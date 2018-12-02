@@ -33,8 +33,8 @@ type PatternClient struct {
 }
 
 // NewPatternClient creates an instance of the PatternClient client.
-func NewPatternClient(endpoint string) PatternClient {
-	return PatternClient{New(endpoint)}
+func NewPatternClient(endpoint string, ocpApimSubscriptionKey string) PatternClient {
+	return PatternClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // AddPattern sends the add pattern request.
@@ -42,7 +42,7 @@ func NewPatternClient(endpoint string) PatternClient {
 // appID - the application ID.
 // versionID - the version ID.
 // pattern - the input pattern.
-func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result PatternRuleInfo, err error) {
+func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.AddPattern")
 		defer func() {
@@ -90,7 +90,8 @@ func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.U
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrule", pathParameters),
-		autorest.WithJSON(pattern))
+		autorest.WithJSON(pattern),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -103,12 +104,12 @@ func (client PatternClient) AddPatternSender(req *http.Request) (*http.Response,
 
 // AddPatternResponder handles the response to the AddPattern request. The method always
 // closes the http.Response Body.
-func (client PatternClient) AddPatternResponder(resp *http.Response) (result PatternRuleInfo, err error) {
+func (client PatternClient) AddPatternResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -119,7 +120,7 @@ func (client PatternClient) AddPatternResponder(resp *http.Response) (result Pat
 // appID - the application ID.
 // versionID - the version ID.
 // patterns - a JSON array containing patterns.
-func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.BatchAddPatterns")
 		defer func() {
@@ -173,7 +174,8 @@ func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID 
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithJSON(patterns))
+		autorest.WithJSON(patterns),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -186,11 +188,11 @@ func (client PatternClient) BatchAddPatternsSender(req *http.Request) (*http.Res
 
 // BatchAddPatternsResponder handles the response to the BatchAddPatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -202,7 +204,7 @@ func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (resu
 // appID - the application ID.
 // versionID - the version ID.
 // patternID - the pattern ID.
-func (client PatternClient) DeletePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID) (result OperationStatus, err error) {
+func (client PatternClient) DeletePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.DeletePattern")
 		defer func() {
@@ -249,7 +251,8 @@ func (client PatternClient) DeletePatternPreparer(ctx context.Context, appID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -262,12 +265,12 @@ func (client PatternClient) DeletePatternSender(req *http.Request) (*http.Respon
 
 // DeletePatternResponder handles the response to the DeletePattern request. The method always
 // closes the http.Response Body.
-func (client PatternClient) DeletePatternResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client PatternClient) DeletePatternResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -278,7 +281,7 @@ func (client PatternClient) DeletePatternResponder(resp *http.Response) (result 
 // appID - the application ID.
 // versionID - the version ID.
 // patternIds - the patterns IDs.
-func (client PatternClient) DeletePatterns(ctx context.Context, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (result OperationStatus, err error) {
+func (client PatternClient) DeletePatterns(ctx context.Context, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.DeletePatterns")
 		defer func() {
@@ -332,7 +335,8 @@ func (client PatternClient) DeletePatternsPreparer(ctx context.Context, appID uu
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithJSON(patternIds))
+		autorest.WithJSON(patternIds),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -345,12 +349,12 @@ func (client PatternClient) DeletePatternsSender(req *http.Request) (*http.Respo
 
 // DeletePatternsResponder handles the response to the DeletePatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) DeletePatternsResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client PatternClient) DeletePatternsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -363,7 +367,7 @@ func (client PatternClient) DeletePatternsResponder(resp *http.Response) (result
 // intentID - the intent classifier ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client PatternClient) GetIntentPatterns(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) GetIntentPatterns(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.GetIntentPatterns")
 		defer func() {
@@ -435,7 +439,8 @@ func (client PatternClient) GetIntentPatternsPreparer(ctx context.Context, appID
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/patternrules", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -448,11 +453,11 @@ func (client PatternClient) GetIntentPatternsSender(req *http.Request) (*http.Re
 
 // GetIntentPatternsResponder handles the response to the GetIntentPatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) GetIntentPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) GetIntentPatternsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -465,7 +470,7 @@ func (client PatternClient) GetIntentPatternsResponder(resp *http.Response) (res
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client PatternClient) GetPatterns(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) GetPatterns(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.GetPatterns")
 		defer func() {
@@ -536,7 +541,8 @@ func (client PatternClient) GetPatternsPreparer(ctx context.Context, appID uuid.
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -549,11 +555,11 @@ func (client PatternClient) GetPatternsSender(req *http.Request) (*http.Response
 
 // GetPatternsResponder handles the response to the GetPatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) GetPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) GetPatternsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -566,7 +572,7 @@ func (client PatternClient) GetPatternsResponder(resp *http.Response) (result Li
 // versionID - the version ID.
 // patternID - the pattern ID.
 // pattern - an object representing a pattern.
-func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result PatternRuleInfo, err error) {
+func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.UpdatePattern")
 		defer func() {
@@ -615,7 +621,8 @@ func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uui
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters),
-		autorest.WithJSON(pattern))
+		autorest.WithJSON(pattern),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -628,12 +635,12 @@ func (client PatternClient) UpdatePatternSender(req *http.Request) (*http.Respon
 
 // UpdatePatternResponder handles the response to the UpdatePattern request. The method always
 // closes the http.Response Body.
-func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result PatternRuleInfo, err error) {
+func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -644,7 +651,7 @@ func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result 
 // appID - the application ID.
 // versionID - the version ID.
 // patterns - an array represents the patterns.
-func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.UpdatePatterns")
 		defer func() {
@@ -698,7 +705,8 @@ func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uu
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithJSON(patterns))
+		autorest.WithJSON(patterns),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -711,11 +719,11 @@ func (client PatternClient) UpdatePatternsSender(req *http.Request) (*http.Respo
 
 // UpdatePatternsResponder handles the response to the UpdatePatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) UpdatePatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) UpdatePatternsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

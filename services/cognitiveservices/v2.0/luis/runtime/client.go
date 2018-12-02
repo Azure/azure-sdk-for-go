@@ -27,18 +27,20 @@ import (
 // BaseClient is the base client for Runtime.
 type BaseClient struct {
 	autorest.Client
-	Endpoint string
+	Endpoint               string
+	OcpApimSubscriptionKey string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string) BaseClient {
-	return NewWithoutDefaults(endpoint)
+func New(endpoint string, ocpApimSubscriptionKey string) BaseClient {
+	return NewWithoutDefaults(endpoint, ocpApimSubscriptionKey)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(endpoint string) BaseClient {
+func NewWithoutDefaults(endpoint string, ocpApimSubscriptionKey string) BaseClient {
 	return BaseClient{
-		Client:   autorest.NewClientWithUserAgent(UserAgent()),
-		Endpoint: endpoint,
+		Client:                 autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint:               endpoint,
+		OcpApimSubscriptionKey: ocpApimSubscriptionKey,
 	}
 }

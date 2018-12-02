@@ -28,7 +28,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/
 // APIError error information returned by the API
 type APIError struct {
 	// StatusCode - HTTP Status code
-	StatusCode *string `json:"statusCode,omitempty"`
+	StatusCode *int32 `json:"statusCode,omitempty"`
 	// Message - Cause of the error.
 	Message *string `json:"message,omitempty"`
 }
@@ -383,7 +383,6 @@ type IntentModel struct {
 
 // LuisResult prediction, based on the input query, containing intent(s) and entities.
 type LuisResult struct {
-	autorest.Response `json:"-"`
 	// Query - The input utterance that was analized.
 	Query *string `json:"query,omitempty"`
 	// AlteredQuery - The corrected utterance (when spell checking was enabled).
@@ -404,4 +403,10 @@ type Sentiment struct {
 	Label *string `json:"label,omitempty"`
 	// Score - Score of the sentiment, ranges from 0 (most negative) to 1 (most positive).
 	Score *float64 `json:"score,omitempty"`
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }

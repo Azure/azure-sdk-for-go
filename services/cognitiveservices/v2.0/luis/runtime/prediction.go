@@ -32,14 +32,14 @@ type PredictionClient struct {
 }
 
 // NewPredictionClient creates an instance of the PredictionClient client.
-func NewPredictionClient(endpoint string) PredictionClient {
-	return PredictionClient{New(endpoint)}
+func NewPredictionClient(endpoint string, ocpApimSubscriptionKey string) PredictionClient {
+	return PredictionClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
-// Resolve gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-// is 500 characters.
+// GET gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is
+// 500 characters.
 // Parameters:
-// appID - the LUIS application ID (Guid).
+// appID - the LUIS application ID (guid).
 // query - the utterance to predict.
 // timezoneOffset - the timezone offset for the location of the request.
 // verbose - if true, return all intents instead of just the top scoring intent.
@@ -47,9 +47,9 @@ func NewPredictionClient(endpoint string) PredictionClient {
 // spellCheck - enable spell checking.
 // bingSpellCheckSubscriptionKey - the subscription key to use when enabling bing spell check
 // logParameter - log query (default is true)
-func (client PredictionClient) Resolve(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result LuisResult, err error) {
+func (client PredictionClient) GET(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result SetObject, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PredictionClient.Resolve")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PredictionClient.GET")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -61,32 +61,142 @@ func (client PredictionClient) Resolve(ctx context.Context, appID string, query 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: query,
 			Constraints: []validation.Constraint{{Target: "query", Name: validation.MaxLength, Rule: 500, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("runtime.PredictionClient", "Resolve", err.Error())
+		return result, validation.NewError("runtime.PredictionClient", "GET", err.Error())
 	}
 
-	req, err := client.ResolvePreparer(ctx, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
+	req, err := client.GETPreparer(ctx, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "Resolve", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "GET", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ResolveSender(req)
+	resp, err := client.GETSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "Resolve", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "GET", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ResolveResponder(resp)
+	result, err = client.GETResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "Resolve", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "GET", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ResolvePreparer prepares the Resolve request.
-func (client PredictionClient) ResolvePreparer(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
+// GETPreparer prepares the GET request.
+func (client PredictionClient) GETPreparer(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId": autorest.Encode("path", appID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"q": autorest.Encode("query", query),
+	}
+	if timezoneOffset != nil {
+		queryParameters["timezoneOffset"] = autorest.Encode("query", *timezoneOffset)
+	}
+	if verbose != nil {
+		queryParameters["verbose"] = autorest.Encode("query", *verbose)
+	}
+	if staging != nil {
+		queryParameters["staging"] = autorest.Encode("query", *staging)
+	}
+	if spellCheck != nil {
+		queryParameters["spellCheck"] = autorest.Encode("query", *spellCheck)
+	}
+	if len(bingSpellCheckSubscriptionKey) > 0 {
+		queryParameters["bing-spell-check-subscription-key"] = autorest.Encode("query", bingSpellCheckSubscriptionKey)
+	}
+	if logParameter != nil {
+		queryParameters["log"] = autorest.Encode("query", *logParameter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GETSender sends the GET request. The method will close the
+// http.Response Body if it receives an error.
+func (client PredictionClient) GETSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GETResponder handles the response to the GET request. The method always
+// closes the http.Response Body.
+func (client PredictionClient) GETResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusConflict, http.StatusGone, http.StatusRequestURITooLong, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// POST gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is
+// 500 characters.
+// Parameters:
+// appID - the LUIS application ID (Guid).
+// query - the utterance to predict.
+// timezoneOffset - the timezone offset for the location of the request.
+// verbose - if true, return all intents instead of just the top scoring intent.
+// staging - use the staging endpoint slot.
+// spellCheck - enable spell checking.
+// bingSpellCheckSubscriptionKey - the subscription key to use when enabling bing spell check
+// logParameter - log query (default is true)
+func (client PredictionClient) POST(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PredictionClient.POST")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: query,
+			Constraints: []validation.Constraint{{Target: "query", Name: validation.MaxLength, Rule: 500, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("runtime.PredictionClient", "POST", err.Error())
+	}
+
+	req, err := client.POSTPreparer(ctx, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "POST", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.POSTSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "POST", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.POSTResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "POST", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// POSTPreparer prepares the POST request.
+func (client PredictionClient) POSTPreparer(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -121,25 +231,26 @@ func (client PredictionClient) ResolvePreparer(ctx context.Context, appID string
 		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(query),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ResolveSender sends the Resolve request. The method will close the
+// POSTSender sends the POST request. The method will close the
 // http.Response Body if it receives an error.
-func (client PredictionClient) ResolveSender(req *http.Request) (*http.Response, error) {
+func (client PredictionClient) POSTSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ResolveResponder handles the response to the Resolve request. The method always
+// POSTResponder handles the response to the POST request. The method always
 // closes the http.Response Body.
-func (client PredictionClient) ResolveResponder(resp *http.Response) (result LuisResult, err error) {
+func (client PredictionClient) POSTResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusConflict, http.StatusGone, http.StatusRequestURITooLong, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

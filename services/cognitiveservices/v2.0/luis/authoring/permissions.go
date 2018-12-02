@@ -32,8 +32,8 @@ type PermissionsClient struct {
 }
 
 // NewPermissionsClient creates an instance of the PermissionsClient client.
-func NewPermissionsClient(endpoint string) PermissionsClient {
-	return PermissionsClient{New(endpoint)}
+func NewPermissionsClient(endpoint string, ocpApimSubscriptionKey string) PermissionsClient {
+	return PermissionsClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // Add adds a user to the allowed list of users to access this LUIS application. Users are added using their email
@@ -41,7 +41,7 @@ func NewPermissionsClient(endpoint string) PermissionsClient {
 // Parameters:
 // appID - the application ID.
 // userToAdd - a model containing the user's email address.
-func (client PermissionsClient) Add(ctx context.Context, appID uuid.UUID, userToAdd UserCollaborator) (result OperationStatus, err error) {
+func (client PermissionsClient) Add(ctx context.Context, appID uuid.UUID, userToAdd UserCollaborator) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Add")
 		defer func() {
@@ -88,7 +88,8 @@ func (client PermissionsClient) AddPreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithJSON(userToAdd))
+		autorest.WithJSON(userToAdd),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -101,12 +102,12 @@ func (client PermissionsClient) AddSender(req *http.Request) (*http.Response, er
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client PermissionsClient) AddResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client PermissionsClient) AddResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -117,7 +118,7 @@ func (client PermissionsClient) AddResponder(resp *http.Response) (result Operat
 // Parameters:
 // appID - the application ID.
 // userToDelete - a model containing the user's email address.
-func (client PermissionsClient) Delete(ctx context.Context, appID uuid.UUID, userToDelete UserCollaborator) (result OperationStatus, err error) {
+func (client PermissionsClient) Delete(ctx context.Context, appID uuid.UUID, userToDelete UserCollaborator) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Delete")
 		defer func() {
@@ -164,7 +165,8 @@ func (client PermissionsClient) DeletePreparer(ctx context.Context, appID uuid.U
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithJSON(userToDelete))
+		autorest.WithJSON(userToDelete),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -177,12 +179,12 @@ func (client PermissionsClient) DeleteSender(req *http.Request) (*http.Response,
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PermissionsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client PermissionsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -191,7 +193,7 @@ func (client PermissionsClient) DeleteResponder(resp *http.Response) (result Ope
 // List gets the list of user emails that have permissions to access your application.
 // Parameters:
 // appID - the application ID.
-func (client PermissionsClient) List(ctx context.Context, appID uuid.UUID) (result UserAccessList, err error) {
+func (client PermissionsClient) List(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.List")
 		defer func() {
@@ -236,7 +238,8 @@ func (client PermissionsClient) ListPreparer(ctx context.Context, appID uuid.UUI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -249,12 +252,12 @@ func (client PermissionsClient) ListSender(req *http.Request) (*http.Response, e
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PermissionsClient) ListResponder(resp *http.Response) (result UserAccessList, err error) {
+func (client PermissionsClient) ListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -265,7 +268,7 @@ func (client PermissionsClient) ListResponder(resp *http.Response) (result UserA
 // Parameters:
 // appID - the application ID.
 // collaborators - a model containing a list of user's email addresses.
-func (client PermissionsClient) Update(ctx context.Context, appID uuid.UUID, collaborators CollaboratorsArray) (result OperationStatus, err error) {
+func (client PermissionsClient) Update(ctx context.Context, appID uuid.UUID, collaborators CollaboratorsArray) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Update")
 		defer func() {
@@ -312,7 +315,8 @@ func (client PermissionsClient) UpdatePreparer(ctx context.Context, appID uuid.U
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithJSON(collaborators))
+		autorest.WithJSON(collaborators),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -325,12 +329,12 @@ func (client PermissionsClient) UpdateSender(req *http.Request) (*http.Response,
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client PermissionsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client PermissionsClient) UpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -32,15 +32,16 @@ type IntentModel = original.IntentModel
 type LuisResult = original.LuisResult
 type PredictionClient = original.PredictionClient
 type Sentiment = original.Sentiment
+type SetObject = original.SetObject
 
-func New(endpoint string) BaseClient {
-	return original.New(endpoint)
+func New(endpoint string, ocpApimSubscriptionKey string) BaseClient {
+	return original.New(endpoint, ocpApimSubscriptionKey)
 }
-func NewPredictionClient(endpoint string) PredictionClient {
-	return original.NewPredictionClient(endpoint)
+func NewPredictionClient(endpoint string, ocpApimSubscriptionKey string) PredictionClient {
+	return original.NewPredictionClient(endpoint, ocpApimSubscriptionKey)
 }
-func NewWithoutDefaults(endpoint string) BaseClient {
-	return original.NewWithoutDefaults(endpoint)
+func NewWithoutDefaults(endpoint string, ocpApimSubscriptionKey string) BaseClient {
+	return original.NewWithoutDefaults(endpoint, ocpApimSubscriptionKey)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

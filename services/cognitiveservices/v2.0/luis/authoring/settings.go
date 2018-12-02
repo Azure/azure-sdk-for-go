@@ -32,15 +32,15 @@ type SettingsClient struct {
 }
 
 // NewSettingsClient creates an instance of the SettingsClient client.
-func NewSettingsClient(endpoint string) SettingsClient {
-	return SettingsClient{New(endpoint)}
+func NewSettingsClient(endpoint string, ocpApimSubscriptionKey string) SettingsClient {
+	return SettingsClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // List gets the application version settings.
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client SettingsClient) List(ctx context.Context, appID uuid.UUID, versionID string) (result ListAppVersionSettingObject, err error) {
+func (client SettingsClient) List(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.List")
 		defer func() {
@@ -86,7 +86,8 @@ func (client SettingsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -99,11 +100,11 @@ func (client SettingsClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SettingsClient) ListResponder(resp *http.Response) (result ListAppVersionSettingObject, err error) {
+func (client SettingsClient) ListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -115,7 +116,7 @@ func (client SettingsClient) ListResponder(resp *http.Response) (result ListAppV
 // appID - the application ID.
 // versionID - the version ID.
 // listOfAppVersionSettingObject - a list of the updated application version settings.
-func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject AppVersionSettingObject) (result OperationStatus, err error) {
+func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject AppVersionSettingObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Update")
 		defer func() {
@@ -163,7 +164,8 @@ func (client SettingsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters),
-		autorest.WithJSON(listOfAppVersionSettingObject))
+		autorest.WithJSON(listOfAppVersionSettingObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -176,12 +178,12 @@ func (client SettingsClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client SettingsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client SettingsClient) UpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

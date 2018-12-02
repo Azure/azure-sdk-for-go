@@ -24,7 +24,8 @@ import (
 
 // PredictionClientAPI contains the set of methods on the PredictionClient type.
 type PredictionClientAPI interface {
-	Resolve(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.LuisResult, err error)
+	GET(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.SetObject, err error)
+	POST(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.SetObject, err error)
 }
 
 var _ PredictionClientAPI = (*runtime.PredictionClient)(nil)

@@ -32,8 +32,8 @@ type TrainClient struct {
 }
 
 // NewTrainClient creates an instance of the TrainClient client.
-func NewTrainClient(endpoint string) TrainClient {
-	return TrainClient{New(endpoint)}
+func NewTrainClient(endpoint string, ocpApimSubscriptionKey string) TrainClient {
+	return TrainClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // GetStatus gets the training status of all models (intents and entities) for the specified LUIS app. You must call
@@ -42,7 +42,7 @@ func NewTrainClient(endpoint string) TrainClient {
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versionID string) (result ListModelTrainingInfo, err error) {
+func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TrainClient.GetStatus")
 		defer func() {
@@ -88,7 +88,8 @@ func (client TrainClient) GetStatusPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -101,11 +102,11 @@ func (client TrainClient) GetStatusSender(req *http.Request) (*http.Response, er
 
 // GetStatusResponder handles the response to the GetStatus request. The method always
 // closes the http.Response Body.
-func (client TrainClient) GetStatusResponder(resp *http.Response) (result ListModelTrainingInfo, err error) {
+func (client TrainClient) GetStatusResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -120,7 +121,7 @@ func (client TrainClient) GetStatusResponder(resp *http.Response) (result ListMo
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, versionID string) (result EnqueueTrainingResponse, err error) {
+func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TrainClient.TrainVersion")
 		defer func() {
@@ -166,7 +167,8 @@ func (client TrainClient) TrainVersionPreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -179,12 +181,12 @@ func (client TrainClient) TrainVersionSender(req *http.Request) (*http.Response,
 
 // TrainVersionResponder handles the response to the TrainVersion request. The method always
 // closes the http.Response Body.
-func (client TrainClient) TrainVersionResponder(resp *http.Response) (result EnqueueTrainingResponse, err error) {
+func (client TrainClient) TrainVersionResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusConflict, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -603,13 +603,13 @@ func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (res
 	return
 }
 
-// GetServerFarmMetricDefinitions sends the get server farm metric definitions request.
+// GetServerFarmMetricDefintions sends the get server farm metric defintions request.
 // Parameters:
 // resourceGroupName - name of resource group
 // name - name of App Service Plan
-func (client ServerFarmsClient) GetServerFarmMetricDefinitions(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionPage, err error) {
+func (client ServerFarmsClient) GetServerFarmMetricDefintions(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetricDefinitions")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetricDefintions")
 		defer func() {
 			sc := -1
 			if result.mdc.Response.Response != nil {
@@ -618,30 +618,30 @@ func (client ServerFarmsClient) GetServerFarmMetricDefinitions(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.fn = client.getServerFarmMetricDefinitionsNextResults
-	req, err := client.GetServerFarmMetricDefinitionsPreparer(ctx, resourceGroupName, name)
+	result.fn = client.getServerFarmMetricDefintionsNextResults
+	req, err := client.GetServerFarmMetricDefintionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefinitions", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetServerFarmMetricDefinitionsSender(req)
+	resp, err := client.GetServerFarmMetricDefintionsSender(req)
 	if err != nil {
 		result.mdc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefinitions", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure sending request")
 		return
 	}
 
-	result.mdc, err = client.GetServerFarmMetricDefinitionsResponder(resp)
+	result.mdc, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefinitions", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetServerFarmMetricDefinitionsPreparer prepares the GetServerFarmMetricDefinitions request.
-func (client ServerFarmsClient) GetServerFarmMetricDefinitionsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+// GetServerFarmMetricDefintionsPreparer prepares the GetServerFarmMetricDefintions request.
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -661,16 +661,16 @@ func (client ServerFarmsClient) GetServerFarmMetricDefinitionsPreparer(ctx conte
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetServerFarmMetricDefinitionsSender sends the GetServerFarmMetricDefinitions request. The method will close the
+// GetServerFarmMetricDefintionsSender sends the GetServerFarmMetricDefintions request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerFarmsClient) GetServerFarmMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetServerFarmMetricDefinitionsResponder handles the response to the GetServerFarmMetricDefinitions request. The method always
+// GetServerFarmMetricDefintionsResponder handles the response to the GetServerFarmMetricDefintions request. The method always
 // closes the http.Response Body.
-func (client ServerFarmsClient) GetServerFarmMetricDefinitionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *http.Response) (result MetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -681,31 +681,31 @@ func (client ServerFarmsClient) GetServerFarmMetricDefinitionsResponder(resp *ht
 	return
 }
 
-// getServerFarmMetricDefinitionsNextResults retrieves the next set of results, if any.
-func (client ServerFarmsClient) getServerFarmMetricDefinitionsNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+// getServerFarmMetricDefintionsNextResults retrieves the next set of results, if any.
+func (client ServerFarmsClient) getServerFarmMetricDefintionsNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
 	req, err := lastResults.metricDefinitionCollectionPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefinitionsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefintionsNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.GetServerFarmMetricDefinitionsSender(req)
+	resp, err := client.GetServerFarmMetricDefintionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefinitionsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefintionsNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.GetServerFarmMetricDefinitionsResponder(resp)
+	result, err = client.GetServerFarmMetricDefintionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefinitionsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefintionsNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// GetServerFarmMetricDefinitionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ServerFarmsClient) GetServerFarmMetricDefinitionsComplete(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionIterator, err error) {
+// GetServerFarmMetricDefintionsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServerFarmsClient) GetServerFarmMetricDefintionsComplete(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetricDefinitions")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetricDefintions")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -714,7 +714,7 @@ func (client ServerFarmsClient) GetServerFarmMetricDefinitionsComplete(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.GetServerFarmMetricDefinitions(ctx, resourceGroupName, name)
+	result.page, err = client.GetServerFarmMetricDefintions(ctx, resourceGroupName, name)
 	return
 }
 

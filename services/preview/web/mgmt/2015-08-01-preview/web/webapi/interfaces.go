@@ -215,7 +215,7 @@ type ServerFarmsClientAPI interface {
 	GetRouteForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string) (result web.ListVnetRoute, err error)
 	GetRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string) (result web.ListVnetRoute, err error)
 	GetServerFarm(ctx context.Context, resourceGroupName string, name string) (result web.ServerFarmWithRichSku, err error)
-	GetServerFarmMetricDefinitions(ctx context.Context, resourceGroupName string, name string) (result web.MetricDefinitionCollectionPage, err error)
+	GetServerFarmMetricDefintions(ctx context.Context, resourceGroupName string, name string) (result web.MetricDefinitionCollectionPage, err error)
 	GetServerFarmMetrics(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result web.ResourceMetricCollectionPage, err error)
 	GetServerFarmOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result web.ServerFarmWithRichSku, err error)
 	GetServerFarms(ctx context.Context, resourceGroupName string) (result web.ServerFarmCollectionPage, err error)

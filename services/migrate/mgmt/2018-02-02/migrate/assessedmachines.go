@@ -40,7 +40,7 @@ func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string,
 	return AssessedMachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
-// Get get an assessed machine with its size & cost estimnate that was evaluated in the specified assessment.
+// Get get an assessed machine with its size & cost estimate that was evaluated in the specified assessment.
 // Parameters:
 // resourceGroupName - name of the Azure Resource Group that project is part of.
 // projectName - name of the Azure Migrate project.

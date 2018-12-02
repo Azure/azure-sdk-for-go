@@ -1467,7 +1467,7 @@ type IntegrationAccountCertificateProperties struct {
 
 // IntegrationAccountContentHash ...
 type IntegrationAccountContentHash struct {
-	// Algorithm - The conetnt hash algorithm.
+	// Algorithm - The content hash algorithm.
 	Algorithm *string `json:"algorithm,omitempty"`
 	// Value - The content hash value.
 	Value *string `json:"value,omitempty"`

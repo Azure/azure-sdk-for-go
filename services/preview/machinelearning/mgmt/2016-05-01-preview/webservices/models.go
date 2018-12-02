@@ -274,7 +274,7 @@ func (ai AssetItem) MarshalJSON() ([]byte, error) {
 
 // AssetLocation describes the access location for a web service asset.
 type AssetLocation struct {
-	// URI - The URI where the asset is accessible from, (e.g. aml://abc for system assets or https://xyz for user asets
+	// URI - The URI where the asset is accessible from, (e.g. aml://abc for system assets or https://xyz for user assets
 	URI *string `json:"uri,omitempty"`
 	// Credentials - Access credentials for the asset, if applicable (e.g. asset specified by storage account connection string + blob URI)
 	Credentials *string `json:"credentials,omitempty"`

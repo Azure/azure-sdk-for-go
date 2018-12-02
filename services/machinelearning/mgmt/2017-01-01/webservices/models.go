@@ -822,7 +822,7 @@ type Properties struct {
 	Parameters map[string]*Parameter `json:"parameters"`
 	// PayloadsInBlobStorage - When set to true, indicates that the payload size is larger than 3 MB. Otherwise false. If the payload size exceed 3 MB, the payload is stored in a blob and the PayloadsLocation parameter contains the URI of the blob. Otherwise, this will be set to false and Assets, Input, Output, Package, Parameters, ExampleRequest are inline. The Payload sizes is determined by adding the size of the Assets, Input, Output, Package, Parameters, and the ExampleRequest.
 	PayloadsInBlobStorage *bool `json:"payloadsInBlobStorage,omitempty"`
-	// PayloadsLocation - The URI of the payload blob. This paramater contains a value only if the payloadsInBlobStorage parameter is set to true. Otherwise is set to null.
+	// PayloadsLocation - The URI of the payload blob. This parameter contains a value only if the payloadsInBlobStorage parameter is set to true. Otherwise is set to null.
 	PayloadsLocation *BlobLocation `json:"payloadsLocation,omitempty"`
 	// PackageType - Possible values include: 'PackageTypeWebServiceProperties', 'PackageTypeGraph'
 	PackageType PackageType `json:"packageType,omitempty"`
@@ -997,7 +997,7 @@ type PropertiesForGraph struct {
 	Parameters map[string]*Parameter `json:"parameters"`
 	// PayloadsInBlobStorage - When set to true, indicates that the payload size is larger than 3 MB. Otherwise false. If the payload size exceed 3 MB, the payload is stored in a blob and the PayloadsLocation parameter contains the URI of the blob. Otherwise, this will be set to false and Assets, Input, Output, Package, Parameters, ExampleRequest are inline. The Payload sizes is determined by adding the size of the Assets, Input, Output, Package, Parameters, and the ExampleRequest.
 	PayloadsInBlobStorage *bool `json:"payloadsInBlobStorage,omitempty"`
-	// PayloadsLocation - The URI of the payload blob. This paramater contains a value only if the payloadsInBlobStorage parameter is set to true. Otherwise is set to null.
+	// PayloadsLocation - The URI of the payload blob. This parameter contains a value only if the payloadsInBlobStorage parameter is set to true. Otherwise is set to null.
 	PayloadsLocation *BlobLocation `json:"payloadsLocation,omitempty"`
 	// PackageType - Possible values include: 'PackageTypeWebServiceProperties', 'PackageTypeGraph'
 	PackageType PackageType `json:"packageType,omitempty"`

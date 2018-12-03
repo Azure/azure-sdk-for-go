@@ -132,7 +132,7 @@ func (at *AgreementTerms) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorResponse error reponse indicates Microsoft.MarketplaceOrdering service is not able to process the
+// ErrorResponse error response indicates Microsoft.MarketplaceOrdering service is not able to process the
 // incoming request. The reason is provided in the error message.
 type ErrorResponse struct {
 	// Error - The details of the error.

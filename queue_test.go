@@ -653,7 +653,7 @@ func (suite *serviceBusSuite) TestNewQueueSession() {
 	suite.NoError(err)
 	sessionID := "123"
 	qs := NewQueueSession(q, &sessionID)
-	suite.Equal(sessionID, qs.SessionID())
+	suite.Equal(sessionID, *qs.SessionID())
 }
 
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {

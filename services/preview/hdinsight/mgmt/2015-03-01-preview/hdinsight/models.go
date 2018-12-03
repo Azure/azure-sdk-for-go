@@ -440,13 +440,13 @@ type CapabilitiesResult struct {
 	autorest.Response `json:"-"`
 	// Versions - The version capability.
 	Versions map[string]*VersionsCapability `json:"versions"`
-	// Regions - The virtual machine size compatibilty features.
+	// Regions - The virtual machine size compatibility features.
 	Regions map[string]*RegionsCapability `json:"regions"`
 	// VMSizes - The virtual machine sizes.
 	VMSizes map[string]*VMSizesCapability `json:"vmSizes"`
-	// VMSizeFilters - The virtual machine size compatibilty filters.
+	// VMSizeFilters - The virtual machine size compatibility filters.
 	VMSizeFilters *[]VMSizeCompatibilityFilter `json:"vmSize_filters,omitempty"`
-	// Features - The capabilty features.
+	// Features - The capability features.
 	Features *[]string `json:"features,omitempty"`
 	// Quota - The quota capability.
 	Quota *QuotaCapability `json:"quota,omitempty"`

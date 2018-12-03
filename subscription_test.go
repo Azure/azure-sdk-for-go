@@ -32,6 +32,7 @@ import (
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -307,25 +308,29 @@ func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
 			topic, err := ns.NewTopic(topicName)
 			if suite.NoError(err) {
 				subName := suite.randEntityName()
-				subCleanup := makeSubscription(ctx, t, topic, subName)
+				subCleanup := makeSubscription(ctx, t, topic, subName, SubscriptionWithRequiredSessions())
 				subscription, err := topic.NewSubscription(subName)
 				id, err := uuid.NewV4()
 				suite.Require().NoError(err)
 				sessionID := id.String()
 
 				ts := topic.NewSession(&sessionID)
-				defer suite.NoError(ts.Close(context.Background()))
 				ss := subscription.NewSession(&sessionID)
-				defer suite.NoError(ss.Close(context.Background()))
+				defer func() {
+					closeCtx, cancel := context.WithTimeout(ctx, 10 * time.Second)
+					defer cancel()
+					suite.NoError(ts.Close(closeCtx))
+					suite.NoError(ss.Close(closeCtx))
+					subCleanup()
+					topicCleanup()
+				}()
 
 				if suite.NoError(err) {
-					defer subCleanup()
 					testFunc(ctx, t, ts, ss)
 					if !t.Failed() {
 						checkZeroSubscriptionMessages(ctx, t, topic, subName)
 					}
 				}
-				defer topicCleanup()
 			}
 		}
 
@@ -335,18 +340,20 @@ func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
 
 func testSubscriptionSessionReceiveOne(ctx context.Context, t *testing.T, topic *TopicSession, sub *SubscriptionSession) {
 	const want = "hello!"
-	if assert.NoError(t, topic.Send(ctx, NewMessageFromString(want))) {
-		err := sub.ReceiveOne(ctx, NewSessionHandler(
-			HandlerFunc(func(ctx context.Context, msg *Message) error {
-				assert.Equal(t, string(msg.Data), want)
-				return msg.Complete(ctx)
-			}),
-			func(ms *MessageSession) error {
-				return nil
-			},
-			func() {}))
-		assert.NoError(t, err)
-	}
+	require.NoError(t, topic.Send(ctx, NewMessageFromString(want)))
+
+	closerCtx, cancel := context.WithCancel(ctx)
+	err := sub.ReceiveOne(closerCtx, NewSessionHandler(
+		HandlerFunc(func(ctx context.Context, msg *Message) error {
+			assert.Equal(t, string(msg.Data), want)
+			defer cancel()
+			return msg.Complete(ctx)
+		}),
+		func(ms *MessageSession) error {
+			return nil
+		},
+		func() {}))
+	assert.Error(t, err, "context canceled")
 }
 
 func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {

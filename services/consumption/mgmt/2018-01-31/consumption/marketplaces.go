@@ -179,7 +179,7 @@ func (client MarketplacesClient) ListComplete(ctx context.Context, filter string
 	return
 }
 
-// ListByBillingPeriod lists the marketplaces for a scope by billing period and subscripotionId. Marketplaces are
+// ListByBillingPeriod lists the marketplaces for a scope by billing period and subscriptionId. Marketplaces are
 // available via this API only for May 1, 2014 or later.
 // Parameters:
 // billingPeriodName - billing Period Name.

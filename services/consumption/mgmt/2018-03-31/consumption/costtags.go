@@ -41,7 +41,7 @@ func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTag
 	return CostTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the operation to create or update cost tags assiciated with a billing account. Update operation
+// CreateOrUpdate the operation to create or update cost tags associated with a billing account. Update operation
 // requires latest eTag to be set in the request mandatorily. You may obtain the latest eTag by performing a get
 // operation. Create operation does not require eTag.
 // Parameters:

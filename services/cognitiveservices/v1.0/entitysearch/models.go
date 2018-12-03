@@ -9988,7 +9988,7 @@ type PostalAddress struct {
 	PostOfficeBoxNumber *string `json:"postOfficeBoxNumber,omitempty"`
 	// AddressCountry - The country/region where the street address is located. This could be the two-letter ISO code. For example, US, or the full name, United States.
 	AddressCountry *string `json:"addressCountry,omitempty"`
-	// CountryIso - The two letter ISO code of this countr. For example, US.
+	// CountryIso - The two letter ISO code of this country. For example, US.
 	CountryIso *string `json:"countryIso,omitempty"`
 	// Neighborhood - The neighborhood where the street address is located. For example, Westlake.
 	Neighborhood *string `json:"neighborhood,omitempty"`

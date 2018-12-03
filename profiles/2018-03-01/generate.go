@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package profiles
+package v20180301
 
-//go:generate go generate ./2017-03-09/generate.go
-//go:generate go generate ./2018-03-01/generate.go
-//go:generate go generate ./latest/generate.go
-//go:generate go generate ./preview/generate.go
+//go:generate go run ../../tools/profileBuilder/main.go list --clear-output --input ./definition.json --name 2018-03-01 --output-location ./ --verbose

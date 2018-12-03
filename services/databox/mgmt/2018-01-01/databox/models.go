@@ -113,7 +113,7 @@ const (
 	InProgress CopyStatus = "InProgress"
 	// NotReturned No copy triggered as device was not returned.
 	NotReturned CopyStatus = "NotReturned"
-	// NotStarted Data copy hasnt started yet.
+	// NotStarted Data copy hasn't started yet.
 	NotStarted CopyStatus = "NotStarted"
 )
 
@@ -208,7 +208,7 @@ const (
 	AzureFile ShareDestinationFormatType = "AzureFile"
 	// BlockBlob Azure storage block blob format.
 	BlockBlob ShareDestinationFormatType = "BlockBlob"
-	// HCS Storsimple data format.
+	// HCS StorSimple data format.
 	HCS ShareDestinationFormatType = "HCS"
 	// ManagedDisk Azure Compute Disk.
 	ManagedDisk ShareDestinationFormatType = "ManagedDisk"
@@ -251,11 +251,11 @@ func PossibleSkuDisabledReasonValues() []SkuDisabledReason {
 type SkuName string
 
 const (
-	// DataBox Databox.
+	// DataBox DataBox.
 	DataBox SkuName = "DataBox"
-	// DataBoxDisk DataboxDisk.
+	// DataBoxDisk DataBoxDisk.
 	DataBoxDisk SkuName = "DataBoxDisk"
-	// DataBoxHeavy DataboxHeavy.
+	// DataBoxHeavy DataBoxHeavy.
 	DataBoxHeavy SkuName = "DataBoxHeavy"
 )
 
@@ -1015,7 +1015,7 @@ type DiskJobDetails struct {
 	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails"`
 	// Passkey - User entered passkey for DataBox Disk job.
 	Passkey *string `json:"passkey,omitempty"`
-	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
@@ -1364,7 +1364,7 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// HeavyAccountCopyLogDetails copy log details for a storage account for Databox heavy
+// HeavyAccountCopyLogDetails copy log details for a storage account for DataBoxHeavy
 type HeavyAccountCopyLogDetails struct {
 	// AccountName - Destination account name.
 	AccountName *string `json:"accountName,omitempty"`
@@ -1415,11 +1415,11 @@ func (hacld HeavyAccountCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDet
 	return &hacld, true
 }
 
-// HeavyJobDetails databox Heavy Device Job Details
+// HeavyJobDetails dataBoxHeavy Device Job Details
 type HeavyJobDetails struct {
 	// CopyProgress - Copy progress per account.
 	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
-	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
@@ -1660,9 +1660,9 @@ func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HeavyJobSecrets the secrets related to a databox heavy job.
+// HeavyJobSecrets the secrets related to a DataBoxHeavy job.
 type HeavyJobSecrets struct {
-	// CabinetPodSecrets - Contains the list of secret objects for a databox heavy job.
+	// CabinetPodSecrets - Contains the list of secret objects for a DataBoxHeavy job.
 	CabinetPodSecrets *[]HeavySecret `json:"cabinetPodSecrets,omitempty"`
 	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
@@ -1706,7 +1706,7 @@ func (hjs HeavyJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 	return &hjs, true
 }
 
-// HeavySecret the secrets related to a databox heavy.
+// HeavySecret the secrets related to a DataBoxHeavy.
 type HeavySecret struct {
 	// DeviceSerialNumber - Serial number of the assigned device.
 	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
@@ -1730,7 +1730,7 @@ type BasicJobDetails interface {
 
 // JobDetails job details.
 type JobDetails struct {
-	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
@@ -2004,11 +2004,11 @@ func (jd *JobDetails) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JobDetailsType databox Job Details
+// JobDetailsType dataBox Job Details
 type JobDetailsType struct {
 	// CopyProgress - Copy progress per storage account.
 	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
-	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
@@ -2834,7 +2834,7 @@ func (js JobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 	return &js, true
 }
 
-// JobSecretsType the secrets related to a databox job.
+// JobSecretsType the secrets related to a DataBox job.
 type JobSecretsType struct {
 	// PodSecrets - Contains the list of secret objects for a job.
 	PodSecrets *[]Secret `json:"podSecrets,omitempty"`

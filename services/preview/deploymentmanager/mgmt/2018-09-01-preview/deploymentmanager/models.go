@@ -463,7 +463,7 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ResourceOperation individial resource operation information.
+// ResourceOperation individual resource operation information.
 type ResourceOperation struct {
 	// ResourceName - Name of the resource as specified in the artifacts. For ARM resources, this is the name of the resource specified in the template.
 	ResourceName *string `json:"resourceName,omitempty"`

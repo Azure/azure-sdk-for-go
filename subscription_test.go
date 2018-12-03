@@ -29,8 +29,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -273,9 +275,9 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
 		inner, cancel := context.WithCancel(ctx)
-		err := sub.Receive(inner, HandlerFunc(func(eventCtx context.Context, msg *Message) DispositionAction {
+		err := sub.Receive(inner, HandlerFunc(func(eventCtx context.Context, msg *Message) error {
 			defer cancel()
-			return msg.Complete()
+			return msg.Complete(ctx)
 		}))
 		assert.EqualError(t, err, context.Canceled.Error())
 	}
@@ -283,11 +285,75 @@ func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, su
 
 func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
-		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
-			return msg.Complete()
+		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			return msg.Complete(ctx)
 		}))
 		assert.NoError(t, err)
 	}
+}
+
+func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
+	tests := map[string]func(context.Context, *testing.T, *TopicSession, *SubscriptionSession){
+		"ReceiveOne": testSubscriptionSessionReceiveOne,
+	}
+
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			topicName := suite.randEntityName()
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+
+			topicCleanup := makeTopic(ctx, t, ns, topicName)
+			topic, err := ns.NewTopic(topicName)
+			if suite.NoError(err) {
+				subName := suite.randEntityName()
+				subCleanup := makeSubscription(ctx, t, topic, subName, SubscriptionWithRequiredSessions())
+				subscription, err := topic.NewSubscription(subName)
+				id, err := uuid.NewV4()
+				suite.Require().NoError(err)
+				sessionID := id.String()
+
+				ts := topic.NewSession(&sessionID)
+				ss := subscription.NewSession(&sessionID)
+				defer func() {
+					closeCtx, cancel := context.WithTimeout(ctx, 10 * time.Second)
+					defer cancel()
+					suite.NoError(ts.Close(closeCtx))
+					suite.NoError(ss.Close(closeCtx))
+					subCleanup()
+					topicCleanup()
+				}()
+
+				if suite.NoError(err) {
+					testFunc(ctx, t, ts, ss)
+					if !t.Failed() {
+						checkZeroSubscriptionMessages(ctx, t, topic, subName)
+					}
+				}
+			}
+		}
+
+		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
+func testSubscriptionSessionReceiveOne(ctx context.Context, t *testing.T, topic *TopicSession, sub *SubscriptionSession) {
+	const want = "hello!"
+	require.NoError(t, topic.Send(ctx, NewMessageFromString(want)))
+
+	closerCtx, cancel := context.WithCancel(ctx)
+	err := sub.ReceiveOne(closerCtx, NewSessionHandler(
+		HandlerFunc(func(ctx context.Context, msg *Message) error {
+			assert.Equal(t, string(msg.Data), want)
+			defer cancel()
+			return msg.Complete(ctx)
+		}),
+		func(ms *MessageSession) error {
+			return nil
+		},
+		func() {}))
+	assert.Error(t, err, "context canceled")
 }
 
 func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {

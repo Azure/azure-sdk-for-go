@@ -1,34 +1,30 @@
 language: go
 sudo: false
 go:
-  - 1.11
+  - 1.11.x
   - 1.x
 
-env:
-  - GO111MODULE=on
-
 before_install:
+- cd ${TRAVIS_HOME}
 - go get github.com/mattn/goveralls
 - go get golang.org/x/tools/cmd/cover
 - go get github.com/fzipp/gocyclo
-- go get honnef.co/go/tools/cmd/megacheck
-- go get -u golang.org/x/lint/golint
+- go get golang.org/x/lint/golint
+- cd ${TRAVIS_BUILD_DIR}
 
 jobs:
   include:
   - stage: integration tests
     if: type IN (push, cron)
     env:
-    - secure: dJ7k4SNjb4x/nHGLG+Oru1ct/sDbNFxa6wMr5xNozuOLO5xFnUPFFiA3ZV4WnULp0bSQuib0Y3fp7713PgKZNfjo40F5licsaIZowpPdct3G5IgfsW+jg3luk/NaTZwNjofMUew6FmuoHqScdyDn+/cFBYiu4tj3IuSy7z2XoQOVNowcmGgmNstJ5r+naWNqFa970J7/wzeebwef+hZ6fXG6XAHV3K4CM8Lg8HnUwcKSSmbC+sQ/18X+YCTMMyPUNAWdZNSBtUJNDPBVPgj2LZKabdMtWz+r4DmOQWn+IR5JDeH0kiJKIGaxHBrscRIREKiBawjjGU2ostbHp1qNqywcu0som/yNYqs98DKcxPH/QFvP2VHlolFq8l2mLoQ7nXKgF9G245Im6o3pbQPYuf8eUph+RvxiAtYhcPCzBHS9rfRaRsuLaUHRVIkga68mp43bI0r/rbzkDOCaitDQjS/ygzf2VhkUts7R1s0oEnlBYJUOTyY2GeodcWQkNzKPPjfUjDEvg9wEX8/lyjtxr2aooOxiIvLGX04dRvR1GYuPjPXqrRBDdUiFET4bt+S2ADQ+kh1SXOtuLZmnxpDtBIs8YqGYaKifiOqn+DIZUhtQKNt2DM3YfOxHkvRU/TFQ9DNXvytEQVakpamOUze0W4qxUKIK+hZkZ8iK3iy/RjI=
     - secure: S2xZc20LIhEis1gQXTrQID/oezgnpdzEHOfCRAbGsFmnsoyuwoRH4gGPM6Qso9JkJo5yf3qCWzp+yKfH/toK2JSLnU6kNlQeNfc0IJkWXgUgatrBSm1NY9nW56h4J46kFquE3fxgfbVIdZk1RGGzXQksnaW0CvK0+/54QYiyTjwn9CQR5H8pzODgmFeEMsoEqGpTFMWAUE9YlXFvkVFnttNZUeOBfUPrPPvDDg8Q0fRTbH+rDNMXFdMdW/0nmQrCMlEv9EL+wVsTZKiMCXk8pAzx37PNYHZfgibYgvf2QBqN9otTqyP92ZdprweEAMk4lexQL1kvU7k//SRRSL2hxTOxCTXGyZBcLtb9n5Llax/FBxHMrxFDDSQQd4dYMfq1BzHyY0zwJeJ9nDrIxqQEx4qUTRBH577C3PZReERIpd+r5KkDubmkLPItc9t+cAZCBSSbYq+9XLIVnp3Uqx+6bWrfamMHFya1uvn8oKnoyCuMGwyo65kITACFovxu5vGd04NXRi7Pzsq+9kRuZIKulgp6w1tPgj38kanKmHOjhZhhX0crYMnWiUY0qrQTAP1bEk4bh0AhZ/aDb+RoX1fwK5xufkS3RNQyMn35bkFAeXy7eyGKijpGQG1p0J9/pfIqmxMPZsR9VOjQP3Y5vsROFrlZ54xS9cE8s9E8HZkQFBE=
     - secure: HP6RES1wZGT1+W80mNLJQbj41BfYpI0pCCkJViu61opSetzr+1uzvyzt6J4STl30p9EMgANIp/rubYgEri0qRroqZxIm4RyNJqlKN7EiTh6VOAbCkL5vsWY63U+x6OJhoZSBTwGrQO4yH/nF2+39ED3Fy5m4I5qWyS+W3adEAew/0OweLAQkaSCPvEvYiEZwliWlfzZD7yVZEj2cGzRcvWG0CjzabfCmqvldImfZYU9ZfPNf9SBO6fiu8S8/UBp/fM/qS+Sc6Do3QlZF55Tll+hhbbbIaxWKkeAbyMtmmVTD+b5Mu8+GY8KmQt++ZzvVaO1sAUlazFYkaPLBkHK2pEHxcxK1H9T0nr2kE8Lzo+Ae+gPH5Sne9bEbsc9J1rG67U0GPs8aUSKgJo122SlY+IUWGCMxaLCP6lggkoRqg/1yXQOJNrztjNezqzzaxR2Vln6rXIPLCxrFrMoxjhS0MiEyL2JP/tiUKTSV4EN3xBHH9HUhobUkOs3/qnzl1josRBNiST2MGvfaq5AJJFeAaxbKDHeTBBxxSds+SnM0NKpQBcRUUeYwlVY0ecUD0BK8C5MvKqdJm+uI8m5RfqEzQ+cbJRl1PtRfrVr4Dy+mUibDxGspU4pMTxSJhOASOxAwRMQ7Q1/hd++7CiV28xmPAj9w2trBTJ0VPALooxnN2OU=
     - secure: eH38UIvLw2kDpvRuT6QkqB4GkJA0df3/Tba6Qy7HluLgIfsJYeq+xgok4oqx1EQlbv4UF5GmeLd5/3HTwB0ljh9XJjGKwQ9lZT5FyuCoM0ovPf+yX+KemhLUvgn7kyAOErvdc+vgzcuw8cAVy2HidVY3lCVEhwvJLimhq4srISAfJu0rtAQTFlzX1fIaDY5zB5tkE2u4VSBqJyLSQgzol7fYV3FGwzByTSmTcF/taxgW3wRtlFBD6v2rMYK+jDrCEYhmS6sy5povvEUwbNX/ouGsmA/2kyzh9NnbFiva1RLPytDCHjf7cJ1blFYBlZJHXKC2/UXwuWtQWlwGXh6ccziLmqn5W13k120hKHOhLxcU82so5eAUMp6mGbxhv4WUhUUfjUmLJDjtzjsTeuQMsamZE1wTbtED0Hj4tr8fXV9d/+IhBksK2WfSm/TjHKMja+aWxZMXJ+AGYsiyetqVc3qtXhWo3o/errIF2/wl6Z40NFMizzzSbT5VS8Xn1/eS/YtVhg99GLHL6a7kXS/sUsK7kedySSmaOoTNkwoKEGMU8egV4P6PqlR0MM8oR3nCZedew1CRkEN/JHKM2ZV+Wp6re9o345rguIhVSlZNP/DEVQ38KuQ9x6cDKFziQaT1LHg743tAGZGlRUfXeN7p9l5xRvtMavYt5zFHG/74d1Y=
     - secure: U5U8AaP0O/SQdWOfhpGsSCrTxGVi8g+VtyNILy37PEoWgG8dm36XUw7k213m4G6QjZJjhDTsfDkMa2Lfb9DF1yitI2sgECwMnn22XWoPvZUS8JLSbsnMe4kIfZhOqCXbD/SQdyX/oL/5hjJHNPkfJgPpUzfsKCMMrzd4NV6EjxvVuKs8cBecIMt3lIBeOnGEBfMUGQz/gfKXwZ8rMWmX752oVX4bQwQOEMs+stTeESfn2l11olqDyWlzy9Roqz/FEVPeq6d7RTVnJXcwP8BPnc6OM0UpZ2OZbFbVUfvlHywvfq8x31RQpmOidG2TrbbC8XVcEbDLDP78kyR4JgCr+aQz8FChI+aRmpVbNbKdNEHii6XArnygMuzHBqypZIDjDj4zAnODjFmTTuXRvV22691khbdryTDE5nlpilv8icq7HlSWIAdnx2gq9AqpOPYW/5/v1O2A7FSn4wFXKogx37azfDiKSMUIcxrn7rnPAW/M5JTec/k3aVrezLwegzrGOIv4UzLwDSCfd2AjBvAHdy2WZlx71I/awWl3BmSRJA23JaN84+1DkNxUAuRsyES5FOK440c3LZblLs62AThSG5Y1FNufsuRy2WRZV/kjKypuNl5drj2IsmF2+xA7bUmijRobMaq2CwFKXh9mnxmRtCGRnn2sxYibf+fgDn0aUy0=
-    - secure: gMzZrG2Yte4K0l8+c7XZxEZoJXVgfeBh7J2gIs5xGSOhJFvNeeAHrfkB8QRUk8+jKDro/W5J1JweOqUL59euoC9NCF4MMeflnoIHYKAoZ97tOcvkPNLda8Azn191RM9iJWPyANBMp05pyYr51X8bxD1fwvk0Ur2Dp8/VLX/GcDX5wFXD6xR8fZrX+fdmlS/s5eQtdNfjtxG7v2XIcfuYtdR6j8w4itRcUKxo3T+B9hp/PLosXIyNAuP3IyhdYjyUYuFxCFQb9UrzEdHLh234LaPmUuHSXmFgP6zsq0M+l5C5fGfsjRcGPImCMhxrmmfRif9xl+5YO8r5JGCI4VL29V8Xi4B8OLTCqp8UgKiPYZ48jeWfc0SBJnXHo77azrDNcUJ+hxciSqG0yXYTBQpZnPaM2ybJ6lazVvudUoViYLN7LIQcqKSmBvx/XbQBPrhB/T8S3qMiHMEbVV2l47O/FKRd6xJxo0Qoe0btkzClazOMpX7Ev9RP4PcdWJLj5D99sIIoo+fr6j2NE/R8i8pDUEegzh/UTVfYKAg0+ECmNAk60E0PvUeM34qKMQGP6gThK9ema94+CAjZ/kaERZEPxmrvdeHXr3Aj2WTPPL0ET5zJ1KLW46b6DfwnB33Lj8uPkk1X8H48JB0+XBXzL83CNTEZpul6WhvpltddLh/i96M=
     - secure: IkQmMlUiieUnBxE+/Lgsvgjkv33JGUFturvRpIOxME2vynqLKjJf6MOUVVMSaeqtt21Gz6mnRh68hxWpeILQK8vQ0Ar27KMseZaoyctceCrPaz9smYgLTM/O2K6d30Ao37jFGRQs74QgbE8jfsVJzp3mWynRaF0fNLZbfBJo6SgtCvoGs+dVUQp+35bFEsTTBVPZTskEltLe6KJLbg3paxaKYQxC0Msp5iCxqmD4Sx2v/ljyaWVS+BNapvlS85DFNhG3YD1oMq35QuVsgOuptWbw8W//QKMAtO01p1O5mvRKh6FQJAWBgnvRuvlCB4wW9rFpHS62etjoWX6g2NJgKSZvJff4/hscN0lh0iiCLIlcdAMlgWVjbxBv6VzzukCweZU+Nc4MbcId3jSjIB8n0dczYo5fCy2v1NK88IxiLUsKntCxi7TTIDCD/zsHwoLbt/pWaqYmlwyp2cTv9kLwh4Gs4g98kT8HzzCGb/lzJ3TOx4yCaOSoY0snR2rwkO8GKkKKVc0W1vDedf16arcJ77+1zqLb8XW4OFbug05cvZPkpMkPMtFvRI0novHHrkn7kmo3g9l985/r+XwJ4Np4fuaUXU+TO2HPU0wiT29IrWouyFzPljsGPB33Xpin/MCkZVGD+dKqlGJqfe4KPuaTnM3/189W9D/PDhDs5uY13rg=
     - secure: QJqe2gpXdSd3PHgAcUNkYlqKlxBQmvp1je5i8/t4PE/7MLuKIVW/sngEFbXQ0Dg69H0ZCHRm3ozEmv7zBmYTOStFxUFzTCD9pYg+ET1vhhqICr/ncepNUXJpZS7XycxwMoPnWy3n474QPP1549OvtnjefV4daQZFe71I+cjFD0Plre+Vj23AetHkO6SzBbnn0n59GMt16N3S1/XIqza1zkXxntw2xROrWDeOVY61EtpKkXQNhKUgRQEluXFPEOCKN1WckcbEuAqfBy0gYAhDV4pH+PJFOw+1/JXzcKCKq3DRD2VTVTCIOI6i0yRBMbtsJHbNvNHp+Z2DS8byhLUTjxx9bjwNRHRVXoN0yEGL0KTF5K9AksX0aDFf5CSYK1ou+EB23GNtsO/Q+/usSZX1t52LYuNpXtD2IUFceKs9p7Z9+5g2Qu/ozRkP8vX9moBQicGtmuTico7jfMP1pTkUtbaoMKStw6BWEEt4x7ivy7/Smeg5pg7WgyubSM3RkvEBdBxciH2k8ujTyC2oB5hpXZJpcE+dbkiOVh66FLWwgzPvLOVQ9wjazcRN7jc4TVlATlcdas4tia5SnHsdDnVdCGqg8ySOlVWq4rz6vTjsa6KKfwHYLLrl5GBGmAPFhOR/3M2O7OvxRlPE6HWCQs9zuYd+5QjeL9AEEOxe7Ps6zYk=
     script:
-    - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
+    - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
     - unzip /tmp/terraform.zip -d /tmp
     - mkdir -p ~/bin
     - mv /tmp/terraform ~/bin
@@ -39,7 +35,10 @@ jobs:
     - export ARM_TENANT_ID=$(echo $AZURE_TENANT_ID)
     - export TEST_SERVICEBUS_RESOURCE_GROUP=$(echo $TF_VAR_resource_group_name)
     - export TF_VAR_location=$(echo $TEST_SERVICEBUS_LOCATION)
+    - export GO111MODULE=on
     - make test-cover
     - goveralls -coverprofile=cover.out -service=travis-ci
+    - make destroy-sb
 script:
-- make
+  - export GO111MODULE=on
+  - make

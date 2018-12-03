@@ -5,11 +5,11 @@ import "context"
 type (
 	// Handler exposes the functionality required to process a Service Bus message.
 	Handler interface {
-		Handle(context.Context, *Message) DispositionAction
+		Handle(context.Context, *Message) error
 	}
 
 	// HandlerFunc is a type converter that allows a func to be used as a `Handler`
-	HandlerFunc func(context.Context, *Message) DispositionAction
+	HandlerFunc func(context.Context, *Message) error
 
 	// SessionHandler exposes a manner of handling a group of messages together. Instances of SessionHandler should be
 	// passed to a Receiver such as a Queue or Subscription.
@@ -25,7 +25,7 @@ type (
 )
 
 // Handle redirects this call to the func that was provided.
-func (hf HandlerFunc) Handle(ctx context.Context, msg *Message) DispositionAction {
+func (hf HandlerFunc) Handle(ctx context.Context, msg *Message) error {
 	return hf(ctx, msg)
 }
 

@@ -13,19 +13,20 @@ import (
 
 // MessageSession represents and allows for interaction with a Service Bus Session.
 type MessageSession struct {
-	mu sync.RWMutex
-	*entity
-	*receiver
+	*Receiver
+	entity         EntityManagementAddresser
+	mu             sync.RWMutex
 	sessionID      *string
 	lockExpiration time.Time
-	done           chan struct{}
-	cancel         sync.Once
+	done           chan struct {
+	}
+	cancel sync.Once
 }
 
-func newMessageSession(r *receiver, e *entity, sessionID *string) (retval *MessageSession, _ error) {
+func newMessageSession(r *Receiver, entity EntityManagementAddresser, sessionID *string) (retval *MessageSession, _ error) {
 	retval = &MessageSession{
-		receiver:       r,
-		entity:         e,
+		Receiver:       r,
+		entity:         entity,
 		sessionID:      sessionID,
 		lockExpiration: time.Now(),
 		done:           make(chan struct{}),
@@ -44,7 +45,7 @@ func (ms *MessageSession) Close() {
 	})
 }
 
-// LockedUntil fetches the moment in time when the Session lock held by this receiver will expire.
+// LockedUntil fetches the moment in time when the Session lock held by this Receiver will expire.
 func (ms *MessageSession) LockedUntil() time.Time {
 	ms.mu.RLock()
 	defer ms.mu.RUnlock()
@@ -57,7 +58,7 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()
 
-	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.connection, ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
@@ -93,9 +94,39 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	return errors.New("value not of expected type map[string]interface{}")
 }
 
+// ListSessions will list all of the sessions available
+func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
+	link, err := rpc.NewLink(ms.Receiver.connection, ms.entity.ManagementPath())
+	if err != nil {
+		return nil, err
+	}
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:get-message-sessions",
+		},
+		Value: map[string]interface{}{
+			"last-updated-time": time.Now().UTC().Add(-30 * time.Minute),
+			"skip":              int32(0),
+			"top":               int32(100),
+		},
+	}
+
+	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	if rsp.Code != 200 {
+		return nil, fmt.Errorf("amqp error (%d): %q", rsp.Code, rsp.Description)
+	}
+
+	return rsp.Message.Data[0], nil
+}
+
 // SetState updates the current State associated with this Session.
 func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
-	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.connection, ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
@@ -103,7 +134,6 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:set-session-state",
-			"type":      "entity-mgmt",
 		},
 		Properties: &amqp.MessageProperties{
 			GroupID: *ms.SessionID(),
@@ -130,7 +160,7 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 	const sessionStateField = "session-state"
 
-	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.connection, ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return []byte{}, err
 	}

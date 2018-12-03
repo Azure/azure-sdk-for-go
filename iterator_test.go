@@ -153,7 +153,7 @@ func testMessageIteratorStartHalfway(ctx context.Context, t *testing.T, queue *Q
 }
 
 func testMessageIteratorLargePageSize(ctx context.Context, t *testing.T, queue *Queue) {
-	const pageSize = 600
+	const pageSize = 500
 	const deciPageSize = pageSize / 10
 
 	subject, err := queue.Peek(ctx, PeekWithPageSize(pageSize))

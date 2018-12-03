@@ -16,7 +16,7 @@ GOCYCLO = gocyclo
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
-TIMEOUT = 500
+TIMEOUT = 800
 
 .PHONY: all
 all: fmt lint vet ; $(info $(M) building library…) @ ## Build program
@@ -67,10 +67,11 @@ terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(in
 	$Q terraform output > .env
 
 .terraform:
-	$Q az group list >> /dev/null ## Ensure Azure CLI Token in valid before running TF
-	## Prevents 'No valid (unexpired) Azure CLI Auth Tokens found.' error message.
-	## Fix pending in PR: https://github.com/terraform-providers/terraform-provider-azurerm/pull/1752
 	$Q terraform init
+
+.Phony: destroy-sb
+destroy-sb: ; $(info $(M) running sb destroy...)
+	$(Q) terraform destroy -target=azurerm_servicebus_namespace.test -auto-approve
 
 # Dependency management
 go.sum: go.mod

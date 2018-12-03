@@ -68,13 +68,13 @@ func applyResponseInfo(span opentracing.Span, res *http.Response) {
 	}
 }
 
-func (s *entity) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+func (e *entity) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
 	applyComponentInfo(span)
 	return span, ctx
 }
 
-func (s *sender) startProducerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
 	applyComponentInfo(span)
 	tag.SpanKindProducer.Set(span)
@@ -82,21 +82,26 @@ func (s *sender) startProducerSpanFromContext(ctx context.Context, operationName
 	return span, ctx
 }
 
-func (r *receiver) startConsumerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	applyComponentInfo(span)
-	tag.SpanKindConsumer.Set(span)
+func (r *Receiver) startConsumerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+	span, ctx := startConsumerSpanFromContext(ctx, operationName, opts...)
 	tag.MessageBusDestination.Set(span, r.entityPath)
 	return span, ctx
 }
 
-func (r *receiver) startConsumerSpanFromWire(ctx context.Context, operationName string, reference opentracing.SpanContext, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+func (r *Receiver) startConsumerSpanFromWire(ctx context.Context, operationName string, reference opentracing.SpanContext, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	opts = append(opts, opentracing.FollowsFrom(reference))
 	span := opentracing.StartSpan(operationName, opts...)
 	ctx = opentracing.ContextWithSpan(ctx, span)
 	applyComponentInfo(span)
 	tag.SpanKindConsumer.Set(span)
 	tag.MessageBusDestination.Set(span, r.entityPath)
+	return span, ctx
+}
+
+func startConsumerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+	applyComponentInfo(span)
+	tag.SpanKindConsumer.Set(span)
 	return span, ctx
 }
 

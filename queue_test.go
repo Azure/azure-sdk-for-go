@@ -449,16 +449,16 @@ func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
 			fail := true
 
 			errs <- q.Receive(inner,
-				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+				HandlerFunc(func(ctx context.Context, msg *Message) error {
 					assert.EqualValues(t, payload, string(msg.Data))
 					if fail {
 						fail = false
 						assert.EqualValues(t, 1, msg.DeliveryCount)
-						return msg.Abandon()
+						return msg.Abandon(ctx)
 					}
 					assert.EqualValues(t, 2, msg.DeliveryCount)
 					cancel()
-					return msg.Complete()
+					return msg.Complete(ctx)
 				}))
 		}()
 
@@ -475,7 +475,7 @@ func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
 func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
 		err := q.ReceiveOne(context.Background(),
-			HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+			HandlerFunc(func(ctx context.Context, msg *Message) error {
 				sp := msg.SystemProperties
 				assert.NotNil(t, sp.LockedUntil, "LockedUntil")
 				assert.NotNil(t, sp.EnqueuedSequenceNumber, "EnqueuedSequenceNumber")
@@ -483,7 +483,7 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 				assert.NotNil(t, sp.SequenceNumber, "SequenceNumber")
 				assert.NotNil(t, sp.PartitionID, "PartitionID")
 				assert.NotNil(t, sp.PartitionKey, "PartitionKey")
-				return msg.Complete()
+				return msg.Complete(ctx)
 			}))
 
 		assert.NoError(t, err)
@@ -491,8 +491,8 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 }
 
 func testQueueSend(ctx context.Context, t *testing.T, queue *Queue) {
-	err := queue.Send(ctx, NewMessageFromString("hello!"))
-	assert.Nil(t, err)
+	rmsg := test.RandomString("foo", 10)
+	assert.Nil(t, queue.Send(ctx, NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))))
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
@@ -519,7 +519,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	inner, cancel := context.WithCancel(ctx)
 
 	var all []*Message
-	err := queue.Receive(inner, HandlerFunc(func(ctx context.Context, message *Message) DispositionAction {
+	err := queue.Receive(inner, HandlerFunc(func(ctx context.Context, message *Message) error {
 		all = append(all, message)
 		if _, ok := received[message.ID]; !ok {
 			// caught a new one
@@ -534,7 +534,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 		if len(all) == len(messages) {
 			cancel()
 		}
-		return message.Complete()
+		return message.Complete(ctx)
 	}))
 	assert.EqualError(t, err, context.Canceled.Error())
 }
@@ -578,7 +578,7 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	go func() {
 		inner, cancel := context.WithCancel(ctx)
 		numSeen := 0
-		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			numSeen++
 			seen[string(msg.Data)]++
 			if numSeen >= numMessages {
@@ -604,17 +604,69 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	}
 }
 
+func (suite *serviceBusSuite) TestIssue73QueueClient() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SimpleSend200": func(ctx context.Context, t *testing.T, queue *Queue) {
+			for i := 0; i < 200; i++ {
+				testQueueSend(ctx, t, queue)
+			}
+		},
+	}
+
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			queueName := suite.randEntityName()
+
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+
+			window := time.Duration(20 * time.Second)
+			ttl := time.Duration(14 * 24 * time.Hour)
+			cleanup := makeQueue(ctx, t, ns, queueName,
+				QueueEntityWithMessageTimeToLive(&ttl),
+				QueueEntityWithDuplicateDetection(&window),
+				QueueEntityWithMaxDeliveryCount(10),
+				QueueEntityWithMaxSizeInMegabytes(1*Megabytes))
+			q, err := ns.NewQueue(queueName)
+			suite.NoError(err)
+			defer func() {
+				q.Close(ctx)
+				cleanup()
+			}()
+			testFunc(ctx, t, q)
+			if !t.Failed() {
+
+			}
+			if !t.Failed() {
+				checkMessageCount(ctx, t, ns, queueName, 200)
+			}
+		}
+
+		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
+func (suite *serviceBusSuite) TestNewQueueSession() {
+	ns := suite.getNewSasInstance()
+	q, err := ns.NewQueue("foo")
+	suite.NoError(err)
+	sessionID := "123"
+	qs := NewQueueSession(q, &sessionID)
+	suite.Equal(sessionID, *qs.SessionID())
+}
+
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {
 	qm := ns.NewQueueManager()
 	entity, err := qm.Get(ctx, name)
 	if !assert.NoError(t, err) {
-		assert.FailNow(t, "could not GET a subscription")
+		assert.FailNow(t, "could not GET a queue entity")
 	}
 
 	if entity == nil {
 		entity, err = qm.Put(ctx, name, opts...)
 		if !assert.NoError(t, err) {
-			assert.FailNow(t, "could not PUT a subscription")
+			assert.FailNow(t, "could not PUT a queue entity")
 		}
 	}
 	return func() {
@@ -626,6 +678,10 @@ func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 }
 
 func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, name string) {
+	checkMessageCount(ctx, t, ns, name, 0)
+}
+
+func checkMessageCount(ctx context.Context, t *testing.T, ns *Namespace, name string, count int64) {
 	qm := ns.NewQueueManager()
 	maxTries := 10
 	for i := 0; i < maxTries; i++ {
@@ -633,7 +689,7 @@ func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, na
 		if !assert.NoError(t, err) {
 			return
 		}
-		if *q.MessageCount == 0 {
+		if *q.MessageCount == count {
 			return
 		}
 		t.Logf("try %d out of %d, message count was %d, not 0", i+1, maxTries, *q.MessageCount)

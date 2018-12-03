@@ -44,9 +44,9 @@ func Example_helloWorld() {
 
 	err = q.ReceiveOne(
 		ctx,
-		servicebus.HandlerFunc(func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
+		servicebus.HandlerFunc(func(ctx context.Context, message *servicebus.Message) error {
 			fmt.Println(string(message.Data))
-			return message.Complete()
+			return message.Complete(ctx)
 		}))
 	if err != nil {
 		fmt.Println("FATAL: ", err)

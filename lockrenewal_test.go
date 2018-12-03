@@ -22,14 +22,14 @@ func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
 			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second*300)
 			defer cancel()
-			cleanup := makeQueue(ctx, t, ns, queueName)
+			lockDuration := 30 * time.Second
+
+			cleanup := makeQueue(ctx, t, ns, queueName, QueueEntityWithLockDuration(&lockDuration))
 			q, err := ns.NewQueue(queueName)
 			suite.NoError(err)
-			defer func() {
-				cleanup()
-			}()
+			defer cleanup()
 			testFunc(ctx, t, q)
-			q.Close(ctx)
+			suite.NoError(q.Close(ctx))
 			if !t.Failed() {
 				// If there are message on the queue this would mean that a lock wasn't held and the message was requeued.
 				checkZeroQueueMessages(ctx, t, ns, queueName)
@@ -41,14 +41,14 @@ func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
 
 func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, queue *Queue) {
 	ttl := 5 * time.Minute
-	numMessages := rand.Intn(100) + 20
+	numMessages := rand.Intn(40) + 20
 	activeMessages := make([]*Message, 0, numMessages)
 	expected := make(map[string]int, numMessages)
 	seen := make(map[string]int, numMessages)
 	errs := make(chan error, 1)
 
-	renewEvery := time.Second * 35
-	processingTime := time.Second * 240
+	renewEvery := time.Second * 20
+	processingTime := time.Second * 100
 
 	t.Logf("Sending/receiving %d messages", numMessages)
 
@@ -56,7 +56,7 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 	go func() {
 		inner, cancel := context.WithCancel(ctx)
 		numSeen := 0
-		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			numSeen++
 			seen[string(msg.Data)]++
 
@@ -64,9 +64,9 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 			if numSeen >= numMessages {
 				cancel()
 			}
-			return func(ctx context.Context) {
-				//Do nothing as we want the message to remain in an uncompleted state.
-			}
+
+			// Do nothing as we want the message to remain in an uncompleted state.
+			return nil
 		}))
 	}()
 
@@ -103,7 +103,7 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 
 	// Then finally accept all the messages we're holding locks on
 	for _, msg := range activeMessages {
-		msg.Complete()(ctx)
+		assert.NoError(t, msg.Complete(ctx))
 	}
 
 	//Check for any errors

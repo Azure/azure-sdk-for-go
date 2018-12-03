@@ -38,7 +38,7 @@ type (
 	Subscription struct {
 		*entity
 		Topic             *Topic
-		receiver          *receiver
+		receiver          *Receiver
 		receiverMu        sync.Mutex
 		receiveMode       ReceiveMode
 		requiredSessionID *string
@@ -134,6 +134,9 @@ func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Mes
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
 func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")
 	defer span.Finish()
@@ -146,6 +149,11 @@ func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 }
 
 // Receive subscribes for messages sent to the Subscription
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
+//
+// If the handler returns an error, the receive loop will be terminated.
 func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
 	defer span.Finish()
@@ -158,61 +166,20 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	return handle.Err()
 }
 
-// ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
-func (s *Subscription) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOneSession")
-	defer span.Finish()
-
-	options := make([]receiverOption, 0, 1)
-	if sessionID != nil {
-		options = append(options, receiverWithSession(sessionID))
-	}
-	s.requiredSessionID = sessionID
-	if err := s.ensureReceiver(ctx, options...); err != nil {
-		return err
-	}
-
-	ms, err := newMessageSession(s.receiver, s.entity, sessionID)
-	if err != nil {
-		return err
-	}
-
-	err = handler.Start(ms)
-	if err != nil {
-		return err
-	}
-
-	defer handler.End()
-	handle := s.receiver.Listen(ctx, handler)
-
-	select {
-	case <-handle.Done():
-		return handle.Err()
-	case <-ms.done:
-		return nil
-	}
+// NewSession will create a new session based receiver for the subscription
+//
+// Microsoft Azure Service Bus sessions enable joint and ordered handling of unbounded sequences of related messages.
+// To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
+// relationship between the messages, and also does not define a particular model for determining where a message
+// sequence starts or ends.
+func (s *Subscription) NewSession(sessionID *string) *SubscriptionSession {
+	return NewSubscriptionSession(s, sessionID)
 }
 
-func (s *Subscription) ensureReceiver(ctx context.Context, options ...receiverOption) error {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
-	defer span.Finish()
-
-	s.receiverMu.Lock()
-	defer s.receiverMu.Unlock()
-
-	options = append(options, receiverWithReceiveMode(s.receiveMode))
-
-	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, options...)
-	if err != nil {
-		log.For(ctx).Error(err)
-		return err
-	}
-
-	s.receiver = receiver
-	return nil
+// NewReceiver will create a new Receiver for receiving messages off of the queue
+func (s *Subscription) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+	opts = append(opts, ReceiverWithReceiveMode(s.receiveMode))
+	return s.namespace.NewReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, opts...)
 }
 
 // Close the underlying connection to Service Bus
@@ -220,5 +187,27 @@ func (s *Subscription) Close(ctx context.Context) error {
 	if s.receiver != nil {
 		return s.receiver.Close(ctx)
 	}
+	return nil
+}
+
+func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
+	defer span.Finish()
+
+	s.receiverMu.Lock()
+	defer s.receiverMu.Unlock()
+
+	// if a receiver is already in established, just return
+	if s.receiver != nil {
+		return nil
+	}
+
+	receiver, err := s.NewReceiver(ctx, opts...)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	s.receiver = receiver
 	return nil
 }

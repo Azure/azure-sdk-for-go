@@ -73,7 +73,7 @@ type ManagementAssociationProperties struct {
 // ManagementAssociationPropertiesList the list of ManagementAssociation response
 type ManagementAssociationPropertiesList struct {
 	autorest.Response `json:"-"`
-	// Value - List of Management Association properites within the subscription.
+	// Value - List of Management Association properties within the subscription.
 	Value *[]ManagementAssociation `json:"value,omitempty"`
 }
 
@@ -110,7 +110,7 @@ type ManagementConfigurationProperties struct {
 // ManagementConfigurationPropertiesList the list of ManagementConfiguration response
 type ManagementConfigurationPropertiesList struct {
 	autorest.Response `json:"-"`
-	// Value - List of Management Configuration properites within the subscription.
+	// Value - List of Management Configuration properties within the subscription.
 	Value *[]ManagementConfiguration `json:"value,omitempty"`
 }
 
@@ -183,7 +183,7 @@ type SolutionProperties struct {
 // SolutionPropertiesList the list of solution response
 type SolutionPropertiesList struct {
 	autorest.Response `json:"-"`
-	// Value - List of solution properites within the subscription.
+	// Value - List of solution properties within the subscription.
 	Value *[]Solution `json:"value,omitempty"`
 }
 

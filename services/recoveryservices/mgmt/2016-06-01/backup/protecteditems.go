@@ -218,7 +218,7 @@ func (client ProtectedItemsClient) DeleteResponder(resp *http.Response) (result 
 // fabricName - the fabric name associated with the backup item.
 // containerName - the container name associated with the backup item.
 // protectedItemName - the backup item name used in this GET operation.
-// filter - expand eq {extendedinfo}. This filter enables you to choose (or filter) specific items in the list
+// filter - expand eq {extendedInfo}. This filter enables you to choose (or filter) specific items in the list
 // of backup items.
 func (client ProtectedItemsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result ProtectedItemResource, err error) {
 	if tracing.IsEnabled() {
@@ -304,7 +304,7 @@ func (client ProtectedItemsClient) GetResponder(resp *http.Response) (result Pro
 // vaultName - the name of the Recovery Services vault.
 // resourceGroupName - the name of the resource group associated with the Recovery Services vault.
 // filter - itemType eq { VM , FileFolder , AzureSqlDb , SQLDB , Exchange , Sharepoint , DPMUnknown } and
-// providerType eq { AzureIaasVM, MAB, DPM, AzureBackupServer, AzureSql } and policyName eq {policyname} and
+// providerType eq { AzureIaasVM, MAB, DPM, AzureBackupServer, AzureSql } and policyName eq {policyName} and
 // containerName eq {containername} and backupManagementType eq { AzureIaasVM, MAB, DPM, AzureBackupServer,
 // AzureSql }.
 // skipToken - the Skip Token filter.

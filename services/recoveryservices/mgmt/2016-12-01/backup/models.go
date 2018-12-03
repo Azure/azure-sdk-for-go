@@ -1191,7 +1191,7 @@ type AzureBackupServerContainer struct {
 	ExtendedInfo *DPMContainerExtendedInfo `json:"extendedInfo,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -1351,7 +1351,7 @@ type AzureBackupServerEngine struct {
 	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
 	// IsDpmUpgradeAvailable - To check if backup engine upgrade available
 	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
-	// ExtendedInfo - Extended info of the backupengine
+	// ExtendedInfo - Extended info of the backup engine
 	ExtendedInfo *EngineExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupEngineType - Possible values include: 'BackupEngineTypeBackupEngineBase', 'BackupEngineTypeAzureBackupServerEngine', 'BackupEngineTypeDpmBackupEngine'
 	BackupEngineType EngineType `json:"backupEngineType,omitempty"`
@@ -1477,7 +1477,7 @@ type AzureFileShareProtectableItem struct {
 	ParentContainerFriendlyName *string `json:"parentContainerFriendlyName,omitempty"`
 	// AzureFileShareType - File Share type XSync or XSMB. Possible values include: 'Invalid', 'XSMB', 'XSync'
 	AzureFileShareType AzureFileShareType `json:"azureFileShareType,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -1606,7 +1606,7 @@ type AzureFileshareProtectedItem struct {
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
 	// ExtendedInfo - Additional information with this backup item.
 	ExtendedInfo *AzureFileshareProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -2123,7 +2123,7 @@ type AzureIaaSClassicComputeVMContainer struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -2249,7 +2249,7 @@ func (aisccvc AzureIaaSClassicComputeVMContainer) AsBasicProtectionContainer() (
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// VirtualMachineID - Fully qualified ARM ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -2379,7 +2379,7 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -2549,7 +2549,7 @@ type AzureIaaSComputeVMContainer struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -2675,7 +2675,7 @@ func (aiscvc AzureIaaSComputeVMContainer) AsBasicProtectionContainer() (BasicPro
 type AzureIaaSComputeVMProtectableItem struct {
 	// VirtualMachineID - Fully qualified ARM ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -2805,7 +2805,7 @@ type AzureIaaSComputeVMProtectedItem struct {
 	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -3005,7 +3005,7 @@ type AzureIaaSVMProtectedItem struct {
 	ProtectedItemDataID *string `json:"protectedItemDataId,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -3371,7 +3371,7 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	WorkloadType WorkloadType `json:"workloadType,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -3499,7 +3499,7 @@ func (aswcpc AzureSQLAGWorkloadContainerProtectionContainer) AsBasicProtectionCo
 type AzureSQLContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -3619,7 +3619,7 @@ type AzureSQLProtectedItem struct {
 	ProtectionState ProtectedItemState `json:"protectionState,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureSQLProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -3884,7 +3884,7 @@ type AzureStorageContainer struct {
 	ProtectedItemCount *int64 `json:"protectedItemCount,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -4012,7 +4012,7 @@ func (asc AzureStorageContainer) AsBasicProtectionContainer() (BasicProtectionCo
 type AzureStorageProtectableContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
@@ -4068,7 +4068,7 @@ func (aspc AzureStorageProtectableContainer) AsBasicProtectableContainer() (Basi
 type AzureVMAppContainerProtectableContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
@@ -4132,7 +4132,7 @@ type AzureVMAppContainerProtectionContainer struct {
 	WorkloadType WorkloadType `json:"workloadType,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -4273,11 +4273,11 @@ type AzureVMWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -4438,13 +4438,13 @@ type AzureVMWorkloadProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -4657,7 +4657,7 @@ type AzureVMWorkloadProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -4960,13 +4960,13 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -5121,7 +5121,7 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -5295,11 +5295,11 @@ type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -5402,13 +5402,13 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -5545,11 +5545,11 @@ type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -5652,13 +5652,13 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -5800,13 +5800,13 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -5961,7 +5961,7 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -6135,11 +6135,11 @@ type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -6242,13 +6242,13 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -6387,11 +6387,11 @@ type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
+	// Subinquireditemcount - For instance or AG, indicates number of DBs present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -6558,7 +6558,7 @@ type AzureWorkloadContainer struct {
 	WorkloadType WorkloadType `json:"workloadType,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -6733,7 +6733,7 @@ type AzureWorkloadContainerExtendedInfo struct {
 	NodesList *[]DistributedNodesInfo `json:"nodesList,omitempty"`
 }
 
-// BasicAzureWorkloadRecoveryPoint workload specific recoverypoint, specifcally encaspulates full/diff recoverypoint
+// BasicAzureWorkloadRecoveryPoint workload specific recovery point, specifically encapsulates full/diff recovery point
 type BasicAzureWorkloadRecoveryPoint interface {
 	AsAzureWorkloadSQLPointInTimeRecoveryPoint() (*AzureWorkloadSQLPointInTimeRecoveryPoint, bool)
 	AsAzureWorkloadSQLRecoveryPoint() (*AzureWorkloadSQLRecoveryPoint, bool)
@@ -6741,9 +6741,10 @@ type BasicAzureWorkloadRecoveryPoint interface {
 	AsAzureWorkloadRecoveryPoint() (*AzureWorkloadRecoveryPoint, bool)
 }
 
-// AzureWorkloadRecoveryPoint workload specific recoverypoint, specifcally encaspulates full/diff recoverypoint
+// AzureWorkloadRecoveryPoint workload specific recovery point, specifically encapsulates full/diff recovery
+// point
 type AzureWorkloadRecoveryPoint struct {
-	// RecoveryPointTimeInUTC - UTC time at which recoverypoint was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
 	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
@@ -7017,7 +7018,7 @@ func (awrr AzureWorkloadRestoreRequest) AsBasicRestoreRequest() (BasicRestoreReq
 type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 	// TimeRanges - List of log ranges
 	TimeRanges *[]PointInTimeRange `json:"timeRanges,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recoverypoint was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
 	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
@@ -7211,17 +7212,17 @@ func (awshpitrr AzureWorkloadSAPHanaPointInTimeRestoreRequest) AsBasicRestoreReq
 	return &awshpitrr, true
 }
 
-// BasicAzureWorkloadSAPHanaRecoveryPoint sAPHana specific recoverypoint, specifcally encaspulates full/diff
-// recoverypoints
+// BasicAzureWorkloadSAPHanaRecoveryPoint sAPHana specific recovery point, specifically encapsulates full/diff recovery
+// points
 type BasicAzureWorkloadSAPHanaRecoveryPoint interface {
 	AsAzureWorkloadSAPHanaPointInTimeRecoveryPoint() (*AzureWorkloadSAPHanaPointInTimeRecoveryPoint, bool)
 	AsAzureWorkloadSAPHanaRecoveryPoint() (*AzureWorkloadSAPHanaRecoveryPoint, bool)
 }
 
-// AzureWorkloadSAPHanaRecoveryPoint sAPHana specific recoverypoint, specifcally encaspulates full/diff
-// recoverypoints
+// AzureWorkloadSAPHanaRecoveryPoint sAPHana specific recovery point, specifically encapsulates full/diff
+// recovery points
 type AzureWorkloadSAPHanaRecoveryPoint struct {
-	// RecoveryPointTimeInUTC - UTC time at which recoverypoint was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
 	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
@@ -7494,7 +7495,7 @@ type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 	//             When a specific recovery point is accessed using GetRecoveryPoint
 	//             Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recoverypoint was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
 	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
@@ -7706,21 +7707,21 @@ func (awspitrr AzureWorkloadSQLPointInTimeRestoreRequest) AsBasicRestoreRequest(
 	return &awspitrr, true
 }
 
-// BasicAzureWorkloadSQLRecoveryPoint SQL specific recoverypoint, specifcally encaspulates full/diff recoverypoint
-// alongwith extended info
+// BasicAzureWorkloadSQLRecoveryPoint SQL specific recovery point, specifically encapsulates full/diff recovery point
+// along with extended info
 type BasicAzureWorkloadSQLRecoveryPoint interface {
 	AsAzureWorkloadSQLPointInTimeRecoveryPoint() (*AzureWorkloadSQLPointInTimeRecoveryPoint, bool)
 	AsAzureWorkloadSQLRecoveryPoint() (*AzureWorkloadSQLRecoveryPoint, bool)
 }
 
-// AzureWorkloadSQLRecoveryPoint SQL specific recoverypoint, specifcally encaspulates full/diff recoverypoint
-// alongwith extended info
+// AzureWorkloadSQLRecoveryPoint SQL specific recovery point, specifically encapsulates full/diff recovery
+// point along with extended info
 type AzureWorkloadSQLRecoveryPoint struct {
 	// ExtendedInfo - Extended Info that provides data directory details. Will be populated in two cases:
 	//             When a specific recovery point is accessed using GetRecoveryPoint
 	//             Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recoverypoint was created
+	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
 	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
@@ -8011,7 +8012,7 @@ func (awsrr AzureWorkloadSQLRestoreRequest) AsBasicRestoreRequest() (BasicRestor
 	return &awsrr, true
 }
 
-// BEKDetails BEK is bitlocker encrpytion key.
+// BEKDetails BEK is bitlocker encryption key.
 type BEKDetails struct {
 	// SecretURL - Secret is BEK.
 	SecretURL *string `json:"secretUrl,omitempty"`
@@ -8189,7 +8190,7 @@ type DpmBackupEngine struct {
 	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
 	// IsDpmUpgradeAvailable - To check if backup engine upgrade available
 	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
-	// ExtendedInfo - Extended info of the backupengine
+	// ExtendedInfo - Extended info of the backup engine
 	ExtendedInfo *EngineExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupEngineType - Possible values include: 'BackupEngineTypeBackupEngineBase', 'BackupEngineTypeAzureBackupServerEngine', 'BackupEngineTypeDpmBackupEngine'
 	BackupEngineType EngineType `json:"backupEngineType,omitempty"`
@@ -8281,7 +8282,7 @@ type DpmContainer struct {
 	ExtendedInfo *DPMContainerExtendedInfo `json:"extendedInfo,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -8429,13 +8430,13 @@ type DPMProtectedItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// BackupEngineName - Backup Management server protecting this backup item
 	BackupEngineName *string `json:"backupEngineName,omitempty"`
-	// ProtectionState - Protection state of the backupengine. Possible values include: 'ProtectedItemStateInvalid', 'ProtectedItemStateIRPending', 'ProtectedItemStateProtected', 'ProtectedItemStateProtectionError', 'ProtectedItemStateProtectionStopped', 'ProtectedItemStateProtectionPaused'
+	// ProtectionState - Protection state of the backup engine. Possible values include: 'ProtectedItemStateInvalid', 'ProtectedItemStateIRPending', 'ProtectedItemStateProtected', 'ProtectedItemStateProtectionError', 'ProtectedItemStateProtectionStopped', 'ProtectedItemStateProtectionPaused'
 	ProtectionState ProtectedItemState `json:"protectionState,omitempty"`
 	// IsScheduledForDeferredDelete - To check if backup item is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// ExtendedInfo - Extended info of the backup item.
 	ExtendedInfo *DPMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -8704,7 +8705,7 @@ type EngineBase struct {
 	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
 	// IsDpmUpgradeAvailable - To check if backup engine upgrade available
 	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
-	// ExtendedInfo - Extended info of the backupengine
+	// ExtendedInfo - Extended info of the backup engine
 	ExtendedInfo *EngineExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupEngineType - Possible values include: 'BackupEngineTypeBackupEngineBase', 'BackupEngineTypeAzureBackupServerEngine', 'BackupEngineTypeDpmBackupEngine'
 	BackupEngineType EngineType `json:"backupEngineType,omitempty"`
@@ -9095,9 +9096,9 @@ type EngineExtendedInfo struct {
 	ProtectedServersCount *int32 `json:"protectedServersCount,omitempty"`
 	// DiskCount - Number of disks in the backup engine.
 	DiskCount *int32 `json:"diskCount,omitempty"`
-	// UsedDiskSpace - Diskspace used in the backup engine.
+	// UsedDiskSpace - Disk space used in the backup engine.
 	UsedDiskSpace *float64 `json:"usedDiskSpace,omitempty"`
-	// AvailableDiskSpace - Diskspace currently available in the backup engine.
+	// AvailableDiskSpace - Disk space currently available in the backup engine.
 	AvailableDiskSpace *float64 `json:"availableDiskSpace,omitempty"`
 	// RefreshedAt - Last refresh time in the backup engine.
 	RefreshedAt *date.Time `json:"refreshedAt,omitempty"`
@@ -9123,7 +9124,7 @@ type GenericContainer struct {
 	ExtendedInformation *GenericContainerExtendedInfo `json:"extendedInformation,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -9280,7 +9281,7 @@ type GenericProtectedItem struct {
 	SourceAssociations map[string]*string `json:"sourceAssociations"`
 	// FabricName - Name of this backup item's fabric.
 	FabricName *string `json:"fabricName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -9673,7 +9674,7 @@ type IaaSVMContainer struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -9897,7 +9898,7 @@ type BasicIaaSVMProtectableItem interface {
 type IaaSVMProtectableItem struct {
 	// VirtualMachineID - Fully qualified ARM ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -10571,15 +10572,15 @@ type KEKDetails struct {
 
 // KeyAndSecretDetails BEK is bitlocker key.
 // KEK is encryption key for BEK
-// If the VM was encrypted then we will store follwing details :
+// If the VM was encrypted then we will store following details :
 // 1. Secret(BEK) - Url + Backup Data + vaultId.
 // 2. Key(KEK) - Url + Backup Data + vaultId.
 // 3. EncryptionMechanism
-// BEK and KEK can potentiallty have different vault ids.
+// BEK and KEK can potentially have different vault ids.
 type KeyAndSecretDetails struct {
 	// KekDetails - KEK is encryption key for BEK.
 	KekDetails *KEKDetails `json:"kekDetails,omitempty"`
-	// BekDetails - BEK is bitlocker encrpytion key.
+	// BekDetails - BEK is bitlocker encryption key.
 	BekDetails *BEKDetails `json:"bekDetails,omitempty"`
 	// EncryptionMechanism - Encryption mechanism: None/ SinglePass/ DoublePass
 	EncryptionMechanism *string `json:"encryptionMechanism,omitempty"`
@@ -10746,7 +10747,7 @@ type MabContainer struct {
 	ContainerHealthState *string `json:"containerHealthState,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -10921,7 +10922,7 @@ type MabFileFolderProtectedItem struct {
 	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
 	// ExtendedInfo - Additional information with this backup item.
 	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -11581,7 +11582,7 @@ type BasicProtectableContainer interface {
 type ProtectableContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
@@ -11961,7 +11962,7 @@ type BasicProtectedItem interface {
 
 // ProtectedItem base class for backup items.
 type ProtectedItem struct {
-	// BackupManagementType - Type of backup managemenent for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -12313,7 +12314,7 @@ type BasicProtectionContainer interface {
 type ProtectionContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - Type of backup managemenent for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	// BackupManagementType - Type of backup management for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
@@ -14566,7 +14567,7 @@ type BasicWorkloadItem interface {
 
 // WorkloadItem base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadItem struct {
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`
@@ -14980,7 +14981,7 @@ type BasicWorkloadProtectableItem interface {
 // WorkloadProtectableItem base class for backup item. Workload-specific backup items are derived from this
 // class.
 type WorkloadProtectableItem struct {
-	// BackupManagementType - Type of backup managemenent to backup an item.
+	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
 	WorkloadType *string `json:"workloadType,omitempty"`

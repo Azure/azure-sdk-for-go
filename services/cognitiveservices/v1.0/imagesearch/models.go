@@ -3886,7 +3886,7 @@ type ImageObject struct {
 	Thumbnail *ImageObject `json:"thumbnail,omitempty"`
 	// ImageInsightsToken - The token that you use in a subsequent call to the Image Search API to get additional information about the image. For information about using this token, see the insightsToken query parameter.
 	ImageInsightsToken *string `json:"imageInsightsToken,omitempty"`
-	// InsightsMetadata - A count of the number of websites where you can shop or perform other actions related to the image. For example, if the image is of an apple pie, this object includes a count of the number of websites where you can buy an apple pie. To indicate the number of offers in your UX, include badging such as a shopping cart icon that contains the count. When the user clicks on the icon, use imageInisghtsToken to get the list of websites.
+	// InsightsMetadata - A count of the number of websites where you can shop or perform other actions related to the image. For example, if the image is of an apple pie, this object includes a count of the number of websites where you can buy an apple pie. To indicate the number of offers in your UX, include badging such as a shopping cart icon that contains the count. When the user clicks on the icon, use imageInsightsToken to get the list of websites.
 	InsightsMetadata *ImagesImageMetadata `json:"insightsMetadata,omitempty"`
 	// ImageID - Unique Id for the image
 	ImageID *string `json:"imageId,omitempty"`

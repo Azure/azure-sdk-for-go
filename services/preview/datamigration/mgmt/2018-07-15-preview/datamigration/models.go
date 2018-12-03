@@ -2336,7 +2336,7 @@ type ConnectToSourceSQLServerTaskOutputAgentJobLevel struct {
 	LastExecutedOn *date.Time `json:"lastExecutedOn,omitempty"`
 	// ValidationErrors - Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
-	// MigrationEligibility - Information about eligiblity of agent job for migration.
+	// MigrationEligibility - Information about eligibility of agent job for migration.
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
@@ -2496,7 +2496,7 @@ type ConnectToSourceSQLServerTaskOutputLoginLevel struct {
 	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
 	// IsEnabled - The state of the login.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// MigrationEligibility - Information about eligiblity of login for migration.
+	// MigrationEligibility - Information about eligibility of login for migration.
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
@@ -11688,7 +11688,7 @@ type ProjectFileProperties struct {
 	FilePath *string `json:"filePath,omitempty"`
 	// LastModified - Modification DateTime.
 	LastModified *date.Time `json:"lastModified,omitempty"`
-	// MediaType - File content type. This propery can be modified to reflect the file content type.
+	// MediaType - File content type. This property can be modified to reflect the file content type.
 	MediaType *string `json:"mediaType,omitempty"`
 	// Size - File size.
 	Size *int64 `json:"size,omitempty"`
@@ -12625,7 +12625,7 @@ type ResourceSku struct {
 	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
 }
 
-// ResourceSkuCapabilities describes The SKU capabilites object.
+// ResourceSkuCapabilities describes The SKU capabilities object.
 type ResourceSkuCapabilities struct {
 	// Name - An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
@@ -12860,7 +12860,7 @@ type SchemaMigrationSetting struct {
 	FileID *string `json:"fileId,omitempty"`
 }
 
-// SelectedCertificateInput info for ertificate to be exported for TDE enabled databases.
+// SelectedCertificateInput info for certificate to be exported for TDE enabled databases.
 type SelectedCertificateInput struct {
 	// CertificateName - Name of certificate to be exported.
 	CertificateName *string `json:"certificateName,omitempty"`

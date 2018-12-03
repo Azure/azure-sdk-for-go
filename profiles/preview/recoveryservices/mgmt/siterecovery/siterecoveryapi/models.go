@@ -21,6 +21,7 @@ package siterecoveryapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery/siterecoveryapi"
 
+type MigrationRecoveryPointsClientAPI = original.MigrationRecoveryPointsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type RecoveryPointsClientAPI = original.RecoveryPointsClientAPI
 type ReplicationAlertSettingsClientAPI = original.ReplicationAlertSettingsClientAPI
@@ -28,6 +29,7 @@ type ReplicationEventsClientAPI = original.ReplicationEventsClientAPI
 type ReplicationFabricsClientAPI = original.ReplicationFabricsClientAPI
 type ReplicationJobsClientAPI = original.ReplicationJobsClientAPI
 type ReplicationLogicalNetworksClientAPI = original.ReplicationLogicalNetworksClientAPI
+type ReplicationMigrationItemsClientAPI = original.ReplicationMigrationItemsClientAPI
 type ReplicationNetworkMappingsClientAPI = original.ReplicationNetworkMappingsClientAPI
 type ReplicationNetworksClientAPI = original.ReplicationNetworksClientAPI
 type ReplicationPoliciesClientAPI = original.ReplicationPoliciesClientAPI

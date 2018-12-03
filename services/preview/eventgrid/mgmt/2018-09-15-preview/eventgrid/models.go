@@ -281,7 +281,7 @@ type BasicAdvancedFilter interface {
 // AdvancedFilter represents an advanced filter that can be used to filter events based on various event
 // envelope/data fields.
 type AdvancedFilter struct {
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -455,7 +455,7 @@ func (af AdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFilter, bool) {
 type BoolEqualsAdvancedFilter struct {
 	// Value - The filter value
 	Value *bool `json:"value,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -1863,7 +1863,7 @@ func (ism InputSchemaMapping) AsBasicInputSchemaMapping() (BasicInputSchemaMappi
 }
 
 // JSONField this is used to express the source of an input schema mapping for a single target field in the
-// Event Grid Event schema. This is currently used in the mappings for the 'id','topic' and 'eventtime'
+// Event Grid Event schema. This is currently used in the mappings for the 'id','topic' and 'eventTime'
 // properties. This represents a field in the input event schema.
 type JSONField struct {
 	// SourceField - Name of a field in the input event schema that's to be used as the source of a mapping.
@@ -1872,7 +1872,7 @@ type JSONField struct {
 
 // JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target
 // field in the Event Grid Event schema. This is currently used in the mappings for the
-// 'subject','eventtype' and 'dataversion' properties. This represents a field in the input event schema
+// 'subject','eventType' and 'dataVersion' properties. This represents a field in the input event schema
 // along with a default value to be used, and at least one of these two properties should be provided.
 type JSONFieldWithDefault struct {
 	// SourceField - Name of a field in the input event schema that's to be used as the source of a mapping.
@@ -1972,7 +1972,7 @@ type JSONInputSchemaMappingProperties struct {
 type NumberGreaterThanAdvancedFilter struct {
 	// Value - The filter value
 	Value *float64 `json:"value,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2068,7 +2068,7 @@ func (ngtaf NumberGreaterThanAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvan
 type NumberGreaterThanOrEqualsAdvancedFilter struct {
 	// Value - The filter value
 	Value *float64 `json:"value,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2164,7 +2164,7 @@ func (ngtoeaf NumberGreaterThanOrEqualsAdvancedFilter) AsBasicAdvancedFilter() (
 type NumberInAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]float64 `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2260,7 +2260,7 @@ func (niaf NumberInAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFilter,
 type NumberLessThanAdvancedFilter struct {
 	// Value - The filter value
 	Value *float64 `json:"value,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2356,7 +2356,7 @@ func (nltaf NumberLessThanAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvanced
 type NumberLessThanOrEqualsAdvancedFilter struct {
 	// Value - The filter value
 	Value *float64 `json:"value,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2452,7 +2452,7 @@ func (nltoeaf NumberLessThanOrEqualsAdvancedFilter) AsBasicAdvancedFilter() (Bas
 type NumberNotInAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]float64 `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2767,7 +2767,7 @@ type StorageQueueEventSubscriptionDestinationProperties struct {
 type StringBeginsWithAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]string `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2863,7 +2863,7 @@ func (sbwaf StringBeginsWithAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvanc
 type StringContainsAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]string `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -2959,7 +2959,7 @@ func (scaf StringContainsAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedF
 type StringEndsWithAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]string `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -3055,7 +3055,7 @@ func (sewaf StringEndsWithAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvanced
 type StringInAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]string `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`
@@ -3151,7 +3151,7 @@ func (siaf StringInAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFilter,
 type StringNotInAdvancedFilter struct {
 	// Values - The set of filter values
 	Values *[]string `json:"values,omitempty"`
-	// Key - The filter key. Represents an event property with upto two levels of nesting.
+	// Key - The filter key. Represents an event property with up to two levels of nesting.
 	Key *string `json:"key,omitempty"`
 	// OperatorType - Possible values include: 'OperatorTypeAdvancedFilter', 'OperatorTypeNumberIn', 'OperatorTypeNumberNotIn', 'OperatorTypeNumberLessThan', 'OperatorTypeNumberGreaterThan', 'OperatorTypeNumberLessThanOrEquals', 'OperatorTypeNumberGreaterThanOrEquals', 'OperatorTypeBoolEquals', 'OperatorTypeStringIn', 'OperatorTypeStringNotIn', 'OperatorTypeStringBeginsWith', 'OperatorTypeStringEndsWith', 'OperatorTypeStringContains'
 	OperatorType OperatorType `json:"operatorType,omitempty"`

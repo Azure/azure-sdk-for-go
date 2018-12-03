@@ -494,7 +494,7 @@ func (dvp DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// IPRule a rule governing the accesibility of a vault from a specific ip address or ip range.
+// IPRule a rule governing the accessibility of a vault from a specific ip address or ip range.
 type IPRule struct {
 	// Value - An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that start with 124.56.78).
 	Value *string `json:"value,omitempty"`
@@ -611,7 +611,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 	// Operation - Type of operation: get, read, delete, etc.
 	Operation *string `json:"operation,omitempty"`
-	// Description - Decription of operation.
+	// Description - Description of operation.
 	Description *string `json:"description,omitempty"`
 }
 
@@ -1025,7 +1025,7 @@ type VaultAccessPolicyParameters struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The resource name of the access policy.
 	Type *string `json:"type,omitempty"`
-	// Location - The resource type of the the access policy.
+	// Location - The resource type of the access policy.
 	Location *string `json:"location,omitempty"`
 	// Properties - Properties of the access policy
 	Properties *VaultAccessPolicyProperties `json:"properties,omitempty"`
@@ -1037,7 +1037,7 @@ type VaultAccessPolicyProperties struct {
 	AccessPolicies *[]AccessPolicyEntry `json:"accessPolicies,omitempty"`
 }
 
-// VaultCheckNameAvailabilityParameters the parameters used to check the availabity of the vault name.
+// VaultCheckNameAvailabilityParameters the parameters used to check the availability of the vault name.
 type VaultCheckNameAvailabilityParameters struct {
 	// Name - The vault name.
 	Name *string `json:"name,omitempty"`
@@ -1338,7 +1338,7 @@ func (future *VaultsPurgeDeletedFuture) Result(client VaultsClient) (ar autorest
 	return
 }
 
-// VirtualNetworkRule a rule governing the accesibility of a vault from a specific virtual network.
+// VirtualNetworkRule a rule governing the accessibility of a vault from a specific virtual network.
 type VirtualNetworkRule struct {
 	// ID - Full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
 	ID *string `json:"id,omitempty"`

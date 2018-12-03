@@ -1424,7 +1424,7 @@ type MediaLiveEventEncoderDisconnectedEventData struct {
 	ResultCode *string `json:"resultCode,omitempty"`
 }
 
-// MediaLiveEventIncomingDataChunkDroppedEventData ingest fragment dropped event event data.
+// MediaLiveEventIncomingDataChunkDroppedEventData ingest fragment dropped event data.
 type MediaLiveEventIncomingDataChunkDroppedEventData struct {
 	// Timestamp - Gets the timestamp of the data chunk dropped.
 	Timestamp *string `json:"timestamp,omitempty"`
@@ -1492,7 +1492,7 @@ type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
 	Timescale *string `json:"timescale,omitempty"`
 }
 
-// MediaLiveEventIngestHeartbeatEventData ingest fragment dropped event event data.
+// MediaLiveEventIngestHeartbeatEventData ingest fragment dropped event data.
 type MediaLiveEventIngestHeartbeatEventData struct {
 	// TrackType - Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`

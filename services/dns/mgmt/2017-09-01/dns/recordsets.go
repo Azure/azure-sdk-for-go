@@ -50,7 +50,7 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 // created (they are created when the DNS zone is created).
 // parameters - parameters supplied to the CreateOrUpdate operation.
 // ifMatch - the etag of the record set. Omit this value to always overwrite the current record set. Specify
-// the last-seen etag value to prevent accidentally overwritting any concurrent changes.
+// the last-seen etag value to prevent accidentally overwriting any concurrent changes.
 // ifNoneMatch - set to '*' to allow a new record set to be created, but to prevent updating an existing record
 // set. Other values will be ignored.
 func (client RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
@@ -616,7 +616,7 @@ func (client RecordSetsClient) ListByTypeComplete(ctx context.Context, resourceG
 // recordType - the type of DNS record in this record set.
 // parameters - parameters supplied to the Update operation.
 // ifMatch - the etag of the record set. Omit this value to always overwrite the current record set. Specify
-// the last-seen etag value to prevent accidentally overwritting concurrent changes.
+// the last-seen etag value to prevent accidentally overwriting concurrent changes.
 func (client RecordSetsClient) Update(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string) (result RecordSet, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecordSetsClient.Update")

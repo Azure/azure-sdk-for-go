@@ -176,7 +176,7 @@ type ApnsCredentialProperties struct {
 	CertificateKey *string `json:"certificateKey,omitempty"`
 	// Endpoint - The endpoint of this credential.
 	Endpoint *string `json:"endpoint,omitempty"`
-	// Thumbprint - The Apns certificate Thumbprint
+	// Thumbprint - The APNS certificate Thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
 }
 
@@ -275,7 +275,7 @@ func (capVar CheckAvailabilityParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CheckAvailabilityResult description of a CheckAvailibility resource.
+// CheckAvailabilityResult description of a CheckAvailability resource.
 type CheckAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// IsAvailiable - True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
@@ -682,7 +682,7 @@ type MpnsCredentialProperties struct {
 	MpnsCertificate *string `json:"mpnsCertificate,omitempty"`
 	// CertificateKey - The certificate key for this credential.
 	CertificateKey *string `json:"certificateKey,omitempty"`
-	// Thumbprint - The Mpns certificate Thumbprint
+	// Thumbprint - The MPNS certificate Thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
 }
 
@@ -1698,7 +1698,7 @@ type SharedAccessAuthorizationRuleProperties struct {
 // SharedAccessAuthorizationRuleResource description of a Namespace AuthorizationRules.
 type SharedAccessAuthorizationRuleResource struct {
 	autorest.Response `json:"-"`
-	// SharedAccessAuthorizationRuleProperties - Pproperties of the Namespace AuthorizationRule.
+	// SharedAccessAuthorizationRuleProperties - Properties of the Namespace AuthorizationRule.
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`

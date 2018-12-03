@@ -134,7 +134,7 @@ func (client MetricAlertsClient) CreateOrUpdateResponder(resp *http.Response) (r
 	return
 }
 
-// Delete delete an alert rule defitiniton.
+// Delete delete an alert rule definition.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // ruleName - the name of the rule.
@@ -210,7 +210,7 @@ func (client MetricAlertsClient) DeleteResponder(resp *http.Response) (result au
 	return
 }
 
-// Get retrieve an alert rule definiton.
+// Get retrieve an alert rule definition.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // ruleName - the name of the rule.
@@ -287,7 +287,7 @@ func (client MetricAlertsClient) GetResponder(resp *http.Response) (result Metri
 	return
 }
 
-// ListByResourceGroup retrieve alert rule defintions in a resource group.
+// ListByResourceGroup retrieve alert rule definitions in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result MetricAlertResourceCollection, err error) {

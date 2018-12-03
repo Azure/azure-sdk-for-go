@@ -129,7 +129,7 @@ func (client NotificationChannelsClient) CreateOrUpdateResponder(resp *http.Resp
 	return
 }
 
-// Delete delete notificationchannel.
+// Delete delete notification channel.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
@@ -207,7 +207,7 @@ func (client NotificationChannelsClient) DeleteResponder(resp *http.Response) (r
 	return
 }
 
-// Get get notificationchannel.
+// Get get notification channels.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
@@ -290,7 +290,7 @@ func (client NotificationChannelsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List list notificationchannels in a given lab.
+// List list notification channels in a given lab.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
@@ -502,7 +502,7 @@ func (client NotificationChannelsClient) NotifyResponder(resp *http.Response) (r
 	return
 }
 
-// Update modify properties of notificationchannels.
+// Update modify properties of notification channels.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

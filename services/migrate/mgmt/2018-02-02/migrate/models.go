@@ -1349,7 +1349,7 @@ type AssessmentProperties struct {
 	MonthlyBandwidthCost *float64 `json:"monthlyBandwidthCost,omitempty"`
 	// MonthlyStorageCost - Monthly storage cost estimate for the machines that are part of this assessment as a group, for a 31-day month.
 	MonthlyStorageCost *float64 `json:"monthlyStorageCost,omitempty"`
-	// Status - Wheter the assessment has been created and is valid. Possible values include: 'Created', 'Updated', 'Running', 'Completed', 'Invalid'
+	// Status - Whether the assessment has been created and is valid. Possible values include: 'Created', 'Updated', 'Running', 'Completed', 'Invalid'
 	Status AssessmentStatus `json:"status,omitempty"`
 	// NumberOfMachines - Number of assessed machines part of this assessment.
 	NumberOfMachines *int32 `json:"numberOfMachines,omitempty"`

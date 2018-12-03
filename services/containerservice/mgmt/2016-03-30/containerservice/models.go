@@ -157,7 +157,7 @@ type AgentPoolProfile struct {
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the agent pool.
+	// Fqdn - FQDN for the agent pool.
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
@@ -349,7 +349,7 @@ type MasterProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create the FQDN for master.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the master.
+	// Fqdn - FQDN for the master.
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 

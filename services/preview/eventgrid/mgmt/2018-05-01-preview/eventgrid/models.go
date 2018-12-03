@@ -1124,7 +1124,7 @@ func (ism InputSchemaMapping) AsBasicInputSchemaMapping() (BasicInputSchemaMappi
 }
 
 // JSONField this is used to express the source of an input schema mapping for a single target field in the
-// Event Grid Event schema. This is currently used in the mappings for the 'id','topic' and 'eventtime'
+// Event Grid Event schema. This is currently used in the mappings for the 'id','topic' and 'eventTime'
 // properties. This represents a field in the input event schema.
 type JSONField struct {
 	// SourceField - Name of a field in the input event schema that's to be used as the source of a mapping.
@@ -1133,7 +1133,7 @@ type JSONField struct {
 
 // JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target
 // field in the Event Grid Event schema. This is currently used in the mappings for the
-// 'subject','eventtype' and 'dataversion' properties. This represents a field in the input event schema
+// 'subject','eventType' and 'dataVersion' properties. This represents a field in the input event schema
 // along with a default value to be used, and at least one of these two properties should be provided.
 type JSONFieldWithDefault struct {
 	// SourceField - Name of a field in the input event schema that's to be used as the source of a mapping.

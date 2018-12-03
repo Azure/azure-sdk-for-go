@@ -16,7 +16,7 @@ GOCYCLO = gocyclo
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
-TIMEOUT = 600
+TIMEOUT = 800
 
 .PHONY: all
 all: fmt lint vet ; $(info $(M) building library…) @ ## Build program

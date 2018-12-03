@@ -95,14 +95,24 @@ type ArtifactModel = original.ArtifactModel
 type ArtifactPropertiesBase = original.ArtifactPropertiesBase
 type ArtifactsClient = original.ArtifactsClient
 type Assignment = original.Assignment
+type AssignmentDeploymentJob = original.AssignmentDeploymentJob
+type AssignmentDeploymentJobResult = original.AssignmentDeploymentJobResult
+type AssignmentJobCreatedResource = original.AssignmentJobCreatedResource
 type AssignmentList = original.AssignmentList
 type AssignmentListIterator = original.AssignmentListIterator
 type AssignmentListPage = original.AssignmentListPage
 type AssignmentLockSettings = original.AssignmentLockSettings
+type AssignmentOperation = original.AssignmentOperation
+type AssignmentOperationList = original.AssignmentOperationList
+type AssignmentOperationListIterator = original.AssignmentOperationListIterator
+type AssignmentOperationListPage = original.AssignmentOperationListPage
+type AssignmentOperationProperties = original.AssignmentOperationProperties
+type AssignmentOperationsClient = original.AssignmentOperationsClient
 type AssignmentProperties = original.AssignmentProperties
 type AssignmentStatus = original.AssignmentStatus
 type AssignmentsClient = original.AssignmentsClient
 type AzureResourceBase = original.AzureResourceBase
+type AzureResourceManagerError = original.AzureResourceManagerError
 type BaseClient = original.BaseClient
 type BasicArtifact = original.BasicArtifact
 type BlueprintsClient = original.BlueprintsClient
@@ -164,6 +174,18 @@ func NewAssignmentListIterator(page AssignmentListPage) AssignmentListIterator {
 }
 func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
 	return original.NewAssignmentListPage(getNextPage)
+}
+func NewAssignmentOperationListIterator(page AssignmentOperationListPage) AssignmentOperationListIterator {
+	return original.NewAssignmentOperationListIterator(page)
+}
+func NewAssignmentOperationListPage(getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
+	return original.NewAssignmentOperationListPage(getNextPage)
+}
+func NewAssignmentOperationsClient() AssignmentOperationsClient {
+	return original.NewAssignmentOperationsClient()
+}
+func NewAssignmentOperationsClientWithBaseURI(baseURI string) AssignmentOperationsClient {
+	return original.NewAssignmentOperationsClientWithBaseURI(baseURI)
 }
 func NewAssignmentsClient() AssignmentsClient {
 	return original.NewAssignmentsClient()

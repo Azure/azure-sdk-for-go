@@ -894,7 +894,7 @@ func (w *Workspace) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// WorkspaceListManagementGroupsResult the list workspace managmement groups operation response.
+// WorkspaceListManagementGroupsResult the list workspace management groups operation response.
 type WorkspaceListManagementGroupsResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets a list of management groups attached to the workspace.

@@ -310,7 +310,7 @@ func (client ManagementAssociationsClient) GetResponder(resp *http.Response) (re
 	return
 }
 
-// ListBySubscription retrieves the ManagementAssociatons list.
+// ListBySubscription retrieves the ManagementAssociations list.
 func (client ManagementAssociationsClient) ListBySubscription(ctx context.Context) (result ManagementAssociationPropertiesList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementAssociationsClient.ListBySubscription")

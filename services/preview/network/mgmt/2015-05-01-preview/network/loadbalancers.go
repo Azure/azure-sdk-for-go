@@ -273,7 +273,7 @@ func (client LoadBalancersClient) GetResponder(resp *http.Response) (result Load
 	return
 }
 
-// List the List loadBalancer operation retrieves all the loadbalancers in a resource group.
+// List the List loadBalancer operation retrieves all the load balancers in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client LoadBalancersClient) List(ctx context.Context, resourceGroupName string) (result LoadBalancerListResultPage, err error) {
@@ -386,7 +386,7 @@ func (client LoadBalancersClient) ListComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListAll the List loadBalancer operation retrieves all the loadbalancers in a subscription.
+// ListAll the List loadBalancer operation retrieves all the load balancers in a subscription.
 func (client LoadBalancersClient) ListAll(ctx context.Context) (result LoadBalancerListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoadBalancersClient.ListAll")

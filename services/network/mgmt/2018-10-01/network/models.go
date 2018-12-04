@@ -8723,6 +8723,154 @@ func (ercc *ExpressRouteCircuitConnection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ExpressRouteCircuitConnectionListResult response for ListConnections API service call retrieves all
+// global reach connections that belongs to a Private Peering for an ExpressRouteCircuit.
+type ExpressRouteCircuitConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The global reach connection associated with Private Peering in an ExpressRoute Circuit.
+	Value *[]ExpressRouteCircuitConnection `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ExpressRouteCircuitConnectionListResultIterator provides access to a complete listing of
+// ExpressRouteCircuitConnection values.
+type ExpressRouteCircuitConnectionListResultIterator struct {
+	i    int
+	page ExpressRouteCircuitConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExpressRouteCircuitConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ExpressRouteCircuitConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExpressRouteCircuitConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExpressRouteCircuitConnectionListResultIterator) Response() ExpressRouteCircuitConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExpressRouteCircuitConnectionListResultIterator) Value() ExpressRouteCircuitConnection {
+	if !iter.page.NotDone() {
+		return ExpressRouteCircuitConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ExpressRouteCircuitConnectionListResultIterator type.
+func NewExpressRouteCircuitConnectionListResultIterator(page ExpressRouteCircuitConnectionListResultPage) ExpressRouteCircuitConnectionListResultIterator {
+	return ExpressRouteCircuitConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ercclr ExpressRouteCircuitConnectionListResult) IsEmpty() bool {
+	return ercclr.Value == nil || len(*ercclr.Value) == 0
+}
+
+// expressRouteCircuitConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ercclr ExpressRouteCircuitConnectionListResult) expressRouteCircuitConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if ercclr.NextLink == nil || len(to.String(ercclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ercclr.NextLink)))
+}
+
+// ExpressRouteCircuitConnectionListResultPage contains a page of ExpressRouteCircuitConnection values.
+type ExpressRouteCircuitConnectionListResultPage struct {
+	fn     func(context.Context, ExpressRouteCircuitConnectionListResult) (ExpressRouteCircuitConnectionListResult, error)
+	ercclr ExpressRouteCircuitConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExpressRouteCircuitConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ercclr)
+	if err != nil {
+		return err
+	}
+	page.ercclr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ExpressRouteCircuitConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExpressRouteCircuitConnectionListResultPage) NotDone() bool {
+	return !page.ercclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExpressRouteCircuitConnectionListResultPage) Response() ExpressRouteCircuitConnectionListResult {
+	return page.ercclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExpressRouteCircuitConnectionListResultPage) Values() []ExpressRouteCircuitConnection {
+	if page.ercclr.IsEmpty() {
+		return nil
+	}
+	return *page.ercclr.Value
+}
+
+// Creates a new instance of the ExpressRouteCircuitConnectionListResultPage type.
+func NewExpressRouteCircuitConnectionListResultPage(getNextPage func(context.Context, ExpressRouteCircuitConnectionListResult) (ExpressRouteCircuitConnectionListResult, error)) ExpressRouteCircuitConnectionListResultPage {
+	return ExpressRouteCircuitConnectionListResultPage{fn: getNextPage}
+}
+
 // ExpressRouteCircuitConnectionPropertiesFormat ...
 type ExpressRouteCircuitConnectionPropertiesFormat struct {
 	// ExpressRouteCircuitPeering - Reference to Express Route Circuit Private Peering Resource of the circuit initiating connection.

@@ -44,7 +44,7 @@ func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID str
 // List check available SKUs.
 // Parameters:
 // location - resource location.
-// parameters - check SKU Availablity POST body.
+// parameters - check SKU Availability POST body.
 func (client CheckSkuAvailabilityClient) List(ctx context.Context, location string, parameters CheckSkuAvailabilityParameter) (result CheckSkuAvailabilityResultList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CheckSkuAvailabilityClient.List")

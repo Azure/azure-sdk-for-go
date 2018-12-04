@@ -281,7 +281,7 @@ type CreateProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
 	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	StaticIP *string `json:"staticIP,omitempty"`
@@ -1061,7 +1061,7 @@ type Properties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
 	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	StaticIP *string `json:"staticIP,omitempty"`
@@ -1164,7 +1164,7 @@ type ResourceProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
 	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	StaticIP *string `json:"staticIP,omitempty"`
@@ -1416,7 +1416,7 @@ type UpdateProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
 	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	StaticIP *string `json:"staticIP,omitempty"`

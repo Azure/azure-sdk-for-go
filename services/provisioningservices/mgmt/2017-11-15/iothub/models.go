@@ -238,14 +238,14 @@ type ErrorMesssage struct {
 	Details *string `json:"details,omitempty"`
 }
 
-// IotDpsPropertiesDescription the service specific properties of a provisoning service, including keys,
+// IotDpsPropertiesDescription the service specific properties of a provisioning service, including keys,
 // linked iot hubs, current state, and system generated properties such as hostname and idScope
 type IotDpsPropertiesDescription struct {
 	// State - Current state of the provisioning service. Possible values include: 'Activating', 'Active', 'Deleting', 'Deleted', 'ActivationFailed', 'DeletionFailed', 'Transitioning', 'Suspending', 'Suspended', 'Resuming', 'FailingOver', 'FailoverFailed'
 	State State `json:"state,omitempty"`
 	// ProvisioningState - The ARM provisioning state of the provisioning service.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// IotHubs - List of IoT hubs assosciated with this provisioning service.
+	// IotHubs - List of IoT hubs associated with this provisioning service.
 	IotHubs *[]DefinitionDescription `json:"iotHubs,omitempty"`
 	// AllocationPolicy - Allocation policy to be used by this provisioning service. Possible values include: 'Hashed', 'GeoLatency', 'Static'
 	AllocationPolicy AllocationPolicy `json:"allocationPolicy,omitempty"`
@@ -340,7 +340,7 @@ func (future *IotDpsResourceUpdateFuture) Result(client IotDpsResourceClient) (p
 	return
 }
 
-// IotDpsSkuDefinition available SKU's of tier and units.
+// IotDpsSkuDefinition available SKUs of tier and units.
 type IotDpsSkuDefinition struct {
 	// Name - SKU name. Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
@@ -349,7 +349,7 @@ type IotDpsSkuDefinition struct {
 // IotDpsSkuDefinitionListResult list of available SKUs.
 type IotDpsSkuDefinitionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of SKU's
+	// Value - The list of SKUs
 	Value *[]IotDpsSkuDefinition `json:"value,omitempty"`
 	// NextLink - The next link.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -493,7 +493,7 @@ func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotD
 	return IotDpsSkuDefinitionListResultPage{fn: getNextPage}
 }
 
-// IotDpsSkuInfo list of possible provisoning service SKUs.
+// IotDpsSkuInfo list of possible provisioning service SKUs.
 type IotDpsSkuInfo struct {
 	// Name - Sku name. Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
@@ -510,7 +510,7 @@ type NameAvailabilityInfo struct {
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
 	// Reason - specifies the reason a name is unavailable. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason NameUnavailabilityReason `json:"reason,omitempty"`
-	// Message - message containing a etailed reason name is unavailable
+	// Message - message containing a detailed reason name is unavailable
 	Message *string `json:"message,omitempty"`
 }
 

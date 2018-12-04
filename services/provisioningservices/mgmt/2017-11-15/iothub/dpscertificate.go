@@ -136,7 +136,7 @@ func (client DpsCertificateClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Delete deletes the specified certificate assosciated with the Provisioning Service
+// Delete deletes the specified certificate associated with the Provisioning Service
 // Parameters:
 // resourceGroupName - resource group identifier.
 // ifMatch - eTag of the certificate

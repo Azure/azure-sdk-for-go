@@ -1323,9 +1323,9 @@ type ScaleSettings struct {
 	AutoScaleEnabled *bool `json:"autoScaleEnabled,omitempty"`
 }
 
-// SslConfiguration the ssl configugation for scoring
+// SslConfiguration the SSL configuration for scoring
 type SslConfiguration struct {
-	// Status - Enable or disable ssl for scoring. Possible values include: 'Disabled', 'Enabled'
+	// Status - Enable or disable SSL for scoring. Possible values include: 'Disabled', 'Enabled'
 	Status Status `json:"status,omitempty"`
 	// Cert - Cert data
 	Cert *string `json:"cert,omitempty"`
@@ -1449,7 +1449,7 @@ type VirtualMachineProperties struct {
 
 // VirtualMachineSecrets secrets related to a Machine Learning compute based on AKS.
 type VirtualMachineSecrets struct {
-	// AdministratorAccount - Admin creadentials for virtual machine.
+	// AdministratorAccount - Admin credentials for virtual machine.
 	AdministratorAccount *VirtualMachineSSHCredentials `json:"administratorAccount,omitempty"`
 	// ComputeType - Possible values include: 'ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets', 'ComputeTypeBasicComputeSecretsComputeTypeAKS', 'ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine'
 	ComputeType ComputeTypeBasicComputeSecrets `json:"computeType,omitempty"`

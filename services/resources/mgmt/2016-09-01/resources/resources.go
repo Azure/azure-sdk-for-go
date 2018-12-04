@@ -851,7 +851,7 @@ func (client Client) ListComplete(ctx context.Context, filter string, expand str
 // different subscription. When moving resources, both the source group and the target group are locked for the
 // duration of the operation. Write and delete operations are blocked on the groups until the move completes.
 // Parameters:
-// sourceResourceGroupName - the name of the resource group containing the rsources to move.
+// sourceResourceGroupName - the name of the resource group containing the resources to move.
 // parameters - parameters for moving resources.
 func (client Client) MoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo) (result MoveResourcesFuture, err error) {
 	if tracing.IsEnabled() {

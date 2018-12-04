@@ -65,6 +65,7 @@ type QuotaByPeriodKeysClientAPI = original.QuotaByPeriodKeysClientAPI
 type RegionsClientAPI = original.RegionsClientAPI
 type ReportsClientAPI = original.ReportsClientAPI
 type ServiceClientAPI = original.ServiceClientAPI
+type ServiceSkusClientAPI = original.ServiceSkusClientAPI
 type SignInSettingsClientAPI = original.SignInSettingsClientAPI
 type SignUpSettingsClientAPI = original.SignUpSettingsClientAPI
 type SubscriptionClientAPI = original.SubscriptionClientAPI

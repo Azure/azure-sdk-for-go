@@ -224,6 +224,14 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
+type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
+
+const (
+	Automatic ResourceSkuCapacityScaleType = original.Automatic
+	Manual    ResourceSkuCapacityScaleType = original.Manual
+	None      ResourceSkuCapacityScaleType = original.None
+)
+
 type SkuType = original.SkuType
 
 const (
@@ -587,6 +595,12 @@ type RequestContract = original.RequestContract
 type RequestReportCollection = original.RequestReportCollection
 type RequestReportRecordContract = original.RequestReportRecordContract
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
+type ResourceSkuCapacity = original.ResourceSkuCapacity
+type ResourceSkuResult = original.ResourceSkuResult
+type ResourceSkuResults = original.ResourceSkuResults
+type ResourceSkuResultsIterator = original.ResourceSkuResultsIterator
+type ResourceSkuResultsPage = original.ResourceSkuResultsPage
 type ResponseContract = original.ResponseContract
 type SaveConfigurationParameter = original.SaveConfigurationParameter
 type SchemaCollection = original.SchemaCollection
@@ -613,6 +627,7 @@ type ServiceProperties = original.ServiceProperties
 type ServiceResource = original.ServiceResource
 type ServiceRestoreFuture = original.ServiceRestoreFuture
 type ServiceSkuProperties = original.ServiceSkuProperties
+type ServiceSkusClient = original.ServiceSkusClient
 type ServiceUpdateFuture = original.ServiceUpdateFuture
 type ServiceUpdateHostnameFuture = original.ServiceUpdateHostnameFuture
 type ServiceUpdateHostnameParameters = original.ServiceUpdateHostnameParameters
@@ -1097,6 +1112,12 @@ func NewReportsClient(subscriptionID string) ReportsClient {
 func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
 	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceSkuResultsIterator(page ResourceSkuResultsPage) ResourceSkuResultsIterator {
+	return original.NewResourceSkuResultsIterator(page)
+}
+func NewResourceSkuResultsPage(getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
+	return original.NewResourceSkuResultsPage(getNextPage)
+}
 func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
 	return original.NewSchemaCollectionIterator(page)
 }
@@ -1114,6 +1135,12 @@ func NewServiceListResultIterator(page ServiceListResultPage) ServiceListResultI
 }
 func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
 	return original.NewServiceListResultPage(getNextPage)
+}
+func NewServiceSkusClient(subscriptionID string) ServiceSkusClient {
+	return original.NewServiceSkusClient(subscriptionID)
+}
+func NewServiceSkusClientWithBaseURI(baseURI string, subscriptionID string) ServiceSkusClient {
+	return original.NewServiceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSignInSettingsClient(subscriptionID string) SignInSettingsClient {
 	return original.NewSignInSettingsClient(subscriptionID)
@@ -1300,6 +1327,9 @@ func PossibleProductStateValues() []ProductState {
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
+}
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return original.PossibleResourceSkuCapacityScaleTypeValues()
 }
 func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()

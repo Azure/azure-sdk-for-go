@@ -457,6 +457,23 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
 }
 
+// ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
+type ResourceSkuCapacityScaleType string
+
+const (
+	// Automatic ...
+	Automatic ResourceSkuCapacityScaleType = "automatic"
+	// Manual ...
+	Manual ResourceSkuCapacityScaleType = "manual"
+	// None ...
+	None ResourceSkuCapacityScaleType = "none"
+)
+
+// PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return []ResourceSkuCapacityScaleType{Automatic, Manual, None}
+}
+
 // SkuType enumerates the values for sku type.
 type SkuType string
 
@@ -2788,7 +2805,7 @@ func (brc *BackendReconnectContract) UnmarshalJSON(body []byte) error {
 
 // BackendReconnectProperties properties to control reconnect requests.
 type BackendReconnectProperties struct {
-	// After - Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconect is PT2M.
+	// After - Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconnect is PT2M.
 	After *string `json:"after,omitempty"`
 }
 
@@ -3028,7 +3045,7 @@ type CertificateConfiguration struct {
 	EncodedCertificate *string `json:"encodedCertificate,omitempty"`
 	// CertificatePassword - Certificate Password.
 	CertificatePassword *string `json:"certificatePassword,omitempty"`
-	// StoreName - The System.Security.Cryptography.x509certificates.Storename certificate store location. Only Root and CertificateAuthority are valid locations. Possible values include: 'CertificateAuthority', 'Root'
+	// StoreName - The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority are valid locations. Possible values include: 'CertificateAuthority', 'Root'
 	StoreName StoreName `json:"storeName,omitempty"`
 	// Certificate - Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
@@ -8389,7 +8406,7 @@ type ReportRecordContract struct {
 	Name *string `json:"name,omitempty"`
 	// Timestamp - Start of aggregation period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Interval - Length of agregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
+	// Interval - Length of aggregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
 	Interval *string `json:"interval,omitempty"`
 	// Country - Country to which this record data is related.
 	Country *string `json:"country,omitempty"`
@@ -8409,9 +8426,9 @@ type ReportRecordContract struct {
 	APIRegion *string `json:"apiRegion,omitempty"`
 	// SubscriptionID - Subscription identifier path. /subscriptions/{subscriptionId}
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// CallCountSuccess - Number of succesful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect
+	// CallCountSuccess - Number of successful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect
 	CallCountSuccess *int32 `json:"callCountSuccess,omitempty"`
-	// CallCountBlocked - Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorize and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
+	// CallCountBlocked - Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
 	CallCountBlocked *int32 `json:"callCountBlocked,omitempty"`
 	// CallCountFailed - Number of calls failed due to proxy or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600
 	CallCountFailed *int32 `json:"callCountFailed,omitempty"`
@@ -8498,7 +8515,7 @@ type RequestReportRecordContract struct {
 	ResponseSize *int32 `json:"responseSize,omitempty"`
 	// Timestamp - The date and time when this request was received by the gateway in ISO 8601 format.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Cache - Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache was used but lookup resulted in a miss and request was fullfilled by the backend.
+	// Cache - Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache was used but lookup resulted in a miss and request was fulfilled by the backend.
 	Cache *string `json:"cache,omitempty"`
 	// APITime - The total time it took to process this request.
 	APITime *float64 `json:"apiTime,omitempty"`
@@ -8522,6 +8539,180 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// ResourceSku describes an available API Management SKU.
+type ResourceSku struct {
+	// Name - Name of the Sku. Possible values include: 'SkuTypeDeveloper', 'SkuTypeStandard', 'SkuTypePremium', 'SkuTypeBasic'
+	Name SkuType `json:"name,omitempty"`
+}
+
+// ResourceSkuCapacity describes scaling information of a SKU.
+type ResourceSkuCapacity struct {
+	// Minimum - The minimum capacity.
+	Minimum *int32 `json:"minimum,omitempty"`
+	// Maximum - The maximum capacity that can be set.
+	Maximum *int32 `json:"maximum,omitempty"`
+	// Default - The default capacity.
+	Default *int32 `json:"default,omitempty"`
+	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
+	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
+}
+
+// ResourceSkuResult describes an available API Management service SKU.
+type ResourceSkuResult struct {
+	// ResourceType - The type of resource the SKU applies to.
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Sku - Specifies API Management SKU.
+	Sku *ResourceSku `json:"sku,omitempty"`
+	// Capacity - Specifies the number of API Management units.
+	Capacity *ResourceSkuCapacity `json:"capacity,omitempty"`
+}
+
+// ResourceSkuResults the API Management service SKUs operation response.
+type ResourceSkuResults struct {
+	autorest.Response `json:"-"`
+	// Value - The list of skus available for the service.
+	Value *[]ResourceSkuResult `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of API Management service Skus.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ResourceSkuResultsIterator provides access to a complete listing of ResourceSkuResult values.
+type ResourceSkuResultsIterator struct {
+	i    int
+	page ResourceSkuResultsPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ResourceSkuResultsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkuResultsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ResourceSkuResultsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ResourceSkuResultsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ResourceSkuResultsIterator) Response() ResourceSkuResults {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ResourceSkuResultsIterator) Value() ResourceSkuResult {
+	if !iter.page.NotDone() {
+		return ResourceSkuResult{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ResourceSkuResultsIterator type.
+func NewResourceSkuResultsIterator(page ResourceSkuResultsPage) ResourceSkuResultsIterator {
+	return ResourceSkuResultsIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rsr ResourceSkuResults) IsEmpty() bool {
+	return rsr.Value == nil || len(*rsr.Value) == 0
+}
+
+// resourceSkuResultsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rsr ResourceSkuResults) resourceSkuResultsPreparer(ctx context.Context) (*http.Request, error) {
+	if rsr.NextLink == nil || len(to.String(rsr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rsr.NextLink)))
+}
+
+// ResourceSkuResultsPage contains a page of ResourceSkuResult values.
+type ResourceSkuResultsPage struct {
+	fn  func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)
+	rsr ResourceSkuResults
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ResourceSkuResultsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkuResultsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rsr)
+	if err != nil {
+		return err
+	}
+	page.rsr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ResourceSkuResultsPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ResourceSkuResultsPage) NotDone() bool {
+	return !page.rsr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ResourceSkuResultsPage) Response() ResourceSkuResults {
+	return page.rsr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ResourceSkuResultsPage) Values() []ResourceSkuResult {
+	if page.rsr.IsEmpty() {
+		return nil
+	}
+	return *page.rsr.Value
+}
+
+// Creates a new instance of the ResourceSkuResultsPage type.
+func NewResourceSkuResultsPage(getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
+	return ResourceSkuResultsPage{fn: getNextPage}
 }
 
 // ResponseContract operation response details.
@@ -8943,7 +9134,7 @@ type ServiceBaseProperties struct {
 	CustomProperties map[string]*string `json:"customProperties"`
 	// Certificates - List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
 	Certificates *[]CertificateConfiguration `json:"certificates,omitempty"`
-	// VirtualNetworkType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
@@ -9251,7 +9442,7 @@ type ServiceProperties struct {
 	CustomProperties map[string]*string `json:"customProperties"`
 	// Certificates - List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
 	Certificates *[]CertificateConfiguration `json:"certificates,omitempty"`
-	// VirtualNetworkType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
@@ -9748,7 +9939,7 @@ type ServiceUpdateProperties struct {
 	CustomProperties map[string]*string `json:"customProperties"`
 	// Certificates - List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
 	Certificates *[]CertificateConfiguration `json:"certificates,omitempty"`
-	// VirtualNetworkType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
@@ -10086,7 +10277,7 @@ type SubscriptionContractProperties struct {
 type SubscriptionCreateParameterProperties struct {
 	// UserID - User (user id path) for whom subscription is being created in form /users/{uid}
 	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product (product id path) for which subscription is being created in form /products/{productid}
+	// ProductID - Product (product id path) for which subscription is being created in form /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
 	// DisplayName - Subscription name.
 	DisplayName *string `json:"displayName,omitempty"`

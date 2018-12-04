@@ -514,7 +514,7 @@ type AlertProperties struct {
 	Details map[string]*string `json:"details"`
 	// CreationTime - The time when the alert was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CloseTime - The time when the alert was closed (resolved / overriden).
+	// CloseTime - The time when the alert was closed (resolved / overridden).
 	CloseTime *date.Time `json:"closeTime,omitempty"`
 	// Status - The current status of the alert. Possible values include: 'Active', 'Overridden', 'Resolved', 'Dismissed'
 	Status AlertStatus `json:"status,omitempty"`
@@ -569,7 +569,7 @@ type ConnectorCollectionErrorInfo struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// ErrorCode - Short error message
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorStartTime - Time the error started occuring (Last time error occurred in lastRun)
+	// ErrorStartTime - Time the error started occurring (Last time error occurred in lastRun)
 	ErrorStartTime *date.Time `json:"errorStartTime,omitempty"`
 }
 
@@ -1264,7 +1264,7 @@ type ReportAggregation struct {
 
 // ReportComparisonExpression the comparison expression to be used in the report.
 type ReportComparisonExpression struct {
-	// Name - The name of the column to use in comaprison.
+	// Name - The name of the column to use in comparison.
 	Name *string `json:"name,omitempty"`
 	// Operator - The operator to use for comparison.
 	Operator *string `json:"operator,omitempty"`
@@ -1278,9 +1278,9 @@ type ReportDataset struct {
 	Granularity GranularityType `json:"granularity,omitempty"`
 	// Configuration - Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided.
 	Configuration *ReportDatasetConfiguration `json:"configuration,omitempty"`
-	// Aggregation - Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can have upto 2 aggregation clauses.
+	// Aggregation - Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can have up to 2 aggregation clauses.
 	Aggregation map[string]*ReportAggregation `json:"aggregation"`
-	// Grouping - Array of group by expression to use in the report. Report can have upto 2 group by clauses.
+	// Grouping - Array of group by expression to use in the report. Report can have up to 2 group by clauses.
 	Grouping *[]ReportGrouping `json:"grouping,omitempty"`
 	// Filter - Has filter expression to use in the report.
 	Filter *ReportFilter `json:"filter,omitempty"`
@@ -1341,7 +1341,7 @@ type ReportDeliveryInfo struct {
 	Destination *ReportDeliveryDestination `json:"destination,omitempty"`
 }
 
-// ReportExecution a report exeuction.
+// ReportExecution a report execution.
 type ReportExecution struct {
 	*ReportExecutionProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
@@ -1463,9 +1463,9 @@ type ReportExecutionProperties struct {
 
 // ReportFilter the filter expression to be used in the report.
 type ReportFilter struct {
-	// And - The logical "AND" expression. Must have atleast 2 items.
+	// And - The logical "AND" expression. Must have at least 2 items.
 	And *[]ReportFilter `json:"and,omitempty"`
-	// Or - The logical "OR" expression. Must have atleast 2 items.
+	// Or - The logical "OR" expression. Must have at least 2 items.
 	Or *[]ReportFilter `json:"or,omitempty"`
 	// Not - The logical "NOT" expression.
 	Not *ReportFilter `json:"not,omitempty"`

@@ -403,7 +403,7 @@ func (client ReplicationStorageClassificationMappingsClient) ListComplete(ctx co
 // ListByReplicationStorageClassifications lists the storage classification mappings for the fabric.
 // Parameters:
 // fabricName - fabric name.
-// storageClassificationName - storage classfication name.
+// storageClassificationName - storage classification name.
 func (client ReplicationStorageClassificationMappingsClient) ListByReplicationStorageClassifications(ctx context.Context, fabricName string, storageClassificationName string) (result StorageClassificationMappingCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications")

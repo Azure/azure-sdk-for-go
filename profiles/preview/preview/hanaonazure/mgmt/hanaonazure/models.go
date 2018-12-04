@@ -66,6 +66,7 @@ const (
 	S768    HanaInstanceSizeNamesEnum = original.S768
 	S768m   HanaInstanceSizeNamesEnum = original.S768m
 	S768xm  HanaInstanceSizeNamesEnum = original.S768xm
+	S96     HanaInstanceSizeNamesEnum = original.S96
 	S960m   HanaInstanceSizeNamesEnum = original.S960m
 )
 

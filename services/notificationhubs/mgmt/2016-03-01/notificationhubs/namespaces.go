@@ -210,7 +210,7 @@ func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // namespaceName - the namespace name.
-// authorizationRuleName - aauthorization Rule Name.
+// authorizationRuleName - authorization Rule Name.
 // parameters - the shared access authorization rule.
 func (client NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
 	if tracing.IsEnabled() {

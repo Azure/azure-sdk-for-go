@@ -144,7 +144,7 @@ func (capVar CheckAvailabilityParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CheckAvailabilityResource description of a CheckAvailibility resource.
+// CheckAvailabilityResource description of a CheckAvailability resource.
 type CheckAvailabilityResource struct {
 	autorest.Response `json:"-"`
 	// ID - Gets or sets the id

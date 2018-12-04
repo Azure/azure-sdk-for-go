@@ -223,7 +223,7 @@ func (s *Subscription) NewDeadLetterReceiver(ctx context.Context, opts ...Receiv
 //   - A message passes through more than 3 queues or topics that are chained together.
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
-func (s Subscription) NewTransferDeadLetter() *TransferDeadLetter {
+func (s *Subscription) NewTransferDeadLetter() *TransferDeadLetter {
 	return NewTransferDeadLetter(s)
 }
 
@@ -233,7 +233,7 @@ func (s Subscription) NewTransferDeadLetter() *TransferDeadLetter {
 //   - A message passes through more than 3 queues or topics that are chained together.
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
-func (s Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+func (s *Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewTransferDeadLetterReceiver")
 	defer span.Finish()
 

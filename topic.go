@@ -139,7 +139,7 @@ func (t *Topic) Close(ctx context.Context) error {
 //   - A message passes through more than 3 queues or topics that are chained together.
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
-func (t Topic) NewTransferDeadLetter() *TransferDeadLetter {
+func (t *Topic) NewTransferDeadLetter() *TransferDeadLetter {
 	return NewTransferDeadLetter(t)
 }
 
@@ -149,7 +149,7 @@ func (t Topic) NewTransferDeadLetter() *TransferDeadLetter {
 //   - A message passes through more than 3 queues or topics that are chained together.
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
-func (t Topic) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+func (t *Topic) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
 	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.NewTransferDeadLetterReceiver")
 	defer span.Finish()
 

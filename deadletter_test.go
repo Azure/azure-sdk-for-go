@@ -90,7 +90,6 @@ func TestDeadLetter_Close(t *testing.T) {
 	builder.receiver.AssertCalled(t, "Close", context.Background())
 }
 
-
 func setupDefaultDLMock() *MockedDeadLetterBuilder {
 	receiver := new(MockedReceiveOner)
 	receiver.Mock.On(

@@ -109,6 +109,8 @@ const (
 	// DeadLetterQueueName is the name of the dead letter queue to be appended to the entity path
 	DeadLetterQueueName = "$DeadLetterQueue"
 
+	// TransferDeadLetterQueueName is the name of the transfer dead letter queue which is appended to the entity name to
+	// build the full address of the transfer dead letter queue.
 	TransferDeadLetterQueueName = "$Transfer/" + DeadLetterQueueName
 )
 
@@ -424,7 +426,7 @@ func (q *Queue) NewDeadLetterReceiver(ctx context.Context, opts ...ReceiverOptio
 //   - A message passes through more than 3 queues or topics that are chained together.
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
-func (q Queue) NewTransferDeadLetter() *TransferDeadLetter {
+func (q *Queue) NewTransferDeadLetter() *TransferDeadLetter {
 	return NewTransferDeadLetter(q)
 }
 
@@ -434,7 +436,7 @@ func (q Queue) NewTransferDeadLetter() *TransferDeadLetter {
 //   - A message passes through more than 3 queues or topics that are chained together.
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
-func (q Queue) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+func (q *Queue) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewTransferDeadLetterReceiver")
 	defer span.Finish()
 

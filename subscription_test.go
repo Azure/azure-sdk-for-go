@@ -240,7 +240,7 @@ func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManage
 
 func (suite *serviceBusSuite) TestSubscription_WithReceiveAndDelete() {
 	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
-		"ReceiveOne":    testSubscriptionReceiveOneNoComplete,
+		"ReceiveOne": testSubscriptionReceiveOneNoComplete,
 	}
 
 	suite.subscriptionMessageTestWithOptions(tests, SubscriptionWithReceiveAndDelete())
@@ -286,7 +286,7 @@ func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic,
 
 func (suite *serviceBusSuite) TestSubscription_NewDeadLetter() {
 	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
-		"ReceiveOneFromDeadLetter":    testSubscriptionReceiveOneFromDeadLetter,
+		"ReceiveOneFromDeadLetter": testSubscriptionReceiveOneFromDeadLetter,
 	}
 
 	suite.subscriptionMessageTestWithOptions(tests)
@@ -380,7 +380,6 @@ func testSubscriptionSessionReceiveOne(ctx context.Context, t *testing.T, topic 
 func (suite *serviceBusSuite) subscriptionMessageTestWithOptions(tests map[string]func(context.Context, *testing.T, *Topic, *Subscription), opts ...SubscriptionOption) {
 	suite.subscriptionMessageTest(tests, opts, []SubscriptionManagementOption{})
 }
-
 
 func (suite *serviceBusSuite) subscriptionMessageTestWithMgmtOptions(tests map[string]func(context.Context, *testing.T, *Topic, *Subscription), mgmtOpts ...SubscriptionManagementOption) {
 	suite.subscriptionMessageTest(tests, []SubscriptionOption{}, mgmtOpts)

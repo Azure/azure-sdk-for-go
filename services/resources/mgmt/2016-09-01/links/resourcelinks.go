@@ -404,7 +404,7 @@ func (client ResourceLinksClient) ListAtSourceScopeComplete(ctx context.Context,
 // ListAtSubscription gets all the linked resources for the subscription.
 // Parameters:
 // filter - the filter to apply on the list resource links operation. The supported filter for list resource
-// links is targetid. For example, $filter=targetid eq {value}
+// links is targetId. For example, $filter=targetId eq {value}
 func (client ResourceLinksClient) ListAtSubscription(ctx context.Context, filter string) (result ResourceLinkResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceLinksClient.ListAtSubscription")

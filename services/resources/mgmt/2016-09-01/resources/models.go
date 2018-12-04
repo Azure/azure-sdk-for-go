@@ -583,7 +583,7 @@ type DeploymentPropertiesExtended struct {
 	CorrelationID *string `json:"correlationId,omitempty"`
 	// Timestamp - The timestamp of the template deployment.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Outputs - Key/value pairs that represent deploymentoutput.
+	// Outputs - Key/value pairs that represent deployment output.
 	Outputs interface{} `json:"outputs,omitempty"`
 	// Providers - The list of resource providers needed for the deployment.
 	Providers *[]Provider `json:"providers,omitempty"`
@@ -756,7 +756,7 @@ type Group struct {
 	// Name - The name of the resource group.
 	Name       *string          `json:"name,omitempty"`
 	Properties *GroupProperties `json:"properties,omitempty"`
-	// Location - The location of the resource group. It cannot be changed after the resource group has been created. It muct be one of the supported Azure locations.
+	// Location - The location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations.
 	Location *string `json:"location,omitempty"`
 	// ManagedBy - The ID of the resource that manages this resource group.
 	ManagedBy *string `json:"managedBy,omitempty"`
@@ -1184,7 +1184,7 @@ func (future *MoveResourcesFuture) Result(client Client) (ar autorest.Response, 
 	return
 }
 
-// ParametersLink entity representing the reference to the deployment paramaters.
+// ParametersLink entity representing the reference to the deployment parameters.
 type ParametersLink struct {
 	// URI - The URI of the parameters file.
 	URI *string `json:"uri,omitempty"`

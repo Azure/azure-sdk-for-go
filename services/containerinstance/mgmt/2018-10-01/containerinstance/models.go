@@ -203,6 +203,8 @@ type AzureFileVolume struct {
 
 // CachedImages the cached image and OS type.
 type CachedImages struct {
+	// ID - The resource Id of the cached image.
+	ID *string `json:"id,omitempty"`
 	// OsType - The OS type of the cached image.
 	OsType *string `json:"osType,omitempty"`
 	// Image - The cached image name.
@@ -251,6 +253,23 @@ type CapabilitiesListResult struct {
 	Value *[]Capabilities `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of capabilities.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CloudError an error response from the Batch service.
+type CloudError struct {
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody an error response from the Batch service.
+type CloudErrorBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
 // Container a container instance.

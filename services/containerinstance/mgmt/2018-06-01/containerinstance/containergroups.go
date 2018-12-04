@@ -523,7 +523,7 @@ func (client ContainerGroupsClient) ListByResourceGroupComplete(ctx context.Cont
 	return
 }
 
-// Restart restarts all containers in a contaienr group in place. If container image has updates, new image will be
+// Restart restarts all containers in a container group in place. If container image has updates, new image will be
 // downloaded.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -600,7 +600,7 @@ func (client ContainerGroupsClient) RestartResponder(resp *http.Response) (resul
 	return
 }
 
-// Stop stops all containers in a contaienr group. Compute resources will be deallocated and billing will stop.
+// Stop stops all containers in a container group. Compute resources will be deallocated and billing will stop.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // containerGroupName - the name of the container group.

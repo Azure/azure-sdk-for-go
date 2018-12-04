@@ -170,7 +170,7 @@ type CloudError struct {
 
 // CloudErrorBody describes a particular API error with an error code and a message.
 type CloudErrorBody struct {
-	// Code - An error code that describes the error condition more precisely than an HTTP status code. Can be used to programatically handle specific error cases.
+	// Code - An error code that describes the error condition more precisely than an HTTP status code. Can be used to programmatically handle specific error cases.
 	Code *string `json:"code,omitempty"`
 	// Message - A message that describes the error in detail and provides debugging information.
 	Message *string `json:"message,omitempty"`

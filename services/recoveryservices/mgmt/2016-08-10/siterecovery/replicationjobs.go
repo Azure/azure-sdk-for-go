@@ -42,7 +42,7 @@ func NewReplicationJobsClientWithBaseURI(baseURI string, subscriptionID string, 
 
 // Cancel the operation to cancel an Azure Site Recovery job.
 // Parameters:
-// jobName - job indentifier.
+// jobName - job identifier.
 func (client ReplicationJobsClient) Cancel(ctx context.Context, jobName string) (result ReplicationJobsCancelFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationJobsClient.Cancel")

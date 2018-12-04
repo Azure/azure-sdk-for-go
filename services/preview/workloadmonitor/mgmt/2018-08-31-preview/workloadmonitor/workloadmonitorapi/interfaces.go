@@ -50,7 +50,9 @@ var _ MonitorInstancesClientAPI = (*workloadmonitor.MonitorInstancesClient)(nil)
 
 // NotificationSettingsClientAPI contains the set of methods on the NotificationSettingsClient type.
 type NotificationSettingsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result workloadmonitor.NotificationSetting, err error)
 	ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, skiptoken string) (result workloadmonitor.NotificationSettingsCollectionPage, err error)
+	Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body workloadmonitor.NotificationSetting) (result workloadmonitor.NotificationSetting, err error)
 }
 
 var _ NotificationSettingsClientAPI = (*workloadmonitor.NotificationSettingsClient)(nil)

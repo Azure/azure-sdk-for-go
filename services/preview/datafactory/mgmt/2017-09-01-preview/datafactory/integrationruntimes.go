@@ -1425,7 +1425,7 @@ func (client IntegrationRuntimesClient) UpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Upgrade upgrade self-hosted integration runtime to latest version if availability.
+// Upgrade upgrade self-hosted integration runtime to latest version if availably.
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.

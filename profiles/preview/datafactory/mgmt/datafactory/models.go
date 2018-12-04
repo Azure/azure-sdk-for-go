@@ -877,7 +877,6 @@ const (
 	PUT    WebActivityMethod = original.PUT
 )
 
-type AccessPolicyResponse = original.AccessPolicyResponse
 type Activity = original.Activity
 type ActivityDependency = original.ActivityDependency
 type ActivityPolicy = original.ActivityPolicy
@@ -1087,7 +1086,6 @@ type ForEachActivity = original.ForEachActivity
 type ForEachActivityTypeProperties = original.ForEachActivityTypeProperties
 type FtpServerLinkedService = original.FtpServerLinkedService
 type FtpServerLinkedServiceTypeProperties = original.FtpServerLinkedServiceTypeProperties
-type GenericDatasetTypeProperties = original.GenericDatasetTypeProperties
 type GetMetadataActivity = original.GetMetadataActivity
 type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypeProperties
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest
@@ -1181,6 +1179,7 @@ type LinkedServiceListResponsePage = original.LinkedServiceListResponsePage
 type LinkedServiceReference = original.LinkedServiceReference
 type LinkedServiceResource = original.LinkedServiceResource
 type LinkedServicesClient = original.LinkedServicesClient
+type LogStorageSettings = original.LogStorageSettings
 type LookupActivity = original.LookupActivity
 type LookupActivityTypeProperties = original.LookupActivityTypeProperties
 type MagentoLinkedService = original.MagentoLinkedService
@@ -1400,7 +1399,6 @@ type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
 type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
-type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService

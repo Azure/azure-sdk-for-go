@@ -509,7 +509,7 @@ func (client ReplicationvCentersClient) ListByReplicationFabricsComplete(ctx con
 // Update the operation to update a registered vCenter.
 // Parameters:
 // fabricName - fabric name.
-// vCenterName - vCeneter name
+// vCenterName - vCenter name
 // updateVCenterRequest - the input to the update vCenter operation.
 func (client ReplicationvCentersClient) Update(ctx context.Context, fabricName string, vCenterName string, updateVCenterRequest UpdateVCenterRequest) (result ReplicationvCentersUpdateFuture, err error) {
 	if tracing.IsEnabled() {

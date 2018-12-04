@@ -2049,7 +2049,7 @@ func NewAlertCollectionPage(getNextPage func(context.Context, AlertCollection) (
 	return AlertCollectionPage{fn: getNextPage}
 }
 
-// AlertProperties the proprties of an alert.
+// AlertProperties the properties of an alert.
 type AlertProperties struct {
 	// SendToOwners - A value indicating whether to send email to subscription administrator.
 	SendToOwners *string `json:"sendToOwners,omitempty"`
@@ -2683,7 +2683,7 @@ func (afsd AzureFabricSpecificDetails) AsBasicFabricSpecificDetails() (BasicFabr
 	return &afsd, true
 }
 
-// AzureToAzureCreateNetworkMappingInput create network mappings input properties/behaviour specific to
+// AzureToAzureCreateNetworkMappingInput create network mappings input properties/behavior specific to
 // Azure to Azure Network mapping.
 type AzureToAzureCreateNetworkMappingInput struct {
 	// PrimaryNetworkID - The primary azure vnet Id.
@@ -2981,7 +2981,7 @@ type ConfigureAlertRequestProperties struct {
 }
 
 // ConsistencyCheckTaskDetails this class contains monitoring details of all the inconsistent Protected
-// Entites in Vmm.
+// Entities in Vmm.
 type ConsistencyCheckTaskDetails struct {
 	// VMDetails - The list of inconsistent Vm details.
 	VMDetails *[]InconsistentVMDetails `json:"vmDetails,omitempty"`
@@ -3223,7 +3223,7 @@ type CurrentScenarioDetails struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 }
 
-// DataStore the datastore details of the MT.
+// DataStore the data store details of the MT.
 type DataStore struct {
 	// SymbolicName - The symbolic name of data store.
 	SymbolicName *string `json:"symbolicName,omitempty"`
@@ -3373,7 +3373,7 @@ type DiscoverProtectableItemRequestProperties struct {
 	OsType *string `json:"osType,omitempty"`
 }
 
-// DiskDetails onprem disk details data.
+// DiskDetails on-prem disk details data.
 type DiskDetails struct {
 	// MaxSizeMB - The hard disk max size in MB.
 	MaxSizeMB *int64 `json:"maxSizeMB,omitempty"`
@@ -3761,7 +3761,7 @@ type EventProperties struct {
 	AffectedObjectFriendlyName *string `json:"affectedObjectFriendlyName,omitempty"`
 	// Severity - The severity of the event.
 	Severity *string `json:"severity,omitempty"`
-	// TimeOfOccurrence - The time of occurence of the event.
+	// TimeOfOccurrence - The time of occurrence of the event.
 	TimeOfOccurrence *date.Time `json:"timeOfOccurrence,omitempty"`
 	// FabricID - The ARM ID of the fabric.
 	FabricID *string `json:"fabricId,omitempty"`
@@ -8024,7 +8024,7 @@ type InMageAzureV2ReplicationDetails struct {
 	DiscoveryType *string `json:"discoveryType,omitempty"`
 	// EnableRDPOnTargetOption - The selected option to enable RDP\SSH on target vm after failover. String value of {SrsDataContract.EnableRDPOnTargetOption} enum.
 	EnableRDPOnTargetOption *string `json:"enableRDPOnTargetOption,omitempty"`
-	// Datastores - The datastores of the on-premise machine. Value can be list of strings that contain datastore names.
+	// Datastores - The data stores of the on-premise machine. Value can be list of strings that contain data store names.
 	Datastores *[]string `json:"datastores,omitempty"`
 	// TargetVMID - The ARM Id of the target Azure VM. This value will be null until the VM is failed over. Only after failure it will be populated with the ARM Id of the Azure VM.
 	TargetVMID *string `json:"targetVmId,omitempty"`
@@ -8564,7 +8564,7 @@ type InMageEnableProtectionInput struct {
 	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
 	// MultiVMGroupName - The multi vm group name.
 	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
-	// DatastoreName - The target datastore name.
+	// DatastoreName - The target data store name.
 	DatastoreName *string `json:"datastoreName,omitempty"`
 	// DiskExclusionInput - The enable disk exclusion input.
 	DiskExclusionInput *InMageDiskExclusionInput `json:"diskExclusionInput,omitempty"`
@@ -8985,7 +8985,7 @@ type InMageReplicationDetails struct {
 	DiscoveryType *string `json:"discoveryType,omitempty"`
 	// AzureStorageAccountID - A value indicating the underlying Azure storage account. If the VM is not running in Azure, this value shall be set to null.
 	AzureStorageAccountID *string `json:"azureStorageAccountId,omitempty"`
-	// Datastores - The datastores of the on-premise machine Value can be list of strings that contain datastore names
+	// Datastores - The data stores of the on-premise machine Value can be list of strings that contain data store names
 	Datastores *[]string `json:"datastores,omitempty"`
 	// ValidationErrors - The validation errors of the on-premise machine Value can be list of validation errors
 	ValidationErrors *[]HealthError `json:"validationErrors,omitempty"`
@@ -9177,7 +9177,7 @@ type InMageReprotectInput struct {
 	RetentionDrive *string `json:"retentionDrive,omitempty"`
 	// RunAsAccountID - The CS account Id.
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
-	// DatastoreName - The target datastore name.
+	// DatastoreName - The target data store name.
 	DatastoreName *string `json:"datastoreName,omitempty"`
 	// DiskExclusionInput - The enable disk exclusion input.
 	DiskExclusionInput *InMageDiskExclusionInput `json:"diskExclusionInput,omitempty"`
@@ -9768,7 +9768,7 @@ func (jp *JobProperties) UnmarshalJSON(body []byte) error {
 type JobQueryParameter struct {
 	// StartTime - Date time to get jobs from.
 	StartTime *string `json:"startTime,omitempty"`
-	// EndTime - Date time to get jobs upto.
+	// EndTime - Date time to get jobs up to.
 	EndTime *string `json:"endTime,omitempty"`
 	// FabricID - The Id of the fabric to search jobs under.
 	FabricID *string `json:"fabricId,omitempty"`
@@ -10368,7 +10368,7 @@ func NewNetworkCollectionPage(getNextPage func(context.Context, NetworkCollectio
 // prev version in InheritedModels as long as there is no difference in structure or method signature.
 // Since there were no base Models for certain fields and methods viz NetworkMappingProperties and Load
 // with required return type, the class has been introduced in its entirety with references to base models
-// to facilitate exensions in subsequent versions.
+// to facilitate extensions in subsequent versions.
 type NetworkMapping struct {
 	autorest.Response `json:"-"`
 	// Properties - The Network Mapping Properties.
@@ -11969,7 +11969,7 @@ func NewProtectionContainerCollectionPage(getNextPage func(context.Context, Prot
 
 // ProtectionContainerFabricSpecificDetails base class for fabric specific details of container.
 type ProtectionContainerFabricSpecificDetails struct {
-	// InstanceType - Gets the class type. Overriden in derived classes.
+	// InstanceType - Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
@@ -12163,7 +12163,7 @@ type ProtectionContainerMappingProperties struct {
 
 // ProtectionContainerMappingProviderSpecificDetails container mapping provider specific details.
 type ProtectionContainerMappingProviderSpecificDetails struct {
-	// InstanceType - Gets the class type. Overriden in derived classes.
+	// InstanceType - Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
@@ -16313,7 +16313,7 @@ type Resource struct {
 // ResourceHealthSummary base class to define the health summary of the resources contained under an Arm
 // resource.
 type ResourceHealthSummary struct {
-	// ResourceCount - The count of total resources umder the container.
+	// ResourceCount - The count of total resources under the container.
 	ResourceCount *int32 `json:"resourceCount,omitempty"`
 	// Issues - The list of summary of health errors across the resources under the container.
 	Issues *[]HealthErrorSummary `json:"issues,omitempty"`
@@ -16669,7 +16669,7 @@ type ServiceError struct {
 // StorageClassification storage object definition.
 type StorageClassification struct {
 	autorest.Response `json:"-"`
-	// Properties - Proprties of the storage object.
+	// Properties - Properties of the storage object.
 	Properties *StorageClassificationProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -16831,7 +16831,7 @@ func NewStorageClassificationCollectionPage(getNextPage func(context.Context, St
 // StorageClassificationMapping storage mapping object.
 type StorageClassificationMapping struct {
 	autorest.Response `json:"-"`
-	// Properties - Proprties of the storage mappping object.
+	// Properties - Properties of the storage mapping object.
 	Properties *StorageClassificationMappingProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -17693,7 +17693,7 @@ type UpdateRecoveryPlanInput struct {
 	Properties *UpdateRecoveryPlanInputProperties `json:"properties,omitempty"`
 }
 
-// UpdateRecoveryPlanInputProperties recovery plan updation properties.
+// UpdateRecoveryPlanInputProperties recovery plan update properties.
 type UpdateRecoveryPlanInputProperties struct {
 	// Groups - The recovery plan groups.
 	Groups *[]RecoveryPlanGroup `json:"groups,omitempty"`
@@ -17921,7 +17921,7 @@ type UpdateVCenterRequestProperties struct {
 	ProcessServerID *string `json:"processServerId,omitempty"`
 	// Port - The port number for discovery.
 	Port *string `json:"port,omitempty"`
-	// RunAsAccountID - The CS account Id which has priviliges to update the vCenter.
+	// RunAsAccountID - The CS account Id which has privileges to update the vCenter.
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
 }
 
@@ -18117,7 +18117,7 @@ type VCenterProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// InternalID - VCenter internal ID.
 	InternalID *string `json:"internalId,omitempty"`
-	// LastHeartbeat - The time when the last heartbeat was reveived by vCenter.
+	// LastHeartbeat - The time when the last heartbeat was received by vCenter.
 	LastHeartbeat *date.Time `json:"lastHeartbeat,omitempty"`
 	// DiscoveryStatus - The VCenter discovery status.
 	DiscoveryStatus *string `json:"discoveryStatus,omitempty"`
@@ -18267,8 +18267,8 @@ func (vd VmmDetails) AsBasicFabricSpecificDetails() (BasicFabricSpecificDetails,
 	return &vd, true
 }
 
-// VmmToAzureCreateNetworkMappingInput create network mappings input properties/behaviour specific to Vmm
-// to Azure Network mapping.
+// VmmToAzureCreateNetworkMappingInput create network mappings input properties/behavior specific to Vmm to
+// Azure Network mapping.
 type VmmToAzureCreateNetworkMappingInput struct {
 	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreateNetworkMappingInput', 'InstanceTypeAzureToAzure', 'InstanceTypeVmmToAzure', 'InstanceTypeVmmToVmm'
 	InstanceType InstanceTypeBasicFabricSpecificCreateNetworkMappingInput `json:"instanceType,omitempty"`
@@ -18350,8 +18350,8 @@ func (vtanms VmmToAzureNetworkMappingSettings) AsBasicNetworkMappingFabricSpecif
 	return &vtanms, true
 }
 
-// VmmToAzureUpdateNetworkMappingInput update network mappings input properties/behaviour specific to vmm
-// to azure.
+// VmmToAzureUpdateNetworkMappingInput update network mappings input properties/behavior specific to vmm to
+// azure.
 type VmmToAzureUpdateNetworkMappingInput struct {
 	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeFabricSpecificUpdateNetworkMappingInput', 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeAzureToAzure', 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToAzure', 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm'
 	InstanceType InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput `json:"instanceType,omitempty"`
@@ -18392,7 +18392,7 @@ func (vtaunmi VmmToAzureUpdateNetworkMappingInput) AsBasicFabricSpecificUpdateNe
 	return &vtaunmi, true
 }
 
-// VmmToVmmCreateNetworkMappingInput create network mappings input properties/behaviour specific to vmm to
+// VmmToVmmCreateNetworkMappingInput create network mappings input properties/behavior specific to vmm to
 // vmm Network mapping.
 type VmmToVmmCreateNetworkMappingInput struct {
 	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreateNetworkMappingInput', 'InstanceTypeAzureToAzure', 'InstanceTypeVmmToAzure', 'InstanceTypeVmmToVmm'
@@ -18475,7 +18475,7 @@ func (vtvnms VmmToVmmNetworkMappingSettings) AsBasicNetworkMappingFabricSpecific
 	return &vtvnms, true
 }
 
-// VmmToVmmUpdateNetworkMappingInput update network mappings input properties/behaviour specific to vmm to
+// VmmToVmmUpdateNetworkMappingInput update network mappings input properties/behavior specific to vmm to
 // vmm.
 type VmmToVmmUpdateNetworkMappingInput struct {
 	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeFabricSpecificUpdateNetworkMappingInput', 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeAzureToAzure', 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToAzure', 'InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm'
@@ -19124,7 +19124,7 @@ type VMwareVirtualMachineDetails struct {
 	PoweredOn *string `json:"poweredOn,omitempty"`
 	// VCenterInfrastructureID - The VCenter infrastructure Id.
 	VCenterInfrastructureID *string `json:"vCenterInfrastructureId,omitempty"`
-	// DiscoveryType - A value inidicating the discovery type of the machine. Value can be vCenter or physical.
+	// DiscoveryType - A value indicating the discovery type of the machine. Value can be vCenter or physical.
 	DiscoveryType *string `json:"discoveryType,omitempty"`
 	// DiskDetails - The disk details.
 	DiskDetails *[]InMageDiskDetails `json:"diskDetails,omitempty"`

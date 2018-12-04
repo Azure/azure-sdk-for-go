@@ -1419,10 +1419,10 @@ type SQLConnectivityUpdateSettings struct {
 type SQLStorageUpdateSettings struct {
 	// DiskCount - Virtual machine disk count.
 	DiskCount *int32 `json:"diskCount,omitempty"`
-	// StartingDeviceID - Device id of the first disk to be updated.
-	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
 	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
 	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
+	// StartingDeviceID - Device id of the first disk to be updated.
+	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
 }
 
 // SQLVirtualMachine a SQL virtual machine.

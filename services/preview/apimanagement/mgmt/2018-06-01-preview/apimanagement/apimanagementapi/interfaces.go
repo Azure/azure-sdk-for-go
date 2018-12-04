@@ -221,6 +221,13 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*apimanagement.OperationsClient)(nil)
 
+// ServiceSkusClientAPI contains the set of methods on the ServiceSkusClient type.
+type ServiceSkusClientAPI interface {
+	ListAvailableServiceSkus(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.ResourceSkuResultsPage, err error)
+}
+
+var _ ServiceSkusClientAPI = (*apimanagement.ServiceSkusClient)(nil)
+
 // ServiceClientAPI contains the set of methods on the ServiceClient type.
 type ServiceClientAPI interface {
 	ApplyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string, parameters *apimanagement.ServiceApplyNetworkConfigurationParameters) (result apimanagement.ServiceApplyNetworkConfigurationUpdatesFuture, err error)

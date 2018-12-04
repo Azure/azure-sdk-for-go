@@ -42,6 +42,96 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 	return NamespacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CreateNetworkRuleSet gets NetworkRuleSet for a Namespace.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// namespaceName - the Namespace name
+// parameters - the Namespace IpFilterRule.
+func (client NamespacesClient) CreateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (result NetworkRuleSet, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.CreateNetworkRuleSet")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventhub.NamespacesClient", "CreateNetworkRuleSet", err.Error())
+	}
+
+	req, err := client.CreateNetworkRuleSetPreparer(ctx, resourceGroupName, namespaceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "CreateNetworkRuleSet", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateNetworkRuleSetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "CreateNetworkRuleSet", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateNetworkRuleSetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "CreateNetworkRuleSet", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateNetworkRuleSetPreparer prepares the CreateNetworkRuleSet request.
+func (client NamespacesClient) CreateNetworkRuleSetPreparer(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkruleset/default", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateNetworkRuleSetSender sends the CreateNetworkRuleSet request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamespacesClient) CreateNetworkRuleSetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateNetworkRuleSetResponder handles the response to the CreateNetworkRuleSet request. The method always
+// closes the http.Response Body.
+func (client NamespacesClient) CreateNetworkRuleSetResponder(resp *http.Response) (result NetworkRuleSet, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdate creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This
 // operation is idempotent.
 // Parameters:
@@ -768,6 +858,93 @@ func (client NamespacesClient) GetIPFilterRuleSender(req *http.Request) (*http.R
 // GetIPFilterRuleResponder handles the response to the GetIPFilterRule request. The method always
 // closes the http.Response Body.
 func (client NamespacesClient) GetIPFilterRuleResponder(resp *http.Response) (result IPFilterRule, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetNetworkRuleSet gets NetworkRuleSet for a Namespace.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// namespaceName - the Namespace name
+func (client NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSet, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.GetNetworkRuleSet")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventhub.NamespacesClient", "GetNetworkRuleSet", err.Error())
+	}
+
+	req, err := client.GetNetworkRuleSetPreparer(ctx, resourceGroupName, namespaceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "GetNetworkRuleSet", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetNetworkRuleSetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "GetNetworkRuleSet", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetNetworkRuleSetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "GetNetworkRuleSet", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetNetworkRuleSetPreparer prepares the GetNetworkRuleSet request.
+func (client NamespacesClient) GetNetworkRuleSetPreparer(ctx context.Context, resourceGroupName string, namespaceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkruleset/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetNetworkRuleSetSender sends the GetNetworkRuleSet request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamespacesClient) GetNetworkRuleSetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetNetworkRuleSetResponder handles the response to the GetNetworkRuleSet request. The method always
+// closes the http.Response Body.
+func (client NamespacesClient) GetNetworkRuleSetResponder(resp *http.Response) (result NetworkRuleSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

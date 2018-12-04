@@ -26,6 +26,7 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -237,39 +238,30 @@ func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManage
 	return s
 }
 
+func (suite *serviceBusSuite) TestSubscription_WithReceiveAndDelete() {
+	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
+		"ReceiveOne":    testSubscriptionReceiveOneNoComplete,
+	}
+
+	suite.subscriptionMessageTestWithOptions(tests, SubscriptionWithReceiveAndDelete())
+}
+
+func testSubscriptionReceiveOneNoComplete(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
+	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
+		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			return nil
+		}))
+		assert.NoError(t, err)
+	}
+}
+
 func (suite *serviceBusSuite) TestSubscriptionClient() {
 	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
 		"SimpleReceive": testSubscriptionReceive,
 		"ReceiveOne":    testSubscriptionReceiveOne,
 	}
 
-	ns := suite.getNewSasInstance()
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			topicName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-
-			topicCleanup := makeTopic(ctx, t, ns, topicName)
-			topic, err := ns.NewTopic(topicName)
-			if suite.NoError(err) {
-				subName := suite.randEntityName()
-				subCleanup := makeSubscription(ctx, t, topic, subName)
-				subscription, err := topic.NewSubscription(subName)
-
-				if suite.NoError(err) {
-					defer subCleanup()
-					testFunc(ctx, t, topic, subscription)
-					if !t.Failed() {
-						checkZeroSubscriptionMessages(ctx, t, topic, subName)
-					}
-				}
-				defer topicCleanup()
-			}
-		}
-
-		suite.T().Run(name, setupTestTeardown)
-	}
+	suite.subscriptionMessageTestWithMgmtOptions(tests)
 }
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
@@ -290,6 +282,35 @@ func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic,
 		}))
 		assert.NoError(t, err)
 	}
+}
+
+func (suite *serviceBusSuite) TestSubscription_NewDeadLetter() {
+	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
+		"ReceiveOneFromDeadLetter":    testSubscriptionReceiveOneFromDeadLetter,
+	}
+
+	suite.subscriptionMessageTestWithOptions(tests)
+}
+
+func testSubscriptionReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
+	require.NoError(t, topic.Send(ctx, NewMessageFromString("foo")))
+
+	for i := 0; i < 10; i++ {
+		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			return msg.Abandon(ctx)
+		}))
+		require.NoError(t, err)
+	}
+
+	dl := sub.NewDeadLetter()
+	called := false
+	err := dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+		called = true
+		assert.Equal(t, "foo", string(msg.Data))
+		return msg.Complete(ctx)
+	}))
+	assert.True(t, called)
+	assert.NoError(t, err)
 }
 
 func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
@@ -317,7 +338,7 @@ func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
 				ts := topic.NewSession(&sessionID)
 				ss := subscription.NewSession(&sessionID)
 				defer func() {
-					closeCtx, cancel := context.WithTimeout(ctx, 10 * time.Second)
+					closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 					defer cancel()
 					suite.NoError(ts.Close(closeCtx))
 					suite.NoError(ss.Close(closeCtx))
@@ -354,6 +375,45 @@ func testSubscriptionSessionReceiveOne(ctx context.Context, t *testing.T, topic 
 		},
 		func() {}))
 	assert.Error(t, err, "context canceled")
+}
+
+func (suite *serviceBusSuite) subscriptionMessageTestWithOptions(tests map[string]func(context.Context, *testing.T, *Topic, *Subscription), opts ...SubscriptionOption) {
+	suite.subscriptionMessageTest(tests, opts, []SubscriptionManagementOption{})
+}
+
+
+func (suite *serviceBusSuite) subscriptionMessageTestWithMgmtOptions(tests map[string]func(context.Context, *testing.T, *Topic, *Subscription), mgmtOpts ...SubscriptionManagementOption) {
+	suite.subscriptionMessageTest(tests, []SubscriptionOption{}, mgmtOpts)
+}
+
+func (suite *serviceBusSuite) subscriptionMessageTest(tests map[string]func(context.Context, *testing.T, *Topic, *Subscription), subOpts []SubscriptionOption, mgmtOpts []SubscriptionManagementOption) {
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			topicName := suite.randEntityName()
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+
+			topicCleanup := makeTopic(ctx, t, ns, topicName)
+			topic, err := ns.NewTopic(topicName)
+			if suite.NoError(err) {
+				subName := suite.randEntityName()
+				subCleanup := makeSubscription(ctx, t, topic, subName, mgmtOpts...)
+				subscription, err := topic.NewSubscription(subName, subOpts...)
+
+				if suite.NoError(err) {
+					defer subCleanup()
+					testFunc(ctx, t, topic, subscription)
+					if !t.Failed() && !strings.HasSuffix(name, "NoZeroCheck") {
+						checkZeroSubscriptionMessages(ctx, t, topic, subName)
+					}
+				}
+				defer topicCleanup()
+			}
+		}
+
+		suite.T().Run(name, setupTestTeardown)
+	}
 }
 
 func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {

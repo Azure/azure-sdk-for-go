@@ -42,7 +42,7 @@ func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID 
 	return RecommendedElasticPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets a recommented elastic pool.
+// Get gets a recommended elastic pool.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -200,7 +200,7 @@ func (client RecommendedElasticPoolsClient) ListByServerResponder(resp *http.Res
 	return
 }
 
-// ListMetrics returns recommented elastic pool metrics.
+// ListMetrics returns recommended elastic pool metrics.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

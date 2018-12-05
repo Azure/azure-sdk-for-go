@@ -556,7 +556,7 @@ func (client DatabasesClient) GetByElasticPoolResponder(resp *http.Response) (re
 	return
 }
 
-// GetByRecommendedElasticPool gets a database inside of a recommented elastic pool.
+// GetByRecommendedElasticPool gets a database inside of a recommended elastic pool.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -806,7 +806,7 @@ func (client DatabasesClient) ListByElasticPoolResponder(resp *http.Response) (r
 	return
 }
 
-// ListByRecommendedElasticPool returns a list of databases inside a recommented elastic pool.
+// ListByRecommendedElasticPool returns a list of databases inside a recommended elastic pool.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

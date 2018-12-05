@@ -341,7 +341,7 @@ func (client AlertsClient) ListComplete(ctx context.Context, filter string, sele
 	return
 }
 
-// ListByResourceGroup list all the alerts alerts that are associated with the resource group
+// ListByResourceGroup list all the alerts that are associated with the resource group
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

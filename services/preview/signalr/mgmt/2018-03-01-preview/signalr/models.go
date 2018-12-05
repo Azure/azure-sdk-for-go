@@ -487,7 +487,7 @@ type RegenerateKeyParameters struct {
 type Resource struct {
 	// ID - Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resouce.
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the service - e.g. "Microsoft.SignalRService/SignalR"
 	Type *string `json:"type,omitempty"`
@@ -668,7 +668,7 @@ type ResourceType struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resouce.
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the service - e.g. "Microsoft.SignalRService/SignalR"
 	Type *string `json:"type,omitempty"`
@@ -793,7 +793,7 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resouce.
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the service - e.g. "Microsoft.SignalRService/SignalR"
 	Type *string `json:"type,omitempty"`
@@ -1036,7 +1036,7 @@ func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, e
 
 // UsageName localizable String object containing the name and a localized value.
 type UsageName struct {
-	// Value - The indentifier of the usage.
+	// Value - The identifier of the usage.
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - Localized name of the usage.
 	LocalizedValue *string `json:"localizedValue,omitempty"`

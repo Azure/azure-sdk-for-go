@@ -19,7 +19,7 @@
 
 package dtlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl/dtlapi"
+import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2018-09-15/dtl/dtlapi"
 
 type ArmTemplatesClientAPI = original.ArmTemplatesClientAPI
 type ArtifactSourcesClientAPI = original.ArtifactSourcesClientAPI
@@ -39,6 +39,8 @@ type PolicySetsClientAPI = original.PolicySetsClientAPI
 type ProviderOperationsClientAPI = original.ProviderOperationsClientAPI
 type SchedulesClientAPI = original.SchedulesClientAPI
 type SecretsClientAPI = original.SecretsClientAPI
+type ServiceFabricSchedulesClientAPI = original.ServiceFabricSchedulesClientAPI
+type ServiceFabricsClientAPI = original.ServiceFabricsClientAPI
 type ServiceRunnersClientAPI = original.ServiceRunnersClientAPI
 type UsersClientAPI = original.UsersClientAPI
 type VirtualMachineSchedulesClientAPI = original.VirtualMachineSchedulesClientAPI

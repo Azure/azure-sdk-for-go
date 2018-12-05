@@ -46,7 +46,7 @@ func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID 
 // resourceGroupName - azure Resource Group Name.
 // filter - may be used to filter dimensions by properties/category, properties/usageStart,
 // properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
-// expand - may be used to expand the properties/data within a dimension category. By default, data is not
+// expand - may be used to expand the properties/data within a dimension dategory. By default, data is not
 // included when listing dimensions.
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that

@@ -1506,7 +1506,7 @@ func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) 
 
 // ServerEndpointUpdateParameters parameters for updating an Server Endpoint.
 type ServerEndpointUpdateParameters struct {
-	// ServerEndpointUpdateProperties - The properties of the serverendpoint.
+	// ServerEndpointUpdateProperties - The properties of the server endpoint.
 	*ServerEndpointUpdateProperties `json:"properties,omitempty"`
 }
 

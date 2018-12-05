@@ -1437,7 +1437,7 @@ func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) 
 type ServerEndpointUpdateParameters struct {
 	// Tags - The user-specified tags associated with the server endpoint.
 	Tags map[string]*string `json:"tags"`
-	// ServerEndpointUpdateProperties - The properties of the serverendpoint.
+	// ServerEndpointUpdateProperties - The properties of the server endpoint.
 	*ServerEndpointUpdateProperties `json:"properties,omitempty"`
 }
 

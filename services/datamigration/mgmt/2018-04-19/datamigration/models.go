@@ -52,6 +52,115 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return []AuthenticationType{ActiveDirectoryIntegrated, ActiveDirectoryPassword, None, SQLAuthentication, WindowsAuthentication}
 }
 
+// BackupFileStatus enumerates the values for backup file status.
+type BackupFileStatus string
+
+const (
+	// Arrived ...
+	Arrived BackupFileStatus = "Arrived"
+	// Cancelled ...
+	Cancelled BackupFileStatus = "Cancelled"
+	// Queued ...
+	Queued BackupFileStatus = "Queued"
+	// Restored ...
+	Restored BackupFileStatus = "Restored"
+	// Restoring ...
+	Restoring BackupFileStatus = "Restoring"
+	// Uploaded ...
+	Uploaded BackupFileStatus = "Uploaded"
+	// Uploading ...
+	Uploading BackupFileStatus = "Uploading"
+)
+
+// PossibleBackupFileStatusValues returns an array of possible values for the BackupFileStatus const type.
+func PossibleBackupFileStatusValues() []BackupFileStatus {
+	return []BackupFileStatus{Arrived, Cancelled, Queued, Restored, Restoring, Uploaded, Uploading}
+}
+
+// BackupMode enumerates the values for backup mode.
+type BackupMode string
+
+const (
+	// CreateBackup ...
+	CreateBackup BackupMode = "CreateBackup"
+	// ExistingBackup ...
+	ExistingBackup BackupMode = "ExistingBackup"
+)
+
+// PossibleBackupModeValues returns an array of possible values for the BackupMode const type.
+func PossibleBackupModeValues() []BackupMode {
+	return []BackupMode{CreateBackup, ExistingBackup}
+}
+
+// BackupType enumerates the values for backup type.
+type BackupType string
+
+const (
+	// BackupTypeDatabase ...
+	BackupTypeDatabase BackupType = "Database"
+	// BackupTypeDifferentialDatabase ...
+	BackupTypeDifferentialDatabase BackupType = "DifferentialDatabase"
+	// BackupTypeDifferentialFile ...
+	BackupTypeDifferentialFile BackupType = "DifferentialFile"
+	// BackupTypeDifferentialPartial ...
+	BackupTypeDifferentialPartial BackupType = "DifferentialPartial"
+	// BackupTypeFile ...
+	BackupTypeFile BackupType = "File"
+	// BackupTypePartial ...
+	BackupTypePartial BackupType = "Partial"
+	// BackupTypeTransactionLog ...
+	BackupTypeTransactionLog BackupType = "TransactionLog"
+)
+
+// PossibleBackupTypeValues returns an array of possible values for the BackupType const type.
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{BackupTypeDatabase, BackupTypeDifferentialDatabase, BackupTypeDifferentialFile, BackupTypeDifferentialPartial, BackupTypeFile, BackupTypePartial, BackupTypeTransactionLog}
+}
+
+// CommandState enumerates the values for command state.
+type CommandState string
+
+const (
+	// Accepted ...
+	Accepted CommandState = "Accepted"
+	// Failed ...
+	Failed CommandState = "Failed"
+	// Running ...
+	Running CommandState = "Running"
+	// Succeeded ...
+	Succeeded CommandState = "Succeeded"
+	// Unknown ...
+	Unknown CommandState = "Unknown"
+)
+
+// PossibleCommandStateValues returns an array of possible values for the CommandState const type.
+func PossibleCommandStateValues() []CommandState {
+	return []CommandState{Accepted, Failed, Running, Succeeded, Unknown}
+}
+
+// CommandType enumerates the values for command type.
+type CommandType string
+
+const (
+	// CommandTypeCancel ...
+	CommandTypeCancel CommandType = "cancel"
+	// CommandTypeFinish ...
+	CommandTypeFinish CommandType = "finish"
+	// CommandTypeMigrateSQLServerAzureDbSQLMiComplete ...
+	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = "Migrate.SqlServer.AzureDbSqlMi.Complete"
+	// CommandTypeMigrateSyncCompleteDatabase ...
+	CommandTypeMigrateSyncCompleteDatabase CommandType = "Migrate.Sync.Complete.Database"
+	// CommandTypeRestart ...
+	CommandTypeRestart CommandType = "restart"
+	// CommandTypeUnknown ...
+	CommandTypeUnknown CommandType = "Unknown"
+)
+
+// PossibleCommandTypeValues returns an array of possible values for the CommandType const type.
+func PossibleCommandTypeValues() []CommandType {
+	return []CommandType{CommandTypeCancel, CommandTypeFinish, CommandTypeMigrateSQLServerAzureDbSQLMiComplete, CommandTypeMigrateSyncCompleteDatabase, CommandTypeRestart, CommandTypeUnknown}
+}
+
 // DatabaseCompatLevel enumerates the values for database compat level.
 type DatabaseCompatLevel string
 
@@ -121,33 +230,64 @@ func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
 	return []DatabaseMigrationStage{DatabaseMigrationStageBackup, DatabaseMigrationStageCompleted, DatabaseMigrationStageFileCopy, DatabaseMigrationStageInitialize, DatabaseMigrationStageNone, DatabaseMigrationStageRestore}
 }
 
+// DatabaseMigrationState enumerates the values for database migration state.
+type DatabaseMigrationState string
+
+const (
+	// CANCELLED ...
+	CANCELLED DatabaseMigrationState = "CANCELLED"
+	// COMPLETED ...
+	COMPLETED DatabaseMigrationState = "COMPLETED"
+	// CUTOVERSTART ...
+	CUTOVERSTART DatabaseMigrationState = "CUTOVER_START"
+	// FAILED ...
+	FAILED DatabaseMigrationState = "FAILED"
+	// FULLBACKUPUPLOADSTART ...
+	FULLBACKUPUPLOADSTART DatabaseMigrationState = "FULL_BACKUP_UPLOAD_START"
+	// INITIAL ...
+	INITIAL DatabaseMigrationState = "INITIAL"
+	// LOGSHIPPINGSTART ...
+	LOGSHIPPINGSTART DatabaseMigrationState = "LOG_SHIPPING_START"
+	// POSTCUTOVERCOMPLETE ...
+	POSTCUTOVERCOMPLETE DatabaseMigrationState = "POST_CUTOVER_COMPLETE"
+	// UNDEFINED ...
+	UNDEFINED DatabaseMigrationState = "UNDEFINED"
+	// UPLOADLOGFILESSTART ...
+	UPLOADLOGFILESSTART DatabaseMigrationState = "UPLOAD_LOG_FILES_START"
+)
+
+// PossibleDatabaseMigrationStateValues returns an array of possible values for the DatabaseMigrationState const type.
+func PossibleDatabaseMigrationStateValues() []DatabaseMigrationState {
+	return []DatabaseMigrationState{CANCELLED, COMPLETED, CUTOVERSTART, FAILED, FULLBACKUPUPLOADSTART, INITIAL, LOGSHIPPINGSTART, POSTCUTOVERCOMPLETE, UNDEFINED, UPLOADLOGFILESSTART}
+}
+
 // DatabaseState enumerates the values for database state.
 type DatabaseState string
 
 const (
-	// Copying ...
-	Copying DatabaseState = "Copying"
-	// Emergency ...
-	Emergency DatabaseState = "Emergency"
-	// Offline ...
-	Offline DatabaseState = "Offline"
-	// OfflineSecondary ...
-	OfflineSecondary DatabaseState = "OfflineSecondary"
-	// Online ...
-	Online DatabaseState = "Online"
-	// Recovering ...
-	Recovering DatabaseState = "Recovering"
-	// RecoveryPending ...
-	RecoveryPending DatabaseState = "RecoveryPending"
-	// Restoring ...
-	Restoring DatabaseState = "Restoring"
-	// Suspect ...
-	Suspect DatabaseState = "Suspect"
+	// DatabaseStateCopying ...
+	DatabaseStateCopying DatabaseState = "Copying"
+	// DatabaseStateEmergency ...
+	DatabaseStateEmergency DatabaseState = "Emergency"
+	// DatabaseStateOffline ...
+	DatabaseStateOffline DatabaseState = "Offline"
+	// DatabaseStateOfflineSecondary ...
+	DatabaseStateOfflineSecondary DatabaseState = "OfflineSecondary"
+	// DatabaseStateOnline ...
+	DatabaseStateOnline DatabaseState = "Online"
+	// DatabaseStateRecovering ...
+	DatabaseStateRecovering DatabaseState = "Recovering"
+	// DatabaseStateRecoveryPending ...
+	DatabaseStateRecoveryPending DatabaseState = "RecoveryPending"
+	// DatabaseStateRestoring ...
+	DatabaseStateRestoring DatabaseState = "Restoring"
+	// DatabaseStateSuspect ...
+	DatabaseStateSuspect DatabaseState = "Suspect"
 )
 
 // PossibleDatabaseStateValues returns an array of possible values for the DatabaseState const type.
 func PossibleDatabaseStateValues() []DatabaseState {
-	return []DatabaseState{Copying, Emergency, Offline, OfflineSecondary, Online, Recovering, RecoveryPending, Restoring, Suspect}
+	return []DatabaseState{DatabaseStateCopying, DatabaseStateEmergency, DatabaseStateOffline, DatabaseStateOfflineSecondary, DatabaseStateOnline, DatabaseStateRecovering, DatabaseStateRecoveryPending, DatabaseStateRestoring, DatabaseStateSuspect}
 }
 
 // ErrorType enumerates the values for error type.
@@ -277,6 +417,122 @@ func PossibleMigrationStatusValues() []MigrationStatus {
 	return []MigrationStatus{MigrationStatusCompleted, MigrationStatusCompletedWithWarnings, MigrationStatusConfigured, MigrationStatusConnecting, MigrationStatusDefault, MigrationStatusError, MigrationStatusRunning, MigrationStatusSelectLogins, MigrationStatusSourceAndTargetSelected, MigrationStatusStopped}
 }
 
+// MongoDbClusterType enumerates the values for mongo db cluster type.
+type MongoDbClusterType string
+
+const (
+	// BlobContainer ...
+	BlobContainer MongoDbClusterType = "BlobContainer"
+	// CosmosDb ...
+	CosmosDb MongoDbClusterType = "CosmosDb"
+	// MongoDb ...
+	MongoDb MongoDbClusterType = "MongoDb"
+)
+
+// PossibleMongoDbClusterTypeValues returns an array of possible values for the MongoDbClusterType const type.
+func PossibleMongoDbClusterTypeValues() []MongoDbClusterType {
+	return []MongoDbClusterType{BlobContainer, CosmosDb, MongoDb}
+}
+
+// MongoDbErrorType enumerates the values for mongo db error type.
+type MongoDbErrorType string
+
+const (
+	// MongoDbErrorTypeError ...
+	MongoDbErrorTypeError MongoDbErrorType = "Error"
+	// MongoDbErrorTypeValidationError ...
+	MongoDbErrorTypeValidationError MongoDbErrorType = "ValidationError"
+	// MongoDbErrorTypeWarning ...
+	MongoDbErrorTypeWarning MongoDbErrorType = "Warning"
+)
+
+// PossibleMongoDbErrorTypeValues returns an array of possible values for the MongoDbErrorType const type.
+func PossibleMongoDbErrorTypeValues() []MongoDbErrorType {
+	return []MongoDbErrorType{MongoDbErrorTypeError, MongoDbErrorTypeValidationError, MongoDbErrorTypeWarning}
+}
+
+// MongoDbMigrationState enumerates the values for mongo db migration state.
+type MongoDbMigrationState string
+
+const (
+	// MongoDbMigrationStateCanceled ...
+	MongoDbMigrationStateCanceled MongoDbMigrationState = "Canceled"
+	// MongoDbMigrationStateComplete ...
+	MongoDbMigrationStateComplete MongoDbMigrationState = "Complete"
+	// MongoDbMigrationStateCopying ...
+	MongoDbMigrationStateCopying MongoDbMigrationState = "Copying"
+	// MongoDbMigrationStateFailed ...
+	MongoDbMigrationStateFailed MongoDbMigrationState = "Failed"
+	// MongoDbMigrationStateFinalizing ...
+	MongoDbMigrationStateFinalizing MongoDbMigrationState = "Finalizing"
+	// MongoDbMigrationStateInitializing ...
+	MongoDbMigrationStateInitializing MongoDbMigrationState = "Initializing"
+	// MongoDbMigrationStateInitialReplay ...
+	MongoDbMigrationStateInitialReplay MongoDbMigrationState = "InitialReplay"
+	// MongoDbMigrationStateNotStarted ...
+	MongoDbMigrationStateNotStarted MongoDbMigrationState = "NotStarted"
+	// MongoDbMigrationStateReplaying ...
+	MongoDbMigrationStateReplaying MongoDbMigrationState = "Replaying"
+	// MongoDbMigrationStateRestarting ...
+	MongoDbMigrationStateRestarting MongoDbMigrationState = "Restarting"
+	// MongoDbMigrationStateValidatingInput ...
+	MongoDbMigrationStateValidatingInput MongoDbMigrationState = "ValidatingInput"
+)
+
+// PossibleMongoDbMigrationStateValues returns an array of possible values for the MongoDbMigrationState const type.
+func PossibleMongoDbMigrationStateValues() []MongoDbMigrationState {
+	return []MongoDbMigrationState{MongoDbMigrationStateCanceled, MongoDbMigrationStateComplete, MongoDbMigrationStateCopying, MongoDbMigrationStateFailed, MongoDbMigrationStateFinalizing, MongoDbMigrationStateInitializing, MongoDbMigrationStateInitialReplay, MongoDbMigrationStateNotStarted, MongoDbMigrationStateReplaying, MongoDbMigrationStateRestarting, MongoDbMigrationStateValidatingInput}
+}
+
+// MongoDbReplication enumerates the values for mongo db replication.
+type MongoDbReplication string
+
+const (
+	// Continuous ...
+	Continuous MongoDbReplication = "Continuous"
+	// Disabled ...
+	Disabled MongoDbReplication = "Disabled"
+	// OneTime ...
+	OneTime MongoDbReplication = "OneTime"
+)
+
+// PossibleMongoDbReplicationValues returns an array of possible values for the MongoDbReplication const type.
+func PossibleMongoDbReplicationValues() []MongoDbReplication {
+	return []MongoDbReplication{Continuous, Disabled, OneTime}
+}
+
+// MongoDbShardKeyOrder enumerates the values for mongo db shard key order.
+type MongoDbShardKeyOrder string
+
+const (
+	// Forward ...
+	Forward MongoDbShardKeyOrder = "Forward"
+	// Hashed ...
+	Hashed MongoDbShardKeyOrder = "Hashed"
+	// Reverse ...
+	Reverse MongoDbShardKeyOrder = "Reverse"
+)
+
+// PossibleMongoDbShardKeyOrderValues returns an array of possible values for the MongoDbShardKeyOrder const type.
+func PossibleMongoDbShardKeyOrderValues() []MongoDbShardKeyOrder {
+	return []MongoDbShardKeyOrder{Forward, Hashed, Reverse}
+}
+
+// MySQLTargetPlatformType enumerates the values for my sql target platform type.
+type MySQLTargetPlatformType string
+
+const (
+	// AzureDbForMySQL ...
+	AzureDbForMySQL MySQLTargetPlatformType = "AzureDbForMySQL"
+	// SQLServer ...
+	SQLServer MySQLTargetPlatformType = "SqlServer"
+)
+
+// PossibleMySQLTargetPlatformTypeValues returns an array of possible values for the MySQLTargetPlatformType const type.
+func PossibleMySQLTargetPlatformTypeValues() []MySQLTargetPlatformType {
+	return []MySQLTargetPlatformType{AzureDbForMySQL, SQLServer}
+}
+
 // NameCheckFailureReason enumerates the values for name check failure reason.
 type NameCheckFailureReason string
 
@@ -317,30 +573,30 @@ func PossibleObjectTypeValues() []ObjectType {
 type ProjectProvisioningState string
 
 const (
-	// Deleting ...
-	Deleting ProjectProvisioningState = "Deleting"
-	// Succeeded ...
-	Succeeded ProjectProvisioningState = "Succeeded"
+	// ProjectProvisioningStateDeleting ...
+	ProjectProvisioningStateDeleting ProjectProvisioningState = "Deleting"
+	// ProjectProvisioningStateSucceeded ...
+	ProjectProvisioningStateSucceeded ProjectProvisioningState = "Succeeded"
 )
 
 // PossibleProjectProvisioningStateValues returns an array of possible values for the ProjectProvisioningState const type.
 func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
-	return []ProjectProvisioningState{Deleting, Succeeded}
+	return []ProjectProvisioningState{ProjectProvisioningStateDeleting, ProjectProvisioningStateSucceeded}
 }
 
 // ProjectSourcePlatform enumerates the values for project source platform.
 type ProjectSourcePlatform string
 
 const (
-	// SQL ...
-	SQL ProjectSourcePlatform = "SQL"
-	// Unknown ...
-	Unknown ProjectSourcePlatform = "Unknown"
+	// ProjectSourcePlatformSQL ...
+	ProjectSourcePlatformSQL ProjectSourcePlatform = "SQL"
+	// ProjectSourcePlatformUnknown ...
+	ProjectSourcePlatformUnknown ProjectSourcePlatform = "Unknown"
 )
 
 // PossibleProjectSourcePlatformValues returns an array of possible values for the ProjectSourcePlatform const type.
 func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
-	return []ProjectSourcePlatform{SQL, Unknown}
+	return []ProjectSourcePlatform{ProjectSourcePlatformSQL, ProjectSourcePlatformUnknown}
 }
 
 // ProjectTargetPlatform enumerates the values for project target platform.
@@ -403,29 +659,44 @@ func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return []ResourceSkuRestrictionsType{Location}
 }
 
+// ResultCode enumerates the values for result code.
+type ResultCode string
+
+const (
+	// Completed ...
+	Completed ResultCode = "Completed"
+	// FatalError ...
+	FatalError ResultCode = "FatalError"
+	// Initial ...
+	Initial ResultCode = "Initial"
+	// ObjectNotExistsInSource ...
+	ObjectNotExistsInSource ResultCode = "ObjectNotExistsInSource"
+	// ObjectNotExistsInTarget ...
+	ObjectNotExistsInTarget ResultCode = "ObjectNotExistsInTarget"
+	// TargetObjectIsInaccessible ...
+	TargetObjectIsInaccessible ResultCode = "TargetObjectIsInaccessible"
+)
+
+// PossibleResultCodeValues returns an array of possible values for the ResultCode const type.
+func PossibleResultCodeValues() []ResultCode {
+	return []ResultCode{Completed, FatalError, Initial, ObjectNotExistsInSource, ObjectNotExistsInTarget, TargetObjectIsInaccessible}
+}
+
 // ResultType enumerates the values for result type.
 type ResultType string
 
 const (
-	// ResultTypeDatabaseLevelOutput ...
-	ResultTypeDatabaseLevelOutput ResultType = "DatabaseLevelOutput"
-	// ResultTypeErrorOutput ...
-	ResultTypeErrorOutput ResultType = "ErrorOutput"
-	// ResultTypeMigrateSQLServerSQLDbTaskOutput ...
-	ResultTypeMigrateSQLServerSQLDbTaskOutput ResultType = "MigrateSqlServerSqlDbTaskOutput"
-	// ResultTypeMigrationDatabaseLevelValidationOutput ...
-	ResultTypeMigrationDatabaseLevelValidationOutput ResultType = "MigrationDatabaseLevelValidationOutput"
-	// ResultTypeMigrationLevelOutput ...
-	ResultTypeMigrationLevelOutput ResultType = "MigrationLevelOutput"
-	// ResultTypeMigrationValidationOutput ...
-	ResultTypeMigrationValidationOutput ResultType = "MigrationValidationOutput"
-	// ResultTypeTableLevelOutput ...
-	ResultTypeTableLevelOutput ResultType = "TableLevelOutput"
+	// ResultTypeCollection ...
+	ResultTypeCollection ResultType = "Collection"
+	// ResultTypeDatabase ...
+	ResultTypeDatabase ResultType = "Database"
+	// ResultTypeMigration ...
+	ResultTypeMigration ResultType = "Migration"
 )
 
 // PossibleResultTypeValues returns an array of possible values for the ResultType const type.
 func PossibleResultTypeValues() []ResultType {
-	return []ResultType{ResultTypeDatabaseLevelOutput, ResultTypeErrorOutput, ResultTypeMigrateSQLServerSQLDbTaskOutput, ResultTypeMigrationDatabaseLevelValidationOutput, ResultTypeMigrationLevelOutput, ResultTypeMigrationValidationOutput, ResultTypeTableLevelOutput}
+	return []ResultType{ResultTypeCollection, ResultTypeDatabase, ResultTypeMigration}
 }
 
 // ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to
@@ -433,21 +704,194 @@ func PossibleResultTypeValues() []ResultType {
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput string
 
 const (
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "AgentJobLevelOutput"
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "ConnectToSourceSqlServerTaskOutput"
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "DatabaseLevelOutput"
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "LoginLevelOutput"
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "TaskLevelOutput"
+	// ResultTypeAgentJobLevelOutput ...
+	ResultTypeAgentJobLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "AgentJobLevelOutput"
+	// ResultTypeConnectToSourceSQLServerTaskOutput ...
+	ResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "ConnectToSourceSqlServerTaskOutput"
+	// ResultTypeDatabaseLevelOutput ...
+	ResultTypeDatabaseLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeLoginLevelOutput ...
+	ResultTypeLoginLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "LoginLevelOutput"
+	// ResultTypeTaskLevelOutput ...
+	ResultTypeTaskLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "TaskLevelOutput"
 )
 
 // PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues returns an array of possible values for the ResultTypeBasicConnectToSourceSQLServerTaskOutput const type.
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
-	return []ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput}
+	return []ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeAgentJobLevelOutput, ResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeDatabaseLevelOutput, ResultTypeLoginLevelOutput, ResultTypeTaskLevelOutput}
+}
+
+// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput enumerates the values for result type basic migrate
+// my sql azure db for my sql sync task output.
+type ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput string
+
+const (
+	// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput ...
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = "DatabaseLevelErrorOutput"
+	// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput ...
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = "ErrorOutput"
+	// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput ...
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = "MigrateMySqlAzureDbForMySqlSyncTaskOutput"
+	// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput ...
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = "MigrationLevelOutput"
+	// ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput ...
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = "TableLevelOutput"
+)
+
+// PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput const type.
+func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues() []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput {
+	return []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput{ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput}
+}
+
+// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput enumerates the values for result type
+// basic migrate postgre sql azure db for postgre sql sync task output.
+type ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput string
+
+const (
+	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput ...
+	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "DatabaseLevelErrorOutput"
+	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput ...
+	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "ErrorOutput"
+	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ...
+	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput"
+	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput ...
+	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "MigrationLevelOutput"
+	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput ...
+	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "TableLevelOutput"
+)
+
+// PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues returns an array of possible values for the ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput const type.
+func PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues() []ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput {
+	return []ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput{ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput}
+}
+
+// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput enumerates the values for result type basic migrate sql
+// server sql db sync task output.
+type ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput string
+
+const (
+	// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = "DatabaseLevelErrorOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = "ErrorOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = "MigrateSqlServerSqlDbSyncTaskOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = "MigrationLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = "TableLevelOutput"
+)
+
+// PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput const type.
+func PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput {
+	return []ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput{ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput, ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput, ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput, ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput}
+}
+
+// ResultTypeBasicMigrateSQLServerSQLDbTaskOutput enumerates the values for result type basic migrate sql
+// server sql db task output.
+type ResultTypeBasicMigrateSQLServerSQLDbTaskOutput string
+
+const (
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "ErrorOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "MigrateSqlServerSqlDbTaskOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "MigrationDatabaseLevelValidationOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "MigrationLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "MigrationValidationOutput"
+	// ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = "TableLevelOutput"
+)
+
+// PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateSQLServerSQLDbTaskOutput const type.
+func PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbTaskOutput {
+	return []ResultTypeBasicMigrateSQLServerSQLDbTaskOutput{ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput, ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput, ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput, ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput, ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput}
+}
+
+// ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput enumerates the values for result type basic migrate sql
+// server sqlmi sync task output.
+type ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput string
+
+const (
+	// ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = "ErrorOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = "MigrateSqlServerSqlMISyncTaskOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = "MigrationLevelOutput"
+)
+
+// PossibleResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput const type.
+func PossibleResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput {
+	return []ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput{ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput, ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput}
+}
+
+// ResultTypeBasicMigrateSQLServerSQLMITaskOutput enumerates the values for result type basic migrate sql
+// server sqlmi task output.
+type ResultTypeBasicMigrateSQLServerSQLMITaskOutput string
+
+const (
+	// ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = "AgentJobLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = "ErrorOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = "LoginLevelOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = "MigrateSqlServerSqlMITaskOutput"
+	// ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput ...
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = "MigrationLevelOutput"
+)
+
+// PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateSQLServerSQLMITaskOutput const type.
+func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMITaskOutput {
+	return []ResultTypeBasicMigrateSQLServerSQLMITaskOutput{ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput, ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput}
+}
+
+// SchemaMigrationStage enumerates the values for schema migration stage.
+type SchemaMigrationStage string
+
+const (
+	// SchemaMigrationStageCollectingObjects ...
+	SchemaMigrationStageCollectingObjects SchemaMigrationStage = "CollectingObjects"
+	// SchemaMigrationStageCompleted ...
+	SchemaMigrationStageCompleted SchemaMigrationStage = "Completed"
+	// SchemaMigrationStageCompletedWithWarnings ...
+	SchemaMigrationStageCompletedWithWarnings SchemaMigrationStage = "CompletedWithWarnings"
+	// SchemaMigrationStageDeployingSchema ...
+	SchemaMigrationStageDeployingSchema SchemaMigrationStage = "DeployingSchema"
+	// SchemaMigrationStageDownloadingScript ...
+	SchemaMigrationStageDownloadingScript SchemaMigrationStage = "DownloadingScript"
+	// SchemaMigrationStageFailed ...
+	SchemaMigrationStageFailed SchemaMigrationStage = "Failed"
+	// SchemaMigrationStageGeneratingScript ...
+	SchemaMigrationStageGeneratingScript SchemaMigrationStage = "GeneratingScript"
+	// SchemaMigrationStageNotStarted ...
+	SchemaMigrationStageNotStarted SchemaMigrationStage = "NotStarted"
+	// SchemaMigrationStageUploadingScript ...
+	SchemaMigrationStageUploadingScript SchemaMigrationStage = "UploadingScript"
+	// SchemaMigrationStageValidatingInputs ...
+	SchemaMigrationStageValidatingInputs SchemaMigrationStage = "ValidatingInputs"
+)
+
+// PossibleSchemaMigrationStageValues returns an array of possible values for the SchemaMigrationStage const type.
+func PossibleSchemaMigrationStageValues() []SchemaMigrationStage {
+	return []SchemaMigrationStage{SchemaMigrationStageCollectingObjects, SchemaMigrationStageCompleted, SchemaMigrationStageCompletedWithWarnings, SchemaMigrationStageDeployingSchema, SchemaMigrationStageDownloadingScript, SchemaMigrationStageFailed, SchemaMigrationStageGeneratingScript, SchemaMigrationStageNotStarted, SchemaMigrationStageUploadingScript, SchemaMigrationStageValidatingInputs}
 }
 
 // ServerLevelPermissionsGroup enumerates the values for server level permissions group.
@@ -456,13 +900,17 @@ type ServerLevelPermissionsGroup string
 const (
 	// Default ...
 	Default ServerLevelPermissionsGroup = "Default"
+	// MigrationFromMySQLToAzureDBForMySQL ...
+	MigrationFromMySQLToAzureDBForMySQL ServerLevelPermissionsGroup = "MigrationFromMySQLToAzureDBForMySQL"
 	// MigrationFromSQLServerToAzureDB ...
 	MigrationFromSQLServerToAzureDB ServerLevelPermissionsGroup = "MigrationFromSqlServerToAzureDB"
+	// MigrationFromSQLServerToAzureMI ...
+	MigrationFromSQLServerToAzureMI ServerLevelPermissionsGroup = "MigrationFromSqlServerToAzureMI"
 )
 
 // PossibleServerLevelPermissionsGroupValues returns an array of possible values for the ServerLevelPermissionsGroup const type.
 func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
-	return []ServerLevelPermissionsGroup{Default, MigrationFromSQLServerToAzureDB}
+	return []ServerLevelPermissionsGroup{Default, MigrationFromMySQLToAzureDBForMySQL, MigrationFromSQLServerToAzureDB, MigrationFromSQLServerToAzureMI}
 }
 
 // ServiceProvisioningState enumerates the values for service provisioning state.
@@ -530,6 +978,75 @@ func PossibleSeverityValues() []Severity {
 	return []Severity{SeverityError, SeverityMessage, SeverityWarning}
 }
 
+// SQLSourcePlatform enumerates the values for sql source platform.
+type SQLSourcePlatform string
+
+const (
+	// SQLOnPrem ...
+	SQLOnPrem SQLSourcePlatform = "SqlOnPrem"
+)
+
+// PossibleSQLSourcePlatformValues returns an array of possible values for the SQLSourcePlatform const type.
+func PossibleSQLSourcePlatformValues() []SQLSourcePlatform {
+	return []SQLSourcePlatform{SQLOnPrem}
+}
+
+// SyncDatabaseMigrationReportingState enumerates the values for sync database migration reporting state.
+type SyncDatabaseMigrationReportingState string
+
+const (
+	// SyncDatabaseMigrationReportingStateCANCELLED ...
+	SyncDatabaseMigrationReportingStateCANCELLED SyncDatabaseMigrationReportingState = "CANCELLED"
+	// SyncDatabaseMigrationReportingStateCANCELLING ...
+	SyncDatabaseMigrationReportingStateCANCELLING SyncDatabaseMigrationReportingState = "CANCELLING"
+	// SyncDatabaseMigrationReportingStateCOMPLETE ...
+	SyncDatabaseMigrationReportingStateCOMPLETE SyncDatabaseMigrationReportingState = "COMPLETE"
+	// SyncDatabaseMigrationReportingStateCOMPLETING ...
+	SyncDatabaseMigrationReportingStateCOMPLETING SyncDatabaseMigrationReportingState = "COMPLETING"
+	// SyncDatabaseMigrationReportingStateCONFIGURING ...
+	SyncDatabaseMigrationReportingStateCONFIGURING SyncDatabaseMigrationReportingState = "CONFIGURING"
+	// SyncDatabaseMigrationReportingStateFAILED ...
+	SyncDatabaseMigrationReportingStateFAILED SyncDatabaseMigrationReportingState = "FAILED"
+	// SyncDatabaseMigrationReportingStateINITIALIAZING ...
+	SyncDatabaseMigrationReportingStateINITIALIAZING SyncDatabaseMigrationReportingState = "INITIALIAZING"
+	// SyncDatabaseMigrationReportingStateREADYTOCOMPLETE ...
+	SyncDatabaseMigrationReportingStateREADYTOCOMPLETE SyncDatabaseMigrationReportingState = "READY_TO_COMPLETE"
+	// SyncDatabaseMigrationReportingStateRUNNING ...
+	SyncDatabaseMigrationReportingStateRUNNING SyncDatabaseMigrationReportingState = "RUNNING"
+	// SyncDatabaseMigrationReportingStateSTARTING ...
+	SyncDatabaseMigrationReportingStateSTARTING SyncDatabaseMigrationReportingState = "STARTING"
+	// SyncDatabaseMigrationReportingStateUNDEFINED ...
+	SyncDatabaseMigrationReportingStateUNDEFINED SyncDatabaseMigrationReportingState = "UNDEFINED"
+)
+
+// PossibleSyncDatabaseMigrationReportingStateValues returns an array of possible values for the SyncDatabaseMigrationReportingState const type.
+func PossibleSyncDatabaseMigrationReportingStateValues() []SyncDatabaseMigrationReportingState {
+	return []SyncDatabaseMigrationReportingState{SyncDatabaseMigrationReportingStateCANCELLED, SyncDatabaseMigrationReportingStateCANCELLING, SyncDatabaseMigrationReportingStateCOMPLETE, SyncDatabaseMigrationReportingStateCOMPLETING, SyncDatabaseMigrationReportingStateCONFIGURING, SyncDatabaseMigrationReportingStateFAILED, SyncDatabaseMigrationReportingStateINITIALIAZING, SyncDatabaseMigrationReportingStateREADYTOCOMPLETE, SyncDatabaseMigrationReportingStateRUNNING, SyncDatabaseMigrationReportingStateSTARTING, SyncDatabaseMigrationReportingStateUNDEFINED}
+}
+
+// SyncTableMigrationState enumerates the values for sync table migration state.
+type SyncTableMigrationState string
+
+const (
+	// SyncTableMigrationStateBEFORELOAD ...
+	SyncTableMigrationStateBEFORELOAD SyncTableMigrationState = "BEFORE_LOAD"
+	// SyncTableMigrationStateCANCELED ...
+	SyncTableMigrationStateCANCELED SyncTableMigrationState = "CANCELED"
+	// SyncTableMigrationStateCOMPLETED ...
+	SyncTableMigrationStateCOMPLETED SyncTableMigrationState = "COMPLETED"
+	// SyncTableMigrationStateERROR ...
+	SyncTableMigrationStateERROR SyncTableMigrationState = "ERROR"
+	// SyncTableMigrationStateFAILED ...
+	SyncTableMigrationStateFAILED SyncTableMigrationState = "FAILED"
+	// SyncTableMigrationStateFULLLOAD ...
+	SyncTableMigrationStateFULLLOAD SyncTableMigrationState = "FULL_LOAD"
+)
+
+// PossibleSyncTableMigrationStateValues returns an array of possible values for the SyncTableMigrationState const type.
+func PossibleSyncTableMigrationStateValues() []SyncTableMigrationState {
+	return []SyncTableMigrationState{SyncTableMigrationStateBEFORELOAD, SyncTableMigrationStateCANCELED, SyncTableMigrationStateCOMPLETED, SyncTableMigrationStateERROR, SyncTableMigrationStateFAILED, SyncTableMigrationStateFULLLOAD}
+}
+
 // TaskState enumerates the values for task state.
 type TaskState string
 
@@ -561,27 +1078,77 @@ func PossibleTaskStateValues() []TaskState {
 type TaskType string
 
 const (
+	// TaskTypeConnectMongoDb ...
+	TaskTypeConnectMongoDb TaskType = "Connect.MongoDb"
+	// TaskTypeConnectToSourceMySQL ...
+	TaskTypeConnectToSourceMySQL TaskType = "ConnectToSource.MySql"
+	// TaskTypeConnectToSourcePostgreSQLSync ...
+	TaskTypeConnectToSourcePostgreSQLSync TaskType = "ConnectToSource.PostgreSql.Sync"
 	// TaskTypeConnectToSourceSQLServer ...
 	TaskTypeConnectToSourceSQLServer TaskType = "ConnectToSource.SqlServer"
+	// TaskTypeConnectToSourceSQLServerSync ...
+	TaskTypeConnectToSourceSQLServerSync TaskType = "ConnectToSource.SqlServer.Sync"
+	// TaskTypeConnectToTargetAzureDbForMySQL ...
+	TaskTypeConnectToTargetAzureDbForMySQL TaskType = "ConnectToTarget.AzureDbForMySql"
+	// TaskTypeConnectToTargetAzureDbForPostgreSQLSync ...
+	TaskTypeConnectToTargetAzureDbForPostgreSQLSync TaskType = "ConnectToTarget.AzureDbForPostgreSql.Sync"
+	// TaskTypeConnectToTargetAzureSQLDbMI ...
+	TaskTypeConnectToTargetAzureSQLDbMI TaskType = "ConnectToTarget.AzureSqlDbMI"
+	// TaskTypeConnectToTargetAzureSQLDbMISyncLRS ...
+	TaskTypeConnectToTargetAzureSQLDbMISyncLRS TaskType = "ConnectToTarget.AzureSqlDbMI.Sync.LRS"
 	// TaskTypeConnectToTargetSQLDb ...
 	TaskTypeConnectToTargetSQLDb TaskType = "ConnectToTarget.SqlDb"
+	// TaskTypeConnectToTargetSQLDbSync ...
+	TaskTypeConnectToTargetSQLDbSync TaskType = "ConnectToTarget.SqlDb.Sync"
+	// TaskTypeGetTDECertificatesSQL ...
+	TaskTypeGetTDECertificatesSQL TaskType = "GetTDECertificates.Sql"
+	// TaskTypeGetUserTablesAzureSQLDbSync ...
+	TaskTypeGetUserTablesAzureSQLDbSync TaskType = "GetUserTables.AzureSqlDb.Sync"
 	// TaskTypeGetUserTablesSQL ...
 	TaskTypeGetUserTablesSQL TaskType = "GetUserTables.Sql"
+	// TaskTypeMigrateMongoDb ...
+	TaskTypeMigrateMongoDb TaskType = "Migrate.MongoDb"
+	// TaskTypeMigrateMySQLAzureDbForMySQLSync ...
+	TaskTypeMigrateMySQLAzureDbForMySQLSync TaskType = "Migrate.MySql.AzureDbForMySql.Sync"
+	// TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync ...
+	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync TaskType = "Migrate.PostgreSql.AzureDbForPostgreSql.Sync"
+	// TaskTypeMigrateSQLServerAzureSQLDbMI ...
+	TaskTypeMigrateSQLServerAzureSQLDbMI TaskType = "Migrate.SqlServer.AzureSqlDbMI"
+	// TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS ...
+	TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS TaskType = "Migrate.SqlServer.AzureSqlDbMI.Sync.LRS"
+	// TaskTypeMigrateSQLServerAzureSQLDbSync ...
+	TaskTypeMigrateSQLServerAzureSQLDbSync TaskType = "Migrate.SqlServer.AzureSqlDb.Sync"
 	// TaskTypeMigrateSQLServerSQLDb ...
 	TaskTypeMigrateSQLServerSQLDb TaskType = "Migrate.SqlServer.SqlDb"
 	// TaskTypeUnknown ...
 	TaskTypeUnknown TaskType = "Unknown"
+	// TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI ...
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI TaskType = "ValidateMigrationInput.SqlServer.AzureSqlDbMI"
+	// TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS ...
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = "ValidateMigrationInput.SqlServer.AzureSqlDbMI.Sync.LRS"
+	// TaskTypeValidateMigrationInputSQLServerSQLDbSync ...
+	TaskTypeValidateMigrationInputSQLServerSQLDbSync TaskType = "ValidateMigrationInput.SqlServer.SqlDb.Sync"
+	// TaskTypeValidateMongoDb ...
+	TaskTypeValidateMongoDb TaskType = "Validate.MongoDb"
 )
 
 // PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
 func PossibleTaskTypeValues() []TaskType {
-	return []TaskType{TaskTypeConnectToSourceSQLServer, TaskTypeConnectToTargetSQLDb, TaskTypeGetUserTablesSQL, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown}
+	return []TaskType{TaskTypeConnectMongoDb, TaskTypeConnectToSourceMySQL, TaskTypeConnectToSourcePostgreSQLSync, TaskTypeConnectToSourceSQLServer, TaskTypeConnectToSourceSQLServerSync, TaskTypeConnectToTargetAzureDbForMySQL, TaskTypeConnectToTargetAzureDbForPostgreSQLSync, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetAzureSQLDbMISyncLRS, TaskTypeConnectToTargetSQLDb, TaskTypeConnectToTargetSQLDbSync, TaskTypeGetTDECertificatesSQL, TaskTypeGetUserTablesAzureSQLDbSync, TaskTypeGetUserTablesSQL, TaskTypeMigrateMongoDb, TaskTypeMigrateMySQLAzureDbForMySQLSync, TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS, TaskTypeMigrateSQLServerAzureSQLDbSync, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS, TaskTypeValidateMigrationInputSQLServerSQLDbSync, TaskTypeValidateMongoDb}
 }
 
 // Type enumerates the values for type.
 type Type string
 
 const (
+	// TypeMiSQLConnectionInfo ...
+	TypeMiSQLConnectionInfo Type = "MiSqlConnectionInfo"
+	// TypeMongoDbConnectionInfo ...
+	TypeMongoDbConnectionInfo Type = "MongoDbConnectionInfo"
+	// TypeMySQLConnectionInfo ...
+	TypeMySQLConnectionInfo Type = "MySqlConnectionInfo"
+	// TypePostgreSQLConnectionInfo ...
+	TypePostgreSQLConnectionInfo Type = "PostgreSqlConnectionInfo"
 	// TypeSQLConnectionInfo ...
 	TypeSQLConnectionInfo Type = "SqlConnectionInfo"
 	// TypeUnknown ...
@@ -590,7 +1157,7 @@ const (
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeSQLConnectionInfo, TypeUnknown}
+	return []Type{TypeMiSQLConnectionInfo, TypeMongoDbConnectionInfo, TypeMySQLConnectionInfo, TypePostgreSQLConnectionInfo, TypeSQLConnectionInfo, TypeUnknown}
 }
 
 // UpdateActionType enumerates the values for update action type.
@@ -677,14 +1244,188 @@ type AvailableServiceSkuSku struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
+// AzureActiveDirectoryApp azure Active Directory Application
+type AzureActiveDirectoryApp struct {
+	// ApplicationID - Application ID of the Azure Active Directory Application
+	ApplicationID *string `json:"applicationId,omitempty"`
+	// AppKey - Key used to authenticate to the Azure Active Directory Application
+	AppKey *string `json:"appKey,omitempty"`
+	// TenantID - Tenant id of the customer
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// BackupFileInfo information of the backup file
+type BackupFileInfo struct {
+	// FileLocation - Location of the backup file in shared folder
+	FileLocation *string `json:"fileLocation,omitempty"`
+	// FamilySequenceNumber - Sequence number of the backup file in the backup set
+	FamilySequenceNumber *int32 `json:"familySequenceNumber,omitempty"`
+	// Status - Status of the backup file during migration. Possible values include: 'Arrived', 'Queued', 'Uploading', 'Uploaded', 'Restoring', 'Restored', 'Cancelled'
+	Status BackupFileStatus `json:"status,omitempty"`
+}
+
+// BackupSetInfo information of backup set
+type BackupSetInfo struct {
+	// BackupSetID - Id for the set of backup files
+	BackupSetID *string `json:"backupSetId,omitempty"`
+	// FirstLsn - First log sequence number of the backup file
+	FirstLsn *string `json:"firstLsn,omitempty"`
+	// LastLsn - Last log sequence number of the backup file
+	LastLsn *string `json:"lastLsn,omitempty"`
+	// LastModifiedTime - Last modified time of the backup file in share location
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// BackupType - Enum of the different backup types. Possible values include: 'BackupTypeDatabase', 'BackupTypeTransactionLog', 'BackupTypeFile', 'BackupTypeDifferentialDatabase', 'BackupTypeDifferentialFile', 'BackupTypePartial', 'BackupTypeDifferentialPartial'
+	BackupType BackupType `json:"backupType,omitempty"`
+	// ListOfBackupFiles - List of files in the backup set
+	ListOfBackupFiles *[]BackupFileInfo `json:"listOfBackupFiles,omitempty"`
+	// DatabaseName - Name of the database to which the backup set belongs
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// BackupStartDate - Date and time that the backup operation began
+	BackupStartDate *date.Time `json:"backupStartDate,omitempty"`
+	// BackupFinishedDate - Date and time that the backup operation finished
+	BackupFinishedDate *date.Time `json:"backupFinishedDate,omitempty"`
+	// IsBackupRestored - Whether the backup set is restored or not
+	IsBackupRestored *bool `json:"isBackupRestored,omitempty"`
+}
+
 // BlobShare blob container storage information.
 type BlobShare struct {
 	// SasURI - SAS URI of Azure Storage Account Container.
 	SasURI *string `json:"sasUri,omitempty"`
 }
 
+// BasicCommandProperties base class for all types of DMS command properties. If command is not supported by current
+// client, this object is returned.
+type BasicCommandProperties interface {
+	AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool)
+	AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool)
+	AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool)
+	AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool)
+	AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool)
+	AsCommandProperties() (*CommandProperties, bool)
+}
+
+// CommandProperties base class for all types of DMS command properties. If command is not supported by current
+// client, this object is returned.
+type CommandProperties struct {
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	State CommandState `json:"state,omitempty"`
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	CommandType CommandType `json:"commandType,omitempty"`
+}
+
+func unmarshalBasicCommandProperties(body []byte) (BasicCommandProperties, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["commandType"] {
+	case string(CommandTypeMigrateSQLServerAzureDbSQLMiComplete):
+		var mmsccp MigrateMISyncCompleteCommandProperties
+		err := json.Unmarshal(body, &mmsccp)
+		return mmsccp, err
+	case string(CommandTypeMigrateSyncCompleteDatabase):
+		var msccp MigrateSyncCompleteCommandProperties
+		err := json.Unmarshal(body, &msccp)
+		return msccp, err
+	case string(CommandTypeCancel):
+		var mdcc MongoDbCancelCommand
+		err := json.Unmarshal(body, &mdcc)
+		return mdcc, err
+	case string(CommandTypeFinish):
+		var mdfc MongoDbFinishCommand
+		err := json.Unmarshal(body, &mdfc)
+		return mdfc, err
+	case string(CommandTypeRestart):
+		var mdrc MongoDbRestartCommand
+		err := json.Unmarshal(body, &mdrc)
+		return mdrc, err
+	default:
+		var cp CommandProperties
+		err := json.Unmarshal(body, &cp)
+		return cp, err
+	}
+}
+func unmarshalBasicCommandPropertiesArray(body []byte) ([]BasicCommandProperties, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	cpArray := make([]BasicCommandProperties, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		cp, err := unmarshalBasicCommandProperties(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		cpArray[index] = cp
+	}
+	return cpArray, nil
+}
+
+// MarshalJSON is the custom marshaler for CommandProperties.
+func (cp CommandProperties) MarshalJSON() ([]byte, error) {
+	cp.CommandType = CommandTypeUnknown
+	objectMap := make(map[string]interface{})
+	if cp.Errors != nil {
+		objectMap["errors"] = cp.Errors
+	}
+	if cp.State != "" {
+		objectMap["state"] = cp.State
+	}
+	if cp.CommandType != "" {
+		objectMap["commandType"] = cp.CommandType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMongoDbCancelCommand is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbFinishCommand is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbRestartCommand is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
+	return nil, false
+}
+
+// AsCommandProperties is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsCommandProperties() (*CommandProperties, bool) {
+	return &cp, true
+}
+
+// AsBasicCommandProperties is the BasicCommandProperties implementation for CommandProperties.
+func (cp CommandProperties) AsBasicCommandProperties() (BasicCommandProperties, bool) {
+	return &cp, true
+}
+
 // BasicConnectionInfo defines the connection properties of a server
 type BasicConnectionInfo interface {
+	AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool)
+	AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool)
+	AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool)
+	AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool)
 	AsSQLConnectionInfo() (*SQLConnectionInfo, bool)
 	AsConnectionInfo() (*ConnectionInfo, bool)
 }
@@ -695,7 +1436,7 @@ type ConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -707,6 +1448,22 @@ func unmarshalBasicConnectionInfo(body []byte) (BasicConnectionInfo, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeMiSQLConnectionInfo):
+		var msci MiSQLConnectionInfo
+		err := json.Unmarshal(body, &msci)
+		return msci, err
+	case string(TypePostgreSQLConnectionInfo):
+		var psci PostgreSQLConnectionInfo
+		err := json.Unmarshal(body, &psci)
+		return psci, err
+	case string(TypeMySQLConnectionInfo):
+		var msci MySQLConnectionInfo
+		err := json.Unmarshal(body, &msci)
+		return msci, err
+	case string(TypeMongoDbConnectionInfo):
+		var mdci MongoDbConnectionInfo
+		err := json.Unmarshal(body, &mdci)
+		return mdci, err
 	case string(TypeSQLConnectionInfo):
 		var sci SQLConnectionInfo
 		err := json.Unmarshal(body, &sci)
@@ -752,6 +1509,26 @@ func (ci ConnectionInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
+func (ci ConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
+func (ci ConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
+func (ci ConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
+func (ci ConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
+	return nil, false
+}
+
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
 func (ci ConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
 	return nil, false
@@ -767,12 +1544,1035 @@ func (ci ConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
 	return &ci, true
 }
 
+// ConnectToMongoDbTaskProperties properties for the task that validates the connection to and provides
+// information about a MongoDB server
+type ConnectToMongoDbTaskProperties struct {
+	Input *MongoDbConnectionInfo `json:"input,omitempty"`
+	// Output - An array containing a single MongoDbClusterInfo object
+	Output *[]MongoDbClusterInfo `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
+	ctmdtp.TaskType = TaskTypeConnectMongoDb
+	objectMap := make(map[string]interface{})
+	if ctmdtp.Input != nil {
+		objectMap["input"] = ctmdtp.Input
+	}
+	if ctmdtp.Output != nil {
+		objectMap["output"] = ctmdtp.Output
+	}
+	if ctmdtp.Errors != nil {
+		objectMap["errors"] = ctmdtp.Errors
+	}
+	if ctmdtp.State != "" {
+		objectMap["state"] = ctmdtp.State
+	}
+	if ctmdtp.Commands != nil {
+		objectMap["commands"] = ctmdtp.Commands
+	}
+	if ctmdtp.TaskType != "" {
+		objectMap["taskType"] = ctmdtp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return &ctmdtp, true
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
+func (ctmdtp ConnectToMongoDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &ctmdtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToMongoDbTaskProperties struct.
+func (ctmdtp *ConnectToMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MongoDbConnectionInfo
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				ctmdtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []MongoDbClusterInfo
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				ctmdtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				ctmdtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				ctmdtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				ctmdtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				ctmdtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToSourceMySQLTaskInput input for the task that validates MySQL database connection
+type ConnectToSourceMySQLTaskInput struct {
+	// SourceConnectionInfo - Information for connecting to MySQL source
+	SourceConnectionInfo *MySQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetPlatform - Target Platform for the migration. Possible values include: 'SQLServer', 'AzureDbForMySQL'
+	TargetPlatform MySQLTargetPlatformType `json:"targetPlatform,omitempty"`
+	// CheckPermissionsGroup - Permission group for validations. Possible values include: 'Default', 'MigrationFromSQLServerToAzureDB', 'MigrationFromSQLServerToAzureMI', 'MigrationFromMySQLToAzureDBForMySQL'
+	CheckPermissionsGroup ServerLevelPermissionsGroup `json:"checkPermissionsGroup,omitempty"`
+}
+
+// ConnectToSourceMySQLTaskProperties properties for the task that validates MySQL database connection
+type ConnectToSourceMySQLTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToSourceMySQLTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToSourceNonSQLTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) MarshalJSON() ([]byte, error) {
+	ctsmstp.TaskType = TaskTypeConnectToSourceMySQL
+	objectMap := make(map[string]interface{})
+	if ctsmstp.Input != nil {
+		objectMap["input"] = ctsmstp.Input
+	}
+	if ctsmstp.Output != nil {
+		objectMap["output"] = ctsmstp.Output
+	}
+	if ctsmstp.Errors != nil {
+		objectMap["errors"] = ctsmstp.Errors
+	}
+	if ctsmstp.State != "" {
+		objectMap["state"] = ctsmstp.State
+	}
+	if ctsmstp.Commands != nil {
+		objectMap["commands"] = ctsmstp.Commands
+	}
+	if ctsmstp.TaskType != "" {
+		objectMap["taskType"] = ctsmstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return &ctsmstp, true
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
+func (ctsmstp ConnectToSourceMySQLTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &ctsmstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToSourceMySQLTaskProperties struct.
+func (ctsmstp *ConnectToSourceMySQLTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToSourceMySQLTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				ctsmstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToSourceNonSQLTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				ctsmstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				ctsmstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				ctsmstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				ctsmstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				ctsmstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToSourceNonSQLTaskOutput output for connect to Oracle, MySQL type source
+type ConnectToSourceNonSQLTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// SourceServerBrandVersion - Server brand version
+	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
+	// ServerProperties - Server properties
+	ServerProperties *ServerProperties `json:"serverProperties,omitempty"`
+	// Databases - List of databases on the server
+	Databases *[]string `json:"databases,omitempty"`
+	// ValidationErrors - Validation errors associated with the task
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ConnectToSourcePostgreSQLSyncTaskInput input for the task that validates connection to PostgreSQL and
+// source server requirements
+type ConnectToSourcePostgreSQLSyncTaskInput struct {
+	// SourceConnectionInfo - Connection information for source PostgreSQL server
+	SourceConnectionInfo *PostgreSQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+}
+
+// ConnectToSourcePostgreSQLSyncTaskOutput output for the task that validates connection to PostgreSQL and
+// source server requirements
+type ConnectToSourcePostgreSQLSyncTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// SourceServerVersion - Version of the source server
+	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
+	// Databases - List of databases on source server
+	Databases *[]string `json:"databases,omitempty"`
+	// SourceServerBrandVersion - Source server brand version
+	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
+	// ValidationErrors - Validation errors associated with the task
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ConnectToSourcePostgreSQLSyncTaskProperties properties for the task that validates connection to
+// PostgreSQL server and source server requirements for online migration
+type ConnectToSourcePostgreSQLSyncTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToSourcePostgreSQLSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToSourcePostgreSQLSyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	ctspsstp.TaskType = TaskTypeConnectToSourcePostgreSQLSync
+	objectMap := make(map[string]interface{})
+	if ctspsstp.Input != nil {
+		objectMap["input"] = ctspsstp.Input
+	}
+	if ctspsstp.Output != nil {
+		objectMap["output"] = ctspsstp.Output
+	}
+	if ctspsstp.Errors != nil {
+		objectMap["errors"] = ctspsstp.Errors
+	}
+	if ctspsstp.State != "" {
+		objectMap["state"] = ctspsstp.State
+	}
+	if ctspsstp.Commands != nil {
+		objectMap["commands"] = ctspsstp.Commands
+	}
+	if ctspsstp.TaskType != "" {
+		objectMap["taskType"] = ctspsstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return &ctspsstp, true
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
+func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &ctspsstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToSourcePostgreSQLSyncTaskProperties struct.
+func (ctspsstp *ConnectToSourcePostgreSQLSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToSourcePostgreSQLSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				ctspsstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToSourcePostgreSQLSyncTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				ctspsstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				ctspsstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				ctspsstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				ctspsstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				ctspsstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToSourceSQLServerSyncTaskProperties properties for the task that validates connection to SQL
+// Server and source server requirements for online migration
+type ConnectToSourceSQLServerSyncTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicConnectToSourceSQLServerTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	ctsssstp.TaskType = TaskTypeConnectToSourceSQLServerSync
+	objectMap := make(map[string]interface{})
+	if ctsssstp.Input != nil {
+		objectMap["input"] = ctsssstp.Input
+	}
+	if ctsssstp.Output != nil {
+		objectMap["output"] = ctsssstp.Output
+	}
+	if ctsssstp.Errors != nil {
+		objectMap["errors"] = ctsssstp.Errors
+	}
+	if ctsssstp.State != "" {
+		objectMap["state"] = ctsssstp.State
+	}
+	if ctsssstp.Commands != nil {
+		objectMap["commands"] = ctsssstp.Commands
+	}
+	if ctsssstp.TaskType != "" {
+		objectMap["taskType"] = ctsssstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return &ctsssstp, true
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
+func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &ctsssstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToSourceSQLServerSyncTaskProperties struct.
+func (ctsssstp *ConnectToSourceSQLServerSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToSourceSQLServerTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				ctsssstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicConnectToSourceSQLServerTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				ctsssstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				ctsssstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				ctsssstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				ctsssstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				ctsssstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
 // ConnectToSourceSQLServerTaskInput input for the task that validates connection to SQL Server and also
 // validates source server requirements
 type ConnectToSourceSQLServerTaskInput struct {
 	// SourceConnectionInfo - Connection information for Source SQL Server
 	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
-	// CheckPermissionsGroup - Permission group for validations. Possible values include: 'Default', 'MigrationFromSQLServerToAzureDB'
+	// CheckPermissionsGroup - Permission group for validations. Possible values include: 'Default', 'MigrationFromSQLServerToAzureDB', 'MigrationFromSQLServerToAzureMI', 'MigrationFromMySQLToAzureDBForMySQL'
 	CheckPermissionsGroup ServerLevelPermissionsGroup `json:"checkPermissionsGroup,omitempty"`
 	// CollectLogins - Flag for whether to collect logins from source server.
 	CollectLogins *bool `json:"collectLogins,omitempty"`
@@ -795,7 +2595,7 @@ type BasicConnectToSourceSQLServerTaskOutput interface {
 type ConnectToSourceSQLServerTaskOutput struct {
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
@@ -807,19 +2607,19 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutput(body []byte) (BasicConnect
 	}
 
 	switch m["resultType"] {
-	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput):
+	case string(ResultTypeAgentJobLevelOutput):
 		var ctssstoajl ConnectToSourceSQLServerTaskOutputAgentJobLevel
 		err := json.Unmarshal(body, &ctssstoajl)
 		return ctssstoajl, err
-	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput):
+	case string(ResultTypeLoginLevelOutput):
 		var ctssstoll ConnectToSourceSQLServerTaskOutputLoginLevel
 		err := json.Unmarshal(body, &ctssstoll)
 		return ctssstoll, err
-	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput):
+	case string(ResultTypeDatabaseLevelOutput):
 		var ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel
 		err := json.Unmarshal(body, &ctssstodl)
 		return ctssstodl, err
-	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput):
+	case string(ResultTypeTaskLevelOutput):
 		var ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel
 		err := json.Unmarshal(body, &ctssstotl)
 		return ctssstotl, err
@@ -850,7 +2650,7 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutputArray(body []byte) ([]Basic
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) MarshalJSON() ([]byte, error) {
-	ctsssto.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
+	ctsssto.ResultType = ResultTypeConnectToSourceSQLServerTaskOutput
 	objectMap := make(map[string]interface{})
 	if ctsssto.ID != nil {
 		objectMap["id"] = ctsssto.ID
@@ -908,13 +2708,13 @@ type ConnectToSourceSQLServerTaskOutputAgentJobLevel struct {
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputAgentJobLevel.
 func (ctssstoajl ConnectToSourceSQLServerTaskOutputAgentJobLevel) MarshalJSON() ([]byte, error) {
-	ctssstoajl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput
+	ctssstoajl.ResultType = ResultTypeAgentJobLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstoajl.Name != nil {
 		objectMap["name"] = ctssstoajl.Name
@@ -984,17 +2784,17 @@ type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 	DatabaseFiles *[]DatabaseFileInfo `json:"databaseFiles,omitempty"`
 	// CompatibilityLevel - SQL Server compatibility level of database. Possible values include: 'CompatLevel80', 'CompatLevel90', 'CompatLevel100', 'CompatLevel110', 'CompatLevel120', 'CompatLevel130', 'CompatLevel140'
 	CompatibilityLevel DatabaseCompatLevel `json:"compatibilityLevel,omitempty"`
-	// DatabaseState - State of the database. Possible values include: 'Online', 'Restoring', 'Recovering', 'RecoveryPending', 'Suspect', 'Emergency', 'Offline', 'Copying', 'OfflineSecondary'
+	// DatabaseState - State of the database. Possible values include: 'DatabaseStateOnline', 'DatabaseStateRestoring', 'DatabaseStateRecovering', 'DatabaseStateRecoveryPending', 'DatabaseStateSuspect', 'DatabaseStateEmergency', 'DatabaseStateOffline', 'DatabaseStateCopying', 'DatabaseStateOfflineSecondary'
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
-	ctssstodl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
+	ctssstodl.ResultType = ResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstodl.Name != nil {
 		objectMap["name"] = ctssstodl.Name
@@ -1065,13 +2865,13 @@ type ConnectToSourceSQLServerTaskOutputLoginLevel struct {
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputLoginLevel.
 func (ctssstoll ConnectToSourceSQLServerTaskOutputLoginLevel) MarshalJSON() ([]byte, error) {
-	ctssstoll.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput
+	ctssstoll.ResultType = ResultTypeLoginLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstoll.Name != nil {
 		objectMap["name"] = ctssstoll.Name
@@ -1144,13 +2944,13 @@ type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]byte, error) {
-	ctssstotl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
+	ctssstotl.ResultType = ResultTypeTaskLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstotl.Databases != nil {
 		objectMap["databases"] = ctssstotl.Databases
@@ -1220,7 +3020,9 @@ type ConnectToSourceSQLServerTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1240,14 +3042,92 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) MarshalJSON() ([]byte, err
 	if ctssstp.State != "" {
 		objectMap["state"] = ctssstp.State
 	}
+	if ctssstp.Commands != nil {
+		objectMap["commands"] = ctssstp.Commands
+	}
 	if ctssstp.TaskType != "" {
 		objectMap["taskType"] = ctssstp.TaskType
 	}
 	return json.Marshal(objectMap)
 }
 
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1256,14 +3136,44 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) AsGetUserTablesSQLTaskProp
 	return nil, false
 }
 
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
 	return nil, false
 }
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
 	return &ctssstp, true
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
+func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
 }
 
 // AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
@@ -1320,6 +3230,14 @@ func (ctssstp *ConnectToSourceSQLServerTaskProperties) UnmarshalJSON(body []byte
 				}
 				ctssstp.State = state
 			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				ctssstp.Commands = &commands
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -1328,6 +3246,544 @@ func (ctssstp *ConnectToSourceSQLServerTaskProperties) UnmarshalJSON(body []byte
 					return err
 				}
 				ctssstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToTargetAzureDbForMySQLTaskInput input for the task that validates connection to Azure Database
+// for MySQL and target server requirements
+type ConnectToTargetAzureDbForMySQLTaskInput struct {
+	// SourceConnectionInfo - Connection information for source MySQL server
+	SourceConnectionInfo *MySQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for target Azure Database for MySQL server
+	TargetConnectionInfo *MySQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+}
+
+// ConnectToTargetAzureDbForMySQLTaskOutput output for the task that validates connection to Azure Database
+// for MySQL and target server requirements
+type ConnectToTargetAzureDbForMySQLTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ServerVersion - Version of the target server
+	ServerVersion *string `json:"serverVersion,omitempty"`
+	// Databases - List of databases on target server
+	Databases *[]string `json:"databases,omitempty"`
+	// TargetServerBrandVersion - Target server brand version
+	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// ValidationErrors - Validation errors associated with the task
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ConnectToTargetAzureDbForMySQLTaskProperties properties for the task that validates connection to Azure
+// Database for MySQL and target server requirements
+type ConnectToTargetAzureDbForMySQLTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToTargetAzureDbForMySQLTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToTargetAzureDbForMySQLTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) MarshalJSON() ([]byte, error) {
+	cttadfmstp.TaskType = TaskTypeConnectToTargetAzureDbForMySQL
+	objectMap := make(map[string]interface{})
+	if cttadfmstp.Input != nil {
+		objectMap["input"] = cttadfmstp.Input
+	}
+	if cttadfmstp.Output != nil {
+		objectMap["output"] = cttadfmstp.Output
+	}
+	if cttadfmstp.Errors != nil {
+		objectMap["errors"] = cttadfmstp.Errors
+	}
+	if cttadfmstp.State != "" {
+		objectMap["state"] = cttadfmstp.State
+	}
+	if cttadfmstp.Commands != nil {
+		objectMap["commands"] = cttadfmstp.Commands
+	}
+	if cttadfmstp.TaskType != "" {
+		objectMap["taskType"] = cttadfmstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return &cttadfmstp, true
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
+func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &cttadfmstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToTargetAzureDbForMySQLTaskProperties struct.
+func (cttadfmstp *ConnectToTargetAzureDbForMySQLTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToTargetAzureDbForMySQLTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToTargetAzureDbForMySQLTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToTargetAzureDbForPostgreSQLSyncTaskInput input for the task that validates connection to Azure
+// Database for PostgreSQL and target server requirements
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskInput struct {
+	// SourceConnectionInfo - Connection information for source PostgreSQL server
+	SourceConnectionInfo *PostgreSQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for target Azure Database for PostgreSQL server
+	TargetConnectionInfo *PostgreSQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+}
+
+// ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput output for the task that validates connection to Azure
+// Database for PostgreSQL and target server requirements
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// TargetServerVersion - Version of the target server
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// Databases - List of databases on target server
+	Databases *[]string `json:"databases,omitempty"`
+	// TargetServerBrandVersion - Target server brand version
+	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// ValidationErrors - Validation errors associated with the task
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties properties for the task that validates connection
+// to Azure Database For PostgreSQL server and target server requirements for online migration
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToTargetAzureDbForPostgreSQLSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	cttadfpsstp.TaskType = TaskTypeConnectToTargetAzureDbForPostgreSQLSync
+	objectMap := make(map[string]interface{})
+	if cttadfpsstp.Input != nil {
+		objectMap["input"] = cttadfpsstp.Input
+	}
+	if cttadfpsstp.Output != nil {
+		objectMap["output"] = cttadfpsstp.Output
+	}
+	if cttadfpsstp.Errors != nil {
+		objectMap["errors"] = cttadfpsstp.Errors
+	}
+	if cttadfpsstp.State != "" {
+		objectMap["state"] = cttadfpsstp.State
+	}
+	if cttadfpsstp.Commands != nil {
+		objectMap["commands"] = cttadfpsstp.Commands
+	}
+	if cttadfpsstp.TaskType != "" {
+		objectMap["taskType"] = cttadfpsstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return &cttadfpsstp, true
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
+func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &cttadfpsstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties struct.
+func (cttadfpsstp *ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToTargetAzureDbForPostgreSQLSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				cttadfpsstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				cttadfpsstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				cttadfpsstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				cttadfpsstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				cttadfpsstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				cttadfpsstp.TaskType = taskType
 			}
 		}
 	}
@@ -1384,7 +3840,9 @@ type ConnectToTargetSQLDbTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1404,14 +3862,92 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) MarshalJSON() ([]byte, error) 
 	if cttsdtp.State != "" {
 		objectMap["state"] = cttsdtp.State
 	}
+	if cttsdtp.Commands != nil {
+		objectMap["commands"] = cttsdtp.Commands
+	}
 	if cttsdtp.TaskType != "" {
 		objectMap["taskType"] = cttsdtp.TaskType
 	}
 	return json.Marshal(objectMap)
 }
 
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1420,13 +3956,43 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsGetUserTablesSQLTaskProperti
 	return nil, false
 }
 
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
 	return &cttsdtp, true
 }
 
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
+func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1438,6 +4004,862 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsProjectTaskProperties() (*Pr
 // AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
 	return &cttsdtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToTargetSQLDbTaskProperties struct.
+func (cttsdtp *ConnectToTargetSQLDbTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToTargetSQLDbTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				cttsdtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToTargetSQLDbTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				cttsdtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				cttsdtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				cttsdtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				cttsdtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				cttsdtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToTargetSQLMISyncTaskInput input for the task that validates connection to Azure SQL Database
+// Managed Instance online scenario.
+type ConnectToTargetSQLMISyncTaskInput struct {
+	// TargetConnectionInfo - Connection information for Azure SQL Database Managed Instance
+	TargetConnectionInfo *MiSQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// AzureApp - Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL Database Managed Instance and the Azure Storage Account
+	AzureApp *AzureActiveDirectoryApp `json:"azureApp,omitempty"`
+}
+
+// ConnectToTargetSQLMISyncTaskOutput output for the task that validates connection to Azure SQL Database
+// Managed Instance.
+type ConnectToTargetSQLMISyncTaskOutput struct {
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServerBrandVersion - Target server brand version
+	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// ValidationErrors - Validation errors
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ConnectToTargetSQLMISyncTaskProperties properties for the task that validates connection to Azure SQL
+// Database Managed Instance
+type ConnectToTargetSQLMISyncTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToTargetSQLMISyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToTargetSQLMISyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) MarshalJSON() ([]byte, error) {
+	cttsmstp.TaskType = TaskTypeConnectToTargetAzureSQLDbMISyncLRS
+	objectMap := make(map[string]interface{})
+	if cttsmstp.Input != nil {
+		objectMap["input"] = cttsmstp.Input
+	}
+	if cttsmstp.Output != nil {
+		objectMap["output"] = cttsmstp.Output
+	}
+	if cttsmstp.Errors != nil {
+		objectMap["errors"] = cttsmstp.Errors
+	}
+	if cttsmstp.State != "" {
+		objectMap["state"] = cttsmstp.State
+	}
+	if cttsmstp.Commands != nil {
+		objectMap["commands"] = cttsmstp.Commands
+	}
+	if cttsmstp.TaskType != "" {
+		objectMap["taskType"] = cttsmstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return &cttsmstp, true
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
+func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &cttsmstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToTargetSQLMISyncTaskProperties struct.
+func (cttsmstp *ConnectToTargetSQLMISyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToTargetSQLMISyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				cttsmstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToTargetSQLMISyncTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				cttsmstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				cttsmstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				cttsmstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				cttsmstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				cttsmstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToTargetSQLMITaskInput input for the task that validates connection to Azure SQL Database Managed
+// Instance.
+type ConnectToTargetSQLMITaskInput struct {
+	// TargetConnectionInfo - Connection information for target SQL Server
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+}
+
+// ConnectToTargetSQLMITaskOutput output for the task that validates connection to Azure SQL Database
+// Managed Instance.
+type ConnectToTargetSQLMITaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServerBrandVersion - Target server brand version
+	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// Logins - List of logins on the target server.
+	Logins *[]string `json:"logins,omitempty"`
+	// AgentJobs - List of agent jobs on the target server.
+	AgentJobs *[]string `json:"agentJobs,omitempty"`
+	// ValidationErrors - Validation errors
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ConnectToTargetSQLMITaskProperties properties for the task that validates connection to Azure SQL
+// Database Managed Instance
+type ConnectToTargetSQLMITaskProperties struct {
+	// Input - Task input
+	Input *ConnectToTargetSQLMITaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToTargetSQLMITaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) MarshalJSON() ([]byte, error) {
+	cttsmtp.TaskType = TaskTypeConnectToTargetAzureSQLDbMI
+	objectMap := make(map[string]interface{})
+	if cttsmtp.Input != nil {
+		objectMap["input"] = cttsmtp.Input
+	}
+	if cttsmtp.Output != nil {
+		objectMap["output"] = cttsmtp.Output
+	}
+	if cttsmtp.Errors != nil {
+		objectMap["errors"] = cttsmtp.Errors
+	}
+	if cttsmtp.State != "" {
+		objectMap["state"] = cttsmtp.State
+	}
+	if cttsmtp.Commands != nil {
+		objectMap["commands"] = cttsmtp.Commands
+	}
+	if cttsmtp.TaskType != "" {
+		objectMap["taskType"] = cttsmtp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return &cttsmtp, true
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
+func (cttsmtp ConnectToTargetSQLMITaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &cttsmtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToTargetSQLMITaskProperties struct.
+func (cttsmtp *ConnectToTargetSQLMITaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToTargetSQLMITaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				cttsmtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToTargetSQLMITaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				cttsmtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				cttsmtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				cttsmtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				cttsmtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				cttsmtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectToTargetSQLSQLDbSyncTaskInput input for the task that validates connection to Azure SQL DB and
+// target server requirements
+type ConnectToTargetSQLSQLDbSyncTaskInput struct {
+	// SourceConnectionInfo - Connection information for source SQL Server
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for target SQL DB
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+}
+
+// ConnectToTargetSQLSQLDbSyncTaskProperties properties for the task that validates connection to SQL DB
+// and target server requirements for online migration
+type ConnectToTargetSQLSQLDbSyncTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToTargetSQLSQLDbSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToTargetSQLDbTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	cttssdstp.TaskType = TaskTypeConnectToTargetSQLDbSync
+	objectMap := make(map[string]interface{})
+	if cttssdstp.Input != nil {
+		objectMap["input"] = cttssdstp.Input
+	}
+	if cttssdstp.Output != nil {
+		objectMap["output"] = cttssdstp.Output
+	}
+	if cttssdstp.Errors != nil {
+		objectMap["errors"] = cttssdstp.Errors
+	}
+	if cttssdstp.State != "" {
+		objectMap["state"] = cttssdstp.State
+	}
+	if cttssdstp.Commands != nil {
+		objectMap["commands"] = cttssdstp.Commands
+	}
+	if cttssdstp.TaskType != "" {
+		objectMap["taskType"] = cttssdstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return &cttssdstp, true
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
+func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &cttssdstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectToTargetSQLSQLDbSyncTaskProperties struct.
+func (cttssdstp *ConnectToTargetSQLSQLDbSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToTargetSQLSQLDbSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				cttssdstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ConnectToTargetSQLDbTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				cttssdstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				cttssdstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				cttssdstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				cttssdstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				cttssdstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
 }
 
 // Database information about a single database
@@ -1472,10 +4894,30 @@ type Database struct {
 	ServerCoreCount *int32 `json:"serverCoreCount,omitempty"`
 	// ServerVisibleOnlineCoreCount - Number of cores on the server that have VISIBLE ONLINE status
 	ServerVisibleOnlineCoreCount *int32 `json:"serverVisibleOnlineCoreCount,omitempty"`
-	// DatabaseState - State of the database. Possible values include: 'Online', 'Restoring', 'Recovering', 'RecoveryPending', 'Suspect', 'Emergency', 'Offline', 'Copying', 'OfflineSecondary'
+	// DatabaseState - State of the database. Possible values include: 'DatabaseStateOnline', 'DatabaseStateRestoring', 'DatabaseStateRecovering', 'DatabaseStateRecoveryPending', 'DatabaseStateSuspect', 'DatabaseStateEmergency', 'DatabaseStateOffline', 'DatabaseStateCopying', 'DatabaseStateOfflineSecondary'
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
 	// ServerID - The unique Server Id
 	ServerID *string `json:"serverId,omitempty"`
+}
+
+// DatabaseBackupInfo information about backup files when existing backup mode is used.
+type DatabaseBackupInfo struct {
+	// DatabaseName - Database name.
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// BackupType - Backup Type. Possible values include: 'BackupTypeDatabase', 'BackupTypeTransactionLog', 'BackupTypeFile', 'BackupTypeDifferentialDatabase', 'BackupTypeDifferentialFile', 'BackupTypePartial', 'BackupTypeDifferentialPartial'
+	BackupType BackupType `json:"backupType,omitempty"`
+	// BackupFiles - The list of backup files for the current database.
+	BackupFiles *[]string `json:"backupFiles,omitempty"`
+	// Position - Position of current database backup in the file.
+	Position *int32 `json:"position,omitempty"`
+	// IsDamaged - Database was damaged when backed up, but the backup operation was requested to continue despite errors.
+	IsDamaged *bool `json:"isDamaged,omitempty"`
+	// IsCompressed - Whether the backup set is compressed
+	IsCompressed *bool `json:"isCompressed,omitempty"`
+	// FamilyCount - Number of files in the backup set.
+	FamilyCount *int32 `json:"familyCount,omitempty"`
+	// BackupFinishDate - Date and time when the backup operation finished.
+	BackupFinishDate *date.Time `json:"backupFinishDate,omitempty"`
 }
 
 // DatabaseFileInfo database file specific information
@@ -1660,6 +5102,578 @@ type FileShare struct {
 	Path *string `json:"path,omitempty"`
 }
 
+// GetProjectDetailsNonSQLTaskInput input for the task that reads configuration from project artifacts
+type GetProjectDetailsNonSQLTaskInput struct {
+	// ProjectName - Name of the migration project
+	ProjectName *string `json:"projectName,omitempty"`
+	// ProjectLocation - A URL that points to the location to access project artifacts
+	ProjectLocation *string `json:"projectLocation,omitempty"`
+}
+
+// GetTdeCertificatesSQLTaskInput input for the task that gets TDE certificates in Base64 encoded format.
+type GetTdeCertificatesSQLTaskInput struct {
+	// ConnectionInfo - Connection information for SQL Server
+	ConnectionInfo *SQLConnectionInfo `json:"connectionInfo,omitempty"`
+	// BackupFileShare - Backup file share information for file share to be used for temporarily storing files.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// SelectedCertificates - List containing certificate names and corresponding password to use for encrypting the exported certificate.
+	SelectedCertificates *[]SelectedCertificateInput `json:"selectedCertificates,omitempty"`
+}
+
+// GetTdeCertificatesSQLTaskOutput output of the task that gets TDE certificates in Base64 encoded format.
+type GetTdeCertificatesSQLTaskOutput struct {
+	// Base64EncodedCertificates - Mapping from certificate name to base 64 encoded format.
+	Base64EncodedCertificates map[string][]string `json:"base64EncodedCertificates"`
+	// ValidationErrors - Validation errors
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GetTdeCertificatesSQLTaskOutput.
+func (gtcsto GetTdeCertificatesSQLTaskOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gtcsto.Base64EncodedCertificates != nil {
+		objectMap["base64EncodedCertificates"] = gtcsto.Base64EncodedCertificates
+	}
+	if gtcsto.ValidationErrors != nil {
+		objectMap["validationErrors"] = gtcsto.ValidationErrors
+	}
+	return json.Marshal(objectMap)
+}
+
+// GetTdeCertificatesSQLTaskProperties properties for the task that gets TDE certificates in Base64 encoded
+// format.
+type GetTdeCertificatesSQLTaskProperties struct {
+	// Input - Task input
+	Input *GetTdeCertificatesSQLTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]GetTdeCertificatesSQLTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) MarshalJSON() ([]byte, error) {
+	gtcstp.TaskType = TaskTypeGetTDECertificatesSQL
+	objectMap := make(map[string]interface{})
+	if gtcstp.Input != nil {
+		objectMap["input"] = gtcstp.Input
+	}
+	if gtcstp.Output != nil {
+		objectMap["output"] = gtcstp.Output
+	}
+	if gtcstp.Errors != nil {
+		objectMap["errors"] = gtcstp.Errors
+	}
+	if gtcstp.State != "" {
+		objectMap["state"] = gtcstp.State
+	}
+	if gtcstp.Commands != nil {
+		objectMap["commands"] = gtcstp.Commands
+	}
+	if gtcstp.TaskType != "" {
+		objectMap["taskType"] = gtcstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return &gtcstp, true
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
+func (gtcstp GetTdeCertificatesSQLTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &gtcstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for GetTdeCertificatesSQLTaskProperties struct.
+func (gtcstp *GetTdeCertificatesSQLTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input GetTdeCertificatesSQLTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				gtcstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []GetTdeCertificatesSQLTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				gtcstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				gtcstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				gtcstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				gtcstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				gtcstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// GetUserTablesSQLSyncTaskInput input for the task that collects user tables for the given list of
+// databases
+type GetUserTablesSQLSyncTaskInput struct {
+	// SourceConnectionInfo - Connection information for SQL Server
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for SQL DB
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// SelectedSourceDatabases - List of source database names to collect tables for
+	SelectedSourceDatabases *[]string `json:"selectedSourceDatabases,omitempty"`
+	// SelectedTargetDatabases - List of target database names to collect tables for
+	SelectedTargetDatabases *[]string `json:"selectedTargetDatabases,omitempty"`
+}
+
+// GetUserTablesSQLSyncTaskOutput output of the task that collects user tables for the given list of
+// databases
+type GetUserTablesSQLSyncTaskOutput struct {
+	// DatabasesToSourceTables - Mapping from database name to list of source tables
+	DatabasesToSourceTables map[string][]DatabaseTable `json:"databasesToSourceTables"`
+	// DatabasesToTargetTables - Mapping from database name to list of target tables
+	DatabasesToTargetTables map[string][]DatabaseTable `json:"databasesToTargetTables"`
+	// TableValidationErrors - Mapping from database name to list of validation errors
+	TableValidationErrors map[string][]string `json:"tableValidationErrors"`
+	// ValidationErrors - Validation errors
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GetUserTablesSQLSyncTaskOutput.
+func (gutssto GetUserTablesSQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gutssto.DatabasesToSourceTables != nil {
+		objectMap["databasesToSourceTables"] = gutssto.DatabasesToSourceTables
+	}
+	if gutssto.DatabasesToTargetTables != nil {
+		objectMap["databasesToTargetTables"] = gutssto.DatabasesToTargetTables
+	}
+	if gutssto.TableValidationErrors != nil {
+		objectMap["tableValidationErrors"] = gutssto.TableValidationErrors
+	}
+	if gutssto.ValidationErrors != nil {
+		objectMap["validationErrors"] = gutssto.ValidationErrors
+	}
+	return json.Marshal(objectMap)
+}
+
+// GetUserTablesSQLSyncTaskProperties properties for the task that collects user tables for the given list
+// of databases
+type GetUserTablesSQLSyncTaskProperties struct {
+	// Input - Task input
+	Input *GetUserTablesSQLSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]GetUserTablesSQLSyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	gutsstp.TaskType = TaskTypeGetUserTablesAzureSQLDbSync
+	objectMap := make(map[string]interface{})
+	if gutsstp.Input != nil {
+		objectMap["input"] = gutsstp.Input
+	}
+	if gutsstp.Output != nil {
+		objectMap["output"] = gutsstp.Output
+	}
+	if gutsstp.Errors != nil {
+		objectMap["errors"] = gutsstp.Errors
+	}
+	if gutsstp.State != "" {
+		objectMap["state"] = gutsstp.State
+	}
+	if gutsstp.Commands != nil {
+		objectMap["commands"] = gutsstp.Commands
+	}
+	if gutsstp.TaskType != "" {
+		objectMap["taskType"] = gutsstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return &gutsstp, true
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
+func (gutsstp GetUserTablesSQLSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &gutsstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for GetUserTablesSQLSyncTaskProperties struct.
+func (gutsstp *GetUserTablesSQLSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input GetUserTablesSQLSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				gutsstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []GetUserTablesSQLSyncTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				gutsstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				gutsstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				gutsstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				gutsstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				gutsstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
 // GetUserTablesSQLTaskInput input for the task that collects user tables for the given list of databases
 type GetUserTablesSQLTaskInput struct {
 	// ConnectionInfo - Connection information for SQL Server
@@ -1704,7 +5718,9 @@ type GetUserTablesSQLTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1724,14 +5740,92 @@ func (gutstp GetUserTablesSQLTaskProperties) MarshalJSON() ([]byte, error) {
 	if gutstp.State != "" {
 		objectMap["state"] = gutstp.State
 	}
+	if gutstp.Commands != nil {
+		objectMap["commands"] = gutstp.Commands
+	}
 	if gutstp.TaskType != "" {
 		objectMap["taskType"] = gutstp.TaskType
 	}
 	return json.Marshal(objectMap)
 }
 
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1740,13 +5834,43 @@ func (gutstp GetUserTablesSQLTaskProperties) AsGetUserTablesSQLTaskProperties() 
 	return &gutstp, true
 }
 
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
 	return nil, false
 }
 
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
+func (gutstp GetUserTablesSQLTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1758,6 +5882,2156 @@ func (gutstp GetUserTablesSQLTaskProperties) AsProjectTaskProperties() (*Project
 // AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
 	return &gutstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for GetUserTablesSQLTaskProperties struct.
+func (gutstp *GetUserTablesSQLTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input GetUserTablesSQLTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				gutstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []GetUserTablesSQLTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				gutstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				gutstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				gutstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				gutstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				gutstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// MigrateMISyncCompleteCommandInput input for command that completes online migration for an Azure SQL
+// Database Managed Instance.
+type MigrateMISyncCompleteCommandInput struct {
+	// SourceDatabaseName - Name of managed instance database
+	SourceDatabaseName *string `json:"sourceDatabaseName,omitempty"`
+}
+
+// MigrateMISyncCompleteCommandOutput output for command that completes online migration for an Azure SQL
+// Database Managed Instance.
+type MigrateMISyncCompleteCommandOutput struct {
+	// Errors - List of errors that happened during the command execution
+	Errors *[]ReportableException `json:"errors,omitempty"`
+}
+
+// MigrateMISyncCompleteCommandProperties properties for the command that completes online migration for an
+// Azure SQL Database Managed Instance.
+type MigrateMISyncCompleteCommandProperties struct {
+	// Input - Command input
+	Input *MigrateMISyncCompleteCommandInput `json:"input,omitempty"`
+	// Output - Command output. This is ignored if submitted.
+	Output *MigrateMISyncCompleteCommandOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	State CommandState `json:"state,omitempty"`
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	CommandType CommandType `json:"commandType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) MarshalJSON() ([]byte, error) {
+	mmsccp.CommandType = CommandTypeMigrateSQLServerAzureDbSQLMiComplete
+	objectMap := make(map[string]interface{})
+	if mmsccp.Input != nil {
+		objectMap["input"] = mmsccp.Input
+	}
+	if mmsccp.Output != nil {
+		objectMap["output"] = mmsccp.Output
+	}
+	if mmsccp.Errors != nil {
+		objectMap["errors"] = mmsccp.Errors
+	}
+	if mmsccp.State != "" {
+		objectMap["state"] = mmsccp.State
+	}
+	if mmsccp.CommandType != "" {
+		objectMap["commandType"] = mmsccp.CommandType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
+	return &mmsccp, true
+}
+
+// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
+	return nil, false
+}
+
+// AsCommandProperties is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsCommandProperties() (*CommandProperties, bool) {
+	return nil, false
+}
+
+// AsBasicCommandProperties is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
+func (mmsccp MigrateMISyncCompleteCommandProperties) AsBasicCommandProperties() (BasicCommandProperties, bool) {
+	return &mmsccp, true
+}
+
+// MigrateMongoDbTaskProperties properties for the task that migrates data between MongoDB data sources
+type MigrateMongoDbTaskProperties struct {
+	Input  *MongoDbMigrationSettings `json:"input,omitempty"`
+	Output *[]MongoDbProgress        `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
+	mmdtp.TaskType = TaskTypeMigrateMongoDb
+	objectMap := make(map[string]interface{})
+	if mmdtp.Input != nil {
+		objectMap["input"] = mmdtp.Input
+	}
+	if mmdtp.Output != nil {
+		objectMap["output"] = mmdtp.Output
+	}
+	if mmdtp.Errors != nil {
+		objectMap["errors"] = mmdtp.Errors
+	}
+	if mmdtp.State != "" {
+		objectMap["state"] = mmdtp.State
+	}
+	if mmdtp.Commands != nil {
+		objectMap["commands"] = mmdtp.Commands
+	}
+	if mmdtp.TaskType != "" {
+		objectMap["taskType"] = mmdtp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return &mmdtp, true
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
+func (mmdtp MigrateMongoDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &mmdtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrateMongoDbTaskProperties struct.
+func (mmdtp *MigrateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MongoDbMigrationSettings
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				mmdtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []MongoDbProgress
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				mmdtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				mmdtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mmdtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				mmdtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				mmdtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// MigrateMySQLAzureDbForMySQLSyncDatabaseInput database specific information for MySQL to Azure Database
+// for MySQL migration task inputs
+type MigrateMySQLAzureDbForMySQLSyncDatabaseInput struct {
+	// Name - Name of the database
+	Name *string `json:"name,omitempty"`
+	// TargetDatabaseName - Name of target database. Note: Target database will be truncated before starting migration.
+	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
+	// MigrationSetting - Migration settings which tune the migration behavior
+	MigrationSetting map[string]*string `json:"migrationSetting"`
+	// SourceSetting - Source settings to tune source endpoint migration behavior
+	SourceSetting map[string]*string `json:"sourceSetting"`
+	// TargetSetting - Target settings to tune target endpoint migration behavior
+	TargetSetting map[string]*string `json:"targetSetting"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncDatabaseInput.
+func (mmsadfmssdi MigrateMySQLAzureDbForMySQLSyncDatabaseInput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mmsadfmssdi.Name != nil {
+		objectMap["name"] = mmsadfmssdi.Name
+	}
+	if mmsadfmssdi.TargetDatabaseName != nil {
+		objectMap["targetDatabaseName"] = mmsadfmssdi.TargetDatabaseName
+	}
+	if mmsadfmssdi.MigrationSetting != nil {
+		objectMap["migrationSetting"] = mmsadfmssdi.MigrationSetting
+	}
+	if mmsadfmssdi.SourceSetting != nil {
+		objectMap["sourceSetting"] = mmsadfmssdi.SourceSetting
+	}
+	if mmsadfmssdi.TargetSetting != nil {
+		objectMap["targetSetting"] = mmsadfmssdi.TargetSetting
+	}
+	return json.Marshal(objectMap)
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskInput input for the task that migrates MySQL databases to Azure
+// Database for MySQL for online migrations
+type MigrateMySQLAzureDbForMySQLSyncTaskInput struct {
+	// SourceConnectionInfo - Connection information for source MySQL
+	SourceConnectionInfo *MySQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for target Azure Database for MySQL
+	TargetConnectionInfo *MySQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateMySQLAzureDbForMySQLSyncDatabaseInput `json:"selectedDatabases,omitempty"`
+}
+
+// BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput output for the task that migrates MySQL databases to Azure Database
+// for MySQL for online migrations
+type BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput interface {
+	AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool)
+	AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool)
+	AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool)
+	AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool)
+	AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool)
+	AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool)
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskOutput output for the task that migrates MySQL databases to Azure
+// Database for MySQL for online migrations
+type MigrateMySQLAzureDbForMySQLSyncTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+func unmarshalBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput(body []byte) (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["resultType"] {
+	case string(ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput):
+		var mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError
+		err := json.Unmarshal(body, &mmsadfmsstode)
+		return mmsadfmsstode, err
+	case string(ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput):
+		var mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError
+		err := json.Unmarshal(body, &mmsadfmsstoe)
+		return mmsadfmsstoe, err
+	case string(ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput):
+		var mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel
+		err := json.Unmarshal(body, &mmsadfmsstotl)
+		return mmsadfmsstotl, err
+	case string(ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput):
+		var mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel
+		err := json.Unmarshal(body, &mmsadfmsstodl)
+		return mmsadfmsstodl, err
+	case string(ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput):
+		var mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel
+		err := json.Unmarshal(body, &mmsadfmsstoml)
+		return mmsadfmsstoml, err
+	default:
+		var mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput
+		err := json.Unmarshal(body, &mmsadfmssto)
+		return mmsadfmssto, err
+	}
+}
+func unmarshalBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputArray(body []byte) ([]BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mmsadfmsstoArray := make([]BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mmsadfmssto, err := unmarshalBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mmsadfmsstoArray[index] = mmsadfmssto
+	}
+	return mmsadfmsstoArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
+	mmsadfmssto.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput
+	objectMap := make(map[string]interface{})
+	if mmsadfmssto.ID != nil {
+		objectMap["id"] = mmsadfmssto.ID
+	}
+	if mmsadfmssto.ResultType != "" {
+		objectMap["resultType"] = mmsadfmssto.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmssto, true
+}
+
+// AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutput.
+func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput() (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmssto, true
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError ...
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError struct {
+	// ErrorMessage - Error message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Events - List of error events.
+	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) MarshalJSON() ([]byte, error) {
+	mmsadfmsstode.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput
+	objectMap := make(map[string]interface{})
+	if mmsadfmsstode.ErrorMessage != nil {
+		objectMap["errorMessage"] = mmsadfmsstode.ErrorMessage
+	}
+	if mmsadfmsstode.Events != nil {
+		objectMap["events"] = mmsadfmsstode.Events
+	}
+	if mmsadfmsstode.ID != nil {
+		objectMap["id"] = mmsadfmsstode.ID
+	}
+	if mmsadfmsstode.ResultType != "" {
+		objectMap["resultType"] = mmsadfmsstode.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool) {
+	return &mmsadfmsstode, true
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError.
+func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput() (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmsstode, true
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel ...
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel struct {
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// MigrationState - Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
+	// IncomingChanges - Number of incoming changes
+	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
+	// AppliedChanges - Number of applied changes
+	AppliedChanges *int64 `json:"appliedChanges,omitempty"`
+	// CdcInsertCounter - Number of cdc inserts
+	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
+	// CdcDeleteCounter - Number of cdc deletes
+	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
+	// CdcUpdateCounter - Number of cdc updates
+	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
+	// FullLoadCompletedTables - Number of tables completed in full load
+	FullLoadCompletedTables *int64 `json:"fullLoadCompletedTables,omitempty"`
+	// FullLoadLoadingTables - Number of tables loading in full load
+	FullLoadLoadingTables *int64 `json:"fullLoadLoadingTables,omitempty"`
+	// FullLoadQueuedTables - Number of tables queued in full load
+	FullLoadQueuedTables *int64 `json:"fullLoadQueuedTables,omitempty"`
+	// FullLoadErroredTables - Number of tables errored in full load
+	FullLoadErroredTables *int64 `json:"fullLoadErroredTables,omitempty"`
+	// InitializationCompleted - Indicates if initial load (full load) has been completed
+	InitializationCompleted *bool `json:"initializationCompleted,omitempty"`
+	// Latency - CDC apply latency
+	Latency *int64 `json:"latency,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
+	mmsadfmsstodl.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput
+	objectMap := make(map[string]interface{})
+	if mmsadfmsstodl.DatabaseName != nil {
+		objectMap["databaseName"] = mmsadfmsstodl.DatabaseName
+	}
+	if mmsadfmsstodl.StartedOn != nil {
+		objectMap["startedOn"] = mmsadfmsstodl.StartedOn
+	}
+	if mmsadfmsstodl.EndedOn != nil {
+		objectMap["endedOn"] = mmsadfmsstodl.EndedOn
+	}
+	if mmsadfmsstodl.MigrationState != "" {
+		objectMap["migrationState"] = mmsadfmsstodl.MigrationState
+	}
+	if mmsadfmsstodl.IncomingChanges != nil {
+		objectMap["incomingChanges"] = mmsadfmsstodl.IncomingChanges
+	}
+	if mmsadfmsstodl.AppliedChanges != nil {
+		objectMap["appliedChanges"] = mmsadfmsstodl.AppliedChanges
+	}
+	if mmsadfmsstodl.CdcInsertCounter != nil {
+		objectMap["cdcInsertCounter"] = mmsadfmsstodl.CdcInsertCounter
+	}
+	if mmsadfmsstodl.CdcDeleteCounter != nil {
+		objectMap["cdcDeleteCounter"] = mmsadfmsstodl.CdcDeleteCounter
+	}
+	if mmsadfmsstodl.CdcUpdateCounter != nil {
+		objectMap["cdcUpdateCounter"] = mmsadfmsstodl.CdcUpdateCounter
+	}
+	if mmsadfmsstodl.FullLoadCompletedTables != nil {
+		objectMap["fullLoadCompletedTables"] = mmsadfmsstodl.FullLoadCompletedTables
+	}
+	if mmsadfmsstodl.FullLoadLoadingTables != nil {
+		objectMap["fullLoadLoadingTables"] = mmsadfmsstodl.FullLoadLoadingTables
+	}
+	if mmsadfmsstodl.FullLoadQueuedTables != nil {
+		objectMap["fullLoadQueuedTables"] = mmsadfmsstodl.FullLoadQueuedTables
+	}
+	if mmsadfmsstodl.FullLoadErroredTables != nil {
+		objectMap["fullLoadErroredTables"] = mmsadfmsstodl.FullLoadErroredTables
+	}
+	if mmsadfmsstodl.InitializationCompleted != nil {
+		objectMap["initializationCompleted"] = mmsadfmsstodl.InitializationCompleted
+	}
+	if mmsadfmsstodl.Latency != nil {
+		objectMap["latency"] = mmsadfmsstodl.Latency
+	}
+	if mmsadfmsstodl.ID != nil {
+		objectMap["id"] = mmsadfmsstodl.ID
+	}
+	if mmsadfmsstodl.ResultType != "" {
+		objectMap["resultType"] = mmsadfmsstodl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool) {
+	return &mmsadfmsstodl, true
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel.
+func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput() (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmsstodl, true
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskOutputError ...
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputError struct {
+	// Error - Migration error
+	Error *ReportableException `json:"error,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) MarshalJSON() ([]byte, error) {
+	mmsadfmsstoe.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput
+	objectMap := make(map[string]interface{})
+	if mmsadfmsstoe.Error != nil {
+		objectMap["error"] = mmsadfmsstoe.Error
+	}
+	if mmsadfmsstoe.ID != nil {
+		objectMap["id"] = mmsadfmsstoe.ID
+	}
+	if mmsadfmsstoe.ResultType != "" {
+		objectMap["resultType"] = mmsadfmsstoe.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool) {
+	return &mmsadfmsstoe, true
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputError.
+func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput() (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmsstoe, true
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel ...
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel struct {
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// SourceServerVersion - Source server version
+	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
+	// SourceServer - Source server name
+	SourceServer *string `json:"sourceServer,omitempty"`
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServer - Target server name
+	TargetServer *string `json:"targetServer,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
+	mmsadfmsstoml.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput
+	objectMap := make(map[string]interface{})
+	if mmsadfmsstoml.StartedOn != nil {
+		objectMap["startedOn"] = mmsadfmsstoml.StartedOn
+	}
+	if mmsadfmsstoml.EndedOn != nil {
+		objectMap["endedOn"] = mmsadfmsstoml.EndedOn
+	}
+	if mmsadfmsstoml.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = mmsadfmsstoml.SourceServerVersion
+	}
+	if mmsadfmsstoml.SourceServer != nil {
+		objectMap["sourceServer"] = mmsadfmsstoml.SourceServer
+	}
+	if mmsadfmsstoml.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = mmsadfmsstoml.TargetServerVersion
+	}
+	if mmsadfmsstoml.TargetServer != nil {
+		objectMap["targetServer"] = mmsadfmsstoml.TargetServer
+	}
+	if mmsadfmsstoml.ID != nil {
+		objectMap["id"] = mmsadfmsstoml.ID
+	}
+	if mmsadfmsstoml.ResultType != "" {
+		objectMap["resultType"] = mmsadfmsstoml.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool) {
+	return &mmsadfmsstoml, true
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel.
+func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput() (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmsstoml, true
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel ...
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel struct {
+	// TableName - Name of the table
+	TableName *string `json:"tableName,omitempty"`
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// CdcInsertCounter - Number of applied inserts
+	CdcInsertCounter *string `json:"cdcInsertCounter,omitempty"`
+	// CdcUpdateCounter - Number of applied updates
+	CdcUpdateCounter *string `json:"cdcUpdateCounter,omitempty"`
+	// CdcDeleteCounter - Number of applied deletes
+	CdcDeleteCounter *string `json:"cdcDeleteCounter,omitempty"`
+	// FullLoadEstFinishTime - Estimate to finish full load
+	FullLoadEstFinishTime *date.Time `json:"fullLoadEstFinishTime,omitempty"`
+	// FullLoadStartedOn - Full load start time
+	FullLoadStartedOn *date.Time `json:"fullLoadStartedOn,omitempty"`
+	// FullLoadEndedOn - Full load end time
+	FullLoadEndedOn *date.Time `json:"fullLoadEndedOn,omitempty"`
+	// FullLoadTotalRows - Number of rows applied in full load
+	FullLoadTotalRows *int64 `json:"fullLoadTotalRows,omitempty"`
+	// State - Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
+	State SyncTableMigrationState `json:"state,omitempty"`
+	// TotalChangesApplied - Total number of applied changes
+	TotalChangesApplied *int64 `json:"totalChangesApplied,omitempty"`
+	// DataErrorsCounter - Number of data errors occurred
+	DataErrorsCounter *int64 `json:"dataErrorsCounter,omitempty"`
+	// LastModifiedTime - Last modified time on target
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
+	mmsadfmsstotl.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput
+	objectMap := make(map[string]interface{})
+	if mmsadfmsstotl.TableName != nil {
+		objectMap["tableName"] = mmsadfmsstotl.TableName
+	}
+	if mmsadfmsstotl.DatabaseName != nil {
+		objectMap["databaseName"] = mmsadfmsstotl.DatabaseName
+	}
+	if mmsadfmsstotl.CdcInsertCounter != nil {
+		objectMap["cdcInsertCounter"] = mmsadfmsstotl.CdcInsertCounter
+	}
+	if mmsadfmsstotl.CdcUpdateCounter != nil {
+		objectMap["cdcUpdateCounter"] = mmsadfmsstotl.CdcUpdateCounter
+	}
+	if mmsadfmsstotl.CdcDeleteCounter != nil {
+		objectMap["cdcDeleteCounter"] = mmsadfmsstotl.CdcDeleteCounter
+	}
+	if mmsadfmsstotl.FullLoadEstFinishTime != nil {
+		objectMap["fullLoadEstFinishTime"] = mmsadfmsstotl.FullLoadEstFinishTime
+	}
+	if mmsadfmsstotl.FullLoadStartedOn != nil {
+		objectMap["fullLoadStartedOn"] = mmsadfmsstotl.FullLoadStartedOn
+	}
+	if mmsadfmsstotl.FullLoadEndedOn != nil {
+		objectMap["fullLoadEndedOn"] = mmsadfmsstotl.FullLoadEndedOn
+	}
+	if mmsadfmsstotl.FullLoadTotalRows != nil {
+		objectMap["fullLoadTotalRows"] = mmsadfmsstotl.FullLoadTotalRows
+	}
+	if mmsadfmsstotl.State != "" {
+		objectMap["state"] = mmsadfmsstotl.State
+	}
+	if mmsadfmsstotl.TotalChangesApplied != nil {
+		objectMap["totalChangesApplied"] = mmsadfmsstotl.TotalChangesApplied
+	}
+	if mmsadfmsstotl.DataErrorsCounter != nil {
+		objectMap["dataErrorsCounter"] = mmsadfmsstotl.DataErrorsCounter
+	}
+	if mmsadfmsstotl.LastModifiedTime != nil {
+		objectMap["lastModifiedTime"] = mmsadfmsstotl.LastModifiedTime
+	}
+	if mmsadfmsstotl.ID != nil {
+		objectMap["id"] = mmsadfmsstotl.ID
+	}
+	if mmsadfmsstotl.ResultType != "" {
+		objectMap["resultType"] = mmsadfmsstotl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputError() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel, bool) {
+	return &mmsadfmsstotl, true
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel() (*MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsMigrateMySQLAzureDbForMySQLSyncTaskOutput() (*MigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput is the BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput implementation for MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel.
+func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput() (BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput, bool) {
+	return &mmsadfmsstotl, true
+}
+
+// MigrateMySQLAzureDbForMySQLSyncTaskProperties properties for the task that migrates MySQL databases to
+// Azure Database for MySQL for online migrations
+type MigrateMySQLAzureDbForMySQLSyncTaskProperties struct {
+	// Input - Task input
+	Input *MigrateMySQLAzureDbForMySQLSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	mmsadfmsstp.TaskType = TaskTypeMigrateMySQLAzureDbForMySQLSync
+	objectMap := make(map[string]interface{})
+	if mmsadfmsstp.Input != nil {
+		objectMap["input"] = mmsadfmsstp.Input
+	}
+	if mmsadfmsstp.Output != nil {
+		objectMap["output"] = mmsadfmsstp.Output
+	}
+	if mmsadfmsstp.Errors != nil {
+		objectMap["errors"] = mmsadfmsstp.Errors
+	}
+	if mmsadfmsstp.State != "" {
+		objectMap["state"] = mmsadfmsstp.State
+	}
+	if mmsadfmsstp.Commands != nil {
+		objectMap["commands"] = mmsadfmsstp.Commands
+	}
+	if mmsadfmsstp.TaskType != "" {
+		objectMap["taskType"] = mmsadfmsstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return &mmsadfmsstp, true
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
+func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &mmsadfmsstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrateMySQLAzureDbForMySQLSyncTaskProperties struct.
+func (mmsadfmsstp *MigrateMySQLAzureDbForMySQLSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MigrateMySQLAzureDbForMySQLSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput database specific information for PostgreSQL to
+// Azure Database for PostgreSQL migration task inputs
+type MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput struct {
+	// Name - Name of the database
+	Name *string `json:"name,omitempty"`
+	// TargetDatabaseName - Name of target database. Note: Target database will be truncated before starting migration.
+	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
+	// MigrationSetting - Migration settings which tune the migration behavior
+	MigrationSetting map[string]*string `json:"migrationSetting"`
+	// SourceSetting - Source settings to tune source endpoint migration behavior
+	SourceSetting map[string]*string `json:"sourceSetting"`
+	// TargetSetting - Target settings to tune target endpoint migration behavior
+	TargetSetting map[string]*string `json:"targetSetting"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput.
+func (mpsadfpssdi MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpsadfpssdi.Name != nil {
+		objectMap["name"] = mpsadfpssdi.Name
+	}
+	if mpsadfpssdi.TargetDatabaseName != nil {
+		objectMap["targetDatabaseName"] = mpsadfpssdi.TargetDatabaseName
+	}
+	if mpsadfpssdi.MigrationSetting != nil {
+		objectMap["migrationSetting"] = mpsadfpssdi.MigrationSetting
+	}
+	if mpsadfpssdi.SourceSetting != nil {
+		objectMap["sourceSetting"] = mpsadfpssdi.SourceSetting
+	}
+	if mpsadfpssdi.TargetSetting != nil {
+		objectMap["targetSetting"] = mpsadfpssdi.TargetSetting
+	}
+	return json.Marshal(objectMap)
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput input for the task that migrates PostgreSQL databases
+// to Azure Database for PostgreSQL for online migrations
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput struct {
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput `json:"selectedDatabases,omitempty"`
+	// TargetConnectionInfo - Connection information for target Azure Database for PostgreSQL
+	TargetConnectionInfo *PostgreSQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// SourceConnectionInfo - Connection information for source PostgreSQL
+	SourceConnectionInfo *PostgreSQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+}
+
+// BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput output for the task that migrates PostgreSQL databases to
+// Azure Database for PostgreSQL for online migrations
+type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput interface {
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool)
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool)
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool)
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool)
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool)
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool)
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput output for the task that migrates PostgreSQL databases
+// to Azure Database for PostgreSQL for online migrations
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+func unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput(body []byte) (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["resultType"] {
+	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput):
+		var mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError
+		err := json.Unmarshal(body, &mpsadfpsstode)
+		return mpsadfpsstode, err
+	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput):
+		var mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError
+		err := json.Unmarshal(body, &mpsadfpsstoe)
+		return mpsadfpsstoe, err
+	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput):
+		var mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel
+		err := json.Unmarshal(body, &mpsadfpsstotl)
+		return mpsadfpsstotl, err
+	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput):
+		var mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel
+		err := json.Unmarshal(body, &mpsadfpsstodl)
+		return mpsadfpsstodl, err
+	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput):
+		var mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel
+		err := json.Unmarshal(body, &mpsadfpsstoml)
+		return mpsadfpsstoml, err
+	default:
+		var mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+		err := json.Unmarshal(body, &mpsadfpssto)
+		return mpsadfpssto, err
+	}
+}
+func unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputArray(body []byte) ([]BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mpsadfpsstoArray := make([]BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mpsadfpssto, err := unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mpsadfpsstoArray[index] = mpsadfpssto
+	}
+	return mpsadfpsstoArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
+	mpsadfpssto.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+	objectMap := make(map[string]interface{})
+	if mpsadfpssto.ID != nil {
+		objectMap["id"] = mpsadfpssto.ID
+	}
+	if mpsadfpssto.ResultType != "" {
+		objectMap["resultType"] = mpsadfpssto.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpssto, true
+}
+
+// AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
+func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpssto, true
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError ...
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError struct {
+	// ErrorMessage - Error message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Events - List of error events.
+	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) MarshalJSON() ([]byte, error) {
+	mpsadfpsstode.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput
+	objectMap := make(map[string]interface{})
+	if mpsadfpsstode.ErrorMessage != nil {
+		objectMap["errorMessage"] = mpsadfpsstode.ErrorMessage
+	}
+	if mpsadfpsstode.Events != nil {
+		objectMap["events"] = mpsadfpsstode.Events
+	}
+	if mpsadfpsstode.ID != nil {
+		objectMap["id"] = mpsadfpsstode.ID
+	}
+	if mpsadfpsstode.ResultType != "" {
+		objectMap["resultType"] = mpsadfpsstode.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool) {
+	return &mpsadfpsstode, true
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
+func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpsstode, true
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel ...
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel struct {
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// MigrationState - Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
+	// IncomingChanges - Number of incoming changes
+	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
+	// AppliedChanges - Number of applied changes
+	AppliedChanges *int64 `json:"appliedChanges,omitempty"`
+	// CdcInsertCounter - Number of cdc inserts
+	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
+	// CdcDeleteCounter - Number of cdc deletes
+	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
+	// CdcUpdateCounter - Number of cdc updates
+	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
+	// FullLoadCompletedTables - Number of tables completed in full load
+	FullLoadCompletedTables *int64 `json:"fullLoadCompletedTables,omitempty"`
+	// FullLoadLoadingTables - Number of tables loading in full load
+	FullLoadLoadingTables *int64 `json:"fullLoadLoadingTables,omitempty"`
+	// FullLoadQueuedTables - Number of tables queued in full load
+	FullLoadQueuedTables *int64 `json:"fullLoadQueuedTables,omitempty"`
+	// FullLoadErroredTables - Number of tables errored in full load
+	FullLoadErroredTables *int64 `json:"fullLoadErroredTables,omitempty"`
+	// InitializationCompleted - Indicates if initial load (full load) has been completed
+	InitializationCompleted *bool `json:"initializationCompleted,omitempty"`
+	// Latency - CDC apply latency
+	Latency *int64 `json:"latency,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
+	mpsadfpsstodl.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput
+	objectMap := make(map[string]interface{})
+	if mpsadfpsstodl.DatabaseName != nil {
+		objectMap["databaseName"] = mpsadfpsstodl.DatabaseName
+	}
+	if mpsadfpsstodl.StartedOn != nil {
+		objectMap["startedOn"] = mpsadfpsstodl.StartedOn
+	}
+	if mpsadfpsstodl.EndedOn != nil {
+		objectMap["endedOn"] = mpsadfpsstodl.EndedOn
+	}
+	if mpsadfpsstodl.MigrationState != "" {
+		objectMap["migrationState"] = mpsadfpsstodl.MigrationState
+	}
+	if mpsadfpsstodl.IncomingChanges != nil {
+		objectMap["incomingChanges"] = mpsadfpsstodl.IncomingChanges
+	}
+	if mpsadfpsstodl.AppliedChanges != nil {
+		objectMap["appliedChanges"] = mpsadfpsstodl.AppliedChanges
+	}
+	if mpsadfpsstodl.CdcInsertCounter != nil {
+		objectMap["cdcInsertCounter"] = mpsadfpsstodl.CdcInsertCounter
+	}
+	if mpsadfpsstodl.CdcDeleteCounter != nil {
+		objectMap["cdcDeleteCounter"] = mpsadfpsstodl.CdcDeleteCounter
+	}
+	if mpsadfpsstodl.CdcUpdateCounter != nil {
+		objectMap["cdcUpdateCounter"] = mpsadfpsstodl.CdcUpdateCounter
+	}
+	if mpsadfpsstodl.FullLoadCompletedTables != nil {
+		objectMap["fullLoadCompletedTables"] = mpsadfpsstodl.FullLoadCompletedTables
+	}
+	if mpsadfpsstodl.FullLoadLoadingTables != nil {
+		objectMap["fullLoadLoadingTables"] = mpsadfpsstodl.FullLoadLoadingTables
+	}
+	if mpsadfpsstodl.FullLoadQueuedTables != nil {
+		objectMap["fullLoadQueuedTables"] = mpsadfpsstodl.FullLoadQueuedTables
+	}
+	if mpsadfpsstodl.FullLoadErroredTables != nil {
+		objectMap["fullLoadErroredTables"] = mpsadfpsstodl.FullLoadErroredTables
+	}
+	if mpsadfpsstodl.InitializationCompleted != nil {
+		objectMap["initializationCompleted"] = mpsadfpsstodl.InitializationCompleted
+	}
+	if mpsadfpsstodl.Latency != nil {
+		objectMap["latency"] = mpsadfpsstodl.Latency
+	}
+	if mpsadfpsstodl.ID != nil {
+		objectMap["id"] = mpsadfpsstodl.ID
+	}
+	if mpsadfpsstodl.ResultType != "" {
+		objectMap["resultType"] = mpsadfpsstodl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool) {
+	return &mpsadfpsstodl, true
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
+func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpsstodl, true
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError ...
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError struct {
+	// Error - Migration error
+	Error *ReportableException `json:"error,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) MarshalJSON() ([]byte, error) {
+	mpsadfpsstoe.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput
+	objectMap := make(map[string]interface{})
+	if mpsadfpsstoe.Error != nil {
+		objectMap["error"] = mpsadfpsstoe.Error
+	}
+	if mpsadfpsstoe.ID != nil {
+		objectMap["id"] = mpsadfpsstoe.ID
+	}
+	if mpsadfpsstoe.ResultType != "" {
+		objectMap["resultType"] = mpsadfpsstoe.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool) {
+	return &mpsadfpsstoe, true
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
+func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpsstoe, true
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel ...
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel struct {
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// SourceServerVersion - Source server version
+	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
+	// SourceServer - Source server name
+	SourceServer *string `json:"sourceServer,omitempty"`
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServer - Target server name
+	TargetServer *string `json:"targetServer,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
+	mpsadfpsstoml.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput
+	objectMap := make(map[string]interface{})
+	if mpsadfpsstoml.StartedOn != nil {
+		objectMap["startedOn"] = mpsadfpsstoml.StartedOn
+	}
+	if mpsadfpsstoml.EndedOn != nil {
+		objectMap["endedOn"] = mpsadfpsstoml.EndedOn
+	}
+	if mpsadfpsstoml.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = mpsadfpsstoml.SourceServerVersion
+	}
+	if mpsadfpsstoml.SourceServer != nil {
+		objectMap["sourceServer"] = mpsadfpsstoml.SourceServer
+	}
+	if mpsadfpsstoml.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = mpsadfpsstoml.TargetServerVersion
+	}
+	if mpsadfpsstoml.TargetServer != nil {
+		objectMap["targetServer"] = mpsadfpsstoml.TargetServer
+	}
+	if mpsadfpsstoml.ID != nil {
+		objectMap["id"] = mpsadfpsstoml.ID
+	}
+	if mpsadfpsstoml.ResultType != "" {
+		objectMap["resultType"] = mpsadfpsstoml.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool) {
+	return &mpsadfpsstoml, true
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
+func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpsstoml, true
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel ...
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel struct {
+	// TableName - Name of the table
+	TableName *string `json:"tableName,omitempty"`
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// CdcInsertCounter - Number of applied inserts
+	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
+	// CdcUpdateCounter - Number of applied updates
+	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
+	// CdcDeleteCounter - Number of applied deletes
+	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
+	// FullLoadEstFinishTime - Estimate to finish full load
+	FullLoadEstFinishTime *date.Time `json:"fullLoadEstFinishTime,omitempty"`
+	// FullLoadStartedOn - Full load start time
+	FullLoadStartedOn *date.Time `json:"fullLoadStartedOn,omitempty"`
+	// FullLoadEndedOn - Full load end time
+	FullLoadEndedOn *date.Time `json:"fullLoadEndedOn,omitempty"`
+	// FullLoadTotalRows - Number of rows applied in full load
+	FullLoadTotalRows *int64 `json:"fullLoadTotalRows,omitempty"`
+	// State - Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
+	State SyncTableMigrationState `json:"state,omitempty"`
+	// TotalChangesApplied - Total number of applied changes
+	TotalChangesApplied *int64 `json:"totalChangesApplied,omitempty"`
+	// DataErrorsCounter - Number of data errors occurred
+	DataErrorsCounter *int64 `json:"dataErrorsCounter,omitempty"`
+	// LastModifiedTime - Last modified time on target
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
+	mpsadfpsstotl.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput
+	objectMap := make(map[string]interface{})
+	if mpsadfpsstotl.TableName != nil {
+		objectMap["tableName"] = mpsadfpsstotl.TableName
+	}
+	if mpsadfpsstotl.DatabaseName != nil {
+		objectMap["databaseName"] = mpsadfpsstotl.DatabaseName
+	}
+	if mpsadfpsstotl.CdcInsertCounter != nil {
+		objectMap["cdcInsertCounter"] = mpsadfpsstotl.CdcInsertCounter
+	}
+	if mpsadfpsstotl.CdcUpdateCounter != nil {
+		objectMap["cdcUpdateCounter"] = mpsadfpsstotl.CdcUpdateCounter
+	}
+	if mpsadfpsstotl.CdcDeleteCounter != nil {
+		objectMap["cdcDeleteCounter"] = mpsadfpsstotl.CdcDeleteCounter
+	}
+	if mpsadfpsstotl.FullLoadEstFinishTime != nil {
+		objectMap["fullLoadEstFinishTime"] = mpsadfpsstotl.FullLoadEstFinishTime
+	}
+	if mpsadfpsstotl.FullLoadStartedOn != nil {
+		objectMap["fullLoadStartedOn"] = mpsadfpsstotl.FullLoadStartedOn
+	}
+	if mpsadfpsstotl.FullLoadEndedOn != nil {
+		objectMap["fullLoadEndedOn"] = mpsadfpsstotl.FullLoadEndedOn
+	}
+	if mpsadfpsstotl.FullLoadTotalRows != nil {
+		objectMap["fullLoadTotalRows"] = mpsadfpsstotl.FullLoadTotalRows
+	}
+	if mpsadfpsstotl.State != "" {
+		objectMap["state"] = mpsadfpsstotl.State
+	}
+	if mpsadfpsstotl.TotalChangesApplied != nil {
+		objectMap["totalChangesApplied"] = mpsadfpsstotl.TotalChangesApplied
+	}
+	if mpsadfpsstotl.DataErrorsCounter != nil {
+		objectMap["dataErrorsCounter"] = mpsadfpsstotl.DataErrorsCounter
+	}
+	if mpsadfpsstotl.LastModifiedTime != nil {
+		objectMap["lastModifiedTime"] = mpsadfpsstotl.LastModifiedTime
+	}
+	if mpsadfpsstotl.ID != nil {
+		objectMap["id"] = mpsadfpsstotl.ID
+	}
+	if mpsadfpsstotl.ResultType != "" {
+		objectMap["resultType"] = mpsadfpsstotl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel, bool) {
+	return &mpsadfpsstotl, true
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput is the BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
+func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) AsBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput() (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, bool) {
+	return &mpsadfpsstotl, true
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties properties for the task that migrates PostgreSQL
+// databases to Azure Database for PostgreSQL for online migrations
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties struct {
+	// Input - Task input
+	Input *MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	mpsadfpsstp.TaskType = TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
+	objectMap := make(map[string]interface{})
+	if mpsadfpsstp.Input != nil {
+		objectMap["input"] = mpsadfpsstp.Input
+	}
+	if mpsadfpsstp.Output != nil {
+		objectMap["output"] = mpsadfpsstp.Output
+	}
+	if mpsadfpsstp.Errors != nil {
+		objectMap["errors"] = mpsadfpsstp.Errors
+	}
+	if mpsadfpsstp.State != "" {
+		objectMap["state"] = mpsadfpsstp.State
+	}
+	if mpsadfpsstp.Commands != nil {
+		objectMap["commands"] = mpsadfpsstp.Commands
+	}
+	if mpsadfpsstp.TaskType != "" {
+		objectMap["taskType"] = mpsadfpsstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return &mpsadfpsstp, true
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
+func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &mpsadfpsstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties struct.
+func (mpsadfpsstp *MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
 }
 
 // MigrateSQLServerSQLDbDatabaseInput database specific information for SQL to Azure SQL DB migration task
@@ -1789,6 +8063,905 @@ func (msssddi MigrateSQLServerSQLDbDatabaseInput) MarshalJSON() ([]byte, error) 
 		objectMap["tableMap"] = msssddi.TableMap
 	}
 	return json.Marshal(objectMap)
+}
+
+// MigrateSQLServerSQLDbSyncDatabaseInput database specific information for SQL to Azure SQL DB sync
+// migration task inputs
+type MigrateSQLServerSQLDbSyncDatabaseInput struct {
+	// ID - Unique identifier for database
+	ID *string `json:"id,omitempty"`
+	// Name - Name of database
+	Name *string `json:"name,omitempty"`
+	// TargetDatabaseName - Target database name
+	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
+	// SchemaName - Schema name to be migrated
+	SchemaName *string `json:"schemaName,omitempty"`
+	// TableMap - Mapping of source to target tables
+	TableMap map[string]*string `json:"tableMap"`
+	// MigrationSetting - Migration settings which tune the migration behavior
+	MigrationSetting map[string]*string `json:"migrationSetting"`
+	// SourceSetting - Source settings to tune source endpoint migration behavior
+	SourceSetting map[string]*string `json:"sourceSetting"`
+	// TargetSetting - Target settings to tune target endpoint migration behavior
+	TargetSetting map[string]*string `json:"targetSetting"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncDatabaseInput.
+func (msssdsdi MigrateSQLServerSQLDbSyncDatabaseInput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msssdsdi.ID != nil {
+		objectMap["id"] = msssdsdi.ID
+	}
+	if msssdsdi.Name != nil {
+		objectMap["name"] = msssdsdi.Name
+	}
+	if msssdsdi.TargetDatabaseName != nil {
+		objectMap["targetDatabaseName"] = msssdsdi.TargetDatabaseName
+	}
+	if msssdsdi.SchemaName != nil {
+		objectMap["schemaName"] = msssdsdi.SchemaName
+	}
+	if msssdsdi.TableMap != nil {
+		objectMap["tableMap"] = msssdsdi.TableMap
+	}
+	if msssdsdi.MigrationSetting != nil {
+		objectMap["migrationSetting"] = msssdsdi.MigrationSetting
+	}
+	if msssdsdi.SourceSetting != nil {
+		objectMap["sourceSetting"] = msssdsdi.SourceSetting
+	}
+	if msssdsdi.TargetSetting != nil {
+		objectMap["targetSetting"] = msssdsdi.TargetSetting
+	}
+	return json.Marshal(objectMap)
+}
+
+// MigrateSQLServerSQLDbSyncTaskInput input for the task that migrates on-prem SQL Server databases to
+// Azure SQL Database for online migrations
+type MigrateSQLServerSQLDbSyncTaskInput struct {
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLDbSyncDatabaseInput `json:"selectedDatabases,omitempty"`
+	// ValidationOptions - Validation options
+	ValidationOptions *MigrationValidationOptions `json:"validationOptions,omitempty"`
+	// SourceConnectionInfo - Information for connecting to source
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Information for connecting to target
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+}
+
+// BasicMigrateSQLServerSQLDbSyncTaskOutput output for the task that migrates on-prem SQL Server databases to Azure SQL
+// Database for online migrations
+type BasicMigrateSQLServerSQLDbSyncTaskOutput interface {
+	AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool)
+	AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool)
+	AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool)
+	AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool)
+	AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool)
+	AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool)
+}
+
+// MigrateSQLServerSQLDbSyncTaskOutput output for the task that migrates on-prem SQL Server databases to Azure
+// SQL Database for online migrations
+type MigrateSQLServerSQLDbSyncTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+func unmarshalBasicMigrateSQLServerSQLDbSyncTaskOutput(body []byte) (BasicMigrateSQLServerSQLDbSyncTaskOutput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["resultType"] {
+	case string(ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput):
+		var msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError
+		err := json.Unmarshal(body, &msssdstode)
+		return msssdstode, err
+	case string(ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput):
+		var msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError
+		err := json.Unmarshal(body, &msssdstoe)
+		return msssdstoe, err
+	case string(ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput):
+		var msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel
+		err := json.Unmarshal(body, &msssdstotl)
+		return msssdstotl, err
+	case string(ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput):
+		var msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel
+		err := json.Unmarshal(body, &msssdstodl)
+		return msssdstodl, err
+	case string(ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput):
+		var msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel
+		err := json.Unmarshal(body, &msssdstoml)
+		return msssdstoml, err
+	default:
+		var msssdsto MigrateSQLServerSQLDbSyncTaskOutput
+		err := json.Unmarshal(body, &msssdsto)
+		return msssdsto, err
+	}
+}
+func unmarshalBasicMigrateSQLServerSQLDbSyncTaskOutputArray(body []byte) ([]BasicMigrateSQLServerSQLDbSyncTaskOutput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	msssdstoArray := make([]BasicMigrateSQLServerSQLDbSyncTaskOutput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		msssdsto, err := unmarshalBasicMigrateSQLServerSQLDbSyncTaskOutput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		msssdstoArray[index] = msssdsto
+	}
+	return msssdstoArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) MarshalJSON() ([]byte, error) {
+	msssdsto.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput
+	objectMap := make(map[string]interface{})
+	if msssdsto.ID != nil {
+		objectMap["id"] = msssdsto.ID
+	}
+	if msssdsto.ResultType != "" {
+		objectMap["resultType"] = msssdsto.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdsto, true
+}
+
+// AsBasicMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutput.
+func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) AsBasicMigrateSQLServerSQLDbSyncTaskOutput() (BasicMigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdsto, true
+}
+
+// MigrateSQLServerSQLDbSyncTaskOutputDatabaseError ...
+type MigrateSQLServerSQLDbSyncTaskOutputDatabaseError struct {
+	// ErrorMessage - Error message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Events - List of error events.
+	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) MarshalJSON() ([]byte, error) {
+	msssdstode.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput
+	objectMap := make(map[string]interface{})
+	if msssdstode.ErrorMessage != nil {
+		objectMap["errorMessage"] = msssdstode.ErrorMessage
+	}
+	if msssdstode.Events != nil {
+		objectMap["events"] = msssdstode.Events
+	}
+	if msssdstode.ID != nil {
+		objectMap["id"] = msssdstode.ID
+	}
+	if msssdstode.ResultType != "" {
+		objectMap["resultType"] = msssdstode.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool) {
+	return &msssdstode, true
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseError.
+func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsBasicMigrateSQLServerSQLDbSyncTaskOutput() (BasicMigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdstode, true
+}
+
+// MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel ...
+type MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel struct {
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// MigrationState - Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
+	// IncomingChanges - Number of incoming changes
+	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
+	// AppliedChanges - Number of applied changes
+	AppliedChanges *int64 `json:"appliedChanges,omitempty"`
+	// CdcInsertCounter - Number of cdc inserts
+	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
+	// CdcDeleteCounter - Number of cdc deletes
+	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
+	// CdcUpdateCounter - Number of cdc updates
+	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
+	// FullLoadCompletedTables - Number of tables completed in full load
+	FullLoadCompletedTables *int64 `json:"fullLoadCompletedTables,omitempty"`
+	// FullLoadLoadingTables - Number of tables loading in full load
+	FullLoadLoadingTables *int64 `json:"fullLoadLoadingTables,omitempty"`
+	// FullLoadQueuedTables - Number of tables queued in full load
+	FullLoadQueuedTables *int64 `json:"fullLoadQueuedTables,omitempty"`
+	// FullLoadErroredTables - Number of tables errored in full load
+	FullLoadErroredTables *int64 `json:"fullLoadErroredTables,omitempty"`
+	// InitializationCompleted - Indicates if initial load (full load) has been completed
+	InitializationCompleted *bool `json:"initializationCompleted,omitempty"`
+	// Latency - CDC apply latency
+	Latency *int64 `json:"latency,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
+	msssdstodl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssdstodl.DatabaseName != nil {
+		objectMap["databaseName"] = msssdstodl.DatabaseName
+	}
+	if msssdstodl.StartedOn != nil {
+		objectMap["startedOn"] = msssdstodl.StartedOn
+	}
+	if msssdstodl.EndedOn != nil {
+		objectMap["endedOn"] = msssdstodl.EndedOn
+	}
+	if msssdstodl.MigrationState != "" {
+		objectMap["migrationState"] = msssdstodl.MigrationState
+	}
+	if msssdstodl.IncomingChanges != nil {
+		objectMap["incomingChanges"] = msssdstodl.IncomingChanges
+	}
+	if msssdstodl.AppliedChanges != nil {
+		objectMap["appliedChanges"] = msssdstodl.AppliedChanges
+	}
+	if msssdstodl.CdcInsertCounter != nil {
+		objectMap["cdcInsertCounter"] = msssdstodl.CdcInsertCounter
+	}
+	if msssdstodl.CdcDeleteCounter != nil {
+		objectMap["cdcDeleteCounter"] = msssdstodl.CdcDeleteCounter
+	}
+	if msssdstodl.CdcUpdateCounter != nil {
+		objectMap["cdcUpdateCounter"] = msssdstodl.CdcUpdateCounter
+	}
+	if msssdstodl.FullLoadCompletedTables != nil {
+		objectMap["fullLoadCompletedTables"] = msssdstodl.FullLoadCompletedTables
+	}
+	if msssdstodl.FullLoadLoadingTables != nil {
+		objectMap["fullLoadLoadingTables"] = msssdstodl.FullLoadLoadingTables
+	}
+	if msssdstodl.FullLoadQueuedTables != nil {
+		objectMap["fullLoadQueuedTables"] = msssdstodl.FullLoadQueuedTables
+	}
+	if msssdstodl.FullLoadErroredTables != nil {
+		objectMap["fullLoadErroredTables"] = msssdstodl.FullLoadErroredTables
+	}
+	if msssdstodl.InitializationCompleted != nil {
+		objectMap["initializationCompleted"] = msssdstodl.InitializationCompleted
+	}
+	if msssdstodl.Latency != nil {
+		objectMap["latency"] = msssdstodl.Latency
+	}
+	if msssdstodl.ID != nil {
+		objectMap["id"] = msssdstodl.ID
+	}
+	if msssdstodl.ResultType != "" {
+		objectMap["resultType"] = msssdstodl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool) {
+	return &msssdstodl, true
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel.
+func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsBasicMigrateSQLServerSQLDbSyncTaskOutput() (BasicMigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdstodl, true
+}
+
+// MigrateSQLServerSQLDbSyncTaskOutputError ...
+type MigrateSQLServerSQLDbSyncTaskOutputError struct {
+	// Error - Migration error
+	Error *ReportableException `json:"error,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) MarshalJSON() ([]byte, error) {
+	msssdstoe.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput
+	objectMap := make(map[string]interface{})
+	if msssdstoe.Error != nil {
+		objectMap["error"] = msssdstoe.Error
+	}
+	if msssdstoe.ID != nil {
+		objectMap["id"] = msssdstoe.ID
+	}
+	if msssdstoe.ResultType != "" {
+		objectMap["resultType"] = msssdstoe.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool) {
+	return &msssdstoe, true
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputError.
+func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsBasicMigrateSQLServerSQLDbSyncTaskOutput() (BasicMigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdstoe, true
+}
+
+// MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel ...
+type MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel struct {
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// SourceServerVersion - Source server version
+	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
+	// SourceServer - Source server name
+	SourceServer *string `json:"sourceServer,omitempty"`
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServer - Target server name
+	TargetServer *string `json:"targetServer,omitempty"`
+	// DatabaseCount - Count of databases
+	DatabaseCount *int32 `json:"databaseCount,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
+	msssdstoml.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssdstoml.StartedOn != nil {
+		objectMap["startedOn"] = msssdstoml.StartedOn
+	}
+	if msssdstoml.EndedOn != nil {
+		objectMap["endedOn"] = msssdstoml.EndedOn
+	}
+	if msssdstoml.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = msssdstoml.SourceServerVersion
+	}
+	if msssdstoml.SourceServer != nil {
+		objectMap["sourceServer"] = msssdstoml.SourceServer
+	}
+	if msssdstoml.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = msssdstoml.TargetServerVersion
+	}
+	if msssdstoml.TargetServer != nil {
+		objectMap["targetServer"] = msssdstoml.TargetServer
+	}
+	if msssdstoml.DatabaseCount != nil {
+		objectMap["databaseCount"] = msssdstoml.DatabaseCount
+	}
+	if msssdstoml.ID != nil {
+		objectMap["id"] = msssdstoml.ID
+	}
+	if msssdstoml.ResultType != "" {
+		objectMap["resultType"] = msssdstoml.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool) {
+	return &msssdstoml, true
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel.
+func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsBasicMigrateSQLServerSQLDbSyncTaskOutput() (BasicMigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdstoml, true
+}
+
+// MigrateSQLServerSQLDbSyncTaskOutputTableLevel ...
+type MigrateSQLServerSQLDbSyncTaskOutputTableLevel struct {
+	// TableName - Name of the table
+	TableName *string `json:"tableName,omitempty"`
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// CdcInsertCounter - Number of applied inserts
+	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
+	// CdcUpdateCounter - Number of applied updates
+	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
+	// CdcDeleteCounter - Number of applied deletes
+	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
+	// FullLoadEstFinishTime - Estimate to finish full load
+	FullLoadEstFinishTime *date.Time `json:"fullLoadEstFinishTime,omitempty"`
+	// FullLoadStartedOn - Full load start time
+	FullLoadStartedOn *date.Time `json:"fullLoadStartedOn,omitempty"`
+	// FullLoadEndedOn - Full load end time
+	FullLoadEndedOn *date.Time `json:"fullLoadEndedOn,omitempty"`
+	// FullLoadTotalRows - Number of rows applied in full load
+	FullLoadTotalRows *int64 `json:"fullLoadTotalRows,omitempty"`
+	// State - Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
+	State SyncTableMigrationState `json:"state,omitempty"`
+	// TotalChangesApplied - Total number of applied changes
+	TotalChangesApplied *int64 `json:"totalChangesApplied,omitempty"`
+	// DataErrorsCounter - Number of data errors occurred
+	DataErrorsCounter *int64 `json:"dataErrorsCounter,omitempty"`
+	// LastModifiedTime - Last modified time on target
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
+	msssdstotl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssdstotl.TableName != nil {
+		objectMap["tableName"] = msssdstotl.TableName
+	}
+	if msssdstotl.DatabaseName != nil {
+		objectMap["databaseName"] = msssdstotl.DatabaseName
+	}
+	if msssdstotl.CdcInsertCounter != nil {
+		objectMap["cdcInsertCounter"] = msssdstotl.CdcInsertCounter
+	}
+	if msssdstotl.CdcUpdateCounter != nil {
+		objectMap["cdcUpdateCounter"] = msssdstotl.CdcUpdateCounter
+	}
+	if msssdstotl.CdcDeleteCounter != nil {
+		objectMap["cdcDeleteCounter"] = msssdstotl.CdcDeleteCounter
+	}
+	if msssdstotl.FullLoadEstFinishTime != nil {
+		objectMap["fullLoadEstFinishTime"] = msssdstotl.FullLoadEstFinishTime
+	}
+	if msssdstotl.FullLoadStartedOn != nil {
+		objectMap["fullLoadStartedOn"] = msssdstotl.FullLoadStartedOn
+	}
+	if msssdstotl.FullLoadEndedOn != nil {
+		objectMap["fullLoadEndedOn"] = msssdstotl.FullLoadEndedOn
+	}
+	if msssdstotl.FullLoadTotalRows != nil {
+		objectMap["fullLoadTotalRows"] = msssdstotl.FullLoadTotalRows
+	}
+	if msssdstotl.State != "" {
+		objectMap["state"] = msssdstotl.State
+	}
+	if msssdstotl.TotalChangesApplied != nil {
+		objectMap["totalChangesApplied"] = msssdstotl.TotalChangesApplied
+	}
+	if msssdstotl.DataErrorsCounter != nil {
+		objectMap["dataErrorsCounter"] = msssdstotl.DataErrorsCounter
+	}
+	if msssdstotl.LastModifiedTime != nil {
+		objectMap["lastModifiedTime"] = msssdstotl.LastModifiedTime
+	}
+	if msssdstotl.ID != nil {
+		objectMap["id"] = msssdstotl.ID
+	}
+	if msssdstotl.ResultType != "" {
+		objectMap["resultType"] = msssdstotl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseError() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputError is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsMigrateSQLServerSQLDbSyncTaskOutputError() (*MigrateSQLServerSQLDbSyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsMigrateSQLServerSQLDbSyncTaskOutputTableLevel() (*MigrateSQLServerSQLDbSyncTaskOutputTableLevel, bool) {
+	return &msssdstotl, true
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsMigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsMigrateSQLServerSQLDbSyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsMigrateSQLServerSQLDbSyncTaskOutput() (*MigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLDbSyncTaskOutput is the BasicMigrateSQLServerSQLDbSyncTaskOutput implementation for MigrateSQLServerSQLDbSyncTaskOutputTableLevel.
+func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsBasicMigrateSQLServerSQLDbSyncTaskOutput() (BasicMigrateSQLServerSQLDbSyncTaskOutput, bool) {
+	return &msssdstotl, true
+}
+
+// MigrateSQLServerSQLDbSyncTaskProperties properties for the task that migrates on-prem SQL Server
+// databases to Azure SQL Database for online migrations
+type MigrateSQLServerSQLDbSyncTaskProperties struct {
+	// Input - Task input
+	Input *MigrateSQLServerSQLDbSyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicMigrateSQLServerSQLDbSyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	msssdstp.TaskType = TaskTypeMigrateSQLServerAzureSQLDbSync
+	objectMap := make(map[string]interface{})
+	if msssdstp.Input != nil {
+		objectMap["input"] = msssdstp.Input
+	}
+	if msssdstp.Output != nil {
+		objectMap["output"] = msssdstp.Output
+	}
+	if msssdstp.Errors != nil {
+		objectMap["errors"] = msssdstp.Errors
+	}
+	if msssdstp.State != "" {
+		objectMap["state"] = msssdstp.State
+	}
+	if msssdstp.Commands != nil {
+		objectMap["commands"] = msssdstp.Commands
+	}
+	if msssdstp.TaskType != "" {
+		objectMap["taskType"] = msssdstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return &msssdstp, true
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
+func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &msssdstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrateSQLServerSQLDbSyncTaskProperties struct.
+func (msssdstp *MigrateSQLServerSQLDbSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MigrateSQLServerSQLDbSyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				msssdstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMigrateSQLServerSQLDbSyncTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				msssdstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				msssdstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				msssdstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				msssdstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				msssdstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
 }
 
 // MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure
@@ -1823,8 +8996,8 @@ type BasicMigrateSQLServerSQLDbTaskOutput interface {
 type MigrateSQLServerSQLDbTaskOutput struct {
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 func unmarshalBasicMigrateSQLServerSQLDbTaskOutput(body []byte) (BasicMigrateSQLServerSQLDbTaskOutput, error) {
@@ -1835,27 +9008,27 @@ func unmarshalBasicMigrateSQLServerSQLDbTaskOutput(body []byte) (BasicMigrateSQL
 	}
 
 	switch m["resultType"] {
-	case string(ResultTypeMigrationDatabaseLevelValidationOutput):
+	case string(ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput):
 		var msssdtodlvr MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult
 		err := json.Unmarshal(body, &msssdtodlvr)
 		return msssdtodlvr, err
-	case string(ResultTypeMigrationValidationOutput):
+	case string(ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput):
 		var msssdtovr MigrateSQLServerSQLDbTaskOutputValidationResult
 		err := json.Unmarshal(body, &msssdtovr)
 		return msssdtovr, err
-	case string(ResultTypeErrorOutput):
+	case string(ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput):
 		var msssdtoe MigrateSQLServerSQLDbTaskOutputError
 		err := json.Unmarshal(body, &msssdtoe)
 		return msssdtoe, err
-	case string(ResultTypeTableLevelOutput):
+	case string(ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput):
 		var msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel
 		err := json.Unmarshal(body, &msssdtotl)
 		return msssdtotl, err
-	case string(ResultTypeDatabaseLevelOutput):
+	case string(ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput):
 		var msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel
 		err := json.Unmarshal(body, &msssdtodl)
 		return msssdtodl, err
-	case string(ResultTypeMigrationLevelOutput):
+	case string(ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput):
 		var msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel
 		err := json.Unmarshal(body, &msssdtoml)
 		return msssdtoml, err
@@ -1886,7 +9059,7 @@ func unmarshalBasicMigrateSQLServerSQLDbTaskOutputArray(body []byte) ([]BasicMig
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
-	msssdto.ResultType = ResultTypeMigrateSQLServerSQLDbTaskOutput
+	msssdto.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput
 	objectMap := make(map[string]interface{})
 	if msssdto.ID != nil {
 		objectMap["id"] = msssdto.ID
@@ -1970,13 +9143,13 @@ type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 	ObjectSummary map[string]*DataItemMigrationSummaryResult `json:"objectSummary"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
-	msssdtodl.ResultType = ResultTypeDatabaseLevelOutput
+	msssdtodl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
 	if msssdtodl.DatabaseName != nil {
 		objectMap["databaseName"] = msssdtodl.DatabaseName
@@ -2092,13 +9265,13 @@ type MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult struct {
 	Status ValidationStatus `json:"status,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult.
 func (msssdtodlvr MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult) MarshalJSON() ([]byte, error) {
-	msssdtodlvr.ResultType = ResultTypeMigrationDatabaseLevelValidationOutput
+	msssdtodlvr.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput
 	objectMap := make(map[string]interface{})
 	if msssdtodlvr.MigrationID != nil {
 		objectMap["migrationId"] = msssdtodlvr.MigrationID
@@ -2182,13 +9355,13 @@ type MigrateSQLServerSQLDbTaskOutputError struct {
 	Error *ReportableException `json:"error,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) MarshalJSON() ([]byte, error) {
-	msssdtoe.ResultType = ResultTypeErrorOutput
+	msssdtoe.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
 	if msssdtoe.Error != nil {
 		objectMap["error"] = msssdtoe.Error
@@ -2275,13 +9448,13 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
-	msssdtoml.ResultType = ResultTypeMigrationLevelOutput
+	msssdtoml.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
 	if msssdtoml.StartedOn != nil {
 		objectMap["startedOn"] = msssdtoml.StartedOn
@@ -2396,13 +9569,13 @@ type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
-	msssdtotl.ResultType = ResultTypeTableLevelOutput
+	msssdtotl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput
 	objectMap := make(map[string]interface{})
 	if msssdtotl.ObjectName != nil {
 		objectMap["objectName"] = msssdtotl.ObjectName
@@ -2491,13 +9664,13 @@ type MigrateSQLServerSQLDbTaskOutputValidationResult struct {
 	Status ValidationStatus `json:"status,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeMigrationValidationOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputValidationResult.
 func (msssdtovr MigrateSQLServerSQLDbTaskOutputValidationResult) MarshalJSON() ([]byte, error) {
-	msssdtovr.ResultType = ResultTypeMigrationValidationOutput
+	msssdtovr.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput
 	objectMap := make(map[string]interface{})
 	if msssdtovr.MigrationID != nil {
 		objectMap["migrationId"] = msssdtovr.MigrationID
@@ -2568,7 +9741,9 @@ type MigrateSQLServerSQLDbTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2588,10 +9763,53 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) MarshalJSON() ([]byte, error)
 	if msssdtp.State != "" {
 		objectMap["state"] = msssdtp.State
 	}
+	if msssdtp.Commands != nil {
+		objectMap["commands"] = msssdtp.Commands
+	}
 	if msssdtp.TaskType != "" {
 		objectMap["taskType"] = msssdtp.TaskType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
 }
 
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
@@ -2599,8 +9817,53 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateSQLServerSQLDbTaskPr
 	return &msssdtp, true
 }
 
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
 func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2609,8 +9872,28 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToTargetSQLDbTaskPro
 	return nil, false
 }
 
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
 func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
+func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2668,6 +9951,14 @@ func (msssdtp *MigrateSQLServerSQLDbTaskProperties) UnmarshalJSON(body []byte) e
 				}
 				msssdtp.State = state
 			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				msssdtp.Commands = &commands
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -2683,6 +9974,1490 @@ func (msssdtp *MigrateSQLServerSQLDbTaskProperties) UnmarshalJSON(body []byte) e
 	return nil
 }
 
+// MigrateSQLServerSQLMIDatabaseInput database specific information for SQL to Azure SQL DB Managed
+// Instance migration task inputs
+type MigrateSQLServerSQLMIDatabaseInput struct {
+	// Name - Name of the database
+	Name *string `json:"name,omitempty"`
+	// RestoreDatabaseName - Name of the database at destination
+	RestoreDatabaseName *string `json:"restoreDatabaseName,omitempty"`
+	// BackupFileShare - Backup file share information for backing up this database.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// BackupFilePaths - The list of backup files to be used in case of existing backups.
+	BackupFilePaths *[]string `json:"backupFilePaths,omitempty"`
+}
+
+// MigrateSQLServerSQLMISyncTaskInput input for task that migrates SQL Server databases to Azure SQL
+// Database Managed Instance online scenario.
+type MigrateSQLServerSQLMISyncTaskInput struct {
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLMIDatabaseInput `json:"selectedDatabases,omitempty"`
+	// BackupFileShare - Backup file share information for all selected databases.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// StorageResourceID - Fully qualified resourceId of storage
+	StorageResourceID *string `json:"storageResourceId,omitempty"`
+	// SourceConnectionInfo - Connection information for source SQL Server
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for Azure SQL Database Managed Instance
+	TargetConnectionInfo *MiSQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// AzureApp - Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL Database Managed Instance and the Azure Storage Account
+	AzureApp *AzureActiveDirectoryApp `json:"azureApp,omitempty"`
+}
+
+// BasicMigrateSQLServerSQLMISyncTaskOutput output for task that migrates SQL Server databases to Azure SQL Database
+// Managed Instance using Log Replay Service.
+type BasicMigrateSQLServerSQLMISyncTaskOutput interface {
+	AsMigrateSQLServerSQLMISyncTaskOutputError() (*MigrateSQLServerSQLMISyncTaskOutputError, bool)
+	AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel, bool)
+	AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLMISyncTaskOutputMigrationLevel, bool)
+	AsMigrateSQLServerSQLMISyncTaskOutput() (*MigrateSQLServerSQLMISyncTaskOutput, bool)
+}
+
+// MigrateSQLServerSQLMISyncTaskOutput output for task that migrates SQL Server databases to Azure SQL Database
+// Managed Instance using Log Replay Service.
+type MigrateSQLServerSQLMISyncTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
+}
+
+func unmarshalBasicMigrateSQLServerSQLMISyncTaskOutput(body []byte) (BasicMigrateSQLServerSQLMISyncTaskOutput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["resultType"] {
+	case string(ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput):
+		var msssmstoe MigrateSQLServerSQLMISyncTaskOutputError
+		err := json.Unmarshal(body, &msssmstoe)
+		return msssmstoe, err
+	case string(ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput):
+		var msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel
+		err := json.Unmarshal(body, &msssmstodl)
+		return msssmstodl, err
+	case string(ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput):
+		var msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel
+		err := json.Unmarshal(body, &msssmstoml)
+		return msssmstoml, err
+	default:
+		var msssmsto MigrateSQLServerSQLMISyncTaskOutput
+		err := json.Unmarshal(body, &msssmsto)
+		return msssmsto, err
+	}
+}
+func unmarshalBasicMigrateSQLServerSQLMISyncTaskOutputArray(body []byte) ([]BasicMigrateSQLServerSQLMISyncTaskOutput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	msssmstoArray := make([]BasicMigrateSQLServerSQLMISyncTaskOutput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		msssmsto, err := unmarshalBasicMigrateSQLServerSQLMISyncTaskOutput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		msssmstoArray[index] = msssmsto
+	}
+	return msssmstoArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMISyncTaskOutput.
+func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) MarshalJSON() ([]byte, error) {
+	msssmsto.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput
+	objectMap := make(map[string]interface{})
+	if msssmsto.ID != nil {
+		objectMap["id"] = msssmsto.ID
+	}
+	if msssmsto.ResultType != "" {
+		objectMap["resultType"] = msssmsto.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputError is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutput.
+func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) AsMigrateSQLServerSQLMISyncTaskOutputError() (*MigrateSQLServerSQLMISyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutput.
+func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutput.
+func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLMISyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutput.
+func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) AsMigrateSQLServerSQLMISyncTaskOutput() (*MigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return &msssmsto, true
+}
+
+// AsBasicMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutput.
+func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) AsBasicMigrateSQLServerSQLMISyncTaskOutput() (BasicMigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return &msssmsto, true
+}
+
+// MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel ...
+type MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel struct {
+	// SourceDatabaseName - Name of the database
+	SourceDatabaseName *string `json:"sourceDatabaseName,omitempty"`
+	// MigrationState - Current state of database. Possible values include: 'UNDEFINED', 'INITIAL', 'FULLBACKUPUPLOADSTART', 'LOGSHIPPINGSTART', 'UPLOADLOGFILESSTART', 'CUTOVERSTART', 'POSTCUTOVERCOMPLETE', 'COMPLETED', 'CANCELLED', 'FAILED'
+	MigrationState DatabaseMigrationState `json:"migrationState,omitempty"`
+	// StartedOn - Database migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Database migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// FullBackupSetInfo - Details of full backup set
+	FullBackupSetInfo *BackupSetInfo `json:"fullBackupSetInfo,omitempty"`
+	// LastRestoredBackupSetInfo - Last applied backup set information
+	LastRestoredBackupSetInfo *BackupSetInfo `json:"lastRestoredBackupSetInfo,omitempty"`
+	// ActiveBackupSets - Backup sets that are currently active (Either being uploaded or getting restored)
+	ActiveBackupSets *[]BackupSetInfo `json:"activeBackupSets,omitempty"`
+	// ContainerName - Name of container created in the Azure Storage account where backups are copied to
+	ContainerName *string `json:"containerName,omitempty"`
+	// ErrorPrefix - prefix string to use for querying errors for this database
+	ErrorPrefix *string `json:"errorPrefix,omitempty"`
+	// IsFullBackupRestored - Whether full backup has been applied to the target database or not
+	IsFullBackupRestored *bool `json:"isFullBackupRestored,omitempty"`
+	// ExceptionsAndWarnings - Migration exceptions and warnings
+	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel.
+func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
+	msssmstodl.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssmstodl.SourceDatabaseName != nil {
+		objectMap["sourceDatabaseName"] = msssmstodl.SourceDatabaseName
+	}
+	if msssmstodl.MigrationState != "" {
+		objectMap["migrationState"] = msssmstodl.MigrationState
+	}
+	if msssmstodl.StartedOn != nil {
+		objectMap["startedOn"] = msssmstodl.StartedOn
+	}
+	if msssmstodl.EndedOn != nil {
+		objectMap["endedOn"] = msssmstodl.EndedOn
+	}
+	if msssmstodl.FullBackupSetInfo != nil {
+		objectMap["fullBackupSetInfo"] = msssmstodl.FullBackupSetInfo
+	}
+	if msssmstodl.LastRestoredBackupSetInfo != nil {
+		objectMap["lastRestoredBackupSetInfo"] = msssmstodl.LastRestoredBackupSetInfo
+	}
+	if msssmstodl.ActiveBackupSets != nil {
+		objectMap["activeBackupSets"] = msssmstodl.ActiveBackupSets
+	}
+	if msssmstodl.ContainerName != nil {
+		objectMap["containerName"] = msssmstodl.ContainerName
+	}
+	if msssmstodl.ErrorPrefix != nil {
+		objectMap["errorPrefix"] = msssmstodl.ErrorPrefix
+	}
+	if msssmstodl.IsFullBackupRestored != nil {
+		objectMap["isFullBackupRestored"] = msssmstodl.IsFullBackupRestored
+	}
+	if msssmstodl.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssmstodl.ExceptionsAndWarnings
+	}
+	if msssmstodl.ID != nil {
+		objectMap["id"] = msssmstodl.ID
+	}
+	if msssmstodl.ResultType != "" {
+		objectMap["resultType"] = msssmstodl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputError is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel.
+func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLMISyncTaskOutputError() (*MigrateSQLServerSQLMISyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel.
+func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel, bool) {
+	return &msssmstodl, true
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel.
+func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLMISyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel.
+func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) AsMigrateSQLServerSQLMISyncTaskOutput() (*MigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel.
+func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) AsBasicMigrateSQLServerSQLMISyncTaskOutput() (BasicMigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return &msssmstodl, true
+}
+
+// MigrateSQLServerSQLMISyncTaskOutputError ...
+type MigrateSQLServerSQLMISyncTaskOutputError struct {
+	// Error - Migration error
+	Error *ReportableException `json:"error,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMISyncTaskOutputError.
+func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) MarshalJSON() ([]byte, error) {
+	msssmstoe.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput
+	objectMap := make(map[string]interface{})
+	if msssmstoe.Error != nil {
+		objectMap["error"] = msssmstoe.Error
+	}
+	if msssmstoe.ID != nil {
+		objectMap["id"] = msssmstoe.ID
+	}
+	if msssmstoe.ResultType != "" {
+		objectMap["resultType"] = msssmstoe.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputError is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputError.
+func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) AsMigrateSQLServerSQLMISyncTaskOutputError() (*MigrateSQLServerSQLMISyncTaskOutputError, bool) {
+	return &msssmstoe, true
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputError.
+func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputError.
+func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLMISyncTaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputError.
+func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) AsMigrateSQLServerSQLMISyncTaskOutput() (*MigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputError.
+func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) AsBasicMigrateSQLServerSQLMISyncTaskOutput() (BasicMigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return &msssmstoe, true
+}
+
+// MigrateSQLServerSQLMISyncTaskOutputMigrationLevel ...
+type MigrateSQLServerSQLMISyncTaskOutputMigrationLevel struct {
+	// DatabaseCount - Count of databases
+	DatabaseCount *int32 `json:"databaseCount,omitempty"`
+	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	State MigrationState `json:"state,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// SourceServerName - Source server name
+	SourceServerName *string `json:"sourceServerName,omitempty"`
+	// SourceServerVersion - Source server version
+	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
+	// SourceServerBrandVersion - Source server brand version
+	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
+	// TargetServerName - Target server name
+	TargetServerName *string `json:"targetServerName,omitempty"`
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServerBrandVersion - Target server brand version
+	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// DatabaseErrorCount - Number of database level errors
+	DatabaseErrorCount *int32 `json:"databaseErrorCount,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMISyncTaskOutputMigrationLevel.
+func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
+	msssmstoml.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssmstoml.DatabaseCount != nil {
+		objectMap["databaseCount"] = msssmstoml.DatabaseCount
+	}
+	if msssmstoml.State != "" {
+		objectMap["state"] = msssmstoml.State
+	}
+	if msssmstoml.StartedOn != nil {
+		objectMap["startedOn"] = msssmstoml.StartedOn
+	}
+	if msssmstoml.EndedOn != nil {
+		objectMap["endedOn"] = msssmstoml.EndedOn
+	}
+	if msssmstoml.SourceServerName != nil {
+		objectMap["sourceServerName"] = msssmstoml.SourceServerName
+	}
+	if msssmstoml.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = msssmstoml.SourceServerVersion
+	}
+	if msssmstoml.SourceServerBrandVersion != nil {
+		objectMap["sourceServerBrandVersion"] = msssmstoml.SourceServerBrandVersion
+	}
+	if msssmstoml.TargetServerName != nil {
+		objectMap["targetServerName"] = msssmstoml.TargetServerName
+	}
+	if msssmstoml.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = msssmstoml.TargetServerVersion
+	}
+	if msssmstoml.TargetServerBrandVersion != nil {
+		objectMap["targetServerBrandVersion"] = msssmstoml.TargetServerBrandVersion
+	}
+	if msssmstoml.DatabaseErrorCount != nil {
+		objectMap["databaseErrorCount"] = msssmstoml.DatabaseErrorCount
+	}
+	if msssmstoml.ID != nil {
+		objectMap["id"] = msssmstoml.ID
+	}
+	if msssmstoml.ResultType != "" {
+		objectMap["resultType"] = msssmstoml.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputError is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputMigrationLevel.
+func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLMISyncTaskOutputError() (*MigrateSQLServerSQLMISyncTaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputMigrationLevel.
+func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLMISyncTaskOutputDatabaseLevel() (*MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputMigrationLevel.
+func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLMISyncTaskOutputMigrationLevel() (*MigrateSQLServerSQLMISyncTaskOutputMigrationLevel, bool) {
+	return &msssmstoml, true
+}
+
+// AsMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputMigrationLevel.
+func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) AsMigrateSQLServerSQLMISyncTaskOutput() (*MigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMISyncTaskOutput is the BasicMigrateSQLServerSQLMISyncTaskOutput implementation for MigrateSQLServerSQLMISyncTaskOutputMigrationLevel.
+func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) AsBasicMigrateSQLServerSQLMISyncTaskOutput() (BasicMigrateSQLServerSQLMISyncTaskOutput, bool) {
+	return &msssmstoml, true
+}
+
+// MigrateSQLServerSQLMISyncTaskProperties properties for task that migrates SQL Server databases to Azure
+// SQL Database Managed Instance sync scenario
+type MigrateSQLServerSQLMISyncTaskProperties struct {
+	// Input - Task input
+	Input *MigrateSQLServerSQLMISyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicMigrateSQLServerSQLMISyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) MarshalJSON() ([]byte, error) {
+	msssmstp.TaskType = TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS
+	objectMap := make(map[string]interface{})
+	if msssmstp.Input != nil {
+		objectMap["input"] = msssmstp.Input
+	}
+	if msssmstp.Output != nil {
+		objectMap["output"] = msssmstp.Output
+	}
+	if msssmstp.Errors != nil {
+		objectMap["errors"] = msssmstp.Errors
+	}
+	if msssmstp.State != "" {
+		objectMap["state"] = msssmstp.State
+	}
+	if msssmstp.Commands != nil {
+		objectMap["commands"] = msssmstp.Commands
+	}
+	if msssmstp.TaskType != "" {
+		objectMap["taskType"] = msssmstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return &msssmstp, true
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
+func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &msssmstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrateSQLServerSQLMISyncTaskProperties struct.
+func (msssmstp *MigrateSQLServerSQLMISyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MigrateSQLServerSQLMISyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				msssmstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMigrateSQLServerSQLMISyncTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				msssmstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				msssmstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				msssmstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				msssmstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				msssmstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// MigrateSQLServerSQLMITaskInput input for task that migrates SQL Server databases to Azure SQL Database
+// Managed Instance.
+type MigrateSQLServerSQLMITaskInput struct {
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLMIDatabaseInput `json:"selectedDatabases,omitempty"`
+	// SelectedLogins - Logins to migrate.
+	SelectedLogins *[]string `json:"selectedLogins,omitempty"`
+	// SelectedAgentJobs - Agent Jobs to migrate.
+	SelectedAgentJobs *[]string `json:"selectedAgentJobs,omitempty"`
+	// BackupFileShare - Backup file share information for all selected databases.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// BackupBlobShare - SAS URI of Azure Storage Account Container to be used for storing backup files.
+	BackupBlobShare *BlobShare `json:"backupBlobShare,omitempty"`
+	// BackupMode - Backup Mode to specify whether to use existing backup or create new backup. If using existing backups, backup file paths are required to be provided in selectedDatabases. Possible values include: 'CreateBackup', 'ExistingBackup'
+	BackupMode BackupMode `json:"backupMode,omitempty"`
+	// SourceConnectionInfo - Information for connecting to source
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Information for connecting to target
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+}
+
+// BasicMigrateSQLServerSQLMITaskOutput output for task that migrates SQL Server databases to Azure SQL Database
+// Managed Instance.
+type BasicMigrateSQLServerSQLMITaskOutput interface {
+	AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool)
+	AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool)
+	AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool)
+	AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool)
+	AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool)
+	AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool)
+}
+
+// MigrateSQLServerSQLMITaskOutput output for task that migrates SQL Server databases to Azure SQL Database
+// Managed Instance.
+type MigrateSQLServerSQLMITaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
+}
+
+func unmarshalBasicMigrateSQLServerSQLMITaskOutput(body []byte) (BasicMigrateSQLServerSQLMITaskOutput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["resultType"] {
+	case string(ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput):
+		var msssmtoe MigrateSQLServerSQLMITaskOutputError
+		err := json.Unmarshal(body, &msssmtoe)
+		return msssmtoe, err
+	case string(ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput):
+		var msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel
+		err := json.Unmarshal(body, &msssmtoll)
+		return msssmtoll, err
+	case string(ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput):
+		var msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel
+		err := json.Unmarshal(body, &msssmtoajl)
+		return msssmtoajl, err
+	case string(ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput):
+		var msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel
+		err := json.Unmarshal(body, &msssmtodl)
+		return msssmtodl, err
+	case string(ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput):
+		var msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel
+		err := json.Unmarshal(body, &msssmtoml)
+		return msssmtoml, err
+	default:
+		var msssmto MigrateSQLServerSQLMITaskOutput
+		err := json.Unmarshal(body, &msssmto)
+		return msssmto, err
+	}
+}
+func unmarshalBasicMigrateSQLServerSQLMITaskOutputArray(body []byte) ([]BasicMigrateSQLServerSQLMITaskOutput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	msssmtoArray := make([]BasicMigrateSQLServerSQLMITaskOutput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		msssmto, err := unmarshalBasicMigrateSQLServerSQLMITaskOutput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		msssmtoArray[index] = msssmto
+	}
+	return msssmtoArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) MarshalJSON() ([]byte, error) {
+	msssmto.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput
+	objectMap := make(map[string]interface{})
+	if msssmto.ID != nil {
+		objectMap["id"] = msssmto.ID
+	}
+	if msssmto.ResultType != "" {
+		objectMap["resultType"] = msssmto.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMITaskOutputError is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputLoginLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputAgentJobLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmto, true
+}
+
+// AsBasicMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutput.
+func (msssmto MigrateSQLServerSQLMITaskOutput) AsBasicMigrateSQLServerSQLMITaskOutput() (BasicMigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmto, true
+}
+
+// MigrateSQLServerSQLMITaskOutputAgentJobLevel ...
+type MigrateSQLServerSQLMITaskOutputAgentJobLevel struct {
+	// Name - Agent Job name.
+	Name *string `json:"name,omitempty"`
+	// IsEnabled - The state of the original Agent Job.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	State MigrationState `json:"state,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// Message - Migration progress message
+	Message *string `json:"message,omitempty"`
+	// ExceptionsAndWarnings - Migration errors and warnings per job
+	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) MarshalJSON() ([]byte, error) {
+	msssmtoajl.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssmtoajl.Name != nil {
+		objectMap["name"] = msssmtoajl.Name
+	}
+	if msssmtoajl.IsEnabled != nil {
+		objectMap["isEnabled"] = msssmtoajl.IsEnabled
+	}
+	if msssmtoajl.State != "" {
+		objectMap["state"] = msssmtoajl.State
+	}
+	if msssmtoajl.StartedOn != nil {
+		objectMap["startedOn"] = msssmtoajl.StartedOn
+	}
+	if msssmtoajl.EndedOn != nil {
+		objectMap["endedOn"] = msssmtoajl.EndedOn
+	}
+	if msssmtoajl.Message != nil {
+		objectMap["message"] = msssmtoajl.Message
+	}
+	if msssmtoajl.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssmtoajl.ExceptionsAndWarnings
+	}
+	if msssmtoajl.ID != nil {
+		objectMap["id"] = msssmtoajl.ID
+	}
+	if msssmtoajl.ResultType != "" {
+		objectMap["resultType"] = msssmtoajl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMITaskOutputError is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputLoginLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputAgentJobLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool) {
+	return &msssmtoajl, true
+}
+
+// AsMigrateSQLServerSQLMITaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputAgentJobLevel.
+func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsBasicMigrateSQLServerSQLMITaskOutput() (BasicMigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmtoajl, true
+}
+
+// MigrateSQLServerSQLMITaskOutputDatabaseLevel ...
+type MigrateSQLServerSQLMITaskOutputDatabaseLevel struct {
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// SizeMB - Size of the database in megabytes
+	SizeMB *float64 `json:"sizeMB,omitempty"`
+	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	State MigrationState `json:"state,omitempty"`
+	// Stage - Current stage of migration. Possible values include: 'DatabaseMigrationStageNone', 'DatabaseMigrationStageInitialize', 'DatabaseMigrationStageBackup', 'DatabaseMigrationStageFileCopy', 'DatabaseMigrationStageRestore', 'DatabaseMigrationStageCompleted'
+	Stage DatabaseMigrationStage `json:"stage,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// Message - Migration progress message
+	Message *string `json:"message,omitempty"`
+	// ExceptionsAndWarnings - Migration exceptions and warnings
+	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
+	msssmtodl.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssmtodl.DatabaseName != nil {
+		objectMap["databaseName"] = msssmtodl.DatabaseName
+	}
+	if msssmtodl.SizeMB != nil {
+		objectMap["sizeMB"] = msssmtodl.SizeMB
+	}
+	if msssmtodl.State != "" {
+		objectMap["state"] = msssmtodl.State
+	}
+	if msssmtodl.Stage != "" {
+		objectMap["stage"] = msssmtodl.Stage
+	}
+	if msssmtodl.StartedOn != nil {
+		objectMap["startedOn"] = msssmtodl.StartedOn
+	}
+	if msssmtodl.EndedOn != nil {
+		objectMap["endedOn"] = msssmtodl.EndedOn
+	}
+	if msssmtodl.Message != nil {
+		objectMap["message"] = msssmtodl.Message
+	}
+	if msssmtodl.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssmtodl.ExceptionsAndWarnings
+	}
+	if msssmtodl.ID != nil {
+		objectMap["id"] = msssmtodl.ID
+	}
+	if msssmtodl.ResultType != "" {
+		objectMap["resultType"] = msssmtodl.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMITaskOutputError is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputLoginLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputAgentJobLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool) {
+	return &msssmtodl, true
+}
+
+// AsMigrateSQLServerSQLMITaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputDatabaseLevel.
+func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsBasicMigrateSQLServerSQLMITaskOutput() (BasicMigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmtodl, true
+}
+
+// MigrateSQLServerSQLMITaskOutputError ...
+type MigrateSQLServerSQLMITaskOutputError struct {
+	// Error - Migration error
+	Error *ReportableException `json:"error,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) MarshalJSON() ([]byte, error) {
+	msssmtoe.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput
+	objectMap := make(map[string]interface{})
+	if msssmtoe.Error != nil {
+		objectMap["error"] = msssmtoe.Error
+	}
+	if msssmtoe.ID != nil {
+		objectMap["id"] = msssmtoe.ID
+	}
+	if msssmtoe.ResultType != "" {
+		objectMap["resultType"] = msssmtoe.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMITaskOutputError is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool) {
+	return &msssmtoe, true
+}
+
+// AsMigrateSQLServerSQLMITaskOutputLoginLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputAgentJobLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputError.
+func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsBasicMigrateSQLServerSQLMITaskOutput() (BasicMigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmtoe, true
+}
+
+// MigrateSQLServerSQLMITaskOutputLoginLevel ...
+type MigrateSQLServerSQLMITaskOutputLoginLevel struct {
+	// LoginName - Login name.
+	LoginName *string `json:"loginName,omitempty"`
+	// State - Current state of login. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	State MigrationState `json:"state,omitempty"`
+	// Stage - Current stage of login. Possible values include: 'LoginMigrationStageNone', 'LoginMigrationStageInitialize', 'LoginMigrationStageLoginMigration', 'LoginMigrationStageEstablishUserMapping', 'LoginMigrationStageAssignRoleMembership', 'LoginMigrationStageAssignRoleOwnership', 'LoginMigrationStageEstablishServerPermissions', 'LoginMigrationStageEstablishObjectPermissions', 'LoginMigrationStageCompleted'
+	Stage LoginMigrationStage `json:"stage,omitempty"`
+	// StartedOn - Login migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Login migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// Message - Login migration progress message
+	Message *string `json:"message,omitempty"`
+	// ExceptionsAndWarnings - Login migration errors and warnings per login
+	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) MarshalJSON() ([]byte, error) {
+	msssmtoll.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssmtoll.LoginName != nil {
+		objectMap["loginName"] = msssmtoll.LoginName
+	}
+	if msssmtoll.State != "" {
+		objectMap["state"] = msssmtoll.State
+	}
+	if msssmtoll.Stage != "" {
+		objectMap["stage"] = msssmtoll.Stage
+	}
+	if msssmtoll.StartedOn != nil {
+		objectMap["startedOn"] = msssmtoll.StartedOn
+	}
+	if msssmtoll.EndedOn != nil {
+		objectMap["endedOn"] = msssmtoll.EndedOn
+	}
+	if msssmtoll.Message != nil {
+		objectMap["message"] = msssmtoll.Message
+	}
+	if msssmtoll.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssmtoll.ExceptionsAndWarnings
+	}
+	if msssmtoll.ID != nil {
+		objectMap["id"] = msssmtoll.ID
+	}
+	if msssmtoll.ResultType != "" {
+		objectMap["resultType"] = msssmtoll.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMITaskOutputError is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputLoginLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool) {
+	return &msssmtoll, true
+}
+
+// AsMigrateSQLServerSQLMITaskOutputAgentJobLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputLoginLevel.
+func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsBasicMigrateSQLServerSQLMITaskOutput() (BasicMigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmtoll, true
+}
+
+// MigrateSQLServerSQLMITaskOutputMigrationLevel ...
+type MigrateSQLServerSQLMITaskOutputMigrationLevel struct {
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// Status - Current status of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
+	Status MigrationStatus `json:"status,omitempty"`
+	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	State MigrationState `json:"state,omitempty"`
+	// AgentJobs - Selected agent jobs as a map from name to id
+	AgentJobs map[string]*string `json:"agentJobs"`
+	// Logins - Selected logins as a map from name to id
+	Logins map[string]*string `json:"logins"`
+	// Message - Migration progress message
+	Message *string `json:"message,omitempty"`
+	// ServerRoleResults - Map of server role migration results.
+	ServerRoleResults map[string]*StartMigrationScenarioServerRoleResult `json:"serverRoleResults"`
+	// OrphanedUsers - Map of users to database name of orphaned users.
+	OrphanedUsers map[string]*string `json:"orphanedUsers"`
+	// Databases - Selected databases as a map from database name to database id
+	Databases map[string]*string `json:"databases"`
+	// SourceServerVersion - Source server version
+	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
+	// SourceServerBrandVersion - Source server brand version
+	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
+	// TargetServerVersion - Target server version
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
+	// TargetServerBrandVersion - Target server brand version
+	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// ExceptionsAndWarnings - Migration exceptions and warnings.
+	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
+	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
+	msssmtoml.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput
+	objectMap := make(map[string]interface{})
+	if msssmtoml.StartedOn != nil {
+		objectMap["startedOn"] = msssmtoml.StartedOn
+	}
+	if msssmtoml.EndedOn != nil {
+		objectMap["endedOn"] = msssmtoml.EndedOn
+	}
+	if msssmtoml.Status != "" {
+		objectMap["status"] = msssmtoml.Status
+	}
+	if msssmtoml.State != "" {
+		objectMap["state"] = msssmtoml.State
+	}
+	if msssmtoml.AgentJobs != nil {
+		objectMap["agentJobs"] = msssmtoml.AgentJobs
+	}
+	if msssmtoml.Logins != nil {
+		objectMap["logins"] = msssmtoml.Logins
+	}
+	if msssmtoml.Message != nil {
+		objectMap["message"] = msssmtoml.Message
+	}
+	if msssmtoml.ServerRoleResults != nil {
+		objectMap["serverRoleResults"] = msssmtoml.ServerRoleResults
+	}
+	if msssmtoml.OrphanedUsers != nil {
+		objectMap["orphanedUsers"] = msssmtoml.OrphanedUsers
+	}
+	if msssmtoml.Databases != nil {
+		objectMap["databases"] = msssmtoml.Databases
+	}
+	if msssmtoml.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = msssmtoml.SourceServerVersion
+	}
+	if msssmtoml.SourceServerBrandVersion != nil {
+		objectMap["sourceServerBrandVersion"] = msssmtoml.SourceServerBrandVersion
+	}
+	if msssmtoml.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = msssmtoml.TargetServerVersion
+	}
+	if msssmtoml.TargetServerBrandVersion != nil {
+		objectMap["targetServerBrandVersion"] = msssmtoml.TargetServerBrandVersion
+	}
+	if msssmtoml.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssmtoml.ExceptionsAndWarnings
+	}
+	if msssmtoml.ID != nil {
+		objectMap["id"] = msssmtoml.ID
+	}
+	if msssmtoml.ResultType != "" {
+		objectMap["resultType"] = msssmtoml.ResultType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateSQLServerSQLMITaskOutputError is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsMigrateSQLServerSQLMITaskOutputError() (*MigrateSQLServerSQLMITaskOutputError, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputLoginLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsMigrateSQLServerSQLMITaskOutputLoginLevel() (*MigrateSQLServerSQLMITaskOutputLoginLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputAgentJobLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsMigrateSQLServerSQLMITaskOutputAgentJobLevel() (*MigrateSQLServerSQLMITaskOutputAgentJobLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsMigrateSQLServerSQLMITaskOutputDatabaseLevel() (*MigrateSQLServerSQLMITaskOutputDatabaseLevel, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskOutputMigrationLevel is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsMigrateSQLServerSQLMITaskOutputMigrationLevel() (*MigrateSQLServerSQLMITaskOutputMigrationLevel, bool) {
+	return &msssmtoml, true
+}
+
+// AsMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsMigrateSQLServerSQLMITaskOutput() (*MigrateSQLServerSQLMITaskOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateSQLServerSQLMITaskOutput is the BasicMigrateSQLServerSQLMITaskOutput implementation for MigrateSQLServerSQLMITaskOutputMigrationLevel.
+func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsBasicMigrateSQLServerSQLMITaskOutput() (BasicMigrateSQLServerSQLMITaskOutput, bool) {
+	return &msssmtoml, true
+}
+
+// MigrateSQLServerSQLMITaskProperties properties for task that migrates SQL Server databases to Azure SQL
+// Database Managed Instance
+type MigrateSQLServerSQLMITaskProperties struct {
+	// Input - Task input
+	Input *MigrateSQLServerSQLMITaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicMigrateSQLServerSQLMITaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) MarshalJSON() ([]byte, error) {
+	msssmtp.TaskType = TaskTypeMigrateSQLServerAzureSQLDbMI
+	objectMap := make(map[string]interface{})
+	if msssmtp.Input != nil {
+		objectMap["input"] = msssmtp.Input
+	}
+	if msssmtp.Output != nil {
+		objectMap["output"] = msssmtp.Output
+	}
+	if msssmtp.Errors != nil {
+		objectMap["errors"] = msssmtp.Errors
+	}
+	if msssmtp.State != "" {
+		objectMap["state"] = msssmtp.State
+	}
+	if msssmtp.Commands != nil {
+		objectMap["commands"] = msssmtp.Commands
+	}
+	if msssmtp.TaskType != "" {
+		objectMap["taskType"] = msssmtp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return &msssmtp, true
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
+func (msssmtp MigrateSQLServerSQLMITaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &msssmtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrateSQLServerSQLMITaskProperties struct.
+func (msssmtp *MigrateSQLServerSQLMITaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MigrateSQLServerSQLMITaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				msssmtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMigrateSQLServerSQLMITaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				msssmtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				msssmtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				msssmtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				msssmtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				msssmtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
 // MigrateSQLServerSQLServerDatabaseInput database specific information for SQL to SQL migration task
 // inputs
 type MigrateSQLServerSQLServerDatabaseInput struct {
@@ -2690,10 +11465,98 @@ type MigrateSQLServerSQLServerDatabaseInput struct {
 	Name *string `json:"name,omitempty"`
 	// RestoreDatabaseName - Name of the database at destination
 	RestoreDatabaseName *string `json:"restoreDatabaseName,omitempty"`
-	// BackupFileShare - Backup file share information for this database.
-	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// BackupAndRestoreFolder - The backup and restore folder
+	BackupAndRestoreFolder *string `json:"backupAndRestoreFolder,omitempty"`
 	// DatabaseFiles - The list of database files
 	DatabaseFiles *[]DatabaseFileInput `json:"databaseFiles,omitempty"`
+}
+
+// MigrateSyncCompleteCommandInput input for command that completes sync migration for a database.
+type MigrateSyncCompleteCommandInput struct {
+	// DatabaseName - Name of database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// CommitTimeStamp - Time stamp to complete
+	CommitTimeStamp *date.Time `json:"commitTimeStamp,omitempty"`
+}
+
+// MigrateSyncCompleteCommandOutput output for command that completes sync migration for a database.
+type MigrateSyncCompleteCommandOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// Errors - List of errors that happened during the command execution
+	Errors *[]ReportableException `json:"errors,omitempty"`
+}
+
+// MigrateSyncCompleteCommandProperties properties for the command that completes sync migration for a
+// database.
+type MigrateSyncCompleteCommandProperties struct {
+	// Input - Command input
+	Input *MigrateSyncCompleteCommandInput `json:"input,omitempty"`
+	// Output - Command output. This is ignored if submitted.
+	Output *MigrateSyncCompleteCommandOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	State CommandState `json:"state,omitempty"`
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	CommandType CommandType `json:"commandType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) MarshalJSON() ([]byte, error) {
+	msccp.CommandType = CommandTypeMigrateSyncCompleteDatabase
+	objectMap := make(map[string]interface{})
+	if msccp.Input != nil {
+		objectMap["input"] = msccp.Input
+	}
+	if msccp.Output != nil {
+		objectMap["output"] = msccp.Output
+	}
+	if msccp.Errors != nil {
+		objectMap["errors"] = msccp.Errors
+	}
+	if msccp.State != "" {
+		objectMap["state"] = msccp.State
+	}
+	if msccp.CommandType != "" {
+		objectMap["commandType"] = msccp.CommandType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
+	return &msccp, true
+}
+
+// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
+	return nil, false
+}
+
+// AsCommandProperties is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsCommandProperties() (*CommandProperties, bool) {
+	return nil, false
+}
+
+// AsBasicCommandProperties is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
+func (msccp MigrateSyncCompleteCommandProperties) AsBasicCommandProperties() (BasicCommandProperties, bool) {
+	return &msccp, true
 }
 
 // MigrationEligibilityInfo information about migration eligibility of a server object
@@ -2749,6 +11612,938 @@ type MigrationValidationOptions struct {
 	EnableQueryAnalysisValidation *bool `json:"enableQueryAnalysisValidation,omitempty"`
 }
 
+// MiSQLConnectionInfo properties required to create a connection to Azure SQL database Managed instance
+type MiSQLConnectionInfo struct {
+	// ManagedInstanceResourceID - Resource id for Azure SQL database Managed instance
+	ManagedInstanceResourceID *string `json:"managedInstanceResourceId,omitempty"`
+	// UserName - User name
+	UserName *string `json:"userName,omitempty"`
+	// Password - Password credential.
+	Password *string `json:"password,omitempty"`
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) MarshalJSON() ([]byte, error) {
+	msci.Type = TypeMiSQLConnectionInfo
+	objectMap := make(map[string]interface{})
+	if msci.ManagedInstanceResourceID != nil {
+		objectMap["managedInstanceResourceId"] = msci.ManagedInstanceResourceID
+	}
+	if msci.UserName != nil {
+		objectMap["userName"] = msci.UserName
+	}
+	if msci.Password != nil {
+		objectMap["password"] = msci.Password
+	}
+	if msci.Type != "" {
+		objectMap["type"] = msci.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
+	return &msci, true
+}
+
+// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsSQLConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsConnectionInfo() (*ConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsBasicConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
+func (msci MiSQLConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
+	return &msci, true
+}
+
+// MongoDbCancelCommand properties for the command that cancels a migration in whole or in part
+type MongoDbCancelCommand struct {
+	// Input - Command input
+	Input *MongoDbCommandInput `json:"input,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	State CommandState `json:"state,omitempty"`
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	CommandType CommandType `json:"commandType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) MarshalJSON() ([]byte, error) {
+	mdcc.CommandType = CommandTypeCancel
+	objectMap := make(map[string]interface{})
+	if mdcc.Input != nil {
+		objectMap["input"] = mdcc.Input
+	}
+	if mdcc.Errors != nil {
+		objectMap["errors"] = mdcc.Errors
+	}
+	if mdcc.State != "" {
+		objectMap["state"] = mdcc.State
+	}
+	if mdcc.CommandType != "" {
+		objectMap["commandType"] = mdcc.CommandType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
+	return &mdcc, true
+}
+
+// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
+	return nil, false
+}
+
+// AsCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsCommandProperties() (*CommandProperties, bool) {
+	return nil, false
+}
+
+// AsBasicCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
+func (mdcc MongoDbCancelCommand) AsBasicCommandProperties() (BasicCommandProperties, bool) {
+	return &mdcc, true
+}
+
+// MongoDbClusterInfo describes a MongoDB data source
+type MongoDbClusterInfo struct {
+	// Databases - A list of non-system databases in the cluster
+	Databases *[]MongoDbDatabaseInfo `json:"databases,omitempty"`
+	// SupportsSharding - Whether the cluster supports sharded collections
+	SupportsSharding *bool `json:"supportsSharding,omitempty"`
+	// Type - The type of data source. Possible values include: 'BlobContainer', 'CosmosDb', 'MongoDb'
+	Type MongoDbClusterType `json:"type,omitempty"`
+	// Version - The version of the data source in the form x.y.z (e.g. 3.6.7). Not used if Type is BlobContainer.
+	Version *string `json:"version,omitempty"`
+}
+
+// MongoDbCollectionInfo describes a supported collection within a MongoDB database
+type MongoDbCollectionInfo struct {
+	// DatabaseName - The name of the database containing the collection
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// IsCapped - Whether the collection is a capped collection (i.e. whether it has a fixed size and acts like a circular buffer)
+	IsCapped *bool `json:"isCapped,omitempty"`
+	// IsSystemCollection - Whether the collection is system collection
+	IsSystemCollection *bool `json:"isSystemCollection,omitempty"`
+	// IsView - Whether the collection is a view of another collection
+	IsView *bool `json:"isView,omitempty"`
+	// ShardKey - The shard key on the collection, or null if the collection is not sharded
+	ShardKey *MongoDbShardKeyInfo `json:"shardKey,omitempty"`
+	// SupportsSharding - Whether the database has sharding enabled. Note that the migration task will enable sharding on the target if necessary.
+	SupportsSharding *bool `json:"supportsSharding,omitempty"`
+	// ViewOf - The name of the collection that this is a view of, if IsView is true
+	ViewOf *string `json:"viewOf,omitempty"`
+	// AverageDocumentSize - The average document size, or -1 if the average size is unknown
+	AverageDocumentSize *int64 `json:"averageDocumentSize,omitempty"`
+	// DataSize - The estimated total data size, in bytes, or -1 if the size is unknown.
+	DataSize *int64 `json:"dataSize,omitempty"`
+	// DocumentCount - The estimated total number of documents, or -1 if the document count is unknown
+	DocumentCount *int64 `json:"documentCount,omitempty"`
+	// Name - The unqualified name of the database or collection
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the database or collection. For a collection, this is the database-qualified name.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+}
+
+// MongoDbCollectionProgress describes the progress of a collection
+type MongoDbCollectionProgress struct {
+	// BytesCopied - The number of document bytes copied during the Copying stage
+	BytesCopied *int64 `json:"bytesCopied,omitempty"`
+	// DocumentsCopied - The number of documents copied during the Copying stage
+	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
+	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
+	ElapsedTime *string `json:"elapsedTime,omitempty"`
+	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
+	Errors map[string]*MongoDbError `json:"errors"`
+	// EventsPending - The number of oplog events awaiting replay
+	EventsPending *int64 `json:"eventsPending,omitempty"`
+	// EventsReplayed - The number of oplog events replayed so far
+	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
+	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
+	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
+	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
+	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
+	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
+	State MongoDbMigrationState `json:"state,omitempty"`
+	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
+	TotalBytes *int64 `json:"totalBytes,omitempty"`
+	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
+	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbCollectionProgress.
+func (mdcp MongoDbCollectionProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdcp.BytesCopied != nil {
+		objectMap["bytesCopied"] = mdcp.BytesCopied
+	}
+	if mdcp.DocumentsCopied != nil {
+		objectMap["documentsCopied"] = mdcp.DocumentsCopied
+	}
+	if mdcp.ElapsedTime != nil {
+		objectMap["elapsedTime"] = mdcp.ElapsedTime
+	}
+	if mdcp.Errors != nil {
+		objectMap["errors"] = mdcp.Errors
+	}
+	if mdcp.EventsPending != nil {
+		objectMap["eventsPending"] = mdcp.EventsPending
+	}
+	if mdcp.EventsReplayed != nil {
+		objectMap["eventsReplayed"] = mdcp.EventsReplayed
+	}
+	if mdcp.LastEventTime != nil {
+		objectMap["lastEventTime"] = mdcp.LastEventTime
+	}
+	if mdcp.LastReplayTime != nil {
+		objectMap["lastReplayTime"] = mdcp.LastReplayTime
+	}
+	if mdcp.Name != nil {
+		objectMap["name"] = mdcp.Name
+	}
+	if mdcp.QualifiedName != nil {
+		objectMap["qualifiedName"] = mdcp.QualifiedName
+	}
+	if mdcp.ResultType != "" {
+		objectMap["resultType"] = mdcp.ResultType
+	}
+	if mdcp.State != "" {
+		objectMap["state"] = mdcp.State
+	}
+	if mdcp.TotalBytes != nil {
+		objectMap["totalBytes"] = mdcp.TotalBytes
+	}
+	if mdcp.TotalDocuments != nil {
+		objectMap["totalDocuments"] = mdcp.TotalDocuments
+	}
+	return json.Marshal(objectMap)
+}
+
+// MongoDbCollectionSettings describes how an individual MongoDB collection should be migrated
+type MongoDbCollectionSettings struct {
+	// CanDelete - Whether the migrator is allowed to drop the target collection in the course of performing a migration. The default is true.
+	CanDelete *bool                   `json:"canDelete,omitempty"`
+	ShardKey  *MongoDbShardKeySetting `json:"shardKey,omitempty"`
+	// TargetRUs - The RUs that should be configured on a CosmosDB target, or null to use the default. This has no effect on non-CosmosDB targets.
+	TargetRUs *int32 `json:"targetRUs,omitempty"`
+}
+
+// MongoDbCommandInput describes the input to the 'cancel' and 'restart' MongoDB migration commands
+type MongoDbCommandInput struct {
+	// ObjectName - The qualified name of a database or collection to act upon, or null to act upon the entire migration
+	ObjectName *string `json:"objectName,omitempty"`
+}
+
+// MongoDbConnectionInfo describes a connection to a MongoDB data source
+type MongoDbConnectionInfo struct {
+	// ConnectionString - A MongoDB connection string or blob container URL. The user name and password can be specified here or in the userName and password properties
+	ConnectionString *string `json:"connectionString,omitempty"`
+	// UserName - User name
+	UserName *string `json:"userName,omitempty"`
+	// Password - Password credential.
+	Password *string `json:"password,omitempty"`
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) MarshalJSON() ([]byte, error) {
+	mdci.Type = TypeMongoDbConnectionInfo
+	objectMap := make(map[string]interface{})
+	if mdci.ConnectionString != nil {
+		objectMap["connectionString"] = mdci.ConnectionString
+	}
+	if mdci.UserName != nil {
+		objectMap["userName"] = mdci.UserName
+	}
+	if mdci.Password != nil {
+		objectMap["password"] = mdci.Password
+	}
+	if mdci.Type != "" {
+		objectMap["type"] = mdci.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
+	return &mdci, true
+}
+
+// AsSQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsConnectionInfo() (*ConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsBasicConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
+func (mdci MongoDbConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
+	return &mdci, true
+}
+
+// MongoDbDatabaseInfo describes a database within a MongoDB data source
+type MongoDbDatabaseInfo struct {
+	// Collections - A list of supported collections in a MongoDB database
+	Collections *[]MongoDbCollectionInfo `json:"collections,omitempty"`
+	// SupportsSharding - Whether the database has sharding enabled. Note that the migration task will enable sharding on the target if necessary.
+	SupportsSharding *bool `json:"supportsSharding,omitempty"`
+	// AverageDocumentSize - The average document size, or -1 if the average size is unknown
+	AverageDocumentSize *int64 `json:"averageDocumentSize,omitempty"`
+	// DataSize - The estimated total data size, in bytes, or -1 if the size is unknown.
+	DataSize *int64 `json:"dataSize,omitempty"`
+	// DocumentCount - The estimated total number of documents, or -1 if the document count is unknown
+	DocumentCount *int64 `json:"documentCount,omitempty"`
+	// Name - The unqualified name of the database or collection
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the database or collection. For a collection, this is the database-qualified name.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+}
+
+// MongoDbDatabaseProgress describes the progress of a database
+type MongoDbDatabaseProgress struct {
+	// Collections - The progress of the collections in the database. The keys are the unqualified names of the collections
+	Collections map[string]*MongoDbCollectionProgress `json:"collections"`
+	// BytesCopied - The number of document bytes copied during the Copying stage
+	BytesCopied *int64 `json:"bytesCopied,omitempty"`
+	// DocumentsCopied - The number of documents copied during the Copying stage
+	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
+	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
+	ElapsedTime *string `json:"elapsedTime,omitempty"`
+	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
+	Errors map[string]*MongoDbError `json:"errors"`
+	// EventsPending - The number of oplog events awaiting replay
+	EventsPending *int64 `json:"eventsPending,omitempty"`
+	// EventsReplayed - The number of oplog events replayed so far
+	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
+	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
+	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
+	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
+	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
+	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
+	State MongoDbMigrationState `json:"state,omitempty"`
+	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
+	TotalBytes *int64 `json:"totalBytes,omitempty"`
+	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
+	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbDatabaseProgress.
+func (mddp MongoDbDatabaseProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mddp.Collections != nil {
+		objectMap["collections"] = mddp.Collections
+	}
+	if mddp.BytesCopied != nil {
+		objectMap["bytesCopied"] = mddp.BytesCopied
+	}
+	if mddp.DocumentsCopied != nil {
+		objectMap["documentsCopied"] = mddp.DocumentsCopied
+	}
+	if mddp.ElapsedTime != nil {
+		objectMap["elapsedTime"] = mddp.ElapsedTime
+	}
+	if mddp.Errors != nil {
+		objectMap["errors"] = mddp.Errors
+	}
+	if mddp.EventsPending != nil {
+		objectMap["eventsPending"] = mddp.EventsPending
+	}
+	if mddp.EventsReplayed != nil {
+		objectMap["eventsReplayed"] = mddp.EventsReplayed
+	}
+	if mddp.LastEventTime != nil {
+		objectMap["lastEventTime"] = mddp.LastEventTime
+	}
+	if mddp.LastReplayTime != nil {
+		objectMap["lastReplayTime"] = mddp.LastReplayTime
+	}
+	if mddp.Name != nil {
+		objectMap["name"] = mddp.Name
+	}
+	if mddp.QualifiedName != nil {
+		objectMap["qualifiedName"] = mddp.QualifiedName
+	}
+	if mddp.ResultType != "" {
+		objectMap["resultType"] = mddp.ResultType
+	}
+	if mddp.State != "" {
+		objectMap["state"] = mddp.State
+	}
+	if mddp.TotalBytes != nil {
+		objectMap["totalBytes"] = mddp.TotalBytes
+	}
+	if mddp.TotalDocuments != nil {
+		objectMap["totalDocuments"] = mddp.TotalDocuments
+	}
+	return json.Marshal(objectMap)
+}
+
+// MongoDbDatabaseSettings describes how an individual MongoDB database should be migrated
+type MongoDbDatabaseSettings struct {
+	// Collections - The collections on the source database to migrate to the target. The keys are the unqualified names of the collections.
+	Collections map[string]*MongoDbCollectionSettings `json:"collections"`
+	// TargetRUs - The RUs that should be configured on a CosmosDB target, or null to use the default, or 0 if throughput should not be provisioned for the database. This has no effect on non-CosmosDB targets.
+	TargetRUs *int32 `json:"targetRUs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbDatabaseSettings.
+func (mdds MongoDbDatabaseSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdds.Collections != nil {
+		objectMap["collections"] = mdds.Collections
+	}
+	if mdds.TargetRUs != nil {
+		objectMap["targetRUs"] = mdds.TargetRUs
+	}
+	return json.Marshal(objectMap)
+}
+
+// MongoDbError describes an error or warning that occurred during a MongoDB migration
+type MongoDbError struct {
+	// Code - The non-localized, machine-readable code that describes the error or warning
+	Code *string `json:"code,omitempty"`
+	// Count - The number of times the error or warning has occurred
+	Count *int32 `json:"count,omitempty"`
+	// Message - The localized, human-readable message that describes the error or warning
+	Message *string `json:"message,omitempty"`
+	// Type - The type of error or warning. Possible values include: 'MongoDbErrorTypeError', 'MongoDbErrorTypeValidationError', 'MongoDbErrorTypeWarning'
+	Type MongoDbErrorType `json:"type,omitempty"`
+}
+
+// MongoDbFinishCommand properties for the command that finishes a migration in whole or in part
+type MongoDbFinishCommand struct {
+	// Input - Command input
+	Input *MongoDbFinishCommandInput `json:"input,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	State CommandState `json:"state,omitempty"`
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	CommandType CommandType `json:"commandType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) MarshalJSON() ([]byte, error) {
+	mdfc.CommandType = CommandTypeFinish
+	objectMap := make(map[string]interface{})
+	if mdfc.Input != nil {
+		objectMap["input"] = mdfc.Input
+	}
+	if mdfc.Errors != nil {
+		objectMap["errors"] = mdfc.Errors
+	}
+	if mdfc.State != "" {
+		objectMap["state"] = mdfc.State
+	}
+	if mdfc.CommandType != "" {
+		objectMap["commandType"] = mdfc.CommandType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
+	return &mdfc, true
+}
+
+// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
+	return nil, false
+}
+
+// AsCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsCommandProperties() (*CommandProperties, bool) {
+	return nil, false
+}
+
+// AsBasicCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
+func (mdfc MongoDbFinishCommand) AsBasicCommandProperties() (BasicCommandProperties, bool) {
+	return &mdfc, true
+}
+
+// MongoDbFinishCommandInput describes the input to the 'finish' MongoDB migration command
+type MongoDbFinishCommandInput struct {
+	// Immediate - If true, replication for the affected objects will be stopped immediately. If false, the migrator will finish replaying queued events before finishing the replication.
+	Immediate *bool `json:"immediate,omitempty"`
+	// ObjectName - The qualified name of a database or collection to act upon, or null to act upon the entire migration
+	ObjectName *string `json:"objectName,omitempty"`
+}
+
+// MongoDbMigrationProgress describes the progress of the overall migration
+type MongoDbMigrationProgress struct {
+	// Databases - The progress of the databases in the migration. The keys are the names of the databases
+	Databases map[string]*MongoDbDatabaseProgress `json:"databases"`
+	// BytesCopied - The number of document bytes copied during the Copying stage
+	BytesCopied *int64 `json:"bytesCopied,omitempty"`
+	// DocumentsCopied - The number of documents copied during the Copying stage
+	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
+	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
+	ElapsedTime *string `json:"elapsedTime,omitempty"`
+	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
+	Errors map[string]*MongoDbError `json:"errors"`
+	// EventsPending - The number of oplog events awaiting replay
+	EventsPending *int64 `json:"eventsPending,omitempty"`
+	// EventsReplayed - The number of oplog events replayed so far
+	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
+	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
+	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
+	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
+	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
+	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
+	State MongoDbMigrationState `json:"state,omitempty"`
+	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
+	TotalBytes *int64 `json:"totalBytes,omitempty"`
+	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
+	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbMigrationProgress.
+func (mdmp MongoDbMigrationProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdmp.Databases != nil {
+		objectMap["databases"] = mdmp.Databases
+	}
+	if mdmp.BytesCopied != nil {
+		objectMap["bytesCopied"] = mdmp.BytesCopied
+	}
+	if mdmp.DocumentsCopied != nil {
+		objectMap["documentsCopied"] = mdmp.DocumentsCopied
+	}
+	if mdmp.ElapsedTime != nil {
+		objectMap["elapsedTime"] = mdmp.ElapsedTime
+	}
+	if mdmp.Errors != nil {
+		objectMap["errors"] = mdmp.Errors
+	}
+	if mdmp.EventsPending != nil {
+		objectMap["eventsPending"] = mdmp.EventsPending
+	}
+	if mdmp.EventsReplayed != nil {
+		objectMap["eventsReplayed"] = mdmp.EventsReplayed
+	}
+	if mdmp.LastEventTime != nil {
+		objectMap["lastEventTime"] = mdmp.LastEventTime
+	}
+	if mdmp.LastReplayTime != nil {
+		objectMap["lastReplayTime"] = mdmp.LastReplayTime
+	}
+	if mdmp.Name != nil {
+		objectMap["name"] = mdmp.Name
+	}
+	if mdmp.QualifiedName != nil {
+		objectMap["qualifiedName"] = mdmp.QualifiedName
+	}
+	if mdmp.ResultType != "" {
+		objectMap["resultType"] = mdmp.ResultType
+	}
+	if mdmp.State != "" {
+		objectMap["state"] = mdmp.State
+	}
+	if mdmp.TotalBytes != nil {
+		objectMap["totalBytes"] = mdmp.TotalBytes
+	}
+	if mdmp.TotalDocuments != nil {
+		objectMap["totalDocuments"] = mdmp.TotalDocuments
+	}
+	return json.Marshal(objectMap)
+}
+
+// MongoDbMigrationSettings describes how a MongoDB data migration should be performed
+type MongoDbMigrationSettings struct {
+	// BoostRUs - The RU limit on a CosmosDB target that collections will be temporarily increased to (if lower) during the initial copy of a migration, from 10,000 to 1,000,000, or 0 to use the default boost (which is generally the maximum), or null to not boost the RUs. This setting has no effect on non-CosmosDB targets.
+	BoostRUs *int32 `json:"boostRUs,omitempty"`
+	// Databases - The databases on the source cluster to migrate to the target. The keys are the names of the databases.
+	Databases map[string]*MongoDbDatabaseSettings `json:"databases"`
+	// Replication - Describes how changes will be replicated from the source to the target. The default is OneTime. Possible values include: 'Disabled', 'OneTime', 'Continuous'
+	Replication MongoDbReplication `json:"replication,omitempty"`
+	// Source - Settings used to connect to the source cluster
+	Source *MongoDbConnectionInfo `json:"source,omitempty"`
+	// Target - Settings used to connect to the target cluster
+	Target *MongoDbConnectionInfo `json:"target,omitempty"`
+	// Throttling - Settings used to limit the resource usage of the migration
+	Throttling *MongoDbThrottlingSettings `json:"throttling,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbMigrationSettings.
+func (mdms MongoDbMigrationSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdms.BoostRUs != nil {
+		objectMap["boostRUs"] = mdms.BoostRUs
+	}
+	if mdms.Databases != nil {
+		objectMap["databases"] = mdms.Databases
+	}
+	if mdms.Replication != "" {
+		objectMap["replication"] = mdms.Replication
+	}
+	if mdms.Source != nil {
+		objectMap["source"] = mdms.Source
+	}
+	if mdms.Target != nil {
+		objectMap["target"] = mdms.Target
+	}
+	if mdms.Throttling != nil {
+		objectMap["throttling"] = mdms.Throttling
+	}
+	return json.Marshal(objectMap)
+}
+
+// MongoDbObjectInfo describes a database or collection within a MongoDB data source
+type MongoDbObjectInfo struct {
+	// AverageDocumentSize - The average document size, or -1 if the average size is unknown
+	AverageDocumentSize *int64 `json:"averageDocumentSize,omitempty"`
+	// DataSize - The estimated total data size, in bytes, or -1 if the size is unknown.
+	DataSize *int64 `json:"dataSize,omitempty"`
+	// DocumentCount - The estimated total number of documents, or -1 if the document count is unknown
+	DocumentCount *int64 `json:"documentCount,omitempty"`
+	// Name - The unqualified name of the database or collection
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the database or collection. For a collection, this is the database-qualified name.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+}
+
+// MongoDbProgress base class for MongoDB migration outputs
+type MongoDbProgress struct {
+	// BytesCopied - The number of document bytes copied during the Copying stage
+	BytesCopied *int64 `json:"bytesCopied,omitempty"`
+	// DocumentsCopied - The number of documents copied during the Copying stage
+	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
+	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
+	ElapsedTime *string `json:"elapsedTime,omitempty"`
+	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
+	Errors map[string]*MongoDbError `json:"errors"`
+	// EventsPending - The number of oplog events awaiting replay
+	EventsPending *int64 `json:"eventsPending,omitempty"`
+	// EventsReplayed - The number of oplog events replayed so far
+	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
+	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
+	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
+	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
+	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
+	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
+	Name *string `json:"name,omitempty"`
+	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
+	QualifiedName *string `json:"qualifiedName,omitempty"`
+	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
+	State MongoDbMigrationState `json:"state,omitempty"`
+	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
+	TotalBytes *int64 `json:"totalBytes,omitempty"`
+	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
+	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbProgress.
+func (mdp MongoDbProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdp.BytesCopied != nil {
+		objectMap["bytesCopied"] = mdp.BytesCopied
+	}
+	if mdp.DocumentsCopied != nil {
+		objectMap["documentsCopied"] = mdp.DocumentsCopied
+	}
+	if mdp.ElapsedTime != nil {
+		objectMap["elapsedTime"] = mdp.ElapsedTime
+	}
+	if mdp.Errors != nil {
+		objectMap["errors"] = mdp.Errors
+	}
+	if mdp.EventsPending != nil {
+		objectMap["eventsPending"] = mdp.EventsPending
+	}
+	if mdp.EventsReplayed != nil {
+		objectMap["eventsReplayed"] = mdp.EventsReplayed
+	}
+	if mdp.LastEventTime != nil {
+		objectMap["lastEventTime"] = mdp.LastEventTime
+	}
+	if mdp.LastReplayTime != nil {
+		objectMap["lastReplayTime"] = mdp.LastReplayTime
+	}
+	if mdp.Name != nil {
+		objectMap["name"] = mdp.Name
+	}
+	if mdp.QualifiedName != nil {
+		objectMap["qualifiedName"] = mdp.QualifiedName
+	}
+	if mdp.ResultType != "" {
+		objectMap["resultType"] = mdp.ResultType
+	}
+	if mdp.State != "" {
+		objectMap["state"] = mdp.State
+	}
+	if mdp.TotalBytes != nil {
+		objectMap["totalBytes"] = mdp.TotalBytes
+	}
+	if mdp.TotalDocuments != nil {
+		objectMap["totalDocuments"] = mdp.TotalDocuments
+	}
+	return json.Marshal(objectMap)
+}
+
+// MongoDbRestartCommand properties for the command that restarts a migration in whole or in part
+type MongoDbRestartCommand struct {
+	// Input - Command input
+	Input *MongoDbCommandInput `json:"input,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	State CommandState `json:"state,omitempty"`
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	CommandType CommandType `json:"commandType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) MarshalJSON() ([]byte, error) {
+	mdrc.CommandType = CommandTypeRestart
+	objectMap := make(map[string]interface{})
+	if mdrc.Input != nil {
+		objectMap["input"] = mdrc.Input
+	}
+	if mdrc.Errors != nil {
+		objectMap["errors"] = mdrc.Errors
+	}
+	if mdrc.State != "" {
+		objectMap["state"] = mdrc.State
+	}
+	if mdrc.CommandType != "" {
+		objectMap["commandType"] = mdrc.CommandType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
+	return nil, false
+}
+
+// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
+	return nil, false
+}
+
+// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
+	return &mdrc, true
+}
+
+// AsCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsCommandProperties() (*CommandProperties, bool) {
+	return nil, false
+}
+
+// AsBasicCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
+func (mdrc MongoDbRestartCommand) AsBasicCommandProperties() (BasicCommandProperties, bool) {
+	return &mdrc, true
+}
+
+// MongoDbShardKeyField describes a field reference within a MongoDB shard key
+type MongoDbShardKeyField struct {
+	// Name - The name of the field
+	Name *string `json:"name,omitempty"`
+	// Order - The field ordering. Possible values include: 'Forward', 'Reverse', 'Hashed'
+	Order MongoDbShardKeyOrder `json:"order,omitempty"`
+}
+
+// MongoDbShardKeyInfo describes a MongoDB shard key
+type MongoDbShardKeyInfo struct {
+	// Fields - The fields within the shard key
+	Fields *[]MongoDbShardKeyField `json:"fields,omitempty"`
+	// IsUnique - Whether the shard key is unique
+	IsUnique *bool `json:"isUnique,omitempty"`
+}
+
+// MongoDbShardKeySetting describes a MongoDB shard key
+type MongoDbShardKeySetting struct {
+	// Fields - The fields within the shard key
+	Fields *[]MongoDbShardKeyField `json:"fields,omitempty"`
+	// IsUnique - Whether the shard key is unique
+	IsUnique *bool `json:"isUnique,omitempty"`
+}
+
+// MongoDbThrottlingSettings specifies resource limits for the migration
+type MongoDbThrottlingSettings struct {
+	// MinFreeCPU - The percentage of CPU time that the migrator will try to avoid using, from 0 to 100
+	MinFreeCPU *int32 `json:"minFreeCpu,omitempty"`
+	// MinFreeMemoryMb - The number of megabytes of RAM that the migrator will try to avoid using
+	MinFreeMemoryMb *int32 `json:"minFreeMemoryMb,omitempty"`
+	// MaxParallelism - The maximum number of work items (e.g. collection copies) that will be processed in parallel
+	MaxParallelism *int32 `json:"maxParallelism,omitempty"`
+}
+
+// MySQLConnectionInfo information for connecting to MySQL server
+type MySQLConnectionInfo struct {
+	// ServerName - Name of the server
+	ServerName *string `json:"serverName,omitempty"`
+	// Port - Port for Server
+	Port *int32 `json:"port,omitempty"`
+	// UserName - User name
+	UserName *string `json:"userName,omitempty"`
+	// Password - Password credential.
+	Password *string `json:"password,omitempty"`
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) MarshalJSON() ([]byte, error) {
+	msci.Type = TypeMySQLConnectionInfo
+	objectMap := make(map[string]interface{})
+	if msci.ServerName != nil {
+		objectMap["serverName"] = msci.ServerName
+	}
+	if msci.Port != nil {
+		objectMap["port"] = msci.Port
+	}
+	if msci.UserName != nil {
+		objectMap["userName"] = msci.UserName
+	}
+	if msci.Password != nil {
+		objectMap["password"] = msci.Password
+	}
+	if msci.Type != "" {
+		objectMap["type"] = msci.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
+	return &msci, true
+}
+
+// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsSQLConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsConnectionInfo() (*ConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsBasicConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
+func (msci MySQLConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
+	return &msci, true
+}
+
 // NameAvailabilityRequest a resource type and proposed name
 type NameAvailabilityRequest struct {
 	// Name - The proposed resource name
@@ -2768,6 +12563,94 @@ type NameAvailabilityResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// NonSQLDataMigrationTable defines metadata for table to be migrated
+type NonSQLDataMigrationTable struct {
+	// SourceName - Source table name
+	SourceName *string `json:"sourceName,omitempty"`
+}
+
+// NonSQLDataMigrationTableResult object used to report the data migration results of a table
+type NonSQLDataMigrationTableResult struct {
+	// ResultCode - Result code of the data migration. Possible values include: 'Initial', 'Completed', 'ObjectNotExistsInSource', 'ObjectNotExistsInTarget', 'TargetObjectIsInaccessible', 'FatalError'
+	ResultCode ResultCode `json:"resultCode,omitempty"`
+	// SourceName - Name of the source table
+	SourceName *string `json:"sourceName,omitempty"`
+	// TargetName - Name of the target table
+	TargetName *string `json:"targetName,omitempty"`
+	// SourceRowCount - Number of rows in the source table
+	SourceRowCount *int64 `json:"sourceRowCount,omitempty"`
+	// TargetRowCount - Number of rows in the target table
+	TargetRowCount *int64 `json:"targetRowCount,omitempty"`
+	// ElapsedTimeInMiliseconds - Time taken to migrate the data
+	ElapsedTimeInMiliseconds *float64 `json:"elapsedTimeInMiliseconds,omitempty"`
+	// Errors - List of errors, if any, during migration
+	Errors *[]Error `json:"errors,omitempty"`
+}
+
+// NonSQLMigrationTaskInput base class for non sql migration task input
+type NonSQLMigrationTaskInput struct {
+	// TargetConnectionInfo - Information for connecting to target
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// TargetDatabaseName - Target database name
+	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
+	// ProjectName - Name of the migration project
+	ProjectName *string `json:"projectName,omitempty"`
+	// ProjectLocation - A URL that points to the drop location to access project artifacts
+	ProjectLocation *string `json:"projectLocation,omitempty"`
+	// SelectedTables - Metadata of the tables selected for migration
+	SelectedTables *[]NonSQLDataMigrationTable `json:"selectedTables,omitempty"`
+}
+
+// NonSQLMigrationTaskOutput base class for non sql migration task output
+type NonSQLMigrationTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// StartedOn - Migration start time
+	StartedOn *date.Time `json:"startedOn,omitempty"`
+	// EndedOn - Migration end time
+	EndedOn *date.Time `json:"endedOn,omitempty"`
+	// Status - Current state of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
+	Status MigrationStatus `json:"status,omitempty"`
+	// DataMigrationTableResults - Results of the migration. The key contains the table name and the value the table result object
+	DataMigrationTableResults map[string]*NonSQLDataMigrationTableResult `json:"dataMigrationTableResults"`
+	// ProgressMessage - Message about the progress of the migration
+	ProgressMessage *string `json:"progressMessage,omitempty"`
+	// SourceServerName - Name of source server
+	SourceServerName *string `json:"sourceServerName,omitempty"`
+	// TargetServerName - Name of target server
+	TargetServerName *string `json:"targetServerName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NonSQLMigrationTaskOutput.
+func (nsmto NonSQLMigrationTaskOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nsmto.ID != nil {
+		objectMap["id"] = nsmto.ID
+	}
+	if nsmto.StartedOn != nil {
+		objectMap["startedOn"] = nsmto.StartedOn
+	}
+	if nsmto.EndedOn != nil {
+		objectMap["endedOn"] = nsmto.EndedOn
+	}
+	if nsmto.Status != "" {
+		objectMap["status"] = nsmto.Status
+	}
+	if nsmto.DataMigrationTableResults != nil {
+		objectMap["dataMigrationTableResults"] = nsmto.DataMigrationTableResults
+	}
+	if nsmto.ProgressMessage != nil {
+		objectMap["progressMessage"] = nsmto.ProgressMessage
+	}
+	if nsmto.SourceServerName != nil {
+		objectMap["sourceServerName"] = nsmto.SourceServerName
+	}
+	if nsmto.TargetServerName != nil {
+		objectMap["targetServerName"] = nsmto.TargetServerName
+	}
+	return json.Marshal(objectMap)
+}
+
 // ODataError error information in OData format.
 type ODataError struct {
 	// Code - The machine-readable description of the error, such as 'InvalidRequest' or 'InternalServerError'
@@ -2776,6 +12659,82 @@ type ODataError struct {
 	Message *string `json:"message,omitempty"`
 	// Details - Inner errors that caused this error
 	Details *[]ODataError `json:"details,omitempty"`
+}
+
+// PostgreSQLConnectionInfo information for connecting to PostgreSQL server
+type PostgreSQLConnectionInfo struct {
+	// ServerName - Name of the server
+	ServerName *string `json:"serverName,omitempty"`
+	// DatabaseName - Name of the database
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// Port - Port for Server
+	Port *int32 `json:"port,omitempty"`
+	// UserName - User name
+	UserName *string `json:"userName,omitempty"`
+	// Password - Password credential.
+	Password *string `json:"password,omitempty"`
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) MarshalJSON() ([]byte, error) {
+	psci.Type = TypePostgreSQLConnectionInfo
+	objectMap := make(map[string]interface{})
+	if psci.ServerName != nil {
+		objectMap["serverName"] = psci.ServerName
+	}
+	if psci.DatabaseName != nil {
+		objectMap["databaseName"] = psci.DatabaseName
+	}
+	if psci.Port != nil {
+		objectMap["port"] = psci.Port
+	}
+	if psci.UserName != nil {
+		objectMap["userName"] = psci.UserName
+	}
+	if psci.Password != nil {
+		objectMap["password"] = psci.Password
+	}
+	if psci.Type != "" {
+		objectMap["type"] = psci.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
+	return &psci, true
+}
+
+// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsSQLConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsConnectionInfo() (*ConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsBasicConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
+func (psci PostgreSQLConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
+	return &psci, true
 }
 
 // Project a project resource
@@ -3056,7 +13015,7 @@ type ProjectMetadata struct {
 
 // ProjectProperties project-specific properties
 type ProjectProperties struct {
-	// SourcePlatform - Source platform for the project. Possible values include: 'SQL', 'Unknown'
+	// SourcePlatform - Source platform for the project. Possible values include: 'ProjectSourcePlatformSQL', 'ProjectSourcePlatformUnknown'
 	SourcePlatform ProjectSourcePlatform `json:"sourcePlatform,omitempty"`
 	// TargetPlatform - Target platform for the project. Possible values include: 'ProjectTargetPlatformSQLDB', 'ProjectTargetPlatformUnknown'
 	TargetPlatform ProjectTargetPlatform `json:"targetPlatform,omitempty"`
@@ -3068,7 +13027,7 @@ type ProjectProperties struct {
 	TargetConnectionInfo BasicConnectionInfo `json:"targetConnectionInfo,omitempty"`
 	// DatabasesInfo - List of DatabaseInfo
 	DatabasesInfo *[]DatabaseInfo `json:"databasesInfo,omitempty"`
-	// ProvisioningState - The project's provisioning state. Possible values include: 'Deleting', 'Succeeded'
+	// ProvisioningState - The project's provisioning state. Possible values include: 'ProjectProvisioningStateDeleting', 'ProjectProvisioningStateSucceeded'
 	ProvisioningState ProjectProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -3225,10 +13184,31 @@ func (pt *ProjectTask) UnmarshalJSON(body []byte) error {
 // BasicProjectTaskProperties base class for all types of DMS task properties. If task is not supported by current
 // client, this object is returned.
 type BasicProjectTaskProperties interface {
+	AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool)
+	AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool)
+	AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool)
+	AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool)
+	AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool)
+	AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool)
+	AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool)
+	AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool)
 	AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool)
+	AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool)
+	AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool)
+	AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool)
+	AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool)
+	AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool)
+	AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool)
+	AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool)
 	AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool)
+	AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool)
+	AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool)
 	AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool)
+	AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool)
+	AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool)
 	AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool)
+	AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool)
+	AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool)
 	AsProjectTaskProperties() (*ProjectTaskProperties, bool)
 }
 
@@ -3239,7 +13219,9 @@ type ProjectTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3251,22 +13233,106 @@ func unmarshalBasicProjectTaskProperties(body []byte) (BasicProjectTaskPropertie
 	}
 
 	switch m["taskType"] {
+	case string(TaskTypeGetTDECertificatesSQL):
+		var gtcstp GetTdeCertificatesSQLTaskProperties
+		err := json.Unmarshal(body, &gtcstp)
+		return gtcstp, err
+	case string(TaskTypeValidateMongoDb):
+		var vmdtp ValidateMongoDbTaskProperties
+		err := json.Unmarshal(body, &vmdtp)
+		return vmdtp, err
+	case string(TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS):
+		var vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties
+		err := json.Unmarshal(body, &vmisssmstp)
+		return vmisssmstp, err
+	case string(TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI):
+		var vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties
+		err := json.Unmarshal(body, &vmisssmtp)
+		return vmisssmtp, err
+	case string(TaskTypeValidateMigrationInputSQLServerSQLDbSync):
+		var vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties
+		err := json.Unmarshal(body, &vmisssdstp)
+		return vmisssdstp, err
+	case string(TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync):
+		var mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties
+		err := json.Unmarshal(body, &mpsadfpsstp)
+		return mpsadfpsstp, err
+	case string(TaskTypeMigrateMySQLAzureDbForMySQLSync):
+		var mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties
+		err := json.Unmarshal(body, &mmsadfmsstp)
+		return mmsadfmsstp, err
+	case string(TaskTypeMigrateSQLServerAzureSQLDbSync):
+		var msssdstp MigrateSQLServerSQLDbSyncTaskProperties
+		err := json.Unmarshal(body, &msssdstp)
+		return msssdstp, err
 	case string(TaskTypeMigrateSQLServerSQLDb):
 		var msssdtp MigrateSQLServerSQLDbTaskProperties
 		err := json.Unmarshal(body, &msssdtp)
 		return msssdtp, err
+	case string(TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS):
+		var msssmstp MigrateSQLServerSQLMISyncTaskProperties
+		err := json.Unmarshal(body, &msssmstp)
+		return msssmstp, err
+	case string(TaskTypeMigrateSQLServerAzureSQLDbMI):
+		var msssmtp MigrateSQLServerSQLMITaskProperties
+		err := json.Unmarshal(body, &msssmtp)
+		return msssmtp, err
+	case string(TaskTypeMigrateMongoDb):
+		var mmdtp MigrateMongoDbTaskProperties
+		err := json.Unmarshal(body, &mmdtp)
+		return mmdtp, err
+	case string(TaskTypeConnectToTargetAzureDbForMySQL):
+		var cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties
+		err := json.Unmarshal(body, &cttadfmstp)
+		return cttadfmstp, err
+	case string(TaskTypeConnectToTargetAzureSQLDbMISyncLRS):
+		var cttsmstp ConnectToTargetSQLMISyncTaskProperties
+		err := json.Unmarshal(body, &cttsmstp)
+		return cttsmstp, err
+	case string(TaskTypeConnectToTargetAzureSQLDbMI):
+		var cttsmtp ConnectToTargetSQLMITaskProperties
+		err := json.Unmarshal(body, &cttsmtp)
+		return cttsmtp, err
+	case string(TaskTypeGetUserTablesAzureSQLDbSync):
+		var gutsstp GetUserTablesSQLSyncTaskProperties
+		err := json.Unmarshal(body, &gutsstp)
+		return gutsstp, err
 	case string(TaskTypeGetUserTablesSQL):
 		var gutstp GetUserTablesSQLTaskProperties
 		err := json.Unmarshal(body, &gutstp)
 		return gutstp, err
+	case string(TaskTypeConnectToTargetAzureDbForPostgreSQLSync):
+		var cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties
+		err := json.Unmarshal(body, &cttadfpsstp)
+		return cttadfpsstp, err
+	case string(TaskTypeConnectToTargetSQLDbSync):
+		var cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties
+		err := json.Unmarshal(body, &cttssdstp)
+		return cttssdstp, err
 	case string(TaskTypeConnectToTargetSQLDb):
 		var cttsdtp ConnectToTargetSQLDbTaskProperties
 		err := json.Unmarshal(body, &cttsdtp)
 		return cttsdtp, err
+	case string(TaskTypeConnectToSourcePostgreSQLSync):
+		var ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties
+		err := json.Unmarshal(body, &ctspsstp)
+		return ctspsstp, err
+	case string(TaskTypeConnectToSourceSQLServerSync):
+		var ctsssstp ConnectToSourceSQLServerSyncTaskProperties
+		err := json.Unmarshal(body, &ctsssstp)
+		return ctsssstp, err
 	case string(TaskTypeConnectToSourceSQLServer):
 		var ctssstp ConnectToSourceSQLServerTaskProperties
 		err := json.Unmarshal(body, &ctssstp)
 		return ctssstp, err
+	case string(TaskTypeConnectMongoDb):
+		var ctmdtp ConnectToMongoDbTaskProperties
+		err := json.Unmarshal(body, &ctmdtp)
+		return ctmdtp, err
+	case string(TaskTypeConnectToSourceMySQL):
+		var ctsmstp ConnectToSourceMySQLTaskProperties
+		err := json.Unmarshal(body, &ctsmstp)
+		return ctsmstp, err
 	default:
 		var ptp ProjectTaskProperties
 		err := json.Unmarshal(body, &ptp)
@@ -3302,14 +13368,92 @@ func (ptp ProjectTaskProperties) MarshalJSON() ([]byte, error) {
 	if ptp.State != "" {
 		objectMap["state"] = ptp.State
 	}
+	if ptp.Commands != nil {
+		objectMap["commands"] = ptp.Commands
+	}
 	if ptp.TaskType != "" {
 		objectMap["taskType"] = ptp.TaskType
 	}
 	return json.Marshal(objectMap)
 }
 
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3318,13 +13462,43 @@ func (ptp ProjectTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTab
 	return nil, false
 }
 
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
 	return nil, false
 }
 
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
+func (ptp ProjectTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3336,6 +13510,56 @@ func (ptp ProjectTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperti
 // AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
 	return &ptp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ProjectTaskProperties struct.
+func (ptp *ProjectTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				ptp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				ptp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				ptp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				ptp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
 }
 
 // QueryAnalysisValidationResult results for query analysis comparison between the source and target
@@ -3530,6 +13754,8 @@ type QuotaName struct {
 type ReportableException struct {
 	// Message - Error message
 	Message *string `json:"message,omitempty"`
+	// ActionableMessage - Actionable steps for this exception
+	ActionableMessage *string `json:"actionableMessage,omitempty"`
 	// FilePath - The path to the file where exception occurred
 	FilePath *string `json:"filePath,omitempty"`
 	// LineNumber - The line number where exception occurred
@@ -3803,6 +14029,30 @@ type SchemaComparisonValidationResultType struct {
 	ObjectType ObjectType `json:"objectType,omitempty"`
 	// UpdateAction - Update action type with respect to target. Possible values include: 'DeletedOnTarget', 'ChangedOnTarget', 'AddedOnTarget'
 	UpdateAction UpdateActionType `json:"updateAction,omitempty"`
+}
+
+// SelectedCertificateInput info for ertificate to be exported for TDE enabled databases.
+type SelectedCertificateInput struct {
+	// CertificateName - Name of certificate to be exported.
+	CertificateName *string `json:"certificateName,omitempty"`
+	// Password - Password to use for encrypting the exported certificate.
+	Password *string `json:"password,omitempty"`
+}
+
+// ServerProperties server properties for Oracle, MySQL type source
+type ServerProperties struct {
+	// ServerPlatform - Name of the server platform
+	ServerPlatform *string `json:"serverPlatform,omitempty"`
+	// ServerName - Name of the server
+	ServerName *string `json:"serverName,omitempty"`
+	// ServerVersion - Version of the database server
+	ServerVersion *string `json:"serverVersion,omitempty"`
+	// ServerEdition - Edition of the database server
+	ServerEdition *string `json:"serverEdition,omitempty"`
+	// ServerOperatingSystemVersion - Version of the operating system
+	ServerOperatingSystemVersion *string `json:"serverOperatingSystemVersion,omitempty"`
+	// ServerDatabaseCount - Number of databases in the server
+	ServerDatabaseCount *int32 `json:"serverDatabaseCount,omitempty"`
 }
 
 // Service a Database Migration Service resource
@@ -4590,11 +14840,13 @@ type SQLConnectionInfo struct {
 	AdditionalSettings *string `json:"additionalSettings,omitempty"`
 	// TrustServerCertificate - Whether to trust the server certificate
 	TrustServerCertificate *bool `json:"trustServerCertificate,omitempty"`
+	// Platform - Server platform type for connection. Possible values include: 'SQLOnPrem'
+	Platform SQLSourcePlatform `json:"platform,omitempty"`
 	// UserName - User name
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -4617,6 +14869,9 @@ func (sci SQLConnectionInfo) MarshalJSON() ([]byte, error) {
 	if sci.TrustServerCertificate != nil {
 		objectMap["trustServerCertificate"] = sci.TrustServerCertificate
 	}
+	if sci.Platform != "" {
+		objectMap["platform"] = sci.Platform
+	}
 	if sci.UserName != nil {
 		objectMap["userName"] = sci.UserName
 	}
@@ -4627,6 +14882,26 @@ func (sci SQLConnectionInfo) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = sci.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
+func (sci SQLConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
+func (sci SQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
+func (sci SQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
+	return nil, false
+}
+
+// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
+func (sci SQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
+	return nil, false
 }
 
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
@@ -4652,7 +14927,24 @@ type SQLMigrationTaskInput struct {
 	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
 }
 
-// StartMigrationScenarioServerRoleResult migration results from a server role.
+// SQLServerSQLMISyncTaskInput input for task that migrates SQL Server databases to Azure SQL Database
+// Managed Instance online scenario.
+type SQLServerSQLMISyncTaskInput struct {
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLMIDatabaseInput `json:"selectedDatabases,omitempty"`
+	// BackupFileShare - Backup file share information for all selected databases.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// StorageResourceID - Fully qualified resourceId of storage
+	StorageResourceID *string `json:"storageResourceId,omitempty"`
+	// SourceConnectionInfo - Connection information for source SQL Server
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for Azure SQL Database Managed Instance
+	TargetConnectionInfo *MiSQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// AzureApp - Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL Database Managed Instance and the Azure Storage Account
+	AzureApp *AzureActiveDirectoryApp `json:"azureApp,omitempty"`
+}
+
+// StartMigrationScenarioServerRoleResult server role migration result
 type StartMigrationScenarioServerRoleResult struct {
 	// Name - Name of server role.
 	Name *string `json:"name,omitempty"`
@@ -4660,6 +14952,16 @@ type StartMigrationScenarioServerRoleResult struct {
 	State MigrationState `json:"state,omitempty"`
 	// ExceptionsAndWarnings - Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+}
+
+// SyncMigrationDatabaseErrorEvent database migration errors for online migration
+type SyncMigrationDatabaseErrorEvent struct {
+	// TimestampString - String value of timestamp.
+	TimestampString *string `json:"timestampString,omitempty"`
+	// EventTypeString - Event type.
+	EventTypeString *string `json:"eventTypeString,omitempty"`
+	// EventText - Event text.
+	EventText *string `json:"eventText,omitempty"`
 }
 
 // TaskList oData page of tasks
@@ -4841,6 +15143,1075 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// ValidateMigrationInputSQLServerSQLDbSyncTaskProperties properties for task that validates migration
+// input for SQL to Azure SQL DB sync migrations
+type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties struct {
+	// Input - Task input
+	Input *ValidateSyncMigrationInputSQLServerTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ValidateSyncMigrationInputSQLServerTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) MarshalJSON() ([]byte, error) {
+	vmisssdstp.TaskType = TaskTypeValidateMigrationInputSQLServerSQLDbSync
+	objectMap := make(map[string]interface{})
+	if vmisssdstp.Input != nil {
+		objectMap["input"] = vmisssdstp.Input
+	}
+	if vmisssdstp.Output != nil {
+		objectMap["output"] = vmisssdstp.Output
+	}
+	if vmisssdstp.Errors != nil {
+		objectMap["errors"] = vmisssdstp.Errors
+	}
+	if vmisssdstp.State != "" {
+		objectMap["state"] = vmisssdstp.State
+	}
+	if vmisssdstp.Commands != nil {
+		objectMap["commands"] = vmisssdstp.Commands
+	}
+	if vmisssdstp.TaskType != "" {
+		objectMap["taskType"] = vmisssdstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return &vmisssdstp, true
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
+func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &vmisssdstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties struct.
+func (vmisssdstp *ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ValidateSyncMigrationInputSQLServerTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ValidateSyncMigrationInputSQLServerTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ValidateMigrationInputSQLServerSQLMISyncTaskInput input for task that migrates SQL Server databases to
+// Azure SQL Database Managed Instance online scenario.
+type ValidateMigrationInputSQLServerSQLMISyncTaskInput struct {
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLMIDatabaseInput `json:"selectedDatabases,omitempty"`
+	// BackupFileShare - Backup file share information for all selected databases.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// StorageResourceID - Fully qualified resourceId of storage
+	StorageResourceID *string `json:"storageResourceId,omitempty"`
+	// SourceConnectionInfo - Connection information for source SQL Server
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Connection information for Azure SQL Database Managed Instance
+	TargetConnectionInfo *MiSQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// AzureApp - Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL Database Managed Instance and the Azure Storage Account
+	AzureApp *AzureActiveDirectoryApp `json:"azureApp,omitempty"`
+}
+
+// ValidateMigrationInputSQLServerSQLMISyncTaskOutput output for task that validates migration input for
+// Azure SQL Database Managed Instance online migration
+type ValidateMigrationInputSQLServerSQLMISyncTaskOutput struct {
+	// ID - Database identifier
+	ID *string `json:"id,omitempty"`
+	// Name - Name of database
+	Name *string `json:"name,omitempty"`
+	// ValidationErrors - Errors associated with a selected database object
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// ValidateMigrationInputSQLServerSQLMISyncTaskProperties properties for task that validates migration
+// input for SQL to Azure SQL Database Managed Instance sync scenario
+type ValidateMigrationInputSQLServerSQLMISyncTaskProperties struct {
+	// Input - Task input
+	Input *ValidateMigrationInputSQLServerSQLMISyncTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ValidateMigrationInputSQLServerSQLMISyncTaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) MarshalJSON() ([]byte, error) {
+	vmisssmstp.TaskType = TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS
+	objectMap := make(map[string]interface{})
+	if vmisssmstp.Input != nil {
+		objectMap["input"] = vmisssmstp.Input
+	}
+	if vmisssmstp.Output != nil {
+		objectMap["output"] = vmisssmstp.Output
+	}
+	if vmisssmstp.Errors != nil {
+		objectMap["errors"] = vmisssmstp.Errors
+	}
+	if vmisssmstp.State != "" {
+		objectMap["state"] = vmisssmstp.State
+	}
+	if vmisssmstp.Commands != nil {
+		objectMap["commands"] = vmisssmstp.Commands
+	}
+	if vmisssmstp.TaskType != "" {
+		objectMap["taskType"] = vmisssmstp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return &vmisssmstp, true
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
+func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &vmisssmstp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateMigrationInputSQLServerSQLMISyncTaskProperties struct.
+func (vmisssmstp *ValidateMigrationInputSQLServerSQLMISyncTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ValidateMigrationInputSQLServerSQLMISyncTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				vmisssmstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ValidateMigrationInputSQLServerSQLMISyncTaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				vmisssmstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				vmisssmstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				vmisssmstp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				vmisssmstp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				vmisssmstp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ValidateMigrationInputSQLServerSQLMITaskInput input for task that validates migration input for SQL to
+// Azure SQL Managed Instance
+type ValidateMigrationInputSQLServerSQLMITaskInput struct {
+	// SourceConnectionInfo - Information for connecting to source
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Information for connecting to target
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLMIDatabaseInput `json:"selectedDatabases,omitempty"`
+	// SelectedLogins - Logins to migrate
+	SelectedLogins *[]string `json:"selectedLogins,omitempty"`
+	// BackupFileShare - Backup file share information for all selected databases.
+	BackupFileShare *FileShare `json:"backupFileShare,omitempty"`
+	// BackupBlobShare - SAS URI of Azure Storage Account Container to be used for storing backup files.
+	BackupBlobShare *BlobShare `json:"backupBlobShare,omitempty"`
+	// BackupMode - Backup Mode to specify whether to use existing backup or create new backup. Possible values include: 'CreateBackup', 'ExistingBackup'
+	BackupMode BackupMode `json:"backupMode,omitempty"`
+}
+
+// ValidateMigrationInputSQLServerSQLMITaskOutput output for task that validates migration input for SQL to
+// Azure SQL Managed Instance migrations
+type ValidateMigrationInputSQLServerSQLMITaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+	// Name - Name of database
+	Name *string `json:"name,omitempty"`
+	// RestoreDatabaseNameErrors - Errors associated with the RestoreDatabaseName
+	RestoreDatabaseNameErrors *[]ReportableException `json:"restoreDatabaseNameErrors,omitempty"`
+	// BackupFolderErrors - Errors associated with the BackupFolder path
+	BackupFolderErrors *[]ReportableException `json:"backupFolderErrors,omitempty"`
+	// BackupShareCredentialsErrors - Errors associated with backup share user name and password credentials
+	BackupShareCredentialsErrors *[]ReportableException `json:"backupShareCredentialsErrors,omitempty"`
+	// BackupStorageAccountErrors - Errors associated with the storage account provided.
+	BackupStorageAccountErrors *[]ReportableException `json:"backupStorageAccountErrors,omitempty"`
+	// ExistingBackupErrors - Errors associated with existing backup files.
+	ExistingBackupErrors *[]ReportableException `json:"existingBackupErrors,omitempty"`
+	// DatabaseBackupInfo - Information about backup files when existing backup mode is used.
+	DatabaseBackupInfo *DatabaseBackupInfo `json:"databaseBackupInfo,omitempty"`
+}
+
+// ValidateMigrationInputSQLServerSQLMITaskProperties properties for task that validates migration input
+// for SQL to Azure SQL Database Managed Instance
+type ValidateMigrationInputSQLServerSQLMITaskProperties struct {
+	// Input - Task input
+	Input *ValidateMigrationInputSQLServerSQLMITaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ValidateMigrationInputSQLServerSQLMITaskOutput `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) MarshalJSON() ([]byte, error) {
+	vmisssmtp.TaskType = TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
+	objectMap := make(map[string]interface{})
+	if vmisssmtp.Input != nil {
+		objectMap["input"] = vmisssmtp.Input
+	}
+	if vmisssmtp.Output != nil {
+		objectMap["output"] = vmisssmtp.Output
+	}
+	if vmisssmtp.Errors != nil {
+		objectMap["errors"] = vmisssmtp.Errors
+	}
+	if vmisssmtp.State != "" {
+		objectMap["state"] = vmisssmtp.State
+	}
+	if vmisssmtp.Commands != nil {
+		objectMap["commands"] = vmisssmtp.Commands
+	}
+	if vmisssmtp.TaskType != "" {
+		objectMap["taskType"] = vmisssmtp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return &vmisssmtp, true
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
+func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &vmisssmtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateMigrationInputSQLServerSQLMITaskProperties struct.
+func (vmisssmtp *ValidateMigrationInputSQLServerSQLMITaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ValidateMigrationInputSQLServerSQLMITaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []ValidateMigrationInputSQLServerSQLMITaskOutput
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ValidateMongoDbTaskProperties properties for the task that validates a migration between MongoDB data
+// sources
+type ValidateMongoDbTaskProperties struct {
+	Input *MongoDbMigrationSettings `json:"input,omitempty"`
+	// Output - An array containing a single MongoDbMigrationProgress object
+	Output *[]MongoDbMigrationProgress `json:"output,omitempty"`
+	// Errors - Array of errors. This is ignored if submitted.
+	Errors *[]ODataError `json:"errors,omitempty"`
+	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	State TaskState `json:"state,omitempty"`
+	// Commands - Array of command properties.
+	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	TaskType TaskType `json:"taskType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
+	vmdtp.TaskType = TaskTypeValidateMongoDb
+	objectMap := make(map[string]interface{})
+	if vmdtp.Input != nil {
+		objectMap["input"] = vmdtp.Input
+	}
+	if vmdtp.Output != nil {
+		objectMap["output"] = vmdtp.Output
+	}
+	if vmdtp.Errors != nil {
+		objectMap["errors"] = vmdtp.Errors
+	}
+	if vmdtp.State != "" {
+		objectMap["state"] = vmdtp.State
+	}
+	if vmdtp.Commands != nil {
+		objectMap["commands"] = vmdtp.Commands
+	}
+	if vmdtp.TaskType != "" {
+		objectMap["taskType"] = vmdtp.TaskType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
+	return &vmdtp, true
+}
+
+// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
+	return nil, false
+}
+
+// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
+	return nil, false
+}
+
+// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
+	return nil, false
+}
+
+// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
+func (vmdtp ValidateMongoDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
+	return &vmdtp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateMongoDbTaskProperties struct.
+func (vmdtp *ValidateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MongoDbMigrationSettings
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				vmdtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				var output []MongoDbMigrationProgress
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				vmdtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				vmdtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				vmdtp.State = state
+			}
+		case "commands":
+			if v != nil {
+				commands, err := unmarshalBasicCommandPropertiesArray(*v)
+				if err != nil {
+					return err
+				}
+				vmdtp.Commands = &commands
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				vmdtp.TaskType = taskType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ValidateSyncMigrationInputSQLServerTaskInput input for task that validates migration input for SQL sync
+// migrations
+type ValidateSyncMigrationInputSQLServerTaskInput struct {
+	// SourceConnectionInfo - Information for connecting to source SQL server
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Information for connecting to target
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
+	// SelectedDatabases - Databases to migrate
+	SelectedDatabases *[]MigrateSQLServerSQLDbSyncDatabaseInput `json:"selectedDatabases,omitempty"`
+}
+
+// ValidateSyncMigrationInputSQLServerTaskOutput output for task that validates migration input for SQL
+// sync migrations
+type ValidateSyncMigrationInputSQLServerTaskOutput struct {
+	// ID - Database identifier
+	ID *string `json:"id,omitempty"`
+	// Name - Name of database
+	Name *string `json:"name,omitempty"`
+	// ValidationErrors - Errors associated with a selected database object
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
 // ValidationError description about the errors happen while performing migration validation

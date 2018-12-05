@@ -2745,7 +2745,7 @@ type DiscoveredSecuritySolutionProperties struct {
 }
 
 // BasicExternalSecuritySolution represents a security solution external to Azure Security Center which sends
-// information to an OMS workspace and whos data is displayed by Azure Security Center.
+// information to an OMS workspace and whose data is displayed by Azure Security Center.
 type BasicExternalSecuritySolution interface {
 	AsCefExternalSecuritySolution() (*CefExternalSecuritySolution, bool)
 	AsAtaExternalSecuritySolution() (*AtaExternalSecuritySolution, bool)
@@ -2754,7 +2754,7 @@ type BasicExternalSecuritySolution interface {
 }
 
 // ExternalSecuritySolution represents a security solution external to Azure Security Center which sends
-// information to an OMS workspace and whos data is displayed by Azure Security Center.
+// information to an OMS workspace and whose data is displayed by Azure Security Center.
 type ExternalSecuritySolution struct {
 	autorest.Response `json:"-"`
 	// ID - Resource Id

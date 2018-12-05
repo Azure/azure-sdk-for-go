@@ -27,6 +27,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -104,6 +105,13 @@ const (
 	PeekLockMode ReceiveMode = 0
 	// ReceiveAndDeleteMode causes a Receiver to pop messages off of the queue without waiting for DispositionAction
 	ReceiveAndDeleteMode ReceiveMode = 1
+
+	// DeadLetterQueueName is the name of the dead letter queue to be appended to the entity path
+	DeadLetterQueueName = "$DeadLetterQueue"
+
+	// TransferDeadLetterQueueName is the name of the transfer dead letter queue which is appended to the entity name to
+	// build the full address of the transfer dead letter queue.
+	TransferDeadLetterQueueName = "$Transfer/" + DeadLetterQueueName
 )
 
 // QueueWithReceiveAndDelete configures a queue to pop and delete messages off of the queue upon receiving the message.
@@ -366,13 +374,74 @@ func (q *Queue) NewSession(sessionID *string) *QueueSession {
 
 // NewReceiver will create a new Receiver for receiving messages off of a queue
 func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
+	defer span.Finish()
+
 	opts = append(opts, ReceiverWithReceiveMode(q.receiveMode))
 	return q.namespace.NewReceiver(ctx, q.Name, opts...)
 }
 
 // NewSender will create a new Sender for sending messages to the queue
 func (q *Queue) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewSender")
+	defer span.Finish()
+
 	return q.namespace.NewSender(ctx, q.Name)
+}
+
+// NewDeadLetter creates an entity that represents the dead letter sub queue of the queue
+//
+// Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue
+// (DLQ). The dead-letter queue does not need to be explicitly created and cannot be deleted or otherwise managed
+// independent of the main entity.
+//
+// The purpose of the dead-letter queue is to hold messages that cannot be delivered to any receiver, or messages
+// that could not be processed. Messages can then be removed from the DLQ and inspected. An application might, with
+// help of an operator, correct issues and resubmit the message, log the fact that there was an error, and take
+// corrective action.
+//
+// From an API and protocol perspective, the DLQ is mostly similar to any other queue, except that messages can only
+// be submitted via the dead-letter operation of the parent entity. In addition, time-to-live is not observed, and
+// you can't dead-letter a message from a DLQ. The dead-letter queue fully supports peek-lock delivery and
+// transactional operations.
+//
+// Note that there is no automatic cleanup of the DLQ. Messages remain in the DLQ until you explicitly retrieve
+// them from the DLQ and call Complete() on the dead-letter message.
+func (q *Queue) NewDeadLetter() *DeadLetter {
+	return NewDeadLetter(q)
+}
+
+// NewDeadLetterReceiver builds a receiver for the Queue's dead letter queue
+func (q *Queue) NewDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewDeadLetterReceiver")
+	defer span.Finish()
+
+	deadLetterEntityPath := strings.Join([]string{q.Name, DeadLetterQueueName}, "/")
+	return q.namespace.NewReceiver(ctx, deadLetterEntityPath, opts...)
+}
+
+// NewTransferDeadLetter creates an entity that represents the transfer dead letter sub queue of the queue
+//
+// Messages will be sent to the transfer dead-letter queue under the following conditions:
+//   - A message passes through more than 3 queues or topics that are chained together.
+//   - The destination queue or topic is disabled or deleted.
+//   - The destination queue or topic exceeds the maximum entity size.
+func (q *Queue) NewTransferDeadLetter() *TransferDeadLetter {
+	return NewTransferDeadLetter(q)
+}
+
+// NewTransferDeadLetterReceiver builds a receiver for the Queue's transfer dead letter queue
+//
+// Messages will be sent to the transfer dead-letter queue under the following conditions:
+//   - A message passes through more than 3 queues or topics that are chained together.
+//   - The destination queue or topic is disabled or deleted.
+//   - The destination queue or topic exceeds the maximum entity size.
+func (q *Queue) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewTransferDeadLetterReceiver")
+	defer span.Finish()
+
+	transferDeadLetterEntityPath := strings.Join([]string{q.Name, TransferDeadLetterQueueName}, "/")
+	return q.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
 }
 
 // Close the underlying connection to Service Bus

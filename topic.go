@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
+	"strings"
 	"sync"
 
 	"github.com/Azure/azure-amqp-common-go/log"
@@ -130,6 +131,30 @@ func (t *Topic) Close(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+// NewTransferDeadLetter creates an entity that represents the transfer dead letter sub queue of the topic
+//
+// Messages will be sent to the transfer dead-letter queue under the following conditions:
+//   - A message passes through more than 3 queues or topics that are chained together.
+//   - The destination queue or topic is disabled or deleted.
+//   - The destination queue or topic exceeds the maximum entity size.
+func (t *Topic) NewTransferDeadLetter() *TransferDeadLetter {
+	return NewTransferDeadLetter(t)
+}
+
+// NewTransferDeadLetterReceiver builds a receiver for the Queue's transfer dead letter queue
+//
+// Messages will be sent to the transfer dead-letter queue under the following conditions:
+//   - A message passes through more than 3 queues or topics that are chained together.
+//   - The destination queue or topic is disabled or deleted.
+//   - The destination queue or topic exceeds the maximum entity size.
+func (t *Topic) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.NewTransferDeadLetterReceiver")
+	defer span.Finish()
+
+	transferDeadLetterEntityPath := strings.Join([]string{t.Name, TransferDeadLetterQueueName}, "/")
+	return t.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
 }
 
 func (t *Topic) ensureSender(ctx context.Context) error {

@@ -27,14 +27,17 @@ import (
 	"encoding/xml"
 	"fmt"
 	"math/rand"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/azure-service-bus-go/internal/test"
-	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -404,38 +407,18 @@ func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string
 
 func (suite *serviceBusSuite) TestQueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SimpleSend":         testQueueSend,
-		"DuplicateDetection": testDuplicateDetection,
-		"MessageProperties":  testMessageProperties,
-		"Retry":              testRequeueOnFail,
+		"SimpleSend_NoZeroCheck": testQueueSend,
+		"DuplicateDetection":     testDuplicateDetection,
+		"MessageProperties":      testMessageProperties,
+		"Retry":                  testRequeueOnFail,
 	}
 
-	ns := suite.getNewSasInstance()
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			queueName := suite.randEntityName()
-
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-
-			window := time.Duration(30 * time.Second)
-			cleanup := makeQueue(ctx, t, ns, queueName,
-				QueueEntityWithPartitioning(),
-				QueueEntityWithDuplicateDetection(&window))
-			q, err := ns.NewQueue(queueName)
-			suite.NoError(err)
-			defer func() {
-				q.Close(ctx)
-				cleanup()
-			}()
-			testFunc(ctx, t, q)
-			if !t.Failed() && name != "SimpleSend" {
-				checkZeroQueueMessages(ctx, t, ns, queueName)
-			}
-		}
-
-		suite.T().Run(name, setupTestTeardown)
+	window := time.Duration(30 * time.Second)
+	mgmtOpts := []QueueManagementOption{
+		QueueEntityWithPartitioning(),
+		QueueEntityWithDuplicateDetection(&window),
 	}
+	suite.queueMessageTestWithMgmtOptions(tests, mgmtOpts...)
 }
 
 func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
@@ -543,27 +526,7 @@ func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"SimpleSendAndReceive": testQueueSendAndReceiveWithReceiveAndDelete,
 	}
-
-	ns := suite.getNewSasInstance()
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			queueName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-			cleanup := makeQueue(ctx, t, ns, queueName)
-			q, err := ns.NewQueue(queueName, QueueWithReceiveAndDelete())
-			suite.NoError(err)
-			defer func() {
-				cleanup()
-			}()
-			testFunc(ctx, t, q)
-			q.Close(ctx)
-			if !t.Failed() {
-				checkZeroQueueMessages(ctx, t, ns, queueName)
-			}
-		}
-		suite.T().Run(name, setupTestTeardown)
-	}
+	suite.queueMessageTestWithQueueOptions(tests, QueueWithReceiveAndDelete())
 }
 
 func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing.T, queue *Queue) {
@@ -606,54 +569,101 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 
 func (suite *serviceBusSuite) TestIssue73QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SimpleSend200": func(ctx context.Context, t *testing.T, queue *Queue) {
+		"SimpleSend200_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {
 			for i := 0; i < 200; i++ {
 				testQueueSend(ctx, t, queue)
 			}
+			checkMessageCount(ctx, t, queue.namespace, queue.Name, 200)
 		},
 	}
-
-	ns := suite.getNewSasInstance()
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			queueName := suite.randEntityName()
-
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-
-			window := time.Duration(20 * time.Second)
-			ttl := time.Duration(14 * 24 * time.Hour)
-			cleanup := makeQueue(ctx, t, ns, queueName,
-				QueueEntityWithMessageTimeToLive(&ttl),
-				QueueEntityWithDuplicateDetection(&window),
-				QueueEntityWithMaxDeliveryCount(10),
-				QueueEntityWithMaxSizeInMegabytes(1*Megabytes))
-			q, err := ns.NewQueue(queueName)
-			suite.NoError(err)
-			defer func() {
-				q.Close(ctx)
-				cleanup()
-			}()
-			testFunc(ctx, t, q)
-			if !t.Failed() {
-
-			}
-			if !t.Failed() {
-				checkMessageCount(ctx, t, ns, queueName, 200)
-			}
-		}
-
-		suite.T().Run(name, setupTestTeardown)
-	}
+	window := time.Duration(20 * time.Second)
+	ttl := time.Duration(14 * 24 * time.Hour)
+	suite.queueMessageTestWithMgmtOptions(
+		tests,
+		QueueEntityWithMessageTimeToLive(&ttl),
+		QueueEntityWithDuplicateDetection(&window),
+		QueueEntityWithMaxDeliveryCount(10),
+		QueueEntityWithMaxSizeInMegabytes(1*Megabytes),
+	)
 }
 
-func (suite *serviceBusSuite) TestNewQueueSession() {
+func (suite *serviceBusSuite) TestQueue_NewSession() {
 	ns := suite.getNewSasInstance()
 	q, err := ns.NewQueue("foo")
 	suite.NoError(err)
 	sessionID := "123"
 	qs := NewQueueSession(q, &sessionID)
 	suite.Equal(sessionID, *qs.SessionID())
+}
+
+func (suite *serviceBusSuite) TestQueue_NewDeadLetter() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"ReceiveOneFromDeadLetter": testReceiveOneFromDeadLetter,
+	}
+	suite.queueMessageTestWithMgmtOptions(tests, QueueEntityWithMaxDeliveryCount(10))
+}
+
+func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
+	qdl := q.NewDeadLetter()
+	require.NotNil(t, qdl)
+	require.NoError(t, q.Send(ctx, NewMessageFromString("foo")))
+
+	// abandon multiple 10 times until the message is dead lettered
+	for i := 0; i < 10; i++ {
+		err := q.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			return msg.Abandon(ctx)
+		}))
+		require.NoError(t, err)
+	}
+
+	dl := q.NewDeadLetter()
+	called := false
+	err := dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+		assert.Equal(t, "foo", string(msg.Data))
+		called = true
+		return msg.Complete(ctx)
+	}))
+	assert.True(t, called)
+	assert.NoError(t, err)
+}
+
+func (suite *serviceBusSuite) queueMessageTestWithQueueOptions(
+	tests map[string]func(context.Context, *testing.T, *Queue),
+	queueOpts ...QueueOption) {
+	suite.queueMessageTest(tests, queueOpts, []QueueManagementOption{})
+}
+
+func (suite *serviceBusSuite) queueMessageTestWithMgmtOptions(
+	tests map[string]func(context.Context, *testing.T, *Queue),
+	mgmtOptions ...QueueManagementOption) {
+	suite.queueMessageTest(tests, []QueueOption{}, mgmtOptions)
+}
+
+func (suite *serviceBusSuite) queueMessageTest(
+	tests map[string]func(context.Context, *testing.T, *Queue),
+	queueOpts []QueueOption,
+	mgmtOptions []QueueManagementOption) {
+
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			queueName := suite.randEntityName()
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+			cleanup := makeQueue(ctx, t, ns, queueName, mgmtOptions...)
+			q, err := ns.NewQueue(queueName, queueOpts...)
+			suite.NoError(err)
+			defer func() {
+				cleanup()
+			}()
+			testFunc(ctx, t, q)
+			suite.NoError(q.Close(ctx))
+			if !t.Failed() && !strings.HasSuffix(name, "NoZeroCheck") {
+				checkZeroQueueMessages(ctx, t, ns, queueName)
+			}
+		}
+		suite.T().Run(name, setupTestTeardown)
+	}
 }
 
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {

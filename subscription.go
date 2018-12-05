@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
+	"strings"
 	"sync"
 
 	"github.com/Azure/azure-amqp-common-go/log"
@@ -178,8 +179,66 @@ func (s *Subscription) NewSession(sessionID *string) *SubscriptionSession {
 
 // NewReceiver will create a new Receiver for receiving messages off of the queue
 func (s *Subscription) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewReceiver")
+	defer span.Finish()
+
 	opts = append(opts, ReceiverWithReceiveMode(s.receiveMode))
 	return s.namespace.NewReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, opts...)
+}
+
+// NewDeadLetter creates an entity that represents the dead letter sub queue of the queue
+//
+// Azure Service Bus queues and topic subscriptions provide a secondary sub-queue, called a dead-letter queue
+// (DLQ). The dead-letter queue does not need to be explicitly created and cannot be deleted or otherwise managed
+// independent of the main entity.
+//
+// The purpose of the dead-letter queue is to hold messages that cannot be delivered to any receiver, or messages
+// that could not be processed. Messages can then be removed from the DLQ and inspected. An application might, with
+// help of an operator, correct issues and resubmit the message, log the fact that there was an error, and take
+// corrective action.
+//
+// From an API and protocol perspective, the DLQ is mostly similar to any other queue, except that messages can only
+// be submitted via the dead-letter operation of the parent entity. In addition, time-to-live is not observed, and
+// you can't dead-letter a message from a DLQ. The dead-letter queue fully supports peek-lock delivery and
+// transactional operations.
+//
+// Note that there is no automatic cleanup of the DLQ. Messages remain in the DLQ until you explicitly retrieve
+// them from the DLQ and call Complete() on the dead-letter message.
+func (s *Subscription) NewDeadLetter() *DeadLetter {
+	return NewDeadLetter(s)
+}
+
+// NewDeadLetterReceiver builds a receiver for the Subscriptions's dead letter queue
+func (s *Subscription) NewDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewDeadLetterReceiver")
+	defer span.Finish()
+
+	deadLetterEntityPath := strings.Join([]string{s.Topic.Name, "Subscriptions", s.Name, DeadLetterQueueName}, "/")
+	return s.namespace.NewReceiver(ctx, deadLetterEntityPath, opts...)
+}
+
+// NewTransferDeadLetter creates an entity that represents the transfer dead letter sub queue of the subscription
+//
+// Messages will be sent to the transfer dead-letter queue under the following conditions:
+//   - A message passes through more than 3 queues or topics that are chained together.
+//   - The destination queue or topic is disabled or deleted.
+//   - The destination queue or topic exceeds the maximum entity size.
+func (s *Subscription) NewTransferDeadLetter() *TransferDeadLetter {
+	return NewTransferDeadLetter(s)
+}
+
+// NewTransferDeadLetterReceiver builds a receiver for the Queue's transfer dead letter queue
+//
+// Messages will be sent to the transfer dead-letter queue under the following conditions:
+//   - A message passes through more than 3 queues or topics that are chained together.
+//   - The destination queue or topic is disabled or deleted.
+//   - The destination queue or topic exceeds the maximum entity size.
+func (s *Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewTransferDeadLetterReceiver")
+	defer span.Finish()
+
+	transferDeadLetterEntityPath := strings.Join([]string{s.Topic.Name, "Subscriptions", s.Name, TransferDeadLetterQueueName}, "/")
+	return s.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
 }
 
 // Close the underlying connection to Service Bus
@@ -191,7 +250,7 @@ func (s *Subscription) Close(ctx context.Context) error {
 }
 
 func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ensureReceiver")
 	defer span.Finish()
 
 	s.receiverMu.Lock()

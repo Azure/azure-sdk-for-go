@@ -33,10 +33,7 @@ func Example_helloWorld() {
 		return
 	}
 
-	err = q.Send(ctx, servicebus.NewMessageFromString("Hello, World!!!"))
-	if err != nil {
-		return
-	}
+	err = q.Send(ctx, servicebus.NewMessageFromString("Hello, World!!!"))ß
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return

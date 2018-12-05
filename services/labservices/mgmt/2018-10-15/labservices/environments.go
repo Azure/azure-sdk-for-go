@@ -142,12 +142,6 @@ func (client EnvironmentsClient) CreateOrUpdate(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: environment,
-			Constraints: []validation.Constraint{{Target: "environment.EnvironmentProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("labservices.EnvironmentsClient", "CreateOrUpdate", err.Error())
-	}
-
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, labAccountName, labName, environmentSettingName, environmentName, environment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "CreateOrUpdate", nil, "Failure preparing request")

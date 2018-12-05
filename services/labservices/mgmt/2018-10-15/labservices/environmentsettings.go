@@ -142,7 +142,7 @@ func (client EnvironmentSettingsClient) CreateOrUpdate(ctx context.Context, reso
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: environmentSetting,
-			Constraints: []validation.Constraint{{Target: "environmentSetting.EnvironmentSettingProperties", Name: validation.Null, Rule: true,
+			Constraints: []validation.Constraint{{Target: "environmentSetting.EnvironmentSettingProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "environmentSetting.EnvironmentSettingProperties.ResourceSettings", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "environmentSetting.EnvironmentSettingProperties.ResourceSettings.ReferenceVM", Name: validation.Null, Rule: true,
 						Chain: []validation.Constraint{{Target: "environmentSetting.EnvironmentSettingProperties.ResourceSettings.ReferenceVM.UserName", Name: validation.Null, Rule: true, Chain: nil}}},

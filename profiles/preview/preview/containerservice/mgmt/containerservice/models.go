@@ -66,8 +66,39 @@ const (
 type OpenShiftContainerServiceVMSize = original.OpenShiftContainerServiceVMSize
 
 const (
-	StandardD2sV3 OpenShiftContainerServiceVMSize = original.StandardD2sV3
-	StandardD4sV3 OpenShiftContainerServiceVMSize = original.StandardD4sV3
+	StandardD16sV3 OpenShiftContainerServiceVMSize = original.StandardD16sV3
+	StandardD2sV3  OpenShiftContainerServiceVMSize = original.StandardD2sV3
+	StandardD32sV3 OpenShiftContainerServiceVMSize = original.StandardD32sV3
+	StandardD4sV3  OpenShiftContainerServiceVMSize = original.StandardD4sV3
+	StandardD64sV3 OpenShiftContainerServiceVMSize = original.StandardD64sV3
+	StandardD8sV3  OpenShiftContainerServiceVMSize = original.StandardD8sV3
+	StandardDS12V2 OpenShiftContainerServiceVMSize = original.StandardDS12V2
+	StandardDS13V2 OpenShiftContainerServiceVMSize = original.StandardDS13V2
+	StandardDS14V2 OpenShiftContainerServiceVMSize = original.StandardDS14V2
+	StandardDS15V2 OpenShiftContainerServiceVMSize = original.StandardDS15V2
+	StandardDS4V2  OpenShiftContainerServiceVMSize = original.StandardDS4V2
+	StandardDS5V2  OpenShiftContainerServiceVMSize = original.StandardDS5V2
+	StandardE16sV3 OpenShiftContainerServiceVMSize = original.StandardE16sV3
+	StandardE20sV3 OpenShiftContainerServiceVMSize = original.StandardE20sV3
+	StandardE32sV3 OpenShiftContainerServiceVMSize = original.StandardE32sV3
+	StandardE4sV3  OpenShiftContainerServiceVMSize = original.StandardE4sV3
+	StandardE64sV3 OpenShiftContainerServiceVMSize = original.StandardE64sV3
+	StandardE8sV3  OpenShiftContainerServiceVMSize = original.StandardE8sV3
+	StandardF16s   OpenShiftContainerServiceVMSize = original.StandardF16s
+	StandardF16sV2 OpenShiftContainerServiceVMSize = original.StandardF16sV2
+	StandardF32sV2 OpenShiftContainerServiceVMSize = original.StandardF32sV2
+	StandardF64sV2 OpenShiftContainerServiceVMSize = original.StandardF64sV2
+	StandardF72sV2 OpenShiftContainerServiceVMSize = original.StandardF72sV2
+	StandardF8s    OpenShiftContainerServiceVMSize = original.StandardF8s
+	StandardF8sV2  OpenShiftContainerServiceVMSize = original.StandardF8sV2
+	StandardGS2    OpenShiftContainerServiceVMSize = original.StandardGS2
+	StandardGS3    OpenShiftContainerServiceVMSize = original.StandardGS3
+	StandardGS4    OpenShiftContainerServiceVMSize = original.StandardGS4
+	StandardGS5    OpenShiftContainerServiceVMSize = original.StandardGS5
+	StandardL16s   OpenShiftContainerServiceVMSize = original.StandardL16s
+	StandardL32s   OpenShiftContainerServiceVMSize = original.StandardL32s
+	StandardL4s    OpenShiftContainerServiceVMSize = original.StandardL4s
+	StandardL8s    OpenShiftContainerServiceVMSize = original.StandardL8s
 )
 
 type OrchestratorTypes = original.OrchestratorTypes
@@ -311,6 +342,9 @@ type OpenShiftManagedClusterAgentPoolProfile = original.OpenShiftManagedClusterA
 type OpenShiftManagedClusterAuthProfile = original.OpenShiftManagedClusterAuthProfile
 type OpenShiftManagedClusterBaseIdentityProvider = original.OpenShiftManagedClusterBaseIdentityProvider
 type OpenShiftManagedClusterIdentityProvider = original.OpenShiftManagedClusterIdentityProvider
+type OpenShiftManagedClusterListResult = original.OpenShiftManagedClusterListResult
+type OpenShiftManagedClusterListResultIterator = original.OpenShiftManagedClusterListResultIterator
+type OpenShiftManagedClusterListResultPage = original.OpenShiftManagedClusterListResultPage
 type OpenShiftManagedClusterMasterPoolProfile = original.OpenShiftManagedClusterMasterPoolProfile
 type OpenShiftManagedClusterProperties = original.OpenShiftManagedClusterProperties
 type OpenShiftManagedClustersClient = original.OpenShiftManagedClustersClient
@@ -363,6 +397,12 @@ func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
 }
 func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
 	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOpenShiftManagedClusterListResultIterator(page OpenShiftManagedClusterListResultPage) OpenShiftManagedClusterListResultIterator {
+	return original.NewOpenShiftManagedClusterListResultIterator(page)
+}
+func NewOpenShiftManagedClusterListResultPage(getNextPage func(context.Context, OpenShiftManagedClusterListResult) (OpenShiftManagedClusterListResult, error)) OpenShiftManagedClusterListResultPage {
+	return original.NewOpenShiftManagedClusterListResultPage(getNextPage)
 }
 func NewOpenShiftManagedClustersClient(subscriptionID string) OpenShiftManagedClustersClient {
 	return original.NewOpenShiftManagedClustersClient(subscriptionID)

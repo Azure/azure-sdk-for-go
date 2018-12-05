@@ -142,23 +142,17 @@ func PossibleCommandStateValues() []CommandState {
 type CommandType string
 
 const (
-	// CommandTypeCancel ...
-	CommandTypeCancel CommandType = "cancel"
-	// CommandTypeFinish ...
-	CommandTypeFinish CommandType = "finish"
 	// CommandTypeMigrateSQLServerAzureDbSQLMiComplete ...
 	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = "Migrate.SqlServer.AzureDbSqlMi.Complete"
 	// CommandTypeMigrateSyncCompleteDatabase ...
 	CommandTypeMigrateSyncCompleteDatabase CommandType = "Migrate.Sync.Complete.Database"
-	// CommandTypeRestart ...
-	CommandTypeRestart CommandType = "restart"
 	// CommandTypeUnknown ...
 	CommandTypeUnknown CommandType = "Unknown"
 )
 
 // PossibleCommandTypeValues returns an array of possible values for the CommandType const type.
 func PossibleCommandTypeValues() []CommandType {
-	return []CommandType{CommandTypeCancel, CommandTypeFinish, CommandTypeMigrateSQLServerAzureDbSQLMiComplete, CommandTypeMigrateSyncCompleteDatabase, CommandTypeRestart, CommandTypeUnknown}
+	return []CommandType{CommandTypeMigrateSQLServerAzureDbSQLMiComplete, CommandTypeMigrateSyncCompleteDatabase, CommandTypeUnknown}
 }
 
 // DatabaseCompatLevel enumerates the values for database compat level.
@@ -417,107 +411,6 @@ func PossibleMigrationStatusValues() []MigrationStatus {
 	return []MigrationStatus{MigrationStatusCompleted, MigrationStatusCompletedWithWarnings, MigrationStatusConfigured, MigrationStatusConnecting, MigrationStatusDefault, MigrationStatusError, MigrationStatusRunning, MigrationStatusSelectLogins, MigrationStatusSourceAndTargetSelected, MigrationStatusStopped}
 }
 
-// MongoDbClusterType enumerates the values for mongo db cluster type.
-type MongoDbClusterType string
-
-const (
-	// BlobContainer ...
-	BlobContainer MongoDbClusterType = "BlobContainer"
-	// CosmosDb ...
-	CosmosDb MongoDbClusterType = "CosmosDb"
-	// MongoDb ...
-	MongoDb MongoDbClusterType = "MongoDb"
-)
-
-// PossibleMongoDbClusterTypeValues returns an array of possible values for the MongoDbClusterType const type.
-func PossibleMongoDbClusterTypeValues() []MongoDbClusterType {
-	return []MongoDbClusterType{BlobContainer, CosmosDb, MongoDb}
-}
-
-// MongoDbErrorType enumerates the values for mongo db error type.
-type MongoDbErrorType string
-
-const (
-	// MongoDbErrorTypeError ...
-	MongoDbErrorTypeError MongoDbErrorType = "Error"
-	// MongoDbErrorTypeValidationError ...
-	MongoDbErrorTypeValidationError MongoDbErrorType = "ValidationError"
-	// MongoDbErrorTypeWarning ...
-	MongoDbErrorTypeWarning MongoDbErrorType = "Warning"
-)
-
-// PossibleMongoDbErrorTypeValues returns an array of possible values for the MongoDbErrorType const type.
-func PossibleMongoDbErrorTypeValues() []MongoDbErrorType {
-	return []MongoDbErrorType{MongoDbErrorTypeError, MongoDbErrorTypeValidationError, MongoDbErrorTypeWarning}
-}
-
-// MongoDbMigrationState enumerates the values for mongo db migration state.
-type MongoDbMigrationState string
-
-const (
-	// MongoDbMigrationStateCanceled ...
-	MongoDbMigrationStateCanceled MongoDbMigrationState = "Canceled"
-	// MongoDbMigrationStateComplete ...
-	MongoDbMigrationStateComplete MongoDbMigrationState = "Complete"
-	// MongoDbMigrationStateCopying ...
-	MongoDbMigrationStateCopying MongoDbMigrationState = "Copying"
-	// MongoDbMigrationStateFailed ...
-	MongoDbMigrationStateFailed MongoDbMigrationState = "Failed"
-	// MongoDbMigrationStateFinalizing ...
-	MongoDbMigrationStateFinalizing MongoDbMigrationState = "Finalizing"
-	// MongoDbMigrationStateInitializing ...
-	MongoDbMigrationStateInitializing MongoDbMigrationState = "Initializing"
-	// MongoDbMigrationStateInitialReplay ...
-	MongoDbMigrationStateInitialReplay MongoDbMigrationState = "InitialReplay"
-	// MongoDbMigrationStateNotStarted ...
-	MongoDbMigrationStateNotStarted MongoDbMigrationState = "NotStarted"
-	// MongoDbMigrationStateReplaying ...
-	MongoDbMigrationStateReplaying MongoDbMigrationState = "Replaying"
-	// MongoDbMigrationStateRestarting ...
-	MongoDbMigrationStateRestarting MongoDbMigrationState = "Restarting"
-	// MongoDbMigrationStateValidatingInput ...
-	MongoDbMigrationStateValidatingInput MongoDbMigrationState = "ValidatingInput"
-)
-
-// PossibleMongoDbMigrationStateValues returns an array of possible values for the MongoDbMigrationState const type.
-func PossibleMongoDbMigrationStateValues() []MongoDbMigrationState {
-	return []MongoDbMigrationState{MongoDbMigrationStateCanceled, MongoDbMigrationStateComplete, MongoDbMigrationStateCopying, MongoDbMigrationStateFailed, MongoDbMigrationStateFinalizing, MongoDbMigrationStateInitializing, MongoDbMigrationStateInitialReplay, MongoDbMigrationStateNotStarted, MongoDbMigrationStateReplaying, MongoDbMigrationStateRestarting, MongoDbMigrationStateValidatingInput}
-}
-
-// MongoDbReplication enumerates the values for mongo db replication.
-type MongoDbReplication string
-
-const (
-	// Continuous ...
-	Continuous MongoDbReplication = "Continuous"
-	// Disabled ...
-	Disabled MongoDbReplication = "Disabled"
-	// OneTime ...
-	OneTime MongoDbReplication = "OneTime"
-)
-
-// PossibleMongoDbReplicationValues returns an array of possible values for the MongoDbReplication const type.
-func PossibleMongoDbReplicationValues() []MongoDbReplication {
-	return []MongoDbReplication{Continuous, Disabled, OneTime}
-}
-
-// MongoDbShardKeyOrder enumerates the values for mongo db shard key order.
-type MongoDbShardKeyOrder string
-
-const (
-	// Forward ...
-	Forward MongoDbShardKeyOrder = "Forward"
-	// Hashed ...
-	Hashed MongoDbShardKeyOrder = "Hashed"
-	// Reverse ...
-	Reverse MongoDbShardKeyOrder = "Reverse"
-)
-
-// PossibleMongoDbShardKeyOrderValues returns an array of possible values for the MongoDbShardKeyOrder const type.
-func PossibleMongoDbShardKeyOrderValues() []MongoDbShardKeyOrder {
-	return []MongoDbShardKeyOrder{Forward, Hashed, Reverse}
-}
-
 // MySQLTargetPlatformType enumerates the values for my sql target platform type.
 type MySQLTargetPlatformType string
 
@@ -686,17 +579,23 @@ func PossibleResultCodeValues() []ResultCode {
 type ResultType string
 
 const (
-	// ResultTypeCollection ...
-	ResultTypeCollection ResultType = "Collection"
-	// ResultTypeDatabase ...
-	ResultTypeDatabase ResultType = "Database"
-	// ResultTypeMigration ...
-	ResultTypeMigration ResultType = "Migration"
+	// ResultTypeDatabaseLevelErrorOutput ...
+	ResultTypeDatabaseLevelErrorOutput ResultType = "DatabaseLevelErrorOutput"
+	// ResultTypeDatabaseLevelOutput ...
+	ResultTypeDatabaseLevelOutput ResultType = "DatabaseLevelOutput"
+	// ResultTypeErrorOutput ...
+	ResultTypeErrorOutput ResultType = "ErrorOutput"
+	// ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ...
+	ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ResultType = "MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput"
+	// ResultTypeMigrationLevelOutput ...
+	ResultTypeMigrationLevelOutput ResultType = "MigrationLevelOutput"
+	// ResultTypeTableLevelOutput ...
+	ResultTypeTableLevelOutput ResultType = "TableLevelOutput"
 )
 
 // PossibleResultTypeValues returns an array of possible values for the ResultType const type.
 func PossibleResultTypeValues() []ResultType {
-	return []ResultType{ResultTypeCollection, ResultTypeDatabase, ResultTypeMigration}
+	return []ResultType{ResultTypeDatabaseLevelErrorOutput, ResultTypeDatabaseLevelOutput, ResultTypeErrorOutput, ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, ResultTypeMigrationLevelOutput, ResultTypeTableLevelOutput}
 }
 
 // ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to
@@ -704,21 +603,21 @@ func PossibleResultTypeValues() []ResultType {
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput string
 
 const (
-	// ResultTypeAgentJobLevelOutput ...
-	ResultTypeAgentJobLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "AgentJobLevelOutput"
-	// ResultTypeConnectToSourceSQLServerTaskOutput ...
-	ResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "ConnectToSourceSqlServerTaskOutput"
-	// ResultTypeDatabaseLevelOutput ...
-	ResultTypeDatabaseLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "DatabaseLevelOutput"
-	// ResultTypeLoginLevelOutput ...
-	ResultTypeLoginLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "LoginLevelOutput"
-	// ResultTypeTaskLevelOutput ...
-	ResultTypeTaskLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "TaskLevelOutput"
+	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput ...
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "AgentJobLevelOutput"
+	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ...
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "ConnectToSourceSqlServerTaskOutput"
+	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput ...
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "DatabaseLevelOutput"
+	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput ...
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "LoginLevelOutput"
+	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput ...
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "TaskLevelOutput"
 )
 
 // PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues returns an array of possible values for the ResultTypeBasicConnectToSourceSQLServerTaskOutput const type.
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
-	return []ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeAgentJobLevelOutput, ResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeDatabaseLevelOutput, ResultTypeLoginLevelOutput, ResultTypeTaskLevelOutput}
+	return []ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput}
 }
 
 // ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput enumerates the values for result type basic migrate
@@ -743,30 +642,6 @@ const (
 // PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues returns an array of possible values for the ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput const type.
 func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues() []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput {
 	return []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput{ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput, ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput}
-}
-
-// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput enumerates the values for result type
-// basic migrate postgre sql azure db for postgre sql sync task output.
-type ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput string
-
-const (
-	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput ...
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "DatabaseLevelErrorOutput"
-	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput ...
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "DatabaseLevelOutput"
-	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput ...
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "ErrorOutput"
-	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ...
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput"
-	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput ...
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "MigrationLevelOutput"
-	// ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput ...
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = "TableLevelOutput"
-)
-
-// PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues returns an array of possible values for the ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput const type.
-func PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues() []ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput {
-	return []ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput{ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput, ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput}
 }
 
 // ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput enumerates the values for result type basic migrate sql
@@ -1078,8 +953,6 @@ func PossibleTaskStateValues() []TaskState {
 type TaskType string
 
 const (
-	// TaskTypeConnectMongoDb ...
-	TaskTypeConnectMongoDb TaskType = "Connect.MongoDb"
 	// TaskTypeConnectToSourceMySQL ...
 	TaskTypeConnectToSourceMySQL TaskType = "ConnectToSource.MySql"
 	// TaskTypeConnectToSourcePostgreSQLSync ...
@@ -1106,8 +979,6 @@ const (
 	TaskTypeGetUserTablesAzureSQLDbSync TaskType = "GetUserTables.AzureSqlDb.Sync"
 	// TaskTypeGetUserTablesSQL ...
 	TaskTypeGetUserTablesSQL TaskType = "GetUserTables.Sql"
-	// TaskTypeMigrateMongoDb ...
-	TaskTypeMigrateMongoDb TaskType = "Migrate.MongoDb"
 	// TaskTypeMigrateMySQLAzureDbForMySQLSync ...
 	TaskTypeMigrateMySQLAzureDbForMySQLSync TaskType = "Migrate.MySql.AzureDbForMySql.Sync"
 	// TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync ...
@@ -1128,13 +999,11 @@ const (
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = "ValidateMigrationInput.SqlServer.AzureSqlDbMI.Sync.LRS"
 	// TaskTypeValidateMigrationInputSQLServerSQLDbSync ...
 	TaskTypeValidateMigrationInputSQLServerSQLDbSync TaskType = "ValidateMigrationInput.SqlServer.SqlDb.Sync"
-	// TaskTypeValidateMongoDb ...
-	TaskTypeValidateMongoDb TaskType = "Validate.MongoDb"
 )
 
 // PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
 func PossibleTaskTypeValues() []TaskType {
-	return []TaskType{TaskTypeConnectMongoDb, TaskTypeConnectToSourceMySQL, TaskTypeConnectToSourcePostgreSQLSync, TaskTypeConnectToSourceSQLServer, TaskTypeConnectToSourceSQLServerSync, TaskTypeConnectToTargetAzureDbForMySQL, TaskTypeConnectToTargetAzureDbForPostgreSQLSync, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetAzureSQLDbMISyncLRS, TaskTypeConnectToTargetSQLDb, TaskTypeConnectToTargetSQLDbSync, TaskTypeGetTDECertificatesSQL, TaskTypeGetUserTablesAzureSQLDbSync, TaskTypeGetUserTablesSQL, TaskTypeMigrateMongoDb, TaskTypeMigrateMySQLAzureDbForMySQLSync, TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS, TaskTypeMigrateSQLServerAzureSQLDbSync, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS, TaskTypeValidateMigrationInputSQLServerSQLDbSync, TaskTypeValidateMongoDb}
+	return []TaskType{TaskTypeConnectToSourceMySQL, TaskTypeConnectToSourcePostgreSQLSync, TaskTypeConnectToSourceSQLServer, TaskTypeConnectToSourceSQLServerSync, TaskTypeConnectToTargetAzureDbForMySQL, TaskTypeConnectToTargetAzureDbForPostgreSQLSync, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetAzureSQLDbMISyncLRS, TaskTypeConnectToTargetSQLDb, TaskTypeConnectToTargetSQLDbSync, TaskTypeGetTDECertificatesSQL, TaskTypeGetUserTablesAzureSQLDbSync, TaskTypeGetUserTablesSQL, TaskTypeMigrateMySQLAzureDbForMySQLSync, TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS, TaskTypeMigrateSQLServerAzureSQLDbSync, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS, TaskTypeValidateMigrationInputSQLServerSQLDbSync}
 }
 
 // Type enumerates the values for type.
@@ -1143,8 +1012,6 @@ type Type string
 const (
 	// TypeMiSQLConnectionInfo ...
 	TypeMiSQLConnectionInfo Type = "MiSqlConnectionInfo"
-	// TypeMongoDbConnectionInfo ...
-	TypeMongoDbConnectionInfo Type = "MongoDbConnectionInfo"
 	// TypeMySQLConnectionInfo ...
 	TypeMySQLConnectionInfo Type = "MySqlConnectionInfo"
 	// TypePostgreSQLConnectionInfo ...
@@ -1157,7 +1024,7 @@ const (
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeMiSQLConnectionInfo, TypeMongoDbConnectionInfo, TypeMySQLConnectionInfo, TypePostgreSQLConnectionInfo, TypeSQLConnectionInfo, TypeUnknown}
+	return []Type{TypeMiSQLConnectionInfo, TypeMySQLConnectionInfo, TypePostgreSQLConnectionInfo, TypeSQLConnectionInfo, TypeUnknown}
 }
 
 // UpdateActionType enumerates the values for update action type.
@@ -1299,9 +1166,6 @@ type BlobShare struct {
 type BasicCommandProperties interface {
 	AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool)
 	AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool)
-	AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool)
-	AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool)
-	AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool)
 	AsCommandProperties() (*CommandProperties, bool)
 }
 
@@ -1312,7 +1176,7 @@ type CommandProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
 	State CommandState `json:"state,omitempty"`
-	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase'
 	CommandType CommandType `json:"commandType,omitempty"`
 }
 
@@ -1332,18 +1196,6 @@ func unmarshalBasicCommandProperties(body []byte) (BasicCommandProperties, error
 		var msccp MigrateSyncCompleteCommandProperties
 		err := json.Unmarshal(body, &msccp)
 		return msccp, err
-	case string(CommandTypeCancel):
-		var mdcc MongoDbCancelCommand
-		err := json.Unmarshal(body, &mdcc)
-		return mdcc, err
-	case string(CommandTypeFinish):
-		var mdfc MongoDbFinishCommand
-		err := json.Unmarshal(body, &mdfc)
-		return mdfc, err
-	case string(CommandTypeRestart):
-		var mdrc MongoDbRestartCommand
-		err := json.Unmarshal(body, &mdrc)
-		return mdrc, err
 	default:
 		var cp CommandProperties
 		err := json.Unmarshal(body, &cp)
@@ -1395,21 +1247,6 @@ func (cp CommandProperties) AsMigrateSyncCompleteCommandProperties() (*MigrateSy
 	return nil, false
 }
 
-// AsMongoDbCancelCommand is the BasicCommandProperties implementation for CommandProperties.
-func (cp CommandProperties) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbFinishCommand is the BasicCommandProperties implementation for CommandProperties.
-func (cp CommandProperties) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbRestartCommand is the BasicCommandProperties implementation for CommandProperties.
-func (cp CommandProperties) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
-	return nil, false
-}
-
 // AsCommandProperties is the BasicCommandProperties implementation for CommandProperties.
 func (cp CommandProperties) AsCommandProperties() (*CommandProperties, bool) {
 	return &cp, true
@@ -1425,7 +1262,6 @@ type BasicConnectionInfo interface {
 	AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool)
 	AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool)
 	AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool)
-	AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool)
 	AsSQLConnectionInfo() (*SQLConnectionInfo, bool)
 	AsConnectionInfo() (*ConnectionInfo, bool)
 }
@@ -1436,7 +1272,7 @@ type ConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -1460,10 +1296,6 @@ func unmarshalBasicConnectionInfo(body []byte) (BasicConnectionInfo, error) {
 		var msci MySQLConnectionInfo
 		err := json.Unmarshal(body, &msci)
 		return msci, err
-	case string(TypeMongoDbConnectionInfo):
-		var mdci MongoDbConnectionInfo
-		err := json.Unmarshal(body, &mdci)
-		return mdci, err
 	case string(TypeSQLConnectionInfo):
 		var sci SQLConnectionInfo
 		err := json.Unmarshal(body, &sci)
@@ -1524,11 +1356,6 @@ func (ci ConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
 	return nil, false
 }
 
-// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
-func (ci ConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
-	return nil, false
-}
-
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
 func (ci ConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
 	return nil, false
@@ -1542,250 +1369,6 @@ func (ci ConnectionInfo) AsConnectionInfo() (*ConnectionInfo, bool) {
 // AsBasicConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
 func (ci ConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
 	return &ci, true
-}
-
-// ConnectToMongoDbTaskProperties properties for the task that validates the connection to and provides
-// information about a MongoDB server
-type ConnectToMongoDbTaskProperties struct {
-	Input *MongoDbConnectionInfo `json:"input,omitempty"`
-	// Output - An array containing a single MongoDbClusterInfo object
-	Output *[]MongoDbClusterInfo `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
-	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
-	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
-	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
-	TaskType TaskType `json:"taskType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
-	ctmdtp.TaskType = TaskTypeConnectMongoDb
-	objectMap := make(map[string]interface{})
-	if ctmdtp.Input != nil {
-		objectMap["input"] = ctmdtp.Input
-	}
-	if ctmdtp.Output != nil {
-		objectMap["output"] = ctmdtp.Output
-	}
-	if ctmdtp.Errors != nil {
-		objectMap["errors"] = ctmdtp.Errors
-	}
-	if ctmdtp.State != "" {
-		objectMap["state"] = ctmdtp.State
-	}
-	if ctmdtp.Commands != nil {
-		objectMap["commands"] = ctmdtp.Commands
-	}
-	if ctmdtp.TaskType != "" {
-		objectMap["taskType"] = ctmdtp.TaskType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
-	return &ctmdtp, true
-}
-
-// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
-	return nil, false
-}
-
-// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ConnectToMongoDbTaskProperties.
-func (ctmdtp ConnectToMongoDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
-	return &ctmdtp, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for ConnectToMongoDbTaskProperties struct.
-func (ctmdtp *ConnectToMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "input":
-			if v != nil {
-				var input MongoDbConnectionInfo
-				err = json.Unmarshal(*v, &input)
-				if err != nil {
-					return err
-				}
-				ctmdtp.Input = &input
-			}
-		case "output":
-			if v != nil {
-				var output []MongoDbClusterInfo
-				err = json.Unmarshal(*v, &output)
-				if err != nil {
-					return err
-				}
-				ctmdtp.Output = &output
-			}
-		case "errors":
-			if v != nil {
-				var errorsVar []ODataError
-				err = json.Unmarshal(*v, &errorsVar)
-				if err != nil {
-					return err
-				}
-				ctmdtp.Errors = &errorsVar
-			}
-		case "state":
-			if v != nil {
-				var state TaskState
-				err = json.Unmarshal(*v, &state)
-				if err != nil {
-					return err
-				}
-				ctmdtp.State = state
-			}
-		case "commands":
-			if v != nil {
-				commands, err := unmarshalBasicCommandPropertiesArray(*v)
-				if err != nil {
-					return err
-				}
-				ctmdtp.Commands = &commands
-			}
-		case "taskType":
-			if v != nil {
-				var taskType TaskType
-				err = json.Unmarshal(*v, &taskType)
-				if err != nil {
-					return err
-				}
-				ctmdtp.TaskType = taskType
-			}
-		}
-	}
-
-	return nil
 }
 
 // ConnectToSourceMySQLTaskInput input for the task that validates MySQL database connection
@@ -1810,7 +1393,7 @@ type ConnectToSourceMySQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1841,11 +1424,6 @@ func (ctsmstp ConnectToSourceMySQLTaskProperties) MarshalJSON() ([]byte, error) 
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
 func (ctsmstp ConnectToSourceMySQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
-func (ctsmstp ConnectToSourceMySQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1891,11 +1469,6 @@ func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateSQLServerSQLMISyncTas
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
 func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
-func (ctsmstp ConnectToSourceMySQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -1951,11 +1524,6 @@ func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToSourceSQLServerSync
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
 func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceMySQLTaskProperties.
-func (ctsmstp ConnectToSourceMySQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2091,7 +1659,7 @@ type ConnectToSourcePostgreSQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2122,11 +1690,6 @@ func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) MarshalJSON() ([]byt
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
 func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
-func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2172,11 +1735,6 @@ func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateSQLServerSQ
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
 func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
-func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2232,11 +1790,6 @@ func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToSourceSQL
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
 func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourcePostgreSQLSyncTaskProperties.
-func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2336,7 +1889,7 @@ type ConnectToSourceSQLServerSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2367,11 +1920,6 @@ func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) MarshalJSON() ([]byte
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
 func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
-func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2417,11 +1965,6 @@ func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateSQLServerSQL
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
 func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
-func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2477,11 +2020,6 @@ func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToSourceSQLS
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
 func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerSyncTaskProperties.
-func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -2595,7 +2133,7 @@ type BasicConnectToSourceSQLServerTaskOutput interface {
 type ConnectToSourceSQLServerTaskOutput struct {
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
@@ -2607,19 +2145,19 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutput(body []byte) (BasicConnect
 	}
 
 	switch m["resultType"] {
-	case string(ResultTypeAgentJobLevelOutput):
+	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput):
 		var ctssstoajl ConnectToSourceSQLServerTaskOutputAgentJobLevel
 		err := json.Unmarshal(body, &ctssstoajl)
 		return ctssstoajl, err
-	case string(ResultTypeLoginLevelOutput):
+	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput):
 		var ctssstoll ConnectToSourceSQLServerTaskOutputLoginLevel
 		err := json.Unmarshal(body, &ctssstoll)
 		return ctssstoll, err
-	case string(ResultTypeDatabaseLevelOutput):
+	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput):
 		var ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel
 		err := json.Unmarshal(body, &ctssstodl)
 		return ctssstodl, err
-	case string(ResultTypeTaskLevelOutput):
+	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput):
 		var ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel
 		err := json.Unmarshal(body, &ctssstotl)
 		return ctssstotl, err
@@ -2650,7 +2188,7 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutputArray(body []byte) ([]Basic
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) MarshalJSON() ([]byte, error) {
-	ctsssto.ResultType = ResultTypeConnectToSourceSQLServerTaskOutput
+	ctsssto.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
 	objectMap := make(map[string]interface{})
 	if ctsssto.ID != nil {
 		objectMap["id"] = ctsssto.ID
@@ -2708,13 +2246,13 @@ type ConnectToSourceSQLServerTaskOutputAgentJobLevel struct {
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputAgentJobLevel.
 func (ctssstoajl ConnectToSourceSQLServerTaskOutputAgentJobLevel) MarshalJSON() ([]byte, error) {
-	ctssstoajl.ResultType = ResultTypeAgentJobLevelOutput
+	ctssstoajl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstoajl.Name != nil {
 		objectMap["name"] = ctssstoajl.Name
@@ -2788,13 +2326,13 @@ type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
-	ctssstodl.ResultType = ResultTypeDatabaseLevelOutput
+	ctssstodl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstodl.Name != nil {
 		objectMap["name"] = ctssstodl.Name
@@ -2865,13 +2403,13 @@ type ConnectToSourceSQLServerTaskOutputLoginLevel struct {
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputLoginLevel.
 func (ctssstoll ConnectToSourceSQLServerTaskOutputLoginLevel) MarshalJSON() ([]byte, error) {
-	ctssstoll.ResultType = ResultTypeLoginLevelOutput
+	ctssstoll.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstoll.Name != nil {
 		objectMap["name"] = ctssstoll.Name
@@ -2944,13 +2482,13 @@ type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeAgentJobLevelOutput', 'ResultTypeLoginLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeTaskLevelOutput'
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]byte, error) {
-	ctssstotl.ResultType = ResultTypeTaskLevelOutput
+	ctssstotl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 	objectMap := make(map[string]interface{})
 	if ctssstotl.Databases != nil {
 		objectMap["databases"] = ctssstotl.Databases
@@ -3022,7 +2560,7 @@ type ConnectToSourceSQLServerTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3053,11 +2591,6 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) MarshalJSON() ([]byte, err
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
-func (ctssstp ConnectToSourceSQLServerTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3103,11 +2636,6 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateSQLServerSQLMISyn
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
-func (ctssstp ConnectToSourceSQLServerTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3164,11 +2692,6 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToSourceSQLServer
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
 	return &ctssstp, true
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
-func (ctssstp ConnectToSourceSQLServerTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
-	return nil, false
 }
 
 // AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
@@ -3290,7 +2813,7 @@ type ConnectToTargetAzureDbForMySQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3321,11 +2844,6 @@ func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) MarshalJSON() ([]
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
 func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
-func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3371,11 +2889,6 @@ func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateSQLServe
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
 func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
-func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3431,11 +2944,6 @@ func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToSource
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
 func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForMySQLTaskProperties.
-func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3559,7 +3067,7 @@ type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3590,11 +3098,6 @@ func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) Marshal
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
 func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
-func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3640,11 +3143,6 @@ func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigra
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
 func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
-func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3700,11 +3198,6 @@ func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConne
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
 func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties.
-func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3842,7 +3335,7 @@ type ConnectToTargetSQLDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3873,11 +3366,6 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) MarshalJSON() ([]byte, error) 
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
-func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3923,11 +3411,6 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateSQLServerSQLMISyncTas
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
-func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -3983,11 +3466,6 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToSourceSQLServerSync
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
-func (cttsdtp ConnectToTargetSQLDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4107,7 +3585,7 @@ type ConnectToTargetSQLMISyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -4138,11 +3616,6 @@ func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) MarshalJSON() ([]byte, er
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
 func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
-func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4188,11 +3661,6 @@ func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateSQLServerSQLMISy
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
 func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
-func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4248,11 +3716,6 @@ func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToSourceSQLServe
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
 func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMISyncTaskProperties.
-func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4376,7 +3839,7 @@ type ConnectToTargetSQLMITaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -4407,11 +3870,6 @@ func (cttsmtp ConnectToTargetSQLMITaskProperties) MarshalJSON() ([]byte, error) 
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
 func (cttsmtp ConnectToTargetSQLMITaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
-func (cttsmtp ConnectToTargetSQLMITaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4457,11 +3915,6 @@ func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateSQLServerSQLMISyncTas
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
 func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
-func (cttsmtp ConnectToTargetSQLMITaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4517,11 +3970,6 @@ func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToSourceSQLServerSync
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
 func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLMITaskProperties.
-func (cttsmtp ConnectToTargetSQLMITaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4630,7 +4078,7 @@ type ConnectToTargetSQLSQLDbSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -4661,11 +4109,6 @@ func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) MarshalJSON() ([]byte
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
 func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
-func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4711,11 +4154,6 @@ func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateSQLServerSQL
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
 func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
-func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -4771,11 +4209,6 @@ func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToSourceSQLS
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
 func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLSQLDbSyncTaskProperties.
-func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5153,7 +4586,7 @@ type GetTdeCertificatesSQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -5185,11 +4618,6 @@ func (gtcstp GetTdeCertificatesSQLTaskProperties) MarshalJSON() ([]byte, error) 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
 func (gtcstp GetTdeCertificatesSQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
 	return &gtcstp, true
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
-func (gtcstp GetTdeCertificatesSQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
-	return nil, false
 }
 
 // AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
@@ -5234,11 +4662,6 @@ func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateSQLServerSQLMISyncTas
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
 func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
-func (gtcstp GetTdeCertificatesSQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5294,11 +4717,6 @@ func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToSourceSQLServerSync
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
 func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetTdeCertificatesSQLTaskProperties.
-func (gtcstp GetTdeCertificatesSQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5442,7 +4860,7 @@ type GetUserTablesSQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -5473,11 +4891,6 @@ func (gutsstp GetUserTablesSQLSyncTaskProperties) MarshalJSON() ([]byte, error) 
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
 func (gutsstp GetUserTablesSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
-func (gutsstp GetUserTablesSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5523,11 +4936,6 @@ func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateSQLServerSQLMISyncTas
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
 func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
-func (gutsstp GetUserTablesSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5583,11 +4991,6 @@ func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToSourceSQLServerSync
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
 func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLSyncTaskProperties.
-func (gutsstp GetUserTablesSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5720,7 +5123,7 @@ type GetUserTablesSQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -5751,11 +5154,6 @@ func (gutstp GetUserTablesSQLTaskProperties) MarshalJSON() ([]byte, error) {
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
-func (gutstp GetUserTablesSQLTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5801,11 +5199,6 @@ func (gutstp GetUserTablesSQLTaskProperties) AsMigrateSQLServerSQLMISyncTaskProp
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
-func (gutstp GetUserTablesSQLTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5861,11 +5254,6 @@ func (gutstp GetUserTablesSQLTaskProperties) AsConnectToSourceSQLServerSyncTaskP
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
-func (gutstp GetUserTablesSQLTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -5977,7 +5365,7 @@ type MigrateMISyncCompleteCommandProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
 	State CommandState `json:"state,omitempty"`
-	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase'
 	CommandType CommandType `json:"commandType,omitempty"`
 }
 
@@ -6013,21 +5401,6 @@ func (mmsccp MigrateMISyncCompleteCommandProperties) AsMigrateSyncCompleteComman
 	return nil, false
 }
 
-// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
-func (mmsccp MigrateMISyncCompleteCommandProperties) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
-func (mmsccp MigrateMISyncCompleteCommandProperties) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
-func (mmsccp MigrateMISyncCompleteCommandProperties) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
-	return nil, false
-}
-
 // AsCommandProperties is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
 func (mmsccp MigrateMISyncCompleteCommandProperties) AsCommandProperties() (*CommandProperties, bool) {
 	return nil, false
@@ -6036,248 +5409,6 @@ func (mmsccp MigrateMISyncCompleteCommandProperties) AsCommandProperties() (*Com
 // AsBasicCommandProperties is the BasicCommandProperties implementation for MigrateMISyncCompleteCommandProperties.
 func (mmsccp MigrateMISyncCompleteCommandProperties) AsBasicCommandProperties() (BasicCommandProperties, bool) {
 	return &mmsccp, true
-}
-
-// MigrateMongoDbTaskProperties properties for the task that migrates data between MongoDB data sources
-type MigrateMongoDbTaskProperties struct {
-	Input  *MongoDbMigrationSettings `json:"input,omitempty"`
-	Output *[]MongoDbProgress        `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
-	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
-	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
-	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
-	TaskType TaskType `json:"taskType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
-	mmdtp.TaskType = TaskTypeMigrateMongoDb
-	objectMap := make(map[string]interface{})
-	if mmdtp.Input != nil {
-		objectMap["input"] = mmdtp.Input
-	}
-	if mmdtp.Output != nil {
-		objectMap["output"] = mmdtp.Output
-	}
-	if mmdtp.Errors != nil {
-		objectMap["errors"] = mmdtp.Errors
-	}
-	if mmdtp.State != "" {
-		objectMap["state"] = mmdtp.State
-	}
-	if mmdtp.Commands != nil {
-		objectMap["commands"] = mmdtp.Commands
-	}
-	if mmdtp.TaskType != "" {
-		objectMap["taskType"] = mmdtp.TaskType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
-	return &mmdtp, true
-}
-
-// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
-	return nil, false
-}
-
-// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for MigrateMongoDbTaskProperties.
-func (mmdtp MigrateMongoDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
-	return &mmdtp, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for MigrateMongoDbTaskProperties struct.
-func (mmdtp *MigrateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "input":
-			if v != nil {
-				var input MongoDbMigrationSettings
-				err = json.Unmarshal(*v, &input)
-				if err != nil {
-					return err
-				}
-				mmdtp.Input = &input
-			}
-		case "output":
-			if v != nil {
-				var output []MongoDbProgress
-				err = json.Unmarshal(*v, &output)
-				if err != nil {
-					return err
-				}
-				mmdtp.Output = &output
-			}
-		case "errors":
-			if v != nil {
-				var errorsVar []ODataError
-				err = json.Unmarshal(*v, &errorsVar)
-				if err != nil {
-					return err
-				}
-				mmdtp.Errors = &errorsVar
-			}
-		case "state":
-			if v != nil {
-				var state TaskState
-				err = json.Unmarshal(*v, &state)
-				if err != nil {
-					return err
-				}
-				mmdtp.State = state
-			}
-		case "commands":
-			if v != nil {
-				commands, err := unmarshalBasicCommandPropertiesArray(*v)
-				if err != nil {
-					return err
-				}
-				mmdtp.Commands = &commands
-			}
-		case "taskType":
-			if v != nil {
-				var taskType TaskType
-				err = json.Unmarshal(*v, &taskType)
-				if err != nil {
-					return err
-				}
-				mmdtp.TaskType = taskType
-			}
-		}
-	}
-
-	return nil
 }
 
 // MigrateMySQLAzureDbForMySQLSyncDatabaseInput database specific information for MySQL to Azure Database
@@ -6926,7 +6057,7 @@ type MigrateMySQLAzureDbForMySQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -6957,11 +6088,6 @@ func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) MarshalJSON() (
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
 func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
-func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -7007,11 +6133,6 @@ func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateSQLSer
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
 func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
-func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -7067,11 +6188,6 @@ func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToSour
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
 func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateMySQLAzureDbForMySQLSyncTaskProperties.
-func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -7220,8 +6336,8 @@ type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput interface {
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput struct {
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 func unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput(body []byte) (BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput, error) {
@@ -7232,23 +6348,23 @@ func unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput(body []by
 	}
 
 	switch m["resultType"] {
-	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput):
+	case string(ResultTypeDatabaseLevelErrorOutput):
 		var mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError
 		err := json.Unmarshal(body, &mpsadfpsstode)
 		return mpsadfpsstode, err
-	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput):
+	case string(ResultTypeErrorOutput):
 		var mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError
 		err := json.Unmarshal(body, &mpsadfpsstoe)
 		return mpsadfpsstoe, err
-	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput):
+	case string(ResultTypeTableLevelOutput):
 		var mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel
 		err := json.Unmarshal(body, &mpsadfpsstotl)
 		return mpsadfpsstotl, err
-	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput):
+	case string(ResultTypeDatabaseLevelOutput):
 		var mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel
 		err := json.Unmarshal(body, &mpsadfpsstodl)
 		return mpsadfpsstodl, err
-	case string(ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput):
+	case string(ResultTypeMigrationLevelOutput):
 		var mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel
 		err := json.Unmarshal(body, &mpsadfpsstoml)
 		return mpsadfpsstoml, err
@@ -7279,7 +6395,7 @@ func unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputArray(body
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput.
 func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
-	mpsadfpssto.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+	mpsadfpssto.ResultType = ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
 	objectMap := make(map[string]interface{})
 	if mpsadfpssto.ID != nil {
 		objectMap["id"] = mpsadfpssto.ID
@@ -7333,13 +6449,13 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError struct {
 	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError.
 func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError) MarshalJSON() ([]byte, error) {
-	mpsadfpsstode.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput
+	mpsadfpsstode.ResultType = ResultTypeDatabaseLevelErrorOutput
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstode.ErrorMessage != nil {
 		objectMap["errorMessage"] = mpsadfpsstode.ErrorMessage
@@ -7425,13 +6541,13 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel struct {
 	Latency *int64 `json:"latency,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel.
 func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
-	mpsadfpsstodl.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput
+	mpsadfpsstodl.ResultType = ResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstodl.DatabaseName != nil {
 		objectMap["databaseName"] = mpsadfpsstodl.DatabaseName
@@ -7528,13 +6644,13 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError struct {
 	Error *ReportableException `json:"error,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError.
 func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) MarshalJSON() ([]byte, error) {
-	mpsadfpsstoe.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput
+	mpsadfpsstoe.ResultType = ResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstoe.Error != nil {
 		objectMap["error"] = mpsadfpsstoe.Error
@@ -7599,13 +6715,13 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel struct {
 	TargetServer *string `json:"targetServer,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel.
 func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
-	mpsadfpsstoml.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput
+	mpsadfpsstoml.ResultType = ResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstoml.StartedOn != nil {
 		objectMap["startedOn"] = mpsadfpsstoml.StartedOn
@@ -7699,13 +6815,13 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput'
-	ResultType ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"resultType,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel.
 func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
-	mpsadfpsstotl.ResultType = ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput
+	mpsadfpsstotl.ResultType = ResultTypeTableLevelOutput
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstotl.TableName != nil {
 		objectMap["tableName"] = mpsadfpsstotl.TableName
@@ -7803,7 +6919,7 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -7834,11 +6950,6 @@ func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) Marsh
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
 func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
-func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -7884,11 +6995,6 @@ func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMig
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
 func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
-func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -7944,11 +7050,6 @@ func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsCon
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
 func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties.
-func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -8733,7 +7834,7 @@ type MigrateSQLServerSQLDbSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -8764,11 +7865,6 @@ func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) MarshalJSON() ([]byte, e
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
 func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
-func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -8814,11 +7910,6 @@ func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMIS
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
 func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
-func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -8874,11 +7965,6 @@ func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServ
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
 func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbSyncTaskProperties.
-func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -9743,7 +8829,7 @@ type MigrateSQLServerSQLDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -9774,11 +8860,6 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) MarshalJSON() ([]byte, error)
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
 func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
-func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -9824,11 +8905,6 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateSQLServerSQLMISyncTa
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
 func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
-func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -9884,11 +8960,6 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToSourceSQLServerSyn
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
 func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
-func (msssdtp MigrateSQLServerSQLDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -10371,7 +9442,7 @@ type MigrateSQLServerSQLMISyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -10402,11 +9473,6 @@ func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) MarshalJSON() ([]byte, e
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
 func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
-func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -10452,11 +9518,6 @@ func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMIS
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
 func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
-func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -10512,11 +9573,6 @@ func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServ
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
 func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMISyncTaskProperties.
-func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -11227,7 +10283,7 @@ type MigrateSQLServerSQLMITaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -11258,11 +10314,6 @@ func (msssmtp MigrateSQLServerSQLMITaskProperties) MarshalJSON() ([]byte, error)
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
 func (msssmtp MigrateSQLServerSQLMITaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
-func (msssmtp MigrateSQLServerSQLMITaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -11309,11 +10360,6 @@ func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMISyncTa
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
 func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
 	return &msssmtp, true
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
-func (msssmtp MigrateSQLServerSQLMITaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
-	return nil, false
 }
 
 // AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
@@ -11368,11 +10414,6 @@ func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerSyn
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
 func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLMITaskProperties.
-func (msssmtp MigrateSQLServerSQLMITaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -11498,7 +10539,7 @@ type MigrateSyncCompleteCommandProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
 	State CommandState `json:"state,omitempty"`
-	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
+	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase'
 	CommandType CommandType `json:"commandType,omitempty"`
 }
 
@@ -11532,21 +10573,6 @@ func (msccp MigrateSyncCompleteCommandProperties) AsMigrateMISyncCompleteCommand
 // AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
 func (msccp MigrateSyncCompleteCommandProperties) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
 	return &msccp, true
-}
-
-// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
-func (msccp MigrateSyncCompleteCommandProperties) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
-func (msccp MigrateSyncCompleteCommandProperties) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
-func (msccp MigrateSyncCompleteCommandProperties) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
-	return nil, false
 }
 
 // AsCommandProperties is the BasicCommandProperties implementation for MigrateSyncCompleteCommandProperties.
@@ -11620,7 +10646,7 @@ type MiSQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -11658,11 +10684,6 @@ func (msci MiSQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, b
 	return nil, false
 }
 
-// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
-func (msci MiSQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
-	return nil, false
-}
-
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for MiSQLConnectionInfo.
 func (msci MiSQLConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
 	return nil, false
@@ -11678,801 +10699,6 @@ func (msci MiSQLConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bo
 	return &msci, true
 }
 
-// MongoDbCancelCommand properties for the command that cancels a migration in whole or in part
-type MongoDbCancelCommand struct {
-	// Input - Command input
-	Input *MongoDbCommandInput `json:"input,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
-	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
-	State CommandState `json:"state,omitempty"`
-	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
-	CommandType CommandType `json:"commandType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) MarshalJSON() ([]byte, error) {
-	mdcc.CommandType = CommandTypeCancel
-	objectMap := make(map[string]interface{})
-	if mdcc.Input != nil {
-		objectMap["input"] = mdcc.Input
-	}
-	if mdcc.Errors != nil {
-		objectMap["errors"] = mdcc.Errors
-	}
-	if mdcc.State != "" {
-		objectMap["state"] = mdcc.State
-	}
-	if mdcc.CommandType != "" {
-		objectMap["commandType"] = mdcc.CommandType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
-	return nil, false
-}
-
-// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
-	return &mdcc, true
-}
-
-// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
-	return nil, false
-}
-
-// AsCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsCommandProperties() (*CommandProperties, bool) {
-	return nil, false
-}
-
-// AsBasicCommandProperties is the BasicCommandProperties implementation for MongoDbCancelCommand.
-func (mdcc MongoDbCancelCommand) AsBasicCommandProperties() (BasicCommandProperties, bool) {
-	return &mdcc, true
-}
-
-// MongoDbClusterInfo describes a MongoDB data source
-type MongoDbClusterInfo struct {
-	// Databases - A list of non-system databases in the cluster
-	Databases *[]MongoDbDatabaseInfo `json:"databases,omitempty"`
-	// SupportsSharding - Whether the cluster supports sharded collections
-	SupportsSharding *bool `json:"supportsSharding,omitempty"`
-	// Type - The type of data source. Possible values include: 'BlobContainer', 'CosmosDb', 'MongoDb'
-	Type MongoDbClusterType `json:"type,omitempty"`
-	// Version - The version of the data source in the form x.y.z (e.g. 3.6.7). Not used if Type is BlobContainer.
-	Version *string `json:"version,omitempty"`
-}
-
-// MongoDbCollectionInfo describes a supported collection within a MongoDB database
-type MongoDbCollectionInfo struct {
-	// DatabaseName - The name of the database containing the collection
-	DatabaseName *string `json:"databaseName,omitempty"`
-	// IsCapped - Whether the collection is a capped collection (i.e. whether it has a fixed size and acts like a circular buffer)
-	IsCapped *bool `json:"isCapped,omitempty"`
-	// IsSystemCollection - Whether the collection is system collection
-	IsSystemCollection *bool `json:"isSystemCollection,omitempty"`
-	// IsView - Whether the collection is a view of another collection
-	IsView *bool `json:"isView,omitempty"`
-	// ShardKey - The shard key on the collection, or null if the collection is not sharded
-	ShardKey *MongoDbShardKeyInfo `json:"shardKey,omitempty"`
-	// SupportsSharding - Whether the database has sharding enabled. Note that the migration task will enable sharding on the target if necessary.
-	SupportsSharding *bool `json:"supportsSharding,omitempty"`
-	// ViewOf - The name of the collection that this is a view of, if IsView is true
-	ViewOf *string `json:"viewOf,omitempty"`
-	// AverageDocumentSize - The average document size, or -1 if the average size is unknown
-	AverageDocumentSize *int64 `json:"averageDocumentSize,omitempty"`
-	// DataSize - The estimated total data size, in bytes, or -1 if the size is unknown.
-	DataSize *int64 `json:"dataSize,omitempty"`
-	// DocumentCount - The estimated total number of documents, or -1 if the document count is unknown
-	DocumentCount *int64 `json:"documentCount,omitempty"`
-	// Name - The unqualified name of the database or collection
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the database or collection. For a collection, this is the database-qualified name.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-}
-
-// MongoDbCollectionProgress describes the progress of a collection
-type MongoDbCollectionProgress struct {
-	// BytesCopied - The number of document bytes copied during the Copying stage
-	BytesCopied *int64 `json:"bytesCopied,omitempty"`
-	// DocumentsCopied - The number of documents copied during the Copying stage
-	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
-	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
-	ElapsedTime *string `json:"elapsedTime,omitempty"`
-	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
-	Errors map[string]*MongoDbError `json:"errors"`
-	// EventsPending - The number of oplog events awaiting replay
-	EventsPending *int64 `json:"eventsPending,omitempty"`
-	// EventsReplayed - The number of oplog events replayed so far
-	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
-	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
-	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
-	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
-	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
-	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
-	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
-	State MongoDbMigrationState `json:"state,omitempty"`
-	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
-	TotalBytes *int64 `json:"totalBytes,omitempty"`
-	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
-	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbCollectionProgress.
-func (mdcp MongoDbCollectionProgress) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdcp.BytesCopied != nil {
-		objectMap["bytesCopied"] = mdcp.BytesCopied
-	}
-	if mdcp.DocumentsCopied != nil {
-		objectMap["documentsCopied"] = mdcp.DocumentsCopied
-	}
-	if mdcp.ElapsedTime != nil {
-		objectMap["elapsedTime"] = mdcp.ElapsedTime
-	}
-	if mdcp.Errors != nil {
-		objectMap["errors"] = mdcp.Errors
-	}
-	if mdcp.EventsPending != nil {
-		objectMap["eventsPending"] = mdcp.EventsPending
-	}
-	if mdcp.EventsReplayed != nil {
-		objectMap["eventsReplayed"] = mdcp.EventsReplayed
-	}
-	if mdcp.LastEventTime != nil {
-		objectMap["lastEventTime"] = mdcp.LastEventTime
-	}
-	if mdcp.LastReplayTime != nil {
-		objectMap["lastReplayTime"] = mdcp.LastReplayTime
-	}
-	if mdcp.Name != nil {
-		objectMap["name"] = mdcp.Name
-	}
-	if mdcp.QualifiedName != nil {
-		objectMap["qualifiedName"] = mdcp.QualifiedName
-	}
-	if mdcp.ResultType != "" {
-		objectMap["resultType"] = mdcp.ResultType
-	}
-	if mdcp.State != "" {
-		objectMap["state"] = mdcp.State
-	}
-	if mdcp.TotalBytes != nil {
-		objectMap["totalBytes"] = mdcp.TotalBytes
-	}
-	if mdcp.TotalDocuments != nil {
-		objectMap["totalDocuments"] = mdcp.TotalDocuments
-	}
-	return json.Marshal(objectMap)
-}
-
-// MongoDbCollectionSettings describes how an individual MongoDB collection should be migrated
-type MongoDbCollectionSettings struct {
-	// CanDelete - Whether the migrator is allowed to drop the target collection in the course of performing a migration. The default is true.
-	CanDelete *bool                   `json:"canDelete,omitempty"`
-	ShardKey  *MongoDbShardKeySetting `json:"shardKey,omitempty"`
-	// TargetRUs - The RUs that should be configured on a CosmosDB target, or null to use the default. This has no effect on non-CosmosDB targets.
-	TargetRUs *int32 `json:"targetRUs,omitempty"`
-}
-
-// MongoDbCommandInput describes the input to the 'cancel' and 'restart' MongoDB migration commands
-type MongoDbCommandInput struct {
-	// ObjectName - The qualified name of a database or collection to act upon, or null to act upon the entire migration
-	ObjectName *string `json:"objectName,omitempty"`
-}
-
-// MongoDbConnectionInfo describes a connection to a MongoDB data source
-type MongoDbConnectionInfo struct {
-	// ConnectionString - A MongoDB connection string or blob container URL. The user name and password can be specified here or in the userName and password properties
-	ConnectionString *string `json:"connectionString,omitempty"`
-	// UserName - User name
-	UserName *string `json:"userName,omitempty"`
-	// Password - Password credential.
-	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
-	Type Type `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) MarshalJSON() ([]byte, error) {
-	mdci.Type = TypeMongoDbConnectionInfo
-	objectMap := make(map[string]interface{})
-	if mdci.ConnectionString != nil {
-		objectMap["connectionString"] = mdci.ConnectionString
-	}
-	if mdci.UserName != nil {
-		objectMap["userName"] = mdci.UserName
-	}
-	if mdci.Password != nil {
-		objectMap["password"] = mdci.Password
-	}
-	if mdci.Type != "" {
-		objectMap["type"] = mdci.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsMiSQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsMiSQLConnectionInfo() (*MiSQLConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsPostgreSQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsMySQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
-	return &mdci, true
-}
-
-// AsSQLConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsSQLConnectionInfo() (*SQLConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsConnectionInfo() (*ConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsBasicConnectionInfo is the BasicConnectionInfo implementation for MongoDbConnectionInfo.
-func (mdci MongoDbConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bool) {
-	return &mdci, true
-}
-
-// MongoDbDatabaseInfo describes a database within a MongoDB data source
-type MongoDbDatabaseInfo struct {
-	// Collections - A list of supported collections in a MongoDB database
-	Collections *[]MongoDbCollectionInfo `json:"collections,omitempty"`
-	// SupportsSharding - Whether the database has sharding enabled. Note that the migration task will enable sharding on the target if necessary.
-	SupportsSharding *bool `json:"supportsSharding,omitempty"`
-	// AverageDocumentSize - The average document size, or -1 if the average size is unknown
-	AverageDocumentSize *int64 `json:"averageDocumentSize,omitempty"`
-	// DataSize - The estimated total data size, in bytes, or -1 if the size is unknown.
-	DataSize *int64 `json:"dataSize,omitempty"`
-	// DocumentCount - The estimated total number of documents, or -1 if the document count is unknown
-	DocumentCount *int64 `json:"documentCount,omitempty"`
-	// Name - The unqualified name of the database or collection
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the database or collection. For a collection, this is the database-qualified name.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-}
-
-// MongoDbDatabaseProgress describes the progress of a database
-type MongoDbDatabaseProgress struct {
-	// Collections - The progress of the collections in the database. The keys are the unqualified names of the collections
-	Collections map[string]*MongoDbCollectionProgress `json:"collections"`
-	// BytesCopied - The number of document bytes copied during the Copying stage
-	BytesCopied *int64 `json:"bytesCopied,omitempty"`
-	// DocumentsCopied - The number of documents copied during the Copying stage
-	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
-	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
-	ElapsedTime *string `json:"elapsedTime,omitempty"`
-	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
-	Errors map[string]*MongoDbError `json:"errors"`
-	// EventsPending - The number of oplog events awaiting replay
-	EventsPending *int64 `json:"eventsPending,omitempty"`
-	// EventsReplayed - The number of oplog events replayed so far
-	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
-	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
-	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
-	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
-	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
-	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
-	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
-	State MongoDbMigrationState `json:"state,omitempty"`
-	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
-	TotalBytes *int64 `json:"totalBytes,omitempty"`
-	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
-	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbDatabaseProgress.
-func (mddp MongoDbDatabaseProgress) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mddp.Collections != nil {
-		objectMap["collections"] = mddp.Collections
-	}
-	if mddp.BytesCopied != nil {
-		objectMap["bytesCopied"] = mddp.BytesCopied
-	}
-	if mddp.DocumentsCopied != nil {
-		objectMap["documentsCopied"] = mddp.DocumentsCopied
-	}
-	if mddp.ElapsedTime != nil {
-		objectMap["elapsedTime"] = mddp.ElapsedTime
-	}
-	if mddp.Errors != nil {
-		objectMap["errors"] = mddp.Errors
-	}
-	if mddp.EventsPending != nil {
-		objectMap["eventsPending"] = mddp.EventsPending
-	}
-	if mddp.EventsReplayed != nil {
-		objectMap["eventsReplayed"] = mddp.EventsReplayed
-	}
-	if mddp.LastEventTime != nil {
-		objectMap["lastEventTime"] = mddp.LastEventTime
-	}
-	if mddp.LastReplayTime != nil {
-		objectMap["lastReplayTime"] = mddp.LastReplayTime
-	}
-	if mddp.Name != nil {
-		objectMap["name"] = mddp.Name
-	}
-	if mddp.QualifiedName != nil {
-		objectMap["qualifiedName"] = mddp.QualifiedName
-	}
-	if mddp.ResultType != "" {
-		objectMap["resultType"] = mddp.ResultType
-	}
-	if mddp.State != "" {
-		objectMap["state"] = mddp.State
-	}
-	if mddp.TotalBytes != nil {
-		objectMap["totalBytes"] = mddp.TotalBytes
-	}
-	if mddp.TotalDocuments != nil {
-		objectMap["totalDocuments"] = mddp.TotalDocuments
-	}
-	return json.Marshal(objectMap)
-}
-
-// MongoDbDatabaseSettings describes how an individual MongoDB database should be migrated
-type MongoDbDatabaseSettings struct {
-	// Collections - The collections on the source database to migrate to the target. The keys are the unqualified names of the collections.
-	Collections map[string]*MongoDbCollectionSettings `json:"collections"`
-	// TargetRUs - The RUs that should be configured on a CosmosDB target, or null to use the default, or 0 if throughput should not be provisioned for the database. This has no effect on non-CosmosDB targets.
-	TargetRUs *int32 `json:"targetRUs,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbDatabaseSettings.
-func (mdds MongoDbDatabaseSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdds.Collections != nil {
-		objectMap["collections"] = mdds.Collections
-	}
-	if mdds.TargetRUs != nil {
-		objectMap["targetRUs"] = mdds.TargetRUs
-	}
-	return json.Marshal(objectMap)
-}
-
-// MongoDbError describes an error or warning that occurred during a MongoDB migration
-type MongoDbError struct {
-	// Code - The non-localized, machine-readable code that describes the error or warning
-	Code *string `json:"code,omitempty"`
-	// Count - The number of times the error or warning has occurred
-	Count *int32 `json:"count,omitempty"`
-	// Message - The localized, human-readable message that describes the error or warning
-	Message *string `json:"message,omitempty"`
-	// Type - The type of error or warning. Possible values include: 'MongoDbErrorTypeError', 'MongoDbErrorTypeValidationError', 'MongoDbErrorTypeWarning'
-	Type MongoDbErrorType `json:"type,omitempty"`
-}
-
-// MongoDbFinishCommand properties for the command that finishes a migration in whole or in part
-type MongoDbFinishCommand struct {
-	// Input - Command input
-	Input *MongoDbFinishCommandInput `json:"input,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
-	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
-	State CommandState `json:"state,omitempty"`
-	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
-	CommandType CommandType `json:"commandType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) MarshalJSON() ([]byte, error) {
-	mdfc.CommandType = CommandTypeFinish
-	objectMap := make(map[string]interface{})
-	if mdfc.Input != nil {
-		objectMap["input"] = mdfc.Input
-	}
-	if mdfc.Errors != nil {
-		objectMap["errors"] = mdfc.Errors
-	}
-	if mdfc.State != "" {
-		objectMap["state"] = mdfc.State
-	}
-	if mdfc.CommandType != "" {
-		objectMap["commandType"] = mdfc.CommandType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
-	return nil, false
-}
-
-// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
-	return &mdfc, true
-}
-
-// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
-	return nil, false
-}
-
-// AsCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsCommandProperties() (*CommandProperties, bool) {
-	return nil, false
-}
-
-// AsBasicCommandProperties is the BasicCommandProperties implementation for MongoDbFinishCommand.
-func (mdfc MongoDbFinishCommand) AsBasicCommandProperties() (BasicCommandProperties, bool) {
-	return &mdfc, true
-}
-
-// MongoDbFinishCommandInput describes the input to the 'finish' MongoDB migration command
-type MongoDbFinishCommandInput struct {
-	// Immediate - If true, replication for the affected objects will be stopped immediately. If false, the migrator will finish replaying queued events before finishing the replication.
-	Immediate *bool `json:"immediate,omitempty"`
-	// ObjectName - The qualified name of a database or collection to act upon, or null to act upon the entire migration
-	ObjectName *string `json:"objectName,omitempty"`
-}
-
-// MongoDbMigrationProgress describes the progress of the overall migration
-type MongoDbMigrationProgress struct {
-	// Databases - The progress of the databases in the migration. The keys are the names of the databases
-	Databases map[string]*MongoDbDatabaseProgress `json:"databases"`
-	// BytesCopied - The number of document bytes copied during the Copying stage
-	BytesCopied *int64 `json:"bytesCopied,omitempty"`
-	// DocumentsCopied - The number of documents copied during the Copying stage
-	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
-	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
-	ElapsedTime *string `json:"elapsedTime,omitempty"`
-	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
-	Errors map[string]*MongoDbError `json:"errors"`
-	// EventsPending - The number of oplog events awaiting replay
-	EventsPending *int64 `json:"eventsPending,omitempty"`
-	// EventsReplayed - The number of oplog events replayed so far
-	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
-	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
-	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
-	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
-	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
-	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
-	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
-	State MongoDbMigrationState `json:"state,omitempty"`
-	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
-	TotalBytes *int64 `json:"totalBytes,omitempty"`
-	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
-	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbMigrationProgress.
-func (mdmp MongoDbMigrationProgress) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdmp.Databases != nil {
-		objectMap["databases"] = mdmp.Databases
-	}
-	if mdmp.BytesCopied != nil {
-		objectMap["bytesCopied"] = mdmp.BytesCopied
-	}
-	if mdmp.DocumentsCopied != nil {
-		objectMap["documentsCopied"] = mdmp.DocumentsCopied
-	}
-	if mdmp.ElapsedTime != nil {
-		objectMap["elapsedTime"] = mdmp.ElapsedTime
-	}
-	if mdmp.Errors != nil {
-		objectMap["errors"] = mdmp.Errors
-	}
-	if mdmp.EventsPending != nil {
-		objectMap["eventsPending"] = mdmp.EventsPending
-	}
-	if mdmp.EventsReplayed != nil {
-		objectMap["eventsReplayed"] = mdmp.EventsReplayed
-	}
-	if mdmp.LastEventTime != nil {
-		objectMap["lastEventTime"] = mdmp.LastEventTime
-	}
-	if mdmp.LastReplayTime != nil {
-		objectMap["lastReplayTime"] = mdmp.LastReplayTime
-	}
-	if mdmp.Name != nil {
-		objectMap["name"] = mdmp.Name
-	}
-	if mdmp.QualifiedName != nil {
-		objectMap["qualifiedName"] = mdmp.QualifiedName
-	}
-	if mdmp.ResultType != "" {
-		objectMap["resultType"] = mdmp.ResultType
-	}
-	if mdmp.State != "" {
-		objectMap["state"] = mdmp.State
-	}
-	if mdmp.TotalBytes != nil {
-		objectMap["totalBytes"] = mdmp.TotalBytes
-	}
-	if mdmp.TotalDocuments != nil {
-		objectMap["totalDocuments"] = mdmp.TotalDocuments
-	}
-	return json.Marshal(objectMap)
-}
-
-// MongoDbMigrationSettings describes how a MongoDB data migration should be performed
-type MongoDbMigrationSettings struct {
-	// BoostRUs - The RU limit on a CosmosDB target that collections will be temporarily increased to (if lower) during the initial copy of a migration, from 10,000 to 1,000,000, or 0 to use the default boost (which is generally the maximum), or null to not boost the RUs. This setting has no effect on non-CosmosDB targets.
-	BoostRUs *int32 `json:"boostRUs,omitempty"`
-	// Databases - The databases on the source cluster to migrate to the target. The keys are the names of the databases.
-	Databases map[string]*MongoDbDatabaseSettings `json:"databases"`
-	// Replication - Describes how changes will be replicated from the source to the target. The default is OneTime. Possible values include: 'Disabled', 'OneTime', 'Continuous'
-	Replication MongoDbReplication `json:"replication,omitempty"`
-	// Source - Settings used to connect to the source cluster
-	Source *MongoDbConnectionInfo `json:"source,omitempty"`
-	// Target - Settings used to connect to the target cluster
-	Target *MongoDbConnectionInfo `json:"target,omitempty"`
-	// Throttling - Settings used to limit the resource usage of the migration
-	Throttling *MongoDbThrottlingSettings `json:"throttling,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbMigrationSettings.
-func (mdms MongoDbMigrationSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdms.BoostRUs != nil {
-		objectMap["boostRUs"] = mdms.BoostRUs
-	}
-	if mdms.Databases != nil {
-		objectMap["databases"] = mdms.Databases
-	}
-	if mdms.Replication != "" {
-		objectMap["replication"] = mdms.Replication
-	}
-	if mdms.Source != nil {
-		objectMap["source"] = mdms.Source
-	}
-	if mdms.Target != nil {
-		objectMap["target"] = mdms.Target
-	}
-	if mdms.Throttling != nil {
-		objectMap["throttling"] = mdms.Throttling
-	}
-	return json.Marshal(objectMap)
-}
-
-// MongoDbObjectInfo describes a database or collection within a MongoDB data source
-type MongoDbObjectInfo struct {
-	// AverageDocumentSize - The average document size, or -1 if the average size is unknown
-	AverageDocumentSize *int64 `json:"averageDocumentSize,omitempty"`
-	// DataSize - The estimated total data size, in bytes, or -1 if the size is unknown.
-	DataSize *int64 `json:"dataSize,omitempty"`
-	// DocumentCount - The estimated total number of documents, or -1 if the document count is unknown
-	DocumentCount *int64 `json:"documentCount,omitempty"`
-	// Name - The unqualified name of the database or collection
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the database or collection. For a collection, this is the database-qualified name.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-}
-
-// MongoDbProgress base class for MongoDB migration outputs
-type MongoDbProgress struct {
-	// BytesCopied - The number of document bytes copied during the Copying stage
-	BytesCopied *int64 `json:"bytesCopied,omitempty"`
-	// DocumentsCopied - The number of documents copied during the Copying stage
-	DocumentsCopied *int64 `json:"documentsCopied,omitempty"`
-	// ElapsedTime - The elapsed time in the format [ddd.]hh:mm:ss[.fffffff] (i.e. TimeSpan format)
-	ElapsedTime *string `json:"elapsedTime,omitempty"`
-	// Errors - The errors and warnings that have occurred for the current object. The keys are the error codes.
-	Errors map[string]*MongoDbError `json:"errors"`
-	// EventsPending - The number of oplog events awaiting replay
-	EventsPending *int64 `json:"eventsPending,omitempty"`
-	// EventsReplayed - The number of oplog events replayed so far
-	EventsReplayed *int64 `json:"eventsReplayed,omitempty"`
-	// LastEventTime - The timestamp of the last oplog event received, or null if no oplog event has been received yet
-	LastEventTime *date.Time `json:"lastEventTime,omitempty"`
-	// LastReplayTime - The timestamp of the last oplog event replayed, or null if no oplog event has been replayed yet
-	LastReplayTime *date.Time `json:"lastReplayTime,omitempty"`
-	// Name - The name of the progress object. For a collection, this is the unqualified collection name. For a database, this is the database name. For the overall migration, this is null.
-	Name *string `json:"name,omitempty"`
-	// QualifiedName - The qualified name of the progress object. For a collection, this is the database-qualified name. For a database, this is the database name. For the overall migration, this is null.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
-	// ResultType - The type of progress object. Possible values include: 'ResultTypeMigration', 'ResultTypeDatabase', 'ResultTypeCollection'
-	ResultType ResultType `json:"resultType,omitempty"`
-	// State - Possible values include: 'MongoDbMigrationStateNotStarted', 'MongoDbMigrationStateValidatingInput', 'MongoDbMigrationStateInitializing', 'MongoDbMigrationStateRestarting', 'MongoDbMigrationStateCopying', 'MongoDbMigrationStateInitialReplay', 'MongoDbMigrationStateReplaying', 'MongoDbMigrationStateFinalizing', 'MongoDbMigrationStateComplete', 'MongoDbMigrationStateCanceled', 'MongoDbMigrationStateFailed'
-	State MongoDbMigrationState `json:"state,omitempty"`
-	// TotalBytes - The total number of document bytes on the source at the beginning of the Copying stage, or -1 if the total size was unknown
-	TotalBytes *int64 `json:"totalBytes,omitempty"`
-	// TotalDocuments - The total number of documents on the source at the beginning of the Copying stage, or -1 if the total count was unknown
-	TotalDocuments *int64 `json:"totalDocuments,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbProgress.
-func (mdp MongoDbProgress) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mdp.BytesCopied != nil {
-		objectMap["bytesCopied"] = mdp.BytesCopied
-	}
-	if mdp.DocumentsCopied != nil {
-		objectMap["documentsCopied"] = mdp.DocumentsCopied
-	}
-	if mdp.ElapsedTime != nil {
-		objectMap["elapsedTime"] = mdp.ElapsedTime
-	}
-	if mdp.Errors != nil {
-		objectMap["errors"] = mdp.Errors
-	}
-	if mdp.EventsPending != nil {
-		objectMap["eventsPending"] = mdp.EventsPending
-	}
-	if mdp.EventsReplayed != nil {
-		objectMap["eventsReplayed"] = mdp.EventsReplayed
-	}
-	if mdp.LastEventTime != nil {
-		objectMap["lastEventTime"] = mdp.LastEventTime
-	}
-	if mdp.LastReplayTime != nil {
-		objectMap["lastReplayTime"] = mdp.LastReplayTime
-	}
-	if mdp.Name != nil {
-		objectMap["name"] = mdp.Name
-	}
-	if mdp.QualifiedName != nil {
-		objectMap["qualifiedName"] = mdp.QualifiedName
-	}
-	if mdp.ResultType != "" {
-		objectMap["resultType"] = mdp.ResultType
-	}
-	if mdp.State != "" {
-		objectMap["state"] = mdp.State
-	}
-	if mdp.TotalBytes != nil {
-		objectMap["totalBytes"] = mdp.TotalBytes
-	}
-	if mdp.TotalDocuments != nil {
-		objectMap["totalDocuments"] = mdp.TotalDocuments
-	}
-	return json.Marshal(objectMap)
-}
-
-// MongoDbRestartCommand properties for the command that restarts a migration in whole or in part
-type MongoDbRestartCommand struct {
-	// Input - Command input
-	Input *MongoDbCommandInput `json:"input,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
-	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
-	State CommandState `json:"state,omitempty"`
-	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase', 'CommandTypeCancel', 'CommandTypeFinish', 'CommandTypeRestart'
-	CommandType CommandType `json:"commandType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) MarshalJSON() ([]byte, error) {
-	mdrc.CommandType = CommandTypeRestart
-	objectMap := make(map[string]interface{})
-	if mdrc.Input != nil {
-		objectMap["input"] = mdrc.Input
-	}
-	if mdrc.Errors != nil {
-		objectMap["errors"] = mdrc.Errors
-	}
-	if mdrc.State != "" {
-		objectMap["state"] = mdrc.State
-	}
-	if mdrc.CommandType != "" {
-		objectMap["commandType"] = mdrc.CommandType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsMigrateMISyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsMigrateMISyncCompleteCommandProperties() (*MigrateMISyncCompleteCommandProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSyncCompleteCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsMigrateSyncCompleteCommandProperties() (*MigrateSyncCompleteCommandProperties, bool) {
-	return nil, false
-}
-
-// AsMongoDbCancelCommand is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsMongoDbCancelCommand() (*MongoDbCancelCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbFinishCommand is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsMongoDbFinishCommand() (*MongoDbFinishCommand, bool) {
-	return nil, false
-}
-
-// AsMongoDbRestartCommand is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsMongoDbRestartCommand() (*MongoDbRestartCommand, bool) {
-	return &mdrc, true
-}
-
-// AsCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsCommandProperties() (*CommandProperties, bool) {
-	return nil, false
-}
-
-// AsBasicCommandProperties is the BasicCommandProperties implementation for MongoDbRestartCommand.
-func (mdrc MongoDbRestartCommand) AsBasicCommandProperties() (BasicCommandProperties, bool) {
-	return &mdrc, true
-}
-
-// MongoDbShardKeyField describes a field reference within a MongoDB shard key
-type MongoDbShardKeyField struct {
-	// Name - The name of the field
-	Name *string `json:"name,omitempty"`
-	// Order - The field ordering. Possible values include: 'Forward', 'Reverse', 'Hashed'
-	Order MongoDbShardKeyOrder `json:"order,omitempty"`
-}
-
-// MongoDbShardKeyInfo describes a MongoDB shard key
-type MongoDbShardKeyInfo struct {
-	// Fields - The fields within the shard key
-	Fields *[]MongoDbShardKeyField `json:"fields,omitempty"`
-	// IsUnique - Whether the shard key is unique
-	IsUnique *bool `json:"isUnique,omitempty"`
-}
-
-// MongoDbShardKeySetting describes a MongoDB shard key
-type MongoDbShardKeySetting struct {
-	// Fields - The fields within the shard key
-	Fields *[]MongoDbShardKeyField `json:"fields,omitempty"`
-	// IsUnique - Whether the shard key is unique
-	IsUnique *bool `json:"isUnique,omitempty"`
-}
-
-// MongoDbThrottlingSettings specifies resource limits for the migration
-type MongoDbThrottlingSettings struct {
-	// MinFreeCPU - The percentage of CPU time that the migrator will try to avoid using, from 0 to 100
-	MinFreeCPU *int32 `json:"minFreeCpu,omitempty"`
-	// MinFreeMemoryMb - The number of megabytes of RAM that the migrator will try to avoid using
-	MinFreeMemoryMb *int32 `json:"minFreeMemoryMb,omitempty"`
-	// MaxParallelism - The maximum number of work items (e.g. collection copies) that will be processed in parallel
-	MaxParallelism *int32 `json:"maxParallelism,omitempty"`
-}
-
 // MySQLConnectionInfo information for connecting to MySQL server
 type MySQLConnectionInfo struct {
 	// ServerName - Name of the server
@@ -12483,7 +10709,7 @@ type MySQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -12522,11 +10748,6 @@ func (msci MySQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnect
 // AsMySQLConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
 func (msci MySQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
 	return &msci, true
-}
-
-// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
-func (msci MySQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
-	return nil, false
 }
 
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for MySQLConnectionInfo.
@@ -12673,7 +10894,7 @@ type PostgreSQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -12714,11 +10935,6 @@ func (psci PostgreSQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLCo
 
 // AsMySQLConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
 func (psci PostgreSQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for PostgreSQLConnectionInfo.
-func (psci PostgreSQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
 	return nil, false
 }
 
@@ -13185,7 +11401,6 @@ func (pt *ProjectTask) UnmarshalJSON(body []byte) error {
 // client, this object is returned.
 type BasicProjectTaskProperties interface {
 	AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool)
-	AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool)
 	AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool)
 	AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool)
 	AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool)
@@ -13195,7 +11410,6 @@ type BasicProjectTaskProperties interface {
 	AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool)
 	AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool)
 	AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool)
-	AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool)
 	AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool)
 	AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool)
 	AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool)
@@ -13207,7 +11421,6 @@ type BasicProjectTaskProperties interface {
 	AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool)
 	AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool)
 	AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool)
-	AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool)
 	AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool)
 	AsProjectTaskProperties() (*ProjectTaskProperties, bool)
 }
@@ -13221,7 +11434,7 @@ type ProjectTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -13237,10 +11450,6 @@ func unmarshalBasicProjectTaskProperties(body []byte) (BasicProjectTaskPropertie
 		var gtcstp GetTdeCertificatesSQLTaskProperties
 		err := json.Unmarshal(body, &gtcstp)
 		return gtcstp, err
-	case string(TaskTypeValidateMongoDb):
-		var vmdtp ValidateMongoDbTaskProperties
-		err := json.Unmarshal(body, &vmdtp)
-		return vmdtp, err
 	case string(TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS):
 		var vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties
 		err := json.Unmarshal(body, &vmisssmstp)
@@ -13277,10 +11486,6 @@ func unmarshalBasicProjectTaskProperties(body []byte) (BasicProjectTaskPropertie
 		var msssmtp MigrateSQLServerSQLMITaskProperties
 		err := json.Unmarshal(body, &msssmtp)
 		return msssmtp, err
-	case string(TaskTypeMigrateMongoDb):
-		var mmdtp MigrateMongoDbTaskProperties
-		err := json.Unmarshal(body, &mmdtp)
-		return mmdtp, err
 	case string(TaskTypeConnectToTargetAzureDbForMySQL):
 		var cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties
 		err := json.Unmarshal(body, &cttadfmstp)
@@ -13325,10 +11530,6 @@ func unmarshalBasicProjectTaskProperties(body []byte) (BasicProjectTaskPropertie
 		var ctssstp ConnectToSourceSQLServerTaskProperties
 		err := json.Unmarshal(body, &ctssstp)
 		return ctssstp, err
-	case string(TaskTypeConnectMongoDb):
-		var ctmdtp ConnectToMongoDbTaskProperties
-		err := json.Unmarshal(body, &ctmdtp)
-		return ctmdtp, err
 	case string(TaskTypeConnectToSourceMySQL):
 		var ctsmstp ConnectToSourceMySQLTaskProperties
 		err := json.Unmarshal(body, &ctsmstp)
@@ -13382,11 +11583,6 @@ func (ptp ProjectTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTd
 	return nil, false
 }
 
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
-func (ptp ProjectTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
 // AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
 	return nil, false
@@ -13429,11 +11625,6 @@ func (ptp ProjectTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*M
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
-func (ptp ProjectTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -13489,11 +11680,6 @@ func (ptp ProjectTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() 
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
-func (ptp ProjectTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -14846,7 +13032,7 @@ type SQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeMongoDbConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -14896,11 +13082,6 @@ func (sci SQLConnectionInfo) AsPostgreSQLConnectionInfo() (*PostgreSQLConnection
 
 // AsMySQLConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
 func (sci SQLConnectionInfo) AsMySQLConnectionInfo() (*MySQLConnectionInfo, bool) {
-	return nil, false
-}
-
-// AsMongoDbConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
-func (sci SQLConnectionInfo) AsMongoDbConnectionInfo() (*MongoDbConnectionInfo, bool) {
 	return nil, false
 }
 
@@ -15158,7 +13339,7 @@ type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -15189,11 +13370,6 @@ func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) Marshal
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
 func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
-func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15239,11 +13415,6 @@ func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigra
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
 func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
-func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15299,11 +13470,6 @@ func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConne
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
 func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLDbSyncTaskProperties.
-func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15431,7 +13597,7 @@ type ValidateMigrationInputSQLServerSQLMISyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -15462,11 +13628,6 @@ func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) Marshal
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
 func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
-func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15512,11 +13673,6 @@ func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigra
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
 func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
-func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15572,11 +13728,6 @@ func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConne
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
 func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMISyncTaskProperties.
-func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15716,7 +13867,7 @@ type ValidateMigrationInputSQLServerSQLMITaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
+	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -15747,11 +13898,6 @@ func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) MarshalJSON(
 
 // AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
 func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
-func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15797,11 +13943,6 @@ func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateSQL
 
 // AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
 func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
-func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15857,11 +13998,6 @@ func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToS
 
 // AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
 func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMigrationInputSQLServerSQLMITaskProperties.
-func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
 	return nil, false
 }
 
@@ -15941,250 +14077,6 @@ func (vmisssmtp *ValidateMigrationInputSQLServerSQLMITaskProperties) UnmarshalJS
 					return err
 				}
 				vmisssmtp.TaskType = taskType
-			}
-		}
-	}
-
-	return nil
-}
-
-// ValidateMongoDbTaskProperties properties for the task that validates a migration between MongoDB data
-// sources
-type ValidateMongoDbTaskProperties struct {
-	Input *MongoDbMigrationSettings `json:"input,omitempty"`
-	// Output - An array containing a single MongoDbMigrationProgress object
-	Output *[]MongoDbMigrationProgress `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
-	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
-	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
-	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL'
-	TaskType TaskType `json:"taskType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
-	vmdtp.TaskType = TaskTypeValidateMongoDb
-	objectMap := make(map[string]interface{})
-	if vmdtp.Input != nil {
-		objectMap["input"] = vmdtp.Input
-	}
-	if vmdtp.Output != nil {
-		objectMap["output"] = vmdtp.Output
-	}
-	if vmdtp.Errors != nil {
-		objectMap["errors"] = vmdtp.Errors
-	}
-	if vmdtp.State != "" {
-		objectMap["state"] = vmdtp.State
-	}
-	if vmdtp.Commands != nil {
-		objectMap["commands"] = vmdtp.Commands
-	}
-	if vmdtp.TaskType != "" {
-		objectMap["taskType"] = vmdtp.TaskType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsGetTdeCertificatesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsGetTdeCertificatesSQLTaskProperties() (*GetTdeCertificatesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsValidateMongoDbTaskProperties() (*ValidateMongoDbTaskProperties, bool) {
-	return &vmdtp, true
-}
-
-// AsValidateMigrationInputSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMISyncTaskProperties() (*ValidateMigrationInputSQLServerSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLMITaskProperties() (*ValidateMigrationInputSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsValidateMigrationInputSQLServerSQLDbSyncTaskProperties() (*ValidateMigrationInputSQLServerSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties() (*MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMySQLAzureDbForMySQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigrateMySQLAzureDbForMySQLSyncTaskProperties() (*MigrateMySQLAzureDbForMySQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLDbSyncTaskProperties() (*MigrateSQLServerSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLDbTaskProperties() (*MigrateSQLServerSQLDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLMISyncTaskProperties() (*MigrateSQLServerSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigrateSQLServerSQLMITaskProperties() (*MigrateSQLServerSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsMigrateMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsMigrateMongoDbTaskProperties() (*MigrateMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetAzureDbForMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetAzureDbForMySQLTaskProperties() (*ConnectToTargetAzureDbForMySQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLMISyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLMISyncTaskProperties() (*ConnectToTargetSQLMISyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLMITaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLMITaskProperties() (*ConnectToTargetSQLMITaskProperties, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsGetUserTablesSQLSyncTaskProperties() (*GetUserTablesSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsGetUserTablesSQLTaskProperties() (*GetUserTablesSQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetAzureDbForPostgreSQLSyncTaskProperties() (*ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLSQLDbSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLSQLDbSyncTaskProperties() (*ConnectToTargetSQLSQLDbSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToTargetSQLDbTaskProperties() (*ConnectToTargetSQLDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourcePostgreSQLSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourcePostgreSQLSyncTaskProperties() (*ConnectToSourcePostgreSQLSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerSyncTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourceSQLServerSyncTaskProperties() (*ConnectToSourceSQLServerSyncTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourceSQLServerTaskProperties() (*ConnectToSourceSQLServerTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToMongoDbTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToMongoDbTaskProperties() (*ConnectToMongoDbTaskProperties, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceMySQLTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsConnectToSourceMySQLTaskProperties() (*ConnectToSourceMySQLTaskProperties, bool) {
-	return nil, false
-}
-
-// AsProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsProjectTaskProperties() (*ProjectTaskProperties, bool) {
-	return nil, false
-}
-
-// AsBasicProjectTaskProperties is the BasicProjectTaskProperties implementation for ValidateMongoDbTaskProperties.
-func (vmdtp ValidateMongoDbTaskProperties) AsBasicProjectTaskProperties() (BasicProjectTaskProperties, bool) {
-	return &vmdtp, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for ValidateMongoDbTaskProperties struct.
-func (vmdtp *ValidateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "input":
-			if v != nil {
-				var input MongoDbMigrationSettings
-				err = json.Unmarshal(*v, &input)
-				if err != nil {
-					return err
-				}
-				vmdtp.Input = &input
-			}
-		case "output":
-			if v != nil {
-				var output []MongoDbMigrationProgress
-				err = json.Unmarshal(*v, &output)
-				if err != nil {
-					return err
-				}
-				vmdtp.Output = &output
-			}
-		case "errors":
-			if v != nil {
-				var errorsVar []ODataError
-				err = json.Unmarshal(*v, &errorsVar)
-				if err != nil {
-					return err
-				}
-				vmdtp.Errors = &errorsVar
-			}
-		case "state":
-			if v != nil {
-				var state TaskState
-				err = json.Unmarshal(*v, &state)
-				if err != nil {
-					return err
-				}
-				vmdtp.State = state
-			}
-		case "commands":
-			if v != nil {
-				commands, err := unmarshalBasicCommandPropertiesArray(*v)
-				if err != nil {
-					return err
-				}
-				vmdtp.Commands = &commands
-			}
-		case "taskType":
-			if v != nil {
-				var taskType TaskType
-				err = json.Unmarshal(*v, &taskType)
-				if err != nil {
-					return err
-				}
-				vmdtp.TaskType = taskType
 			}
 		}
 	}

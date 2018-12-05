@@ -83,11 +83,8 @@ const (
 type CommandType = original.CommandType
 
 const (
-	CommandTypeCancel                               CommandType = original.CommandTypeCancel
-	CommandTypeFinish                               CommandType = original.CommandTypeFinish
 	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = original.CommandTypeMigrateSQLServerAzureDbSQLMiComplete
 	CommandTypeMigrateSyncCompleteDatabase          CommandType = original.CommandTypeMigrateSyncCompleteDatabase
-	CommandTypeRestart                              CommandType = original.CommandTypeRestart
 	CommandTypeUnknown                              CommandType = original.CommandTypeUnknown
 )
 
@@ -214,54 +211,6 @@ const (
 	MigrationStatusStopped                 MigrationStatus = original.MigrationStatusStopped
 )
 
-type MongoDbClusterType = original.MongoDbClusterType
-
-const (
-	BlobContainer MongoDbClusterType = original.BlobContainer
-	CosmosDb      MongoDbClusterType = original.CosmosDb
-	MongoDb       MongoDbClusterType = original.MongoDb
-)
-
-type MongoDbErrorType = original.MongoDbErrorType
-
-const (
-	MongoDbErrorTypeError           MongoDbErrorType = original.MongoDbErrorTypeError
-	MongoDbErrorTypeValidationError MongoDbErrorType = original.MongoDbErrorTypeValidationError
-	MongoDbErrorTypeWarning         MongoDbErrorType = original.MongoDbErrorTypeWarning
-)
-
-type MongoDbMigrationState = original.MongoDbMigrationState
-
-const (
-	MongoDbMigrationStateCanceled        MongoDbMigrationState = original.MongoDbMigrationStateCanceled
-	MongoDbMigrationStateComplete        MongoDbMigrationState = original.MongoDbMigrationStateComplete
-	MongoDbMigrationStateCopying         MongoDbMigrationState = original.MongoDbMigrationStateCopying
-	MongoDbMigrationStateFailed          MongoDbMigrationState = original.MongoDbMigrationStateFailed
-	MongoDbMigrationStateFinalizing      MongoDbMigrationState = original.MongoDbMigrationStateFinalizing
-	MongoDbMigrationStateInitializing    MongoDbMigrationState = original.MongoDbMigrationStateInitializing
-	MongoDbMigrationStateInitialReplay   MongoDbMigrationState = original.MongoDbMigrationStateInitialReplay
-	MongoDbMigrationStateNotStarted      MongoDbMigrationState = original.MongoDbMigrationStateNotStarted
-	MongoDbMigrationStateReplaying       MongoDbMigrationState = original.MongoDbMigrationStateReplaying
-	MongoDbMigrationStateRestarting      MongoDbMigrationState = original.MongoDbMigrationStateRestarting
-	MongoDbMigrationStateValidatingInput MongoDbMigrationState = original.MongoDbMigrationStateValidatingInput
-)
-
-type MongoDbReplication = original.MongoDbReplication
-
-const (
-	Continuous MongoDbReplication = original.Continuous
-	Disabled   MongoDbReplication = original.Disabled
-	OneTime    MongoDbReplication = original.OneTime
-)
-
-type MongoDbShardKeyOrder = original.MongoDbShardKeyOrder
-
-const (
-	Forward MongoDbShardKeyOrder = original.Forward
-	Hashed  MongoDbShardKeyOrder = original.Hashed
-	Reverse MongoDbShardKeyOrder = original.Reverse
-)
-
 type MySQLTargetPlatformType = original.MySQLTargetPlatformType
 
 const (
@@ -342,19 +291,22 @@ const (
 type ResultType = original.ResultType
 
 const (
-	ResultTypeCollection ResultType = original.ResultTypeCollection
-	ResultTypeDatabase   ResultType = original.ResultTypeDatabase
-	ResultTypeMigration  ResultType = original.ResultTypeMigration
+	ResultTypeDatabaseLevelErrorOutput                            ResultType = original.ResultTypeDatabaseLevelErrorOutput
+	ResultTypeDatabaseLevelOutput                                 ResultType = original.ResultTypeDatabaseLevelOutput
+	ResultTypeErrorOutput                                         ResultType = original.ResultTypeErrorOutput
+	ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ResultType = original.ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+	ResultTypeMigrationLevelOutput                                ResultType = original.ResultTypeMigrationLevelOutput
+	ResultTypeTableLevelOutput                                    ResultType = original.ResultTypeTableLevelOutput
 )
 
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutput
 
 const (
-	ResultTypeAgentJobLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeAgentJobLevelOutput
-	ResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeConnectToSourceSQLServerTaskOutput
-	ResultTypeDatabaseLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeDatabaseLevelOutput
-	ResultTypeLoginLevelOutput                   ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeLoginLevelOutput
-	ResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeTaskLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput                   ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 )
 
 type ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
@@ -366,17 +318,6 @@ const (
 	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput
 	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput                      ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput
 	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput                          ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput
-)
-
-type ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
-
-const (
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput                            ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput                                 ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeDatabaseLevelOutput
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput                                         ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeErrorOutput
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput                                ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeMigrationLevelOutput
-	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput                                    ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput
 )
 
 type ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput
@@ -526,7 +467,6 @@ const (
 type TaskType = original.TaskType
 
 const (
-	TaskTypeConnectMongoDb                                     TaskType = original.TaskTypeConnectMongoDb
 	TaskTypeConnectToSourceMySQL                               TaskType = original.TaskTypeConnectToSourceMySQL
 	TaskTypeConnectToSourcePostgreSQLSync                      TaskType = original.TaskTypeConnectToSourcePostgreSQLSync
 	TaskTypeConnectToSourceSQLServer                           TaskType = original.TaskTypeConnectToSourceSQLServer
@@ -540,7 +480,6 @@ const (
 	TaskTypeGetTDECertificatesSQL                              TaskType = original.TaskTypeGetTDECertificatesSQL
 	TaskTypeGetUserTablesAzureSQLDbSync                        TaskType = original.TaskTypeGetUserTablesAzureSQLDbSync
 	TaskTypeGetUserTablesSQL                                   TaskType = original.TaskTypeGetUserTablesSQL
-	TaskTypeMigrateMongoDb                                     TaskType = original.TaskTypeMigrateMongoDb
 	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
 	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync          TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
 	TaskTypeMigrateSQLServerAzureSQLDbMI                       TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI
@@ -551,14 +490,12 @@ const (
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI        TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS
 	TaskTypeValidateMigrationInputSQLServerSQLDbSync           TaskType = original.TaskTypeValidateMigrationInputSQLServerSQLDbSync
-	TaskTypeValidateMongoDb                                    TaskType = original.TaskTypeValidateMongoDb
 )
 
 type Type = original.Type
 
 const (
 	TypeMiSQLConnectionInfo      Type = original.TypeMiSQLConnectionInfo
-	TypeMongoDbConnectionInfo    Type = original.TypeMongoDbConnectionInfo
 	TypeMySQLConnectionInfo      Type = original.TypeMySQLConnectionInfo
 	TypePostgreSQLConnectionInfo Type = original.TypePostgreSQLConnectionInfo
 	TypeSQLConnectionInfo        Type = original.TypeSQLConnectionInfo
@@ -606,7 +543,6 @@ type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMIT
 type BasicProjectTaskProperties = original.BasicProjectTaskProperties
 type BlobShare = original.BlobShare
 type CommandProperties = original.CommandProperties
-type ConnectToMongoDbTaskProperties = original.ConnectToMongoDbTaskProperties
 type ConnectToSourceMySQLTaskInput = original.ConnectToSourceMySQLTaskInput
 type ConnectToSourceMySQLTaskProperties = original.ConnectToSourceMySQLTaskProperties
 type ConnectToSourceNonSQLTaskOutput = original.ConnectToSourceNonSQLTaskOutput
@@ -666,7 +602,6 @@ type MiSQLConnectionInfo = original.MiSQLConnectionInfo
 type MigrateMISyncCompleteCommandInput = original.MigrateMISyncCompleteCommandInput
 type MigrateMISyncCompleteCommandOutput = original.MigrateMISyncCompleteCommandOutput
 type MigrateMISyncCompleteCommandProperties = original.MigrateMISyncCompleteCommandProperties
-type MigrateMongoDbTaskProperties = original.MigrateMongoDbTaskProperties
 type MigrateMySQLAzureDbForMySQLSyncDatabaseInput = original.MigrateMySQLAzureDbForMySQLSyncDatabaseInput
 type MigrateMySQLAzureDbForMySQLSyncTaskInput = original.MigrateMySQLAzureDbForMySQLSyncTaskInput
 type MigrateMySQLAzureDbForMySQLSyncTaskOutput = original.MigrateMySQLAzureDbForMySQLSyncTaskOutput
@@ -728,28 +663,6 @@ type MigrationReportResult = original.MigrationReportResult
 type MigrationTableMetadata = original.MigrationTableMetadata
 type MigrationValidationDatabaseSummaryResult = original.MigrationValidationDatabaseSummaryResult
 type MigrationValidationOptions = original.MigrationValidationOptions
-type MongoDbCancelCommand = original.MongoDbCancelCommand
-type MongoDbClusterInfo = original.MongoDbClusterInfo
-type MongoDbCollectionInfo = original.MongoDbCollectionInfo
-type MongoDbCollectionProgress = original.MongoDbCollectionProgress
-type MongoDbCollectionSettings = original.MongoDbCollectionSettings
-type MongoDbCommandInput = original.MongoDbCommandInput
-type MongoDbConnectionInfo = original.MongoDbConnectionInfo
-type MongoDbDatabaseInfo = original.MongoDbDatabaseInfo
-type MongoDbDatabaseProgress = original.MongoDbDatabaseProgress
-type MongoDbDatabaseSettings = original.MongoDbDatabaseSettings
-type MongoDbError = original.MongoDbError
-type MongoDbFinishCommand = original.MongoDbFinishCommand
-type MongoDbFinishCommandInput = original.MongoDbFinishCommandInput
-type MongoDbMigrationProgress = original.MongoDbMigrationProgress
-type MongoDbMigrationSettings = original.MongoDbMigrationSettings
-type MongoDbObjectInfo = original.MongoDbObjectInfo
-type MongoDbProgress = original.MongoDbProgress
-type MongoDbRestartCommand = original.MongoDbRestartCommand
-type MongoDbShardKeyField = original.MongoDbShardKeyField
-type MongoDbShardKeyInfo = original.MongoDbShardKeyInfo
-type MongoDbShardKeySetting = original.MongoDbShardKeySetting
-type MongoDbThrottlingSettings = original.MongoDbThrottlingSettings
 type MySQLConnectionInfo = original.MySQLConnectionInfo
 type NameAvailabilityRequest = original.NameAvailabilityRequest
 type NameAvailabilityResponse = original.NameAvailabilityResponse
@@ -830,7 +743,6 @@ type ValidateMigrationInputSQLServerSQLMISyncTaskProperties = original.ValidateM
 type ValidateMigrationInputSQLServerSQLMITaskInput = original.ValidateMigrationInputSQLServerSQLMITaskInput
 type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigrationInputSQLServerSQLMITaskOutput
 type ValidateMigrationInputSQLServerSQLMITaskProperties = original.ValidateMigrationInputSQLServerSQLMITaskProperties
-type ValidateMongoDbTaskProperties = original.ValidateMongoDbTaskProperties
 type ValidateSyncMigrationInputSQLServerTaskInput = original.ValidateSyncMigrationInputSQLServerTaskInput
 type ValidateSyncMigrationInputSQLServerTaskOutput = original.ValidateSyncMigrationInputSQLServerTaskOutput
 type ValidationError = original.ValidationError
@@ -968,21 +880,6 @@ func PossibleMigrationStateValues() []MigrationState {
 func PossibleMigrationStatusValues() []MigrationStatus {
 	return original.PossibleMigrationStatusValues()
 }
-func PossibleMongoDbClusterTypeValues() []MongoDbClusterType {
-	return original.PossibleMongoDbClusterTypeValues()
-}
-func PossibleMongoDbErrorTypeValues() []MongoDbErrorType {
-	return original.PossibleMongoDbErrorTypeValues()
-}
-func PossibleMongoDbMigrationStateValues() []MongoDbMigrationState {
-	return original.PossibleMongoDbMigrationStateValues()
-}
-func PossibleMongoDbReplicationValues() []MongoDbReplication {
-	return original.PossibleMongoDbReplicationValues()
-}
-func PossibleMongoDbShardKeyOrderValues() []MongoDbShardKeyOrder {
-	return original.PossibleMongoDbShardKeyOrderValues()
-}
 func PossibleMySQLTargetPlatformTypeValues() []MySQLTargetPlatformType {
 	return original.PossibleMySQLTargetPlatformTypeValues()
 }
@@ -1018,9 +915,6 @@ func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultT
 }
 func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues() []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput {
 	return original.PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues()
-}
-func PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues() []ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput {
-	return original.PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues()
 }
 func PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput {
 	return original.PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues()

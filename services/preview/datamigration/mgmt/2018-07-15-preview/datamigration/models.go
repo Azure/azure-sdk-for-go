@@ -13824,7 +13824,7 @@ type ODataError struct {
 type OrphanedUserInfo struct {
 	// Name - Name of the orphaned user
 	Name *string `json:"name,omitempty"`
-	// DatabaseName - Parent DB of the user
+	// DatabaseName - Parent database of the user
 	DatabaseName *string `json:"databaseName,omitempty"`
 }
 

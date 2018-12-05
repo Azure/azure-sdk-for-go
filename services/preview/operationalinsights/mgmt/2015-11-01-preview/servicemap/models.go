@@ -691,7 +691,7 @@ func (aphc AzureProcessHostingConfiguration) AsBasicProcessHostingConfiguration(
 type AzureServiceFabricClusterConfiguration struct {
 	// Name - Service Fabric cluster name.
 	Name *string `json:"name,omitempty"`
-	// ClusterID - Service Fabric cluster indentifier.
+	// ClusterID - Service Fabric cluster identifier.
 	ClusterID *string `json:"clusterId,omitempty"`
 }
 
@@ -4168,11 +4168,11 @@ func NewProcessCollectionPage(getNextPage func(context.Context, ProcessCollectio
 
 // ProcessDetails describes process metadata.
 type ProcessDetails struct {
-	// PersistentKey - A unique indentifier for a process, generally resilient to process restart, computed by Service Map.
+	// PersistentKey - A unique identifier for a process, generally resilient to process restart, computed by Service Map.
 	PersistentKey *string `json:"persistentKey,omitempty"`
 	// PoolID - Represents the identity of the process pool assigned to the process by Dependency Agent.
 	PoolID *int32 `json:"poolId,omitempty"`
-	// FirstPid - The Operating System Process Idendifier (PID) of the first process in this process pool.
+	// FirstPid - The Operating System Process Identifier (PID) of the first process in this process pool.
 	FirstPid *int32 `json:"firstPid,omitempty"`
 	// Description - Process description.
 	Description *string `json:"description,omitempty"`
@@ -4978,11 +4978,11 @@ type Timezone struct {
 	FullName *string `json:"fullName,omitempty"`
 }
 
-// VirtualMachineConfiguration describes the virtualizaton-related configuration of a machine.
+// VirtualMachineConfiguration describes the virtualization-related configuration of a machine.
 type VirtualMachineConfiguration struct {
 	// VirtualMachineType - Specifies the virtualization technology used by the machine (hyperv, vmware, etc.). Possible values include: 'VirtualMachineTypeUnknown', 'VirtualMachineTypeHyperv', 'VirtualMachineTypeLdom', 'VirtualMachineTypeLpar', 'VirtualMachineTypeVmware', 'VirtualMachineTypeVirtualPc', 'VirtualMachineTypeXen'
 	VirtualMachineType VirtualMachineType `json:"virtualMachineType,omitempty"`
-	// NativeMachineID - The unique identifier of the virtual machine as reported by the underlying virtualization sytem.
+	// NativeMachineID - The unique identifier of the virtual machine as reported by the underlying virtualization system.
 	NativeMachineID *string `json:"nativeMachineId,omitempty"`
 	// VirtualMachineName - The Name of the virtual machine.
 	VirtualMachineName *string `json:"virtualMachineName,omitempty"`

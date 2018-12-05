@@ -19,28 +19,30 @@
 
 package dtlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl/dtlapi"
+import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2018-09-15/dtl/dtlapi"
 
-type ProviderOperationsClientAPI = original.ProviderOperationsClientAPI
-type LabsClientAPI = original.LabsClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
-type GlobalSchedulesClientAPI = original.GlobalSchedulesClientAPI
-type ArtifactSourcesClientAPI = original.ArtifactSourcesClientAPI
 type ArmTemplatesClientAPI = original.ArmTemplatesClientAPI
+type ArtifactSourcesClientAPI = original.ArtifactSourcesClientAPI
 type ArtifactsClientAPI = original.ArtifactsClientAPI
 type CostsClientAPI = original.CostsClientAPI
 type CustomImagesClientAPI = original.CustomImagesClientAPI
-type FormulasClientAPI = original.FormulasClientAPI
-type GalleryImagesClientAPI = original.GalleryImagesClientAPI
-type NotificationChannelsClientAPI = original.NotificationChannelsClientAPI
-type PolicySetsClientAPI = original.PolicySetsClientAPI
-type PoliciesClientAPI = original.PoliciesClientAPI
-type SchedulesClientAPI = original.SchedulesClientAPI
-type ServiceRunnersClientAPI = original.ServiceRunnersClientAPI
-type UsersClientAPI = original.UsersClientAPI
 type DisksClientAPI = original.DisksClientAPI
 type EnvironmentsClientAPI = original.EnvironmentsClientAPI
+type FormulasClientAPI = original.FormulasClientAPI
+type GalleryImagesClientAPI = original.GalleryImagesClientAPI
+type GlobalSchedulesClientAPI = original.GlobalSchedulesClientAPI
+type LabsClientAPI = original.LabsClientAPI
+type NotificationChannelsClientAPI = original.NotificationChannelsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type PoliciesClientAPI = original.PoliciesClientAPI
+type PolicySetsClientAPI = original.PolicySetsClientAPI
+type ProviderOperationsClientAPI = original.ProviderOperationsClientAPI
+type SchedulesClientAPI = original.SchedulesClientAPI
 type SecretsClientAPI = original.SecretsClientAPI
-type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI
+type ServiceFabricSchedulesClientAPI = original.ServiceFabricSchedulesClientAPI
+type ServiceFabricsClientAPI = original.ServiceFabricsClientAPI
+type ServiceRunnersClientAPI = original.ServiceRunnersClientAPI
+type UsersClientAPI = original.UsersClientAPI
 type VirtualMachineSchedulesClientAPI = original.VirtualMachineSchedulesClientAPI
+type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI
 type VirtualNetworksClientAPI = original.VirtualNetworksClientAPI

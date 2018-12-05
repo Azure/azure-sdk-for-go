@@ -672,6 +672,7 @@ type NonSQLMigrationTaskInput = original.NonSQLMigrationTaskInput
 type NonSQLMigrationTaskOutput = original.NonSQLMigrationTaskOutput
 type ODataError = original.ODataError
 type OperationsClient = original.OperationsClient
+type OrphanedUserInfo = original.OrphanedUserInfo
 type PostgreSQLConnectionInfo = original.PostgreSQLConnectionInfo
 type Project = original.Project
 type ProjectList = original.ProjectList

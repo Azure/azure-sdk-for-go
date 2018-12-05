@@ -12187,8 +12187,8 @@ type MigrateSQLServerSQLMITaskOutputMigrationLevel struct {
 	Message *string `json:"message,omitempty"`
 	// ServerRoleResults - Map of server role migration results.
 	ServerRoleResults map[string]*StartMigrationScenarioServerRoleResult `json:"serverRoleResults"`
-	// OrphanedUsers - Map of users to database name of orphaned users.
-	OrphanedUsers map[string]*string `json:"orphanedUsers"`
+	// OrphanedUsers - List of orphaned users.
+	OrphanedUsers *[]OrphanedUserInfo `json:"orphanedUsers,omitempty"`
 	// Databases - Selected databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
 	// SourceServerVersion - Source server version
@@ -13818,6 +13818,14 @@ type ODataError struct {
 	Message *string `json:"message,omitempty"`
 	// Details - Inner errors that caused this error
 	Details *[]ODataError `json:"details,omitempty"`
+}
+
+// OrphanedUserInfo information of orphaned users on the SQL server database.
+type OrphanedUserInfo struct {
+	// Name - Name of the orphaned user
+	Name *string `json:"name,omitempty"`
+	// DatabaseName - Parent DB of the user
+	DatabaseName *string `json:"databaseName,omitempty"`
 }
 
 // PostgreSQLConnectionInfo information for connecting to PostgreSQL server

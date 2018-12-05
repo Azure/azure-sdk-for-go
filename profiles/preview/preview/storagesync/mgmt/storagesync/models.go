@@ -98,6 +98,15 @@ const (
 	OfflineDataTransfer2On  OfflineDataTransfer2 = original.OfflineDataTransfer2On
 )
 
+type OfflineDataTransferStatus = original.OfflineDataTransferStatus
+
+const (
+	Complete   OfflineDataTransferStatus = original.Complete
+	InProgress OfflineDataTransferStatus = original.InProgress
+	NotRunning OfflineDataTransferStatus = original.NotRunning
+	Stopping   OfflineDataTransferStatus = original.Stopping
+)
+
 type Operation = original.Operation
 
 const (
@@ -302,6 +311,9 @@ func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
 }
 func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
 	return original.PossibleOfflineDataTransfer2Values()
+}
+func PossibleOfflineDataTransferStatusValues() []OfflineDataTransferStatus {
+	return original.PossibleOfflineDataTransferStatusValues()
 }
 func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
 	return original.PossibleOfflineDataTransferValues()

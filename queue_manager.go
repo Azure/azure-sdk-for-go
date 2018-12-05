@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -158,6 +159,14 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 	}
 }
 
+// QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified entity path
+func QueueEntityWithAutoForward(entityPath string) QueueManagementOption {
+	return func(q *QueueDescription) error {
+		q.ForwardTo = &entityPath
+		return nil
+	}
+}
+
 // QueueEntityWithMaxDeliveryCount configures the queue to have a maximum number of delivery attempts before
 // dead-lettering the message
 func QueueEntityWithMaxDeliveryCount(count int32) QueueManagementOption {
@@ -181,7 +190,11 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 
 	res, err := qm.entityManager.Delete(ctx, "/"+name)
 	if res != nil {
-		defer res.Body.Close()
+		defer func() {
+			if err := res.Body.Close(); err != nil {
+				log.For(ctx).Error(err)
+			}
+		}()
 	}
 
 	return err
@@ -221,7 +234,11 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	reqBytes = xmlDoc(reqBytes)
 	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes)
 	if res != nil {
-		defer res.Body.Close()
+		defer func() {
+			if err := res.Body.Close(); err != nil {
+				log.For(ctx).Error(err)
+			}
+		}()
 	}
 
 	if err != nil {
@@ -250,7 +267,11 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 
 	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
 	if res != nil {
-		defer res.Body.Close()
+		defer func() {
+			if err := res.Body.Close(); err != nil {
+				log.For(ctx).Error(err)
+			}
+		}()
 	}
 
 	if err != nil {
@@ -284,7 +305,11 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 
 	res, err := qm.entityManager.Get(ctx, name)
 	if res != nil {
-		defer res.Body.Close()
+		defer func() {
+			if err := res.Body.Close(); err != nil {
+				log.For(ctx).Error(err)
+			}
+		}()
 	}
 
 	if err != nil {
@@ -297,6 +322,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
+	fmt.Println(string(b))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err

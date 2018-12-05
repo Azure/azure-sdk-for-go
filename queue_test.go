@@ -315,6 +315,7 @@ func (suite *serviceBusSuite) TestQueueManagement() {
 		"TestQueueWithLockDuration":                     testQueueWithLockDuration,
 		"TestQueueWithAutoDeleteOnIdle":                 testQueueWithAutoDeleteOnIdle,
 		"TestQueueWithPartitioning":                     testQueueWithPartitioning,
+		"TestQueueWithAutoForward":                      testQueueWithAutoForward,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -389,6 +390,12 @@ func testQueueWithLockDuration(ctx context.Context, t *testing.T, qm *QueueManag
 	window := time.Duration(3 * time.Minute)
 	q := buildQueue(ctx, t, qm, name, QueueEntityWithLockDuration(&window))
 	assert.Equal(t, "PT3M", *q.LockDuration)
+}
+
+func testQueueWithAutoForward(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	absoluteEntityURI := "sb://foo.servicebus.windows.net/bazz"
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithAutoForward(absoluteEntityURI))
+	assert.Equal(t, absoluteEntityURI, *q.ForwardTo)
 }
 
 func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueManagementOption) *QueueEntity {

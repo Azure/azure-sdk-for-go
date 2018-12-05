@@ -569,10 +569,11 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 
 func (suite *serviceBusSuite) TestIssue73QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SimpleSend200": func(ctx context.Context, t *testing.T, queue *Queue) {
+		"SimpleSend200_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {
 			for i := 0; i < 200; i++ {
 				testQueueSend(ctx, t, queue)
 			}
+			checkMessageCount(ctx, t, queue.namespace, queue.Name, 200)
 		},
 	}
 	window := time.Duration(20 * time.Second)

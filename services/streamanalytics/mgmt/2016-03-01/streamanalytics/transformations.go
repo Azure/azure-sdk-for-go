@@ -50,7 +50,7 @@ func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) 
 // jobName - the name of the streaming job.
 // transformationName - the name of the transformation.
 // ifMatch - the ETag of the transformation. Omit this value to always overwrite the current transformation.
-// Specify the last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
 // ifNoneMatch - set to '*' to allow a new transformation to be created, but to prevent updating an existing
 // transformation. Other values will result in a 412 Pre-condition Failed response.
 func (client TransformationsClient) CreateOrReplace(ctx context.Context, transformation Transformation, resourceGroupName string, jobName string, transformationName string, ifMatch string, ifNoneMatch string) (result Transformation, err error) {
@@ -229,7 +229,7 @@ func (client TransformationsClient) GetResponder(resp *http.Response) (result Tr
 // jobName - the name of the streaming job.
 // transformationName - the name of the transformation.
 // ifMatch - the ETag of the transformation. Omit this value to always overwrite the current transformation.
-// Specify the last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
 func (client TransformationsClient) Update(ctx context.Context, transformation Transformation, resourceGroupName string, jobName string, transformationName string, ifMatch string) (result Transformation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransformationsClient.Update")

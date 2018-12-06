@@ -49,7 +49,7 @@ func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) Functi
 // jobName - the name of the streaming job.
 // functionName - the name of the function.
 // ifMatch - the ETag of the function. Omit this value to always overwrite the current function. Specify the
-// last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// last-seen ETag value to prevent accidentally overwriting concurrent changes.
 // ifNoneMatch - set to '*' to allow a new function to be created, but to prevent updating an existing
 // function. Other values will result in a 412 Pre-condition Failed response.
 func (client FunctionsClient) CreateOrReplace(ctx context.Context, function Function, resourceGroupName string, jobName string, functionName string, ifMatch string, ifNoneMatch string) (result Function, err error) {
@@ -607,7 +607,7 @@ func (client FunctionsClient) TestResponder(resp *http.Response) (result Resourc
 // jobName - the name of the streaming job.
 // functionName - the name of the function.
 // ifMatch - the ETag of the function. Omit this value to always overwrite the current function. Specify the
-// last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// last-seen ETag value to prevent accidentally overwriting concurrent changes.
 func (client FunctionsClient) Update(ctx context.Context, function Function, resourceGroupName string, jobName string, functionName string, ifMatch string) (result Function, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FunctionsClient.Update")

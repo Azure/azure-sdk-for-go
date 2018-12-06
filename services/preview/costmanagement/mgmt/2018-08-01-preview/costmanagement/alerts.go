@@ -119,9 +119,10 @@ func (client AlertsClient) GetAlertByManagementGroupsResponder(resp *http.Respon
 
 // GetByAccount gets the alert for an account by alert ID.
 // Parameters:
+// billingAccountID - billingAccount ID
 // enrollmentAccountID - enrollment Account Id
 // alertID - alert ID.
-func (client AlertsClient) GetByAccount(ctx context.Context, enrollmentAccountID string, alertID string) (result Alert, err error) {
+func (client AlertsClient) GetByAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByAccount")
 		defer func() {
@@ -132,7 +133,7 @@ func (client AlertsClient) GetByAccount(ctx context.Context, enrollmentAccountID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByAccountPreparer(ctx, enrollmentAccountID, alertID)
+	req, err := client.GetByAccountPreparer(ctx, billingAccountID, enrollmentAccountID, alertID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByAccount", nil, "Failure preparing request")
 		return
@@ -154,9 +155,10 @@ func (client AlertsClient) GetByAccount(ctx context.Context, enrollmentAccountID
 }
 
 // GetByAccountPreparer prepares the GetByAccount request.
-func (client AlertsClient) GetByAccountPreparer(ctx context.Context, enrollmentAccountID string, alertID string) (*http.Request, error) {
+func (client AlertsClient) GetByAccountPreparer(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertId":             autorest.Encode("path", alertID),
+		"billingAccountId":    autorest.Encode("path", billingAccountID),
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
@@ -168,7 +170,7 @@ func (client AlertsClient) GetByAccountPreparer(ctx context.Context, enrollmentA
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -195,9 +197,10 @@ func (client AlertsClient) GetByAccountResponder(resp *http.Response) (result Al
 
 // GetByDepartment gets the alert for a department by alert ID.
 // Parameters:
+// billingAccountID - billingAccount ID
 // departmentID - department ID
 // alertID - alert ID.
-func (client AlertsClient) GetByDepartment(ctx context.Context, departmentID string, alertID string) (result Alert, err error) {
+func (client AlertsClient) GetByDepartment(ctx context.Context, billingAccountID string, departmentID string, alertID string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByDepartment")
 		defer func() {
@@ -208,7 +211,7 @@ func (client AlertsClient) GetByDepartment(ctx context.Context, departmentID str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByDepartmentPreparer(ctx, departmentID, alertID)
+	req, err := client.GetByDepartmentPreparer(ctx, billingAccountID, departmentID, alertID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByDepartment", nil, "Failure preparing request")
 		return
@@ -230,10 +233,11 @@ func (client AlertsClient) GetByDepartment(ctx context.Context, departmentID str
 }
 
 // GetByDepartmentPreparer prepares the GetByDepartment request.
-func (client AlertsClient) GetByDepartmentPreparer(ctx context.Context, departmentID string, alertID string) (*http.Request, error) {
+func (client AlertsClient) GetByDepartmentPreparer(ctx context.Context, billingAccountID string, departmentID string, alertID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"alertId":      autorest.Encode("path", alertID),
-		"departmentId": autorest.Encode("path", departmentID),
+		"alertId":          autorest.Encode("path", alertID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"departmentId":     autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-08-01-preview"
@@ -244,7 +248,7 @@ func (client AlertsClient) GetByDepartmentPreparer(ctx context.Context, departme
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -635,6 +639,7 @@ func (client AlertsClient) ListComplete(ctx context.Context, filter string, skip
 
 // ListByAccount list all alerts for an account.
 // Parameters:
+// billingAccountID - billingAccount ID
 // enrollmentAccountID - enrollment Account Id
 // filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
 // properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
@@ -643,7 +648,7 @@ func (client AlertsClient) ListComplete(ctx context.Context, filter string, skip
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N alerts.
-func (client AlertsClient) ListByAccount(ctx context.Context, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+func (client AlertsClient) ListByAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByAccount")
 		defer func() {
@@ -664,7 +669,7 @@ func (client AlertsClient) ListByAccount(ctx context.Context, enrollmentAccountI
 	}
 
 	result.fn = client.listByAccountNextResults
-	req, err := client.ListByAccountPreparer(ctx, enrollmentAccountID, filter, skiptoken, top)
+	req, err := client.ListByAccountPreparer(ctx, billingAccountID, enrollmentAccountID, filter, skiptoken, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByAccount", nil, "Failure preparing request")
 		return
@@ -686,8 +691,9 @@ func (client AlertsClient) ListByAccount(ctx context.Context, enrollmentAccountI
 }
 
 // ListByAccountPreparer prepares the ListByAccount request.
-func (client AlertsClient) ListByAccountPreparer(ctx context.Context, enrollmentAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+func (client AlertsClient) ListByAccountPreparer(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"billingAccountId":    autorest.Encode("path", billingAccountID),
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
@@ -708,7 +714,7 @@ func (client AlertsClient) ListByAccountPreparer(ctx context.Context, enrollment
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/alerts", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/alerts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -755,7 +761,7 @@ func (client AlertsClient) listByAccountNextResults(ctx context.Context, lastRes
 }
 
 // ListByAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) ListByAccountComplete(ctx context.Context, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+func (client AlertsClient) ListByAccountComplete(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByAccount")
 		defer func() {
@@ -766,12 +772,13 @@ func (client AlertsClient) ListByAccountComplete(ctx context.Context, enrollment
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByAccount(ctx, enrollmentAccountID, filter, skiptoken, top)
+	result.page, err = client.ListByAccount(ctx, billingAccountID, enrollmentAccountID, filter, skiptoken, top)
 	return
 }
 
 // ListByDepartment list all alerts for a department.
 // Parameters:
+// billingAccountID - billingAccount ID
 // departmentID - department ID
 // filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
 // properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
@@ -780,7 +787,7 @@ func (client AlertsClient) ListByAccountComplete(ctx context.Context, enrollment
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N alerts.
-func (client AlertsClient) ListByDepartment(ctx context.Context, departmentID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+func (client AlertsClient) ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByDepartment")
 		defer func() {
@@ -801,7 +808,7 @@ func (client AlertsClient) ListByDepartment(ctx context.Context, departmentID st
 	}
 
 	result.fn = client.listByDepartmentNextResults
-	req, err := client.ListByDepartmentPreparer(ctx, departmentID, filter, skiptoken, top)
+	req, err := client.ListByDepartmentPreparer(ctx, billingAccountID, departmentID, filter, skiptoken, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByDepartment", nil, "Failure preparing request")
 		return
@@ -823,9 +830,10 @@ func (client AlertsClient) ListByDepartment(ctx context.Context, departmentID st
 }
 
 // ListByDepartmentPreparer prepares the ListByDepartment request.
-func (client AlertsClient) ListByDepartmentPreparer(ctx context.Context, departmentID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+func (client AlertsClient) ListByDepartmentPreparer(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"departmentId": autorest.Encode("path", departmentID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"departmentId":     autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-08-01-preview"
@@ -845,7 +853,7 @@ func (client AlertsClient) ListByDepartmentPreparer(ctx context.Context, departm
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.CostManagement/alerts", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}/providers/Microsoft.CostManagement/alerts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -892,7 +900,7 @@ func (client AlertsClient) listByDepartmentNextResults(ctx context.Context, last
 }
 
 // ListByDepartmentComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) ListByDepartmentComplete(ctx context.Context, departmentID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+func (client AlertsClient) ListByDepartmentComplete(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByDepartment")
 		defer func() {
@@ -903,7 +911,7 @@ func (client AlertsClient) ListByDepartmentComplete(ctx context.Context, departm
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByDepartment(ctx, departmentID, filter, skiptoken, top)
+	result.page, err = client.ListByDepartment(ctx, billingAccountID, departmentID, filter, skiptoken, top)
 	return
 }
 
@@ -1400,10 +1408,11 @@ func (client AlertsClient) UpdateBillingAccountAlertStatusResponder(resp *http.R
 
 // UpdateDepartmentsAlertStatus update alerts status for a department.
 // Parameters:
+// billingAccountID - billingAccount ID
 // departmentID - department ID
 // alertID - alert ID.
 // parameters - parameters supplied to the update alerts status operation.
-func (client AlertsClient) UpdateDepartmentsAlertStatus(ctx context.Context, departmentID string, alertID string, parameters Alert) (result Alert, err error) {
+func (client AlertsClient) UpdateDepartmentsAlertStatus(ctx context.Context, billingAccountID string, departmentID string, alertID string, parameters Alert) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateDepartmentsAlertStatus")
 		defer func() {
@@ -1414,7 +1423,7 @@ func (client AlertsClient) UpdateDepartmentsAlertStatus(ctx context.Context, dep
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateDepartmentsAlertStatusPreparer(ctx, departmentID, alertID, parameters)
+	req, err := client.UpdateDepartmentsAlertStatusPreparer(ctx, billingAccountID, departmentID, alertID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateDepartmentsAlertStatus", nil, "Failure preparing request")
 		return
@@ -1436,10 +1445,11 @@ func (client AlertsClient) UpdateDepartmentsAlertStatus(ctx context.Context, dep
 }
 
 // UpdateDepartmentsAlertStatusPreparer prepares the UpdateDepartmentsAlertStatus request.
-func (client AlertsClient) UpdateDepartmentsAlertStatusPreparer(ctx context.Context, departmentID string, alertID string, parameters Alert) (*http.Request, error) {
+func (client AlertsClient) UpdateDepartmentsAlertStatusPreparer(ctx context.Context, billingAccountID string, departmentID string, alertID string, parameters Alert) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"alertId":      autorest.Encode("path", alertID),
-		"departmentId": autorest.Encode("path", departmentID),
+		"alertId":          autorest.Encode("path", alertID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"departmentId":     autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-08-01-preview"
@@ -1451,7 +1461,7 @@ func (client AlertsClient) UpdateDepartmentsAlertStatusPreparer(ctx context.Cont
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.CostManagement/alerts/{alertId}/updateStatus", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}/providers/Microsoft.CostManagement/alerts/{alertId}/updateStatus", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1479,10 +1489,11 @@ func (client AlertsClient) UpdateDepartmentsAlertStatusResponder(resp *http.Resp
 
 // UpdateEnrollmentAccountAlertStatus update alerts status for an enrollment account.
 // Parameters:
+// billingAccountID - billingAccount ID
 // enrollmentAccountID - enrollment Account Id
 // alertID - alert ID.
 // parameters - parameters supplied to the update alerts status operation.
-func (client AlertsClient) UpdateEnrollmentAccountAlertStatus(ctx context.Context, enrollmentAccountID string, alertID string, parameters Alert) (result Alert, err error) {
+func (client AlertsClient) UpdateEnrollmentAccountAlertStatus(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string, parameters Alert) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateEnrollmentAccountAlertStatus")
 		defer func() {
@@ -1493,7 +1504,7 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatus(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateEnrollmentAccountAlertStatusPreparer(ctx, enrollmentAccountID, alertID, parameters)
+	req, err := client.UpdateEnrollmentAccountAlertStatusPreparer(ctx, billingAccountID, enrollmentAccountID, alertID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateEnrollmentAccountAlertStatus", nil, "Failure preparing request")
 		return
@@ -1515,9 +1526,10 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatus(ctx context.Contex
 }
 
 // UpdateEnrollmentAccountAlertStatusPreparer prepares the UpdateEnrollmentAccountAlertStatus request.
-func (client AlertsClient) UpdateEnrollmentAccountAlertStatusPreparer(ctx context.Context, enrollmentAccountID string, alertID string, parameters Alert) (*http.Request, error) {
+func (client AlertsClient) UpdateEnrollmentAccountAlertStatusPreparer(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string, parameters Alert) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertId":             autorest.Encode("path", alertID),
+		"billingAccountId":    autorest.Encode("path", billingAccountID),
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
@@ -1530,7 +1542,7 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatusPreparer(ctx contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/alerts/{alertId}/updateStatus", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/alerts/{alertId}/updateStatus", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

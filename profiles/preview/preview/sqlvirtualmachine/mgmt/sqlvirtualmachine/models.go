@@ -113,6 +113,13 @@ const (
 	PAYG SQLServerLicenseType = original.PAYG
 )
 
+type SQLVMGroupImageSku = original.SQLVMGroupImageSku
+
+const (
+	SQLVMGroupImageSkuDeveloper  SQLVMGroupImageSku = original.SQLVMGroupImageSkuDeveloper
+	SQLVMGroupImageSkuEnterprise SQLVMGroupImageSku = original.SQLVMGroupImageSkuEnterprise
+)
+
 type SQLWorkloadType = original.SQLWorkloadType
 
 const (
@@ -265,6 +272,9 @@ func PossibleSQLImageSkuValues() []SQLImageSku {
 }
 func PossibleSQLServerLicenseTypeValues() []SQLServerLicenseType {
 	return original.PossibleSQLServerLicenseTypeValues()
+}
+func PossibleSQLVMGroupImageSkuValues() []SQLVMGroupImageSku {
+	return original.PossibleSQLVMGroupImageSkuValues()
 }
 func PossibleSQLWorkloadTypeValues() []SQLWorkloadType {
 	return original.PossibleSQLWorkloadTypeValues()

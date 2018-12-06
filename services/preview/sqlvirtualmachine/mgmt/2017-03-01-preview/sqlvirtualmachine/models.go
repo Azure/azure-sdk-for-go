@@ -223,6 +223,21 @@ func PossibleSQLServerLicenseTypeValues() []SQLServerLicenseType {
 	return []SQLServerLicenseType{AHUB, PAYG}
 }
 
+// SQLVMGroupImageSku enumerates the values for sqlvm group image sku.
+type SQLVMGroupImageSku string
+
+const (
+	// SQLVMGroupImageSkuDeveloper ...
+	SQLVMGroupImageSkuDeveloper SQLVMGroupImageSku = "Developer"
+	// SQLVMGroupImageSkuEnterprise ...
+	SQLVMGroupImageSkuEnterprise SQLVMGroupImageSku = "Enterprise"
+)
+
+// PossibleSQLVMGroupImageSkuValues returns an array of possible values for the SQLVMGroupImageSku const type.
+func PossibleSQLVMGroupImageSkuValues() []SQLVMGroupImageSku {
+	return []SQLVMGroupImageSku{SQLVMGroupImageSkuDeveloper, SQLVMGroupImageSkuEnterprise}
+}
+
 // SQLWorkloadType enumerates the values for sql workload type.
 type SQLWorkloadType string
 
@@ -244,8 +259,6 @@ func PossibleSQLWorkloadTypeValues() []SQLWorkloadType {
 type AdditionalFeaturesServerConfigurations struct {
 	// IsRServicesEnabled - Enable or disable R services (SQL 2016 onwards).
 	IsRServicesEnabled *bool `json:"isRServicesEnabled,omitempty"`
-	// BackupPermissionsForAzureBackupSvc - Enable or disable Azure Backup service.
-	BackupPermissionsForAzureBackupSvc *bool `json:"backupPermissionsForAzureBackupSvc,omitempty"`
 }
 
 // AutoBackupSettings configure backups for databases in your SQL virtual machine.
@@ -845,8 +858,8 @@ type GroupProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
-	// SQLImageSku - SQL image sku. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
-	SQLImageSku SQLImageSku `json:"sqlImageSku,omitempty"`
+	// SQLImageSku - SQL image sku. Possible values include: 'SQLVMGroupImageSkuDeveloper', 'SQLVMGroupImageSkuEnterprise'
+	SQLImageSku SQLVMGroupImageSku `json:"sqlImageSku,omitempty"`
 	// ScaleType - Scale type. Possible values include: 'HA'
 	ScaleType ScaleType `json:"scaleType,omitempty"`
 	// ClusterManagerType - Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type. Possible values include: 'WSFC'
@@ -1118,7 +1131,7 @@ type LoadBalancerConfiguration struct {
 	PrivateIPAddress *PrivateIPAddress `json:"privateIpAddress,omitempty"`
 	// PublicIPAddressResourceID - Resource id of the public IP.
 	PublicIPAddressResourceID *string `json:"publicIpAddressResourceId,omitempty"`
-	// LoadBalancerResourceID - Subnet used to include private IP.
+	// LoadBalancerResourceID - Resource id of the load balancer.
 	LoadBalancerResourceID *string `json:"loadBalancerResourceId,omitempty"`
 	// ProbePort - Probe port.
 	ProbePort *int32 `json:"probePort,omitempty"`
@@ -1408,6 +1421,8 @@ type SQLStorageUpdateSettings struct {
 	DiskCount *int32 `json:"diskCount,omitempty"`
 	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
 	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
+	// StartingDeviceID - Device id of the first disk to be updated.
+	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
 }
 
 // SQLVirtualMachine a SQL virtual machine.

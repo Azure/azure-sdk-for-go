@@ -534,9 +534,11 @@ const (
 	// Batch The LOGON32_LOGON_BATCH Win32 login mode. The batch login mode is recommended for long running
 	// parallel processes.
 	Batch LoginMode = "batch"
-	// Interactive The LOGON32_LOGON_INTERACTIVE Win32 login mode. Some applications require having permissions
-	// associated with the interactive login mode. If this is the case for an application used in your task,
-	// then this option is recommended.
+	// Interactive The LOGON32_LOGON_INTERACTIVE Win32 login mode. UAC is enabled on
+	// VirtualMachineConfiguration pools. If this option is used with an elevated user in a
+	// VirtualMachineConfiguration pool, the user session will not be elevated unless the application executed
+	// by the task command line is configured to always require administrative privilege or to always require
+	// maximum privilege.
 	Interactive LoginMode = "interactive"
 )
 
@@ -2588,7 +2590,7 @@ type ImageReference struct {
 	Sku *string `json:"sku,omitempty"`
 	// Version - A value of 'latest' can be specified to select the latest version of an image. If omitted, the default is 'latest'.
 	Version *string `json:"version,omitempty"`
-	// VirtualMachineImageID - This property is mutually exclusive with other ImageReference properties. The virtual machine image must be in the same region and subscription as the Azure Batch account. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+	// VirtualMachineImageID - This property is mutually exclusive with other ImageReference properties. The virtual machine image must be in the same region and subscription as the Azure Batch account. For more details, see https://docs.microsoft.com/azure/batch/batch-custom-images.
 	VirtualMachineImageID *string `json:"virtualMachineImageId,omitempty"`
 }
 
@@ -4158,6 +4160,6 @@ type WindowsConfiguration struct {
 
 // WindowsUserConfiguration ...
 type WindowsUserConfiguration struct {
-	// LoginMode - The default value for VirtualMachineConfiguration pools is interactive and for CloudServiceConfiguration pools is batch. Possible values include: 'Batch', 'Interactive'
+	// LoginMode - The default value for VirtualMachineConfiguration pools is batch and for CloudServiceConfiguration pools is interactive. Possible values include: 'Batch', 'Interactive'
 	LoginMode LoginMode `json:"loginMode,omitempty"`
 }

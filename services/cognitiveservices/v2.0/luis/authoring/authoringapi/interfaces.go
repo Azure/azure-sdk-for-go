@@ -25,6 +25,8 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
+	AppsPackagepublishedapplicationasgzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result authoring.SetObject, err error)
+	AppsPackagetrainedapplicationasgzip(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.SetObject, err error)
 	FivebeThreeOneThreececOneEightOneaeSevenTwoZeroaaTwobTwoSixc(ctx context.Context) (result authoring.SetObject, err error)
 	FivebeThreeTwoFiveFiveFourfEightFiveNineOnedbThreeaEightSixTwoThreeTwoeOne(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
 	FivebeThreeTwoTwoTwoEighteEightFourSevenThreedeOneOneSixThreeTwoFiveFiveOneFive(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)

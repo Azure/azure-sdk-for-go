@@ -49,6 +49,154 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
+// AppsPackagepublishedapplicationasgzip packages published LUIS application as GZip.
+// Parameters:
+// appID - the application ID.
+// slotName - the publishing slot name.
+func (client BaseClient) AppsPackagepublishedapplicationasgzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AppsPackagepublishedapplicationasgzip")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.AppsPackagepublishedapplicationasgzipPreparer(ctx, appID, slotName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.BaseClient", "AppsPackagepublishedapplicationasgzip", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AppsPackagepublishedapplicationasgzipSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.BaseClient", "AppsPackagepublishedapplicationasgzip", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AppsPackagepublishedapplicationasgzipResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.BaseClient", "AppsPackagepublishedapplicationasgzip", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AppsPackagepublishedapplicationasgzipPreparer prepares the AppsPackagepublishedapplicationasgzip request.
+func (client BaseClient) AppsPackagepublishedapplicationasgzipPreparer(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":    autorest.Encode("path", appID),
+		"slotName": autorest.Encode("path", slotName),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithPathParameters("/package/{appId}/slot/{slotName}/gzip", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AppsPackagepublishedapplicationasgzipSender sends the AppsPackagepublishedapplicationasgzip request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) AppsPackagepublishedapplicationasgzipSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AppsPackagepublishedapplicationasgzipResponder handles the response to the AppsPackagepublishedapplicationasgzip request. The method always
+// closes the http.Response Body.
+func (client BaseClient) AppsPackagepublishedapplicationasgzipResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// AppsPackagetrainedapplicationasgzip packages trained LUIS application as GZip.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+func (client BaseClient) AppsPackagetrainedapplicationasgzip(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AppsPackagetrainedapplicationasgzip")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.AppsPackagetrainedapplicationasgzipPreparer(ctx, appID, versionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.BaseClient", "AppsPackagetrainedapplicationasgzip", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AppsPackagetrainedapplicationasgzipSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.BaseClient", "AppsPackagetrainedapplicationasgzip", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AppsPackagetrainedapplicationasgzipResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.BaseClient", "AppsPackagetrainedapplicationasgzip", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AppsPackagetrainedapplicationasgzipPreparer prepares the AppsPackagetrainedapplicationasgzip request.
+func (client BaseClient) AppsPackagetrainedapplicationasgzipPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithPathParameters("/package/{appId}/versions/{versionId}/gzip", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AppsPackagetrainedapplicationasgzipSender sends the AppsPackagetrainedapplicationasgzip request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) AppsPackagetrainedapplicationasgzipSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AppsPackagetrainedapplicationasgzipResponder handles the response to the AppsPackagetrainedapplicationasgzip request. The method always
+// closes the http.Response Body.
+func (client BaseClient) AppsPackagetrainedapplicationasgzipResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // FivebeThreeOneThreececOneEightOneaeSevenTwoZeroaaTwobTwoSixc gets the LUIS azure accounts for the user using his ARM
 // token.
 func (client BaseClient) FivebeThreeOneThreececOneEightOneaeSevenTwoZeroaaTwobTwoSixc(ctx context.Context) (result SetObject, err error) {

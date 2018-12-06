@@ -156,8 +156,8 @@ func (client PipelinesClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // pipelineName - the pipeline name.
-// referencePipelineRunID - the pipeline run identifier. If run ID is specified the parameters of the the
-// specified run will be used to create a new run.
+// referencePipelineRunID - the pipeline run identifier. If run ID is specified the parameters of the specified
+// run will be used to create a new run.
 // parameters - parameters of the pipeline run. These parameters will be used only if the runId is not
 // specified.
 func (client PipelinesClient) CreateRun(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, referencePipelineRunID string, parameters map[string]interface{}) (result CreateRunResponse, err error) {

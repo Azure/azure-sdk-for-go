@@ -653,9 +653,9 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 type MonitorCriteria struct {
 	// HealthState - Target health state of the criteria. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// Threshold - Treshold value for this criteria
+	// Threshold - Threshold value for this criteria
 	Threshold *float64 `json:"threshold,omitempty"`
-	// ComparisonOperator - Comparison enum on theshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
+	// ComparisonOperator - Comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
 	ComparisonOperator Operator `json:"comparisonOperator,omitempty"`
 }
 
@@ -1037,7 +1037,7 @@ type MonitorProperties struct {
 	ComponentTypeDisplayName *string `json:"componentTypeDisplayName,omitempty"`
 	// MonitorState - Is the monitor state enabled or disabled. Possible values include: 'MonitorStateEnabled', 'MonitorStateDisabled'
 	MonitorState MonitorState `json:"monitorState,omitempty"`
-	// Criteria - Collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updation.
+	// Criteria - Collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updating.
 	Criteria *[]MonitorCriteria `json:"criteria,omitempty"`
 	// AlertGeneration - Generates alerts or not. Possible values include: 'Enabled', 'Disabled'
 	AlertGeneration AlertGeneration `json:"alertGeneration,omitempty"`

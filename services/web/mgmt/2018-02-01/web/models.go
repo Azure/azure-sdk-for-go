@@ -9415,7 +9415,7 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DomainAvailablilityCheckResult domain availablility check result.
+// DomainAvailablilityCheckResult domain availability check result.
 type DomainAvailablilityCheckResult struct {
 	autorest.Response `json:"-"`
 	// Name - Name of the domain.

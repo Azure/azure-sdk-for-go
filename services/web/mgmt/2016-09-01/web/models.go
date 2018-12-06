@@ -2146,7 +2146,7 @@ type AppServiceCertificate struct {
 	ProvisioningState KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
-// AppServiceCertificateCollection collection of certitificateorder certificates.
+// AppServiceCertificateCollection collection of certificate order certificates.
 type AppServiceCertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.

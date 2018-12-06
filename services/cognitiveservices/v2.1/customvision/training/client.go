@@ -291,7 +291,7 @@ func (client BaseClient) CreateImagesFromFilesResponder(resp *http.Response) (re
 // 64 images and 20 tags.
 // Parameters:
 // projectID - the project id
-// batch - image and tag ids. Limted to 64 images and 20 tags per batch
+// batch - image and tag ids. Limited to 64 images and 20 tags per batch
 func (client BaseClient) CreateImagesFromPredictions(ctx context.Context, projectID uuid.UUID, batch ImageIDCreateBatch) (result ImageCreateSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CreateImagesFromPredictions")
@@ -749,7 +749,7 @@ func (client BaseClient) DeleteImageRegionsResponder(resp *http.Response) (resul
 // DeleteImages sends the delete images request.
 // Parameters:
 // projectID - the project id
-// imageIds - ids of the images to be deleted. Limted to 256 images per batch
+// imageIds - ids of the images to be deleted. Limited to 256 images per batch
 func (client BaseClient) DeleteImages(ctx context.Context, projectID uuid.UUID, imageIds []string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteImages")
@@ -830,7 +830,7 @@ func (client BaseClient) DeleteImagesResponder(resp *http.Response) (result auto
 // Parameters:
 // projectID - the project id
 // imageIds - image ids. Limited to 64 images
-// tagIds - tags to be deleted from the specified images. Limted to 20 tags
+// tagIds - tags to be deleted from the specified images. Limited to 20 tags
 func (client BaseClient) DeleteImageTags(ctx context.Context, projectID uuid.UUID, imageIds []string, tagIds []string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteImageTags")

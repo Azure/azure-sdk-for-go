@@ -298,9 +298,9 @@ func (client GlobalUsersClient) GetOperationStatusResponder(resp *http.Response)
 // GetPersonalPreferences get personal preferences for a user
 // Parameters:
 // userName - the name of the user.
-// personalPerferencesOperationsPayload - represents payload for any Environment operations like get, start,
+// personalPreferencesOperationsPayload - represents payload for any Environment operations like get, start,
 // stop, connect
-func (client GlobalUsersClient) GetPersonalPreferences(ctx context.Context, userName string, personalPerferencesOperationsPayload PersonalPerferencesOperationsPayload) (result GetPersonalPreferencesResponse, err error) {
+func (client GlobalUsersClient) GetPersonalPreferences(ctx context.Context, userName string, personalPreferencesOperationsPayload PersonalPreferencesOperationsPayload) (result GetPersonalPreferencesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalUsersClient.GetPersonalPreferences")
 		defer func() {
@@ -311,7 +311,7 @@ func (client GlobalUsersClient) GetPersonalPreferences(ctx context.Context, user
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPersonalPreferencesPreparer(ctx, userName, personalPerferencesOperationsPayload)
+	req, err := client.GetPersonalPreferencesPreparer(ctx, userName, personalPreferencesOperationsPayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "GetPersonalPreferences", nil, "Failure preparing request")
 		return
@@ -333,7 +333,7 @@ func (client GlobalUsersClient) GetPersonalPreferences(ctx context.Context, user
 }
 
 // GetPersonalPreferencesPreparer prepares the GetPersonalPreferences request.
-func (client GlobalUsersClient) GetPersonalPreferencesPreparer(ctx context.Context, userName string, personalPerferencesOperationsPayload PersonalPerferencesOperationsPayload) (*http.Request, error) {
+func (client GlobalUsersClient) GetPersonalPreferencesPreparer(ctx context.Context, userName string, personalPreferencesOperationsPayload PersonalPreferencesOperationsPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"userName": autorest.Encode("path", userName),
 	}
@@ -348,7 +348,7 @@ func (client GlobalUsersClient) GetPersonalPreferencesPreparer(ctx context.Conte
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.LabServices/users/{userName}/getPersonalPreferences", pathParameters),
-		autorest.WithJSON(personalPerferencesOperationsPayload),
+		autorest.WithJSON(personalPreferencesOperationsPayload),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -35,7 +35,7 @@ type GlobalUsersClientAPI interface {
 	GetEnvironment(ctx context.Context, userName string, environmentOperationsPayload labservices.EnvironmentOperationsPayload, expand string) (result labservices.GetEnvironmentResponse, err error)
 	GetOperationBatchStatus(ctx context.Context, userName string, operationBatchStatusPayload labservices.OperationBatchStatusPayload) (result labservices.OperationBatchStatusResponse, err error)
 	GetOperationStatus(ctx context.Context, userName string, operationStatusPayload labservices.OperationStatusPayload) (result labservices.OperationStatusResponse, err error)
-	GetPersonalPreferences(ctx context.Context, userName string, personalPerferencesOperationsPayload labservices.PersonalPerferencesOperationsPayload) (result labservices.GetPersonalPreferencesResponse, err error)
+	GetPersonalPreferences(ctx context.Context, userName string, personalPreferencesOperationsPayload labservices.PersonalPreferencesOperationsPayload) (result labservices.GetPersonalPreferencesResponse, err error)
 	ListEnvironments(ctx context.Context, userName string, listEnvironmentsPayload labservices.ListEnvironmentsPayload) (result labservices.ListEnvironmentsResponse, err error)
 	ListLabs(ctx context.Context, userName string) (result labservices.ListLabsResponse, err error)
 	Register(ctx context.Context, userName string, registerPayload labservices.RegisterPayload) (result autorest.Response, err error)

@@ -294,7 +294,7 @@ type ResourceStatus string
 const (
 	// Creating Indicates the resource is being created. The value is 3.
 	Creating ResourceStatus = "Creating"
-	// Deleting Indicates the resource is being deletd. The value is 4.
+	// Deleting Indicates the resource is being deleted. The value is 4.
 	Deleting ResourceStatus = "Deleting"
 	// Failed Indicates the resource is not functional due to persistent failures. See statusDetails property
 	// for more details. The value is 5.
@@ -1414,7 +1414,7 @@ type ContainerCodePackageProperties struct {
 	Volumes *[]ApplicationScopedVolume `json:"volumes,omitempty"`
 	// Diagnostics - Reference to sinks in DiagnosticsDescription.
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
-	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
 	ReliableCollectionsRefs *[]ReliableCollectionsRef `json:"reliableCollectionsRefs,omitempty"`
 	// InstanceView - Runtime information of a container instance.
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`
@@ -1988,7 +1988,7 @@ type HTTPConfig struct {
 type HTTPHostConfig struct {
 	// Name - http hostname config name.
 	Name *string `json:"name,omitempty"`
-	// Routes - Route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can hamdle general cases.
+	// Routes - Route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can handle general cases.
 	Routes *[]HTTPRouteConfig `json:"routes,omitempty"`
 }
 
@@ -3453,7 +3453,7 @@ func (svrd *SecretValueResourceDescription) UnmarshalJSON(body []byte) error {
 }
 
 // SecretValueResourceDescriptionList a pageable list of values of a secret resource. The information does
-// not include only the name of the value and not the actual unecrypted value.
+// not include only the name of the value and not the actual unencrypted value.
 type SecretValueResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - One page of the list.

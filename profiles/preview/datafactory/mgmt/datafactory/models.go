@@ -1181,6 +1181,7 @@ type LinkedServiceListResponsePage = original.LinkedServiceListResponsePage
 type LinkedServiceReference = original.LinkedServiceReference
 type LinkedServiceResource = original.LinkedServiceResource
 type LinkedServicesClient = original.LinkedServicesClient
+type LogStorageSettings = original.LogStorageSettings
 type LookupActivity = original.LookupActivity
 type LookupActivityTypeProperties = original.LookupActivityTypeProperties
 type MagentoLinkedService = original.MagentoLinkedService

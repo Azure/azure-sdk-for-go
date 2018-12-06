@@ -32,8 +32,8 @@ type SettingsClient struct {
 }
 
 // NewSettingsClient creates an instance of the SettingsClient client.
-func NewSettingsClient(endpoint string, ocpApimSubscriptionKey string) SettingsClient {
-	return SettingsClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewSettingsClient(endpoint string) SettingsClient {
+	return SettingsClient{New(endpoint)}
 }
 
 // List gets the application version settings.
@@ -86,8 +86,7 @@ func (client SettingsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -164,8 +163,7 @@ func (client SettingsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters),
-		autorest.WithJSON(listOfAppVersionSettingObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(listOfAppVersionSettingObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -33,8 +33,8 @@ type VersionsClient struct {
 }
 
 // NewVersionsClient creates an instance of the VersionsClient client.
-func NewVersionsClient(endpoint string, ocpApimSubscriptionKey string) VersionsClient {
-	return VersionsClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewVersionsClient(endpoint string) VersionsClient {
+	return VersionsClient{New(endpoint)}
 }
 
 // Clone creates a new version using the current snapshot of the selected application version.
@@ -89,8 +89,7 @@ func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID,
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters))
 	if versionCloneObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(versionCloneObject))
@@ -168,8 +167,7 @@ func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -246,8 +244,7 @@ func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Conte
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/suggest", pathParameters),
-		autorest.WithJSON(utterance),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(utterance))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -321,8 +318,7 @@ func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -396,8 +392,7 @@ func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, v
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -480,8 +475,7 @@ func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/import", pathParameters),
 		autorest.WithJSON(luisApp),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -580,8 +574,7 @@ func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -658,8 +651,7 @@ func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
-		autorest.WithJSON(versionUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(versionUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

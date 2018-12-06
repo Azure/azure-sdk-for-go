@@ -33,8 +33,8 @@ type ExamplesClient struct {
 }
 
 // NewExamplesClient creates an instance of the ExamplesClient client.
-func NewExamplesClient(endpoint string, ocpApimSubscriptionKey string) ExamplesClient {
-	return ExamplesClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewExamplesClient(endpoint string) ExamplesClient {
+	return ExamplesClient{New(endpoint)}
 }
 
 // Add adds a labeled example to the application.
@@ -90,8 +90,7 @@ func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, v
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/example", pathParameters),
-		autorest.WithJSON(exampleLabelObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(exampleLabelObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -174,8 +173,7 @@ func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID,
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
-		autorest.WithJSON(exampleLabelObjectArray),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(exampleLabelObjectArray))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -251,8 +249,7 @@ func (client ExamplesClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples/{exampleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples/{exampleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -353,8 +350,7 @@ func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

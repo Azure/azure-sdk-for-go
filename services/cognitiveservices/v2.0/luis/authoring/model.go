@@ -33,8 +33,8 @@ type ModelClient struct {
 }
 
 // NewModelClient creates an instance of the ModelClient client.
-func NewModelClient(endpoint string, ocpApimSubscriptionKey string) ModelClient {
-	return ModelClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewModelClient(endpoint string) ModelClient {
+	return ModelClient{New(endpoint)}
 }
 
 // AddClosedList adds a closed list model to the application.
@@ -91,8 +91,7 @@ func (client ModelClient) AddClosedListPreparer(ctx context.Context, appID uuid.
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists", pathParameters),
-		autorest.WithJSON(closedListModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(closedListModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -169,8 +168,7 @@ func (client ModelClient) AddCompositeEntityPreparer(ctx context.Context, appID 
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities", pathParameters),
-		autorest.WithJSON(compositeModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(compositeModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -249,8 +247,7 @@ func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children", pathParameters),
-		autorest.WithJSON(compositeChildModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(compositeChildModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -327,8 +324,7 @@ func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains", pathParameters),
-		autorest.WithJSON(prebuiltDomainObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(prebuiltDomainObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -406,8 +402,7 @@ func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters),
-		autorest.WithJSON(prebuiltDomainModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(prebuiltDomainModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -485,8 +480,7 @@ func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters),
-		autorest.WithJSON(prebuiltDomainModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(prebuiltDomainModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -563,8 +557,7 @@ func (client ModelClient) AddEntityPreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities", pathParameters),
-		autorest.WithJSON(modelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(modelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -643,8 +636,7 @@ func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, appID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters),
-		autorest.WithJSON(item),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(item))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -721,8 +713,7 @@ func (client ModelClient) AddHierarchicalEntityPreparer(ctx context.Context, app
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities", pathParameters),
-		autorest.WithJSON(hierarchicalModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(hierarchicalModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -801,8 +792,7 @@ func (client ModelClient) AddHierarchicalEntityChildPreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children", pathParameters),
-		autorest.WithJSON(hierarchicalChildModelCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(hierarchicalChildModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -879,8 +869,7 @@ func (client ModelClient) AddIntentPreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents", pathParameters),
-		autorest.WithJSON(intentCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(intentCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -963,8 +952,7 @@ func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, appID uuid.UU
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts", pathParameters),
-		autorest.WithJSON(prebuiltExtractorNames),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(prebuiltExtractorNames))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1043,8 +1031,7 @@ func (client ModelClient) AddSubListPreparer(ctx context.Context, appID uuid.UUI
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists", pathParameters),
-		autorest.WithJSON(wordListCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(wordListCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1123,8 +1110,7 @@ func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1203,8 +1189,7 @@ func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context,
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1283,8 +1268,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Con
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1363,8 +1347,7 @@ func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, appID uu
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1443,8 +1426,7 @@ func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Conte
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1522,8 +1504,7 @@ func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Contex
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
-		autorest.WithJSON(extractorCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(extractorCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1602,8 +1583,7 @@ func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1682,8 +1662,7 @@ func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, 
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1761,8 +1740,7 @@ func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, ap
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities", pathParameters),
-		autorest.WithJSON(regexEntityExtractorCreateObj),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(regexEntityExtractorCreateObj))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1841,8 +1819,7 @@ func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, app
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1918,8 +1895,7 @@ func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1997,8 +1973,7 @@ func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2074,8 +2049,7 @@ func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2153,8 +2127,7 @@ func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2232,8 +2205,7 @@ func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2311,8 +2283,7 @@ func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2388,8 +2359,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2465,8 +2435,7 @@ func (client ModelClient) DeleteEntityPreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2544,8 +2513,7 @@ func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2623,8 +2591,7 @@ func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2700,8 +2667,7 @@ func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2779,8 +2745,7 @@ func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2858,8 +2823,7 @@ func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2945,8 +2909,7 @@ func (client ModelClient) DeleteIntentPreparer(ctx context.Context, appID uuid.U
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3022,8 +2985,7 @@ func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3101,8 +3063,7 @@ func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3178,8 +3139,7 @@ func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, appID uuid
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3257,8 +3217,7 @@ func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3334,8 +3293,7 @@ func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3413,8 +3371,7 @@ func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3492,8 +3449,7 @@ func (client ModelClient) DeleteSubListPreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3596,8 +3552,7 @@ func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, appID uuid
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/models/{modelId}/examples", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3673,8 +3628,7 @@ func (client ModelClient) GetClosedListPreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3752,8 +3706,7 @@ func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3829,8 +3782,7 @@ func (client ModelClient) GetClosedListEntityRolesPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3906,8 +3858,7 @@ func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, appID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3985,8 +3936,7 @@ func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4062,8 +4012,7 @@ func (client ModelClient) GetCompositeEntityRolesPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4141,8 +4090,7 @@ func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4218,8 +4166,7 @@ func (client ModelClient) GetCustomPrebuiltEntityRolesPreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4295,8 +4242,7 @@ func (client ModelClient) GetEntityPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4374,8 +4320,7 @@ func (client ModelClient) GetEntityRolePreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4451,8 +4396,7 @@ func (client ModelClient) GetEntityRolesPreparer(ctx context.Context, appID uuid
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4546,8 +4490,7 @@ func (client ModelClient) GetEntitySuggestionsPreparer(ctx context.Context, appI
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/suggest", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4623,8 +4566,7 @@ func (client ModelClient) GetExplicitListPreparer(ctx context.Context, appID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4702,8 +4644,7 @@ func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4779,8 +4720,7 @@ func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4858,8 +4798,7 @@ func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4937,8 +4876,7 @@ func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5014,8 +4952,7 @@ func (client ModelClient) GetHierarchicalEntityRolesPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5091,8 +5028,7 @@ func (client ModelClient) GetIntentPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5186,8 +5122,7 @@ func (client ModelClient) GetIntentSuggestionsPreparer(ctx context.Context, appI
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/suggest", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5263,8 +5198,7 @@ func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5365,8 +5299,7 @@ func (client ModelClient) GetPatternAnyEntityInfosPreparer(ctx context.Context, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5444,8 +5377,7 @@ func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5521,8 +5453,7 @@ func (client ModelClient) GetPatternAnyEntityRolesPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5598,8 +5529,7 @@ func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, appID uuid.UU
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5677,8 +5607,7 @@ func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5754,8 +5683,7 @@ func (client ModelClient) GetPrebuiltEntityRolesPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5831,8 +5759,7 @@ func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5933,8 +5860,7 @@ func (client ModelClient) GetRegexEntityInfosPreparer(ctx context.Context, appID
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6012,8 +5938,7 @@ func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, appID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6089,8 +6014,7 @@ func (client ModelClient) GetRegexEntityRolesPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6191,8 +6115,7 @@ func (client ModelClient) ListClosedListsPreparer(ctx context.Context, appID uui
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6293,8 +6216,7 @@ func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, app
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6368,8 +6290,7 @@ func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6443,8 +6364,7 @@ func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6518,8 +6438,7 @@ func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltmodels", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltmodels", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6620,8 +6539,7 @@ func (client ModelClient) ListEntitiesPreparer(ctx context.Context, appID uuid.U
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6722,8 +6640,7 @@ func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6824,8 +6741,7 @@ func (client ModelClient) ListIntentsPreparer(ctx context.Context, appID uuid.UU
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6926,8 +6842,7 @@ func (client ModelClient) ListModelsPreparer(ctx context.Context, appID uuid.UUI
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/models", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7001,8 +6916,7 @@ func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, appI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/listprebuilts", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/listprebuilts", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7103,8 +7017,7 @@ func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, appID uuid.
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7183,8 +7096,7 @@ func (client ModelClient) PatchClosedListPreparer(ctx context.Context, appID uui
 		autorest.AsPatch(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
-		autorest.WithJSON(closedListModelPatchObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(closedListModelPatchObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7263,8 +7175,7 @@ func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, appID uu
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
-		autorest.WithJSON(closedListModelUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(closedListModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7345,8 +7256,7 @@ func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7425,8 +7335,7 @@ func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, app
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
-		autorest.WithJSON(compositeModelUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(compositeModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7507,8 +7416,7 @@ func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context,
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7589,8 +7497,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Con
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7669,8 +7576,7 @@ func (client ModelClient) UpdateEntityPreparer(ctx context.Context, appID uuid.U
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
-		autorest.WithJSON(modelUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(modelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7751,8 +7657,7 @@ func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, appID uu
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7833,8 +7738,7 @@ func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, ap
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
-		autorest.WithJSON(item),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(item))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7913,8 +7817,7 @@ func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, 
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
-		autorest.WithJSON(hierarchicalModelUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(hierarchicalModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7995,8 +7898,7 @@ func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Cont
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
-		autorest.WithJSON(hierarchicalChildModelUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(hierarchicalChildModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8077,8 +7979,7 @@ func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Conte
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8157,8 +8058,7 @@ func (client ModelClient) UpdateIntentPreparer(ctx context.Context, appID uuid.U
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
-		autorest.WithJSON(modelUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(modelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8237,8 +8137,7 @@ func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Contex
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
-		autorest.WithJSON(patternAnyUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(patternAnyUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8319,8 +8218,7 @@ func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8401,8 +8299,7 @@ func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, 
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8481,8 +8378,7 @@ func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, ap
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
-		autorest.WithJSON(regexEntityUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(regexEntityUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8563,8 +8459,7 @@ func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, app
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8645,8 +8540,7 @@ func (client ModelClient) UpdateSubListPreparer(ctx context.Context, appID uuid.
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters),
-		autorest.WithJSON(wordListBaseUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(wordListBaseUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

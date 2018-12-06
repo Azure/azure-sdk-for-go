@@ -32,8 +32,8 @@ type PredictionClient struct {
 }
 
 // NewPredictionClient creates an instance of the PredictionClient client.
-func NewPredictionClient(endpoint string, ocpApimSubscriptionKey string) PredictionClient {
-	return PredictionClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewPredictionClient(endpoint string) PredictionClient {
+	return PredictionClient{New(endpoint)}
 }
 
 // GET gets predictions for a given utterance, in the form of intents and entities. The current maximum query size is
@@ -121,8 +121,7 @@ func (client PredictionClient) GETPreparer(ctx context.Context, appID string, qu
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -231,8 +230,7 @@ func (client PredictionClient) POSTPreparer(ctx context.Context, appID string, q
 		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(query),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

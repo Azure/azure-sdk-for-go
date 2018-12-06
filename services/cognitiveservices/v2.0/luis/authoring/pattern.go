@@ -33,8 +33,8 @@ type PatternClient struct {
 }
 
 // NewPatternClient creates an instance of the PatternClient client.
-func NewPatternClient(endpoint string, ocpApimSubscriptionKey string) PatternClient {
-	return PatternClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewPatternClient(endpoint string) PatternClient {
+	return PatternClient{New(endpoint)}
 }
 
 // AddPattern sends the add pattern request.
@@ -90,8 +90,7 @@ func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.U
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrule", pathParameters),
-		autorest.WithJSON(pattern),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(pattern))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -174,8 +173,7 @@ func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID 
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithJSON(patterns),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(patterns))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -251,8 +249,7 @@ func (client PatternClient) DeletePatternPreparer(ctx context.Context, appID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -335,8 +332,7 @@ func (client PatternClient) DeletePatternsPreparer(ctx context.Context, appID uu
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithJSON(patternIds),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(patternIds))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -439,8 +435,7 @@ func (client PatternClient) GetIntentPatternsPreparer(ctx context.Context, appID
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/patternrules", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -541,8 +536,7 @@ func (client PatternClient) GetPatternsPreparer(ctx context.Context, appID uuid.
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -621,8 +615,7 @@ func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uui
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters),
-		autorest.WithJSON(pattern),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(pattern))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -705,8 +698,7 @@ func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uu
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
-		autorest.WithJSON(patterns),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(patterns))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

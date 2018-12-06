@@ -32,8 +32,8 @@ type PermissionsClient struct {
 }
 
 // NewPermissionsClient creates an instance of the PermissionsClient client.
-func NewPermissionsClient(endpoint string, ocpApimSubscriptionKey string) PermissionsClient {
-	return PermissionsClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewPermissionsClient(endpoint string) PermissionsClient {
+	return PermissionsClient{New(endpoint)}
 }
 
 // Add adds a user to the allowed list of users to access this LUIS application. Users are added using their email
@@ -88,8 +88,7 @@ func (client PermissionsClient) AddPreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithJSON(userToAdd),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(userToAdd))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -165,8 +164,7 @@ func (client PermissionsClient) DeletePreparer(ctx context.Context, appID uuid.U
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithJSON(userToDelete),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(userToDelete))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -238,8 +236,7 @@ func (client PermissionsClient) ListPreparer(ctx context.Context, appID uuid.UUI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -315,8 +312,7 @@ func (client PermissionsClient) UpdatePreparer(ctx context.Context, appID uuid.U
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
-		autorest.WithJSON(collaborators),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(collaborators))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

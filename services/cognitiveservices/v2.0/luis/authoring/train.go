@@ -32,8 +32,8 @@ type TrainClient struct {
 }
 
 // NewTrainClient creates an instance of the TrainClient client.
-func NewTrainClient(endpoint string, ocpApimSubscriptionKey string) TrainClient {
-	return TrainClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewTrainClient(endpoint string) TrainClient {
+	return TrainClient{New(endpoint)}
 }
 
 // GetStatus gets the training status of all models (intents and entities) for the specified LUIS app. You must call
@@ -88,8 +88,7 @@ func (client TrainClient) GetStatusPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -167,8 +166,7 @@ func (client TrainClient) TrainVersionPreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

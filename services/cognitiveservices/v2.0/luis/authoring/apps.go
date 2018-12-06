@@ -33,8 +33,8 @@ type AppsClient struct {
 }
 
 // NewAppsClient creates an instance of the AppsClient client.
-func NewAppsClient(endpoint string, ocpApimSubscriptionKey string) AppsClient {
-	return AppsClient{New(endpoint, ocpApimSubscriptionKey)}
+func NewAppsClient(endpoint string) AppsClient {
+	return AppsClient{New(endpoint)}
 }
 
 // Add creates a new LUIS app.
@@ -92,8 +92,7 @@ func (client AppsClient) AddPreparer(ctx context.Context, applicationCreateObjec
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/"),
-		autorest.WithJSON(applicationCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(applicationCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -163,8 +162,7 @@ func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, pr
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/customprebuiltdomains"),
-		autorest.WithJSON(prebuiltDomainCreateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(prebuiltDomainCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -236,8 +234,7 @@ func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID) (*
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -309,8 +306,7 @@ func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -382,8 +378,7 @@ func (client AppsClient) GetPreparer(ctx context.Context, appID uuid.UUID) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -455,8 +450,7 @@ func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, appID u
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -528,8 +522,7 @@ func (client AppsClient) GetSettingsPreparer(ctx context.Context, appID uuid.UUI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -553,7 +546,7 @@ func (client AppsClient) GetSettingsResponder(resp *http.Response) (result SetOb
 	return
 }
 
-// Import imports an application to LUIS, the application's structure should be included in in the request body.
+// Import imports an application to LUIS, the application's structure should be included in the request body.
 // Parameters:
 // luisApp - a LUIS application structure.
 // appName - the application name to create. If not specified, the application name will be read from the
@@ -607,8 +600,7 @@ func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, ap
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/import"),
 		autorest.WithJSON(luisApp),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -702,8 +694,7 @@ func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *in
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/"),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -769,8 +760,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/customprebuiltdomains"),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPath("/apps/customprebuiltdomains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -842,8 +832,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ct
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -909,8 +898,7 @@ func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/assistants"),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPath("/apps/assistants"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -976,8 +964,7 @@ func (client AppsClient) ListDomainsPreparer(ctx context.Context) (*http.Request
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/domains"),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPath("/apps/domains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1049,8 +1036,7 @@ func (client AppsClient) ListEndpointsPreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1116,8 +1102,7 @@ func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context) (*ht
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/cultures"),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPath("/apps/cultures"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1183,8 +1168,7 @@ func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context) (*http.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/usagescenarios"),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithPath("/apps/usagescenarios"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1260,8 +1244,7 @@ func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publish", pathParameters),
-		autorest.WithJSON(applicationPublishObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(applicationPublishObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1336,8 +1319,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, ap
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
-		autorest.WithJSON(applicationUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(applicationUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1412,8 +1394,7 @@ func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appI
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
-		autorest.WithJSON(publishSettingUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(publishSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1488,8 +1469,7 @@ func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
-		autorest.WithJSON(applicationSettingUpdateObject),
-		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
+		autorest.WithJSON(applicationSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -325,38 +325,38 @@ type VersionsClient = original.VersionsClient
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
 
-func New(endpoint string, ocpApimSubscriptionKey string) BaseClient {
-	return original.New(endpoint, ocpApimSubscriptionKey)
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
-func NewAppsClient(endpoint string, ocpApimSubscriptionKey string) AppsClient {
-	return original.NewAppsClient(endpoint, ocpApimSubscriptionKey)
+func NewAppsClient(endpoint string) AppsClient {
+	return original.NewAppsClient(endpoint)
 }
-func NewExamplesClient(endpoint string, ocpApimSubscriptionKey string) ExamplesClient {
-	return original.NewExamplesClient(endpoint, ocpApimSubscriptionKey)
+func NewExamplesClient(endpoint string) ExamplesClient {
+	return original.NewExamplesClient(endpoint)
 }
-func NewFeaturesClient(endpoint string, ocpApimSubscriptionKey string) FeaturesClient {
-	return original.NewFeaturesClient(endpoint, ocpApimSubscriptionKey)
+func NewFeaturesClient(endpoint string) FeaturesClient {
+	return original.NewFeaturesClient(endpoint)
 }
-func NewModelClient(endpoint string, ocpApimSubscriptionKey string) ModelClient {
-	return original.NewModelClient(endpoint, ocpApimSubscriptionKey)
+func NewModelClient(endpoint string) ModelClient {
+	return original.NewModelClient(endpoint)
 }
-func NewPatternClient(endpoint string, ocpApimSubscriptionKey string) PatternClient {
-	return original.NewPatternClient(endpoint, ocpApimSubscriptionKey)
+func NewPatternClient(endpoint string) PatternClient {
+	return original.NewPatternClient(endpoint)
 }
-func NewPermissionsClient(endpoint string, ocpApimSubscriptionKey string) PermissionsClient {
-	return original.NewPermissionsClient(endpoint, ocpApimSubscriptionKey)
+func NewPermissionsClient(endpoint string) PermissionsClient {
+	return original.NewPermissionsClient(endpoint)
 }
-func NewSettingsClient(endpoint string, ocpApimSubscriptionKey string) SettingsClient {
-	return original.NewSettingsClient(endpoint, ocpApimSubscriptionKey)
+func NewSettingsClient(endpoint string) SettingsClient {
+	return original.NewSettingsClient(endpoint)
 }
-func NewTrainClient(endpoint string, ocpApimSubscriptionKey string) TrainClient {
-	return original.NewTrainClient(endpoint, ocpApimSubscriptionKey)
+func NewTrainClient(endpoint string) TrainClient {
+	return original.NewTrainClient(endpoint)
 }
-func NewVersionsClient(endpoint string, ocpApimSubscriptionKey string) VersionsClient {
-	return original.NewVersionsClient(endpoint, ocpApimSubscriptionKey)
+func NewVersionsClient(endpoint string) VersionsClient {
+	return original.NewVersionsClient(endpoint)
 }
-func NewWithoutDefaults(endpoint string, ocpApimSubscriptionKey string) BaseClient {
-	return original.NewWithoutDefaults(endpoint, ocpApimSubscriptionKey)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return original.PossibleOperationStatusTypeValues()

@@ -27,20 +27,18 @@ import (
 // BaseClient is the base client for Authoring.
 type BaseClient struct {
 	autorest.Client
-	Endpoint               string
-	OcpApimSubscriptionKey string
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string, ocpApimSubscriptionKey string) BaseClient {
-	return NewWithoutDefaults(endpoint, ocpApimSubscriptionKey)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(endpoint string, ocpApimSubscriptionKey string) BaseClient {
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client:                 autorest.NewClientWithUserAgent(UserAgent()),
-		Endpoint:               endpoint,
-		OcpApimSubscriptionKey: ocpApimSubscriptionKey,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
 	}
 }

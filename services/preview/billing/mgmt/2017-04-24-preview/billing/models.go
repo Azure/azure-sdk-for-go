@@ -144,7 +144,7 @@ type InvoiceProperties struct {
 	InvoicePeriodStartDate *date.Date `json:"invoicePeriodStartDate,omitempty"`
 	// InvoicePeriodEndDate - The end of the date range covered by the invoice.
 	InvoicePeriodEndDate *date.Date `json:"invoicePeriodEndDate,omitempty"`
-	// BillingPeriodIds - Array of billing perdiod ids that the invoice is attributed to.
+	// BillingPeriodIds - Array of billing period ids that the invoice is attributed to.
 	BillingPeriodIds *[]string `json:"billingPeriodIds,omitempty"`
 }
 

@@ -189,8 +189,8 @@ func (q *Queue) ScheduleAt(ctx context.Context, enqueueTime time.Time, messages 
 			"message-id": messages[i].ID,
 			"message":    encoded,
 		}
-		if messages[i].GroupID != nil {
-			individualMessage["session-id"] = *messages[i].GroupID
+		if messages[i].SessionID != nil {
+			individualMessage["session-id"] = *messages[i].SessionID
 		}
 		if partitionKey := messages[i].SystemProperties.PartitionKey; partitionKey != nil {
 			individualMessage["partition-key"] = *partitionKey

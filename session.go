@@ -173,8 +173,8 @@ func (qs *QueueSession) Send(ctx context.Context, msg *Message) error {
 		return err
 	}
 
-	if msg.GroupID == nil {
-		msg.GroupID = qs.sessionID
+	if msg.SessionID == nil {
+		msg.SessionID = qs.sessionID
 	}
 	return qs.sender.Send(ctx, msg)
 }
@@ -327,8 +327,8 @@ func (ts *TopicSession) Send(ctx context.Context, msg *Message) error {
 		return err
 	}
 
-	if msg.GroupID == nil {
-		msg.GroupID = ts.sessionID
+	if msg.SessionID == nil {
+		msg.SessionID = ts.sessionID
 	}
 	return ts.sender.Send(ctx, msg)
 }

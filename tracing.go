@@ -41,8 +41,8 @@ func (m *Message) startSpanFromContext(ctx context.Context, operationName string
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
 	applyComponentInfo(span)
 	span.SetTag("amqp.message-id", m.ID)
-	if m.GroupID != nil {
-		span.SetTag("amqp.message-group-id", *m.GroupID)
+	if m.SessionID != nil {
+		span.SetTag("amqp.message-group-id", *m.SessionID)
 	}
 	if m.GroupSequence != nil {
 		span.SetTag("amqp.message-group-sequence", *m.GroupSequence)

@@ -55,7 +55,7 @@ func (suite *serviceBusSuite) TestMessageToAMQPMessage() {
 		ContentType:    "application/json",
 		CorrelationID:  "1",
 		Data:           []byte("foo"),
-		GroupID:        to.StringPtr("12"),
+		SessionID:      to.StringPtr("12"),
 		GroupSequence:  &sequence,
 		ID:             "123",
 		Label:          "subject",
@@ -82,7 +82,7 @@ func (suite *serviceBusSuite) TestMessageToAMQPMessage() {
 	aMsg, err := msg.toMsg()
 	if suite.NoError(err) {
 		suite.Equal(msg.ID, aMsg.Properties.MessageID, "message id")
-		suite.Equal(*msg.GroupID, aMsg.Properties.GroupID, "groupID")
+		suite.Equal(*msg.SessionID, aMsg.Properties.GroupID, "groupID")
 		suite.Equal(*msg.GroupSequence, aMsg.Properties.GroupSequence, "GroupSequence")
 		suite.Equal(msg.CorrelationID, aMsg.Properties.CorrelationID, "CorrelationID")
 		suite.Equal(msg.ContentType, aMsg.Properties.ContentType, "ContentType")
@@ -161,7 +161,7 @@ func (suite *serviceBusSuite) TestAMQPMessageToMessage() {
 	if suite.NoError(err) {
 		suite.Equal(msg.ID, aMsg.Properties.MessageID, "messageID")
 		suite.Equal(*msg.GroupSequence, aMsg.Properties.GroupSequence, "groupSequence")
-		suite.Equal(*msg.GroupID, aMsg.Properties.GroupID, "groupID")
+		suite.Equal(*msg.SessionID, aMsg.Properties.GroupID, "groupID")
 		suite.Equal(msg.ContentType, aMsg.Properties.ContentType, "contentType")
 		suite.Equal(msg.CorrelationID, aMsg.Properties.CorrelationID, "correlation")
 		suite.Equal(msg.ReplyToGroupID, aMsg.Properties.ReplyToGroupID, "replyToGroupID")

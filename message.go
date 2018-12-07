@@ -41,7 +41,7 @@ type (
 		CorrelationID    string
 		Data             []byte
 		DeliveryCount    uint32
-		GroupID          *string
+		SessionID        *string
 		GroupSequence    *uint32
 		ID               string
 		Label            string
@@ -265,8 +265,8 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 		MessageID: m.ID,
 	}
 
-	if m.GroupID != nil {
-		amqpMsg.Properties.GroupID = *m.GroupID
+	if m.SessionID != nil {
+		amqpMsg.Properties.GroupID = *m.SessionID
 	}
 
 	if m.GroupSequence != nil {
@@ -338,7 +338,7 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		if id, ok := amqpMsg.Properties.MessageID.(string); ok {
 			msg.ID = id
 		}
-		msg.GroupID = &amqpMsg.Properties.GroupID
+		msg.SessionID = &amqpMsg.Properties.GroupID
 		msg.GroupSequence = &amqpMsg.Properties.GroupSequence
 		if id, ok := amqpMsg.Properties.CorrelationID.(string); ok {
 			msg.CorrelationID = id

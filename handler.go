@@ -3,6 +3,10 @@ package servicebus
 import "context"
 
 type (
+	// TODO: message session should be available for each of the handler methods
+
+	// TODO: write a session manager that will handle a max concurrent session
+
 	// Handler exposes the functionality required to process a Service Bus message.
 	Handler interface {
 		Handle(context.Context, *Message) error

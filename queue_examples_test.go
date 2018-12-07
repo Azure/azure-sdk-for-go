@@ -208,7 +208,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	for i := 0; i < numSessions; i++ {
 		adj := adjectives[generator.Intn(len(adjectives))]
 		msg := servicebus.NewMessageFromString(adj)
-		msg.GroupID = &sessionIDs[i]
+		msg.SessionID = &sessionIDs[i]
 		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
 			return
@@ -219,7 +219,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	for i := 0; i < numSessions; i++ {
 		noun := nouns[generator.Intn(len(nouns))]
 		msg := servicebus.NewMessageFromString(noun)
-		msg.GroupID = &sessionIDs[i]
+		msg.SessionID = &sessionIDs[i]
 		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
 			return
@@ -230,7 +230,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	for i := 0; i < numSessions; i++ {
 		suffix := fmt.Sprintf("%02d", generator.Intn(100))
 		msg := servicebus.NewMessageFromString(suffix)
-		msg.GroupID = &sessionIDs[i]
+		msg.SessionID = &sessionIDs[i]
 		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
 			return

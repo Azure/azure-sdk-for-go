@@ -278,7 +278,7 @@ func (client BlueprintsClient) GetResponder(resp *http.Response) (result Model, 
 	return
 }
 
-// List create or update blueprint definition.
+// List list Blueprint definitions within a Management Group.
 // Parameters:
 // managementGroupName - managementGroup where blueprint stores.
 func (client BlueprintsClient) List(ctx context.Context, managementGroupName string) (result ListPage, err error) {

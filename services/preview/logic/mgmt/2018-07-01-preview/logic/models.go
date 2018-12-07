@@ -1441,10 +1441,10 @@ type EdifactValidationOverride struct {
 	MessageID *string `json:"messageId,omitempty"`
 	// EnforceCharacterSet - The value indicating whether to validate character Set.
 	EnforceCharacterSet *bool `json:"enforceCharacterSet,omitempty"`
-	// ValidateEdiTypes - The value indicating whether to validate EDI types.
-	ValidateEdiTypes *bool `json:"validateEdiTypes,omitempty"`
-	// ValidateXsdTypes - The value indicating whether to validate XSD types.
-	ValidateXsdTypes *bool `json:"validateXsdTypes,omitempty"`
+	// ValidateEDITypes - The value indicating whether to validate EDI types.
+	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	// ValidateXSDTypes - The value indicating whether to validate XSD types.
+	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
 	// AllowLeadingAndTrailingSpacesAndZeroes - The value indicating whether to allow leading and trailing spaces and zeroes.
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'TrailingSeparatorPolicyNotSpecified', 'TrailingSeparatorPolicyNotAllowed', 'TrailingSeparatorPolicyOptional', 'TrailingSeparatorPolicyMandatory'
@@ -1465,10 +1465,10 @@ type EdifactValidationSettings struct {
 	CheckDuplicateGroupControlNumber *bool `json:"checkDuplicateGroupControlNumber,omitempty"`
 	// CheckDuplicateTransactionSetControlNumber - The value indicating whether to check for duplicate transaction set control number.
 	CheckDuplicateTransactionSetControlNumber *bool `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
-	// ValidateEdiTypes - The value indicating whether to Whether to validate EDI types.
-	ValidateEdiTypes *bool `json:"validateEdiTypes,omitempty"`
-	// ValidateXsdTypes - The value indicating whether to Whether to validate XSD types.
-	ValidateXsdTypes *bool `json:"validateXsdTypes,omitempty"`
+	// ValidateEDITypes - The value indicating whether to Whether to validate EDI types.
+	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	// ValidateXSDTypes - The value indicating whether to Whether to validate XSD types.
+	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
 	// AllowLeadingAndTrailingSpacesAndZeroes - The value indicating whether to allow leading and trailing spaces and zeroes.
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	// TrimLeadingAndTrailingSpacesAndZeroes - The value indicating whether to trim leading and trailing spaces and zeroes.
@@ -6309,10 +6309,10 @@ type X12SecuritySettings struct {
 type X12ValidationOverride struct {
 	// MessageID - The message id on which the validation settings has to be applied.
 	MessageID *string `json:"messageId,omitempty"`
-	// ValidateEdiTypes - The value indicating whether to validate EDI types.
-	ValidateEdiTypes *bool `json:"validateEdiTypes,omitempty"`
-	// ValidateXsdTypes - The value indicating whether to validate XSD types.
-	ValidateXsdTypes *bool `json:"validateXsdTypes,omitempty"`
+	// ValidateEDITypes - The value indicating whether to validate EDI types.
+	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	// ValidateXSDTypes - The value indicating whether to validate XSD types.
+	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
 	// AllowLeadingAndTrailingSpacesAndZeroes - The value indicating whether to allow leading and trailing spaces and zeroes.
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	// ValidateCharacterSet - The value indicating whether to validate character Set.
@@ -6335,10 +6335,10 @@ type X12ValidationSettings struct {
 	CheckDuplicateGroupControlNumber *bool `json:"checkDuplicateGroupControlNumber,omitempty"`
 	// CheckDuplicateTransactionSetControlNumber - The value indicating whether to check for duplicate transaction set control number.
 	CheckDuplicateTransactionSetControlNumber *bool `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
-	// ValidateEdiTypes - The value indicating whether to Whether to validate EDI types.
-	ValidateEdiTypes *bool `json:"validateEdiTypes,omitempty"`
-	// ValidateXsdTypes - The value indicating whether to Whether to validate XSD types.
-	ValidateXsdTypes *bool `json:"validateXsdTypes,omitempty"`
+	// ValidateEDITypes - The value indicating whether to Whether to validate EDI types.
+	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	// ValidateXSDTypes - The value indicating whether to Whether to validate XSD types.
+	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
 	// AllowLeadingAndTrailingSpacesAndZeroes - The value indicating whether to allow leading and trailing spaces and zeroes.
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	// TrimLeadingAndTrailingSpacesAndZeroes - The value indicating whether to trim leading and trailing spaces and zeroes.

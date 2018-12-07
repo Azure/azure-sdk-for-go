@@ -228,7 +228,7 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCheckNameAvailabilityParameters the parameters used to check the availabity of the storage
+// AccountCheckNameAvailabilityParameters the parameters used to check the availability of the storage
 // account name.
 type AccountCheckNameAvailabilityParameters struct {
 	Name *string `json:"name,omitempty"`

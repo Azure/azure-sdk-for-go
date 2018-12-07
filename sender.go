@@ -125,8 +125,8 @@ func (s *Sender) Send(ctx context.Context, event *Message, opts ...SendOption) e
 	span, ctx := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
 	defer span.Finish()
 
-	if event.GroupID == nil {
-		event.GroupID = &s.session.SessionID
+	if event.SessionID == nil {
+		event.SessionID = &s.session.SessionID
 		next := s.session.getNext()
 		event.GroupSequence = &next
 	}

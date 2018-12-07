@@ -541,7 +541,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 			// caught a dup
 			assert.Fail(t, "received a duplicate message")
 			for _, item := range all {
-				t.Logf("mID: %q, gID: %q, gSeq: %q, lockT: %q", item.ID, *item.GroupID, *item.GroupSequence, *item.LockToken)
+				t.Logf("mID: %q, gID: %q, gSeq: %q, lockT: %q", item.ID, *item.SessionID, *item.GroupSequence, *item.LockToken)
 			}
 		}
 		if len(all) == len(messages) {

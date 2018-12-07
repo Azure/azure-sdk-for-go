@@ -70,7 +70,9 @@ func newPeekIterator(entity *entity, connection *amqp.Client, options ...PeekOpt
 
 	foundPageSize := false
 	for i := range options {
-		options[i](retval)
+		if err := options[i](retval); err != nil {
+			return nil, err
+		}
 
 		if retval.buffer != nil {
 			foundPageSize = true

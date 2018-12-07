@@ -2674,20 +2674,20 @@ func PossibleRetentionPolicyTypeValues() []RetentionPolicyType {
 	return []RetentionPolicyType{RetentionPolicyTypeBasic, RetentionPolicyTypeInvalid}
 }
 
-// RetentionPolicyTypeBasicRetentionPolicyDescription enumerates the values for retention policy type basic
-// retention policy description.
-type RetentionPolicyTypeBasicRetentionPolicyDescription string
+// RetentionPolicyTypeBasicBasicRetentionPolicyDescription enumerates the values for retention policy type
+// basic basic retention policy description.
+type RetentionPolicyTypeBasicBasicRetentionPolicyDescription string
 
 const (
 	// RetentionPolicyTypeBasic1 ...
-	RetentionPolicyTypeBasic1 RetentionPolicyTypeBasicRetentionPolicyDescription = "Basic"
+	RetentionPolicyTypeBasic1 RetentionPolicyTypeBasicBasicRetentionPolicyDescription = "Basic"
 	// RetentionPolicyTypeRetentionPolicyDescription ...
-	RetentionPolicyTypeRetentionPolicyDescription RetentionPolicyTypeBasicRetentionPolicyDescription = "RetentionPolicyDescription"
+	RetentionPolicyTypeRetentionPolicyDescription RetentionPolicyTypeBasicBasicRetentionPolicyDescription = "RetentionPolicyDescription"
 )
 
-// PossibleRetentionPolicyTypeBasicRetentionPolicyDescriptionValues returns an array of possible values for the RetentionPolicyTypeBasicRetentionPolicyDescription const type.
-func PossibleRetentionPolicyTypeBasicRetentionPolicyDescriptionValues() []RetentionPolicyTypeBasicRetentionPolicyDescription {
-	return []RetentionPolicyTypeBasicRetentionPolicyDescription{RetentionPolicyTypeBasic1, RetentionPolicyTypeRetentionPolicyDescription}
+// PossibleRetentionPolicyTypeBasicBasicRetentionPolicyDescriptionValues returns an array of possible values for the RetentionPolicyTypeBasicBasicRetentionPolicyDescription const type.
+func PossibleRetentionPolicyTypeBasicBasicRetentionPolicyDescriptionValues() []RetentionPolicyTypeBasicBasicRetentionPolicyDescription {
+	return []RetentionPolicyTypeBasicBasicRetentionPolicyDescription{RetentionPolicyTypeBasic1, RetentionPolicyTypeRetentionPolicyDescription}
 }
 
 // SafetyCheckKind enumerates the values for safety check kind.
@@ -11078,7 +11078,7 @@ type BackupPolicyDescription struct {
 	// Storage - Describes the details of backup storage where to store the periodic backups.
 	Storage BasicBackupStorageDescription `json:"Storage,omitempty"`
 	// RetentionPolicy - Describes the policy to retain backups in storage.
-	RetentionPolicy BasicRetentionPolicyDescription `json:"RetentionPolicy,omitempty"`
+	RetentionPolicy BasicBasicRetentionPolicyDescription `json:"RetentionPolicy,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for BackupPolicyDescription struct.
@@ -11135,7 +11135,7 @@ func (bpd *BackupPolicyDescription) UnmarshalJSON(body []byte) error {
 			}
 		case "RetentionPolicy":
 			if v != nil {
-				retentionPolicy, err := unmarshalBasicRetentionPolicyDescription(*v)
+				retentionPolicy, err := unmarshalBasicBasicRetentionPolicyDescription(*v)
 				if err != nil {
 					return err
 				}
@@ -11354,7 +11354,7 @@ type BasicRetentionPolicyDescription struct {
 	// MinimumNumberOfBackups - It is the minimum number of backups to be retained at any point of time. If specified with a non zero value, backups will not be deleted even if the backups have gone past retention duration and have number of backups less than or equal to it.
 	MinimumNumberOfBackups *int32 `json:"MinimumNumberOfBackups,omitempty"`
 	// RetentionPolicyType - Possible values include: 'RetentionPolicyTypeRetentionPolicyDescription', 'RetentionPolicyTypeBasic1'
-	RetentionPolicyType RetentionPolicyTypeBasicRetentionPolicyDescription `json:"RetentionPolicyType,omitempty"`
+	RetentionPolicyType RetentionPolicyTypeBasicBasicRetentionPolicyDescription `json:"RetentionPolicyType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BasicRetentionPolicyDescription.
@@ -11373,18 +11373,18 @@ func (brpd BasicRetentionPolicyDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsBasicRetentionPolicyDescription is the BasicRetentionPolicyDescription implementation for BasicRetentionPolicyDescription.
+// AsBasicRetentionPolicyDescription is the BasicBasicRetentionPolicyDescription implementation for BasicRetentionPolicyDescription.
 func (brpd BasicRetentionPolicyDescription) AsBasicRetentionPolicyDescription() (*BasicRetentionPolicyDescription, bool) {
 	return &brpd, true
 }
 
-// AsRetentionPolicyDescription is the BasicRetentionPolicyDescription implementation for BasicRetentionPolicyDescription.
+// AsRetentionPolicyDescription is the BasicBasicRetentionPolicyDescription implementation for BasicRetentionPolicyDescription.
 func (brpd BasicRetentionPolicyDescription) AsRetentionPolicyDescription() (*RetentionPolicyDescription, bool) {
 	return nil, false
 }
 
-// AsBasicRetentionPolicyDescription is the BasicRetentionPolicyDescription implementation for BasicRetentionPolicyDescription.
-func (brpd BasicRetentionPolicyDescription) AsBasicRetentionPolicyDescription() (BasicRetentionPolicyDescription, bool) {
+// AsBasicBasicRetentionPolicyDescription is the BasicBasicRetentionPolicyDescription implementation for BasicRetentionPolicyDescription.
+func (brpd BasicRetentionPolicyDescription) AsBasicBasicRetentionPolicyDescription() (BasicBasicRetentionPolicyDescription, bool) {
 	return &brpd, true
 }
 
@@ -40071,8 +40071,8 @@ type ResumeClusterUpgradeDescription struct {
 	UpgradeDomain *string `json:"UpgradeDomain,omitempty"`
 }
 
-// BasicRetentionPolicyDescription describes the retention policy configured.
-type BasicRetentionPolicyDescription interface {
+// BasicBasicRetentionPolicyDescription describes the retention policy configured.
+type BasicBasicRetentionPolicyDescription interface {
 	AsBasicRetentionPolicyDescription() (*BasicRetentionPolicyDescription, bool)
 	AsRetentionPolicyDescription() (*RetentionPolicyDescription, bool)
 }
@@ -40080,10 +40080,10 @@ type BasicRetentionPolicyDescription interface {
 // RetentionPolicyDescription describes the retention policy configured.
 type RetentionPolicyDescription struct {
 	// RetentionPolicyType - Possible values include: 'RetentionPolicyTypeRetentionPolicyDescription', 'RetentionPolicyTypeBasic1'
-	RetentionPolicyType RetentionPolicyTypeBasicRetentionPolicyDescription `json:"RetentionPolicyType,omitempty"`
+	RetentionPolicyType RetentionPolicyTypeBasicBasicRetentionPolicyDescription `json:"RetentionPolicyType,omitempty"`
 }
 
-func unmarshalBasicRetentionPolicyDescription(body []byte) (BasicRetentionPolicyDescription, error) {
+func unmarshalBasicBasicRetentionPolicyDescription(body []byte) (BasicBasicRetentionPolicyDescription, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -40101,17 +40101,17 @@ func unmarshalBasicRetentionPolicyDescription(body []byte) (BasicRetentionPolicy
 		return rpd, err
 	}
 }
-func unmarshalBasicRetentionPolicyDescriptionArray(body []byte) ([]BasicRetentionPolicyDescription, error) {
+func unmarshalBasicBasicRetentionPolicyDescriptionArray(body []byte) ([]BasicBasicRetentionPolicyDescription, error) {
 	var rawMessages []*json.RawMessage
 	err := json.Unmarshal(body, &rawMessages)
 	if err != nil {
 		return nil, err
 	}
 
-	rpdArray := make([]BasicRetentionPolicyDescription, len(rawMessages))
+	rpdArray := make([]BasicBasicRetentionPolicyDescription, len(rawMessages))
 
 	for index, rawMessage := range rawMessages {
-		rpd, err := unmarshalBasicRetentionPolicyDescription(*rawMessage)
+		rpd, err := unmarshalBasicBasicRetentionPolicyDescription(*rawMessage)
 		if err != nil {
 			return nil, err
 		}
@@ -40130,18 +40130,18 @@ func (rpd RetentionPolicyDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsBasicRetentionPolicyDescription is the BasicRetentionPolicyDescription implementation for RetentionPolicyDescription.
+// AsBasicRetentionPolicyDescription is the BasicBasicRetentionPolicyDescription implementation for RetentionPolicyDescription.
 func (rpd RetentionPolicyDescription) AsBasicRetentionPolicyDescription() (*BasicRetentionPolicyDescription, bool) {
 	return nil, false
 }
 
-// AsRetentionPolicyDescription is the BasicRetentionPolicyDescription implementation for RetentionPolicyDescription.
+// AsRetentionPolicyDescription is the BasicBasicRetentionPolicyDescription implementation for RetentionPolicyDescription.
 func (rpd RetentionPolicyDescription) AsRetentionPolicyDescription() (*RetentionPolicyDescription, bool) {
 	return &rpd, true
 }
 
-// AsBasicRetentionPolicyDescription is the BasicRetentionPolicyDescription implementation for RetentionPolicyDescription.
-func (rpd RetentionPolicyDescription) AsBasicRetentionPolicyDescription() (BasicRetentionPolicyDescription, bool) {
+// AsBasicBasicRetentionPolicyDescription is the BasicBasicRetentionPolicyDescription implementation for RetentionPolicyDescription.
+func (rpd RetentionPolicyDescription) AsBasicBasicRetentionPolicyDescription() (BasicBasicRetentionPolicyDescription, bool) {
 	return &rpd, true
 }
 

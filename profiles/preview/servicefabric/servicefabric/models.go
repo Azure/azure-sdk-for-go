@@ -1198,11 +1198,11 @@ const (
 	RetentionPolicyTypeInvalid RetentionPolicyType = original.RetentionPolicyTypeInvalid
 )
 
-type RetentionPolicyTypeBasicRetentionPolicyDescription = original.RetentionPolicyTypeBasicRetentionPolicyDescription
+type RetentionPolicyTypeBasicBasicRetentionPolicyDescription = original.RetentionPolicyTypeBasicBasicRetentionPolicyDescription
 
 const (
-	RetentionPolicyTypeBasic1                     RetentionPolicyTypeBasicRetentionPolicyDescription = original.RetentionPolicyTypeBasic1
-	RetentionPolicyTypeRetentionPolicyDescription RetentionPolicyTypeBasicRetentionPolicyDescription = original.RetentionPolicyTypeRetentionPolicyDescription
+	RetentionPolicyTypeBasic1                     RetentionPolicyTypeBasicBasicRetentionPolicyDescription = original.RetentionPolicyTypeBasic1
+	RetentionPolicyTypeRetentionPolicyDescription RetentionPolicyTypeBasicBasicRetentionPolicyDescription = original.RetentionPolicyTypeRetentionPolicyDescription
 )
 
 type SafetyCheckKind = original.SafetyCheckKind
@@ -1602,6 +1602,7 @@ type BasicBackupConfigurationInfo = original.BasicBackupConfigurationInfo
 type BasicBackupEntity = original.BasicBackupEntity
 type BasicBackupScheduleDescription = original.BasicBackupScheduleDescription
 type BasicBackupStorageDescription = original.BasicBackupStorageDescription
+type BasicBasicRetentionPolicyDescription = original.BasicBasicRetentionPolicyDescription
 type BasicChaosEvent = original.BasicChaosEvent
 type BasicClusterEvent = original.BasicClusterEvent
 type BasicDeployedServiceReplicaDetailInfo = original.BasicDeployedServiceReplicaDetailInfo
@@ -1629,7 +1630,6 @@ type BasicReplicaHealthState = original.BasicReplicaHealthState
 type BasicReplicaInfo = original.BasicReplicaInfo
 type BasicReplicaStatusBase = original.BasicReplicaStatusBase
 type BasicReplicatorStatus = original.BasicReplicatorStatus
-type BasicRetentionPolicyDescription = original.BasicRetentionPolicyDescription
 type BasicRetentionPolicyDescription = original.BasicRetentionPolicyDescription
 type BasicSafetyCheck = original.BasicSafetyCheck
 type BasicScalingMechanismDescription = original.BasicScalingMechanismDescription
@@ -2456,8 +2456,8 @@ func PossibleRestoreStateValues() []RestoreState {
 func PossibleResultStatusValues() []ResultStatus {
 	return original.PossibleResultStatusValues()
 }
-func PossibleRetentionPolicyTypeBasicRetentionPolicyDescriptionValues() []RetentionPolicyTypeBasicRetentionPolicyDescription {
-	return original.PossibleRetentionPolicyTypeBasicRetentionPolicyDescriptionValues()
+func PossibleRetentionPolicyTypeBasicBasicRetentionPolicyDescriptionValues() []RetentionPolicyTypeBasicBasicRetentionPolicyDescription {
+	return original.PossibleRetentionPolicyTypeBasicBasicRetentionPolicyDescriptionValues()
 }
 func PossibleRetentionPolicyTypeValues() []RetentionPolicyType {
 	return original.PossibleRetentionPolicyTypeValues()

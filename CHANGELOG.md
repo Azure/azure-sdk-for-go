@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v23.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| dtl | 2018-09-15 |
+| labservices | 2018-10-15 |
+| msi | 2018-11-30 |
+| servicefabric | 6.3<br/>6.4 |
+| timeseriesinsights | 2018-08-15-preview |
+
 ## `v23.0.0`
 
 ### New Packages

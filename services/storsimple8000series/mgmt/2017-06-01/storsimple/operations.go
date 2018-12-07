@@ -40,7 +40,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all of the available REST API operations of the Microsoft.Storsimple provider
+// List lists all of the available REST API operations of the Microsoft.StorSimple provider
 func (client OperationsClient) List(ctx context.Context) (result AvailableProviderOperationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")

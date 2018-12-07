@@ -1169,7 +1169,7 @@ type AlertErrorDetails struct {
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// ErrorMessage - The error message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// Occurences - The number of occurences
+	// Occurences - The number of occurrences
 	Occurences *int32 `json:"occurences,omitempty"`
 }
 
@@ -2171,7 +2171,7 @@ type BackupPolicyProperties struct {
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
 	// SchedulesCount - The count of schedules the backup policy contains.
 	SchedulesCount *int64 `json:"schedulesCount,omitempty"`
-	// ScheduledBackupStatus - Indicates whether atleast one of the schedules in the backup policy is active or not. Possible values include: 'ScheduledBackupStatusDisabled', 'ScheduledBackupStatusEnabled'
+	// ScheduledBackupStatus - Indicates whether at least one of the schedules in the backup policy is active or not. Possible values include: 'ScheduledBackupStatusDisabled', 'ScheduledBackupStatusEnabled'
 	ScheduledBackupStatus ScheduledBackupStatus `json:"scheduledBackupStatus,omitempty"`
 	// BackupPolicyCreationType - The backup policy creation type. Indicates whether this was created through SaaS or through StorSimple Snapshot Manager. Possible values include: 'BackupPolicyCreationTypeBySaaS', 'BackupPolicyCreationTypeBySSM'
 	BackupPolicyCreationType BackupPolicyCreationType `json:"backupPolicyCreationType,omitempty"`
@@ -2446,7 +2446,7 @@ type BandwidthRateSettingProperties struct {
 
 // BandwidthSchedule the schedule for bandwidth setting.
 type BandwidthSchedule struct {
-	// Start - The start time of the schdule.
+	// Start - The start time of the schedule.
 	Start *Time `json:"start,omitempty"`
 	// Stop - The stop time of the schedule.
 	Stop *Time `json:"stop,omitempty"`
@@ -3728,7 +3728,7 @@ type FailoverTarget struct {
 	ModelDescription *string `json:"modelDescription,omitempty"`
 	// DeviceSoftwareVersion - The software version of the device.
 	DeviceSoftwareVersion *string `json:"deviceSoftwareVersion,omitempty"`
-	// DataContainersCount - The count of datacontainers on the device.
+	// DataContainersCount - The count of data containers on the device.
 	DataContainersCount *int32 `json:"dataContainersCount,omitempty"`
 	// VolumesCount - The count of volumes on the device.
 	VolumesCount *int32 `json:"volumesCount,omitempty"`
@@ -4584,7 +4584,7 @@ type ManagerExtendedInfoProperties struct {
 	Algorithm *string `json:"algorithm,omitempty"`
 }
 
-// ManagerIntrinsicSettings intrinsic settings which refers to the type of the Storsimple Manager.
+// ManagerIntrinsicSettings intrinsic settings which refers to the type of the StorSimple Manager.
 type ManagerIntrinsicSettings struct {
 	// Type - The type of StorSimple Manager. Possible values include: 'GardaV1', 'HelsinkiV1'
 	Type ManagerType `json:"type,omitempty"`
@@ -4593,7 +4593,7 @@ type ManagerIntrinsicSettings struct {
 // ManagerList the list of StorSimple Managers.
 type ManagerList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of storsimple managers.
+	// Value - The list of StorSimple managers.
 	Value *[]Manager `json:"value,omitempty"`
 }
 

@@ -8,8 +8,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-service-bus-go/atom"
+	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/to"
+
+	"github.com/Azure/azure-service-bus-go/atom"
 )
 
 type (
@@ -22,7 +24,7 @@ type (
 	// SubscriptionEntity is the Azure Service Bus description of a topic Subscription for management activities
 	SubscriptionEntity struct {
 		*SubscriptionDescription
-		Name string
+		*Entity
 	}
 
 	// subscriptionFeed is a specialized feed containing Topic Subscriptions
@@ -74,9 +76,7 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 	defer span.Finish()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	return err
 }
@@ -112,9 +112,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := sm.entityManager.Put(ctx, sm.getResourceURI(name), reqBytes)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		return nil, err
@@ -139,9 +137,7 @@ func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity,
 	defer span.Finish()
 
 	res, err := sm.entityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		return nil, err
@@ -171,9 +167,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	defer span.Finish()
 
 	res, err := sm.entityManager.Get(ctx, sm.getResourceURI(name))
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		return nil, err
@@ -202,7 +196,10 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
 	return &SubscriptionEntity{
 		SubscriptionDescription: &entry.Content.SubscriptionDescription,
-		Name:                    entry.Title,
+		Entity: &Entity{
+			Name: entry.Title,
+			ID:   entry.ID,
+		},
 	}
 }
 
@@ -274,5 +271,14 @@ func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionManage
 		}
 		s.DefaultMessageTimeToLive = ptrString(durationTo8601Seconds(*window))
 		return nil
+	}
+}
+
+func closeRes(ctx context.Context, res *http.Response) {
+	if res == nil {
+		return
+	}
+	if err := res.Body.Close(); err != nil {
+		log.For(ctx).Error(err)
 	}
 }

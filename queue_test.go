@@ -304,6 +304,22 @@ func (suite *serviceBusSuite) randEntityName() string {
 	return suite.RandomName("goq", 6)
 }
 
+func (suite *serviceBusSuite) TestQueueManager_QueueWithAutoForward() {
+	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
+		"TestQueueWithAutoForward": testQueueWithAutoForward,
+	}
+
+	suite.testQueueMgmt(tests)
+}
+
+func testQueueWithAutoForward(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	targetQueueName := "target-" + name
+	target := buildQueue(ctx, t, qm, targetQueueName)
+	defer assert.NoError(t, qm.Delete(ctx, targetQueueName))
+	src := buildQueue(ctx, t, qm, name, QueueEntityWithAutoForward(target))
+	assert.Equal(t, target.EntityID(), *src.ForwardTo)
+}
+
 func (suite *serviceBusSuite) TestQueueManagement() {
 	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
 		"TestQueueDefaultSettings":                      testDefaultQueue,
@@ -318,19 +334,7 @@ func (suite *serviceBusSuite) TestQueueManagement() {
 		"TestQueueWithAutoForward":                      testQueueWithAutoForward,
 	}
 
-	ns := suite.getNewSasInstance()
-	qm := ns.NewQueueManager()
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-			name := suite.randEntityName()
-			testFunc(ctx, t, qm, name)
-			defer suite.cleanupQueue(name)
-
-		}
-		suite.T().Run(name, setupTestTeardown)
-	}
+	suite.testQueueMgmt(tests)
 }
 
 func testDefaultQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
@@ -392,24 +396,30 @@ func testQueueWithLockDuration(ctx context.Context, t *testing.T, qm *QueueManag
 	assert.Equal(t, "PT3M", *q.LockDuration)
 }
 
-func testQueueWithAutoForward(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
-	absoluteEntityURI := "sb://foo.servicebus.windows.net/bazz"
-	q := buildQueue(ctx, t, qm, name, QueueEntityWithAutoForward(absoluteEntityURI))
-	assert.Equal(t, absoluteEntityURI, *q.ForwardTo)
-}
-
 func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueManagementOption) *QueueEntity {
 	_, err := qm.Put(ctx, name, opts...)
-	if !assert.NoError(t, err) {
-		assert.FailNow(t, fmt.Sprintf("%v", err))
-	}
+	require.NoError(t, err)
 
 	q, err := qm.Get(ctx, name)
-	if !assert.NoError(t, err) {
-		assert.FailNow(t, fmt.Sprintf("%v", err))
-	}
+	require.NoError(t, err)
 
 	return q
+}
+
+func (suite *serviceBusSuite) testQueueMgmt(tests map[string]func(context.Context, *testing.T, *QueueManager, string)) {
+	ns := suite.getNewSasInstance()
+	qm := ns.NewQueueManager()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+			name := suite.randEntityName()
+			testFunc(ctx, t, qm, name)
+			defer suite.cleanupQueue(name)
+
+		}
+		suite.T().Run(name, setupTestTeardown)
+	}
 }
 
 func (suite *serviceBusSuite) TestQueueClient() {

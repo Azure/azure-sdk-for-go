@@ -48,6 +48,7 @@ type (
 	entityManager struct {
 		TokenProvider auth.TokenProvider
 		Host          string
+		stack         []MiddlewareFunc
 	}
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
@@ -74,6 +75,44 @@ type (
 
 	// EntityStatus enumerates the values for entity status.
 	EntityStatus string
+
+	MiddlewareFunc func(next RestHandler) RestHandler
+	RestHandler func(ctx context.Context, req *http.Request) (*http.Response, error)
+)
+
+var (
+	addAtomXMLContentType MiddlewareFunc = func(next RestHandler) RestHandler {
+		return func(ctx context.Context, req *http.Request) (res *http.Response, e error) {
+			fmt.Println("addAtomXMLContentType")
+			if req.Method != http.MethodGet && req.Method != http.MethodHead {
+				req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
+			}
+			return next(ctx, req)
+		}
+	}
+
+	addAPIVersion201704 MiddlewareFunc = func(next RestHandler) RestHandler {
+		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
+			fmt.Println("addAPIVersion201704")
+			q := req.URL.Query()
+			q.Add("api-version", "2017-04")
+			req.URL.RawQuery = q.Encode()
+			return next(ctx, req)
+		}
+	}
+
+	applyTracing MiddlewareFunc = func(next RestHandler) RestHandler {
+		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
+			fmt.Println("applyTracing")
+			span, ctx := startConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing")
+			defer span.Finish()
+
+			applyRequestInfo(span, req)
+			res, err := next(ctx, req)
+			applyResponseInfo(span, res)
+			return res, err
+		}
+	}
 )
 
 const (
@@ -106,6 +145,12 @@ func newEntityManager(host string, tokenProvider auth.TokenProvider) *entityMana
 	return &entityManager{
 		Host:          host,
 		TokenProvider: tokenProvider,
+		stack: []MiddlewareFunc{
+			addAPIVersion201704,
+			addAtomXMLContentType,
+			addAuthorization(tokenProvider),
+			applyTracing,
+		},
 	}
 }
 
@@ -141,68 +186,65 @@ func (em *entityManager) Post(ctx context.Context, entityPath string, body []byt
 	return em.Execute(ctx, http.MethodPost, entityPath, bytes.NewReader(body))
 }
 
-// Execute performs an HTTP request given a http method, path and body
 func (em *entityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader) (*http.Response, error) {
 	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
 	defer span.Finish()
 
-	client := &http.Client{
-		Timeout: 60 * time.Second,
-	}
 	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
 	}
 
-	req = addAtomXMLContentType(req)
-	req = addAPIVersion201704(req)
-	applyRequestInfo(span, req)
-	req, err = em.addAuthorization(req)
-	if err != nil {
-		log.For(ctx).Error(err)
-		return nil, err
+	final := func(_ RestHandler) RestHandler {
+		return func(reqCtx context.Context, request *http.Request) (*http.Response, error) {
+			fmt.Println("final")
+			client := &http.Client{
+				Timeout: 60 * time.Second,
+			}
+			request = request.WithContext(reqCtx)
+			return client.Do(request)
+		}
 	}
 
-	req = req.WithContext(ctx)
-	res, err := client.Do(req)
-
-	applyResponseInfo(span, res)
-	if err != nil {
-		log.For(ctx).Error(err)
+	tstack := []MiddlewareFunc{final}
+	sl := len(em.stack) - 1
+	for i := sl; i >= 0; i-- {
+		tstack = append(tstack, em.stack[i])
 	}
 
-	return res, err
+	var h RestHandler
+	for _, mw := range tstack {
+		h = mw(h)
+	}
+
+	return h(ctx, req)
+}
+
+// Use adds middleware to the middleware stack
+func (em *entityManager) Use(mw ...MiddlewareFunc) {
+	em.stack = append(em.stack, mw...)
+}
+
+func addAuthorization(tp auth.TokenProvider) MiddlewareFunc {
+	return func(next RestHandler) RestHandler {
+		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
+			fmt.Println("addAuthorization")
+			signature, err := tp.GetToken(req.URL.String())
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Add("Authorization", signature.Token)
+			return next(ctx, req)
+		}
+	}
 }
 
 func isEmptyFeed(b []byte) bool {
 	var emptyFeed queueFeed
 	feedErr := xml.Unmarshal(b, &emptyFeed)
 	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
-}
-
-func (em *entityManager) addAuthorization(req *http.Request) (*http.Request, error) {
-	signature, err := em.TokenProvider.GetToken(req.URL.String())
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Authorization", signature.Token)
-	return req, nil
-}
-
-func addAtomXMLContentType(req *http.Request) *http.Request {
-	if req.Method != http.MethodGet && req.Method != http.MethodHead {
-		req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
-	}
-	return req
-}
-
-func addAPIVersion201704(req *http.Request) *http.Request {
-	q := req.URL.Query()
-	q.Add("api-version", "2017-04")
-	req.URL.RawQuery = q.Encode()
-	return req
 }
 
 func xmlDoc(content []byte) []byte {

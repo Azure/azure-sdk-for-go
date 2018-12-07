@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/to"
+
+	"github.com/Azure/azure-service-bus-go/atom"
 )
 
 type (
@@ -20,10 +21,15 @@ type (
 		*entityManager
 	}
 
+	Entity struct {
+		Name string
+		ID   string
+	}
+
 	// QueueEntity is the Azure Service Bus description of a Queue for management activities
 	QueueEntity struct {
 		*QueueDescription
-		Name string
+		*Entity
 	}
 
 	// queueFeed is a specialized feed containing QueueEntries
@@ -40,12 +46,25 @@ type (
 
 	// QueueManagementOption represents named configuration options for queue mutation
 	QueueManagementOption func(*QueueDescription) error
+
+	// EntityIdentifier provides the ability for a Service Bus entity to identify itself
+	EntityIdentifier interface {
+		EntityID() string
+	}
 )
+
+func (e Entity) EntityID() string {
+	split := strings.Split(e.ID, "?")
+	return strings.Replace(split[0], "https://", "sb://", 1)
+}
 
 func queueEntryToEntity(entry *queueEntry) *QueueEntity {
 	return &QueueEntity{
 		QueueDescription: &entry.Content.QueueDescription,
-		Name:             entry.Title,
+		Entity: &Entity{
+			Name: entry.Title,
+			ID:   entry.ID,
+		},
 	}
 }
 
@@ -160,9 +179,10 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 }
 
 // QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified entity path
-func QueueEntityWithAutoForward(entityPath string) QueueManagementOption {
+func QueueEntityWithAutoForward(entityIdentifier EntityIdentifier) QueueManagementOption {
 	return func(q *QueueDescription) error {
-		q.ForwardTo = &entityPath
+		entityID := entityIdentifier.EntityID()
+		q.ForwardTo = &entityID
 		return nil
 	}
 }
@@ -189,13 +209,7 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 	defer span.Finish()
 
 	res, err := qm.entityManager.Delete(ctx, "/"+name)
-	if res != nil {
-		defer func() {
-			if err := res.Body.Close(); err != nil {
-				log.For(ctx).Error(err)
-			}
-		}()
-	}
+	defer closeRes(ctx, res)
 
 	return err
 }
@@ -233,13 +247,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes)
-	if res != nil {
-		defer func() {
-			if err := res.Body.Close(); err != nil {
-				log.For(ctx).Error(err)
-			}
-		}()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -266,13 +274,7 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	defer span.Finish()
 
 	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
-	if res != nil {
-		defer func() {
-			if err := res.Body.Close(); err != nil {
-				log.For(ctx).Error(err)
-			}
-		}()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -304,13 +306,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	defer span.Finish()
 
 	res, err := qm.entityManager.Get(ctx, name)
-	if res != nil {
-		defer func() {
-			if err := res.Body.Close(); err != nil {
-				log.For(ctx).Error(err)
-			}
-		}()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -322,7 +318,6 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
-	fmt.Println(string(b))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err

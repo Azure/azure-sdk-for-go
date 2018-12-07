@@ -275,6 +275,20 @@ func addSupplementalAuthorization(supplementalURI string, tp auth.TokenProvider)
 	}
 }
 
+func addDeadLetterSupplementalAuthorization(targetURI string, tp auth.TokenProvider) MiddlewareFunc {
+	return func(next RestHandler) RestHandler {
+		return func(ctx context.Context, req *http.Request) (response *http.Response, e error) {
+			signature, err := tp.GetToken(targetURI)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Add("ServiceBusDlqSupplementaryAuthorization", signature.Token)
+			return next(ctx, req)
+		}
+	}
+}
+
 // TraceReqAndResponseMiddleware will print the dump of the management request and response.
 //
 // This should only be used for debugging or educational purposes.

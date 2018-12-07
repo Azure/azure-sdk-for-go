@@ -304,12 +304,23 @@ func (suite *serviceBusSuite) randEntityName() string {
 	return suite.RandomName("goq", 6)
 }
 
-func (suite *serviceBusSuite) TestQueueManager_QueueWithAutoForward() {
+func (suite *serviceBusSuite) TestQueueManager_QueueWithForwarding() {
 	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
-		"TestQueueWithAutoForward": testQueueWithAutoForward,
+		"TestQueueWithAutoForward":         testQueueWithAutoForward,
+		"TestQueueWithForwardDeadLetterTo": testQueueWithForwardDeadLetterTo,
 	}
 
 	suite.testQueueMgmt(tests)
+}
+
+func testQueueWithForwardDeadLetterTo(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	targetQueueName := "target-" + name
+	target := buildQueue(ctx, t, qm, targetQueueName)
+	defer func() {
+		assert.NoError(t, qm.Delete(ctx, targetQueueName))
+	}()
+	src := buildQueue(ctx, t, qm, name, QueueEntityWithForwardDeadLetteredMessagesTo(target))
+	assert.Equal(t, target.TargetURI(), *src.ForwardDeadLetteredMessagesTo)
 }
 
 func testQueueWithAutoForward(ctx context.Context, t *testing.T, qm *QueueManager, name string) {

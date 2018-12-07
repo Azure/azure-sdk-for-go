@@ -110,6 +110,10 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 		mw = append(mw, addSupplementalAuthorization(*sd.ForwardTo, sm.TokenProvider()))
 	}
 
+	if sd.ForwardDeadLetteredMessagesTo != nil {
+		mw = append(mw, addDeadLetterSupplementalAuthorization(*sd.ForwardDeadLetteredMessagesTo, sm.TokenProvider()))
+	}
+
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
 		return nil, err
@@ -216,6 +220,20 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 func SubscriptionWithBatchedOperations() SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		s.EnableBatchedOperations = ptrBool(true)
+		return nil
+	}
+}
+
+// SubscriptionWithForwardDeadLetteredMessagesTo configures the queue to automatically forward dead letter messages to
+// the specified target entity.
+//
+// The ability to forward dead letter messages to a target requires the connection have management authorization. If
+// the connection string or Azure Active Directory identity used does not have management authorization, an unauthorized
+// error will be returned on the PUT.
+func SubscriptionWithForwardDeadLetteredMessagesTo(target Targetable) SubscriptionManagementOption {
+	return func(s *SubscriptionDescription) error {
+		uri := target.TargetURI()
+		s.ForwardDeadLetteredMessagesTo = &uri
 		return nil
 	}
 }

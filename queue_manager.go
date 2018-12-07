@@ -180,7 +180,7 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 	}
 }
 
-// QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified entity path
+// QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified target.
 //
 // The ability to AutoForward to a target requires the connection have management authorization. If the connection
 // string or Azure Active Directory identity used does not have management authorization, an unauthorized error will be
@@ -189,6 +189,20 @@ func QueueEntityWithAutoForward(target Targetable) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		uri := target.TargetURI()
 		q.ForwardTo = &uri
+		return nil
+	}
+}
+
+// QueueEntityWithForwardDeadLetteredMessagesTo configures the queue to automatically forward dead letter messages to
+// the specified target.
+//
+// The ability to forward dead letter messages to a target requires the connection have management authorization. If
+// the connection string or Azure Active Directory identity used does not have management authorization, an unauthorized
+// error will be returned on the PUT.
+func QueueEntityWithForwardDeadLetteredMessagesTo(target Targetable) QueueManagementOption {
+	return func(q *QueueDescription) error {
+		uri := target.TargetURI()
+		q.ForwardDeadLetteredMessagesTo = &uri
 		return nil
 	}
 }
@@ -248,6 +262,10 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	var mw []MiddlewareFunc
 	if qd.ForwardTo != nil {
 		mw = append(mw, addSupplementalAuthorization(*qd.ForwardTo, qm.TokenProvider()))
+	}
+
+	if qd.ForwardDeadLetteredMessagesTo != nil {
+		mw = append(mw, addDeadLetterSupplementalAuthorization(*qd.ForwardDeadLetteredMessagesTo, qm.TokenProvider()))
 	}
 
 	reqBytes, err := xml.Marshal(qe)

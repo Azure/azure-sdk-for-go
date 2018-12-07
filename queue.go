@@ -91,6 +91,7 @@ type (
 		EnableExpress                       *bool         `xml:"EnableExpress,omitempty"`
 		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
 		ForwardTo                           *string       `xml:"ForwardTo,omitempty"`
+		ForwardDeadLetteredMessagesTo       *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
 	}
 
 	// QueueOption represents named options for assisting Queue message handling

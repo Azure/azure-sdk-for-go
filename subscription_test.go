@@ -142,12 +142,24 @@ func (suite *serviceBusSuite) cleanupSubscription(topic *Topic, subscriptionName
 	}
 }
 
-func (suite *serviceBusSuite) TestSubscriptionManager_SubscriptionWithAutoForward() {
+func (suite *serviceBusSuite) TestSubscriptionManager_SubscriptionWithForwarding() {
 	tests := map[string]func(context.Context, *testing.T, *SubscriptionManager, string, string){
-		"TestSubscriptionWithAutoForward": testSubscriptionWithAutoForward,
+		"TestSubscriptionWithAutoForward":         testSubscriptionWithAutoForward,
+		"TestSubscriptionWithForwardDeadLetterTo": testSubscriptionWithForwardDeadLetterTo,
 	}
 
 	suite.testSubscriptionManager(tests)
+}
+
+func testSubscriptionWithForwardDeadLetterTo(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, subName string) {
+	targetName := "target-" + subName
+	target := buildSubscription(ctx, t, sm, targetName)
+	defer func() {
+		assert.NoError(t, sm.Delete(ctx, targetName))
+	}()
+
+	src := buildSubscription(ctx, t, sm, subName, SubscriptionWithForwardDeadLetteredMessagesTo(target))
+	assert.Equal(t, target.TargetURI(), *src.ForwardDeadLetteredMessagesTo)
 }
 
 func testSubscriptionWithAutoForward(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, subName string) {

@@ -43,12 +43,12 @@ func NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI string, subscr
 	return IntegrationRuntimeObjectMetadataClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+// Get get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // integrationRuntimeName - the integration runtime name.
-// getMetadataRequest - the parameters for getting a ssis object metadata.
+// getMetadataRequest - the parameters for getting a SSIS object metadata.
 func (client IntegrationRuntimeObjectMetadataClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, getMetadataRequest *GetSsisObjectMetadataRequest) (result SsisObjectMetadataListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeObjectMetadataClient.Get")
@@ -144,7 +144,7 @@ func (client IntegrationRuntimeObjectMetadataClient) GetResponder(resp *http.Res
 	return
 }
 
-// Refresh refresh a ssis integration runtime object metadata.
+// Refresh refresh a SSIS integration runtime object metadata.
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.

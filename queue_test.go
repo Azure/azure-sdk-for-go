@@ -304,6 +304,35 @@ func (suite *serviceBusSuite) randEntityName() string {
 	return suite.RandomName("goq", 6)
 }
 
+func (suite *serviceBusSuite) TestQueueManager_QueueWithForwarding() {
+	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
+		"TestQueueWithAutoForward":         testQueueWithAutoForward,
+		"TestQueueWithForwardDeadLetterTo": testQueueWithForwardDeadLetterTo,
+	}
+
+	suite.testQueueMgmt(tests)
+}
+
+func testQueueWithForwardDeadLetterTo(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	targetQueueName := "target-" + name
+	target := buildQueue(ctx, t, qm, targetQueueName)
+	defer func() {
+		assert.NoError(t, qm.Delete(ctx, targetQueueName))
+	}()
+	src := buildQueue(ctx, t, qm, name, QueueEntityWithForwardDeadLetteredMessagesTo(target))
+	assert.Equal(t, target.TargetURI(), *src.ForwardDeadLetteredMessagesTo)
+}
+
+func testQueueWithAutoForward(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	targetQueueName := "target-" + name
+	target := buildQueue(ctx, t, qm, targetQueueName)
+	defer func() {
+		assert.NoError(t, qm.Delete(ctx, targetQueueName))
+	}()
+	src := buildQueue(ctx, t, qm, name, QueueEntityWithAutoForward(target))
+	assert.Equal(t, target.TargetURI(), *src.ForwardTo)
+}
+
 func (suite *serviceBusSuite) TestQueueManagement() {
 	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
 		"TestQueueDefaultSettings":                      testDefaultQueue,
@@ -315,21 +344,10 @@ func (suite *serviceBusSuite) TestQueueManagement() {
 		"TestQueueWithLockDuration":                     testQueueWithLockDuration,
 		"TestQueueWithAutoDeleteOnIdle":                 testQueueWithAutoDeleteOnIdle,
 		"TestQueueWithPartitioning":                     testQueueWithPartitioning,
+		"TestQueueWithAutoForward":                      testQueueWithAutoForward,
 	}
 
-	ns := suite.getNewSasInstance()
-	qm := ns.NewQueueManager()
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-			name := suite.randEntityName()
-			testFunc(ctx, t, qm, name)
-			defer suite.cleanupQueue(name)
-
-		}
-		suite.T().Run(name, setupTestTeardown)
-	}
+	suite.testQueueMgmt(tests)
 }
 
 func testDefaultQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
@@ -393,16 +411,28 @@ func testQueueWithLockDuration(ctx context.Context, t *testing.T, qm *QueueManag
 
 func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueManagementOption) *QueueEntity {
 	_, err := qm.Put(ctx, name, opts...)
-	if !assert.NoError(t, err) {
-		assert.FailNow(t, fmt.Sprintf("%v", err))
-	}
+	require.NoError(t, err)
 
 	q, err := qm.Get(ctx, name)
-	if !assert.NoError(t, err) {
-		assert.FailNow(t, fmt.Sprintf("%v", err))
-	}
+	require.NoError(t, err)
 
 	return q
+}
+
+func (suite *serviceBusSuite) testQueueMgmt(tests map[string]func(context.Context, *testing.T, *QueueManager, string)) {
+	ns := suite.getNewSasInstance()
+	qm := ns.NewQueueManager()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+			name := suite.randEntityName()
+			testFunc(ctx, t, qm, name)
+			defer suite.cleanupQueue(name)
+
+		}
+		suite.T().Run(name, setupTestTeardown)
+	}
 }
 
 func (suite *serviceBusSuite) TestQueueClient() {

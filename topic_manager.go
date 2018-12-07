@@ -9,8 +9,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/to"
+
+	"github.com/Azure/azure-service-bus-go/atom"
 )
 
 type (
@@ -22,7 +23,7 @@ type (
 	// TopicEntity is the Azure Service Bus description of a Topic for management activities
 	TopicEntity struct {
 		*TopicDescription
-		Name string
+		*Entity
 	}
 
 	// topicEntry is a specialized Topic feed entry
@@ -61,9 +62,7 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 	defer span.Finish()
 
 	res, err := tm.entityManager.Delete(ctx, "/"+name)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	return err
 }
@@ -101,9 +100,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := tm.entityManager.Put(ctx, "/"+name, reqBytes)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -130,9 +127,7 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 	defer span.Finish()
 
 	res, err := tm.entityManager.Get(ctx, `/$Resources/Topics`)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -164,9 +159,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	defer span.Finish()
 
 	res, err := tm.entityManager.Get(ctx, name)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -197,7 +190,10 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 func topicEntryToEntity(entry *topicEntry) *TopicEntity {
 	return &TopicEntity{
 		TopicDescription: &entry.Content.TopicDescription,
-		Name:             entry.Title,
+		Entity: &Entity{
+			Name: entry.Title,
+			ID:   entry.ID,
+		},
 	}
 }
 

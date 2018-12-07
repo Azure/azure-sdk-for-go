@@ -6,11 +6,13 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/to"
+
+	"github.com/Azure/azure-service-bus-go/atom"
 )
 
 type (
@@ -19,10 +21,16 @@ type (
 		*entityManager
 	}
 
+	// Entity is represents the most basic form of an Azure Service Bus entity.
+	Entity struct {
+		Name string
+		ID   string
+	}
+
 	// QueueEntity is the Azure Service Bus description of a Queue for management activities
 	QueueEntity struct {
 		*QueueDescription
-		Name string
+		*Entity
 	}
 
 	// queueFeed is a specialized feed containing QueueEntries
@@ -39,12 +47,26 @@ type (
 
 	// QueueManagementOption represents named configuration options for queue mutation
 	QueueManagementOption func(*QueueDescription) error
+
+	// Targetable provides the ability to forward messages to the entity
+	Targetable interface {
+		TargetURI() string
+	}
 )
+
+// TargetURI provides an absolute address to a target entity
+func (e Entity) TargetURI() string {
+	split := strings.Split(e.ID, "?")
+	return split[0]
+}
 
 func queueEntryToEntity(entry *queueEntry) *QueueEntity {
 	return &QueueEntity{
 		QueueDescription: &entry.Content.QueueDescription,
-		Name:             entry.Title,
+		Entity: &Entity{
+			Name: entry.Title,
+			ID:   entry.ID,
+		},
 	}
 }
 
@@ -158,6 +180,33 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 	}
 }
 
+// QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified target.
+//
+// The ability to AutoForward to a target requires the connection have management authorization. If the connection
+// string or Azure Active Directory identity used does not have management authorization, an unauthorized error will be
+// returned on the PUT.
+func QueueEntityWithAutoForward(target Targetable) QueueManagementOption {
+	return func(q *QueueDescription) error {
+		uri := target.TargetURI()
+		q.ForwardTo = &uri
+		return nil
+	}
+}
+
+// QueueEntityWithForwardDeadLetteredMessagesTo configures the queue to automatically forward dead letter messages to
+// the specified target.
+//
+// The ability to forward dead letter messages to a target requires the connection have management authorization. If
+// the connection string or Azure Active Directory identity used does not have management authorization, an unauthorized
+// error will be returned on the PUT.
+func QueueEntityWithForwardDeadLetteredMessagesTo(target Targetable) QueueManagementOption {
+	return func(q *QueueDescription) error {
+		uri := target.TargetURI()
+		q.ForwardDeadLetteredMessagesTo = &uri
+		return nil
+	}
+}
+
 // QueueEntityWithMaxDeliveryCount configures the queue to have a maximum number of delivery attempts before
 // dead-lettering the message
 func QueueEntityWithMaxDeliveryCount(count int32) QueueManagementOption {
@@ -180,9 +229,7 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 	defer span.Finish()
 
 	res, err := qm.entityManager.Delete(ctx, "/"+name)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	return err
 }
@@ -212,6 +259,15 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 		},
 	}
 
+	var mw []MiddlewareFunc
+	if qd.ForwardTo != nil {
+		mw = append(mw, addSupplementalAuthorization(*qd.ForwardTo, qm.TokenProvider()))
+	}
+
+	if qd.ForwardDeadLetteredMessagesTo != nil {
+		mw = append(mw, addDeadLetterSupplementalAuthorization(*qd.ForwardDeadLetteredMessagesTo, qm.TokenProvider()))
+	}
+
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -219,10 +275,8 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	}
 
 	reqBytes = xmlDoc(reqBytes)
-	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes, mw...)
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -249,9 +303,7 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	defer span.Finish()
 
 	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -283,9 +335,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	defer span.Finish()
 
 	res, err := qm.entityManager.Get(ctx, name)
-	if res != nil {
-		defer res.Body.Close()
-	}
+	defer closeRes(ctx, res)
 
 	if err != nil {
 		log.For(ctx).Error(err)

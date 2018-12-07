@@ -181,6 +181,10 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 }
 
 // QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified entity path
+//
+// The ability to AutoForward to a target requires the connection have management authorization. If the connection
+// string or Azure Active Directory identity used does not have management authorization, an unauthorized error will be
+// returned on the PUT.
 func QueueEntityWithAutoForward(target Targetable) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		uri := target.TargetURI()

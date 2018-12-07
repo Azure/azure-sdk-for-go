@@ -221,6 +221,10 @@ func SubscriptionWithBatchedOperations() SubscriptionManagementOption {
 }
 
 // SubscriptionWithAutoForward configures the queue to automatically forward messages to the specified entity path
+//
+// The ability to AutoForward to a target requires the connection have management authorization. If the connection
+// string or Azure Active Directory identity used does not have management authorization, an unauthorized error will be
+// returned on the PUT.
 func SubscriptionWithAutoForward(target Targetable) SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		uri := target.TargetURI()

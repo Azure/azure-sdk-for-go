@@ -834,7 +834,7 @@ type ResourceSku struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
-// SkuCapability describes The SKU capabilites object.
+// SkuCapability describes The SKU capabilities object.
 type SkuCapability struct {
 	// Name - The capability name.
 	Name *string `json:"name,omitempty"`

@@ -105,13 +105,18 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 		},
 	}
 
+	var mw []MiddlewareFunc
+	if sd.ForwardTo != nil {
+		mw = append(mw, addSupplementalAuthorization(*sd.ForwardTo, sm.TokenProvider()))
+	}
+
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
 		return nil, err
 	}
 
 	reqBytes = xmlDoc(reqBytes)
-	res, err := sm.entityManager.Put(ctx, sm.getResourceURI(name), reqBytes)
+	res, err := sm.entityManager.Put(ctx, sm.getResourceURI(name), reqBytes, mw...)
 	defer closeRes(ctx, res)
 
 	if err != nil {
@@ -211,6 +216,15 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 func SubscriptionWithBatchedOperations() SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		s.EnableBatchedOperations = ptrBool(true)
+		return nil
+	}
+}
+
+// SubscriptionWithAutoForward configures the queue to automatically forward messages to the specified entity path
+func SubscriptionWithAutoForward(target Targetable) SubscriptionManagementOption {
+	return func(s *SubscriptionDescription) error {
+		uri := target.TargetURI()
+		s.ForwardTo = &uri
 		return nil
 	}
 }

@@ -142,6 +142,25 @@ func (suite *serviceBusSuite) cleanupSubscription(topic *Topic, subscriptionName
 	}
 }
 
+func (suite *serviceBusSuite) TestSubscriptionManager_SubscriptionWithAutoForward() {
+	tests := map[string]func(context.Context, *testing.T, *SubscriptionManager, string, string){
+		"TestSubscriptionWithAutoForward": testSubscriptionWithAutoForward,
+	}
+
+	suite.testSubscriptionManager(tests)
+}
+
+func testSubscriptionWithAutoForward(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, subName string) {
+	targetName := "target-" + subName
+	target := buildSubscription(ctx, t, sm, targetName)
+	defer func() {
+		assert.NoError(t, sm.Delete(ctx, targetName))
+	}()
+
+	src := buildSubscription(ctx, t, sm, subName, SubscriptionWithAutoForward(target))
+	assert.Equal(t, target.TargetURI(), *src.ForwardTo)
+}
+
 func (suite *serviceBusSuite) TestSubscriptionManagement() {
 	tests := map[string]func(context.Context, *testing.T, *SubscriptionManager, string, string){
 		"TestSubscriptionDefaultSettings":                      testDefaultSubscription,
@@ -153,33 +172,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 		"TestSubscriptionWithBatchedOperations":                testSubscriptionWithBatchedOperations,
 	}
 
-	ns := suite.getNewSasInstance()
-	for name, testFunc := range tests {
-		topicName := suite.randEntityName()
-		subName := suite.randEntityName()
-
-		setupTestTeardown := func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-			defer cancel()
-			cleanupTopic := makeTopic(ctx, t, ns, topicName)
-			topic, err := ns.NewTopic(topicName)
-			if suite.NoError(err) {
-				sm := topic.NewSubscriptionManager()
-				if suite.NoError(err) {
-					defer func(sName string) {
-						ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-						defer cancel()
-						if !suite.NoError(sm.Delete(ctx, sName)) {
-							suite.Fail(err.Error())
-						}
-					}(subName)
-					testFunc(ctx, t, sm, topicName, subName)
-				}
-			}
-			defer cleanupTopic()
-		}
-		suite.T().Run(name, setupTestTeardown)
-	}
+	suite.testSubscriptionManager(tests)
 }
 
 func testDefaultSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
@@ -236,6 +229,36 @@ func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManage
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
 	return s
+}
+
+func (suite *serviceBusSuite) testSubscriptionManager(tests map[string]func(context.Context, *testing.T, *SubscriptionManager, string, string)) {
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		topicName := suite.randEntityName()
+		subName := suite.randEntityName()
+
+		setupTestTeardown := func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+			cleanupTopic := makeTopic(ctx, t, ns, topicName)
+			topic, err := ns.NewTopic(topicName)
+			if suite.NoError(err) {
+				sm := topic.NewSubscriptionManager()
+				if suite.NoError(err) {
+					defer func(sName string) {
+						ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+						defer cancel()
+						if !suite.NoError(sm.Delete(ctx, sName)) {
+							suite.Fail(err.Error())
+						}
+					}(subName)
+					testFunc(ctx, t, sm, topicName, subName)
+				}
+			}
+			defer cleanupTopic()
+		}
+		suite.T().Run(name, setupTestTeardown)
+	}
 }
 
 func (suite *serviceBusSuite) TestSubscription_WithReceiveAndDelete() {

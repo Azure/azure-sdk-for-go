@@ -21,6 +21,7 @@ type (
 		*entityManager
 	}
 
+	// Entity is represents the most basic form of an Azure Service Bus entity.
 	Entity struct {
 		Name string
 		ID   string
@@ -47,15 +48,16 @@ type (
 	// QueueManagementOption represents named configuration options for queue mutation
 	QueueManagementOption func(*QueueDescription) error
 
-	// EntityIdentifier provides the ability for a Service Bus entity to identify itself
-	EntityIdentifier interface {
-		EntityID() string
+	// Targetable provides the ability to forward messages to the entity
+	Targetable interface {
+		TargetURI() string
 	}
 )
 
-func (e Entity) EntityID() string {
+// TargetURI provides an absolute address to a target entity
+func (e Entity) TargetURI() string {
 	split := strings.Split(e.ID, "?")
-	return strings.Replace(split[0], "https://", "sb://", 1)
+	return split[0]
 }
 
 func queueEntryToEntity(entry *queueEntry) *QueueEntity {
@@ -179,10 +181,10 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 }
 
 // QueueEntityWithAutoForward configures the queue to automatically forward messages to the specified entity path
-func QueueEntityWithAutoForward(entityIdentifier EntityIdentifier) QueueManagementOption {
+func QueueEntityWithAutoForward(target Targetable) QueueManagementOption {
 	return func(q *QueueDescription) error {
-		entityID := entityIdentifier.EntityID()
-		q.ForwardTo = &entityID
+		uri := target.TargetURI()
+		q.ForwardTo = &uri
 		return nil
 	}
 }
@@ -239,6 +241,11 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 		},
 	}
 
+	var mw []MiddlewareFunc
+	if qd.ForwardTo != nil {
+		mw = append(mw, addSupplementalAuthorization(*qd.ForwardTo, qm.TokenProvider()))
+	}
+
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -246,7 +253,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	}
 
 	reqBytes = xmlDoc(reqBytes)
-	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes)
+	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes, mw...)
 	defer closeRes(ctx, res)
 
 	if err != nil {

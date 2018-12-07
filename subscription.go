@@ -62,6 +62,7 @@ type (
 		UpdatedAt                                 *date.Time    `xml:"UpdatedAt,omitempty"`
 		AccessedAt                                *date.Time    `xml:"AccessedAt,omitempty"`
 		AutoDeleteOnIdle                          *string       `xml:"AutoDeleteOnIdle,omitempty"`
+		ForwardTo                                 *string       `xml:"ForwardTo,omitempty"` // ForwardTo - absolute URI of the entity to forward messages
 	}
 
 	// SubscriptionOption configures the Subscription Azure Service Bus client

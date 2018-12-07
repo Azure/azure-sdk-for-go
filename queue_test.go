@@ -315,9 +315,11 @@ func (suite *serviceBusSuite) TestQueueManager_QueueWithAutoForward() {
 func testQueueWithAutoForward(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	targetQueueName := "target-" + name
 	target := buildQueue(ctx, t, qm, targetQueueName)
-	defer assert.NoError(t, qm.Delete(ctx, targetQueueName))
+	defer func() {
+		assert.NoError(t, qm.Delete(ctx, targetQueueName))
+	}()
 	src := buildQueue(ctx, t, qm, name, QueueEntityWithAutoForward(target))
-	assert.Equal(t, target.EntityID(), *src.ForwardTo)
+	assert.Equal(t, target.TargetURI(), *src.ForwardTo)
 }
 
 func (suite *serviceBusSuite) TestQueueManagement() {

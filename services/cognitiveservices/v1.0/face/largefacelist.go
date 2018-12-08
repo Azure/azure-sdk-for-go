@@ -403,7 +403,7 @@ func (client LargeFaceListClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
-// DeleteFace delete an existing face from a large face list (given by a persisitedFaceId and a largeFaceListId).
+// DeleteFace delete an existing face from a large face list (given by a persistedFaceId and a largeFaceListId).
 // Persisted image related to the face will also be deleted.
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.

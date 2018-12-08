@@ -403,7 +403,7 @@ func (client ListClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// DeleteFace delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image
+// DeleteFace delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image
 // related to the face will also be deleted.
 // Parameters:
 // faceListID - id referencing a particular face list.

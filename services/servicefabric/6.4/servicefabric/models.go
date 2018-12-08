@@ -19168,7 +19168,7 @@ type ContainerCodePackageProperties struct {
 	Volumes *[]ApplicationScopedVolume `json:"volumes,omitempty"`
 	// Diagnostics - Reference to sinks in DiagnosticsDescription.
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
-	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
 	ReliableCollectionsRefs *[]ReliableCollectionsRef `json:"reliableCollectionsRefs,omitempty"`
 	// InstanceView - Runtime information of a container instance.
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`

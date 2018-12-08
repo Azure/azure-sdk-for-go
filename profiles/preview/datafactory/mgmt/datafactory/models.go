@@ -1392,6 +1392,7 @@ type SquareObjectDataset = original.SquareObjectDataset
 type SquareSource = original.SquareSource
 type SsisObjectMetadata = original.SsisObjectMetadata
 type SsisObjectMetadataListResponse = original.SsisObjectMetadataListResponse
+type SsisObjectMetadataStatusResponse = original.SsisObjectMetadataStatusResponse
 type StagingSettings = original.StagingSettings
 type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource

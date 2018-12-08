@@ -228,12 +228,13 @@ func (client IntegrationRuntimeObjectMetadataClient) RefreshSender(req *http.Req
 
 // RefreshResponder handles the response to the Refresh request. The method always
 // closes the http.Response Body.
-func (client IntegrationRuntimeObjectMetadataClient) RefreshResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client IntegrationRuntimeObjectMetadataClient) RefreshResponder(resp *http.Response) (result SsisObjectMetadataStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

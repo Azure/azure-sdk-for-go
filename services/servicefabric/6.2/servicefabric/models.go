@@ -14813,7 +14813,7 @@ type ChaosTargetFilter struct {
 	// happens to reside on a node of NodeTypeX.
 	// At most 100 node type names can be included in this list, to increase this number, a config upgrade is required for MaxNumberOfNodeTypesInChaosEntityFilter configuration.
 	NodeTypeInclusionList *[]string `json:"NodeTypeInclusionList,omitempty"`
-	// ApplicationInclusionList - A list of application URI's to include in Chaos faults.
+	// ApplicationInclusionList - A list of application URIs to include in Chaos faults.
 	// All replicas belonging to services of these applications are amenable to replica faults (restart replica, remove replica, move primary, and move secondary) by Chaos.
 	// Chaos may restart a code package only if the code package hosts replicas of these applications only.
 	// If an application does not appear in this list, it can still be faulted in some Chaos iteration if the application ends up on a node of a node type that is included in NodeTypeInclusionList.

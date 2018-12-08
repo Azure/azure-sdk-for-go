@@ -563,7 +563,7 @@ type DefinitionReference struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 }
 
-// ErrorResponse error reponse indicates ARM is not able to process the incoming request. The reason is
+// ErrorResponse error response indicates ARM is not able to process the incoming request. The reason is
 // provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.

@@ -351,7 +351,7 @@ const (
 	// runs of Chaos. The value is three.
 	ChaosScheduleStatusExpired ChaosScheduleStatus = "Expired"
 	// ChaosScheduleStatusInvalid Indicates an invalid Chaos Schedule status. All Service Fabric enumerations
-	// have the invalid type. The valus is zero.
+	// have the invalid type. The value is zero.
 	ChaosScheduleStatusInvalid ChaosScheduleStatus = "Invalid"
 	// ChaosScheduleStatusPending Indicates that the schedule is pending and is not yet being used to schedule
 	// runs of Chaos but will be used when the start time is passed. The value is four.
@@ -371,7 +371,7 @@ type ChaosStatus string
 
 const (
 	// ChaosStatusInvalid Indicates an invalid Chaos status. All Service Fabric enumerations have the invalid
-	// type. The valus is zero.
+	// type. The value is zero.
 	ChaosStatusInvalid ChaosStatus = "Invalid"
 	// ChaosStatusRunning Indicates that Chaos is not stopped. The value is one.
 	ChaosStatusRunning ChaosStatus = "Running"
@@ -9114,7 +9114,7 @@ func (be BackupEntity) AsBasicBackupEntity() (BasicBackupEntity, bool) {
 type BackupEpoch struct {
 	// ConfigurationNumber - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
 	ConfigurationNumber *string `json:"ConfigurationNumber,omitempty"`
-	// DataLossNumber - The current dataloss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
+	// DataLossNumber - The current data loss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
 	DataLossNumber *string `json:"DataLossNumber,omitempty"`
 }
 
@@ -14813,7 +14813,7 @@ type ChaosTargetFilter struct {
 	// happens to reside on a node of NodeTypeX.
 	// At most 100 node type names can be included in this list, to increase this number, a config upgrade is required for MaxNumberOfNodeTypesInChaosEntityFilter configuration.
 	NodeTypeInclusionList *[]string `json:"NodeTypeInclusionList,omitempty"`
-	// ApplicationInclusionList - A list of application URI's to include in Chaos faults.
+	// ApplicationInclusionList - A list of application URIs to include in Chaos faults.
 	// All replicas belonging to services of these applications are amenable to replica faults (restart replica, remove replica, move primary, and move secondary) by Chaos.
 	// Chaos may restart a code package only if the code package hosts replicas of these applications only.
 	// If an application does not appear in this list, it can still be faulted in some Chaos iteration if the application ends up on a node of a node type that is included in NodeTypeInclusionList.
@@ -24002,7 +24002,7 @@ type EntityKindHealthStateCount struct {
 type Epoch struct {
 	// ConfigurationVersion - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
 	ConfigurationVersion *string `json:"ConfigurationVersion,omitempty"`
-	// DataLossVersion - The current dataloss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
+	// DataLossVersion - The current data loss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
 	DataLossVersion *string `json:"DataLossVersion,omitempty"`
 }
 

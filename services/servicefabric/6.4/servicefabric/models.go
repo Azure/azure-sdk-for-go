@@ -419,7 +419,7 @@ const (
 	// runs of Chaos. The value is three.
 	ChaosScheduleStatusExpired ChaosScheduleStatus = "Expired"
 	// ChaosScheduleStatusInvalid Indicates an invalid Chaos Schedule status. All Service Fabric enumerations
-	// have the invalid type. The valus is zero.
+	// have the invalid type. The value is zero.
 	ChaosScheduleStatusInvalid ChaosScheduleStatus = "Invalid"
 	// ChaosScheduleStatusPending Indicates that the schedule is pending and is not yet being used to schedule
 	// runs of Chaos but will be used when the start time is passed. The value is four.
@@ -439,7 +439,7 @@ type ChaosStatus string
 
 const (
 	// ChaosStatusInvalid Indicates an invalid Chaos status. All Service Fabric enumerations have the invalid
-	// type. The valus is zero.
+	// type. The value is zero.
 	ChaosStatusInvalid ChaosStatus = "Invalid"
 	// ChaosStatusRunning Indicates that Chaos is not stopped. The value is one.
 	ChaosStatusRunning ChaosStatus = "Running"
@@ -2572,7 +2572,7 @@ type ResourceStatus string
 const (
 	// ResourceStatusCreating Indicates the resource is being created. The value is 3.
 	ResourceStatusCreating ResourceStatus = "Creating"
-	// ResourceStatusDeleting Indicates the resource is being deletd. The value is 4.
+	// ResourceStatusDeleting Indicates the resource is being deleted. The value is 4.
 	ResourceStatusDeleting ResourceStatus = "Deleting"
 	// ResourceStatusFailed Indicates the resource is not functional due to persistent failures. See
 	// statusDetails property for more details. The value is 5.
@@ -15109,7 +15109,7 @@ type ChaosTargetFilter struct {
 	// happens to reside on a node of NodeTypeX.
 	// At most 100 node type names can be included in this list, to increase this number, a config upgrade is required for MaxNumberOfNodeTypesInChaosEntityFilter configuration.
 	NodeTypeInclusionList *[]string `json:"NodeTypeInclusionList,omitempty"`
-	// ApplicationInclusionList - A list of application URI's to include in Chaos faults.
+	// ApplicationInclusionList - A list of application URIs to include in Chaos faults.
 	// All replicas belonging to services of these applications are amenable to replica faults (restart replica, remove replica, move primary, and move secondary) by Chaos.
 	// Chaos may restart a code package only if the code package hosts replicas of these applications only.
 	// If an application does not appear in this list, it can still be faulted in some Chaos iteration if the application ends up on a node of a node type that is included in NodeTypeInclusionList.
@@ -19168,7 +19168,7 @@ type ContainerCodePackageProperties struct {
 	Volumes *[]ApplicationScopedVolume `json:"volumes,omitempty"`
 	// Diagnostics - Reference to sinks in DiagnosticsDescription.
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
-	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
 	ReliableCollectionsRefs *[]ReliableCollectionsRef `json:"reliableCollectionsRefs,omitempty"`
 	// InstanceView - Runtime information of a container instance.
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`
@@ -23755,7 +23755,7 @@ type EnvironmentVariable struct {
 type Epoch struct {
 	// ConfigurationVersion - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
 	ConfigurationVersion *string `json:"ConfigurationVersion,omitempty"`
-	// DataLossVersion - The current dataloss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
+	// DataLossVersion - The current data loss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
 	DataLossVersion *string `json:"DataLossVersion,omitempty"`
 }
 
@@ -24132,7 +24132,7 @@ type FabricErrorError struct {
 	//     - "FABRIC_E_SINGLE_INSTANCE_APPLICATION_ALREADY_EXISTS"
 	//     - "FABRIC_E_SINGLE_INSTANCE_APPLICATION_NOT_FOUND"
 	//     - "FABRIC_E_VOLUME_ALREADY_EXISTS"
-	//     - "ABRIC_E_VOLUME_NOT_FOUND"
+	//     - "FABRIC_E_VOLUME_NOT_FOUND"
 	//     - "SerializationError"
 	//   - Possible values of the error code for HTTP status code 503 (Service Unavailable)
 	//     - "FABRIC_E_NO_WRITE_QUORUM"
@@ -25829,7 +25829,7 @@ type HTTPConfig struct {
 type HTTPHostConfig struct {
 	// Name - http hostname config name.
 	Name *string `json:"name,omitempty"`
-	// Routes - Route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can hamdle general cases.
+	// Routes - Route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can handle general cases.
 	Routes *[]HTTPRouteConfig `json:"routes,omitempty"`
 }
 
@@ -33869,7 +33869,7 @@ type PartitionBackupConfigurationInfo struct {
 	autorest.Response `json:"-"`
 	// ServiceName - The full name of the service with 'fabric:' URI scheme.
 	ServiceName *string `json:"ServiceName,omitempty"`
-	// PartitionID - The partition ID indentifying the partition.
+	// PartitionID - The partition ID identifying the partition.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// PolicyName - The name of the backup policy which is applicable to this Service Fabric application or service or partition.
 	PolicyName *string `json:"PolicyName,omitempty"`
@@ -33935,7 +33935,7 @@ func (pbci PartitionBackupConfigurationInfo) AsBasicBackupConfigurationInfo() (B
 type PartitionBackupEntity struct {
 	// ServiceName - The full name of the service with 'fabric:' URI scheme.
 	ServiceName *string `json:"ServiceName,omitempty"`
-	// PartitionID - The partition ID indentifying the partition.
+	// PartitionID - The partition ID identifying the partition.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// EntityKind - Possible values include: 'EntityKindBackupEntity', 'EntityKindApplication1', 'EntityKindService1', 'EntityKindPartition1'
 	EntityKind EntityKindBasicBackupEntity `json:"EntityKind,omitempty"`

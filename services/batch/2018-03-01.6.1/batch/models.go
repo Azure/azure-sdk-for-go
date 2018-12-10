@@ -152,13 +152,13 @@ func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
 type CertificateVisibility string
 
 const (
-	// CertificateVisibilityRemoteUser The certificate should be visibile to the user accounts under which
-	// users remotely access the node.
+	// CertificateVisibilityRemoteUser The certificate should be visible to the user accounts under which users
+	// remotely access the node.
 	CertificateVisibilityRemoteUser CertificateVisibility = "remoteuser"
 	// CertificateVisibilityStartTask The certificate should be visible to the user account under which the
 	// start task is run.
 	CertificateVisibilityStartTask CertificateVisibility = "starttask"
-	// CertificateVisibilityTask The certificate should be visibile to the user accounts under which job tasks
+	// CertificateVisibilityTask The certificate should be visible to the user accounts under which job tasks
 	// are run.
 	CertificateVisibilityTask CertificateVisibility = "task"
 )
@@ -272,7 +272,7 @@ const (
 	// Offline The node is not currently running a task, and scheduling of new tasks to the node is disabled.
 	Offline ComputeNodeState = "offline"
 	// Preempted The low-priority node has been preempted. Tasks which were running on the node when it was
-	// pre-empted will be rescheduled when another node becomes available.
+	// preempted will be rescheduled when another node becomes available.
 	Preempted ComputeNodeState = "preempted"
 	// Rebooting The node is rebooting.
 	Rebooting ComputeNodeState = "rebooting"
@@ -2245,7 +2245,7 @@ type ComputeNode struct {
 	// ID - Every node that is added to a pool is assigned a unique ID. Whenever a node is removed from a pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new nodes.
 	ID  *string `json:"id,omitempty"`
 	URL *string `json:"url,omitempty"`
-	// State - The low-priority node has been preempted. Tasks which were running on the node when it was pre-empted will be rescheduled when another node becomes available. Possible values include: 'Idle', 'Rebooting', 'Reimaging', 'Running', 'Unusable', 'Creating', 'Starting', 'WaitingForStartTask', 'StartTaskFailed', 'Unknown', 'LeavingPool', 'Offline', 'Preempted'
+	// State - The low-priority node has been preempted. Tasks which were running on the node when it was preempted will be rescheduled when another node becomes available. Possible values include: 'Idle', 'Rebooting', 'Reimaging', 'Running', 'Unusable', 'Creating', 'Starting', 'WaitingForStartTask', 'StartTaskFailed', 'Unknown', 'LeavingPool', 'Offline', 'Preempted'
 	State ComputeNodeState `json:"state,omitempty"`
 	// SchedulingState - Possible values include: 'Enabled', 'Disabled'
 	SchedulingState     SchedulingState `json:"schedulingState,omitempty"`

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v23.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2018-11-01-preview |
+| localsearch | 1.0 |
+
 ## `v23.1.0`
 
 ### New Packages

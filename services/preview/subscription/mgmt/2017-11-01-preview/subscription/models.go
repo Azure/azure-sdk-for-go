@@ -39,7 +39,7 @@ type Definition struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// DefinitionProperties - the subscription definiton properties
+	// DefinitionProperties - the subscription definition properties
 	*DefinitionProperties `json:"properties,omitempty"`
 }
 

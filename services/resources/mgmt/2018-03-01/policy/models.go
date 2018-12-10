@@ -577,7 +577,7 @@ type DefinitionReference struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 }
 
-// ErrorResponse error reponse indicates Azure Resource Manager is not able to process the incoming
+// ErrorResponse error response indicates Azure Resource Manager is not able to process the incoming
 // request. The reason is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.

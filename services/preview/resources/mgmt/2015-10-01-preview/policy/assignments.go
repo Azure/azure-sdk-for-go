@@ -123,7 +123,7 @@ func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Ass
 }
 
 // CreateByID policy assignments are inherited by child resources. For example, when you apply a policy to a resource
-// group that policy is assigned to all resources in the group. When providing a scope for the assigment, use
+// group that policy is assigned to all resources in the group. When providing a scope for the assignment, use
 // '/subscriptions/{subscription-id}/' for subscriptions,
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
@@ -281,7 +281,7 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 	return
 }
 
-// DeleteByID when providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions,
+// DeleteByID when providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
@@ -435,7 +435,7 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 	return
 }
 
-// GetByID when providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions,
+// GetByID when providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.

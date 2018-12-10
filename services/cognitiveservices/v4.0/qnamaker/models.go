@@ -351,7 +351,7 @@ type UpdateKbOperationDTOUpdate struct {
 type UpdateMetadataDTO struct {
 	// Delete - List of Metadata associated with answer to be deleted
 	Delete *[]MetadataDTO `json:"delete,omitempty"`
-	// Add - List of Metadat associated with answer to be added
+	// Add - List of metadata associated with answer to be added
 	Add *[]MetadataDTO `json:"add,omitempty"`
 }
 
@@ -373,7 +373,7 @@ type UpdateQnaDTO struct {
 type UpdateQnaDTOMetadata struct {
 	// Delete - List of Metadata associated with answer to be deleted
 	Delete *[]MetadataDTO `json:"delete,omitempty"`
-	// Add - List of Metadat associated with answer to be added
+	// Add - List of metadata associated with answer to be added
 	Add *[]MetadataDTO `json:"add,omitempty"`
 }
 

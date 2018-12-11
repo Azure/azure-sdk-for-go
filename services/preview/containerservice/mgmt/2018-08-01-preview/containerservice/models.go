@@ -1894,7 +1894,7 @@ func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsBasicOpenShiftManage
 type OpenShiftManagedClusterAgentPoolProfile struct {
 	// Name - Unique name of the pool profile in the context of the subscription and resource group.
 	Name *string `json:"name,omitempty"`
-	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 5 (inclusive). The default value is 2.
+	// Count - Number of agents (VMs) to host docker containers.
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'StandardD2sV3', 'StandardD4sV3', 'StandardD8sV3', 'StandardD16sV3', 'StandardD32sV3', 'StandardD64sV3', 'StandardDS4V2', 'StandardDS5V2', 'StandardF8sV2', 'StandardF16sV2', 'StandardF32sV2', 'StandardF64sV2', 'StandardF72sV2', 'StandardF8s', 'StandardF16s', 'StandardE4sV3', 'StandardE8sV3', 'StandardE16sV3', 'StandardE20sV3', 'StandardE32sV3', 'StandardE64sV3', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5', 'StandardDS12V2', 'StandardDS13V2', 'StandardDS14V2', 'StandardDS15V2', 'StandardL4s', 'StandardL8s', 'StandardL16s', 'StandardL32s'
 	VMSize OpenShiftContainerServiceVMSize `json:"vmSize,omitempty"`

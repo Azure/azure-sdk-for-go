@@ -483,6 +483,15 @@ const (
 	SparkThriftTransportProtocolSASL   SparkThriftTransportProtocol = original.SparkThriftTransportProtocolSASL
 )
 
+type SsisObjectMetadataType = original.SsisObjectMetadataType
+
+const (
+	Environment SsisObjectMetadataType = original.Environment
+	Folder      SsisObjectMetadataType = original.Folder
+	Package     SsisObjectMetadataType = original.Package
+	Project     SsisObjectMetadataType = original.Project
+)
+
 type StoredProcedureParameterType = original.StoredProcedureParameterType
 
 const (
@@ -848,6 +857,12 @@ const (
 	TypeZoho                     TypeBasicLinkedService = original.TypeZoho
 )
 
+type TypeBasicSsisObjectMetadata = original.TypeBasicSsisObjectMetadata
+
+const (
+	TypeSsisObjectMetadata TypeBasicSsisObjectMetadata = original.TypeSsisObjectMetadata
+)
+
 type TypeBasicTrigger = original.TypeBasicTrigger
 
 const (
@@ -972,6 +987,7 @@ type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeT
 type BasicLinkedService = original.BasicLinkedService
 type BasicMultiplePipelineTrigger = original.BasicMultiplePipelineTrigger
 type BasicSecretBase = original.BasicSecretBase
+type BasicSsisObjectMetadata = original.BasicSsisObjectMetadata
 type BasicTrigger = original.BasicTrigger
 type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
 type BasicWebLinkedServiceTypeProperties = original.BasicWebLinkedServiceTypeProperties
@@ -1090,6 +1106,7 @@ type FtpServerLinkedServiceTypeProperties = original.FtpServerLinkedServiceTypeP
 type GenericDatasetTypeProperties = original.GenericDatasetTypeProperties
 type GetMetadataActivity = original.GetMetadataActivity
 type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypeProperties
+type GetSsisObjectMetadataRequest = original.GetSsisObjectMetadataRequest
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest
 type GitHubAccessTokenResponse = original.GitHubAccessTokenResponse
 type GoogleBigQueryLinkedService = original.GoogleBigQueryLinkedService
@@ -1152,6 +1169,8 @@ type IntegrationRuntimeMonitoringData = original.IntegrationRuntimeMonitoringDat
 type IntegrationRuntimeNodeIPAddress = original.IntegrationRuntimeNodeIPAddress
 type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonitoringData
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
+type IntegrationRuntimeObjectMetadataClient = original.IntegrationRuntimeObjectMetadataClient
+type IntegrationRuntimeObjectMetadataRefreshFuture = original.IntegrationRuntimeObjectMetadataRefreshFuture
 type IntegrationRuntimeReference = original.IntegrationRuntimeReference
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
 type IntegrationRuntimeResource = original.IntegrationRuntimeResource
@@ -1371,6 +1390,9 @@ type SquareLinkedService = original.SquareLinkedService
 type SquareLinkedServiceTypeProperties = original.SquareLinkedServiceTypeProperties
 type SquareObjectDataset = original.SquareObjectDataset
 type SquareSource = original.SquareSource
+type SsisObjectMetadata = original.SsisObjectMetadata
+type SsisObjectMetadataListResponse = original.SsisObjectMetadataListResponse
+type SsisObjectMetadataStatusResponse = original.SsisObjectMetadataStatusResponse
 type StagingSettings = original.StagingSettings
 type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource
@@ -1474,6 +1496,12 @@ func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeN
 }
 func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodesClient {
 	return original.NewIntegrationRuntimeNodesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string) IntegrationRuntimeObjectMetadataClient {
+	return original.NewIntegrationRuntimeObjectMetadataClient(subscriptionID)
+}
+func NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeObjectMetadataClient {
+	return original.NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
 	return original.NewIntegrationRuntimesClient(subscriptionID)
@@ -1715,6 +1743,9 @@ func PossibleSparkServerTypeValues() []SparkServerType {
 func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol {
 	return original.PossibleSparkThriftTransportProtocolValues()
 }
+func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
+	return original.PossibleSsisObjectMetadataTypeValues()
+}
 func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType {
 	return original.PossibleStoredProcedureParameterTypeValues()
 }
@@ -1768,6 +1799,9 @@ func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
 }
 func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
 	return original.PossibleTypeBasicLinkedServiceValues()
+}
+func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
+	return original.PossibleTypeBasicSsisObjectMetadataValues()
 }
 func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
 	return original.PossibleTypeBasicTriggerValues()

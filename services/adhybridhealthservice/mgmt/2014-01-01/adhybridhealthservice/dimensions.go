@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// DimensionsClient is the REST APIs for Azure Active Drectory Connect Health
+// DimensionsClient is the REST APIs for Azure Active Directory Connect Health
 type DimensionsClient struct {
 	BaseClient
 }

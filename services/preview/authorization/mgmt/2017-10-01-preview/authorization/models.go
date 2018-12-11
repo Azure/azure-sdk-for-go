@@ -732,7 +732,7 @@ func (racp *RoleAssignmentCreateParameters) UnmarshalJSON(body []byte) error {
 type RoleAssignmentFilter struct {
 	// PrincipalID - Returns role assignment of the specific principal.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// CanDelegate - The Delegation flag for the roleassignment
+	// CanDelegate - The Delegation flag for the role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
@@ -888,7 +888,7 @@ type RoleAssignmentProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// CanDelegate - The delgation flag used for creating a role assignment
+	// CanDelegate - The delegation flag used for creating a role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
@@ -900,7 +900,7 @@ type RoleAssignmentPropertiesWithScope struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// CanDelegate - The Delegation flag for the roleassignment
+	// CanDelegate - The Delegation flag for the role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 

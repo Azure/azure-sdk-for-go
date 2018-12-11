@@ -1047,7 +1047,7 @@ func (racp *RoleAssignmentCreateParameters) UnmarshalJSON(body []byte) error {
 type RoleAssignmentFilter struct {
 	// PrincipalID - Returns role assignment of the specific principal.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// CanDelegate - The Delegation flag for the roleassignment
+	// CanDelegate - The Delegation flag for the role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
@@ -1205,7 +1205,7 @@ type RoleAssignmentProperties struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'
 	PrincipalType PrincipalType `json:"principalType,omitempty"`
-	// CanDelegate - The delgation flag used for creating a role assignment
+	// CanDelegate - The delegation flag used for creating a role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
@@ -1219,7 +1219,7 @@ type RoleAssignmentPropertiesWithScope struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'
 	PrincipalType PrincipalType `json:"principalType,omitempty"`
-	// CanDelegate - The Delegation flag for the roleassignment
+	// CanDelegate - The Delegation flag for the role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 

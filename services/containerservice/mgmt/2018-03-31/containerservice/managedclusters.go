@@ -765,7 +765,7 @@ func (client ManagedClustersClient) ListClusterAdminCredentialsResponder(resp *h
 	return
 }
 
-// ListClusterUserCredentials gets clusteruser credential of the managed cluster with a specified resource group and
+// ListClusterUserCredentials gets cluster user credential of the managed cluster with a specified resource group and
 // name.
 // Parameters:
 // resourceGroupName - the name of the resource group.

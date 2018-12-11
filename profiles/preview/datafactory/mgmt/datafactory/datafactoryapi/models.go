@@ -25,6 +25,7 @@ type ActivityRunsClientAPI = original.ActivityRunsClientAPI
 type DatasetsClientAPI = original.DatasetsClientAPI
 type FactoriesClientAPI = original.FactoriesClientAPI
 type IntegrationRuntimeNodesClientAPI = original.IntegrationRuntimeNodesClientAPI
+type IntegrationRuntimeObjectMetadataClientAPI = original.IntegrationRuntimeObjectMetadataClientAPI
 type IntegrationRuntimesClientAPI = original.IntegrationRuntimesClientAPI
 type LinkedServicesClientAPI = original.LinkedServicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

@@ -52,6 +52,8 @@ type AvailabilityStatusProperties = original.AvailabilityStatusProperties
 type AvailabilityStatusPropertiesRecentlyResolvedState = original.AvailabilityStatusPropertiesRecentlyResolvedState
 type AvailabilityStatusesClient = original.AvailabilityStatusesClient
 type BaseClient = original.BaseClient
+type ChildAvailabilityStatusesClient = original.ChildAvailabilityStatusesClient
+type ChildResourcesClient = original.ChildResourcesClient
 type ErrorResponse = original.ErrorResponse
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -76,6 +78,18 @@ func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesCl
 }
 func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
 	return original.NewAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewChildAvailabilityStatusesClient(subscriptionID string) ChildAvailabilityStatusesClient {
+	return original.NewChildAvailabilityStatusesClient(subscriptionID)
+}
+func NewChildAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) ChildAvailabilityStatusesClient {
+	return original.NewChildAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
+	return original.NewChildResourcesClient(subscriptionID)
+}
+func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
+	return original.NewChildResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

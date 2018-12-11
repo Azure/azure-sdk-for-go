@@ -352,7 +352,7 @@ type AuthorizationRuleProperties struct {
 
 // CheckNameAvailability description of a Check Name availability request properties.
 type CheckNameAvailability struct {
-	// Name - The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+	// Name - The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -367,7 +367,7 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponse error reponse indicates Relay service is not able to process the incoming request. The
+// ErrorResponse error response indicates Relay service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -614,7 +614,7 @@ type HybridConnectionProperties struct {
 	ListenerCount *int32 `json:"listenerCount,omitempty"`
 	// RequiresClientAuthorization - true if client authorization is needed for this HybridConnection; otherwise, false.
 	RequiresClientAuthorization *bool `json:"requiresClientAuthorization,omitempty"`
-	// UserMetadata - usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
+	// UserMetadata - userMetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
 	UserMetadata *string `json:"userMetadata,omitempty"`
 }
 
@@ -1296,7 +1296,7 @@ type WcfRelayProperties struct {
 	RequiresTransportSecurity *bool `json:"requiresTransportSecurity,omitempty"`
 	// IsDynamic - true if the relay is dynamic; otherwise, false.
 	IsDynamic *bool `json:"isDynamic,omitempty"`
-	// UserMetadata - usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
+	// UserMetadata - userMetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
 	UserMetadata *string `json:"userMetadata,omitempty"`
 }
 

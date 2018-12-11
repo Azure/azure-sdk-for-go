@@ -4452,13 +4452,13 @@ type ImageObject struct {
 	Thumbnail *ImageObject `json:"thumbnail,omitempty"`
 	// ImageInsightsToken - The token that you use in a subsequent call to Visual Search API to get additional information about the image. For information about using this token, see the imageInsightsToken field inside the knowledgeRequest request parameter.
 	ImageInsightsToken *string `json:"imageInsightsToken,omitempty"`
-	// InsightsMetadata - A count of the number of websites where you can shop or perform other actions related to the image. For example, if the image is of an apple pie, this object includes a count of the number of websites where you can buy an apple pie. To indicate the number of offers in your UX, include badging such as a shopping cart icon that contains the count. When the user clicks on the icon, use imageInisghtsToken in a subsequent Visual Search API call to get the list of shopping websites.
+	// InsightsMetadata - A count of the number of websites where you can shop or perform other actions related to the image. For example, if the image is of an apple pie, this object includes a count of the number of websites where you can buy an apple pie. To indicate the number of offers in your UX, include badging such as a shopping cart icon that contains the count. When the user clicks on the icon, use imageInsightsToken in a subsequent Visual Search API call to get the list of shopping websites.
 	InsightsMetadata *ImagesImageMetadata `json:"insightsMetadata,omitempty"`
 	// ImageID - Unique Id for the image.
 	ImageID *string `json:"imageId,omitempty"`
 	// AccentColor - A three-byte hexadecimal number that represents the color that dominates the image. Use the color as the temporary background in your client until the image is loaded.
 	AccentColor *string `json:"accentColor,omitempty"`
-	// VisualWords - For interal use only.
+	// VisualWords - For internal use only.
 	VisualWords *string `json:"visualWords,omitempty"`
 	// ContentURL - Original URL to retrieve the source (file) for the media object (e.g., the source URL for the image).
 	ContentURL *string `json:"contentUrl,omitempty"`

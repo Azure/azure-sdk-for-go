@@ -23,18 +23,6 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-// BaseClientAPI contains the set of methods on the BaseClient type.
-type BaseClientAPI interface {
-	AppsPackagepublishedapplicationasgzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result authoring.SetObject, err error)
-	AppsPackagetrainedapplicationasgzip(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.SetObject, err error)
-	FivebeThreeOneThreececOneEightOneaeSevenTwoZeroaaTwobTwoSixc(ctx context.Context) (result authoring.SetObject, err error)
-	FivebeThreeTwoFiveFiveFourfEightFiveNineOnedbThreeaEightSixTwoThreeTwoeOne(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
-	FivebeThreeTwoTwoTwoEighteEightFourSevenThreedeOneOneSixThreeTwoFiveFiveOneFive(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
-	FivebeThreeTwoZeroTwoEightaOnedFourEightfEightEightcfdFiveSeveneTwoZero(ctx context.Context, appID uuid.UUID) (result authoring.SetObject, err error)
-}
-
-var _ BaseClientAPI = (*authoring.BaseClient)(nil)
-
 // FeaturesClientAPI contains the set of methods on the FeaturesClient type.
 type FeaturesClientAPI interface {
 	AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject authoring.PhraselistCreateObject) (result authoring.Int32, err error)
@@ -173,7 +161,7 @@ var _ ModelClientAPI = (*authoring.ModelClient)(nil)
 type AppsClientAPI interface {
 	Add(ctx context.Context, applicationCreateObject authoring.ApplicationCreateObject) (result authoring.UUID, err error)
 	AddCustomPrebuiltDomain(ctx context.Context, prebuiltDomainCreateObject authoring.PrebuiltDomainCreateObject) (result authoring.UUID, err error)
-	Delete(ctx context.Context, appID uuid.UUID) (result authoring.OperationStatus, err error)
+	Delete(ctx context.Context, appID uuid.UUID, force *bool) (result authoring.OperationStatus, err error)
 	DownloadQueryLogs(ctx context.Context, appID uuid.UUID) (result authoring.ReadCloser, err error)
 	Get(ctx context.Context, appID uuid.UUID) (result authoring.ApplicationInfoResponse, err error)
 	GetPublishSettings(ctx context.Context, appID uuid.UUID) (result authoring.PublishSettings, err error)
@@ -187,6 +175,8 @@ type AppsClientAPI interface {
 	ListEndpoints(ctx context.Context, appID uuid.UUID) (result authoring.SetString, err error)
 	ListSupportedCultures(ctx context.Context) (result authoring.ListAvailableCulture, err error)
 	ListUsageScenarios(ctx context.Context) (result authoring.ListString, err error)
+	PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result authoring.SetObject, err error)
+	PackageTrainedApplicationAsGzip(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.SetObject, err error)
 	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.SetObject, err error)
 	Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject authoring.ApplicationUpdateObject) (result authoring.OperationStatus, err error)
 	UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject authoring.PublishSettingUpdateObject) (result authoring.OperationStatus, err error)
@@ -248,3 +238,13 @@ type SettingsClientAPI interface {
 }
 
 var _ SettingsClientAPI = (*authoring.SettingsClient)(nil)
+
+// AzureAccountsClientAPI contains the set of methods on the AzureAccountsClient type.
+type AzureAccountsClientAPI interface {
+	AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
+	GetAssigned(ctx context.Context, appID uuid.UUID) (result authoring.SetObject, err error)
+	GetUserLUISAccounts(ctx context.Context) (result authoring.SetObject, err error)
+	RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
+}
+
+var _ AzureAccountsClientAPI = (*authoring.AzureAccountsClient)(nil)

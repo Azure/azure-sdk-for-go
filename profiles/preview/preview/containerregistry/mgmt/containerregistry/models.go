@@ -29,6 +29,12 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type Action = original.Action
+
+const (
+	Allow Action = original.Allow
+)
+
 type BaseImageDependencyType = original.BaseImageDependencyType
 
 const (
@@ -74,8 +80,8 @@ const (
 type DefaultAction = original.DefaultAction
 
 const (
-	Allow DefaultAction = original.Allow
-	Deny  DefaultAction = original.Deny
+	DefaultActionAllow DefaultAction = original.DefaultActionAllow
+	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
 type ImportMode = original.ImportMode
@@ -256,6 +262,7 @@ type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
 type GitCommitTrigger = original.GitCommitTrigger
+type IPRule = original.IPRule
 type ImageDescriptor = original.ImageDescriptor
 type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
@@ -436,6 +443,9 @@ func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) Webhook
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleActionValues() []Action {
+	return original.PossibleActionValues()
 }
 func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 	return original.PossibleBaseImageDependencyTypeValues()

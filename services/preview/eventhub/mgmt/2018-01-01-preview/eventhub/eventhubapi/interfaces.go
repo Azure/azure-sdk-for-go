@@ -49,16 +49,16 @@ var _ ConfigurationClientAPI = (*eventhub.ConfigurationClient)(nil)
 
 // NamespacesClientAPI contains the set of methods on the NamespacesClient type.
 type NamespacesClientAPI interface {
-	CreateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters eventhub.NetworkRuleSet) (result eventhub.NetworkRuleSet, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters eventhub.EHNamespace) (result eventhub.NamespacesCreateOrUpdateFuture, err error)
 	CreateOrUpdateIPFilterRule(ctx context.Context, resourceGroupName string, namespaceName string, IPFilterRuleName string, parameters eventhub.IPFilterRule) (result eventhub.IPFilterRule, err error)
+	CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters eventhub.NetworkRuleSets) (result eventhub.NetworkRuleSets, err error)
 	CreateOrUpdateVirtualNetworkRule(ctx context.Context, resourceGroupName string, namespaceName string, virtualNetworkRuleName string, parameters eventhub.VirtualNetworkRule) (result eventhub.VirtualNetworkRule, err error)
 	Delete(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NamespacesDeleteFuture, err error)
 	DeleteIPFilterRule(ctx context.Context, resourceGroupName string, namespaceName string, IPFilterRuleName string) (result autorest.Response, err error)
 	DeleteVirtualNetworkRule(ctx context.Context, resourceGroupName string, namespaceName string, virtualNetworkRuleName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.EHNamespace, err error)
 	GetIPFilterRule(ctx context.Context, resourceGroupName string, namespaceName string, IPFilterRuleName string) (result eventhub.IPFilterRule, err error)
-	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSet, err error)
+	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSets, err error)
 	GetVirtualNetworkRule(ctx context.Context, resourceGroupName string, namespaceName string, virtualNetworkRuleName string) (result eventhub.VirtualNetworkRule, err error)
 	List(ctx context.Context) (result eventhub.EHNamespaceListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.EHNamespaceListResultPage, err error)

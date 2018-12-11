@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// ChildrenClient is the the Resource Health Client.
-type ChildrenClient struct {
+// ChildResourcesClient is the the Resource Health Client.
+type ChildResourcesClient struct {
 	BaseClient
 }
 
-// NewChildrenClient creates an instance of the ChildrenClient client.
-func NewChildrenClient(subscriptionID string) ChildrenClient {
-	return NewChildrenClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewChildResourcesClient creates an instance of the ChildResourcesClient client.
+func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
+	return NewChildResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewChildrenClientWithBaseURI creates an instance of the ChildrenClient client.
-func NewChildrenClientWithBaseURI(baseURI string, subscriptionID string) ChildrenClient {
-	return ChildrenClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewChildResourcesClientWithBaseURI creates an instance of the ChildResourcesClient client.
+func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
+	return ChildResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the all the children and its current health status for a parent resource. Use the nextLink property in
@@ -49,9 +49,9 @@ func NewChildrenClientWithBaseURI(baseURI string, subscriptionID string) Childre
 // filter - the filter to apply on the operation. For more information please see
 // https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 // expand - setting $expand=recommendedactions in url query expands the recommendedactions in the response.
-func (client ChildrenClient) List(ctx context.Context, resourceURI string, filter string, expand string) (result AvailabilityStatusListResultPage, err error) {
+func (client ChildResourcesClient) List(ctx context.Context, resourceURI string, filter string, expand string) (result AvailabilityStatusListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ChildrenClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChildResourcesClient.List")
 		defer func() {
 			sc := -1
 			if result.aslr.Response.Response != nil {
@@ -63,32 +63,32 @@ func (client ChildrenClient) List(ctx context.Context, resourceURI string, filte
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceURI, filter, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcehealth.ChildrenClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.aslr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "resourcehealth.ChildrenClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.aslr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcehealth.ChildrenClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ChildrenClient) ListPreparer(ctx context.Context, resourceURI string, filter string, expand string) (*http.Request, error) {
+func (client ChildResourcesClient) ListPreparer(ctx context.Context, resourceURI string, filter string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
 
-	const APIVersion = "2015-01-01"
+	const APIVersion = "2017-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -102,21 +102,21 @@ func (client ChildrenClient) ListPreparer(ctx context.Context, resourceURI strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.ResourceHealth/children", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.ResourceHealth/childResources", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ChildrenClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ChildResourcesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ChildrenClient) ListResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
+func (client ChildResourcesClient) ListResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -128,10 +128,10 @@ func (client ChildrenClient) ListResponder(resp *http.Response) (result Availabi
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ChildrenClient) listNextResults(ctx context.Context, lastResults AvailabilityStatusListResult) (result AvailabilityStatusListResult, err error) {
+func (client ChildResourcesClient) listNextResults(ctx context.Context, lastResults AvailabilityStatusListResult) (result AvailabilityStatusListResult, err error) {
 	req, err := lastResults.availabilityStatusListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resourcehealth.ChildrenClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -139,19 +139,19 @@ func (client ChildrenClient) listNextResults(ctx context.Context, lastResults Av
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resourcehealth.ChildrenClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcehealth.ChildrenClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ChildrenClient) ListComplete(ctx context.Context, resourceURI string, filter string, expand string) (result AvailabilityStatusListResultIterator, err error) {
+func (client ChildResourcesClient) ListComplete(ctx context.Context, resourceURI string, filter string, expand string) (result AvailabilityStatusListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ChildrenClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChildResourcesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

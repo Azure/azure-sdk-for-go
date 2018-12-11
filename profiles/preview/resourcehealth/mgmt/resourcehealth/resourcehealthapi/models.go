@@ -23,5 +23,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/
 
 type AvailabilityStatusesClientAPI = original.AvailabilityStatusesClientAPI
 type ChildAvailabilityStatusesClientAPI = original.ChildAvailabilityStatusesClientAPI
-type ChildrenClientAPI = original.ChildrenClientAPI
+type ChildResourcesClientAPI = original.ChildResourcesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

@@ -40,12 +40,12 @@ type ChildAvailabilityStatusesClientAPI interface {
 
 var _ ChildAvailabilityStatusesClientAPI = (*resourcehealth.ChildAvailabilityStatusesClient)(nil)
 
-// ChildrenClientAPI contains the set of methods on the ChildrenClient type.
-type ChildrenClientAPI interface {
+// ChildResourcesClientAPI contains the set of methods on the ChildResourcesClient type.
+type ChildResourcesClientAPI interface {
 	List(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatusListResultPage, err error)
 }
 
-var _ ChildrenClientAPI = (*resourcehealth.ChildrenClient)(nil)
+var _ ChildResourcesClientAPI = (*resourcehealth.ChildResourcesClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

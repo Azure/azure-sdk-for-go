@@ -100,7 +100,7 @@ func (client ChildAvailabilityStatusesClient) GetByResourcePreparer(ctx context.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses/current", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -187,7 +187,7 @@ func (client ChildAvailabilityStatusesClient) ListPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.ResourceHealth/child/availabilityStatuses", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

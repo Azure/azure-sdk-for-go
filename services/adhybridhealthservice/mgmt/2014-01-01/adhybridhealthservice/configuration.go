@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// ConfigurationClient is the REST APIs for Azure Active Drectory Connect Health
+// ConfigurationClient is the REST APIs for Azure Active Directory Connect Health
 type ConfigurationClient struct {
 	BaseClient
 }

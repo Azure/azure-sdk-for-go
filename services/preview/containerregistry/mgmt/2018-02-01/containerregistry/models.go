@@ -2391,8 +2391,8 @@ type ImportSourceCredentials struct {
 type IPRule struct {
 	// Action - The action of IP ACL rule. Possible values include: 'Allow'
 	Action Action `json:"action,omitempty"`
-	// Value - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-	Value *string `json:"value,omitempty"`
+	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+	IPAddressOrRange *string `json:"value,omitempty"`
 }
 
 // NetworkRuleSet the network rule set for a container registry.
@@ -3972,8 +3972,8 @@ type TrustPolicy struct {
 type VirtualNetworkRule struct {
 	// Action - The action of virtual network rule. Possible values include: 'Allow'
 	Action Action `json:"action,omitempty"`
-	// ID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-	ID *string `json:"id,omitempty"`
+	// VirtualNetworkResourceID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+	VirtualNetworkResourceID *string `json:"id,omitempty"`
 }
 
 // Webhook an object that represents a webhook for a container registry.

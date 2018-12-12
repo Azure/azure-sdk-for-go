@@ -29,11 +29,17 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type Action = original.Action
+
+const (
+	Allow Action = original.Allow
+)
+
 type DefaultAction = original.DefaultAction
 
 const (
-	Allow DefaultAction = original.Allow
-	Deny  DefaultAction = original.Deny
+	DefaultActionAllow DefaultAction = original.DefaultActionAllow
+	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
 type ImportMode = original.ImportMode
@@ -125,6 +131,7 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
+type IPRule = original.IPRule
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
@@ -252,6 +259,9 @@ func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) Webhook
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleActionValues() []Action {
+	return original.PossibleActionValues()
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()

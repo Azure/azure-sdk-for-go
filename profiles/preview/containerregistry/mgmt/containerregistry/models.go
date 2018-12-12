@@ -29,6 +29,12 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type Action = original.Action
+
+const (
+	Allow Action = original.Allow
+)
+
 type Architecture = original.Architecture
 
 const (
@@ -54,8 +60,8 @@ const (
 type DefaultAction = original.DefaultAction
 
 const (
-	Allow DefaultAction = original.Allow
-	Deny  DefaultAction = original.Deny
+	DefaultActionAllow DefaultAction = original.DefaultActionAllow
+	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
 type ImportMode = original.ImportMode
@@ -266,6 +272,7 @@ type EventResponseMessage = original.EventResponseMessage
 type FileTaskRunRequest = original.FileTaskRunRequest
 type FileTaskStep = original.FileTaskStep
 type FileTaskStepUpdateParameters = original.FileTaskStepUpdateParameters
+type IPRule = original.IPRule
 type ImageDescriptor = original.ImageDescriptor
 type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
@@ -458,6 +465,9 @@ func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) Webhook
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleActionValues() []Action {
+	return original.PossibleActionValues()
 }
 func PossibleArchitectureValues() []Architecture {
 	return original.PossibleArchitectureValues()

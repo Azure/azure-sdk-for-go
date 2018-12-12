@@ -44,6 +44,13 @@ type ReplicationUsagesClientAPI interface {
 
 var _ ReplicationUsagesClientAPI = (*recoveryservices.ReplicationUsagesClient)(nil)
 
+// CheckResourceNameAvailabilityClientAPI contains the set of methods on the CheckResourceNameAvailabilityClient type.
+type CheckResourceNameAvailabilityClientAPI interface {
+	Post(ctx context.Context, location string, input recoveryservices.ResourceNameAvailabilityInput) (result recoveryservices.ResourceNameAvailabilityResponseResource, err error)
+}
+
+var _ CheckResourceNameAvailabilityClientAPI = (*recoveryservices.CheckResourceNameAvailabilityClient)(nil)
+
 // VaultsClientAPI contains the set of methods on the VaultsClient type.
 type VaultsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault recoveryservices.Vault) (result recoveryservices.Vault, err error)

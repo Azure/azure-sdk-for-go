@@ -21,6 +21,7 @@ package recoveryservicesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices/recoveryservicesapi"
 
+type CheckResourceNameAvailabilityClientAPI = original.CheckResourceNameAvailabilityClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type RegisteredIdentitiesClientAPI = original.RegisteredIdentitiesClientAPI
 type ReplicationUsagesClientAPI = original.ReplicationUsagesClientAPI

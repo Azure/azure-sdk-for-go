@@ -1028,11 +1028,11 @@ func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autore
 	return
 }
 
-// NetworkRuleSets description of topic resource.
-type NetworkRuleSets struct {
+// NetworkRuleSet description of topic resource.
+type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
-	// NetworkRuleSetsProperties - NetworkRuleSet properties
-	*NetworkRuleSetsProperties `json:"properties,omitempty"`
+	// NetworkRuleSetProperties - NetworkRuleSet properties
+	*NetworkRuleSetProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -1041,11 +1041,11 @@ type NetworkRuleSets struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for NetworkRuleSets.
-func (nrs NetworkRuleSets) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for NetworkRuleSet.
+func (nrs NetworkRuleSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if nrs.NetworkRuleSetsProperties != nil {
-		objectMap["properties"] = nrs.NetworkRuleSetsProperties
+	if nrs.NetworkRuleSetProperties != nil {
+		objectMap["properties"] = nrs.NetworkRuleSetProperties
 	}
 	if nrs.ID != nil {
 		objectMap["id"] = nrs.ID
@@ -1059,8 +1059,8 @@ func (nrs NetworkRuleSets) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for NetworkRuleSets struct.
-func (nrs *NetworkRuleSets) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for NetworkRuleSet struct.
+func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1070,12 +1070,12 @@ func (nrs *NetworkRuleSets) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var networkRuleSetsProperties NetworkRuleSetsProperties
-				err = json.Unmarshal(*v, &networkRuleSetsProperties)
+				var networkRuleSetProperties NetworkRuleSetProperties
+				err = json.Unmarshal(*v, &networkRuleSetProperties)
 				if err != nil {
 					return err
 				}
-				nrs.NetworkRuleSetsProperties = &networkRuleSetsProperties
+				nrs.NetworkRuleSetProperties = &networkRuleSetProperties
 			}
 		case "id":
 			if v != nil {
@@ -1110,8 +1110,8 @@ func (nrs *NetworkRuleSets) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NetworkRuleSetsProperties networkRuleSet properties
-type NetworkRuleSetsProperties struct {
+// NetworkRuleSetProperties networkRuleSet properties
+type NetworkRuleSetProperties struct {
 	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'Allow', 'Deny'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
 	// VirtualNetworkRules - List VirtualNetwork Rules

@@ -245,7 +245,7 @@ func (client NamespacesClient) CreateOrUpdateIPFilterRuleResponder(resp *http.Re
 // resourceGroupName - name of the resource group within the Azure subscription.
 // namespaceName - the Namespace name
 // parameters - the Namespace IpFilterRule.
-func (client NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSets) (result NetworkRuleSets, err error) {
+func (client NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (result NetworkRuleSet, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.CreateOrUpdateNetworkRuleSet")
 		defer func() {
@@ -288,7 +288,7 @@ func (client NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context,
 }
 
 // CreateOrUpdateNetworkRuleSetPreparer prepares the CreateOrUpdateNetworkRuleSet request.
-func (client NamespacesClient) CreateOrUpdateNetworkRuleSetPreparer(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSets) (*http.Request, error) {
+func (client NamespacesClient) CreateOrUpdateNetworkRuleSetPreparer(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     autorest.Encode("path", namespaceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -304,7 +304,7 @@ func (client NamespacesClient) CreateOrUpdateNetworkRuleSetPreparer(ctx context.
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkruleset/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -319,7 +319,7 @@ func (client NamespacesClient) CreateOrUpdateNetworkRuleSetSender(req *http.Requ
 
 // CreateOrUpdateNetworkRuleSetResponder handles the response to the CreateOrUpdateNetworkRuleSet request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) CreateOrUpdateNetworkRuleSetResponder(resp *http.Response) (result NetworkRuleSets, err error) {
+func (client NamespacesClient) CreateOrUpdateNetworkRuleSetResponder(resp *http.Response) (result NetworkRuleSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -872,7 +872,7 @@ func (client NamespacesClient) GetIPFilterRuleResponder(resp *http.Response) (re
 // Parameters:
 // resourceGroupName - name of the resource group within the Azure subscription.
 // namespaceName - the Namespace name
-func (client NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSets, err error) {
+func (client NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSet, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.GetNetworkRuleSet")
 		defer func() {
@@ -930,7 +930,7 @@ func (client NamespacesClient) GetNetworkRuleSetPreparer(ctx context.Context, re
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkruleset/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -944,7 +944,7 @@ func (client NamespacesClient) GetNetworkRuleSetSender(req *http.Request) (*http
 
 // GetNetworkRuleSetResponder handles the response to the GetNetworkRuleSet request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) GetNetworkRuleSetResponder(resp *http.Response) (result NetworkRuleSets, err error) {
+func (client NamespacesClient) GetNetworkRuleSetResponder(resp *http.Response) (result NetworkRuleSet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

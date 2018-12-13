@@ -221,6 +221,8 @@ type ApplicationUpdateObject = original.ApplicationUpdateObject
 type AppsClient = original.AppsClient
 type AvailableCulture = original.AvailableCulture
 type AvailablePrebuiltEntityModel = original.AvailablePrebuiltEntityModel
+type AzureAccountInfoObject = original.AzureAccountInfoObject
+type AzureAccountsClient = original.AzureAccountsClient
 type BaseClient = original.BaseClient
 type BatchLabelExample = original.BatchLabelExample
 type ChildEntity = original.ChildEntity
@@ -275,6 +277,7 @@ type ListAppVersionSettingObject = original.ListAppVersionSettingObject
 type ListApplicationInfoResponse = original.ListApplicationInfoResponse
 type ListAvailableCulture = original.ListAvailableCulture
 type ListAvailablePrebuiltEntityModel = original.ListAvailablePrebuiltEntityModel
+type ListAzureAccountInfoObject = original.ListAzureAccountInfoObject
 type ListBatchLabelExample = original.ListBatchLabelExample
 type ListClosedListEntityExtractor = original.ListClosedListEntityExtractor
 type ListCompositeEntityExtractor = original.ListCompositeEntityExtractor
@@ -362,6 +365,9 @@ func New(endpoint string) BaseClient {
 }
 func NewAppsClient(endpoint string) AppsClient {
 	return original.NewAppsClient(endpoint)
+}
+func NewAzureAccountsClient(endpoint string) AzureAccountsClient {
+	return original.NewAzureAccountsClient(endpoint)
 }
 func NewExamplesClient(endpoint string) ExamplesClient {
 	return original.NewExamplesClient(endpoint)

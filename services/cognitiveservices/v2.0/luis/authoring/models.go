@@ -523,6 +523,16 @@ type AvailablePrebuiltEntityModel struct {
 	Examples *string `json:"examples,omitempty"`
 }
 
+// AzureAccountInfoObject defines the azure account information object.
+type AzureAccountInfoObject struct {
+	// AzureSubscriptionID - The id for the azure subscription.
+	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
+	// ResourceGroup - The azure resource group name.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	// AccountName - The azure account name.
+	AccountName *string `json:"accountName,omitempty"`
+}
+
 // BatchLabelExample response when adding a batch of labeled examples.
 type BatchLabelExample struct {
 	Value    *LabelExampleResponse `json:"value,omitempty"`
@@ -651,6 +661,8 @@ type EndpointInfo struct {
 	AssignedEndpointKey *string `json:"assignedEndpointKey,omitempty"`
 	// EndpointRegion - The endpoint's region.
 	EndpointRegion *string `json:"endpointRegion,omitempty"`
+	// FailedRegions - Regions where publishing failed.
+	FailedRegions *string `json:"failedRegions,omitempty"`
 	// PublishedDateTime - Timestamp when was last published.
 	PublishedDateTime *string `json:"publishedDateTime,omitempty"`
 }
@@ -1060,6 +1072,12 @@ type ListAvailableCulture struct {
 type ListAvailablePrebuiltEntityModel struct {
 	autorest.Response `json:"-"`
 	Value             *[]AvailablePrebuiltEntityModel `json:"value,omitempty"`
+}
+
+// ListAzureAccountInfoObject ...
+type ListAzureAccountInfoObject struct {
+	autorest.Response `json:"-"`
+	Value             *[]AzureAccountInfoObject `json:"value,omitempty"`
 }
 
 // ListBatchLabelExample ...
@@ -1788,6 +1806,8 @@ type ProductionOrStagingEndpointInfo struct {
 	AssignedEndpointKey *string `json:"assignedEndpointKey,omitempty"`
 	// EndpointRegion - The endpoint's region.
 	EndpointRegion *string `json:"endpointRegion,omitempty"`
+	// FailedRegions - Regions where publishing failed.
+	FailedRegions *string `json:"failedRegions,omitempty"`
 	// PublishedDateTime - Timestamp when was last published.
 	PublishedDateTime *string `json:"publishedDateTime,omitempty"`
 }

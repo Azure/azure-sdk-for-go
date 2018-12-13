@@ -582,9 +582,9 @@ type AssignmentDeploymentJob struct {
 	JobID *string `json:"jobId,omitempty"`
 	// JobState - State of this job.
 	JobState *string `json:"jobState,omitempty"`
-	// Result - deployment job result.
+	// Result - Deployment job result.
 	Result *AssignmentDeploymentJobResult `json:"result,omitempty"`
-	// History - result of this deployment job for each retry.
+	// History - Result of this deployment job for each retry.
 	History *[]AssignmentDeploymentJobResult `json:"history,omitempty"`
 	// RequestURI - Reference to deployment job resource id.
 	RequestURI *string `json:"requestUri,omitempty"`
@@ -592,15 +592,15 @@ type AssignmentDeploymentJob struct {
 
 // AssignmentDeploymentJobResult result of each individual deployment in a blueprint assignment.
 type AssignmentDeploymentJobResult struct {
-	// Error - contains error details if deployment job failed.
+	// Error - Contains error details if deployment job failed.
 	Error *AzureResourceManagerError `json:"error,omitempty"`
-	// Resources - resources created as result of the deployment job.
+	// Resources - Resources created as result of the deployment job.
 	Resources *[]AssignmentJobCreatedResource `json:"resources,omitempty"`
 }
 
 // AssignmentJobCreatedResource azure resource created from deployment job.
 type AssignmentJobCreatedResource struct {
-	// Properties - additional properties in a dictionary.
+	// Properties - Additional properties in a dictionary.
 	Properties map[string]*string `json:"properties"`
 	// ID - String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
@@ -1020,7 +1020,7 @@ type AssignmentOperationProperties struct {
 	TimeStarted *string `json:"timeStarted,omitempty"`
 	// TimeFinished - Finish time of the overall underlying deployments.
 	TimeFinished *string `json:"timeFinished,omitempty"`
-	// Deployments - list of jobs in this assignment operation.
+	// Deployments - List of jobs in this assignment operation.
 	Deployments *[]AssignmentDeploymentJob `json:"deployments,omitempty"`
 }
 

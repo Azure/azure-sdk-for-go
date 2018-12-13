@@ -49,7 +49,7 @@ func NewInputsClientWithBaseURI(baseURI string, subscriptionID string) InputsCli
 // jobName - the name of the streaming job.
 // inputName - the name of the input.
 // ifMatch - the ETag of the input. Omit this value to always overwrite the current input. Specify the
-// last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// last-seen ETag value to prevent accidentally overwriting concurrent changes.
 // ifNoneMatch - set to '*' to allow a new input to be created, but to prevent updating an existing input.
 // Other values will result in a 412 Pre-condition Failed response.
 func (client InputsClient) CreateOrReplace(ctx context.Context, input Input, resourceGroupName string, jobName string, inputName string, ifMatch string, ifNoneMatch string) (result Input, err error) {
@@ -518,7 +518,7 @@ func (client InputsClient) TestResponder(resp *http.Response) (result ResourceTe
 // jobName - the name of the streaming job.
 // inputName - the name of the input.
 // ifMatch - the ETag of the input. Omit this value to always overwrite the current input. Specify the
-// last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// last-seen ETag value to prevent accidentally overwriting concurrent changes.
 func (client InputsClient) Update(ctx context.Context, input Input, resourceGroupName string, jobName string, inputName string, ifMatch string) (result Input, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InputsClient.Update")

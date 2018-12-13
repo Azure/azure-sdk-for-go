@@ -27,6 +27,7 @@ const (
 	ACCEPTED  ApplicationState = original.ACCEPTED
 	FAILED    ApplicationState = original.FAILED
 	FINISHED  ApplicationState = original.FINISHED
+	FINISHING ApplicationState = original.FINISHING
 	KILLED    ApplicationState = original.KILLED
 	NEW       ApplicationState = original.NEW
 	NEWSAVING ApplicationState = original.NEWSAVING

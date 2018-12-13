@@ -12187,8 +12187,8 @@ type MigrateSQLServerSQLMITaskOutputMigrationLevel struct {
 	Message *string `json:"message,omitempty"`
 	// ServerRoleResults - Map of server role migration results.
 	ServerRoleResults map[string]*StartMigrationScenarioServerRoleResult `json:"serverRoleResults"`
-	// OrphanedUsers - List of orphaned users.
-	OrphanedUsers *[]OrphanedUserInfo `json:"orphanedUsers,omitempty"`
+	// OrphanedUsersInfo - List of orphaned users.
+	OrphanedUsersInfo *[]OrphanedUserInfo `json:"orphanedUsersInfo,omitempty"`
 	// Databases - Selected databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
 	// SourceServerVersion - Source server version
@@ -12235,8 +12235,8 @@ func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) MarshalJSON() ([]
 	if msssmtoml.ServerRoleResults != nil {
 		objectMap["serverRoleResults"] = msssmtoml.ServerRoleResults
 	}
-	if msssmtoml.OrphanedUsers != nil {
-		objectMap["orphanedUsers"] = msssmtoml.OrphanedUsers
+	if msssmtoml.OrphanedUsersInfo != nil {
+		objectMap["orphanedUsersInfo"] = msssmtoml.OrphanedUsersInfo
 	}
 	if msssmtoml.Databases != nil {
 		objectMap["databases"] = msssmtoml.Databases

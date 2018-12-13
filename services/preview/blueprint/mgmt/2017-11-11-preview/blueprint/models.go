@@ -952,6 +952,26 @@ type ManagedServiceIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - ID of the Azure Active Directory.
 	TenantID *string `json:"tenantId,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the resource, key will be Azure resource Id of the ManagedIdentity.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
+func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msi.Type != "" {
+		objectMap["type"] = msi.Type
+	}
+	if msi.PrincipalID != nil {
+		objectMap["principalId"] = msi.PrincipalID
+	}
+	if msi.TenantID != nil {
+		objectMap["tenantId"] = msi.TenantID
+	}
+	if msi.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
 }
 
 // Model represents a Blueprint definition.
@@ -1143,7 +1163,7 @@ type ParameterValueBase struct {
 
 // PolicyAssignmentArtifact blueprint artifact applies Policy assignments.
 type PolicyAssignmentArtifact struct {
-	// PolicyAssignmentArtifactProperties - properties for policyAssignment Artifact
+	// PolicyAssignmentArtifactProperties - properties for policyAssginment Artifact
 	*PolicyAssignmentArtifactProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`
@@ -1749,7 +1769,6 @@ type ResourceProviderOperationDisplay struct {
 
 // ResourceProviderOperationList result of the request to list operations.
 type ResourceProviderOperationList struct {
-	autorest.Response `json:"-"`
 	// Value - List of operations supported by this resource provider.
 	Value *[]ResourceProviderOperation `json:"value,omitempty"`
 }
@@ -2136,4 +2155,12 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Name of this resource.
 	Name *string `json:"name,omitempty"`
+}
+
+// UserAssignedIdentity user assigned Identity
+type UserAssignedIdentity struct {
+	// PrincipalID - Azure Active Directory principal ID associated with this Identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - Client App Id associated with this identity.
+	ClientID *string `json:"clientId,omitempty"`
 }

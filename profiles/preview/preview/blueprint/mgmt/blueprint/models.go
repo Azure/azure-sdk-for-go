@@ -112,7 +112,6 @@ type ListIterator = original.ListIterator
 type ListPage = original.ListPage
 type ManagedServiceIdentity = original.ManagedServiceIdentity
 type Model = original.Model
-type OperationsClient = original.OperationsClient
 type ParameterDefinition = original.ParameterDefinition
 type ParameterDefinitionMetadata = original.ParameterDefinitionMetadata
 type ParameterValue = original.ParameterValue
@@ -143,6 +142,7 @@ type Status = original.Status
 type TemplateArtifact = original.TemplateArtifact
 type TemplateArtifactProperties = original.TemplateArtifactProperties
 type TrackedResource = original.TrackedResource
+type UserAssignedIdentity = original.UserAssignedIdentity
 
 func New() BaseClient {
 	return original.New()
@@ -182,12 +182,6 @@ func NewListIterator(page ListPage) ListIterator {
 }
 func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
 	return original.NewListPage(getNextPage)
-}
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
-}
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
 }
 func NewPublishedArtifactsClient() PublishedArtifactsClient {
 	return original.NewPublishedArtifactsClient()

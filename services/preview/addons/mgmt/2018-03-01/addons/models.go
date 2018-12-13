@@ -103,7 +103,7 @@ func PossibleSupportPlanTypeValues() []SupportPlanType {
 	return []SupportPlanType{SupportPlanTypeAdvanced, SupportPlanTypeEssential, SupportPlanTypeStandard}
 }
 
-// CanonicalSupportPlanInfoDefinition definition object with the properties of a camonical plan
+// CanonicalSupportPlanInfoDefinition definition object with the properties of a canonical plan
 type CanonicalSupportPlanInfoDefinition struct {
 	// SupportPlanType - Support plan type. Possible values include: 'SupportPlanTypeEssential', 'SupportPlanTypeStandard', 'SupportPlanTypeAdvanced'
 	SupportPlanType SupportPlanType `json:"supportPlanType,omitempty"`

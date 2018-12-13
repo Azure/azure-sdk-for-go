@@ -48,7 +48,7 @@ func NewStreamingJobsClientWithBaseURI(baseURI string, subscriptionID string) St
 // from the Azure Resource Manager API or the portal.
 // jobName - the name of the streaming job.
 // ifMatch - the ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-// the last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// the last-seen ETag value to prevent accidentally overwriting concurrent changes.
 // ifNoneMatch - set to '*' to allow a new streaming job to be created, but to prevent updating an existing
 // record set. Other values will result in a 412 Pre-condition Failed response.
 func (client StreamingJobsClient) CreateOrReplace(ctx context.Context, streamingJob StreamingJob, resourceGroupName string, jobName string, ifMatch string, ifNoneMatch string) (result StreamingJobsCreateOrReplaceFuture, err error) {
@@ -707,7 +707,7 @@ func (client StreamingJobsClient) StopResponder(resp *http.Response) (result aut
 // from the Azure Resource Manager API or the portal.
 // jobName - the name of the streaming job.
 // ifMatch - the ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-// the last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// the last-seen ETag value to prevent accidentally overwriting concurrent changes.
 func (client StreamingJobsClient) Update(ctx context.Context, streamingJob StreamingJob, resourceGroupName string, jobName string, ifMatch string) (result StreamingJob, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingJobsClient.Update")

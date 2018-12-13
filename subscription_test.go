@@ -348,6 +348,32 @@ func testSubscriptionReceiveOneFromDeadLetter(ctx context.Context, t *testing.T,
 	assert.NoError(t, err)
 }
 
+func (suite *serviceBusSuite) TestSubscriptionWithPrefetch() {
+	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
+		"SendAndReceive": testSubscriptionSendAndReceive,
+	}
+	suite.subscriptionMessageTestWithOptions(tests, SubscriptionWithPrefetchCount(10))
+}
+
+func testSubscriptionSendAndReceive(ctx context.Context, t *testing.T, topic *Topic, s *Subscription) {
+	messages := []string{"foo", "bar", "bazz", "buzz"}
+	for _, msg := range messages {
+		require.NoError(t, topic.Send(ctx, NewMessageFromString(msg)))
+	}
+
+	count := 0
+	for idx := range messages {
+		err := s.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			assert.Equal(t, messages[idx], string(msg.Data))
+			count++
+			return msg.Complete(ctx)
+		}))
+		assert.NoError(t, err)
+	}
+	assert.Len(t, messages, count)
+}
+
+
 func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
 	tests := map[string]func(context.Context, *testing.T, *TopicSession, *SubscriptionSession){
 		"ReceiveOne": testSubscriptionSessionReceiveOne,

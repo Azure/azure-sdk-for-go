@@ -78,6 +78,21 @@ func ReceiverWithReceiveMode(mode ReceiveMode) ReceiverOption {
 	}
 }
 
+// ReceiverWithPrefetchCount configures the receiver to attempt to fetch the number of messages specified by the prefect
+// at one time.
+//
+// The default is 1 message at a time.
+//
+// Caution: Using PeekLock, messages have a set lock timeout, which can be renewed. By setting a high prefetch count, a
+// local queue of messages could build up and cause message locks to expire before the message lands in the handler. If
+// this happens, the message disposition will fail and will be re-queued and processed again.
+func ReceiverWithPrefetchCount(prefetch uint32) ReceiverOption {
+	return func(receiver *Receiver) error {
+		receiver.prefetch = prefetch
+		return nil
+	}
+}
+
 // NewReceiver creates a new Service Bus message listener given an AMQP client and an entity path
 func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ...ReceiverOption) (*Receiver, error) {
 	span, ctx := ns.startSpanFromContext(ctx, "sb.Hub.NewReceiver")

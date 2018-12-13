@@ -57,6 +57,7 @@ type (
 		senderMu          sync.Mutex
 		receiveMode       ReceiveMode
 		requiredSessionID *string
+		prefetchCount     *uint32
 	}
 
 	// queueContent is a specialized Queue body for an Atom entry
@@ -122,6 +123,21 @@ const (
 func QueueWithReceiveAndDelete() QueueOption {
 	return func(q *Queue) error {
 		q.receiveMode = ReceiveAndDeleteMode
+		return nil
+	}
+}
+
+// QueueWithPrefetchCount configures the queue to attempt to fetch the number of messages specified by the
+// prefetch count at one time.
+//
+// The default is 1 message at a time.
+//
+// Caution: Using PeekLock, messages have a set lock timeout, which can be renewed. By setting a high prefetch count, a
+// local queue of messages could build up and cause message locks to expire before the message lands in the handler. If
+// this happens, the message disposition will fail and will be re-queued and processed again.
+func QueueWithPrefetchCount(prefetch uint32) QueueOption {
+	return func(q *Queue) error {
+		q.prefetchCount = &prefetch
 		return nil
 	}
 }
@@ -475,6 +491,11 @@ func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (*Recei
 	defer span.Finish()
 
 	opts = append(opts, ReceiverWithReceiveMode(q.receiveMode))
+
+	if q.prefetchCount != nil {
+		opts = append(opts, ReceiverWithPrefetchCount(*q.prefetchCount))
+	}
+
 	return q.namespace.NewReceiver(ctx, q.Name, opts...)
 }
 

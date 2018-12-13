@@ -597,6 +597,31 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	}
 }
 
+func (suite *serviceBusSuite) TestQueueWithPrefetch() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SendAndReceive": testQueueSendAndReceive,
+	}
+	suite.queueMessageTestWithQueueOptions(tests, QueueWithPrefetchCount(10))
+}
+
+func testQueueSendAndReceive(ctx context.Context, t *testing.T, q *Queue) {
+	messages := []string{"foo", "bar", "bazz", "buzz"}
+	for _, msg := range messages {
+		require.NoError(t, q.Send(ctx, NewMessageFromString(msg)))
+	}
+
+	count := 0
+	for idx := range messages {
+		err := q.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			assert.Equal(t, messages[idx], string(msg.Data))
+			count++
+			return msg.Complete(ctx)
+		}))
+		assert.NoError(t, err)
+	}
+	assert.Len(t, messages, count)
+}
+
 func (suite *serviceBusSuite) TestIssue73QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"SimpleSend200_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {

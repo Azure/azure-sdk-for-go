@@ -43,6 +43,7 @@ type (
 		receiverMu        sync.Mutex
 		receiveMode       ReceiveMode
 		requiredSessionID *string
+		prefetchCount     *uint32
 	}
 
 	// SubscriptionDescription is the content type for Subscription management requests
@@ -76,6 +77,21 @@ type (
 func SubscriptionWithReceiveAndDelete() SubscriptionOption {
 	return func(s *Subscription) error {
 		s.receiveMode = ReceiveAndDeleteMode
+		return nil
+	}
+}
+
+// SubscriptionWithPrefetchCount configures the subscription to attempt to fetch the number of messages specified by the
+// prefetch count at one time.
+//
+// The default is 1 message at a time.
+//
+// Caution: Using PeekLock, messages have a set lock timeout, which can be renewed. By setting a high prefetch count, a
+// local queue of messages could build up and cause message locks to expire before the message lands in the handler. If
+// this happens, the message disposition will fail and will be re-queued and processed again.
+func SubscriptionWithPrefetchCount(prefetch uint32) SubscriptionOption {
+	return func(q *Subscription) error {
+		q.prefetchCount = &prefetch
 		return nil
 	}
 }
@@ -185,6 +201,11 @@ func (s *Subscription) NewReceiver(ctx context.Context, opts ...ReceiverOption) 
 	defer span.Finish()
 
 	opts = append(opts, ReceiverWithReceiveMode(s.receiveMode))
+
+	if s.prefetchCount != nil {
+		opts = append(opts, ReceiverWithPrefetchCount(*s.prefetchCount))
+	}
+
 	return s.namespace.NewReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, opts...)
 }
 

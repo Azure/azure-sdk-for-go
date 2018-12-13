@@ -647,7 +647,7 @@ func (client ServiceMembersClient) ListComplete(ctx context.Context, serviceName
 
 // ListAlerts gets the details of an alert for a given service and server combination.
 // Parameters:
-// serviceMemberID - the server Id for which the laert details needs to be queried.
+// serviceMemberID - the server Id for which the alert details needs to be queried.
 // serviceName - the name of the service.
 // filter - the alert property filter to apply.
 // state - the alert state to query for.

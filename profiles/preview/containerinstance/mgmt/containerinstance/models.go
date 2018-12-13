@@ -105,6 +105,13 @@ const (
 
 type AzureFileVolume = original.AzureFileVolume
 type BaseClient = original.BaseClient
+type CachedImages = original.CachedImages
+type CachedImagesListResult = original.CachedImagesListResult
+type Capabilities = original.Capabilities
+type CapabilitiesCapabilities = original.CapabilitiesCapabilities
+type CapabilitiesListResult = original.CapabilitiesListResult
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type Container = original.Container
 type ContainerClient = original.ContainerClient
 type ContainerExec = original.ContainerExec

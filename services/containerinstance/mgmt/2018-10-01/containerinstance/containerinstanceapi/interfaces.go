@@ -23,6 +23,14 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	ListCachedImages(ctx context.Context, location string) (result containerinstance.CachedImagesListResult, err error)
+	ListCapabilities(ctx context.Context, location string) (result containerinstance.CapabilitiesListResult, err error)
+}
+
+var _ BaseClientAPI = (*containerinstance.BaseClient)(nil)
+
 // ContainerGroupsClientAPI contains the set of methods on the ContainerGroupsClient type.
 type ContainerGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup containerinstance.ContainerGroup) (result containerinstance.ContainerGroupsCreateOrUpdateFuture, err error)

@@ -1074,6 +1074,12 @@ type ListAvailablePrebuiltEntityModel struct {
 	Value             *[]AvailablePrebuiltEntityModel `json:"value,omitempty"`
 }
 
+// ListAzureAccountInfoObject ...
+type ListAzureAccountInfoObject struct {
+	autorest.Response `json:"-"`
+	Value             *[]AzureAccountInfoObject `json:"value,omitempty"`
+}
+
 // ListBatchLabelExample ...
 type ListBatchLabelExample struct {
 	autorest.Response `json:"-"`
@@ -1787,6 +1793,7 @@ type PrebuiltEntityExtractor struct {
 
 // ProductionOrStagingEndpointInfo ...
 type ProductionOrStagingEndpointInfo struct {
+	autorest.Response `json:"-"`
 	// VersionID - The version ID to publish.
 	VersionID *string `json:"versionId,omitempty"`
 	// IsStaging - Indicates if the staging slot should be used, instead of the Production one.
@@ -1871,12 +1878,6 @@ type RegexModelUpdateObject struct {
 	RegexPattern *string `json:"regexPattern,omitempty"`
 	// Name - The model name.
 	Name *string `json:"name,omitempty"`
-}
-
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             interface{} `json:"value,omitempty"`
 }
 
 // SetString ...

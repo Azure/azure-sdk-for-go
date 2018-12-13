@@ -41,7 +41,7 @@ func NewAzureAccountsClient(endpoint string) AzureAccountsClient {
 // Parameters:
 // appID - the application ID.
 // azureAccountInfoObject - the azure account information object.
-func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result SetObject, err error) {
+func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.AssignToApp")
 		defer func() {
@@ -114,12 +114,12 @@ func (client AzureAccountsClient) AssignToAppSender(req *http.Request) (*http.Re
 
 // AssignToAppResponder handles the response to the AssignToApp request. The method always
 // closes the http.Response Body.
-func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (result SetObject, err error) {
+func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -128,7 +128,7 @@ func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (res
 // GetAssigned gets the LUIS azure accounts assigned to the application for the user using his ARM token.
 // Parameters:
 // appID - the application ID.
-func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
+func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UUID) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.GetAssigned")
 		defer func() {
@@ -186,11 +186,11 @@ func (client AzureAccountsClient) GetAssignedSender(req *http.Request) (*http.Re
 
 // GetAssignedResponder handles the response to the GetAssigned request. The method always
 // closes the http.Response Body.
-func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (result SetObject, err error) {
+func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (result ListAzureAccountInfoObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -198,7 +198,7 @@ func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (res
 }
 
 // GetUserLUISAccounts gets the LUIS azure accounts for the user using his ARM token.
-func (client AzureAccountsClient) GetUserLUISAccounts(ctx context.Context) (result SetObject, err error) {
+func (client AzureAccountsClient) GetUserLUISAccounts(ctx context.Context) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.GetUserLUISAccounts")
 		defer func() {
@@ -252,11 +252,11 @@ func (client AzureAccountsClient) GetUserLUISAccountsSender(req *http.Request) (
 
 // GetUserLUISAccountsResponder handles the response to the GetUserLUISAccounts request. The method always
 // closes the http.Response Body.
-func (client AzureAccountsClient) GetUserLUISAccountsResponder(resp *http.Response) (result SetObject, err error) {
+func (client AzureAccountsClient) GetUserLUISAccountsResponder(resp *http.Response) (result ListAzureAccountInfoObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -267,7 +267,7 @@ func (client AzureAccountsClient) GetUserLUISAccountsResponder(resp *http.Respon
 // Parameters:
 // appID - the application ID.
 // azureAccountInfoObject - the azure account information object.
-func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result SetObject, err error) {
+func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.RemoveFromApp")
 		defer func() {
@@ -340,12 +340,12 @@ func (client AzureAccountsClient) RemoveFromAppSender(req *http.Request) (*http.
 
 // RemoveFromAppResponder handles the response to the RemoveFromApp request. The method always
 // closes the http.Response Body.
-func (client AzureAccountsClient) RemoveFromAppResponder(resp *http.Response) (result SetObject, err error) {
+func (client AzureAccountsClient) RemoveFromAppResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

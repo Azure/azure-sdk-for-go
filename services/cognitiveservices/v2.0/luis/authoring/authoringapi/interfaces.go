@@ -175,9 +175,9 @@ type AppsClientAPI interface {
 	ListEndpoints(ctx context.Context, appID uuid.UUID) (result authoring.SetString, err error)
 	ListSupportedCultures(ctx context.Context) (result authoring.ListAvailableCulture, err error)
 	ListUsageScenarios(ctx context.Context) (result authoring.ListString, err error)
-	PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result authoring.SetObject, err error)
-	PackageTrainedApplicationAsGzip(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.SetObject, err error)
-	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.SetObject, err error)
+	PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result authoring.ReadCloser, err error)
+	PackageTrainedApplicationAsGzip(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.ReadCloser, err error)
+	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.ProductionOrStagingEndpointInfo, err error)
 	Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject authoring.ApplicationUpdateObject) (result authoring.OperationStatus, err error)
 	UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject authoring.PublishSettingUpdateObject) (result authoring.OperationStatus, err error)
 	UpdateSettings(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject authoring.ApplicationSettingUpdateObject) (result authoring.OperationStatus, err error)
@@ -241,10 +241,10 @@ var _ SettingsClientAPI = (*authoring.SettingsClient)(nil)
 
 // AzureAccountsClientAPI contains the set of methods on the AzureAccountsClient type.
 type AzureAccountsClientAPI interface {
-	AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
-	GetAssigned(ctx context.Context, appID uuid.UUID) (result authoring.SetObject, err error)
-	GetUserLUISAccounts(ctx context.Context) (result authoring.SetObject, err error)
-	RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
+	AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
+	GetAssigned(ctx context.Context, appID uuid.UUID) (result authoring.ListAzureAccountInfoObject, err error)
+	GetUserLUISAccounts(ctx context.Context) (result authoring.ListAzureAccountInfoObject, err error)
+	RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
 }
 
 var _ AzureAccountsClientAPI = (*authoring.AzureAccountsClient)(nil)

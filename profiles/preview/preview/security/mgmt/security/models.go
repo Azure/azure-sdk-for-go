@@ -113,6 +113,15 @@ const (
 	UDP Protocol = original.UDP
 )
 
+type ReportedSeverity = original.ReportedSeverity
+
+const (
+	High        ReportedSeverity = original.High
+	Information ReportedSeverity = original.Information
+	Low         ReportedSeverity = original.Low
+	Silent      ReportedSeverity = original.Silent
+)
+
 type SettingKind = original.SettingKind
 
 const (
@@ -510,6 +519,9 @@ func PossiblePricingTierValues() []PricingTier {
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
+}
+func PossibleReportedSeverityValues() []ReportedSeverity {
+	return original.PossibleReportedSeverityValues()
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()

@@ -959,7 +959,7 @@ func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (resu
 // Parameters:
 // resourceGroupName - name of resource group
 // name - name of web app
-// siteConfig - request body that contains the configuraiton setting for the web app
+// siteConfig - request body that contains the configuration setting for the web app
 func (client SitesClient) CreateOrUpdateSiteConfig(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig) (result SiteConfig, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteConfig")
@@ -1039,7 +1039,7 @@ func (client SitesClient) CreateOrUpdateSiteConfigResponder(resp *http.Response)
 // Parameters:
 // resourceGroupName - name of resource group
 // name - name of web app
-// siteConfig - request body that contains the configuraiton setting for the web app
+// siteConfig - request body that contains the configuration setting for the web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) CreateOrUpdateSiteConfigSlot(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig, slot string) (result SiteConfig, err error) {
 	if tracing.IsEnabled() {
@@ -12439,7 +12439,7 @@ func (client SitesClient) UpdateSiteBackupConfigurationSlotResponder(resp *http.
 // Parameters:
 // resourceGroupName - name of resource group
 // name - name of web app
-// siteConfig - request body that contains the configuraiton setting for the web app
+// siteConfig - request body that contains the configuration setting for the web app
 func (client SitesClient) UpdateSiteConfig(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig) (result SiteConfig, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteConfig")
@@ -12519,7 +12519,7 @@ func (client SitesClient) UpdateSiteConfigResponder(resp *http.Response) (result
 // Parameters:
 // resourceGroupName - name of resource group
 // name - name of web app
-// siteConfig - request body that contains the configuraiton setting for the web app
+// siteConfig - request body that contains the configuration setting for the web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteConfigSlot(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig, slot string) (result SiteConfig, err error) {
 	if tracing.IsEnabled() {

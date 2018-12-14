@@ -188,7 +188,7 @@ type Endpoint struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -293,7 +293,7 @@ type GeographicHierarchy struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -419,7 +419,7 @@ type Profile struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -544,7 +544,7 @@ type ProxyResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -565,7 +565,7 @@ type Resource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -579,7 +579,7 @@ type TrackedResource struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
 }
 

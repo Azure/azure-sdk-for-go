@@ -108,9 +108,11 @@ const (
 type WebhookAction = original.WebhookAction
 
 const (
-	Delete     WebhookAction = original.Delete
-	Push       WebhookAction = original.Push
-	Quarantine WebhookAction = original.Quarantine
+	ChartDelete WebhookAction = original.ChartDelete
+	ChartPush   WebhookAction = original.ChartPush
+	Delete      WebhookAction = original.Delete
+	Push        WebhookAction = original.Push
+	Quarantine  WebhookAction = original.Quarantine
 )
 
 type WebhookStatus = original.WebhookStatus

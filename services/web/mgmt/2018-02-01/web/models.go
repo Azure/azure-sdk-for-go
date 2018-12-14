@@ -6376,7 +6376,7 @@ type CertificatePatchResourceProperties struct {
 	Issuer *string `json:"issuer,omitempty"`
 	// IssueDate - Certificate issue Date.
 	IssueDate *date.Time `json:"issueDate,omitempty"`
-	// ExpirationDate - Certificate expriration date.
+	// ExpirationDate - Certificate expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Password - Certificate password.
 	Password *string `json:"password,omitempty"`
@@ -6418,7 +6418,7 @@ type CertificateProperties struct {
 	Issuer *string `json:"issuer,omitempty"`
 	// IssueDate - Certificate issue Date.
 	IssueDate *date.Time `json:"issueDate,omitempty"`
-	// ExpirationDate - Certificate expriration date.
+	// ExpirationDate - Certificate expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Password - Certificate password.
 	Password *string `json:"password,omitempty"`
@@ -7089,7 +7089,7 @@ type CsmSlotEntity struct {
 
 // CsmUsageQuota usage of the quota resource.
 type CsmUsageQuota struct {
-	// Unit - Units of measurement for the quota resourse.
+	// Unit - Units of measurement for the quota resource.
 	Unit *string `json:"unit,omitempty"`
 	// NextResetTime - Next reset time for the resource counter.
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
@@ -7353,7 +7353,7 @@ type CustomHostnameAnalysisResultProperties struct {
 	CustomDomainVerificationFailureInfo *ErrorEntity `json:"customDomainVerificationFailureInfo,omitempty"`
 	// HasConflictOnScaleUnit - <code>true</code> if there is a conflict on a scale unit; otherwise, <code>false</code>.
 	HasConflictOnScaleUnit *bool `json:"hasConflictOnScaleUnit,omitempty"`
-	// HasConflictAcrossSubscription - <code>true</code> if htere is a conflict across subscriptions; otherwise, <code>false</code>.
+	// HasConflictAcrossSubscription - <code>true</code> if there is a conflict across subscriptions; otherwise, <code>false</code>.
 	HasConflictAcrossSubscription *bool `json:"hasConflictAcrossSubscription,omitempty"`
 	// ConflictingAppResourceID - Name of the conflicting app on scale unit if it's within the same subscription.
 	ConflictingAppResourceID *string `json:"conflictingAppResourceId,omitempty"`
@@ -7383,7 +7383,7 @@ type DatabaseBackupSetting struct {
 
 // DataSource class representing data source used by the detectors
 type DataSource struct {
-	// Instructions - Instrunctions if any for the data source
+	// Instructions - Instructions if any for the data source
 	Instructions *[]string `json:"instructions,omitempty"`
 	// DataSourceURI - Datasource Uri Links
 	DataSourceURI *[]NameValuePair `json:"dataSourceUri,omitempty"`
@@ -7808,7 +7808,7 @@ func NewDeletedWebAppCollectionPage(getNextPage func(context.Context, DeletedWeb
 	return DeletedWebAppCollectionPage{fn: getNextPage}
 }
 
-// Deployment user crendentials used for publishing activity.
+// Deployment user credentials used for publishing activity.
 type Deployment struct {
 	autorest.Response `json:"-"`
 	// DeploymentProperties - Deployment resource specific properties
@@ -8086,9 +8086,9 @@ type DeploymentProperties struct {
 
 // DetectorAbnormalTimePeriod class representing Abnormal Time Period detected.
 type DetectorAbnormalTimePeriod struct {
-	// StartTime - Start time of the corelated event
+	// StartTime - Start time of the correlated event
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the corelated event
+	// EndTime - End time of the correlated event
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// Message - Message describing the event
 	Message *string `json:"message,omitempty"`
@@ -9131,7 +9131,7 @@ func NewDiagnosticDetectorCollectionPage(getNextPage func(context.Context, Diagn
 	return DiagnosticDetectorCollectionPage{fn: getNextPage}
 }
 
-// DiagnosticDetectorResponse class representing Reponse from Diagnostic Detectors
+// DiagnosticDetectorResponse class representing Response from Diagnostic Detectors
 type DiagnosticDetectorResponse struct {
 	autorest.Response `json:"-"`
 	// DiagnosticDetectorResponseProperties - DiagnosticDetectorResponse resource specific properties
@@ -15715,7 +15715,7 @@ type RecommendationProperties struct {
 	ActionName *string `json:"actionName,omitempty"`
 	// Enabled - True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
 	Enabled *int32 `json:"enabled,omitempty"`
-	// States - The list of states of this recommendation. If it's null then it shoud be considered "Active".
+	// States - The list of states of this recommendation. If it's null then it should be considered "Active".
 	States *[]string `json:"states,omitempty"`
 	// StartTime - The beginning time in UTC of a range that the recommendation refers to.
 	StartTime *date.Time `json:"startTime,omitempty"`
@@ -17127,7 +17127,7 @@ type ResourceMetricValue struct {
 	Properties *[]ResourceMetricProperty `json:"properties,omitempty"`
 }
 
-// ResourceNameAvailability information regarding availbility of a resource name.
+// ResourceNameAvailability information regarding availability of a resource name.
 type ResourceNameAvailability struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - <code>true</code> indicates name is valid and available. <code>false</code> indicates the name is invalid, unavailable, or both.
@@ -17706,7 +17706,7 @@ type SiteConfig struct {
 	VirtualApplications *[]VirtualApplication `json:"virtualApplications,omitempty"`
 	// LoadBalancing - Site load balancing. Possible values include: 'WeightedRoundRobin', 'LeastRequests', 'LeastResponseTime', 'WeightedTotalTraffic', 'RequestHash'
 	LoadBalancing SiteLoadBalancing `json:"loadBalancing,omitempty"`
-	// Experiments - This is work around for polymophic types.
+	// Experiments - This is work around for polymorphic types.
 	Experiments *Experiments `json:"experiments,omitempty"`
 	// Limits - Site limits.
 	Limits *SiteLimits `json:"limits,omitempty"`
@@ -22651,7 +22651,7 @@ type ValidateProperties struct {
 	NeedLinuxWorkers *bool `json:"needLinuxWorkers,omitempty"`
 	// IsSpot - <code>true</code> if App Service plan is for Spot instances; otherwise, <code>false</code>.
 	IsSpot *bool `json:"isSpot,omitempty"`
-	// Capacity - Target capacity of the App Service plan (number of VM's).
+	// Capacity - Target capacity of the App Service plan (number of VMs).
 	Capacity *int32 `json:"capacity,omitempty"`
 	// HostingEnvironment - Name of App Service Environment where app or App Service plan should be created.
 	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`

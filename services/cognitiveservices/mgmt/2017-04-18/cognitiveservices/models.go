@@ -44,55 +44,6 @@ func PossibleKeyNameValues() []KeyName {
 	return []KeyName{Key1, Key2}
 }
 
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// BingAutosuggestv7 ...
-	BingAutosuggestv7 Kind = "Bing.Autosuggest.v7"
-	// BingCustomSearch ...
-	BingCustomSearch Kind = "Bing.CustomSearch"
-	// BingSearchv7 ...
-	BingSearchv7 Kind = "Bing.Search.v7"
-	// BingSpeech ...
-	BingSpeech Kind = "Bing.Speech"
-	// BingSpellCheckv7 ...
-	BingSpellCheckv7 Kind = "Bing.SpellCheck.v7"
-	// ComputerVision ...
-	ComputerVision Kind = "ComputerVision"
-	// ContentModerator ...
-	ContentModerator Kind = "ContentModerator"
-	// CustomSpeech ...
-	CustomSpeech Kind = "CustomSpeech"
-	// CustomVisionPrediction ...
-	CustomVisionPrediction Kind = "CustomVision.Prediction"
-	// CustomVisionTraining ...
-	CustomVisionTraining Kind = "CustomVision.Training"
-	// Emotion ...
-	Emotion Kind = "Emotion"
-	// Face ...
-	Face Kind = "Face"
-	// LUIS ...
-	LUIS Kind = "LUIS"
-	// QnAMaker ...
-	QnAMaker Kind = "QnAMaker"
-	// SpeakerRecognition ...
-	SpeakerRecognition Kind = "SpeakerRecognition"
-	// SpeechTranslation ...
-	SpeechTranslation Kind = "SpeechTranslation"
-	// TextAnalytics ...
-	TextAnalytics Kind = "TextAnalytics"
-	// TextTranslation ...
-	TextTranslation Kind = "TextTranslation"
-	// WebLM ...
-	WebLM Kind = "WebLM"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{BingAutosuggestv7, BingCustomSearch, BingSearchv7, BingSpeech, BingSpellCheckv7, ComputerVision, ContentModerator, CustomSpeech, CustomVisionPrediction, CustomVisionTraining, Emotion, Face, LUIS, QnAMaker, SpeakerRecognition, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
-}
-
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -163,39 +114,6 @@ const (
 // PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return []ResourceSkuRestrictionsType{Location, Zone}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// F0 ...
-	F0 SkuName = "F0"
-	// P0 ...
-	P0 SkuName = "P0"
-	// P1 ...
-	P1 SkuName = "P1"
-	// P2 ...
-	P2 SkuName = "P2"
-	// S0 ...
-	S0 SkuName = "S0"
-	// S1 ...
-	S1 SkuName = "S1"
-	// S2 ...
-	S2 SkuName = "S2"
-	// S3 ...
-	S3 SkuName = "S3"
-	// S4 ...
-	S4 SkuName = "S4"
-	// S5 ...
-	S5 SkuName = "S5"
-	// S6 ...
-	S6 SkuName = "S6"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -397,8 +315,8 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 type AccountCreateParameters struct {
 	// Sku - Required. Gets or sets the SKU of the resource.
 	Sku *Sku `json:"sku,omitempty"`
-	// Kind - Required. Gets or sets the Kind of the resource. Possible values include: 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVisionPrediction', 'CustomVisionTraining', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
-	Kind Kind `json:"kind,omitempty"`
+	// Kind - Required. Gets or sets the Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
@@ -413,7 +331,7 @@ func (acp AccountCreateParameters) MarshalJSON() ([]byte, error) {
 	if acp.Sku != nil {
 		objectMap["sku"] = acp.Sku
 	}
-	if acp.Kind != "" {
+	if acp.Kind != nil {
 		objectMap["kind"] = acp.Kind
 	}
 	if acp.Location != nil {
@@ -623,21 +541,21 @@ func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
 // CheckSkuAvailabilityParameter check SKU availability parameter.
 type CheckSkuAvailabilityParameter struct {
 	// Skus - The SKU of the resource.
-	Skus *[]SkuName `json:"skus,omitempty"`
-	// Kind - The Kind of the resource. Possible values include: 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVisionPrediction', 'CustomVisionTraining', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
-	Kind Kind `json:"kind,omitempty"`
+	Skus *[]string `json:"skus,omitempty"`
+	// Kind - The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 	// Type - The Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
 // CheckSkuAvailabilityResult check SKU availability result.
 type CheckSkuAvailabilityResult struct {
-	// Kind - The Kind of the resource. Possible values include: 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVisionPrediction', 'CustomVisionTraining', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
-	Kind Kind `json:"kind,omitempty"`
+	// Kind - The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
 	// Type - The Type of the resource.
 	Type *string `json:"type,omitempty"`
-	// SkuName - The SKU of Cognitive Services account. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'
-	SkuName SkuName `json:"skuName,omitempty"`
+	// SkuName - The SKU of Cognitive Services account.
+	SkuName *string `json:"skuName,omitempty"`
 	// SkuAvailable - Indicates the given SKU is available or not.
 	SkuAvailable *bool `json:"skuAvailable,omitempty"`
 	// Reason - Reason why the SKU is not available.
@@ -1043,8 +961,8 @@ func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusRes
 
 // Sku the SKU of the cognitive services account.
 type Sku struct {
-	// Name - Gets or sets the sku name. Required for account creation, optional for update. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'
-	Name SkuName `json:"name,omitempty"`
+	// Name - Gets or sets the sku name. Required for account creation, optional for update.
+	Name *string `json:"name,omitempty"`
 	// Tier - Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 }

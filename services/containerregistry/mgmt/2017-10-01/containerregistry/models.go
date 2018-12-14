@@ -197,6 +197,10 @@ func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 type WebhookAction string
 
 const (
+	// ChartDelete ...
+	ChartDelete WebhookAction = "chart_delete"
+	// ChartPush ...
+	ChartPush WebhookAction = "chart_push"
 	// Delete ...
 	Delete WebhookAction = "delete"
 	// Push ...
@@ -207,7 +211,7 @@ const (
 
 // PossibleWebhookActionValues returns an array of possible values for the WebhookAction const type.
 func PossibleWebhookActionValues() []WebhookAction {
-	return []WebhookAction{Delete, Push, Quarantine}
+	return []WebhookAction{ChartDelete, ChartPush, Delete, Push, Quarantine}
 }
 
 // WebhookStatus enumerates the values for webhook status.

@@ -2146,7 +2146,7 @@ type AppServiceCertificate struct {
 	ProvisioningState KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
-// AppServiceCertificateCollection collection of certitificateorder certificates.
+// AppServiceCertificateCollection collection of certificate order certificates.
 type AppServiceCertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
@@ -8824,7 +8824,7 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DomainAvailablilityCheckResult domain availablility check result.
+// DomainAvailablilityCheckResult domain availability check result.
 type DomainAvailablilityCheckResult struct {
 	autorest.Response `json:"-"`
 	// Name - Name of the domain.

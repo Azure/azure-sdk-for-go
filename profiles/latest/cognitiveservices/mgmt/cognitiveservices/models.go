@@ -36,30 +36,6 @@ const (
 	Key2 KeyName = original.Key2
 )
 
-type Kind = original.Kind
-
-const (
-	BingAutosuggestv7      Kind = original.BingAutosuggestv7
-	BingCustomSearch       Kind = original.BingCustomSearch
-	BingSearchv7           Kind = original.BingSearchv7
-	BingSpeech             Kind = original.BingSpeech
-	BingSpellCheckv7       Kind = original.BingSpellCheckv7
-	ComputerVision         Kind = original.ComputerVision
-	ContentModerator       Kind = original.ContentModerator
-	CustomSpeech           Kind = original.CustomSpeech
-	CustomVisionPrediction Kind = original.CustomVisionPrediction
-	CustomVisionTraining   Kind = original.CustomVisionTraining
-	Emotion                Kind = original.Emotion
-	Face                   Kind = original.Face
-	LUIS                   Kind = original.LUIS
-	QnAMaker               Kind = original.QnAMaker
-	SpeakerRecognition     Kind = original.SpeakerRecognition
-	SpeechTranslation      Kind = original.SpeechTranslation
-	TextAnalytics          Kind = original.TextAnalytics
-	TextTranslation        Kind = original.TextTranslation
-	WebLM                  Kind = original.WebLM
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -92,22 +68,6 @@ type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 const (
 	Location ResourceSkuRestrictionsType = original.Location
 	Zone     ResourceSkuRestrictionsType = original.Zone
-)
-
-type SkuName = original.SkuName
-
-const (
-	F0 SkuName = original.F0
-	P0 SkuName = original.P0
-	P1 SkuName = original.P1
-	P2 SkuName = original.P2
-	S0 SkuName = original.S0
-	S1 SkuName = original.S1
-	S2 SkuName = original.S2
-	S3 SkuName = original.S3
-	S4 SkuName = original.S4
-	S5 SkuName = original.S5
-	S6 SkuName = original.S6
 )
 
 type SkuTier = original.SkuTier
@@ -218,9 +178,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()
 }
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -232,9 +189,6 @@ func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictions
 }
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
-}
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()

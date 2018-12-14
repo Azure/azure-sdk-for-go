@@ -59,6 +59,7 @@ func (client CheckSkuAvailabilityClient) List(ctx context.Context, location stri
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Skus", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Kind", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cognitiveservices.CheckSkuAvailabilityClient", "List", err.Error())
 	}

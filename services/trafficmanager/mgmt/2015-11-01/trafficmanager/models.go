@@ -40,7 +40,7 @@ type DNSConfig struct {
 	RelativeName *string `json:"relativeName,omitempty"`
 	// Fqdn - Gets or sets the fully-qualified domain name (FQDN) of the Traffic Manager profile.  This is formed from the concatenation of the RelativeName with the DNS domain used by Azure Traffic Manager.
 	Fqdn *string `json:"fqdn,omitempty"`
-	// TTL - Gets or sets the DNS Ttime-To-Live (TTL), in seconds.  This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile.
+	// TTL - Gets or sets the DNS Time-To-Live (TTL), in seconds.  This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile.
 	TTL *int64 `json:"ttl,omitempty"`
 }
 

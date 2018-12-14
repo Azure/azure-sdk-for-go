@@ -7115,7 +7115,7 @@ type JobSchedule struct {
 	Type JobScheduleType `json:"type,omitempty"`
 	// Enabled - Whether or not the schedule is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
-	// Interval - Value of the schedule's recurring interval, if the scheduletype is recurring. ISO8601 duration format.
+	// Interval - Value of the schedule's recurring interval, if the schedule type is recurring. ISO8601 duration format.
 	Interval *string `json:"interval,omitempty"`
 }
 
@@ -9069,7 +9069,7 @@ type MetricDefinition struct {
 	ResourceURI *string `json:"resourceUri,omitempty"`
 	// Unit - The unit of the metric. Possible values include: 'UnitDefinitionTypeCount', 'UnitDefinitionTypeBytes', 'UnitDefinitionTypeSeconds', 'UnitDefinitionTypePercent', 'UnitDefinitionTypeCountPerSecond', 'UnitDefinitionTypeBytesPerSecond'
 	Unit UnitDefinitionType `json:"unit,omitempty"`
-	// MetricAvailabilities - The list of database metric availabities for the metric.
+	// MetricAvailabilities - The list of database metric availabilities for the metric.
 	MetricAvailabilities *[]MetricAvailability `json:"metricAvailabilities,omitempty"`
 }
 
@@ -9967,7 +9967,7 @@ func (rp *RestorePoint) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RestorePointListResult a list of long term retention bacukps.
+// RestorePointListResult a list of long term retention backups.
 type RestorePointListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Array of results.
@@ -12175,7 +12175,7 @@ type ServiceObjectiveProperties struct {
 // ServiceTierAdvisor represents a Service Tier Advisor.
 type ServiceTierAdvisor struct {
 	autorest.Response `json:"-"`
-	// ServiceTierAdvisorProperties - The properites representing the resource.
+	// ServiceTierAdvisorProperties - The properties representing the resource.
 	*ServiceTierAdvisorProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`

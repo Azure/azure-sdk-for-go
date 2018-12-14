@@ -2120,10 +2120,10 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// RecommendedElasticPool represents a recommented elastic pool.
+// RecommendedElasticPool represents a recommended elastic pool.
 type RecommendedElasticPool struct {
 	autorest.Response `json:"-"`
-	// RecommendedElasticPoolProperties - The properites representing the resource.
+	// RecommendedElasticPoolProperties - The properties representing the resource.
 	*RecommendedElasticPoolProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -2227,7 +2227,7 @@ type RecommendedElasticPoolMetric struct {
 	SizeGB *float64 `json:"sizeGB,omitempty"`
 }
 
-// RecommendedElasticPoolProperties represents the properties of a recommented elastic pool.
+// RecommendedElasticPoolProperties represents the properties of a recommended elastic pool.
 type RecommendedElasticPoolProperties struct {
 	// DatabaseEdition - The edition of the recommended elastic pool. The ElasticPoolEdition enumeration contains all the valid editions. Possible values include: 'ElasticPoolEditionBasic', 'ElasticPoolEditionStandard', 'ElasticPoolEditionPremium'
 	DatabaseEdition ElasticPoolEdition `json:"databaseEdition,omitempty"`
@@ -2548,7 +2548,7 @@ type Resource struct {
 // ServiceTierAdvisor represents a Service Tier Advisor.
 type ServiceTierAdvisor struct {
 	autorest.Response `json:"-"`
-	// ServiceTierAdvisorProperties - The properites representing the resource.
+	// ServiceTierAdvisorProperties - The properties representing the resource.
 	*ServiceTierAdvisorProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`

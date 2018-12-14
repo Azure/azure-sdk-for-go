@@ -209,7 +209,7 @@ func (client JobExecutionsClient) CreateResponder(resp *http.Response) (result J
 	return
 }
 
-// CreateOrUpdate creates or updatess a job execution.
+// CreateOrUpdate creates or updates a job execution.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

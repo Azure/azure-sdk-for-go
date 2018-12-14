@@ -14,4 +14,4 @@
 
 package latest
 
-//go:generate go run ../../tools/profileBuilder/main.go list --clear-output --input ./stableApis.json --name latest --output-location ./ --verbose
+//go:generate go run ../../tools/profileBuilder/main.go latest --clear-output --name latest --root ../../services --output-location ./ --verbose

@@ -22,7 +22,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2018-09-01/containerregistry"
 )
 
 const (
@@ -33,6 +33,28 @@ type Action = original.Action
 
 const (
 	Allow Action = original.Allow
+)
+
+type Architecture = original.Architecture
+
+const (
+	Amd64 Architecture = original.Amd64
+	Arm   Architecture = original.Arm
+	X86   Architecture = original.X86
+)
+
+type BaseImageDependencyType = original.BaseImageDependencyType
+
+const (
+	BuildTime BaseImageDependencyType = original.BuildTime
+	RunTime   BaseImageDependencyType = original.RunTime
+)
+
+type BaseImageTriggerType = original.BaseImageTriggerType
+
+const (
+	All     BaseImageTriggerType = original.All
+	Runtime BaseImageTriggerType = original.Runtime
 )
 
 type DefaultAction = original.DefaultAction
@@ -47,6 +69,13 @@ type ImportMode = original.ImportMode
 const (
 	Force   ImportMode = original.Force
 	NoForce ImportMode = original.NoForce
+)
+
+type OS = original.OS
+
+const (
+	Linux   OS = original.Linux
+	Windows OS = original.Windows
 )
 
 type PasswordName = original.PasswordName
@@ -81,6 +110,28 @@ const (
 	Count RegistryUsageUnit = original.Count
 )
 
+type RunStatus = original.RunStatus
+
+const (
+	RunStatusCanceled  RunStatus = original.RunStatusCanceled
+	RunStatusError     RunStatus = original.RunStatusError
+	RunStatusFailed    RunStatus = original.RunStatusFailed
+	RunStatusQueued    RunStatus = original.RunStatusQueued
+	RunStatusRunning   RunStatus = original.RunStatusRunning
+	RunStatusStarted   RunStatus = original.RunStatusStarted
+	RunStatusSucceeded RunStatus = original.RunStatusSucceeded
+	RunStatusTimeout   RunStatus = original.RunStatusTimeout
+)
+
+type RunType = original.RunType
+
+const (
+	AutoBuild  RunType = original.AutoBuild
+	AutoRun    RunType = original.AutoRun
+	QuickBuild RunType = original.QuickBuild
+	QuickRun   RunType = original.QuickRun
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -99,10 +150,81 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type SourceControlType = original.SourceControlType
+
+const (
+	Github                  SourceControlType = original.Github
+	VisualStudioTeamService SourceControlType = original.VisualStudioTeamService
+)
+
+type SourceTriggerEvent = original.SourceTriggerEvent
+
+const (
+	Commit      SourceTriggerEvent = original.Commit
+	Pullrequest SourceTriggerEvent = original.Pullrequest
+)
+
+type TaskStatus = original.TaskStatus
+
+const (
+	TaskStatusDisabled TaskStatus = original.TaskStatusDisabled
+	TaskStatusEnabled  TaskStatus = original.TaskStatusEnabled
+)
+
+type TokenType = original.TokenType
+
+const (
+	OAuth TokenType = original.OAuth
+	PAT   TokenType = original.PAT
+)
+
+type TriggerStatus = original.TriggerStatus
+
+const (
+	TriggerStatusDisabled TriggerStatus = original.TriggerStatusDisabled
+	TriggerStatusEnabled  TriggerStatus = original.TriggerStatusEnabled
+)
+
 type TrustPolicyType = original.TrustPolicyType
 
 const (
 	Notary TrustPolicyType = original.Notary
+)
+
+type Type = original.Type
+
+const (
+	TypeDockerBuildRequest    Type = original.TypeDockerBuildRequest
+	TypeEncodedTaskRunRequest Type = original.TypeEncodedTaskRunRequest
+	TypeFileTaskRunRequest    Type = original.TypeFileTaskRunRequest
+	TypeRunRequest            Type = original.TypeRunRequest
+	TypeTaskRunRequest        Type = original.TypeTaskRunRequest
+)
+
+type TypeBasicTaskStepProperties = original.TypeBasicTaskStepProperties
+
+const (
+	TypeDocker             TypeBasicTaskStepProperties = original.TypeDocker
+	TypeEncodedTask        TypeBasicTaskStepProperties = original.TypeEncodedTask
+	TypeFileTask           TypeBasicTaskStepProperties = original.TypeFileTask
+	TypeTaskStepProperties TypeBasicTaskStepProperties = original.TypeTaskStepProperties
+)
+
+type TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParameters
+
+const (
+	TypeBasicTaskStepUpdateParametersTypeDocker                   TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeDocker
+	TypeBasicTaskStepUpdateParametersTypeEncodedTask              TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeEncodedTask
+	TypeBasicTaskStepUpdateParametersTypeFileTask                 TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeFileTask
+	TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters
+)
+
+type Variant = original.Variant
+
+const (
+	V6 Variant = original.V6
+	V7 Variant = original.V7
+	V8 Variant = original.V8
 )
 
 type WebhookAction = original.WebhookAction
@@ -123,8 +245,24 @@ const (
 )
 
 type Actor = original.Actor
+type AgentProperties = original.AgentProperties
+type Argument = original.Argument
+type AuthInfo = original.AuthInfo
+type AuthInfoUpdateParameters = original.AuthInfoUpdateParameters
 type BaseClient = original.BaseClient
+type BaseImageDependency = original.BaseImageDependency
+type BaseImageTrigger = original.BaseImageTrigger
+type BaseImageTriggerUpdateParameters = original.BaseImageTriggerUpdateParameters
+type BasicRunRequest = original.BasicRunRequest
+type BasicTaskStepProperties = original.BasicTaskStepProperties
+type BasicTaskStepUpdateParameters = original.BasicTaskStepUpdateParameters
 type CallbackConfig = original.CallbackConfig
+type DockerBuildRequest = original.DockerBuildRequest
+type DockerBuildStep = original.DockerBuildStep
+type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
+type EncodedTaskRunRequest = original.EncodedTaskRunRequest
+type EncodedTaskStep = original.EncodedTaskStep
+type EncodedTaskStepUpdateParameters = original.EncodedTaskStepUpdateParameters
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo
@@ -133,7 +271,12 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
+type FileTaskRunRequest = original.FileTaskRunRequest
+type FileTaskStep = original.FileTaskStep
+type FileTaskStepUpdateParameters = original.FileTaskStepUpdateParameters
 type IPRule = original.IPRule
+type ImageDescriptor = original.ImageDescriptor
+type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
@@ -147,12 +290,16 @@ type OperationMetricSpecificationDefinition = original.OperationMetricSpecificat
 type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
+type PlatformProperties = original.PlatformProperties
+type PlatformUpdateParameters = original.PlatformUpdateParameters
+type ProxyResource = original.ProxyResource
 type QuarantinePolicy = original.QuarantinePolicy
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesClient = original.RegistriesClient
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
+type RegistriesScheduleRunFuture = original.RegistriesScheduleRunFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
 type RegistriesUpdatePoliciesFuture = original.RegistriesUpdatePoliciesFuture
 type Registry = original.Registry
@@ -181,11 +328,46 @@ type ReplicationsDeleteFuture = original.ReplicationsDeleteFuture
 type ReplicationsUpdateFuture = original.ReplicationsUpdateFuture
 type Request = original.Request
 type Resource = original.Resource
+type Run = original.Run
+type RunFilter = original.RunFilter
+type RunGetLogResult = original.RunGetLogResult
+type RunListResult = original.RunListResult
+type RunListResultIterator = original.RunListResultIterator
+type RunListResultPage = original.RunListResultPage
+type RunProperties = original.RunProperties
+type RunRequest = original.RunRequest
+type RunUpdateParameters = original.RunUpdateParameters
+type RunsCancelFuture = original.RunsCancelFuture
+type RunsClient = original.RunsClient
+type RunsUpdateFuture = original.RunsUpdateFuture
+type SetValue = original.SetValue
 type Sku = original.Sku
 type Source = original.Source
+type SourceProperties = original.SourceProperties
+type SourceTrigger = original.SourceTrigger
+type SourceTriggerDescriptor = original.SourceTriggerDescriptor
+type SourceTriggerUpdateParameters = original.SourceTriggerUpdateParameters
+type SourceUpdateParameters = original.SourceUpdateParameters
+type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
+type Task = original.Task
+type TaskListResult = original.TaskListResult
+type TaskListResultIterator = original.TaskListResultIterator
+type TaskListResultPage = original.TaskListResultPage
+type TaskProperties = original.TaskProperties
+type TaskPropertiesUpdateParameters = original.TaskPropertiesUpdateParameters
+type TaskRunRequest = original.TaskRunRequest
+type TaskStepProperties = original.TaskStepProperties
+type TaskStepUpdateParameters = original.TaskStepUpdateParameters
+type TaskUpdateParameters = original.TaskUpdateParameters
+type TasksClient = original.TasksClient
+type TasksCreateFuture = original.TasksCreateFuture
+type TasksDeleteFuture = original.TasksDeleteFuture
+type TasksUpdateFuture = original.TasksUpdateFuture
+type TriggerProperties = original.TriggerProperties
+type TriggerUpdateParameters = original.TriggerUpdateParameters
 type TrustPolicy = original.TrustPolicy
 type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
@@ -247,6 +429,30 @@ func NewReplicationsClient(subscriptionID string) ReplicationsClient {
 func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
 	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRunListResultIterator(page RunListResultPage) RunListResultIterator {
+	return original.NewRunListResultIterator(page)
+}
+func NewRunListResultPage(getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
+	return original.NewRunListResultPage(getNextPage)
+}
+func NewRunsClient(subscriptionID string) RunsClient {
+	return original.NewRunsClient(subscriptionID)
+}
+func NewRunsClientWithBaseURI(baseURI string, subscriptionID string) RunsClient {
+	return original.NewRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTaskListResultIterator(page TaskListResultPage) TaskListResultIterator {
+	return original.NewTaskListResultIterator(page)
+}
+func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
+	return original.NewTaskListResultPage(getNextPage)
+}
+func NewTasksClient(subscriptionID string) TasksClient {
+	return original.NewTasksClient(subscriptionID)
+}
+func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
+	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
 	return original.NewWebhookListResultIterator(page)
 }
@@ -265,11 +471,23 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
+func PossibleArchitectureValues() []Architecture {
+	return original.PossibleArchitectureValues()
+}
+func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
+	return original.PossibleBaseImageDependencyTypeValues()
+}
+func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
+	return original.PossibleBaseImageTriggerTypeValues()
+}
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
 func PossibleImportModeValues() []ImportMode {
 	return original.PossibleImportModeValues()
+}
+func PossibleOSValues() []OS {
+	return original.PossibleOSValues()
 }
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
@@ -283,14 +501,47 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 	return original.PossibleRegistryUsageUnitValues()
 }
+func PossibleRunStatusValues() []RunStatus {
+	return original.PossibleRunStatusValues()
+}
+func PossibleRunTypeValues() []RunType {
+	return original.PossibleRunTypeValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
+func PossibleSourceControlTypeValues() []SourceControlType {
+	return original.PossibleSourceControlTypeValues()
+}
+func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
+	return original.PossibleSourceTriggerEventValues()
+}
+func PossibleTaskStatusValues() []TaskStatus {
+	return original.PossibleTaskStatusValues()
+}
+func PossibleTokenTypeValues() []TokenType {
+	return original.PossibleTokenTypeValues()
+}
+func PossibleTriggerStatusValues() []TriggerStatus {
+	return original.PossibleTriggerStatusValues()
+}
 func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 	return original.PossibleTrustPolicyTypeValues()
+}
+func PossibleTypeBasicTaskStepPropertiesValues() []TypeBasicTaskStepProperties {
+	return original.PossibleTypeBasicTaskStepPropertiesValues()
+}
+func PossibleTypeBasicTaskStepUpdateParametersValues() []TypeBasicTaskStepUpdateParameters {
+	return original.PossibleTypeBasicTaskStepUpdateParametersValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleVariantValues() []Variant {
+	return original.PossibleVariantValues()
 }
 func PossibleWebhookActionValues() []WebhookAction {
 	return original.PossibleWebhookActionValues()

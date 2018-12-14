@@ -39,6 +39,55 @@ const (
 	WindowsAuthentication     AuthenticationType = original.WindowsAuthentication
 )
 
+type BackupFileStatus = original.BackupFileStatus
+
+const (
+	Arrived   BackupFileStatus = original.Arrived
+	Cancelled BackupFileStatus = original.Cancelled
+	Queued    BackupFileStatus = original.Queued
+	Restored  BackupFileStatus = original.Restored
+	Restoring BackupFileStatus = original.Restoring
+	Uploaded  BackupFileStatus = original.Uploaded
+	Uploading BackupFileStatus = original.Uploading
+)
+
+type BackupMode = original.BackupMode
+
+const (
+	CreateBackup   BackupMode = original.CreateBackup
+	ExistingBackup BackupMode = original.ExistingBackup
+)
+
+type BackupType = original.BackupType
+
+const (
+	BackupTypeDatabase             BackupType = original.BackupTypeDatabase
+	BackupTypeDifferentialDatabase BackupType = original.BackupTypeDifferentialDatabase
+	BackupTypeDifferentialFile     BackupType = original.BackupTypeDifferentialFile
+	BackupTypeDifferentialPartial  BackupType = original.BackupTypeDifferentialPartial
+	BackupTypeFile                 BackupType = original.BackupTypeFile
+	BackupTypePartial              BackupType = original.BackupTypePartial
+	BackupTypeTransactionLog       BackupType = original.BackupTypeTransactionLog
+)
+
+type CommandState = original.CommandState
+
+const (
+	Accepted  CommandState = original.Accepted
+	Failed    CommandState = original.Failed
+	Running   CommandState = original.Running
+	Succeeded CommandState = original.Succeeded
+	Unknown   CommandState = original.Unknown
+)
+
+type CommandType = original.CommandType
+
+const (
+	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = original.CommandTypeMigrateSQLServerAzureDbSQLMiComplete
+	CommandTypeMigrateSyncCompleteDatabase          CommandType = original.CommandTypeMigrateSyncCompleteDatabase
+	CommandTypeUnknown                              CommandType = original.CommandTypeUnknown
+)
+
 type DatabaseCompatLevel = original.DatabaseCompatLevel
 
 const (
@@ -72,18 +121,33 @@ const (
 	DatabaseMigrationStageRestore    DatabaseMigrationStage = original.DatabaseMigrationStageRestore
 )
 
+type DatabaseMigrationState = original.DatabaseMigrationState
+
+const (
+	CANCELLED             DatabaseMigrationState = original.CANCELLED
+	COMPLETED             DatabaseMigrationState = original.COMPLETED
+	CUTOVERSTART          DatabaseMigrationState = original.CUTOVERSTART
+	FAILED                DatabaseMigrationState = original.FAILED
+	FULLBACKUPUPLOADSTART DatabaseMigrationState = original.FULLBACKUPUPLOADSTART
+	INITIAL               DatabaseMigrationState = original.INITIAL
+	LOGSHIPPINGSTART      DatabaseMigrationState = original.LOGSHIPPINGSTART
+	POSTCUTOVERCOMPLETE   DatabaseMigrationState = original.POSTCUTOVERCOMPLETE
+	UNDEFINED             DatabaseMigrationState = original.UNDEFINED
+	UPLOADLOGFILESSTART   DatabaseMigrationState = original.UPLOADLOGFILESSTART
+)
+
 type DatabaseState = original.DatabaseState
 
 const (
-	Copying          DatabaseState = original.Copying
-	Emergency        DatabaseState = original.Emergency
-	Offline          DatabaseState = original.Offline
-	OfflineSecondary DatabaseState = original.OfflineSecondary
-	Online           DatabaseState = original.Online
-	Recovering       DatabaseState = original.Recovering
-	RecoveryPending  DatabaseState = original.RecoveryPending
-	Restoring        DatabaseState = original.Restoring
-	Suspect          DatabaseState = original.Suspect
+	DatabaseStateCopying          DatabaseState = original.DatabaseStateCopying
+	DatabaseStateEmergency        DatabaseState = original.DatabaseStateEmergency
+	DatabaseStateOffline          DatabaseState = original.DatabaseStateOffline
+	DatabaseStateOfflineSecondary DatabaseState = original.DatabaseStateOfflineSecondary
+	DatabaseStateOnline           DatabaseState = original.DatabaseStateOnline
+	DatabaseStateRecovering       DatabaseState = original.DatabaseStateRecovering
+	DatabaseStateRecoveryPending  DatabaseState = original.DatabaseStateRecoveryPending
+	DatabaseStateRestoring        DatabaseState = original.DatabaseStateRestoring
+	DatabaseStateSuspect          DatabaseState = original.DatabaseStateSuspect
 )
 
 type ErrorType = original.ErrorType
@@ -147,6 +211,13 @@ const (
 	MigrationStatusStopped                 MigrationStatus = original.MigrationStatusStopped
 )
 
+type MySQLTargetPlatformType = original.MySQLTargetPlatformType
+
+const (
+	AzureDbForMySQL MySQLTargetPlatformType = original.AzureDbForMySQL
+	SQLServer       MySQLTargetPlatformType = original.SQLServer
+)
+
 type NameCheckFailureReason = original.NameCheckFailureReason
 
 const (
@@ -167,15 +238,15 @@ const (
 type ProjectProvisioningState = original.ProjectProvisioningState
 
 const (
-	Deleting  ProjectProvisioningState = original.Deleting
-	Succeeded ProjectProvisioningState = original.Succeeded
+	ProjectProvisioningStateDeleting  ProjectProvisioningState = original.ProjectProvisioningStateDeleting
+	ProjectProvisioningStateSucceeded ProjectProvisioningState = original.ProjectProvisioningStateSucceeded
 )
 
 type ProjectSourcePlatform = original.ProjectSourcePlatform
 
 const (
-	SQL     ProjectSourcePlatform = original.SQL
-	Unknown ProjectSourcePlatform = original.Unknown
+	ProjectSourcePlatformSQL     ProjectSourcePlatform = original.ProjectSourcePlatformSQL
+	ProjectSourcePlatformUnknown ProjectSourcePlatform = original.ProjectSourcePlatformUnknown
 )
 
 type ProjectTargetPlatform = original.ProjectTargetPlatform
@@ -206,16 +277,26 @@ const (
 	Location ResourceSkuRestrictionsType = original.Location
 )
 
+type ResultCode = original.ResultCode
+
+const (
+	Completed                  ResultCode = original.Completed
+	FatalError                 ResultCode = original.FatalError
+	Initial                    ResultCode = original.Initial
+	ObjectNotExistsInSource    ResultCode = original.ObjectNotExistsInSource
+	ObjectNotExistsInTarget    ResultCode = original.ObjectNotExistsInTarget
+	TargetObjectIsInaccessible ResultCode = original.TargetObjectIsInaccessible
+)
+
 type ResultType = original.ResultType
 
 const (
-	ResultTypeDatabaseLevelOutput                    ResultType = original.ResultTypeDatabaseLevelOutput
-	ResultTypeErrorOutput                            ResultType = original.ResultTypeErrorOutput
-	ResultTypeMigrateSQLServerSQLDbTaskOutput        ResultType = original.ResultTypeMigrateSQLServerSQLDbTaskOutput
-	ResultTypeMigrationDatabaseLevelValidationOutput ResultType = original.ResultTypeMigrationDatabaseLevelValidationOutput
-	ResultTypeMigrationLevelOutput                   ResultType = original.ResultTypeMigrationLevelOutput
-	ResultTypeMigrationValidationOutput              ResultType = original.ResultTypeMigrationValidationOutput
-	ResultTypeTableLevelOutput                       ResultType = original.ResultTypeTableLevelOutput
+	ResultTypeDatabaseLevelErrorOutput                            ResultType = original.ResultTypeDatabaseLevelErrorOutput
+	ResultTypeDatabaseLevelOutput                                 ResultType = original.ResultTypeDatabaseLevelOutput
+	ResultTypeErrorOutput                                         ResultType = original.ResultTypeErrorOutput
+	ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput ResultType = original.ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+	ResultTypeMigrationLevelOutput                                ResultType = original.ResultTypeMigrationLevelOutput
+	ResultTypeTableLevelOutput                                    ResultType = original.ResultTypeTableLevelOutput
 )
 
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutput
@@ -228,11 +309,88 @@ const (
 	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 )
 
+type ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
+
+const (
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput                  ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput                       ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput                               ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput                      ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput
+	ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput                          ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput
+)
+
+type ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput
+
+const (
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput            ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput                 ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput                         ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput                ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput                    ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput
+)
+
+type ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutput
+
+const (
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput                    ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput                            ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput        ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput                   ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput              ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput
+	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput                       ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput
+)
+
+type ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput
+
+const (
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput                 ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput                         ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput                ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput
+)
+
+type ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutput
+
+const (
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput             ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput             ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput                     ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput                ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput            ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput
+)
+
+type SQLSourcePlatform = original.SQLSourcePlatform
+
+const (
+	SQLOnPrem SQLSourcePlatform = original.SQLOnPrem
+)
+
+type SchemaMigrationStage = original.SchemaMigrationStage
+
+const (
+	SchemaMigrationStageCollectingObjects     SchemaMigrationStage = original.SchemaMigrationStageCollectingObjects
+	SchemaMigrationStageCompleted             SchemaMigrationStage = original.SchemaMigrationStageCompleted
+	SchemaMigrationStageCompletedWithWarnings SchemaMigrationStage = original.SchemaMigrationStageCompletedWithWarnings
+	SchemaMigrationStageDeployingSchema       SchemaMigrationStage = original.SchemaMigrationStageDeployingSchema
+	SchemaMigrationStageDownloadingScript     SchemaMigrationStage = original.SchemaMigrationStageDownloadingScript
+	SchemaMigrationStageFailed                SchemaMigrationStage = original.SchemaMigrationStageFailed
+	SchemaMigrationStageGeneratingScript      SchemaMigrationStage = original.SchemaMigrationStageGeneratingScript
+	SchemaMigrationStageNotStarted            SchemaMigrationStage = original.SchemaMigrationStageNotStarted
+	SchemaMigrationStageUploadingScript       SchemaMigrationStage = original.SchemaMigrationStageUploadingScript
+	SchemaMigrationStageValidatingInputs      SchemaMigrationStage = original.SchemaMigrationStageValidatingInputs
+)
+
 type ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroup
 
 const (
-	Default                         ServerLevelPermissionsGroup = original.Default
-	MigrationFromSQLServerToAzureDB ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureDB
+	Default                             ServerLevelPermissionsGroup = original.Default
+	MigrationFromMySQLToAzureDBForMySQL ServerLevelPermissionsGroup = original.MigrationFromMySQLToAzureDBForMySQL
+	MigrationFromSQLServerToAzureDB     ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureDB
+	MigrationFromSQLServerToAzureMI     ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureMI
 )
 
 type ServiceProvisioningState = original.ServiceProvisioningState
@@ -266,6 +424,33 @@ const (
 	SeverityWarning Severity = original.SeverityWarning
 )
 
+type SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingState
+
+const (
+	SyncDatabaseMigrationReportingStateCANCELLED       SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLED
+	SyncDatabaseMigrationReportingStateCANCELLING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLING
+	SyncDatabaseMigrationReportingStateCOMPLETE        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETE
+	SyncDatabaseMigrationReportingStateCOMPLETING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETING
+	SyncDatabaseMigrationReportingStateCONFIGURING     SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCONFIGURING
+	SyncDatabaseMigrationReportingStateFAILED          SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateFAILED
+	SyncDatabaseMigrationReportingStateINITIALIAZING   SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateINITIALIAZING
+	SyncDatabaseMigrationReportingStateREADYTOCOMPLETE SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateREADYTOCOMPLETE
+	SyncDatabaseMigrationReportingStateRUNNING         SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateRUNNING
+	SyncDatabaseMigrationReportingStateSTARTING        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateSTARTING
+	SyncDatabaseMigrationReportingStateUNDEFINED       SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateUNDEFINED
+)
+
+type SyncTableMigrationState = original.SyncTableMigrationState
+
+const (
+	SyncTableMigrationStateBEFORELOAD SyncTableMigrationState = original.SyncTableMigrationStateBEFORELOAD
+	SyncTableMigrationStateCANCELED   SyncTableMigrationState = original.SyncTableMigrationStateCANCELED
+	SyncTableMigrationStateCOMPLETED  SyncTableMigrationState = original.SyncTableMigrationStateCOMPLETED
+	SyncTableMigrationStateERROR      SyncTableMigrationState = original.SyncTableMigrationStateERROR
+	SyncTableMigrationStateFAILED     SyncTableMigrationState = original.SyncTableMigrationStateFAILED
+	SyncTableMigrationStateFULLLOAD   SyncTableMigrationState = original.SyncTableMigrationStateFULLLOAD
+)
+
 type TaskState = original.TaskState
 
 const (
@@ -282,18 +467,39 @@ const (
 type TaskType = original.TaskType
 
 const (
-	TaskTypeConnectToSourceSQLServer TaskType = original.TaskTypeConnectToSourceSQLServer
-	TaskTypeConnectToTargetSQLDb     TaskType = original.TaskTypeConnectToTargetSQLDb
-	TaskTypeGetUserTablesSQL         TaskType = original.TaskTypeGetUserTablesSQL
-	TaskTypeMigrateSQLServerSQLDb    TaskType = original.TaskTypeMigrateSQLServerSQLDb
-	TaskTypeUnknown                  TaskType = original.TaskTypeUnknown
+	TaskTypeConnectToSourceMySQL                               TaskType = original.TaskTypeConnectToSourceMySQL
+	TaskTypeConnectToSourcePostgreSQLSync                      TaskType = original.TaskTypeConnectToSourcePostgreSQLSync
+	TaskTypeConnectToSourceSQLServer                           TaskType = original.TaskTypeConnectToSourceSQLServer
+	TaskTypeConnectToSourceSQLServerSync                       TaskType = original.TaskTypeConnectToSourceSQLServerSync
+	TaskTypeConnectToTargetAzureDbForMySQL                     TaskType = original.TaskTypeConnectToTargetAzureDbForMySQL
+	TaskTypeConnectToTargetAzureDbForPostgreSQLSync            TaskType = original.TaskTypeConnectToTargetAzureDbForPostgreSQLSync
+	TaskTypeConnectToTargetAzureSQLDbMI                        TaskType = original.TaskTypeConnectToTargetAzureSQLDbMI
+	TaskTypeConnectToTargetAzureSQLDbMISyncLRS                 TaskType = original.TaskTypeConnectToTargetAzureSQLDbMISyncLRS
+	TaskTypeConnectToTargetSQLDb                               TaskType = original.TaskTypeConnectToTargetSQLDb
+	TaskTypeConnectToTargetSQLDbSync                           TaskType = original.TaskTypeConnectToTargetSQLDbSync
+	TaskTypeGetTDECertificatesSQL                              TaskType = original.TaskTypeGetTDECertificatesSQL
+	TaskTypeGetUserTablesAzureSQLDbSync                        TaskType = original.TaskTypeGetUserTablesAzureSQLDbSync
+	TaskTypeGetUserTablesSQL                                   TaskType = original.TaskTypeGetUserTablesSQL
+	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
+	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync          TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
+	TaskTypeMigrateSQLServerAzureSQLDbMI                       TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI
+	TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS
+	TaskTypeMigrateSQLServerAzureSQLDbSync                     TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbSync
+	TaskTypeMigrateSQLServerSQLDb                              TaskType = original.TaskTypeMigrateSQLServerSQLDb
+	TaskTypeUnknown                                            TaskType = original.TaskTypeUnknown
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI        TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS
+	TaskTypeValidateMigrationInputSQLServerSQLDbSync           TaskType = original.TaskTypeValidateMigrationInputSQLServerSQLDbSync
 )
 
 type Type = original.Type
 
 const (
-	TypeSQLConnectionInfo Type = original.TypeSQLConnectionInfo
-	TypeUnknown           Type = original.TypeUnknown
+	TypeMiSQLConnectionInfo      Type = original.TypeMiSQLConnectionInfo
+	TypeMySQLConnectionInfo      Type = original.TypeMySQLConnectionInfo
+	TypePostgreSQLConnectionInfo Type = original.TypePostgreSQLConnectionInfo
+	TypeSQLConnectionInfo        Type = original.TypeSQLConnectionInfo
+	TypeUnknown                  Type = original.TypeUnknown
 )
 
 type UpdateActionType = original.UpdateActionType
@@ -321,12 +527,29 @@ type APIError = original.APIError
 type AvailableServiceSku = original.AvailableServiceSku
 type AvailableServiceSkuCapacity = original.AvailableServiceSkuCapacity
 type AvailableServiceSkuSku = original.AvailableServiceSkuSku
+type AzureActiveDirectoryApp = original.AzureActiveDirectoryApp
+type BackupFileInfo = original.BackupFileInfo
+type BackupSetInfo = original.BackupSetInfo
 type BaseClient = original.BaseClient
+type BasicCommandProperties = original.BasicCommandProperties
 type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
 type BasicConnectionInfo = original.BasicConnectionInfo
+type BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
+type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+type BasicMigrateSQLServerSQLDbSyncTaskOutput = original.BasicMigrateSQLServerSQLDbSyncTaskOutput
 type BasicMigrateSQLServerSQLDbTaskOutput = original.BasicMigrateSQLServerSQLDbTaskOutput
+type BasicMigrateSQLServerSQLMISyncTaskOutput = original.BasicMigrateSQLServerSQLMISyncTaskOutput
+type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
 type BasicProjectTaskProperties = original.BasicProjectTaskProperties
 type BlobShare = original.BlobShare
+type CommandProperties = original.CommandProperties
+type ConnectToSourceMySQLTaskInput = original.ConnectToSourceMySQLTaskInput
+type ConnectToSourceMySQLTaskProperties = original.ConnectToSourceMySQLTaskProperties
+type ConnectToSourceNonSQLTaskOutput = original.ConnectToSourceNonSQLTaskOutput
+type ConnectToSourcePostgreSQLSyncTaskInput = original.ConnectToSourcePostgreSQLSyncTaskInput
+type ConnectToSourcePostgreSQLSyncTaskOutput = original.ConnectToSourcePostgreSQLSyncTaskOutput
+type ConnectToSourcePostgreSQLSyncTaskProperties = original.ConnectToSourcePostgreSQLSyncTaskProperties
+type ConnectToSourceSQLServerSyncTaskProperties = original.ConnectToSourceSQLServerSyncTaskProperties
 type ConnectToSourceSQLServerTaskInput = original.ConnectToSourceSQLServerTaskInput
 type ConnectToSourceSQLServerTaskOutput = original.ConnectToSourceSQLServerTaskOutput
 type ConnectToSourceSQLServerTaskOutputAgentJobLevel = original.ConnectToSourceSQLServerTaskOutputAgentJobLevel
@@ -334,13 +557,28 @@ type ConnectToSourceSQLServerTaskOutputDatabaseLevel = original.ConnectToSourceS
 type ConnectToSourceSQLServerTaskOutputLoginLevel = original.ConnectToSourceSQLServerTaskOutputLoginLevel
 type ConnectToSourceSQLServerTaskOutputTaskLevel = original.ConnectToSourceSQLServerTaskOutputTaskLevel
 type ConnectToSourceSQLServerTaskProperties = original.ConnectToSourceSQLServerTaskProperties
+type ConnectToTargetAzureDbForMySQLTaskInput = original.ConnectToTargetAzureDbForMySQLTaskInput
+type ConnectToTargetAzureDbForMySQLTaskOutput = original.ConnectToTargetAzureDbForMySQLTaskOutput
+type ConnectToTargetAzureDbForMySQLTaskProperties = original.ConnectToTargetAzureDbForMySQLTaskProperties
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskInput = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskInput
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties
 type ConnectToTargetSQLDbTaskInput = original.ConnectToTargetSQLDbTaskInput
 type ConnectToTargetSQLDbTaskOutput = original.ConnectToTargetSQLDbTaskOutput
 type ConnectToTargetSQLDbTaskProperties = original.ConnectToTargetSQLDbTaskProperties
+type ConnectToTargetSQLMISyncTaskInput = original.ConnectToTargetSQLMISyncTaskInput
+type ConnectToTargetSQLMISyncTaskOutput = original.ConnectToTargetSQLMISyncTaskOutput
+type ConnectToTargetSQLMISyncTaskProperties = original.ConnectToTargetSQLMISyncTaskProperties
+type ConnectToTargetSQLMITaskInput = original.ConnectToTargetSQLMITaskInput
+type ConnectToTargetSQLMITaskOutput = original.ConnectToTargetSQLMITaskOutput
+type ConnectToTargetSQLMITaskProperties = original.ConnectToTargetSQLMITaskProperties
+type ConnectToTargetSQLSQLDbSyncTaskInput = original.ConnectToTargetSQLSQLDbSyncTaskInput
+type ConnectToTargetSQLSQLDbSyncTaskProperties = original.ConnectToTargetSQLSQLDbSyncTaskProperties
 type ConnectionInfo = original.ConnectionInfo
 type DataIntegrityValidationResult = original.DataIntegrityValidationResult
 type DataItemMigrationSummaryResult = original.DataItemMigrationSummaryResult
 type Database = original.Database
+type DatabaseBackupInfo = original.DatabaseBackupInfo
 type DatabaseFileInfo = original.DatabaseFileInfo
 type DatabaseFileInput = original.DatabaseFileInput
 type DatabaseInfo = original.DatabaseInfo
@@ -350,10 +588,48 @@ type DatabaseTable = original.DatabaseTable
 type Error = original.Error
 type ExecutionStatistics = original.ExecutionStatistics
 type FileShare = original.FileShare
+type GetProjectDetailsNonSQLTaskInput = original.GetProjectDetailsNonSQLTaskInput
+type GetTdeCertificatesSQLTaskInput = original.GetTdeCertificatesSQLTaskInput
+type GetTdeCertificatesSQLTaskOutput = original.GetTdeCertificatesSQLTaskOutput
+type GetTdeCertificatesSQLTaskProperties = original.GetTdeCertificatesSQLTaskProperties
+type GetUserTablesSQLSyncTaskInput = original.GetUserTablesSQLSyncTaskInput
+type GetUserTablesSQLSyncTaskOutput = original.GetUserTablesSQLSyncTaskOutput
+type GetUserTablesSQLSyncTaskProperties = original.GetUserTablesSQLSyncTaskProperties
 type GetUserTablesSQLTaskInput = original.GetUserTablesSQLTaskInput
 type GetUserTablesSQLTaskOutput = original.GetUserTablesSQLTaskOutput
 type GetUserTablesSQLTaskProperties = original.GetUserTablesSQLTaskProperties
+type MiSQLConnectionInfo = original.MiSQLConnectionInfo
+type MigrateMISyncCompleteCommandInput = original.MigrateMISyncCompleteCommandInput
+type MigrateMISyncCompleteCommandOutput = original.MigrateMISyncCompleteCommandOutput
+type MigrateMISyncCompleteCommandProperties = original.MigrateMISyncCompleteCommandProperties
+type MigrateMySQLAzureDbForMySQLSyncDatabaseInput = original.MigrateMySQLAzureDbForMySQLSyncDatabaseInput
+type MigrateMySQLAzureDbForMySQLSyncTaskInput = original.MigrateMySQLAzureDbForMySQLSyncTaskInput
+type MigrateMySQLAzureDbForMySQLSyncTaskOutput = original.MigrateMySQLAzureDbForMySQLSyncTaskOutput
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputError = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputError
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel
+type MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel
+type MigrateMySQLAzureDbForMySQLSyncTaskProperties = original.MigrateMySQLAzureDbForMySQLSyncTaskProperties
+type MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput = original.MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel
+type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties
 type MigrateSQLServerSQLDbDatabaseInput = original.MigrateSQLServerSQLDbDatabaseInput
+type MigrateSQLServerSQLDbSyncDatabaseInput = original.MigrateSQLServerSQLDbSyncDatabaseInput
+type MigrateSQLServerSQLDbSyncTaskInput = original.MigrateSQLServerSQLDbSyncTaskInput
+type MigrateSQLServerSQLDbSyncTaskOutput = original.MigrateSQLServerSQLDbSyncTaskOutput
+type MigrateSQLServerSQLDbSyncTaskOutputDatabaseError = original.MigrateSQLServerSQLDbSyncTaskOutputDatabaseError
+type MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel = original.MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel
+type MigrateSQLServerSQLDbSyncTaskOutputError = original.MigrateSQLServerSQLDbSyncTaskOutputError
+type MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel = original.MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel
+type MigrateSQLServerSQLDbSyncTaskOutputTableLevel = original.MigrateSQLServerSQLDbSyncTaskOutputTableLevel
+type MigrateSQLServerSQLDbSyncTaskProperties = original.MigrateSQLServerSQLDbSyncTaskProperties
 type MigrateSQLServerSQLDbTaskInput = original.MigrateSQLServerSQLDbTaskInput
 type MigrateSQLServerSQLDbTaskOutput = original.MigrateSQLServerSQLDbTaskOutput
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel = original.MigrateSQLServerSQLDbTaskOutputDatabaseLevel
@@ -363,16 +639,41 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSQLServerSQ
 type MigrateSQLServerSQLDbTaskOutputTableLevel = original.MigrateSQLServerSQLDbTaskOutputTableLevel
 type MigrateSQLServerSQLDbTaskOutputValidationResult = original.MigrateSQLServerSQLDbTaskOutputValidationResult
 type MigrateSQLServerSQLDbTaskProperties = original.MigrateSQLServerSQLDbTaskProperties
+type MigrateSQLServerSQLMIDatabaseInput = original.MigrateSQLServerSQLMIDatabaseInput
+type MigrateSQLServerSQLMISyncTaskInput = original.MigrateSQLServerSQLMISyncTaskInput
+type MigrateSQLServerSQLMISyncTaskOutput = original.MigrateSQLServerSQLMISyncTaskOutput
+type MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel = original.MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel
+type MigrateSQLServerSQLMISyncTaskOutputError = original.MigrateSQLServerSQLMISyncTaskOutputError
+type MigrateSQLServerSQLMISyncTaskOutputMigrationLevel = original.MigrateSQLServerSQLMISyncTaskOutputMigrationLevel
+type MigrateSQLServerSQLMISyncTaskProperties = original.MigrateSQLServerSQLMISyncTaskProperties
+type MigrateSQLServerSQLMITaskInput = original.MigrateSQLServerSQLMITaskInput
+type MigrateSQLServerSQLMITaskOutput = original.MigrateSQLServerSQLMITaskOutput
+type MigrateSQLServerSQLMITaskOutputAgentJobLevel = original.MigrateSQLServerSQLMITaskOutputAgentJobLevel
+type MigrateSQLServerSQLMITaskOutputDatabaseLevel = original.MigrateSQLServerSQLMITaskOutputDatabaseLevel
+type MigrateSQLServerSQLMITaskOutputError = original.MigrateSQLServerSQLMITaskOutputError
+type MigrateSQLServerSQLMITaskOutputLoginLevel = original.MigrateSQLServerSQLMITaskOutputLoginLevel
+type MigrateSQLServerSQLMITaskOutputMigrationLevel = original.MigrateSQLServerSQLMITaskOutputMigrationLevel
+type MigrateSQLServerSQLMITaskProperties = original.MigrateSQLServerSQLMITaskProperties
 type MigrateSQLServerSQLServerDatabaseInput = original.MigrateSQLServerSQLServerDatabaseInput
+type MigrateSyncCompleteCommandInput = original.MigrateSyncCompleteCommandInput
+type MigrateSyncCompleteCommandOutput = original.MigrateSyncCompleteCommandOutput
+type MigrateSyncCompleteCommandProperties = original.MigrateSyncCompleteCommandProperties
 type MigrationEligibilityInfo = original.MigrationEligibilityInfo
 type MigrationReportResult = original.MigrationReportResult
 type MigrationTableMetadata = original.MigrationTableMetadata
 type MigrationValidationDatabaseSummaryResult = original.MigrationValidationDatabaseSummaryResult
 type MigrationValidationOptions = original.MigrationValidationOptions
+type MySQLConnectionInfo = original.MySQLConnectionInfo
 type NameAvailabilityRequest = original.NameAvailabilityRequest
 type NameAvailabilityResponse = original.NameAvailabilityResponse
+type NonSQLDataMigrationTable = original.NonSQLDataMigrationTable
+type NonSQLDataMigrationTableResult = original.NonSQLDataMigrationTableResult
+type NonSQLMigrationTaskInput = original.NonSQLMigrationTaskInput
+type NonSQLMigrationTaskOutput = original.NonSQLMigrationTaskOutput
 type ODataError = original.ODataError
 type OperationsClient = original.OperationsClient
+type OrphanedUserInfo = original.OrphanedUserInfo
+type PostgreSQLConnectionInfo = original.PostgreSQLConnectionInfo
 type Project = original.Project
 type ProjectList = original.ProjectList
 type ProjectListIterator = original.ProjectListIterator
@@ -402,8 +703,11 @@ type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
 type SQLConnectionInfo = original.SQLConnectionInfo
 type SQLMigrationTaskInput = original.SQLMigrationTaskInput
+type SQLServerSQLMISyncTaskInput = original.SQLServerSQLMISyncTaskInput
 type SchemaComparisonValidationResult = original.SchemaComparisonValidationResult
 type SchemaComparisonValidationResultType = original.SchemaComparisonValidationResultType
+type SelectedCertificateInput = original.SelectedCertificateInput
+type ServerProperties = original.ServerProperties
 type Service = original.Service
 type ServiceList = original.ServiceList
 type ServiceListIterator = original.ServiceListIterator
@@ -426,12 +730,22 @@ type ServicesStartFuture = original.ServicesStartFuture
 type ServicesStopFuture = original.ServicesStopFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
+type SyncMigrationDatabaseErrorEvent = original.SyncMigrationDatabaseErrorEvent
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
 type TasksClient = original.TasksClient
 type TrackedResource = original.TrackedResource
 type UsagesClient = original.UsagesClient
+type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties = original.ValidateMigrationInputSQLServerSQLDbSyncTaskProperties
+type ValidateMigrationInputSQLServerSQLMISyncTaskInput = original.ValidateMigrationInputSQLServerSQLMISyncTaskInput
+type ValidateMigrationInputSQLServerSQLMISyncTaskOutput = original.ValidateMigrationInputSQLServerSQLMISyncTaskOutput
+type ValidateMigrationInputSQLServerSQLMISyncTaskProperties = original.ValidateMigrationInputSQLServerSQLMISyncTaskProperties
+type ValidateMigrationInputSQLServerSQLMITaskInput = original.ValidateMigrationInputSQLServerSQLMITaskInput
+type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigrationInputSQLServerSQLMITaskOutput
+type ValidateMigrationInputSQLServerSQLMITaskProperties = original.ValidateMigrationInputSQLServerSQLMITaskProperties
+type ValidateSyncMigrationInputSQLServerTaskInput = original.ValidateSyncMigrationInputSQLServerTaskInput
+type ValidateSyncMigrationInputSQLServerTaskOutput = original.ValidateSyncMigrationInputSQLServerTaskOutput
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
 
@@ -522,6 +836,21 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
 }
+func PossibleBackupFileStatusValues() []BackupFileStatus {
+	return original.PossibleBackupFileStatusValues()
+}
+func PossibleBackupModeValues() []BackupMode {
+	return original.PossibleBackupModeValues()
+}
+func PossibleBackupTypeValues() []BackupType {
+	return original.PossibleBackupTypeValues()
+}
+func PossibleCommandStateValues() []CommandState {
+	return original.PossibleCommandStateValues()
+}
+func PossibleCommandTypeValues() []CommandType {
+	return original.PossibleCommandTypeValues()
+}
 func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
 	return original.PossibleDatabaseCompatLevelValues()
 }
@@ -530,6 +859,9 @@ func PossibleDatabaseFileTypeValues() []DatabaseFileType {
 }
 func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
 	return original.PossibleDatabaseMigrationStageValues()
+}
+func PossibleDatabaseMigrationStateValues() []DatabaseMigrationState {
+	return original.PossibleDatabaseMigrationStateValues()
 }
 func PossibleDatabaseStateValues() []DatabaseState {
 	return original.PossibleDatabaseStateValues()
@@ -548,6 +880,9 @@ func PossibleMigrationStateValues() []MigrationState {
 }
 func PossibleMigrationStatusValues() []MigrationStatus {
 	return original.PossibleMigrationStatusValues()
+}
+func PossibleMySQLTargetPlatformTypeValues() []MySQLTargetPlatformType {
+	return original.PossibleMySQLTargetPlatformTypeValues()
 }
 func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
 	return original.PossibleNameCheckFailureReasonValues()
@@ -573,11 +908,35 @@ func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictions
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
+func PossibleResultCodeValues() []ResultCode {
+	return original.PossibleResultCodeValues()
+}
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
 	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
 }
+func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues() []ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput {
+	return original.PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput {
+	return original.PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbTaskOutput {
+	return original.PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput {
+	return original.PossibleResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMITaskOutput {
+	return original.PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues()
+}
 func PossibleResultTypeValues() []ResultType {
 	return original.PossibleResultTypeValues()
+}
+func PossibleSQLSourcePlatformValues() []SQLSourcePlatform {
+	return original.PossibleSQLSourcePlatformValues()
+}
+func PossibleSchemaMigrationStageValues() []SchemaMigrationStage {
+	return original.PossibleSchemaMigrationStageValues()
 }
 func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
 	return original.PossibleServerLevelPermissionsGroupValues()
@@ -590,6 +949,12 @@ func PossibleServiceScalabilityValues() []ServiceScalability {
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
+}
+func PossibleSyncDatabaseMigrationReportingStateValues() []SyncDatabaseMigrationReportingState {
+	return original.PossibleSyncDatabaseMigrationReportingStateValues()
+}
+func PossibleSyncTableMigrationStateValues() []SyncTableMigrationState {
+	return original.PossibleSyncTableMigrationStateValues()
 }
 func PossibleTaskStateValues() []TaskState {
 	return original.PossibleTaskStateValues()

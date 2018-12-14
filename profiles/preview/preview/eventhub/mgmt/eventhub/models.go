@@ -29,11 +29,24 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
+)
+
 type IPAction = original.IPAction
 
 const (
 	Accept IPAction = original.Accept
 	Reject IPAction = original.Reject
+)
+
+type NetworkRuleIPAction = original.NetworkRuleIPAction
+
+const (
+	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
 )
 
 type SkuName = original.SkuName
@@ -72,9 +85,13 @@ type IPFilterRuleListResult = original.IPFilterRuleListResult
 type IPFilterRuleListResultIterator = original.IPFilterRuleListResultIterator
 type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
 type IPFilterRuleProperties = original.IPFilterRuleProperties
+type NWRuleSetIPRules = original.NWRuleSetIPRules
+type NWRuleSetVirtualNetworkRules = original.NWRuleSetVirtualNetworkRules
 type NamespacesClient = original.NamespacesClient
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
+type NetworkRuleSet = original.NetworkRuleSet
+type NetworkRuleSetProperties = original.NetworkRuleSetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -83,6 +100,7 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type Sku = original.Sku
+type Subnet = original.Subnet
 type TrackedResource = original.TrackedResource
 type VirtualNetworkRule = original.VirtualNetworkRule
 type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
@@ -150,8 +168,14 @@ func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, Virtu
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
+}
 func PossibleIPActionValues() []IPAction {
 	return original.PossibleIPActionValues()
+}
+func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
+	return original.PossibleNetworkRuleIPActionValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()

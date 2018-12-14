@@ -608,13 +608,13 @@ type AgentPoolProfile struct {
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the agent pool.
+	// Fqdn - FQDN for the agent pool.
 	Fqdn *string `json:"fqdn,omitempty"`
 	// Ports - Ports number array used to expose on this agent pool. The default opened ports are different based on your choice of orchestrator.
 	Ports *[]int32 `json:"ports,omitempty"`
 	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
 	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
-	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
+	// VnetSubnetID - VNet SubnetID specifies the VNet's subnet identifier.
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
@@ -1252,7 +1252,7 @@ type ManagedClusterAgentPoolProfile struct {
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
+	// VnetSubnetID - VNet SubnetID specifies the VNet's subnet identifier.
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 	// MaxPods - Maximum number of pods that can run on a node.
 	MaxPods *int32 `json:"maxPods,omitempty"`
@@ -1264,7 +1264,7 @@ type ManagedClusterAgentPoolProfile struct {
 	MinCount *int32 `json:"minCount,omitempty"`
 	// EnableAutoScaling - Whether to enable auto-scaler
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
-	// Type - AgentPoolType represents types of agentpool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
+	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
 	Type AgentPoolType `json:"type,omitempty"`
 }
 
@@ -1434,7 +1434,7 @@ type ManagedClusterProperties struct {
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// DNSPrefix - DNS prefix specified when creating the managed cluster.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the master pool.
+	// Fqdn - FQDN for the master pool.
 	Fqdn *string `json:"fqdn,omitempty"`
 	// AgentPoolProfiles - Properties of the agent pool.
 	AgentPoolProfiles *[]ManagedClusterAgentPoolProfile `json:"agentPoolProfiles,omitempty"`
@@ -1686,13 +1686,13 @@ type MasterProfile struct {
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
+	// VnetSubnetID - VNet SubnetID specifies the VNet's subnet identifier.
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 	// FirstConsecutiveStaticIP - FirstConsecutiveStaticIP used to specify the first static ip of masters.
 	FirstConsecutiveStaticIP *string `json:"firstConsecutiveStaticIP,omitempty"`
 	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
 	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
-	// Fqdn - FDQN for the master pool.
+	// Fqdn - FQDN for the master pool.
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
@@ -1725,7 +1725,7 @@ type OpenShiftManagedCluster struct {
 	autorest.Response `json:"-"`
 	// Plan - Define the resource plan as required by ARM for billing purposes
 	Plan *PurchasePlan `json:"plan,omitempty"`
-	// OpenShiftManagedClusterProperties - Properties of a openshift managed cluster.
+	// OpenShiftManagedClusterProperties - Properties of a OpenShift managed cluster.
 	*OpenShiftManagedClusterProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -2190,7 +2190,7 @@ type OpenShiftManagedClusterMasterPoolProfile struct {
 	OsType OSType `json:"osType,omitempty"`
 }
 
-// OpenShiftManagedClusterProperties properties of the openshift managed cluster.
+// OpenShiftManagedClusterProperties properties of the OpenShift managed cluster.
 type OpenShiftManagedClusterProperties struct {
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -2297,7 +2297,7 @@ func (future *OpenShiftManagedClustersUpdateTagsFuture) Result(client OpenShiftM
 type OpenShiftRouterProfile struct {
 	// Name - Name of the router profile.
 	Name *string `json:"name,omitempty"`
-	// PublicSubdomain - DNS subdomain for openshift router.
+	// PublicSubdomain - DNS subdomain for OpenShift router.
 	PublicSubdomain *string `json:"publicSubdomain,omitempty"`
 	// Fqdn - Auto-allocated FQDN for the OpenShift router.
 	Fqdn *string `json:"fqdn,omitempty"`

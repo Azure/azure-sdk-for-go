@@ -41,11 +41,11 @@ func NewOpenShiftManagedClustersClientWithBaseURI(baseURI string, subscriptionID
 	return OpenShiftManagedClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a openshift managed cluster with the specified configuration for agents and
+// CreateOrUpdate creates or updates a OpenShift managed cluster with the specified configuration for agents and
 // OpenShift version.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 // parameters - parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
 func (client OpenShiftManagedClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftManagedCluster) (result OpenShiftManagedClustersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -132,10 +132,10 @@ func (client OpenShiftManagedClustersClient) CreateOrUpdateResponder(resp *http.
 	return
 }
 
-// Delete deletes the openshift managed cluster with a specified resource group and name.
+// Delete deletes the OpenShift managed cluster with a specified resource group and name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 func (client OpenShiftManagedClustersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result OpenShiftManagedClustersDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.Delete")
@@ -208,10 +208,10 @@ func (client OpenShiftManagedClustersClient) DeleteResponder(resp *http.Response
 	return
 }
 
-// Get gets the details of the managed openshift cluster with a specified resource group and name.
+// Get gets the details of the managed OpenShift cluster with a specified resource group and name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 func (client OpenShiftManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result OpenShiftManagedCluster, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.Get")
@@ -510,10 +510,10 @@ func (client OpenShiftManagedClustersClient) ListByResourceGroupComplete(ctx con
 	return
 }
 
-// UpdateTags updates an openshift managed cluster with the specified tags.
+// UpdateTags updates an OpenShift managed cluster with the specified tags.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 // parameters - parameters supplied to the Update OpenShift Managed Cluster Tags operation.
 func (client OpenShiftManagedClustersClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject) (result OpenShiftManagedClustersUpdateTagsFuture, err error) {
 	if tracing.IsEnabled() {

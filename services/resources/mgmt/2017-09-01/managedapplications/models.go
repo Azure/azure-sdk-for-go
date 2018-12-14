@@ -1192,7 +1192,7 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	return
 }
 
-// ErrorResponse error reponse indicates managed application is not able to process the incoming request.
+// ErrorResponse error response indicates managed application is not able to process the incoming request.
 // The reason is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.

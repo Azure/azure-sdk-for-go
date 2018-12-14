@@ -576,13 +576,15 @@ const (
 	ManagedDatabaseCreateModeDefault ManagedDatabaseCreateMode = "Default"
 	// ManagedDatabaseCreateModePointInTimeRestore ...
 	ManagedDatabaseCreateModePointInTimeRestore ManagedDatabaseCreateMode = "PointInTimeRestore"
+	// ManagedDatabaseCreateModeRecovery ...
+	ManagedDatabaseCreateModeRecovery ManagedDatabaseCreateMode = "Recovery"
 	// ManagedDatabaseCreateModeRestoreExternalBackup ...
 	ManagedDatabaseCreateModeRestoreExternalBackup ManagedDatabaseCreateMode = "RestoreExternalBackup"
 )
 
 // PossibleManagedDatabaseCreateModeValues returns an array of possible values for the ManagedDatabaseCreateMode const type.
 func PossibleManagedDatabaseCreateModeValues() []ManagedDatabaseCreateMode {
-	return []ManagedDatabaseCreateMode{ManagedDatabaseCreateModeDefault, ManagedDatabaseCreateModePointInTimeRestore, ManagedDatabaseCreateModeRestoreExternalBackup}
+	return []ManagedDatabaseCreateMode{ManagedDatabaseCreateModeDefault, ManagedDatabaseCreateModePointInTimeRestore, ManagedDatabaseCreateModeRecovery, ManagedDatabaseCreateModeRestoreExternalBackup}
 }
 
 // ManagedDatabaseStatus enumerates the values for managed database status.
@@ -599,11 +601,13 @@ const (
 	Online ManagedDatabaseStatus = "Online"
 	// Shutdown ...
 	Shutdown ManagedDatabaseStatus = "Shutdown"
+	// Updating ...
+	Updating ManagedDatabaseStatus = "Updating"
 )
 
 // PossibleManagedDatabaseStatusValues returns an array of possible values for the ManagedDatabaseStatus const type.
 func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
-	return []ManagedDatabaseStatus{Creating, Inaccessible, Offline, Online, Shutdown}
+	return []ManagedDatabaseStatus{Creating, Inaccessible, Offline, Online, Shutdown, Updating}
 }
 
 // ManagementOperationState enumerates the values for management operation state.
@@ -8378,7 +8382,7 @@ func NewManagedDatabaseListResultPage(getNextPage func(context.Context, ManagedD
 type ManagedDatabaseProperties struct {
 	// Collation - Collation of the managed database.
 	Collation *string `json:"collation,omitempty"`
-	// Status - Status for the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible'
+	// Status - Status of the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible', 'Updating'
 	Status ManagedDatabaseStatus `json:"status,omitempty"`
 	// CreationDate - Creation date of the database.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
@@ -8390,16 +8394,20 @@ type ManagedDatabaseProperties struct {
 	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
 	// CatalogCollation - Collation of the metadata catalog. Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'
 	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
-	// CreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Possible values include: 'ManagedDatabaseCreateModeDefault', 'ManagedDatabaseCreateModeRestoreExternalBackup', 'ManagedDatabaseCreateModePointInTimeRestore'
+	// CreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'ManagedDatabaseCreateModeDefault', 'ManagedDatabaseCreateModeRestoreExternalBackup', 'ManagedDatabaseCreateModePointInTimeRestore', 'ManagedDatabaseCreateModeRecovery'
 	CreateMode ManagedDatabaseCreateMode `json:"createMode,omitempty"`
 	// StorageContainerURI - Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container where backups for this restore are stored.
 	StorageContainerURI *string `json:"storageContainerUri,omitempty"`
 	// SourceDatabaseID - The resource identifier of the source database associated with create operation of this database.
 	SourceDatabaseID *string `json:"sourceDatabaseId,omitempty"`
+	// RestorableDroppedDatabaseID - The restorable dropped database resource id to restore when creating this database.
+	RestorableDroppedDatabaseID *string `json:"restorableDroppedDatabaseId,omitempty"`
 	// StorageContainerSasToken - Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.
 	StorageContainerSasToken *string `json:"storageContainerSasToken,omitempty"`
 	// FailoverGroupID - Instance Failover Group resource identifier that this managed database belongs to.
 	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
+	// RecoverableDatabaseID - The resource identifier of the recoverable database associated with create operation of this database.
+	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
 }
 
 // ManagedDatabasesCompleteRestoreFuture an abstraction for monitoring and retrieving the results of a

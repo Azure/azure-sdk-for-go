@@ -642,7 +642,7 @@ func (client SubscriptionClient) RegenerateSecondaryKeyResponder(resp *http.Resp
 	return
 }
 
-// Update updates the details of a subscription specificied by its identifier.
+// Update updates the details of a subscription specified by its identifier.
 // Parameters:
 // apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.

@@ -1908,7 +1908,7 @@ type ListEnvironmentsPayload struct {
 // ListEnvironmentsResponse represents the list of environments owned by a user
 type ListEnvironmentsResponse struct {
 	autorest.Response `json:"-"`
-	// Environments - List of all the evironments
+	// Environments - List of all the environments
 	Environments *[]EnvironmentDetails `json:"environments,omitempty"`
 }
 

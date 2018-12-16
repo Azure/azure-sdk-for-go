@@ -178,6 +178,36 @@ func PossibleKindEnum1Values() []KindEnum1 {
 	return []KindEnum1{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// NorthSouthProtocol enumerates the values for north south protocol.
+type NorthSouthProtocol string
+
+const (
+	// TCP ...
+	TCP NorthSouthProtocol = "TCP"
+	// UDP ...
+	UDP NorthSouthProtocol = "UDP"
+)
+
+// PossibleNorthSouthProtocolValues returns an array of possible values for the NorthSouthProtocol const type.
+func PossibleNorthSouthProtocolValues() []NorthSouthProtocol {
+	return []NorthSouthProtocol{TCP, UDP}
+}
+
+// NorthSouthTrafficDirection enumerates the values for north south traffic direction.
+type NorthSouthTrafficDirection string
+
+const (
+	// Inbound ...
+	Inbound NorthSouthTrafficDirection = "Inbound"
+	// Outbound ...
+	Outbound NorthSouthTrafficDirection = "Outbound"
+)
+
+// PossibleNorthSouthTrafficDirectionValues returns an array of possible values for the NorthSouthTrafficDirection const type.
+func PossibleNorthSouthTrafficDirectionValues() []NorthSouthTrafficDirection {
+	return []NorthSouthTrafficDirection{Inbound, Outbound}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -197,17 +227,17 @@ func PossiblePricingTierValues() []PricingTier {
 type Protocol string
 
 const (
-	// All ...
-	All Protocol = "*"
-	// TCP ...
-	TCP Protocol = "TCP"
-	// UDP ...
-	UDP Protocol = "UDP"
+	// ProtocolAll ...
+	ProtocolAll Protocol = "*"
+	// ProtocolTCP ...
+	ProtocolTCP Protocol = "TCP"
+	// ProtocolUDP ...
+	ProtocolUDP Protocol = "UDP"
 )
 
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
-	return []Protocol{All, TCP, UDP}
+	return []Protocol{ProtocolAll, ProtocolTCP, ProtocolUDP}
 }
 
 // SettingKind enumerates the values for setting kind.
@@ -3723,7 +3753,7 @@ type JitNetworkAccessPolicyVirtualMachine struct {
 // JitNetworkAccessPortRule ...
 type JitNetworkAccessPortRule struct {
 	Number *int32 `json:"number,omitempty"`
-	// Protocol - Possible values include: 'TCP', 'UDP', 'All'
+	// Protocol - Possible values include: 'ProtocolTCP', 'ProtocolUDP', 'ProtocolAll'
 	Protocol Protocol `json:"protocol,omitempty"`
 	// AllowedSourceAddressPrefix - Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
 	AllowedSourceAddressPrefix *string `json:"allowedSourceAddressPrefix,omitempty"`
@@ -3776,6 +3806,245 @@ type Kind struct {
 type Location struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
+}
+
+// NorthSouthHardenings the resource whose properties describes the North-south hardening settings for some
+// Azure resource
+type NorthSouthHardenings struct {
+	autorest.Response `json:"-"`
+	// NorthSouthHardeningsProperties - Properties of the north-south hardening resource
+	*NorthSouthHardeningsProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NorthSouthHardenings.
+func (nsh NorthSouthHardenings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nsh.NorthSouthHardeningsProperties != nil {
+		objectMap["properties"] = nsh.NorthSouthHardeningsProperties
+	}
+	if nsh.ID != nil {
+		objectMap["id"] = nsh.ID
+	}
+	if nsh.Name != nil {
+		objectMap["name"] = nsh.Name
+	}
+	if nsh.Type != nil {
+		objectMap["type"] = nsh.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NorthSouthHardenings struct.
+func (nsh *NorthSouthHardenings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var northSouthHardeningsProperties NorthSouthHardeningsProperties
+				err = json.Unmarshal(*v, &northSouthHardeningsProperties)
+				if err != nil {
+					return err
+				}
+				nsh.NorthSouthHardeningsProperties = &northSouthHardeningsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nsh.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nsh.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nsh.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NorthSouthHardeningsList response for ListNorthSouthHardenings API service call
+type NorthSouthHardeningsList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of north-south hardening resources
+	Value *[]NorthSouthHardenings `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NorthSouthHardeningsListIterator provides access to a complete listing of NorthSouthHardenings values.
+type NorthSouthHardeningsListIterator struct {
+	i    int
+	page NorthSouthHardeningsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *NorthSouthHardeningsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NorthSouthHardeningsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *NorthSouthHardeningsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter NorthSouthHardeningsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter NorthSouthHardeningsListIterator) Response() NorthSouthHardeningsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter NorthSouthHardeningsListIterator) Value() NorthSouthHardenings {
+	if !iter.page.NotDone() {
+		return NorthSouthHardenings{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the NorthSouthHardeningsListIterator type.
+func NewNorthSouthHardeningsListIterator(page NorthSouthHardeningsListPage) NorthSouthHardeningsListIterator {
+	return NorthSouthHardeningsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (nshl NorthSouthHardeningsList) IsEmpty() bool {
+	return nshl.Value == nil || len(*nshl.Value) == 0
+}
+
+// northSouthHardeningsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (nshl NorthSouthHardeningsList) northSouthHardeningsListPreparer(ctx context.Context) (*http.Request, error) {
+	if nshl.NextLink == nil || len(to.String(nshl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(nshl.NextLink)))
+}
+
+// NorthSouthHardeningsListPage contains a page of NorthSouthHardenings values.
+type NorthSouthHardeningsListPage struct {
+	fn   func(context.Context, NorthSouthHardeningsList) (NorthSouthHardeningsList, error)
+	nshl NorthSouthHardeningsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *NorthSouthHardeningsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NorthSouthHardeningsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.nshl)
+	if err != nil {
+		return err
+	}
+	page.nshl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *NorthSouthHardeningsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page NorthSouthHardeningsListPage) NotDone() bool {
+	return !page.nshl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page NorthSouthHardeningsListPage) Response() NorthSouthHardeningsList {
+	return page.nshl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page NorthSouthHardeningsListPage) Values() []NorthSouthHardenings {
+	if page.nshl.IsEmpty() {
+		return nil
+	}
+	return *page.nshl.Value
+}
+
+// Creates a new instance of the NorthSouthHardeningsListPage type.
+func NewNorthSouthHardeningsListPage(getNextPage func(context.Context, NorthSouthHardeningsList) (NorthSouthHardeningsList, error)) NorthSouthHardeningsListPage {
+	return NorthSouthHardeningsListPage{fn: getNextPage}
+}
+
+// NorthSouthHardeningsProperties north-south hardening resource propeties
+type NorthSouthHardeningsProperties struct {
+	// TrafficHardeningRules - The set of North-south traffic hardening rules
+	TrafficHardeningRules *[]TrafficHardeningRule `json:"trafficHardeningRules,omitempty"`
+	// TrafficAlerts - The set of North-south hardening alerts associated with the Azure resource
+	TrafficAlerts *[]TrafficAlert `json:"trafficAlerts,omitempty"`
+	// RulesCalculationTime - The UTC time on which the traffic hardening rules were calculated
+	RulesCalculationTime *date.Time `json:"rulesCalculationTime,omitempty"`
 }
 
 // Operation possible operation in the REST API of Microsoft.Security
@@ -5064,6 +5333,42 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// TrafficAlert a north-south traffic hardening alert
+type TrafficAlert struct {
+	// DetectionDate - the date (UTC) that the traffic was detected
+	DetectionDate *date.Time `json:"detectionDate,omitempty"`
+	// Direction - The alert's traffic direction. Possible values include: 'Inbound', 'Outbound'
+	Direction NorthSouthTrafficDirection `json:"direction,omitempty"`
+	// DestinationPort - The alert's deStination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocol - The alert's transport protocol. Possible values include: 'TCP', 'UDP'
+	Protocol NorthSouthProtocol `json:"protocol,omitempty"`
+	// Traffic - The traffic that was detected and raised the alert
+	Traffic *[]TrafficAlertTrafficItem `json:"traffic,omitempty"`
+}
+
+// TrafficAlertTrafficItem ...
+type TrafficAlertTrafficItem struct {
+	// RemoteAddress - The IP address of the remote host that is associated with the traffic
+	RemoteAddress *string `json:"remoteAddress,omitempty"`
+	// Attempts - The detected number of packets sent to or from the remote address (depends on the direction of the traffic)
+	Attempts *float64 `json:"attempts,omitempty"`
+}
+
+// TrafficHardeningRule a north-south traffic hardening rule
+type TrafficHardeningRule struct {
+	// Name - The name of the rule
+	Name *string `json:"name,omitempty"`
+	// Direction - The rule;s traffic direction. Possible values include: 'Inbound', 'Outbound'
+	Direction NorthSouthTrafficDirection `json:"direction,omitempty"`
+	// DestinationPort - The rule's destination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocols - The rule's transport protocol
+	Protocols *[]NorthSouthProtocol `json:"protocols,omitempty"`
+	// AllowRemoteAddresses - The remote addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
+	AllowRemoteAddresses *[]string `json:"allowRemoteAddresses,omitempty"`
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

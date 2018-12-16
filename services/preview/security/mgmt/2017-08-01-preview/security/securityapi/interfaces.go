@@ -174,6 +174,15 @@ type ExternalSecuritySolutionsClientAPI interface {
 
 var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
 
+// NorthSouthHardeningsClientAPI contains the set of methods on the NorthSouthHardeningsClient type.
+type NorthSouthHardeningsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, northSouthResourceName string) (result security.NorthSouthHardenings, err error)
+	List(ctx context.Context) (result security.NorthSouthHardeningsListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.NorthSouthHardeningsListPage, err error)
+}
+
+var _ NorthSouthHardeningsClientAPI = (*security.NorthSouthHardeningsClient)(nil)
+
 // TopologyClientAPI contains the set of methods on the TopologyClient type.
 type TopologyClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, topologyResourceName string) (result security.TopologyResource, err error)

@@ -98,6 +98,20 @@ const (
 	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
 )
 
+type NorthSouthProtocol = original.NorthSouthProtocol
+
+const (
+	TCP NorthSouthProtocol = original.TCP
+	UDP NorthSouthProtocol = original.UDP
+)
+
+type NorthSouthTrafficDirection = original.NorthSouthTrafficDirection
+
+const (
+	Inbound  NorthSouthTrafficDirection = original.Inbound
+	Outbound NorthSouthTrafficDirection = original.Outbound
+)
+
 type PricingTier = original.PricingTier
 
 const (
@@ -108,9 +122,9 @@ const (
 type Protocol = original.Protocol
 
 const (
-	All Protocol = original.All
-	TCP Protocol = original.TCP
-	UDP Protocol = original.UDP
+	ProtocolAll Protocol = original.ProtocolAll
+	ProtocolTCP Protocol = original.ProtocolTCP
+	ProtocolUDP Protocol = original.ProtocolUDP
 )
 
 type SettingKind = original.SettingKind
@@ -230,6 +244,12 @@ type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVir
 type Kind = original.Kind
 type Location = original.Location
 type LocationsClient = original.LocationsClient
+type NorthSouthHardenings = original.NorthSouthHardenings
+type NorthSouthHardeningsClient = original.NorthSouthHardeningsClient
+type NorthSouthHardeningsList = original.NorthSouthHardeningsList
+type NorthSouthHardeningsListIterator = original.NorthSouthHardeningsListIterator
+type NorthSouthHardeningsListPage = original.NorthSouthHardeningsListPage
+type NorthSouthHardeningsProperties = original.NorthSouthHardeningsProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -267,6 +287,9 @@ type TopologyResourceProperties = original.TopologyResourceProperties
 type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
+type TrafficAlert = original.TrafficAlert
+type TrafficAlertTrafficItem = original.TrafficAlertTrafficItem
+type TrafficHardeningRule = original.TrafficHardeningRule
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
@@ -403,6 +426,18 @@ func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClie
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewNorthSouthHardeningsClient(subscriptionID string, ascLocation string) NorthSouthHardeningsClient {
+	return original.NewNorthSouthHardeningsClient(subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) NorthSouthHardeningsClient {
+	return original.NewNorthSouthHardeningsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsListIterator(page NorthSouthHardeningsListPage) NorthSouthHardeningsListIterator {
+	return original.NewNorthSouthHardeningsListIterator(page)
+}
+func NewNorthSouthHardeningsListPage(getNextPage func(context.Context, NorthSouthHardeningsList) (NorthSouthHardeningsList, error)) NorthSouthHardeningsListPage {
+	return original.NewNorthSouthHardeningsListPage(getNextPage)
+}
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
@@ -504,6 +539,12 @@ func PossibleKindEnum1Values() []KindEnum1 {
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
+}
+func PossibleNorthSouthProtocolValues() []NorthSouthProtocol {
+	return original.PossibleNorthSouthProtocolValues()
+}
+func PossibleNorthSouthTrafficDirectionValues() []NorthSouthTrafficDirection {
+	return original.PossibleNorthSouthTrafficDirectionValues()
 }
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()

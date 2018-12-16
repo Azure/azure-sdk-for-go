@@ -32,6 +32,7 @@ type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClie
 type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
+type NorthSouthHardeningsClientAPI = original.NorthSouthHardeningsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PricingsClientAPI = original.PricingsClientAPI
 type SettingsClientAPI = original.SettingsClientAPI

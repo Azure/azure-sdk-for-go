@@ -4037,7 +4037,7 @@ func NewNorthSouthHardeningsListPage(getNextPage func(context.Context, NorthSout
 	return NorthSouthHardeningsListPage{fn: getNextPage}
 }
 
-// NorthSouthHardeningsProperties north-south hardening resource propeties
+// NorthSouthHardeningsProperties north-south hardening resource properties
 type NorthSouthHardeningsProperties struct {
 	// TrafficHardeningRules - The set of North-south traffic hardening rules
 	TrafficHardeningRules *[]TrafficHardeningRule `json:"trafficHardeningRules,omitempty"`
@@ -5341,7 +5341,7 @@ type TrafficAlert struct {
 	DetectionDate *date.Time `json:"detectionDate,omitempty"`
 	// Direction - The alert's traffic direction. Possible values include: 'Inbound', 'Outbound'
 	Direction NorthSouthTrafficDirection `json:"direction,omitempty"`
-	// DestinationPort - The alert's deStination port
+	// DestinationPort - The alert's destination port
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// Protocol - The alert's transport protocol. Possible values include: 'TCP', 'UDP'
 	Protocol NorthSouthProtocol `json:"protocol,omitempty"`

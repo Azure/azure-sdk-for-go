@@ -111,7 +111,7 @@ func (client NorthSouthHardeningsClient) EnforcePreparer(ctx context.Context, re
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{extendedResourceProvider}/{extendedResourceType}/{extendedResourceName}/providers/Microsoft.Security/northSouthHardenings/{northSouthResourceName}/enforce", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{extendedResourceProvider}/{extendedResourceType}/{extendedResourceName}/providers/Microsoft.Security/northSouthHardenings/{northSouthResourceName}/{trafficHardeningsRulesEnforceAction}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

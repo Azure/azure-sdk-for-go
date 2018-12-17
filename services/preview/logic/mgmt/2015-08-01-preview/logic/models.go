@@ -573,7 +573,7 @@ type EdifactDelimiterOverride struct {
 	MessageID *string `json:"messageId,omitempty"`
 	// MessageVersion - The message version.
 	MessageVersion *string `json:"messageVersion,omitempty"`
-	// MessageRelease - The message releaseversion.
+	// MessageRelease - The message release version.
 	MessageRelease *string `json:"messageRelease,omitempty"`
 	// DataElementSeparator - The data element separator.
 	DataElementSeparator *int32 `json:"dataElementSeparator,omitempty"`

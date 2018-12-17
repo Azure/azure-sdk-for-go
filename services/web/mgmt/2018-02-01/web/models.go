@@ -15035,7 +15035,7 @@ type ProcessThreadInfoProperties struct {
 	TotalProcessorTime *string `json:"total_processor_time,omitempty"`
 	// UserProcessorTime - User processor time.
 	UserProcessorTime *string `json:"user_processor_time,omitempty"`
-	// PriviledgedProcessorTime - Priviledged processor time.
+	// PriviledgedProcessorTime - Privileged processor time.
 	PriviledgedProcessorTime *string `json:"priviledged_processor_time,omitempty"`
 	// State - Thread state.
 	State *string `json:"state,omitempty"`

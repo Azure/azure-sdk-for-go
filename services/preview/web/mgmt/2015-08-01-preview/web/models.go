@@ -4729,7 +4729,7 @@ type CsmPublishingProfileOptions struct {
 	Format *string `json:"format,omitempty"`
 }
 
-// CsmSiteRecoveryEntity class containting details about site recovery operation.
+// CsmSiteRecoveryEntity class containing details about site recovery operation.
 type CsmSiteRecoveryEntity struct {
 	// SnapshotTime - Point in time in which the site recover should be attempted.
 	SnapshotTime *date.Time `json:"snapshotTime,omitempty"`
@@ -8397,7 +8397,7 @@ func (future *ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture) R
 	return
 }
 
-// MetricAvailabilily class repesenting metrics availability and retention
+// MetricAvailabilily class representing metrics availability and retention
 type MetricAvailabilily struct {
 	// TimeGrain - Time grain
 	TimeGrain *string `json:"timeGrain,omitempty"`
@@ -8405,7 +8405,7 @@ type MetricAvailabilily struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
-// MetricDefinition class repesenting metadata for the metrics
+// MetricDefinition class representing metadata for the metrics
 type MetricDefinition struct {
 	autorest.Response           `json:"-"`
 	*MetricDefinitionProperties `json:"properties,omitempty"`
@@ -9175,7 +9175,7 @@ type RampUpRule struct {
 	//             {Microsoft.Web.Hosting.Administration.RampUpRule.MinReroutePercentage} or {Microsoft.Web.Hosting.Administration.RampUpRule.MaxReroutePercentage}. Site metrics are checked every N minutes specified in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeIntervalInMinutes}.
 	//             Custom decision algorithm can be provided in TiPCallback site extension which Url can be specified in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeDecisionCallbackUrl}
 	ChangeStep *float64 `json:"changeStep,omitempty"`
-	// ChangeIntervalInMinutes - [Optional] Specifies interval in mimuntes to reevaluate ReroutePercentage
+	// ChangeIntervalInMinutes - [Optional] Specifies interval in minutes to reevaluate ReroutePercentage
 	ChangeIntervalInMinutes *int32 `json:"changeIntervalInMinutes,omitempty"`
 	// MinReroutePercentage - [Optional] Specifies lower boundary above which ReroutePercentage will stay.
 	MinReroutePercentage *float64 `json:"minReroutePercentage,omitempty"`
@@ -10096,7 +10096,7 @@ type RestoreRequestProperties struct {
 	Overwrite *bool `json:"overwrite,omitempty"`
 	// SiteName - Name of a site (Web App)
 	SiteName *string `json:"siteName,omitempty"`
-	// Databases - Collection of databses which should be restored. This list has to match the list of databases included in the backup.
+	// Databases - Collection of databases which should be restored. This list has to match the list of databases included in the backup.
 	Databases *[]DatabaseBackupSetting `json:"databases,omitempty"`
 	// IgnoreConflictingHostNames - Changes a logic when restoring a site with custom domains. If "true", custom domains are removed automatically. If "false", custom domains are added to
 	//             the site object when it is being restored, but that might fail due to conflicts during the operation.
@@ -12850,7 +12850,7 @@ func (sc *SourceControl) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SourceControlCollection collection of soure controls
+// SourceControlCollection collection of source controls
 type SourceControlCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources
@@ -13527,7 +13527,7 @@ func (tld *TopLevelDomain) UnmarshalJSON(body []byte) error {
 
 // TopLevelDomainAgreementOption options for retrieving the list of top level domain legal agreements
 type TopLevelDomainAgreementOption struct {
-	// IncludePrivacy - If true then the list of agreements will inclue agreements for domain privacy as well.
+	// IncludePrivacy - If true then the list of agreements will include agreements for domain privacy as well.
 	IncludePrivacy *bool `json:"includePrivacy,omitempty"`
 }
 

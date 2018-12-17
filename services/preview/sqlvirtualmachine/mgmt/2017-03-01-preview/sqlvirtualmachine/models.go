@@ -532,7 +532,7 @@ func NewAvailabilityGroupListenerListResultPage(getNextPage func(context.Context
 
 // AvailabilityGroupListenerProperties the properties of an availability group listener.
 type AvailabilityGroupListenerProperties struct {
-	// ProvisioningState - Provisioning state to track the aysnc operation status.
+	// ProvisioningState - Provisioning state to track the async operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityGroupName - Name of the availability group.
 	AvailabilityGroupName *string `json:"availabilityGroupName,omitempty"`
@@ -854,7 +854,7 @@ func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (
 
 // GroupProperties the properties of a SQL virtual machine group.
 type GroupProperties struct {
-	// ProvisioningState - Provisioning state to track the aysnc operation status.
+	// ProvisioningState - Provisioning state to track the async operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
@@ -1339,7 +1339,7 @@ type PrivateIPAddress struct {
 type Properties struct {
 	// VirtualMachineResourceID - ARM Resource id of underlying virtual machine created from SQL marketplace image.
 	VirtualMachineResourceID *string `json:"virtualMachineResourceId,omitempty"`
-	// ProvisioningState - Provisioning state to track the aysnc operation status.
+	// ProvisioningState - Provisioning state to track the async operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`

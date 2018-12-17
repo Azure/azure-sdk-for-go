@@ -12225,7 +12225,7 @@ type SchemaComparisonValidationResultType struct {
 	UpdateAction UpdateActionType `json:"updateAction,omitempty"`
 }
 
-// SelectedCertificateInput info for ertificate to be exported for TDE enabled databases.
+// SelectedCertificateInput info for certificate to be exported for TDE enabled databases.
 type SelectedCertificateInput struct {
 	// CertificateName - Name of certificate to be exported.
 	CertificateName *string `json:"certificateName,omitempty"`

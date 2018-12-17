@@ -19,7 +19,7 @@
 
 package trafficmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-05-01/trafficmanager"
+import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-03-01/trafficmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -77,6 +77,13 @@ const (
 	Weighted    TrafficRoutingMethod = original.Weighted
 )
 
+type TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatus
+
+const (
+	TrafficViewEnrollmentStatusDisabled TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatusDisabled
+	TrafficViewEnrollmentStatusEnabled  TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatusEnabled
+)
+
 type BaseClient = original.BaseClient
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters = original.CheckTrafficManagerRelativeDNSNameAvailabilityParameters
 type CloudError = original.CloudError
@@ -85,20 +92,29 @@ type DNSConfig = original.DNSConfig
 type DeleteOperationResult = original.DeleteOperationResult
 type Endpoint = original.Endpoint
 type EndpointProperties = original.EndpointProperties
+type EndpointPropertiesCustomHeadersItem = original.EndpointPropertiesCustomHeadersItem
 type EndpointsClient = original.EndpointsClient
 type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 type GeographicHierarchy = original.GeographicHierarchy
 type GeographicHierarchyProperties = original.GeographicHierarchyProperties
+type HeatMapClient = original.HeatMapClient
+type HeatMapEndpoint = original.HeatMapEndpoint
+type HeatMapModel = original.HeatMapModel
+type HeatMapProperties = original.HeatMapProperties
 type MonitorConfig = original.MonitorConfig
+type MonitorConfigCustomHeadersItem = original.MonitorConfigCustomHeadersItem
+type MonitorConfigExpectedStatusCodeRangesItem = original.MonitorConfigExpectedStatusCodeRangesItem
 type NameAvailability = original.NameAvailability
 type Profile = original.Profile
 type ProfileListResult = original.ProfileListResult
 type ProfileProperties = original.ProfileProperties
 type ProfilesClient = original.ProfilesClient
 type ProxyResource = original.ProxyResource
+type QueryExperience = original.QueryExperience
 type Region = original.Region
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
+type TrafficFlow = original.TrafficFlow
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -114,6 +130,12 @@ func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchies
 }
 func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
 	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHeatMapClient(subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClient(subscriptionID)
+}
+func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
@@ -141,6 +163,9 @@ func PossibleProfileStatusValues() []ProfileStatus {
 }
 func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
 	return original.PossibleTrafficRoutingMethodValues()
+}
+func PossibleTrafficViewEnrollmentStatusValues() []TrafficViewEnrollmentStatus {
+	return original.PossibleTrafficViewEnrollmentStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

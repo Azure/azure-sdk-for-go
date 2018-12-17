@@ -27,15 +27,23 @@ import (
 	"strings"
 )
 
-func acceptAll(name string) bool {
+var previewSubdir = fmt.Sprintf("%spreview%s", string(os.PathSeparator), string(os.PathSeparator))
+
+// these predicates are used when walking the package directories.
+// if a predicate returns true it means to include that package.
+
+func acceptAllPredicate(name string) bool {
 	return true
 }
 
-func ignorePreview(name string) (result bool) {
+func includePreviewPredicate(name string) bool {
+	// check if the path contains a /preview/ subdirectory
+	if strings.Contains(name, previewSubdir) {
+		return false
+	}
 	matches := packageName.FindStringSubmatch(name)
 	version := matches[3]
-	result = !strings.Contains(version, "-preview") && !strings.Contains(version, "-beta") // matches[2] is the `version` group
-	return
+	return !strings.Contains(version, "-preview") && !strings.Contains(version, "-beta") // matches[2] is the `version` group
 }
 
 func GetLatestPackages(rootDir string, includePreview bool, verboseLog *log.Logger) (ListDefinition, error) {
@@ -50,9 +58,9 @@ func GetLatestPackages(rootDir string, includePreview bool, verboseLog *log.Logg
 		rawpath string
 	}
 
-	predicate := ignorePreview
+	predicate := includePreviewPredicate
 	if includePreview {
-		predicate = acceptAll
+		predicate = acceptAllPredicate
 	}
 
 	maxFound := make(map[operationGroup]operInfo)

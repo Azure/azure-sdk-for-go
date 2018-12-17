@@ -22,7 +22,7 @@ package keyvault
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
+	original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault"
 )
 
 const (
@@ -40,6 +40,7 @@ const (
 type CertificatePermissions = original.CertificatePermissions
 
 const (
+	Backup         CertificatePermissions = original.Backup
 	Create         CertificatePermissions = original.Create
 	Delete         CertificatePermissions = original.Delete
 	Deleteissuers  CertificatePermissions = original.Deleteissuers
@@ -52,6 +53,7 @@ const (
 	Manageissuers  CertificatePermissions = original.Manageissuers
 	Purge          CertificatePermissions = original.Purge
 	Recover        CertificatePermissions = original.Recover
+	Restore        CertificatePermissions = original.Restore
 	Setissuers     CertificatePermissions = original.Setissuers
 	Update         CertificatePermissions = original.Update
 )
@@ -82,6 +84,20 @@ const (
 	KeyPermissionsUpdate    KeyPermissions = original.KeyPermissionsUpdate
 	KeyPermissionsVerify    KeyPermissions = original.KeyPermissionsVerify
 	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
+)
+
+type NetworkRuleAction = original.NetworkRuleAction
+
+const (
+	Allow NetworkRuleAction = original.Allow
+	Deny  NetworkRuleAction = original.Deny
+)
+
+type NetworkRuleBypassOptions = original.NetworkRuleBypassOptions
+
+const (
+	AzureServices NetworkRuleBypassOptions = original.AzureServices
+	None          NetworkRuleBypassOptions = original.None
 )
 
 type Reason = original.Reason
@@ -138,7 +154,9 @@ type DeletedVaultListResult = original.DeletedVaultListResult
 type DeletedVaultListResultIterator = original.DeletedVaultListResultIterator
 type DeletedVaultListResultPage = original.DeletedVaultListResultPage
 type DeletedVaultProperties = original.DeletedVaultProperties
+type IPRule = original.IPRule
 type LogSpecification = original.LogSpecification
+type NetworkRuleSet = original.NetworkRuleSet
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -165,7 +183,9 @@ type VaultPatchParameters = original.VaultPatchParameters
 type VaultPatchProperties = original.VaultPatchProperties
 type VaultProperties = original.VaultProperties
 type VaultsClient = original.VaultsClient
+type VaultsCreateOrUpdateFuture = original.VaultsCreateOrUpdateFuture
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
+type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -220,6 +240,12 @@ func PossibleCreateModeValues() []CreateMode {
 }
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return original.PossibleKeyPermissionsValues()
+}
+func PossibleNetworkRuleActionValues() []NetworkRuleAction {
+	return original.PossibleNetworkRuleActionValues()
+}
+func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
+	return original.PossibleNetworkRuleBypassOptionsValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()

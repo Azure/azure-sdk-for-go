@@ -22,7 +22,7 @@ package web
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2016-09-01/web"
+	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2018-02-01/web"
 )
 
 const (
@@ -62,6 +62,21 @@ const (
 	Website        AzureResourceType = original.Website
 )
 
+type AzureStorageState = original.AzureStorageState
+
+const (
+	InvalidCredentials AzureStorageState = original.InvalidCredentials
+	InvalidShare       AzureStorageState = original.InvalidShare
+	Ok                 AzureStorageState = original.Ok
+)
+
+type AzureStorageType = original.AzureStorageType
+
+const (
+	AzureBlob  AzureStorageType = original.AzureBlob
+	AzureFiles AzureStorageType = original.AzureFiles
+)
+
 type BackupItemStatus = original.BackupItemStatus
 
 const (
@@ -81,6 +96,7 @@ type BackupRestoreOperationType = original.BackupRestoreOperationType
 
 const (
 	BackupRestoreOperationTypeClone      BackupRestoreOperationType = original.BackupRestoreOperationTypeClone
+	BackupRestoreOperationTypeCloudFS    BackupRestoreOperationType = original.BackupRestoreOperationTypeCloudFS
 	BackupRestoreOperationTypeDefault    BackupRestoreOperationType = original.BackupRestoreOperationTypeDefault
 	BackupRestoreOperationTypeRelocation BackupRestoreOperationType = original.BackupRestoreOperationTypeRelocation
 	BackupRestoreOperationTypeSnapshot   BackupRestoreOperationType = original.BackupRestoreOperationTypeSnapshot
@@ -273,6 +289,14 @@ const (
 	Hour FrequencyUnit = original.Hour
 )
 
+type FtpsState = original.FtpsState
+
+const (
+	AllAllowed FtpsState = original.AllAllowed
+	Disabled   FtpsState = original.Disabled
+	FtpsOnly   FtpsState = original.FtpsOnly
+)
+
 type HostNameType = original.HostNameType
 
 const (
@@ -294,6 +318,13 @@ const (
 	Preparing HostingEnvironmentStatus = original.Preparing
 	Ready     HostingEnvironmentStatus = original.Ready
 	Scaling   HostingEnvironmentStatus = original.Scaling
+)
+
+type IPFilterTag = original.IPFilterTag
+
+const (
+	Default  IPFilterTag = original.Default
+	XffProxy IPFilterTag = original.XffProxy
 )
 
 type InAvailabilityReasonType = original.InAvailabilityReasonType
@@ -386,6 +417,7 @@ type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
 	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
+	UserAssigned   ManagedServiceIdentityType = original.UserAssigned
 )
 
 type MySQLMigrationType = original.MySQLMigrationType
@@ -511,14 +543,16 @@ const (
 type SkuName = original.SkuName
 
 const (
-	SkuNameBasic     SkuName = original.SkuNameBasic
-	SkuNameDynamic   SkuName = original.SkuNameDynamic
-	SkuNameFree      SkuName = original.SkuNameFree
-	SkuNameIsolated  SkuName = original.SkuNameIsolated
-	SkuNamePremium   SkuName = original.SkuNamePremium
-	SkuNamePremiumV2 SkuName = original.SkuNamePremiumV2
-	SkuNameShared    SkuName = original.SkuNameShared
-	SkuNameStandard  SkuName = original.SkuNameStandard
+	SkuNameBasic           SkuName = original.SkuNameBasic
+	SkuNameDynamic         SkuName = original.SkuNameDynamic
+	SkuNameElasticIsolated SkuName = original.SkuNameElasticIsolated
+	SkuNameElasticPremium  SkuName = original.SkuNameElasticPremium
+	SkuNameFree            SkuName = original.SkuNameFree
+	SkuNameIsolated        SkuName = original.SkuNameIsolated
+	SkuNamePremium         SkuName = original.SkuNamePremium
+	SkuNamePremiumV2       SkuName = original.SkuNamePremiumV2
+	SkuNameShared          SkuName = original.SkuNameShared
+	SkuNameStandard        SkuName = original.SkuNameStandard
 )
 
 type SolutionType = original.SolutionType
@@ -532,9 +566,9 @@ const (
 type SslState = original.SslState
 
 const (
-	Disabled       SslState = original.Disabled
-	IPBasedEnabled SslState = original.IPBasedEnabled
-	SniEnabled     SslState = original.SniEnabled
+	SslStateDisabled       SslState = original.SslStateDisabled
+	SslStateIPBasedEnabled SslState = original.SslStateIPBasedEnabled
+	SslStateSniEnabled     SslState = original.SslStateSniEnabled
 )
 
 type StatusOptions = original.StatusOptions
@@ -585,13 +619,13 @@ const (
 type WorkerSizeOptions = original.WorkerSizeOptions
 
 const (
-	D1      WorkerSizeOptions = original.D1
-	D2      WorkerSizeOptions = original.D2
-	D3      WorkerSizeOptions = original.D3
-	Default WorkerSizeOptions = original.Default
-	Large   WorkerSizeOptions = original.Large
-	Medium  WorkerSizeOptions = original.Medium
-	Small   WorkerSizeOptions = original.Small
+	WorkerSizeOptionsD1      WorkerSizeOptions = original.WorkerSizeOptionsD1
+	WorkerSizeOptionsD2      WorkerSizeOptions = original.WorkerSizeOptionsD2
+	WorkerSizeOptionsD3      WorkerSizeOptions = original.WorkerSizeOptionsD3
+	WorkerSizeOptionsDefault WorkerSizeOptions = original.WorkerSizeOptionsDefault
+	WorkerSizeOptionsLarge   WorkerSizeOptions = original.WorkerSizeOptionsLarge
+	WorkerSizeOptionsMedium  WorkerSizeOptions = original.WorkerSizeOptionsMedium
+	WorkerSizeOptionsSmall   WorkerSizeOptions = original.WorkerSizeOptionsSmall
 )
 
 type APIDefinitionInfo = original.APIDefinitionInfo
@@ -629,6 +663,8 @@ type AppServiceEnvironmentCollectionIterator = original.AppServiceEnvironmentCol
 type AppServiceEnvironmentCollectionPage = original.AppServiceEnvironmentCollectionPage
 type AppServiceEnvironmentPatchResource = original.AppServiceEnvironmentPatchResource
 type AppServiceEnvironmentResource = original.AppServiceEnvironmentResource
+type AppServiceEnvironmentsChangeVnetAllFuture = original.AppServiceEnvironmentsChangeVnetAllFuture
+type AppServiceEnvironmentsChangeVnetFuture = original.AppServiceEnvironmentsChangeVnetFuture
 type AppServiceEnvironmentsClient = original.AppServiceEnvironmentsClient
 type AppServiceEnvironmentsCreateOrUpdateFuture = original.AppServiceEnvironmentsCreateOrUpdateFuture
 type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture = original.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture
@@ -669,10 +705,18 @@ type AppsListPublishingCredentialsFuture = original.AppsListPublishingCredential
 type AppsListPublishingCredentialsSlotFuture = original.AppsListPublishingCredentialsSlotFuture
 type AppsMigrateMySQLFuture = original.AppsMigrateMySQLFuture
 type AppsMigrateStorageFuture = original.AppsMigrateStorageFuture
-type AppsRecoverFuture = original.AppsRecoverFuture
-type AppsRecoverSlotFuture = original.AppsRecoverSlotFuture
+type AppsRestoreFromBackupBlobFuture = original.AppsRestoreFromBackupBlobFuture
+type AppsRestoreFromBackupBlobSlotFuture = original.AppsRestoreFromBackupBlobSlotFuture
+type AppsRestoreFromDeletedAppFuture = original.AppsRestoreFromDeletedAppFuture
+type AppsRestoreFromDeletedAppSlotFuture = original.AppsRestoreFromDeletedAppSlotFuture
 type AppsRestoreFuture = original.AppsRestoreFuture
 type AppsRestoreSlotFuture = original.AppsRestoreSlotFuture
+type AppsRestoreSnapshotFuture = original.AppsRestoreSnapshotFuture
+type AppsRestoreSnapshotSlotFuture = original.AppsRestoreSnapshotSlotFuture
+type AppsStartNetworkTraceFuture = original.AppsStartNetworkTraceFuture
+type AppsStartNetworkTraceSlotFuture = original.AppsStartNetworkTraceSlotFuture
+type AppsStartWebSiteNetworkTraceOperationFuture = original.AppsStartWebSiteNetworkTraceOperationFuture
+type AppsStartWebSiteNetworkTraceOperationSlotFuture = original.AppsStartWebSiteNetworkTraceOperationSlotFuture
 type AppsSwapSlotSlotFuture = original.AppsSwapSlotSlotFuture
 type AppsSwapSlotWithProductionFuture = original.AppsSwapSlotWithProductionFuture
 type AutoHealActions = original.AutoHealActions
@@ -681,6 +725,8 @@ type AutoHealRules = original.AutoHealRules
 type AutoHealTriggers = original.AutoHealTriggers
 type AzureBlobStorageApplicationLogsConfig = original.AzureBlobStorageApplicationLogsConfig
 type AzureBlobStorageHTTPLogsConfig = original.AzureBlobStorageHTTPLogsConfig
+type AzureStorageInfoValue = original.AzureStorageInfoValue
+type AzureStoragePropertyDictionaryResource = original.AzureStoragePropertyDictionaryResource
 type AzureTableStorageApplicationLogsConfig = original.AzureTableStorageApplicationLogsConfig
 type BackupItem = original.BackupItem
 type BackupItemCollection = original.BackupItemCollection
@@ -696,7 +742,6 @@ type BillingMeterCollection = original.BillingMeterCollection
 type BillingMeterCollectionIterator = original.BillingMeterCollectionIterator
 type BillingMeterCollectionPage = original.BillingMeterCollectionPage
 type BillingMeterProperties = original.BillingMeterProperties
-type BillingMetersClient = original.BillingMetersClient
 type Capability = original.Capability
 type Certificate = original.Certificate
 type CertificateCollection = original.CertificateCollection
@@ -745,7 +790,10 @@ type DatabaseBackupSetting = original.DatabaseBackupSetting
 type DefaultErrorResponse = original.DefaultErrorResponse
 type DefaultErrorResponseError = original.DefaultErrorResponseError
 type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDetailsItem
+type DeletedAppRestoreRequest = original.DeletedAppRestoreRequest
+type DeletedAppRestoreRequestProperties = original.DeletedAppRestoreRequestProperties
 type DeletedSite = original.DeletedSite
+type DeletedSiteProperties = original.DeletedSiteProperties
 type DeletedWebAppCollection = original.DeletedWebAppCollection
 type DeletedWebAppCollectionIterator = original.DeletedWebAppCollectionIterator
 type DeletedWebAppCollectionPage = original.DeletedWebAppCollectionPage
@@ -806,7 +854,6 @@ type DomainsClient = original.DomainsClient
 type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
 type EnabledConfig = original.EnabledConfig
 type ErrorEntity = original.ErrorEntity
-type ErrorResponse = original.ErrorResponse
 type Experiments = original.Experiments
 type FileSystemApplicationLogsConfig = original.FileSystemApplicationLogsConfig
 type FileSystemHTTPLogsConfig = original.FileSystemHTTPLogsConfig
@@ -859,10 +906,12 @@ type ListCapability = original.ListCapability
 type ListCertificateEmail = original.ListCertificateEmail
 type ListCertificateOrderAction = original.ListCertificateOrderAction
 type ListHostingEnvironmentDiagnostics = original.ListHostingEnvironmentDiagnostics
+type ListNetworkTrace = original.ListNetworkTrace
 type ListOperation = original.ListOperation
 type ListVnetInfo = original.ListVnetInfo
 type ListVnetRoute = original.ListVnetRoute
 type LocalizableString = original.LocalizableString
+type LogSpecification = original.LogSpecification
 type MSDeploy = original.MSDeploy
 type MSDeployCore = original.MSDeployCore
 type MSDeployLog = original.MSDeployLog
@@ -888,6 +937,7 @@ type NameValuePair = original.NameValuePair
 type NetworkAccessControlEntry = original.NetworkAccessControlEntry
 type NetworkFeatures = original.NetworkFeatures
 type NetworkFeaturesProperties = original.NetworkFeaturesProperties
+type NetworkTrace = original.NetworkTrace
 type Operation = original.Operation
 type PerfMonCounterCollection = original.PerfMonCounterCollection
 type PerfMonCounterCollectionIterator = original.PerfMonCounterCollectionIterator
@@ -901,7 +951,13 @@ type PremierAddOnOfferCollection = original.PremierAddOnOfferCollection
 type PremierAddOnOfferCollectionIterator = original.PremierAddOnOfferCollectionIterator
 type PremierAddOnOfferCollectionPage = original.PremierAddOnOfferCollectionPage
 type PremierAddOnOfferProperties = original.PremierAddOnOfferProperties
+type PremierAddOnPatchResource = original.PremierAddOnPatchResource
+type PremierAddOnPatchResourceProperties = original.PremierAddOnPatchResourceProperties
 type PremierAddOnProperties = original.PremierAddOnProperties
+type PrivateAccess = original.PrivateAccess
+type PrivateAccessProperties = original.PrivateAccessProperties
+type PrivateAccessSubnet = original.PrivateAccessSubnet
+type PrivateAccessVirtualNetwork = original.PrivateAccessVirtualNetwork
 type ProcessInfo = original.ProcessInfo
 type ProcessInfoCollection = original.ProcessInfoCollection
 type ProcessInfoCollectionIterator = original.ProcessInfoCollectionIterator
@@ -972,8 +1028,6 @@ type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
 type ResponseMetaData = original.ResponseMetaData
 type RestoreRequest = original.RestoreRequest
 type RestoreRequestProperties = original.RestoreRequestProperties
-type RestoreResponse = original.RestoreResponse
-type RestoreResponseProperties = original.RestoreResponseProperties
 type ServiceSpecification = original.ServiceSpecification
 type SetObject = original.SetObject
 type Site = original.Site
@@ -1032,9 +1086,9 @@ type SnapshotCollection = original.SnapshotCollection
 type SnapshotCollectionIterator = original.SnapshotCollectionIterator
 type SnapshotCollectionPage = original.SnapshotCollectionPage
 type SnapshotProperties = original.SnapshotProperties
-type SnapshotRecoveryRequest = original.SnapshotRecoveryRequest
-type SnapshotRecoveryRequestProperties = original.SnapshotRecoveryRequestProperties
-type SnapshotRecoveryTarget = original.SnapshotRecoveryTarget
+type SnapshotRecoverySource = original.SnapshotRecoverySource
+type SnapshotRestoreRequest = original.SnapshotRestoreRequest
+type SnapshotRestoreRequestProperties = original.SnapshotRestoreRequestProperties
 type Solution = original.Solution
 type SourceControl = original.SourceControl
 type SourceControlCollection = original.SourceControlCollection
@@ -1054,6 +1108,8 @@ type StorageMigrationResponse = original.StorageMigrationResponse
 type StorageMigrationResponseProperties = original.StorageMigrationResponseProperties
 type String = original.String
 type StringDictionary = original.StringDictionary
+type SwiftVirtualNetwork = original.SwiftVirtualNetwork
+type SwiftVirtualNetworkProperties = original.SwiftVirtualNetworkProperties
 type TldLegalAgreement = original.TldLegalAgreement
 type TldLegalAgreementCollection = original.TldLegalAgreementCollection
 type TldLegalAgreementCollectionIterator = original.TldLegalAgreementCollectionIterator
@@ -1190,12 +1246,6 @@ func NewBillingMeterCollectionIterator(page BillingMeterCollectionPage) BillingM
 }
 func NewBillingMeterCollectionPage(getNextPage func(context.Context, BillingMeterCollection) (BillingMeterCollection, error)) BillingMeterCollectionPage {
 	return original.NewBillingMeterCollectionPage(getNextPage)
-}
-func NewBillingMetersClient(subscriptionID string) BillingMetersClient {
-	return original.NewBillingMetersClient(subscriptionID)
-}
-func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
-	return original.NewBillingMetersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
 	return original.NewCertificateCollectionIterator(page)
@@ -1536,6 +1586,12 @@ func PossibleAutoHealActionTypeValues() []AutoHealActionType {
 func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return original.PossibleAzureResourceTypeValues()
 }
+func PossibleAzureStorageStateValues() []AzureStorageState {
+	return original.PossibleAzureStorageStateValues()
+}
+func PossibleAzureStorageTypeValues() []AzureStorageType {
+	return original.PossibleAzureStorageTypeValues()
+}
 func PossibleBackupItemStatusValues() []BackupItemStatus {
 	return original.PossibleBackupItemStatusValues()
 }
@@ -1593,6 +1649,9 @@ func PossibleDomainTypeValues() []DomainType {
 func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return original.PossibleFrequencyUnitValues()
 }
+func PossibleFtpsStateValues() []FtpsState {
+	return original.PossibleFtpsStateValues()
+}
 func PossibleHostNameTypeValues() []HostNameType {
 	return original.PossibleHostNameTypeValues()
 }
@@ -1601,6 +1660,9 @@ func PossibleHostTypeValues() []HostType {
 }
 func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
 	return original.PossibleHostingEnvironmentStatusValues()
+}
+func PossibleIPFilterTagValues() []IPFilterTag {
+	return original.PossibleIPFilterTagValues()
 }
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()

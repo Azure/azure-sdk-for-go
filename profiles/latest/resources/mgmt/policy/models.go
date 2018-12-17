@@ -22,7 +22,7 @@ package policy
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/policy"
 )
 
 const (
@@ -35,6 +35,13 @@ const (
 	All          Mode = original.All
 	Indexed      Mode = original.Indexed
 	NotSpecified Mode = original.NotSpecified
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None           ResourceIdentityType = original.None
+	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
 type Type = original.Type
@@ -57,7 +64,17 @@ type DefinitionListResult = original.DefinitionListResult
 type DefinitionListResultIterator = original.DefinitionListResultIterator
 type DefinitionListResultPage = original.DefinitionListResultPage
 type DefinitionProperties = original.DefinitionProperties
+type DefinitionReference = original.DefinitionReference
 type DefinitionsClient = original.DefinitionsClient
+type ErrorResponse = original.ErrorResponse
+type Identity = original.Identity
+type SetDefinition = original.SetDefinition
+type SetDefinitionListResult = original.SetDefinitionListResult
+type SetDefinitionListResultIterator = original.SetDefinitionListResultIterator
+type SetDefinitionListResultPage = original.SetDefinitionListResultPage
+type SetDefinitionProperties = original.SetDefinitionProperties
+type SetDefinitionsClient = original.SetDefinitionsClient
+type Sku = original.Sku
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -86,11 +103,26 @@ func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSetDefinitionListResultIterator(page SetDefinitionListResultPage) SetDefinitionListResultIterator {
+	return original.NewSetDefinitionListResultIterator(page)
+}
+func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
+	return original.NewSetDefinitionListResultPage(getNextPage)
+}
+func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
+	return original.NewSetDefinitionsClient(subscriptionID)
+}
+func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
+	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleModeValues() []Mode {
 	return original.PossibleModeValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

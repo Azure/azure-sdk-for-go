@@ -22,7 +22,7 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-02-01/resources"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources"
 )
 
 const (
@@ -80,7 +80,9 @@ type DeploymentProperties = original.DeploymentProperties
 type DeploymentPropertiesExtended = original.DeploymentPropertiesExtended
 type DeploymentValidateResult = original.DeploymentValidateResult
 type DeploymentsClient = original.DeploymentsClient
+type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture = original.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture
 type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
+type DeploymentsDeleteAtSubscriptionScopeFuture = original.DeploymentsDeleteAtSubscriptionScopeFuture
 type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
 type ExportTemplateRequest = original.ExportTemplateRequest
 type GenericResource = original.GenericResource
@@ -97,6 +99,7 @@ type GroupsClient = original.GroupsClient
 type GroupsDeleteFuture = original.GroupsDeleteFuture
 type HTTPMessage = original.HTTPMessage
 type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -105,6 +108,12 @@ type MoveInfo = original.MoveInfo
 type MoveResourcesFuture = original.MoveResourcesFuture
 type OnErrorDeployment = original.OnErrorDeployment
 type OnErrorDeploymentExtended = original.OnErrorDeploymentExtended
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type ParametersLink = original.ParametersLink
 type Plan = original.Plan
 type Provider = original.Provider
@@ -180,6 +189,18 @@ func NewListResultIterator(page ListResultPage) ListResultIterator {
 }
 func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
 	return original.NewListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
 	return original.NewProviderListResultIterator(page)

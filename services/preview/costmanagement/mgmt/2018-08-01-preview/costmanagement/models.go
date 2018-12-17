@@ -518,6 +518,12 @@ type AlertProperties struct {
 	CloseTime *date.Time `json:"closeTime,omitempty"`
 	// Status - The current status of the alert. Possible values include: 'Active', 'Overridden', 'Resolved', 'Dismissed'
 	Status AlertStatus `json:"status,omitempty"`
+	// StatusModificationTime - The current status when alert status was modified.
+	StatusModificationTime *date.Time `json:"statusModificationTime,omitempty"`
+	// ModificationTime - The current status when alert was modified.
+	ModificationTime *date.Time `json:"modificationTime,omitempty"`
+	// ModificationUsername - The username who modified the alert.
+	ModificationUsername *string `json:"modificationUsername,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AlertProperties.
@@ -549,6 +555,15 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.Status != "" {
 		objectMap["status"] = ap.Status
+	}
+	if ap.StatusModificationTime != nil {
+		objectMap["statusModificationTime"] = ap.StatusModificationTime
+	}
+	if ap.ModificationTime != nil {
+		objectMap["modificationTime"] = ap.ModificationTime
+	}
+	if ap.ModificationUsername != nil {
+		objectMap["modificationUsername"] = ap.ModificationUsername
 	}
 	return json.Marshal(objectMap)
 }

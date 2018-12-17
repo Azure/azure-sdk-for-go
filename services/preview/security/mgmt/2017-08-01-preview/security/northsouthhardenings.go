@@ -41,6 +41,100 @@ func NewNorthSouthHardeningsClientWithBaseURI(baseURI string, subscriptionID str
 	return NorthSouthHardeningsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
+// Enforce enforces the given collections of traffic hardenings rule's on the VM's NSG
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// extendedResourceProvider - resource provider name of the base resource
+// extendedResourceType - type of the base resource
+// extendedResourceName - the name of the base resource
+// northSouthResourceName - name of a north-south resource.
+func (client NorthSouthHardeningsClient) Enforce(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, northSouthResourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NorthSouthHardeningsClient.Enforce")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.NorthSouthHardeningsClient", "Enforce", err.Error())
+	}
+
+	req, err := client.EnforcePreparer(ctx, resourceGroupName, extendedResourceProvider, extendedResourceType, extendedResourceName, northSouthResourceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "Enforce", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EnforceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "Enforce", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EnforceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "Enforce", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// EnforcePreparer prepares the Enforce request.
+func (client NorthSouthHardeningsClient) EnforcePreparer(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, northSouthResourceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"extendedResourceName":                autorest.Encode("path", extendedResourceName),
+		"extendedResourceProvider":            autorest.Encode("path", extendedResourceProvider),
+		"extendedResourceType":                autorest.Encode("path", extendedResourceType),
+		"northSouthResourceName":              autorest.Encode("path", northSouthResourceName),
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"trafficHardeningsRulesEnforceAction": autorest.Encode("path", "enforce"),
+	}
+
+	const APIVersion = "2015-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{extendedResourceProvider}/{extendedResourceType}/{extendedResourceName}/providers/Microsoft.Security/northSouthHardenings/{northSouthResourceName}/enforce", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EnforceSender sends the Enforce request. The method will close the
+// http.Response Body if it receives an error.
+func (client NorthSouthHardeningsClient) EnforceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// EnforceResponder handles the response to the Enforce request. The method always
+// closes the http.Response Body.
+func (client NorthSouthHardeningsClient) EnforceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get gets the north-south traffic hardening for the specified resource
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case

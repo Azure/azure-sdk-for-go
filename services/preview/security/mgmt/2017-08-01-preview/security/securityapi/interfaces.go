@@ -176,6 +176,7 @@ var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsC
 
 // NorthSouthHardeningsClientAPI contains the set of methods on the NorthSouthHardeningsClient type.
 type NorthSouthHardeningsClientAPI interface {
+	Enforce(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, northSouthResourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, northSouthResourceName string) (result security.NorthSouthHardenings, err error)
 	List(ctx context.Context) (result security.NorthSouthHardeningsListPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.NorthSouthHardeningsListPage, err error)

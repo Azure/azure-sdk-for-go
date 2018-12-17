@@ -126,7 +126,7 @@ func (client PropertyClient) CreateOrUpdateResponder(resp *http.Response) (resul
 	return
 }
 
-// Delete deletes specific property from the the API Management service instance.
+// Delete deletes specific property from the API Management service instance.
 // Parameters:
 // apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.

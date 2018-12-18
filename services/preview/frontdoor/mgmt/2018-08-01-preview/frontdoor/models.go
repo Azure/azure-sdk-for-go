@@ -142,6 +142,23 @@ func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSu
 	return []CustomHTTPSProvisioningSubstate{CertificateDeleted, CertificateDeployed, DeletingCertificate, DeployingCertificate, DomainControlValidationRequestApproved, DomainControlValidationRequestRejected, DomainControlValidationRequestTimedOut, IssuingCertificate, PendingDomainControlValidationREquestApproval, SubmittingDomainControlValidationRequest}
 }
 
+// DestinationProtocol enumerates the values for destination protocol.
+type DestinationProtocol string
+
+const (
+	// Htt ...
+	Htt DestinationProtocol = "Htt"
+	// HTTPS ...
+	HTTPS DestinationProtocol = "Https"
+	// MatchRequest ...
+	MatchRequest DestinationProtocol = "MatchRequest"
+)
+
+// PossibleDestinationProtocolValues returns an array of possible values for the DestinationProtocol const type.
+func PossibleDestinationProtocolValues() []DestinationProtocol {
+	return []DestinationProtocol{Htt, HTTPS, MatchRequest}
+}
+
 // DynamicCompressionEnabled enumerates the values for dynamic compression enabled.
 type DynamicCompressionEnabled string
 
@@ -191,17 +208,17 @@ func PossibleEnabledStateEnumValues() []EnabledStateEnum {
 type ForwardingProtocol string
 
 const (
-	// HTTPOnly ...
-	HTTPOnly ForwardingProtocol = "HttpOnly"
-	// HTTPSOnly ...
-	HTTPSOnly ForwardingProtocol = "HttpsOnly"
-	// MatchRequest ...
-	MatchRequest ForwardingProtocol = "MatchRequest"
+	// ForwardingProtocolHTTPOnly ...
+	ForwardingProtocolHTTPOnly ForwardingProtocol = "HttpOnly"
+	// ForwardingProtocolHTTPSOnly ...
+	ForwardingProtocolHTTPSOnly ForwardingProtocol = "HttpsOnly"
+	// ForwardingProtocolMatchRequest ...
+	ForwardingProtocolMatchRequest ForwardingProtocol = "MatchRequest"
 )
 
 // PossibleForwardingProtocolValues returns an array of possible values for the ForwardingProtocol const type.
 func PossibleForwardingProtocolValues() []ForwardingProtocol {
-	return []ForwardingProtocol{HTTPOnly, HTTPSOnly, MatchRequest}
+	return []ForwardingProtocol{ForwardingProtocolHTTPOnly, ForwardingProtocolHTTPSOnly, ForwardingProtocolMatchRequest}
 }
 
 // MatchCondition enumerates the values for match condition.
@@ -298,15 +315,15 @@ func PossibleOperatorValues() []Operator {
 type Protocol string
 
 const (
-	// HTTP ...
-	HTTP Protocol = "Http"
-	// HTTPS ...
-	HTTPS Protocol = "Https"
+	// ProtocolHTTP ...
+	ProtocolHTTP Protocol = "Http"
+	// ProtocolHTTPS ...
+	ProtocolHTTPS Protocol = "Https"
 )
 
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
-	return []Protocol{HTTP, HTTPS}
+	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
 }
 
 // Query enumerates the values for query.
@@ -322,6 +339,25 @@ const (
 // PossibleQueryValues returns an array of possible values for the Query const type.
 func PossibleQueryValues() []Query {
 	return []Query{StripAll, StripNone}
+}
+
+// RedirectProtocol enumerates the values for redirect protocol.
+type RedirectProtocol string
+
+const (
+	// Found302 ...
+	Found302 RedirectProtocol = "Found(302)"
+	// Moved301 ...
+	Moved301 RedirectProtocol = "Moved(301)"
+	// PermanentRedirect308 ...
+	PermanentRedirect308 RedirectProtocol = "PermanentRedirect(308)"
+	// TemporaryRedirect307 ...
+	TemporaryRedirect307 RedirectProtocol = "TemporaryRedirect(307)"
+)
+
+// PossibleRedirectProtocolValues returns an array of possible values for the RedirectProtocol const type.
+func PossibleRedirectProtocolValues() []RedirectProtocol {
+	return []RedirectProtocol{Found302, Moved301, PermanentRedirect308, TemporaryRedirect307}
 }
 
 // ResourceState enumerates the values for resource state.
@@ -360,6 +396,21 @@ const (
 // PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
 func PossibleResourceTypeValues() []ResourceType {
 	return []ResourceType{MicrosoftNetworkfrontDoors, MicrosoftNetworkfrontDoorsfrontendEndpoints}
+}
+
+// RoutingRuleType enumerates the values for routing rule type.
+type RoutingRuleType string
+
+const (
+	// Forward ...
+	Forward RoutingRuleType = "Forward"
+	// Redirect ...
+	Redirect RoutingRuleType = "Redirect"
+)
+
+// PossibleRoutingRuleTypeValues returns an array of possible values for the RoutingRuleType const type.
+func PossibleRoutingRuleTypeValues() []RoutingRuleType {
+	return []RoutingRuleType{Forward, Redirect}
 }
 
 // RuleGroupOverride enumerates the values for rule group override.
@@ -1880,7 +1931,7 @@ type HealthProbeSettingsProperties struct {
 	ResourceState ResourceState `json:"resourceState,omitempty"`
 	// Path - The path to use for the health probe. Default is /
 	Path *string `json:"path,omitempty"`
-	// Protocol - Protocol scheme to use for this probe. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - Protocol scheme to use for this probe. Possible values include: 'ProtocolHTTP', 'ProtocolHTTPS'
 	Protocol Protocol `json:"protocol,omitempty"`
 	// IntervalInSeconds - The number of seconds between health probes.
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
@@ -1890,7 +1941,7 @@ type HealthProbeSettingsProperties struct {
 type HealthProbeSettingsUpdateParameters struct {
 	// Path - The path to use for the health probe. Default is /
 	Path *string `json:"path,omitempty"`
-	// Protocol - Protocol scheme to use for this probe. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - Protocol scheme to use for this probe. Possible values include: 'ProtocolHTTP', 'ProtocolHTTPS'
 	Protocol Protocol `json:"protocol,omitempty"`
 	// IntervalInSeconds - The number of seconds between health probes.
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
@@ -2552,6 +2603,27 @@ type PurgeParameters struct {
 	ContentPaths *[]string `json:"contentPaths,omitempty"`
 }
 
+// RedirectConfiguration the configuration for a redirect routing rule. This object is needed only if the
+// type property of RoutingRule is set to Redirect.
+type RedirectConfiguration struct {
+	// RedirectType - The redirect type the rule will use when redirecting traffic. Possible values include: 'Moved301', 'Found302', 'TemporaryRedirect307', 'PermanentRedirect308'
+	RedirectType RedirectProtocol `json:"redirectType,omitempty"`
+	// DestinationProtocol - The protocol of the destination where the traffic is forwarded to. Possible values include: 'MatchRequest', 'Htt', 'HTTPS'
+	DestinationProtocol DestinationProtocol `json:"destinationProtocol,omitempty"`
+	// DestinationHost - If left blank, then we will use the incoming host as the destination host.
+	DestinationHost *string `json:"destinationHost,omitempty"`
+	// DestinationPath - Path cannot be empty and must start with /.
+	DestinationPath *string `json:"destinationPath,omitempty"`
+	// DestinationFragment - Fragment is the part of the URL that comes after #. Do not include the #.
+	DestinationFragment *string `json:"destinationFragment,omitempty"`
+	// PreservePath - Indicates whether the path is preserved.
+	PreservePath *bool `json:"preservePath,omitempty"`
+	// PreserveQueryString - Indicates whether the query string is preserved.
+	PreserveQueryString *bool `json:"preserveQueryString,omitempty"`
+	// ExtraQueryString - Any string to be added to the query string in the destination URL. ? and & will be added automatically so do not include them.
+	ExtraQueryString *string `json:"extraQueryString,omitempty"`
+}
+
 // Resource common resource representation.
 type Resource struct {
 	// ID - Resource ID.
@@ -2595,8 +2667,8 @@ type RoutingRule struct {
 	*RoutingRuleProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
+	// Type - Resource type. Possible values include: 'Forward', 'Redirect'
+	Type RoutingRuleType `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -2610,7 +2682,7 @@ func (rr RoutingRule) MarshalJSON() ([]byte, error) {
 	if rr.Name != nil {
 		objectMap["name"] = rr.Name
 	}
-	if rr.Type != nil {
+	if rr.Type != "" {
 		objectMap["type"] = rr.Type
 	}
 	if rr.ID != nil {
@@ -2648,12 +2720,12 @@ func (rr *RoutingRule) UnmarshalJSON(body []byte) error {
 			}
 		case "type":
 			if v != nil {
-				var typeVar string
+				var typeVar RoutingRuleType
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				rr.Type = &typeVar
+				rr.Type = typeVar
 			}
 		case "id":
 			if v != nil {
@@ -2829,7 +2901,7 @@ type RoutingRuleProperties struct {
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
 	// CustomForwardingPath - A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
 	CustomForwardingPath *string `json:"customForwardingPath,omitempty"`
-	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
+	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'ForwardingProtocolHTTPOnly', 'ForwardingProtocolHTTPSOnly', 'ForwardingProtocolMatchRequest'
 	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
 	// CacheConfiguration - The caching configuration associated with this rule.
 	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
@@ -2837,6 +2909,8 @@ type RoutingRuleProperties struct {
 	BackendPool *SubResource `json:"backendPool,omitempty"`
 	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
 	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// RedirectConfiguration - A reference to the redirect routing configuration.
+	RedirectConfiguration *RedirectConfiguration `json:"redirectConfiguration,omitempty"`
 }
 
 // RoutingRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2901,7 +2975,7 @@ type RoutingRuleUpdateParameters struct {
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
 	// CustomForwardingPath - A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
 	CustomForwardingPath *string `json:"customForwardingPath,omitempty"`
-	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
+	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'ForwardingProtocolHTTPOnly', 'ForwardingProtocolHTTPSOnly', 'ForwardingProtocolMatchRequest'
 	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
 	// CacheConfiguration - The caching configuration associated with this rule.
 	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
@@ -2909,6 +2983,8 @@ type RoutingRuleUpdateParameters struct {
 	BackendPool *SubResource `json:"backendPool,omitempty"`
 	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
 	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// RedirectConfiguration - A reference to the redirect routing configuration.
+	RedirectConfiguration *RedirectConfiguration `json:"redirectConfiguration,omitempty"`
 }
 
 // SubResource reference to another subresource.

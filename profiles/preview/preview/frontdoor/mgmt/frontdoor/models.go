@@ -82,6 +82,14 @@ const (
 	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
 )
 
+type DestinationProtocol = original.DestinationProtocol
+
+const (
+	Htt          DestinationProtocol = original.Htt
+	HTTPS        DestinationProtocol = original.HTTPS
+	MatchRequest DestinationProtocol = original.MatchRequest
+)
+
 type DynamicCompressionEnabled = original.DynamicCompressionEnabled
 
 const (
@@ -106,9 +114,9 @@ const (
 type ForwardingProtocol = original.ForwardingProtocol
 
 const (
-	HTTPOnly     ForwardingProtocol = original.HTTPOnly
-	HTTPSOnly    ForwardingProtocol = original.HTTPSOnly
-	MatchRequest ForwardingProtocol = original.MatchRequest
+	ForwardingProtocolHTTPOnly     ForwardingProtocol = original.ForwardingProtocolHTTPOnly
+	ForwardingProtocolHTTPSOnly    ForwardingProtocol = original.ForwardingProtocolHTTPSOnly
+	ForwardingProtocolMatchRequest ForwardingProtocol = original.ForwardingProtocolMatchRequest
 )
 
 type MatchCondition = original.MatchCondition
@@ -157,8 +165,8 @@ const (
 type Protocol = original.Protocol
 
 const (
-	HTTP  Protocol = original.HTTP
-	HTTPS Protocol = original.HTTPS
+	ProtocolHTTP  Protocol = original.ProtocolHTTP
+	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
 type Query = original.Query
@@ -166,6 +174,15 @@ type Query = original.Query
 const (
 	StripAll  Query = original.StripAll
 	StripNone Query = original.StripNone
+)
+
+type RedirectProtocol = original.RedirectProtocol
+
+const (
+	Found302             RedirectProtocol = original.Found302
+	Moved301             RedirectProtocol = original.Moved301
+	PermanentRedirect308 RedirectProtocol = original.PermanentRedirect308
+	TemporaryRedirect307 RedirectProtocol = original.TemporaryRedirect307
 )
 
 type ResourceState = original.ResourceState
@@ -184,6 +201,13 @@ type ResourceType = original.ResourceType
 const (
 	MicrosoftNetworkfrontDoors                  ResourceType = original.MicrosoftNetworkfrontDoors
 	MicrosoftNetworkfrontDoorsfrontendEndpoints ResourceType = original.MicrosoftNetworkfrontDoorsfrontendEndpoints
+)
+
+type RoutingRuleType = original.RoutingRuleType
+
+const (
+	Forward  RoutingRuleType = original.Forward
+	Redirect RoutingRuleType = original.Redirect
 )
 
 type RuleGroupOverride = original.RuleGroupOverride
@@ -317,6 +341,7 @@ type PoliciesDeleteFuture = original.PoliciesDeleteFuture
 type PolicySettings = original.PolicySettings
 type Properties = original.Properties
 type PurgeParameters = original.PurgeParameters
+type RedirectConfiguration = original.RedirectConfiguration
 type Resource = original.Resource
 type RoutingRule = original.RoutingRule
 type RoutingRuleListResult = original.RoutingRuleListResult
@@ -452,6 +477,9 @@ func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState
 func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
 	return original.PossibleCustomHTTPSProvisioningSubstateValues()
 }
+func PossibleDestinationProtocolValues() []DestinationProtocol {
+	return original.PossibleDestinationProtocolValues()
+}
 func PossibleDynamicCompressionEnabledValues() []DynamicCompressionEnabled {
 	return original.PossibleDynamicCompressionEnabledValues()
 }
@@ -482,11 +510,17 @@ func PossibleProtocolValues() []Protocol {
 func PossibleQueryValues() []Query {
 	return original.PossibleQueryValues()
 }
+func PossibleRedirectProtocolValues() []RedirectProtocol {
+	return original.PossibleRedirectProtocolValues()
+}
 func PossibleResourceStateValues() []ResourceState {
 	return original.PossibleResourceStateValues()
 }
 func PossibleResourceTypeValues() []ResourceType {
 	return original.PossibleResourceTypeValues()
+}
+func PossibleRoutingRuleTypeValues() []RoutingRuleType {
+	return original.PossibleRoutingRuleTypeValues()
 }
 func PossibleRuleGroupOverrideValues() []RuleGroupOverride {
 	return original.PossibleRuleGroupOverrideValues()

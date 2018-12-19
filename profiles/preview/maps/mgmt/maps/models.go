@@ -35,6 +35,7 @@ const (
 type Account = original.Account
 type AccountCreateParameters = original.AccountCreateParameters
 type AccountKeys = original.AccountKeys
+type AccountProperties = original.AccountProperties
 type AccountUpdateParameters = original.AccountUpdateParameters
 type Accounts = original.Accounts
 type AccountsClient = original.AccountsClient

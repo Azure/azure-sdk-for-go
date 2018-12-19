@@ -1411,6 +1411,64 @@ type ManagedClusterServicePrincipalProfile struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
+// ManagedClustersResetAADProfileFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ManagedClustersResetAADProfileFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedClustersResetAADProfileFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetAADProfileFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetAADProfileFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
+		mc, err = client.ResetAADProfileResponder(mc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetAADProfileFuture", "Result", mc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedClustersResetServicePrincipalProfileFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ManagedClustersResetServicePrincipalProfileFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetServicePrincipalProfileFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
+		mc, err = client.ResetServicePrincipalProfileResponder(mc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetServicePrincipalProfileFuture", "Result", mc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // ManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedClustersUpdateTagsFuture struct {

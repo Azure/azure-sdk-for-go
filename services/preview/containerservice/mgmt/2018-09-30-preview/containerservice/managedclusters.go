@@ -843,6 +843,179 @@ func (client ManagedClustersClient) ListClusterUserCredentialsResponder(resp *ht
 	return
 }
 
+// ResetAADProfile update the AAD Profile for a managed cluster.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the managed cluster resource.
+// parameters - parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
+func (client ManagedClustersClient) ResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile) (result ManagedClustersResetAADProfileFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.ResetAADProfile")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ClientAppID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.ServerAppID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("containerservice.ManagedClustersClient", "ResetAADProfile", err.Error())
+	}
+
+	req, err := client.ResetAADProfilePreparer(ctx, resourceGroupName, resourceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ResetAADProfileSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ResetAADProfilePreparer prepares the ResetAADProfile request.
+func (client ManagedClustersClient) ResetAADProfilePreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-03-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ResetAADProfileSender sends the ResetAADProfile request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedClustersClient) ResetAADProfileSender(req *http.Request) (future ManagedClustersResetAADProfileFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ResetAADProfileResponder handles the response to the ResetAADProfile request. The method always
+// closes the http.Response Body.
+func (client ManagedClustersClient) ResetAADProfileResponder(resp *http.Response) (result ManagedCluster, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ResetServicePrincipalProfile update the service principal Profile for a managed cluster.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the managed cluster resource.
+// parameters - parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
+func (client ManagedClustersClient) ResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile) (result ManagedClustersResetServicePrincipalProfileFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.ResetServicePrincipalProfile")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ClientID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", err.Error())
+	}
+
+	req, err := client.ResetServicePrincipalProfilePreparer(ctx, resourceGroupName, resourceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ResetServicePrincipalProfileSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ResetServicePrincipalProfilePreparer prepares the ResetServicePrincipalProfile request.
+func (client ManagedClustersClient) ResetServicePrincipalProfilePreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-03-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ResetServicePrincipalProfileSender sends the ResetServicePrincipalProfile request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedClustersClient) ResetServicePrincipalProfileSender(req *http.Request) (future ManagedClustersResetServicePrincipalProfileFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ResetServicePrincipalProfileResponder handles the response to the ResetServicePrincipalProfile request. The method always
+// closes the http.Response Body.
+func (client ManagedClustersClient) ResetServicePrincipalProfileResponder(resp *http.Response) (result ManagedCluster, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // UpdateTags updates a managed cluster with the specified tags.
 // Parameters:
 // resourceGroupName - the name of the resource group.

@@ -50,7 +50,6 @@ type (
 	SendOption func(event *Message) error
 
 	eventer interface {
-		Set(key, value string)
 		toMsg() (*amqp.Message, error)
 	}
 
@@ -121,34 +120,34 @@ func (s *Sender) Close(ctx context.Context) error {
 // Send will send a message to the entity path with options
 //
 // This will retry sending the message if the server responds with a busy error.
-func (s *Sender) Send(ctx context.Context, event *Message, opts ...SendOption) error {
+func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) error {
 	span, ctx := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
 	defer span.Finish()
 
-	if event.SessionID == nil {
-		event.SessionID = &s.session.SessionID
+	if msg.SessionID == nil {
+		msg.SessionID = &s.session.SessionID
 		next := s.session.getNext()
-		event.GroupSequence = &next
+		msg.GroupSequence = &next
 	}
 
-	if event.ID == "" {
+	if msg.ID == "" {
 		id, err := uuid.NewV4()
 		if err != nil {
 			log.For(ctx).Error(err)
 			return err
 		}
-		event.ID = id.String()
+		msg.ID = id.String()
 	}
 
 	for _, opt := range opts {
-		err := opt(event)
+		err := opt(msg)
 		if err != nil {
 			log.For(ctx).Error(err)
 			return err
 		}
 	}
 
-	return s.trySend(ctx, event)
+	return s.trySend(ctx, msg)
 }
 
 func (s *Sender) trySend(ctx context.Context, evt eventer) error {
@@ -165,7 +164,10 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 	if err != nil {
 		return err
 	}
-	sp.SetTag("sb.message-id", msg.Properties.MessageID)
+
+	if msg.Properties != nil {
+		sp.SetTag("sb.message-id", msg.Properties.MessageID)
+	}
 
 	for {
 		select {
@@ -179,6 +181,8 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 				return err
 			}
 
+			fmt.Println("trying but got err: ", err)
+
 			switch err.(type) {
 			case *amqp.Error, *amqp.DetachError:
 				log.For(ctx).Debug("amqp error, delaying 4 seconds: " + err.Error())
@@ -190,7 +194,6 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 				}
 				log.For(ctx).Debug("recovered connection")
 			default:
-				fmt.Println(err.Error())
 				return err
 			}
 		}
@@ -234,9 +237,9 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 	}
 
 	amqpSender, err := amqpSession.NewSender(
+		amqp.LinkReceiverSettle(amqp.ModeSecond),
 		amqp.LinkTargetAddress(s.getAddress()),
-		amqp.LinkSenderSettle(amqp.ModeMixed),
-		amqp.LinkReceiverSettle(amqp.ModeSecond))
+		amqp.LinkSenderSettle(amqp.ModeMixed))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err

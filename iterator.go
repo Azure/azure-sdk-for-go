@@ -51,7 +51,7 @@ func (ms MessageSliceIterator) Done() bool {
 	return ms.Cursor >= len(ms.Target)
 }
 
-// Next fetches the Message in the slice at a position one larger than the last one accessed.s
+// Next fetches the Message in the slice at a position one larger than the last one accessed.
 func (ms *MessageSliceIterator) Next(_ context.Context) (*Message, error) {
 	if ms.Done() {
 		return nil, ErrNoMessages{}

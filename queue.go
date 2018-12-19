@@ -167,7 +167,7 @@ func (ns *Namespace) NewQueue(name string, opts ...QueueOption) (*Queue, error) 
 }
 
 // Send sends messages to the Queue
-func (q *Queue) Send(ctx context.Context, event *Message) error {
+func (q *Queue) Send(ctx context.Context, msg *Message) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
 	defer span.Finish()
 
@@ -176,7 +176,20 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 		log.For(ctx).Error(err)
 		return err
 	}
-	return q.sender.Send(ctx, event)
+	return q.sender.Send(ctx, msg)
+}
+
+func (q *Queue) SendBatch(ctx context.Context, batch *MessageBatch) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
+	defer span.Finish()
+
+	err := q.ensureSender(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	return q.sender.trySend(ctx, batch)
 }
 
 // ScheduleAt will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers

@@ -32,7 +32,7 @@ func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
 			suite.NoError(q.Close(ctx))
 			if !t.Failed() {
 				// If there are message on the queue this would mean that a lock wasn't held and the message was requeued.
-				checkZeroQueueMessages(ctx, t, ns, queueName)
+				assertZeroQueueMessages(ctx, t, ns, queueName)
 			}
 		}
 		suite.T().Run(name, setupTestTeardown)

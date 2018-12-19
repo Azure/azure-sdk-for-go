@@ -146,8 +146,8 @@ func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSu
 type DestinationProtocol string
 
 const (
-	// Htt ...
-	Htt DestinationProtocol = "Htt"
+	// HTTP ...
+	HTTP DestinationProtocol = "Http"
 	// HTTPS ...
 	HTTPS DestinationProtocol = "Https"
 	// MatchRequest ...
@@ -156,7 +156,7 @@ const (
 
 // PossibleDestinationProtocolValues returns an array of possible values for the DestinationProtocol const type.
 func PossibleDestinationProtocolValues() []DestinationProtocol {
-	return []DestinationProtocol{Htt, HTTPS, MatchRequest}
+	return []DestinationProtocol{HTTP, HTTPS, MatchRequest}
 }
 
 // DynamicCompressionEnabled enumerates the values for dynamic compression enabled.
@@ -398,19 +398,19 @@ func PossibleResourceTypeValues() []ResourceType {
 	return []ResourceType{MicrosoftNetworkfrontDoors, MicrosoftNetworkfrontDoorsfrontendEndpoints}
 }
 
-// RoutingRuleType enumerates the values for routing rule type.
-type RoutingRuleType string
+// RouteType enumerates the values for route type.
+type RouteType string
 
 const (
 	// Forward ...
-	Forward RoutingRuleType = "Forward"
+	Forward RouteType = "Forward"
 	// Redirect ...
-	Redirect RoutingRuleType = "Redirect"
+	Redirect RouteType = "Redirect"
 )
 
-// PossibleRoutingRuleTypeValues returns an array of possible values for the RoutingRuleType const type.
-func PossibleRoutingRuleTypeValues() []RoutingRuleType {
-	return []RoutingRuleType{Forward, Redirect}
+// PossibleRouteTypeValues returns an array of possible values for the RouteType const type.
+func PossibleRouteTypeValues() []RouteType {
+	return []RouteType{Forward, Redirect}
 }
 
 // RuleGroupOverride enumerates the values for rule group override.
@@ -2608,7 +2608,7 @@ type PurgeParameters struct {
 type RedirectConfiguration struct {
 	// RedirectType - The redirect type the rule will use when redirecting traffic. Possible values include: 'Moved301', 'Found302', 'TemporaryRedirect307', 'PermanentRedirect308'
 	RedirectType RedirectProtocol `json:"redirectType,omitempty"`
-	// DestinationProtocol - The protocol of the destination where the traffic is forwarded to. Possible values include: 'MatchRequest', 'Htt', 'HTTPS'
+	// DestinationProtocol - The protocol of the destination where the traffic is forwarded to. Possible values include: 'MatchRequest', 'HTTP', 'HTTPS'
 	DestinationProtocol DestinationProtocol `json:"destinationProtocol,omitempty"`
 	// DestinationHost - If left blank, then we will use the incoming host as the destination host.
 	DestinationHost *string `json:"destinationHost,omitempty"`
@@ -2667,8 +2667,8 @@ type RoutingRule struct {
 	*RoutingRuleProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type. Possible values include: 'Forward', 'Redirect'
-	Type RoutingRuleType `json:"type,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -2682,7 +2682,7 @@ func (rr RoutingRule) MarshalJSON() ([]byte, error) {
 	if rr.Name != nil {
 		objectMap["name"] = rr.Name
 	}
-	if rr.Type != "" {
+	if rr.Type != nil {
 		objectMap["type"] = rr.Type
 	}
 	if rr.ID != nil {
@@ -2720,12 +2720,12 @@ func (rr *RoutingRule) UnmarshalJSON(body []byte) error {
 			}
 		case "type":
 			if v != nil {
-				var typeVar RoutingRuleType
+				var typeVar string
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				rr.Type = typeVar
+				rr.Type = &typeVar
 			}
 		case "id":
 			if v != nil {
@@ -2893,6 +2893,8 @@ func NewRoutingRuleListResultPage(getNextPage func(context.Context, RoutingRuleL
 type RoutingRuleProperties struct {
 	// ResourceState - Resource status. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
 	ResourceState ResourceState `json:"resourceState,omitempty"`
+	// RouteType - Route type. Possible values include: 'Forward', 'Redirect'
+	RouteType RouteType `json:"routeType,omitempty"`
 	// FrontendEndpoints - Frontend endpoints associated with this rule
 	FrontendEndpoints *[]SubResource `json:"frontendEndpoints,omitempty"`
 	// AcceptedProtocols - Protocol schemes to match for this rule
@@ -2967,6 +2969,8 @@ func (future *RoutingRulesDeleteFuture) Result(client RoutingRulesClient) (ar au
 
 // RoutingRuleUpdateParameters routing rules to apply to an endpoint
 type RoutingRuleUpdateParameters struct {
+	// RouteType - Route type. Possible values include: 'Forward', 'Redirect'
+	RouteType RouteType `json:"routeType,omitempty"`
 	// FrontendEndpoints - Frontend endpoints associated with this rule
 	FrontendEndpoints *[]SubResource `json:"frontendEndpoints,omitempty"`
 	// AcceptedProtocols - Protocol schemes to match for this rule

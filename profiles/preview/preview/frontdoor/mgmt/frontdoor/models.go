@@ -85,7 +85,7 @@ const (
 type DestinationProtocol = original.DestinationProtocol
 
 const (
-	Htt          DestinationProtocol = original.Htt
+	HTTP         DestinationProtocol = original.HTTP
 	HTTPS        DestinationProtocol = original.HTTPS
 	MatchRequest DestinationProtocol = original.MatchRequest
 )
@@ -203,11 +203,11 @@ const (
 	MicrosoftNetworkfrontDoorsfrontendEndpoints ResourceType = original.MicrosoftNetworkfrontDoorsfrontendEndpoints
 )
 
-type RoutingRuleType = original.RoutingRuleType
+type RouteType = original.RouteType
 
 const (
-	Forward  RoutingRuleType = original.Forward
-	Redirect RoutingRuleType = original.Redirect
+	Forward  RouteType = original.Forward
+	Redirect RouteType = original.Redirect
 )
 
 type RuleGroupOverride = original.RuleGroupOverride
@@ -519,8 +519,8 @@ func PossibleResourceStateValues() []ResourceState {
 func PossibleResourceTypeValues() []ResourceType {
 	return original.PossibleResourceTypeValues()
 }
-func PossibleRoutingRuleTypeValues() []RoutingRuleType {
-	return original.PossibleRoutingRuleTypeValues()
+func PossibleRouteTypeValues() []RouteType {
+	return original.PossibleRouteTypeValues()
 }
 func PossibleRuleGroupOverrideValues() []RuleGroupOverride {
 	return original.PossibleRuleGroupOverrideValues()

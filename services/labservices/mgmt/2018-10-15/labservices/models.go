@@ -1908,7 +1908,7 @@ type ListEnvironmentsPayload struct {
 // ListEnvironmentsResponse represents the list of environments owned by a user
 type ListEnvironmentsResponse struct {
 	autorest.Response `json:"-"`
-	// Environments - List of all the evironments
+	// Environments - List of all the environments
 	Environments *[]EnvironmentDetails `json:"environments,omitempty"`
 }
 
@@ -2002,9 +2002,9 @@ type OperationStatusResponse struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// PersonalPerferencesOperationsPayload represents payload for any Environment operations like get, start,
+// PersonalPreferencesOperationsPayload represents payload for any Environment operations like get, start,
 // stop, connect
-type PersonalPerferencesOperationsPayload struct {
+type PersonalPreferencesOperationsPayload struct {
 	// LabAccountResourceID - Resource Id of the lab account
 	LabAccountResourceID *string `json:"labAccountResourceId,omitempty"`
 	// AddRemove - Enum indicating if user is adding or removing a favorite lab. Possible values include: 'Add', 'Remove'

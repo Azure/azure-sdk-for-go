@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the REST APIs for Azure Active Drectory Connect Health
+// OperationsClient is the REST APIs for Azure Active Directory Connect Health
 type OperationsClient struct {
 	BaseClient
 }

@@ -29,9 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ContainerHostMappingsClient = original.ContainerHostMappingsClient
-type ControllersClient = original.ControllersClient
 type InstanceType = original.InstanceType
 
 const (
@@ -57,7 +54,10 @@ const (
 	Standard SkuTier = original.Standard
 )
 
+type BaseClient = original.BaseClient
+type BasicOrchestratorSpecificConnectionDetails = original.BasicOrchestratorSpecificConnectionDetails
 type ContainerHostMapping = original.ContainerHostMapping
+type ContainerHostMappingsClient = original.ContainerHostMappingsClient
 type Controller = original.Controller
 type ControllerConnectionDetails = original.ControllerConnectionDetails
 type ControllerConnectionDetailsList = original.ControllerConnectionDetailsList
@@ -65,13 +65,14 @@ type ControllerList = original.ControllerList
 type ControllerListIterator = original.ControllerListIterator
 type ControllerListPage = original.ControllerListPage
 type ControllerProperties = original.ControllerProperties
+type ControllerUpdateParameters = original.ControllerUpdateParameters
+type ControllersClient = original.ControllersClient
 type ControllersCreateFuture = original.ControllersCreateFuture
 type ControllersDeleteFuture = original.ControllersDeleteFuture
-type ControllerUpdateParameters = original.ControllerUpdateParameters
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type KubernetesConnectionDetails = original.KubernetesConnectionDetails
-type BasicOrchestratorSpecificConnectionDetails = original.BasicOrchestratorSpecificConnectionDetails
+type OperationsClient = original.OperationsClient
 type OrchestratorSpecificConnectionDetails = original.OrchestratorSpecificConnectionDetails
 type Resource = original.Resource
 type ResourceProviderOperationDefinition = original.ResourceProviderOperationDefinition
@@ -82,13 +83,9 @@ type ResourceProviderOperationListPage = original.ResourceProviderOperationListP
 type SetObject = original.SetObject
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewContainerHostMappingsClient(subscriptionID string) ContainerHostMappingsClient {
 	return original.NewContainerHostMappingsClient(subscriptionID)
@@ -96,11 +93,32 @@ func NewContainerHostMappingsClient(subscriptionID string) ContainerHostMappings
 func NewContainerHostMappingsClientWithBaseURI(baseURI string, subscriptionID string) ContainerHostMappingsClient {
 	return original.NewContainerHostMappingsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewControllerListIterator(page ControllerListPage) ControllerListIterator {
+	return original.NewControllerListIterator(page)
+}
+func NewControllerListPage(getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
+	return original.NewControllerListPage(getNextPage)
+}
 func NewControllersClient(subscriptionID string) ControllersClient {
 	return original.NewControllersClient(subscriptionID)
 }
 func NewControllersClientWithBaseURI(baseURI string, subscriptionID string) ControllersClient {
 	return original.NewControllersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
+	return original.NewResourceProviderOperationListIterator(page)
+}
+func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return original.NewResourceProviderOperationListPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleInstanceTypeValues() []InstanceType {
 	return original.PossibleInstanceTypeValues()
@@ -110,24 +128,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
-}
-func NewControllerListIterator(page ControllerListPage) ControllerListIterator {
-	return original.NewControllerListIterator(page)
-}
-func NewControllerListPage(getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
-	return original.NewControllerListPage(getNextPage)
-}
-func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
-	return original.NewResourceProviderOperationListIterator(page)
-}
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return original.NewResourceProviderOperationListPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

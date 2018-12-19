@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type AggregationGranularity = original.AggregationGranularity
 
 const (
@@ -46,41 +45,27 @@ const (
 	NameRecurringCharge    Name = original.NameRecurringCharge
 )
 
+type BaseClient = original.BaseClient
+type BasicOfferTermInfo = original.BasicOfferTermInfo
 type ErrorResponse = original.ErrorResponse
 type InfoField = original.InfoField
 type MeterInfo = original.MeterInfo
 type MonetaryCommitment = original.MonetaryCommitment
 type MonetaryCredit = original.MonetaryCredit
-type BasicOfferTermInfo = original.BasicOfferTermInfo
 type OfferTermInfo = original.OfferTermInfo
+type RateCardClient = original.RateCardClient
 type RateCardQueryParameters = original.RateCardQueryParameters
 type RecurringCharge = original.RecurringCharge
 type ResourceRateCardInfo = original.ResourceRateCardInfo
+type UsageAggregatesClient = original.UsageAggregatesClient
 type UsageAggregation = original.UsageAggregation
 type UsageAggregationListResult = original.UsageAggregationListResult
 type UsageAggregationListResultIterator = original.UsageAggregationListResultIterator
 type UsageAggregationListResultPage = original.UsageAggregationListResultPage
 type UsageSample = original.UsageSample
-type RateCardClient = original.RateCardClient
-type UsageAggregatesClient = original.UsageAggregatesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAggregationGranularityValues() []AggregationGranularity {
-	return original.PossibleAggregationGranularityValues()
-}
-func PossibleNameValues() []Name {
-	return original.PossibleNameValues()
-}
-func NewUsageAggregationListResultIterator(page UsageAggregationListResultPage) UsageAggregationListResultIterator {
-	return original.NewUsageAggregationListResultIterator(page)
-}
-func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
-	return original.NewUsageAggregationListResultPage(getNextPage)
 }
 func NewRateCardClient(subscriptionID string) RateCardClient {
 	return original.NewRateCardClient(subscriptionID)
@@ -93,6 +78,21 @@ func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
 }
 func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
 	return original.NewUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageAggregationListResultIterator(page UsageAggregationListResultPage) UsageAggregationListResultIterator {
+	return original.NewUsageAggregationListResultIterator(page)
+}
+func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
+	return original.NewUsageAggregationListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAggregationGranularityValues() []AggregationGranularity {
+	return original.PossibleAggregationGranularityValues()
+}
+func PossibleNameValues() []Name {
+	return original.PossibleNameValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

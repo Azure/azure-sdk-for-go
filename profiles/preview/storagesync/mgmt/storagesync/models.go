@@ -29,8 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type CloudEndpointsClient = original.CloudEndpointsClient
 type CloudTiering = original.CloudTiering
 
 const (
@@ -90,6 +88,7 @@ const (
 type APIError = original.APIError
 type AzureEntityResource = original.AzureEntityResource
 type BackupRequest = original.BackupRequest
+type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudEndpoint = original.CloudEndpoint
@@ -97,6 +96,7 @@ type CloudEndpointArray = original.CloudEndpointArray
 type CloudEndpointCreateParameters = original.CloudEndpointCreateParameters
 type CloudEndpointCreateParametersProperties = original.CloudEndpointCreateParametersProperties
 type CloudEndpointProperties = original.CloudEndpointProperties
+type CloudEndpointsClient = original.CloudEndpointsClient
 type CloudEndpointsCreateFuture = original.CloudEndpointsCreateFuture
 type CloudEndpointsDeleteFuture = original.CloudEndpointsDeleteFuture
 type CloudEndpointsPostBackupFuture = original.CloudEndpointsPostBackupFuture
@@ -111,6 +111,7 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
+type OperationsClient = original.OperationsClient
 type PostBackupResponse = original.PostBackupResponse
 type PostBackupResponseProperties = original.PostBackupResponseProperties
 type PostRestoreRequest = original.PostRestoreRequest
@@ -122,6 +123,7 @@ type RegisteredServerArray = original.RegisteredServerArray
 type RegisteredServerCreateParameters = original.RegisteredServerCreateParameters
 type RegisteredServerCreateParametersProperties = original.RegisteredServerCreateParametersProperties
 type RegisteredServerProperties = original.RegisteredServerProperties
+type RegisteredServersClient = original.RegisteredServersClient
 type RegisteredServersCreateFuture = original.RegisteredServersCreateFuture
 type RegisteredServersDeleteFuture = original.RegisteredServersDeleteFuture
 type RegisteredServersTriggerRolloverFuture = original.RegisteredServersTriggerRolloverFuture
@@ -133,66 +135,40 @@ type ServerEndpointArray = original.ServerEndpointArray
 type ServerEndpointCreateParameters = original.ServerEndpointCreateParameters
 type ServerEndpointCreateParametersProperties = original.ServerEndpointCreateParametersProperties
 type ServerEndpointProperties = original.ServerEndpointProperties
+type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
+type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
+type ServerEndpointsClient = original.ServerEndpointsClient
 type ServerEndpointsCreateFuture = original.ServerEndpointsCreateFuture
 type ServerEndpointsDeleteFuture = original.ServerEndpointsDeleteFuture
 type ServerEndpointsRecallActionFuture = original.ServerEndpointsRecallActionFuture
 type ServerEndpointsUpdateFuture = original.ServerEndpointsUpdateFuture
-type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
-type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
 type Service = original.Service
 type ServiceArray = original.ServiceArray
 type ServiceCreateParameters = original.ServiceCreateParameters
 type ServiceProperties = original.ServiceProperties
 type ServiceUpdateParameters = original.ServiceUpdateParameters
+type ServicesClient = original.ServicesClient
 type SubscriptionState = original.SubscriptionState
 type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
+type SyncGroupsClient = original.SyncGroupsClient
 type TrackedResource = original.TrackedResource
 type TriggerRolloverRequest = original.TriggerRolloverRequest
 type Workflow = original.Workflow
 type WorkflowArray = original.WorkflowArray
 type WorkflowProperties = original.WorkflowProperties
-type OperationsClient = original.OperationsClient
-type RegisteredServersClient = original.RegisteredServersClient
-type ServerEndpointsClient = original.ServerEndpointsClient
-type ServicesClient = original.ServicesClient
-type SyncGroupsClient = original.SyncGroupsClient
 type WorkflowsClient = original.WorkflowsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewCloudEndpointsClient(subscriptionID string) CloudEndpointsClient {
 	return original.NewCloudEndpointsClient(subscriptionID)
 }
 func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) CloudEndpointsClient {
 	return original.NewCloudEndpointsClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleCloudTieringValues() []CloudTiering {
-	return original.PossibleCloudTieringValues()
-}
-func PossibleCloudTiering1Values() []CloudTiering1 {
-	return original.PossibleCloudTiering1Values()
-}
-func PossibleCloudTiering2Values() []CloudTiering2 {
-	return original.PossibleCloudTiering2Values()
-}
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return original.PossibleNameAvailabilityReasonValues()
-}
-func PossibleOperationValues() []Operation {
-	return original.PossibleOperationValues()
-}
-func PossibleReasonValues() []Reason {
-	return original.PossibleReasonValues()
-}
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
@@ -230,15 +206,39 @@ func NewSyncGroupsClient(subscriptionID string) SyncGroupsClient {
 func NewSyncGroupsClientWithBaseURI(baseURI string, subscriptionID string) SyncGroupsClient {
 	return original.NewSyncGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
 	return original.NewWorkflowsClient(subscriptionID)
 }
 func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
 	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCloudTiering1Values() []CloudTiering1 {
+	return original.PossibleCloudTiering1Values()
+}
+func PossibleCloudTiering2Values() []CloudTiering2 {
+	return original.PossibleCloudTiering2Values()
+}
+func PossibleCloudTieringValues() []CloudTiering {
+	return original.PossibleCloudTieringValues()
+}
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
+	return original.PossibleNameAvailabilityReasonValues()
+}
+func PossibleOperationValues() []Operation {
+	return original.PossibleOperationValues()
+}
+func PossibleReasonValues() []Reason {
+	return original.PossibleReasonValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

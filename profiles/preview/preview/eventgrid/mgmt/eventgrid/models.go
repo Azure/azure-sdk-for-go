@@ -25,10 +25,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type DomainsClient = original.DomainsClient
-type DomainTopicsClient = original.DomainTopicsClient
-type EventSubscriptionsClient = original.EventSubscriptionsClient
 type DomainProvisioningState = original.DomainProvisioningState
 
 const (
@@ -139,41 +135,45 @@ const (
 	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
 
-type BasicAdvancedFilter = original.BasicAdvancedFilter
 type AdvancedFilter = original.AdvancedFilter
-type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
+type BaseClient = original.BaseClient
+type BasicAdvancedFilter = original.BasicAdvancedFilter
 type BasicDeadLetterDestination = original.BasicDeadLetterDestination
+type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
+type BasicInputSchemaMapping = original.BasicInputSchemaMapping
+type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
 type DeadLetterDestination = original.DeadLetterDestination
 type Domain = original.Domain
 type DomainProperties = original.DomainProperties
 type DomainRegenerateKeyRequest = original.DomainRegenerateKeyRequest
-type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
-type DomainsDeleteFuture = original.DomainsDeleteFuture
 type DomainSharedAccessKeys = original.DomainSharedAccessKeys
-type DomainsListResult = original.DomainsListResult
-type DomainsUpdateFuture = original.DomainsUpdateFuture
 type DomainTopic = original.DomainTopic
+type DomainTopicsClient = original.DomainTopicsClient
 type DomainTopicsListResult = original.DomainTopicsListResult
 type DomainUpdateParameters = original.DomainUpdateParameters
+type DomainsClient = original.DomainsClient
+type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
+type DomainsDeleteFuture = original.DomainsDeleteFuture
+type DomainsListResult = original.DomainsListResult
+type DomainsUpdateFuture = original.DomainsUpdateFuture
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination
 type EventHubEventSubscriptionDestinationProperties = original.EventHubEventSubscriptionDestinationProperties
 type EventSubscription = original.EventSubscription
-type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
 type EventSubscriptionDestination = original.EventSubscriptionDestination
 type EventSubscriptionFilter = original.EventSubscriptionFilter
 type EventSubscriptionFullURL = original.EventSubscriptionFullURL
 type EventSubscriptionProperties = original.EventSubscriptionProperties
+type EventSubscriptionUpdateParameters = original.EventSubscriptionUpdateParameters
+type EventSubscriptionsClient = original.EventSubscriptionsClient
 type EventSubscriptionsCreateOrUpdateFuture = original.EventSubscriptionsCreateOrUpdateFuture
 type EventSubscriptionsDeleteFuture = original.EventSubscriptionsDeleteFuture
 type EventSubscriptionsListResult = original.EventSubscriptionsListResult
 type EventSubscriptionsUpdateFuture = original.EventSubscriptionsUpdateFuture
-type EventSubscriptionUpdateParameters = original.EventSubscriptionUpdateParameters
 type EventType = original.EventType
 type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
 type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEventSubscriptionDestination
 type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
-type BasicInputSchemaMapping = original.BasicInputSchemaMapping
 type InputSchemaMapping = original.InputSchemaMapping
 type JSONField = original.JSONField
 type JSONFieldWithDefault = original.JSONFieldWithDefault
@@ -187,6 +187,7 @@ type NumberLessThanOrEqualsAdvancedFilter = original.NumberLessThanOrEqualsAdvan
 type NumberNotInAdvancedFilter = original.NumberNotInAdvancedFilter
 type Operation = original.Operation
 type OperationInfo = original.OperationInfo
+type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
 type Resource = original.Resource
 type RetryPolicy = original.RetryPolicy
@@ -202,33 +203,23 @@ type StringNotInAdvancedFilter = original.StringNotInAdvancedFilter
 type Topic = original.Topic
 type TopicProperties = original.TopicProperties
 type TopicRegenerateKeyRequest = original.TopicRegenerateKeyRequest
-type TopicsCreateOrUpdateFuture = original.TopicsCreateOrUpdateFuture
-type TopicsDeleteFuture = original.TopicsDeleteFuture
 type TopicSharedAccessKeys = original.TopicSharedAccessKeys
-type TopicsListResult = original.TopicsListResult
-type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TopicTypeInfo = original.TopicTypeInfo
 type TopicTypeProperties = original.TopicTypeProperties
+type TopicTypesClient = original.TopicTypesClient
 type TopicTypesListResult = original.TopicTypesListResult
 type TopicUpdateParameters = original.TopicUpdateParameters
+type TopicsClient = original.TopicsClient
+type TopicsCreateOrUpdateFuture = original.TopicsCreateOrUpdateFuture
+type TopicsDeleteFuture = original.TopicsDeleteFuture
+type TopicsListResult = original.TopicsListResult
+type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TrackedResource = original.TrackedResource
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
-type OperationsClient = original.OperationsClient
-type TopicsClient = original.TopicsClient
-type TopicTypesClient = original.TopicTypesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewDomainsClient(subscriptionID string) DomainsClient {
-	return original.NewDomainsClient(subscriptionID)
-}
-func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDomainTopicsClient(subscriptionID string) DomainTopicsClient {
 	return original.NewDomainTopicsClient(subscriptionID)
@@ -236,20 +227,47 @@ func NewDomainTopicsClient(subscriptionID string) DomainTopicsClient {
 func NewDomainTopicsClientWithBaseURI(baseURI string, subscriptionID string) DomainTopicsClient {
 	return original.NewDomainTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDomainsClient(subscriptionID string) DomainsClient {
+	return original.NewDomainsClient(subscriptionID)
+}
+func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClient(subscriptionID)
 }
 func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
+	return original.NewTopicTypesClient(subscriptionID)
+}
+func NewTopicTypesClientWithBaseURI(baseURI string, subscriptionID string) TopicTypesClient {
+	return original.NewTopicTypesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTopicsClient(subscriptionID string) TopicsClient {
+	return original.NewTopicsClient(subscriptionID)
+}
+func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
+	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
 	return original.PossibleDomainProvisioningStateValues()
 }
-func PossibleEndpointTypeValues() []EndpointType {
-	return original.PossibleEndpointTypeValues()
-}
 func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicDeadLetterDestination {
 	return original.PossibleEndpointTypeBasicDeadLetterDestinationValues()
+}
+func PossibleEndpointTypeValues() []EndpointType {
+	return original.PossibleEndpointTypeValues()
 }
 func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 	return original.PossibleEventDeliverySchemaValues()
@@ -257,11 +275,11 @@ func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
 }
-func PossibleInputSchemaValues() []InputSchema {
-	return original.PossibleInputSchemaValues()
-}
 func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 	return original.PossibleInputSchemaMappingTypeValues()
+}
+func PossibleInputSchemaValues() []InputSchema {
+	return original.PossibleInputSchemaValues()
 }
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
@@ -274,24 +292,6 @@ func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
 }
 func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	return original.PossibleTopicTypeProvisioningStateValues()
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTopicsClient(subscriptionID string) TopicsClient {
-	return original.NewTopicsClient(subscriptionID)
-}
-func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
-	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
-	return original.NewTopicTypesClient(subscriptionID)
-}
-func NewTopicTypesClientWithBaseURI(baseURI string, subscriptionID string) TopicTypesClient {
-	return original.NewTopicTypesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

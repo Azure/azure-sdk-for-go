@@ -41,7 +41,7 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 	return PoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or update policy with specified ruleset name within a resource group.
+// CreateOrUpdate creates or update policy with specified rule set name within a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // policyName - the name of the resource group.

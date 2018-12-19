@@ -384,7 +384,7 @@ type IntentModel struct {
 // LuisResult prediction, based on the input query, containing intent(s) and entities.
 type LuisResult struct {
 	autorest.Response `json:"-"`
-	// Query - The input utterance that was analized.
+	// Query - The input utterance that was analyzed.
 	Query *string `json:"query,omitempty"`
 	// AlteredQuery - The corrected utterance (when spell checking was enabled).
 	AlteredQuery     *string      `json:"alteredQuery,omitempty"`

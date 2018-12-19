@@ -292,11 +292,8 @@ func (client TransformsClient) GetResponder(resp *http.Response) (result Transfo
 // resourceGroupName - the name of the resource group within the Azure subscription.
 // accountName - the Media Services account name.
 // filter - restricts the set of items returned.
-// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
-// service returns the number of available items up to but not greater than the specified value n.
-// skip - specifies a non-negative integer n that excludes the first n items of the queried collection from the
-// result. The service returns items starting at position n+1.
-func (client TransformsClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32) (result TransformCollectionPage, err error) {
+// orderby - specifies the the key by which the result collection should be ordered.
+func (client TransformsClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, orderby string) (result TransformCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransformsClient.List")
 		defer func() {
@@ -308,7 +305,7 @@ func (client TransformsClient) List(ctx context.Context, resourceGroupName strin
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, top, skip)
+	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.TransformsClient", "List", nil, "Failure preparing request")
 		return
@@ -330,7 +327,7 @@ func (client TransformsClient) List(ctx context.Context, resourceGroupName strin
 }
 
 // ListPreparer prepares the List request.
-func (client TransformsClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client TransformsClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, orderby string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -344,11 +341,8 @@ func (client TransformsClient) ListPreparer(ctx context.Context, resourceGroupNa
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -401,7 +395,7 @@ func (client TransformsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client TransformsClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32) (result TransformCollectionIterator, err error) {
+func (client TransformsClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, orderby string) (result TransformCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransformsClient.List")
 		defer func() {
@@ -412,7 +406,7 @@ func (client TransformsClient) ListComplete(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, accountName, filter, top, skip)
+	result.page, err = client.List(ctx, resourceGroupName, accountName, filter, orderby)
 	return
 }
 

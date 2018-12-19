@@ -189,7 +189,8 @@ func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (
 // Delete deletes an application.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID) (result OperationStatus, err error) {
+// force - a flag to indicate whether to force an operation.
+func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID, force *bool) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Delete")
 		defer func() {
@@ -200,7 +201,7 @@ func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID) (result Op
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, appID)
+	req, err := client.DeletePreparer(ctx, appID, force)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -222,7 +223,7 @@ func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID) (result Op
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
+func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, force *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -231,10 +232,18 @@ func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID) (*
 		"appId": autorest.Encode("path", appID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if force != nil {
+		queryParameters["force"] = autorest.Encode("query", *force)
+	} else {
+		queryParameters["force"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -545,7 +554,7 @@ func (client AppsClient) GetSettingsResponder(resp *http.Response) (result Appli
 	return
 }
 
-// Import imports an application to LUIS, the application's structure should be included in in the request body.
+// Import imports an application to LUIS, the application's structure should be included in the request body.
 // Parameters:
 // luisApp - a LUIS application structure.
 // appName - the application name to create. If not specified, the application name will be read from the
@@ -1191,6 +1200,152 @@ func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (resul
 	return
 }
 
+// PackagePublishedApplicationAsGzip packages published LUIS application as GZip.
+// Parameters:
+// appID - the application ID.
+// slotName - the publishing slot name.
+func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.PackagePublishedApplicationAsGzip")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.PackagePublishedApplicationAsGzipPreparer(ctx, appID, slotName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackagePublishedApplicationAsGzip", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PackagePublishedApplicationAsGzipSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackagePublishedApplicationAsGzip", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PackagePublishedApplicationAsGzipResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackagePublishedApplicationAsGzip", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PackagePublishedApplicationAsGzipPreparer prepares the PackagePublishedApplicationAsGzip request.
+func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":    autorest.Encode("path", appID),
+		"slotName": autorest.Encode("path", slotName),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithPathParameters("/package/{appId}/slot/{slotName}/gzip", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PackagePublishedApplicationAsGzipSender sends the PackagePublishedApplicationAsGzip request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) PackagePublishedApplicationAsGzipSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// PackagePublishedApplicationAsGzipResponder handles the response to the PackagePublishedApplicationAsGzip request. The method always
+// closes the http.Response Body.
+func (client AppsClient) PackagePublishedApplicationAsGzipResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PackageTrainedApplicationAsGzip packages trained LUIS application as GZip.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, appID uuid.UUID, versionID string) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.PackageTrainedApplicationAsGzip")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.PackageTrainedApplicationAsGzipPreparer(ctx, appID, versionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackageTrainedApplicationAsGzip", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PackageTrainedApplicationAsGzipSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackageTrainedApplicationAsGzip", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PackageTrainedApplicationAsGzipResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackageTrainedApplicationAsGzip", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PackageTrainedApplicationAsGzipPreparer prepares the PackageTrainedApplicationAsGzip request.
+func (client AppsClient) PackageTrainedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithPathParameters("/package/{appId}/versions/{versionId}/gzip", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PackageTrainedApplicationAsGzipSender sends the PackageTrainedApplicationAsGzip request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) PackageTrainedApplicationAsGzipSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// PackageTrainedApplicationAsGzipResponder handles the response to the PackageTrainedApplicationAsGzip request. The method always
+// closes the http.Response Body.
+func (client AppsClient) PackageTrainedApplicationAsGzipResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Publish publishes a specific version of the application.
 // Parameters:
 // appID - the application ID.
@@ -1260,7 +1415,7 @@ func (client AppsClient) PublishResponder(resp *http.Response) (result Productio
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

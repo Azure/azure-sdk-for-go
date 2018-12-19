@@ -921,11 +921,11 @@ type APIEntityProperties struct {
 	RuntimeUrls *[]string `json:"runtimeUrls,omitempty"`
 	// Protocols - Protocols supported by the front end - http/https
 	Protocols *[]string `json:"protocols,omitempty"`
-	// Policies - Api polcies
+	// Policies - API policies
 	Policies *APIPolicies `json:"policies,omitempty"`
 	// BackendService - Backend service definition
 	BackendService *BackendServiceDefinition `json:"backendService,omitempty"`
-	// APIDefinitionURL - Api definition Url - url where the swagger can be downloaded from
+	// APIDefinitionURL - API definition Url - url where the swagger can be downloaded from
 	APIDefinitionURL *string `json:"apiDefinitionUrl,omitempty"`
 	// Metadata - Free form object for the data caller wants to store
 	Metadata interface{} `json:"metadata,omitempty"`
@@ -984,7 +984,7 @@ func (ae APIEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// APIOAuthSettings oAuth settings for the conenction provider
+// APIOAuthSettings oAuth settings for the connection provider
 type APIOAuthSettings struct {
 	// IdentityProvider - Identity provider
 	IdentityProvider *string `json:"identityProvider,omitempty"`
@@ -1039,7 +1039,7 @@ type APIOAuthSettingsParameter struct {
 	UIDefinition interface{} `json:"uiDefinition,omitempty"`
 }
 
-// APIPolicies api policies
+// APIPolicies API policies
 type APIPolicies struct {
 	*APIPoliciesProperties `json:"properties,omitempty"`
 	// ID - Resource Id
@@ -2917,7 +2917,7 @@ func (coc *CertificateOrderCertificate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CertificateOrderCertificateCollection collection of ceritificateorder certificates
+// CertificateOrderCertificateCollection collection of certificate order certificates
 type CertificateOrderCertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources
@@ -3074,7 +3074,7 @@ type CertificateOrderCertificateProperties struct {
 	ProvisioningState KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
-// CertificateOrderCollection collection of ceritificate orders
+// CertificateOrderCollection collection of certificate orders
 type CertificateOrderCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources
@@ -3328,7 +3328,7 @@ type CertificateProperties struct {
 	Issuer *string `json:"issuer,omitempty"`
 	// IssueDate - Certificate issue Date
 	IssueDate *date.Time `json:"issueDate,omitempty"`
-	// ExpirationDate - Certificate expriration date
+	// ExpirationDate - Certificate expiration date
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Password - Certificate password
 	Password *string `json:"password,omitempty"`
@@ -3819,7 +3819,7 @@ type ConfirmConsentCodeInputProperties struct {
 	Code *string `json:"code,omitempty"`
 }
 
-// Connection api Connection
+// Connection API Connection
 type Connection struct {
 	autorest.Response     `json:"-"`
 	*ConnectionProperties `json:"properties,omitempty"`
@@ -3942,7 +3942,7 @@ func (c *Connection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectionCollection collection of conenctions
+// ConnectionCollection collection of connections
 type ConnectionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources
@@ -4532,7 +4532,7 @@ type ConsentLink struct {
 	Status LinkState `json:"status,omitempty"`
 }
 
-// ConsentLinkInput connection Constent Link payload
+// ConsentLinkInput connection Consent Link payload
 type ConsentLinkInput struct {
 	*ConsentLinkInputProperties `json:"properties,omitempty"`
 	// ID - Resource Id
@@ -4683,7 +4683,7 @@ type ConsentLinkPayload struct {
 }
 
 // Contact contact information for domain registration. If 'Domain Privacy' option is not selected then the
-// contact information will be  be made publicly available through the Whois directories as per ICANN
+// contact information will be made publicly available through the Whois directories as per ICANN
 // requirements.
 type Contact struct {
 	// AddressMailing - Mailing address
@@ -4729,7 +4729,7 @@ type CsmPublishingProfileOptions struct {
 	Format *string `json:"format,omitempty"`
 }
 
-// CsmSiteRecoveryEntity class containting details about site recovery operation.
+// CsmSiteRecoveryEntity class containing details about site recovery operation.
 type CsmSiteRecoveryEntity struct {
 	// SnapshotTime - Point in time in which the site recover should be attempted.
 	SnapshotTime *date.Time `json:"snapshotTime,omitempty"`
@@ -4751,7 +4751,7 @@ type CsmSlotEntity struct {
 
 // CsmUsageQuota usage of the quota resource
 type CsmUsageQuota struct {
-	// Unit - Units of measurement for the quota resourse
+	// Unit - Units of measurement for the quota resource
 	Unit *string `json:"unit,omitempty"`
 	// NextResetTime - Next reset time for the resource counter
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
@@ -5040,7 +5040,7 @@ type CsrProperties struct {
 	DistinguishedName *string `json:"distinguishedName,omitempty"`
 	// CsrString - Actual CSR string created
 	CsrString *string `json:"csrString,omitempty"`
-	// PfxBlob - PFX certifcate of created certificate
+	// PfxBlob - PFX certificate of created certificate
 	PfxBlob *string `json:"pfxBlob,omitempty"`
 	// Password - PFX password
 	Password *string `json:"password,omitempty"`
@@ -5528,7 +5528,7 @@ type DeletedSiteProperties struct {
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 }
 
-// Deployment represents user crendentials used for publishing activity
+// Deployment represents user credentials used for publishing activity
 type Deployment struct {
 	autorest.Response     `json:"-"`
 	*DeploymentProperties `json:"properties,omitempty"`
@@ -7401,7 +7401,7 @@ type HostingEnvironmentServiceDescriptions struct {
 	// ServiceURL - service url to use
 	ServiceURL *string `json:"serviceUrl,omitempty"`
 	// UseInternalRouting - When the backend url is in same ASE, for performance reason this flag can be set to true
-	//             If WebApp.DisableHostNames is also set it improves the security by making the back end accesible only
+	//             If WebApp.DisableHostNames is also set it improves the security by making the back end accessible only
 	//             via API calls
 	//             Note: calls will fail if this option is used but back end is not on the same ASE
 	UseInternalRouting *bool `json:"useInternalRouting,omitempty"`
@@ -8397,7 +8397,7 @@ func (future *ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture) R
 	return
 }
 
-// MetricAvailabilily class repesenting metrics availability and retention
+// MetricAvailabilily class representing metrics availability and retention
 type MetricAvailabilily struct {
 	// TimeGrain - Time grain
 	TimeGrain *string `json:"timeGrain,omitempty"`
@@ -8405,7 +8405,7 @@ type MetricAvailabilily struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
-// MetricDefinition class repesenting metadata for the metrics
+// MetricDefinition class representing metadata for the metrics
 type MetricDefinition struct {
 	autorest.Response           `json:"-"`
 	*MetricDefinitionProperties `json:"properties,omitempty"`
@@ -8528,7 +8528,7 @@ func (md *MetricDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MetricDefinitionCollection collection of metric defintions
+// MetricDefinitionCollection collection of metric definitions
 type MetricDefinitionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources
@@ -9171,11 +9171,11 @@ type RampUpRule struct {
 	ActionHostName *string `json:"actionHostName,omitempty"`
 	// ReroutePercentage - Percentage of the traffic which will be redirected to {Microsoft.Web.Hosting.Administration.RampUpRule.ActionHostName}
 	ReroutePercentage *float64 `json:"reroutePercentage,omitempty"`
-	// ChangeStep - [Optional] In auto ramp up scenario this is the step to to add/remove from {Microsoft.Web.Hosting.Administration.RampUpRule.ReroutePercentage} until it reaches
-	//             {Microsoft.Web.Hosting.Administration.RampUpRule.MinReroutePercentage} or {Microsoft.Web.Hosting.Administration.RampUpRule.MaxReroutePercentage}. Site metrics are checked every N minutes specificed in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeIntervalInMinutes}.
+	// ChangeStep - [Optional] In auto ramp up scenario this is the step to add/remove from {Microsoft.Web.Hosting.Administration.RampUpRule.ReroutePercentage} until it reaches
+	//             {Microsoft.Web.Hosting.Administration.RampUpRule.MinReroutePercentage} or {Microsoft.Web.Hosting.Administration.RampUpRule.MaxReroutePercentage}. Site metrics are checked every N minutes specified in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeIntervalInMinutes}.
 	//             Custom decision algorithm can be provided in TiPCallback site extension which Url can be specified in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeDecisionCallbackUrl}
 	ChangeStep *float64 `json:"changeStep,omitempty"`
-	// ChangeIntervalInMinutes - [Optional] Specifies interval in mimuntes to reevaluate ReroutePercentage
+	// ChangeIntervalInMinutes - [Optional] Specifies interval in minutes to reevaluate ReroutePercentage
 	ChangeIntervalInMinutes *int32 `json:"changeIntervalInMinutes,omitempty"`
 	// MinReroutePercentage - [Optional] Specifies lower boundary above which ReroutePercentage will stay.
 	MinReroutePercentage *float64 `json:"minReroutePercentage,omitempty"`
@@ -9390,7 +9390,7 @@ type ReissueCertificateOrderRequestProperties struct {
 	DelayExistingRevokeInHours *int32 `json:"delayExistingRevokeInHours,omitempty"`
 }
 
-// RelayServiceConnectionEntity class that represents a Biztalk Hybrid Connection
+// RelayServiceConnectionEntity class that represents a BizTalk Hybrid Connection
 type RelayServiceConnectionEntity struct {
 	autorest.Response                       `json:"-"`
 	*RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
@@ -10096,7 +10096,7 @@ type RestoreRequestProperties struct {
 	Overwrite *bool `json:"overwrite,omitempty"`
 	// SiteName - Name of a site (Web App)
 	SiteName *string `json:"siteName,omitempty"`
-	// Databases - Collection of databses which should be restored. This list has to match the list of databases included in the backup.
+	// Databases - Collection of databases which should be restored. This list has to match the list of databases included in the backup.
 	Databases *[]DatabaseBackupSetting `json:"databases,omitempty"`
 	// IgnoreConflictingHostNames - Changes a logic when restoring a site with custom domains. If "true", custom domains are removed automatically. If "false", custom domains are added to
 	//             the site object when it is being restored, but that might fail due to conflicts during the operation.
@@ -10578,7 +10578,7 @@ type ServerFarmWithRichSkuProperties struct {
 	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
 	// NumberOfSites - Number of web apps assigned to this App Service Plan
 	NumberOfSites *int32 `json:"numberOfSites,omitempty"`
-	// ResourceGroup - Resource group of the serverfarm
+	// ResourceGroup - Resource group of the server farm
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - Enables creation of a Linux App Service Plan
 	Reserved *bool `json:"reserved,omitempty"`
@@ -11164,7 +11164,7 @@ type SiteConfigProperties struct {
 	VirtualApplications *[]VirtualApplication `json:"virtualApplications,omitempty"`
 	// LoadBalancing - Site load balancing. Possible values include: 'WeightedRoundRobin', 'LeastRequests', 'LeastResponseTime', 'WeightedTotalTraffic', 'RequestHash'
 	LoadBalancing SiteLoadBalancing `json:"loadBalancing,omitempty"`
-	// Experiments - This is work around for polymophic types
+	// Experiments - This is work around for polymorphic types
 	Experiments *Experiments `json:"experiments,omitempty"`
 	// Limits - Site limits
 	Limits *SiteLimits `json:"limits,omitempty"`
@@ -12850,7 +12850,7 @@ func (sc *SourceControl) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SourceControlCollection collection of soure controls
+// SourceControlCollection collection of source controls
 type SourceControlCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources
@@ -13527,7 +13527,7 @@ func (tld *TopLevelDomain) UnmarshalJSON(body []byte) error {
 
 // TopLevelDomainAgreementOption options for retrieving the list of top level domain legal agreements
 type TopLevelDomainAgreementOption struct {
-	// IncludePrivacy - If true then the list of agreements will inclue agreements for domain privacy as well.
+	// IncludePrivacy - If true then the list of agreements will include agreements for domain privacy as well.
 	IncludePrivacy *bool `json:"includePrivacy,omitempty"`
 }
 
@@ -13975,7 +13975,7 @@ type UsageProperties struct {
 	SiteMode *string `json:"siteMode,omitempty"`
 }
 
-// User represents user crendentials used for publishing activity
+// User represents user credentials used for publishing activity
 type User struct {
 	autorest.Response `json:"-"`
 	*UserProperties   `json:"properties,omitempty"`

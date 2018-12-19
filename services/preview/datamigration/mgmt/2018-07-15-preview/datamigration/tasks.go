@@ -209,7 +209,7 @@ func (client TasksClient) CommandResponder(resp *http.Response) (result CommandP
 
 // CreateOrUpdate the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance.
 // The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom
-// properties, there is little reason to update an exising one.
+// properties, there is little reason to update an existing one.
 // Parameters:
 // parameters - information about the task
 // groupName - name of the resource group

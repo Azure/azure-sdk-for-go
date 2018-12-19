@@ -49,7 +49,7 @@ func NewOutputsClientWithBaseURI(baseURI string, subscriptionID string) OutputsC
 // jobName - the name of the streaming job.
 // outputName - the name of the output.
 // ifMatch - the ETag of the output. Omit this value to always overwrite the current output. Specify the
-// last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// last-seen ETag value to prevent accidentally overwriting concurrent changes.
 // ifNoneMatch - set to '*' to allow a new output to be created, but to prevent updating an existing output.
 // Other values will result in a 412 Pre-condition Failed response.
 func (client OutputsClient) CreateOrReplace(ctx context.Context, output Output, resourceGroupName string, jobName string, outputName string, ifMatch string, ifNoneMatch string) (result Output, err error) {
@@ -518,7 +518,7 @@ func (client OutputsClient) TestResponder(resp *http.Response) (result ResourceT
 // jobName - the name of the streaming job.
 // outputName - the name of the output.
 // ifMatch - the ETag of the output. Omit this value to always overwrite the current output. Specify the
-// last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// last-seen ETag value to prevent accidentally overwriting concurrent changes.
 func (client OutputsClient) Update(ctx context.Context, output Output, resourceGroupName string, jobName string, outputName string, ifMatch string) (result Output, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OutputsClient.Update")

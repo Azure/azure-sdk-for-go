@@ -41,11 +41,11 @@ func NewOpenShiftManagedClustersClientWithBaseURI(baseURI string, subscriptionID
 	return OpenShiftManagedClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a openshift managed cluster with the specified configuration for agents and
+// CreateOrUpdate creates or updates a OpenShift managed cluster with the specified configuration for agents and
 // OpenShift version.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 // parameters - parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
 func (client OpenShiftManagedClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftManagedCluster) (result OpenShiftManagedClustersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -63,11 +63,7 @@ func (client OpenShiftManagedClustersClient) CreateOrUpdate(ctx context.Context,
 			Constraints: []validation.Constraint{{Target: "parameters.OpenShiftManagedClusterProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.OpenShiftManagedClusterProperties.OpenShiftVersion", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.OpenShiftManagedClusterProperties.MasterPoolProfile", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.OpenShiftManagedClusterProperties.MasterPoolProfile.Count", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.OpenShiftManagedClusterProperties.MasterPoolProfile.Count", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "parameters.OpenShiftManagedClusterProperties.MasterPoolProfile.Count", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-							}},
-						}},
+						Chain: []validation.Constraint{{Target: "parameters.OpenShiftManagedClusterProperties.MasterPoolProfile.Count", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("containerservice.OpenShiftManagedClustersClient", "CreateOrUpdate", err.Error())
 	}
@@ -136,10 +132,10 @@ func (client OpenShiftManagedClustersClient) CreateOrUpdateResponder(resp *http.
 	return
 }
 
-// Delete deletes the openshift managed cluster with a specified resource group and name.
+// Delete deletes the OpenShift managed cluster with a specified resource group and name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 func (client OpenShiftManagedClustersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result OpenShiftManagedClustersDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.Delete")
@@ -212,10 +208,10 @@ func (client OpenShiftManagedClustersClient) DeleteResponder(resp *http.Response
 	return
 }
 
-// Get gets the details of the managed openshift cluster with a specified resource group and name.
+// Get gets the details of the managed OpenShift cluster with a specified resource group and name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+// resourceName - the name of the OpenShift managed cluster resource.
 func (client OpenShiftManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result OpenShiftManagedCluster, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.Get")
@@ -289,10 +285,235 @@ func (client OpenShiftManagedClustersClient) GetResponder(resp *http.Response) (
 	return
 }
 
-// UpdateTags updates an openshift managed cluster with the specified tags.
+// List gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of
+// each OpenShift managed cluster.
+func (client OpenShiftManagedClustersClient) List(ctx context.Context) (result OpenShiftManagedClusterListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.List")
+		defer func() {
+			sc := -1
+			if result.osmclr.Response.Response != nil {
+				sc = result.osmclr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "List", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.osmclr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "List", resp, "Failure sending request")
+		return
+	}
+
+	result.osmclr, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "List", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client OpenShiftManagedClustersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/openShiftManagedClusters", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client OpenShiftManagedClustersClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client OpenShiftManagedClustersClient) ListResponder(resp *http.Response) (result OpenShiftManagedClusterListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client OpenShiftManagedClustersClient) listNextResults(ctx context.Context, lastResults OpenShiftManagedClusterListResult) (result OpenShiftManagedClusterListResult, err error) {
+	req, err := lastResults.openShiftManagedClusterListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client OpenShiftManagedClustersClient) ListComplete(ctx context.Context) (result OpenShiftManagedClusterListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx)
+	return
+}
+
+// ListByResourceGroup lists OpenShift managed clusters in the specified subscription and resource group. The operation
+// returns properties of each OpenShift managed cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// resourceName - the name of the openshift managed cluster resource.
+func (client OpenShiftManagedClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result OpenShiftManagedClusterListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.osmclr.Response.Response != nil {
+				sc = result.osmclr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listByResourceGroupNextResults
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.osmclr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.osmclr, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client OpenShiftManagedClustersClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/openShiftManagedClusters", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client OpenShiftManagedClustersClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client OpenShiftManagedClustersClient) ListByResourceGroupResponder(resp *http.Response) (result OpenShiftManagedClusterListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client OpenShiftManagedClustersClient) listByResourceGroupNextResults(ctx context.Context, lastResults OpenShiftManagedClusterListResult) (result OpenShiftManagedClusterListResult, err error) {
+	req, err := lastResults.openShiftManagedClusterListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client OpenShiftManagedClustersClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result OpenShiftManagedClusterListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
+// UpdateTags updates an OpenShift managed cluster with the specified tags.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the OpenShift managed cluster resource.
 // parameters - parameters supplied to the Update OpenShift Managed Cluster Tags operation.
 func (client OpenShiftManagedClustersClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject) (result OpenShiftManagedClustersUpdateTagsFuture, err error) {
 	if tracing.IsEnabled() {

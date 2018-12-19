@@ -21,22 +21,22 @@ package networkapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network/networkapi"
 
-type BaseClientAPI = original.BaseClientAPI
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type ExpressRouteCircuitAuthorizationsClientAPI = original.ExpressRouteCircuitAuthorizationsClientAPI
 type ExpressRouteCircuitPeeringsClientAPI = original.ExpressRouteCircuitPeeringsClientAPI
 type ExpressRouteCircuitsClientAPI = original.ExpressRouteCircuitsClientAPI
 type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvidersClientAPI
-type LoadBalancersClientAPI = original.LoadBalancersClientAPI
 type InterfacesClientAPI = original.InterfacesClientAPI
-type SecurityGroupsClientAPI = original.SecurityGroupsClientAPI
-type SecurityRulesClientAPI = original.SecurityRulesClientAPI
+type LoadBalancersClientAPI = original.LoadBalancersClientAPI
+type LocalNetworkGatewaysClientAPI = original.LocalNetworkGatewaysClientAPI
 type PublicIPAddressesClientAPI = original.PublicIPAddressesClientAPI
 type RouteTablesClientAPI = original.RouteTablesClientAPI
 type RoutesClientAPI = original.RoutesClientAPI
-type UsagesClientAPI = original.UsagesClientAPI
-type VirtualNetworksClientAPI = original.VirtualNetworksClientAPI
+type SecurityGroupsClientAPI = original.SecurityGroupsClientAPI
+type SecurityRulesClientAPI = original.SecurityRulesClientAPI
 type SubnetsClientAPI = original.SubnetsClientAPI
-type VirtualNetworkGatewaysClientAPI = original.VirtualNetworkGatewaysClientAPI
+type UsagesClientAPI = original.UsagesClientAPI
 type VirtualNetworkGatewayConnectionsClientAPI = original.VirtualNetworkGatewayConnectionsClientAPI
-type LocalNetworkGatewaysClientAPI = original.LocalNetworkGatewaysClientAPI
+type VirtualNetworkGatewaysClientAPI = original.VirtualNetworkGatewaysClientAPI
+type VirtualNetworksClientAPI = original.VirtualNetworksClientAPI

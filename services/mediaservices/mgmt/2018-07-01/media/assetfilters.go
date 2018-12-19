@@ -62,16 +62,8 @@ func (client AssetFiltersClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.FilterProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.FilterProperties.PresentationTimeRange", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.FilterProperties.PresentationTimeRange.StartTimestamp", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.FilterProperties.PresentationTimeRange.EndTimestamp", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.FilterProperties.PresentationTimeRange.PresentationWindowDuration", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.FilterProperties.PresentationTimeRange.LiveBackoffDuration", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.FilterProperties.PresentationTimeRange.Timescale", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.FilterProperties.PresentationTimeRange.ForceEndTimestamp", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-					{Target: "parameters.FilterProperties.FirstQuality", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.FilterProperties.FirstQuality.Bitrate", Name: validation.Null, Rule: true, Chain: nil}}},
+				Chain: []validation.Constraint{{Target: "parameters.FilterProperties.FirstQuality", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.FilterProperties.FirstQuality.Bitrate", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("media.AssetFiltersClient", "CreateOrUpdate", err.Error())
 	}

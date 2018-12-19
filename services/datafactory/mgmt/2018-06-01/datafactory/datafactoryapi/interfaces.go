@@ -67,6 +67,14 @@ type IntegrationRuntimesClientAPI interface {
 
 var _ IntegrationRuntimesClientAPI = (*datafactory.IntegrationRuntimesClient)(nil)
 
+// IntegrationRuntimeObjectMetadataClientAPI contains the set of methods on the IntegrationRuntimeObjectMetadataClient type.
+type IntegrationRuntimeObjectMetadataClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, getMetadataRequest *datafactory.GetSsisObjectMetadataRequest) (result datafactory.SsisObjectMetadataListResponse, err error)
+	Refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeObjectMetadataRefreshFuture, err error)
+}
+
+var _ IntegrationRuntimeObjectMetadataClientAPI = (*datafactory.IntegrationRuntimeObjectMetadataClient)(nil)
+
 // IntegrationRuntimeNodesClientAPI contains the set of methods on the IntegrationRuntimeNodesClient type.
 type IntegrationRuntimeNodesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string) (result autorest.Response, err error)

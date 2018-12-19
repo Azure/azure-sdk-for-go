@@ -357,7 +357,7 @@ type ErrorResponseWrapper struct {
 type GlobalServiceConfiguration struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// Etag - The configuartion ETag for updates.
+	// Etag - The configuration ETag for updates.
 	Etag *string `json:"etag,omitempty"`
 	// Ssl - The SSL configuration properties
 	Ssl *SslConfiguration `json:"ssl,omitempty"`

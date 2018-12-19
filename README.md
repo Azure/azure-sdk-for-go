@@ -328,13 +328,14 @@ import "github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/network/mgmt/netwo
 import "github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/storage/mgmt/storage"
 ```
 
-The `2017-03-09` profile is the only one currently available and is for use in
-hybrid Azure and Azure Stack environments. More profiles are under development.
+The following profiles are available for hybrid Azure and Azure Stack environments.
+- 2017-03-09
+- 2018-03-01
 
 In addition to versioned profiles, we also provide two special profiles
-`latest` and `preview`. These _always_ include the most recent respective stable or
-preview API versions for each service, even when updating them to do so causes
-breaking changes. That is, these do _not_ adhere to semantic versioning rules.
+`latest` and `preview`. The `latest` profile contains the latest API version
+of each service, excluding any preview versions and/or content.  The `preview`
+profile is similar to the `latest` profile but includes preview API versions.
 
 The `latest` and `preview` profiles can help you stay up to date with API
 updates as you build applications. Since they are by definition not stable,

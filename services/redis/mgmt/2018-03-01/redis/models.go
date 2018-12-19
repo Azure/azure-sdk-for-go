@@ -356,7 +356,7 @@ func (cp *CreateParameters) UnmarshalJSON(body []byte) error {
 type CreateProperties struct {
 	// Sku - The SKU of the Redis cache to deploy.
 	Sku *Sku `json:"sku,omitempty"`
-	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
 	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	StaticIP *string `json:"staticIP,omitempty"`
@@ -947,10 +947,10 @@ func (lswp *LinkedServerWithProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// LinkedServerWithPropertiesList list of linked servers (with properites) of a Redis cache.
+// LinkedServerWithPropertiesList list of linked servers (with properties) of a Redis cache.
 type LinkedServerWithPropertiesList struct {
 	autorest.Response `json:"-"`
-	// Value - List of linked servers (with properites) of a Redis cache.
+	// Value - List of linked servers (with properties) of a Redis cache.
 	Value *[]LinkedServerWithProperties `json:"value,omitempty"`
 	// NextLink - Link for next set.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1662,7 +1662,7 @@ type Properties struct {
 	LinkedServers *[]LinkedServer `json:"linkedServers,omitempty"`
 	// Sku - The SKU of the Redis cache to deploy.
 	Sku *Sku `json:"sku,omitempty"`
-	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
 	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	StaticIP *string `json:"staticIP,omitempty"`
@@ -2046,7 +2046,7 @@ func (up UpdateProperties) MarshalJSON() ([]byte, error) {
 type UpgradeNotification struct {
 	// Name - Name of upgrade notification.
 	Name *string `json:"name,omitempty"`
-	// Timestamp - Timestamp when upgrade notification occured.
+	// Timestamp - Timestamp when upgrade notification occurred.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// UpsellNotification - Details about this upgrade notification
 	UpsellNotification map[string]*string `json:"upsellNotification"`

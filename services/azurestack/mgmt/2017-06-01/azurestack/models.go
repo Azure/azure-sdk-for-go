@@ -102,7 +102,7 @@ type ActivationKeyResult struct {
 	ActivationKey *string `json:"activationKey,omitempty"`
 }
 
-// CustomerSubscription customer subcription.
+// CustomerSubscription customer subscription.
 type CustomerSubscription struct {
 	autorest.Response `json:"-"`
 	// CustomerSubscriptionProperties - Customer subscription properties.
@@ -113,7 +113,7 @@ type CustomerSubscription struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Type of Resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The entity tag used for optimistic concurency when modifying the resource.
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -457,7 +457,7 @@ func (ep *ExtendedProduct) UnmarshalJSON(body []byte) error {
 
 // ExtendedProductProperties product information.
 type ExtendedProductProperties struct {
-	// ComputeRole - Specifies kind of compute role inclided in the package. Possible values include: 'None', 'IaaS', 'PaaS'
+	// ComputeRole - Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
 	ComputeRole ComputeRole `json:"computeRole,omitempty"`
 	// IsSystemExtension - Specifies if product is a Virtual Machine Extension.
 	IsSystemExtension *bool `json:"isSystemExtension,omitempty"`
@@ -795,7 +795,7 @@ type Product struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Type of Resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The entity tag used for optimistic concurency when modifying the resource.
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -1093,7 +1093,7 @@ type Registration struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Custom tags for the resource.
 	Tags map[string]*string `json:"tags"`
-	// Etag - The entity tag used for optimistic concurency when modifying the resource.
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -1401,7 +1401,7 @@ func (rp *RegistrationParameter) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RegistrationParameterProperties properties of the Azure Stack regstration resource
+// RegistrationParameterProperties properties of the Azure Stack registration resource
 type RegistrationParameterProperties struct {
 	// RegistrationToken - The token identifying registered Azure Stack
 	RegistrationToken *string `json:"registrationToken,omitempty"`
@@ -1425,7 +1425,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Type of Resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The entity tag used for optimistic concurency when modifying the resource.
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -1441,7 +1441,7 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Custom tags for the resource.
 	Tags map[string]*string `json:"tags"`
-	// Etag - The entity tag used for optimistic concurency when modifying the resource.
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -1477,7 +1477,7 @@ type URI struct {
 
 // VirtualMachineExtensionProductProperties product information.
 type VirtualMachineExtensionProductProperties struct {
-	// ComputeRole - Specifies kind of compute role inclided in the package. Possible values include: 'None', 'IaaS', 'PaaS'
+	// ComputeRole - Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
 	ComputeRole ComputeRole `json:"computeRole,omitempty"`
 	// IsSystemExtension - Specifies if product is a Virtual Machine Extension.
 	IsSystemExtension *bool `json:"isSystemExtension,omitempty"`

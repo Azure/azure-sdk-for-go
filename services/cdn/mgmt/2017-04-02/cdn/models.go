@@ -275,7 +275,7 @@ type CidrIPAddress struct {
 }
 
 // CustomDomain friendly domain name mapping to the endpoint hostname that the customer provides for
-// branding purposes, e.g. www.consoto.com.
+// branding purposes, e.g. www.contoso.com.
 type CustomDomain struct {
 	autorest.Response       `json:"-"`
 	*CustomDomainProperties `json:"properties,omitempty"`
@@ -1177,7 +1177,7 @@ func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListRes
 
 // EndpointProperties the JSON object that contains the properties required to create an endpoint.
 type EndpointProperties struct {
-	// HostName - The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. consoto.azureedge.net
+	// HostName - The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
 	HostName *string `json:"hostName,omitempty"`
 	// Origins - The source of the content being delivered via CDN.
 	Origins *[]DeepCreatedOrigin `json:"origins,omitempty"`

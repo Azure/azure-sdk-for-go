@@ -831,7 +831,7 @@ type USQLIndex struct {
 	DistributionInfo *USQLDistributionInfo `json:"distributionInfo,omitempty"`
 	// PartitionFunction - partition function ID for the index.
 	PartitionFunction *uuid.UUID `json:"partitionFunction,omitempty"`
-	// PartitionKeyList - the list of partion keys in the index
+	// PartitionKeyList - the list of partition keys in the index
 	PartitionKeyList *[]string `json:"partitionKeyList,omitempty"`
 	// StreamNames - the list of full paths to the streams that contain this index in the DataLake account.
 	StreamNames *[]string `json:"streamNames,omitempty"`

@@ -910,13 +910,13 @@ type AzureIaaSClassicComputeVMContainer struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - The backup managemenent type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - The container's registration status with the Recovery Services vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these propertes are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -1001,7 +1001,7 @@ func (aisccvc AzureIaaSClassicComputeVMContainer) AsBasicProtectionContainer() (
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
-	// BackupManagementType - The backup managemenent type.
+	// BackupManagementType - The backup management type.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// FriendlyName - The friendly name of the backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -1080,7 +1080,7 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - The backup managemenent type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - The workload type for this item. Possible values include: 'Invalid', 'VM', 'FileFolder', 'AzureSQLDb', 'SQLDB', 'Exchange', 'Sharepoint', 'DPMUnknown'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -1191,13 +1191,13 @@ type AzureIaaSComputeVMContainer struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - The backup managemenent type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - The container's registration status with the Recovery Services vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these propertes are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -1282,7 +1282,7 @@ func (aiscvc AzureIaaSComputeVMContainer) AsBasicProtectionContainer() (BasicPro
 type AzureIaaSComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
-	// BackupManagementType - The backup managemenent type.
+	// BackupManagementType - The backup management type.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// FriendlyName - The friendly name of the backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -1361,7 +1361,7 @@ type AzureIaaSComputeVMProtectedItem struct {
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - The backup managemenent type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - The workload type for this item. Possible values include: 'Invalid', 'VM', 'FileFolder', 'AzureSQLDb', 'SQLDB', 'Exchange', 'Sharepoint', 'DPMUnknown'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -1473,7 +1473,7 @@ type AzureIaaSVMErrorInfo struct {
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
-// AzureIaaSVMJob the Azure IaaS VM workload-specifc job object.
+// AzureIaaSVMJob the Azure IaaS VM workload-specific job object.
 type AzureIaaSVMJob struct {
 	// Duration - The time that elapsed during the execution of this job.
 	Duration *string `json:"duration,omitempty"`
@@ -1647,7 +1647,7 @@ type AzureIaaSVMProtectedItem struct {
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - The backup managemenent type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - The workload type for this item. Possible values include: 'Invalid', 'VM', 'FileFolder', 'AzureSQLDb', 'SQLDB', 'Exchange', 'Sharepoint', 'DPMUnknown'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -1904,13 +1904,13 @@ func (aispp *AzureIaaSVMProtectionPolicy) UnmarshalJSON(body []byte) error {
 type AzureSQLContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - The backup managemenent type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - The container's registration status with the Recovery Services vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these propertes are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -1989,7 +1989,7 @@ type AzureSQLProtectedItem struct {
 	ProtectionState ProtectedItemState `json:"protectionState,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *AzureSQLProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - The backup managemenent type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - The workload type for this item. Possible values include: 'Invalid', 'VM', 'FileFolder', 'AzureSQLDb', 'SQLDB', 'Exchange', 'Sharepoint', 'DPMUnknown'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -2177,7 +2177,7 @@ func (aspp *AzureSQLProtectionPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BEKDetails BEK is Bitlocker Encrpytion Key.
+// BEKDetails BEK is Bitlocker Encryption Key.
 type BEKDetails struct {
 	// SecretURL - Secret refers to Bitlocker Encryption Key (BEK). The Secret can be unlocked by the key (or KEK).
 	SecretURL *string `json:"secretUrl,omitempty"`
@@ -2325,7 +2325,7 @@ type DpmErrorInfo struct {
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
-// DpmJob the DPM workload-specifc job object.
+// DpmJob the DPM workload-specific job object.
 type DpmJob struct {
 	// Duration - The time elapsed for the job.
 	Duration *string `json:"duration,omitempty"`
@@ -3035,13 +3035,13 @@ type IaaSVMContainer struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - The backup managemenent type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - The container's registration status with the Recovery Services vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these propertes are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -3227,7 +3227,7 @@ type BasicIaaSVMProtectableItem interface {
 type IaaSVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
-	// BackupManagementType - The backup managemenent type.
+	// BackupManagementType - The backup management type.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// FriendlyName - The friendly name of the backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -3832,7 +3832,7 @@ func (j Job) AsBasicJob() (BasicJob, bool) {
 type JobQueryObject struct {
 	// Status - Status of the job. Possible values include: 'JobStatusInvalid', 'JobStatusInProgress', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusCompletedWithWarnings', 'JobStatusCancelled', 'JobStatusCancelling'
 	Status JobStatus `json:"status,omitempty"`
-	// BackupManagementType - Type of backup managmenent for the job. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - Type of backup management for the job. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// Operation - The type of operation. Possible values include: 'JobOperationTypeInvalid', 'JobOperationTypeConfigureBackup', 'JobOperationTypeBackup', 'JobOperationTypeRestore', 'JobOperationTypeDisableBackup', 'JobOperationTypeDeleteBackupData'
 	Operation JobOperationType `json:"operation,omitempty"`
@@ -4129,7 +4129,7 @@ type KEKDetails struct {
 type KeyAndSecretDetails struct {
 	// KekDetails - The Key Encryption Key (KEK) is the encryption key for the Bitlocker Encryption Key (BEK).
 	KekDetails *KEKDetails `json:"kekDetails,omitempty"`
-	// BekDetails - BEK is Bitlocker Encrpytion Key.
+	// BekDetails - BEK is Bitlocker Encryption Key.
 	BekDetails *BEKDetails `json:"bekDetails,omitempty"`
 }
 
@@ -4239,13 +4239,13 @@ type MabContainer struct {
 	ExtendedInfo *MabContainerExtendedInfo `json:"extendedInfo,omitempty"`
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - The backup managemenent type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - The container's registration status with the Recovery Services vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these propertes are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -4366,7 +4366,7 @@ type MabFileFolderProtectedItem struct {
 	IsScheduledForDeferredDelete *bool   `json:"isScheduledForDeferredDelete,omitempty"`
 	// ExtendedInfo - Additional information for this backup item.
 	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - The backup managemenent type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - The workload type for this item. Possible values include: 'Invalid', 'VM', 'FileFolder', 'AzureSQLDb', 'SQLDB', 'Exchange', 'Sharepoint', 'DPMUnknown'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -5302,7 +5302,7 @@ type BasicProtectedItem interface {
 
 // ProtectedItem the base class for backup items.
 type ProtectedItem struct {
-	// BackupManagementType - The backup managemenent type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type associated with the backup item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// WorkloadType - The workload type for this item. Possible values include: 'Invalid', 'VM', 'FileFolder', 'AzureSQLDb', 'SQLDB', 'Exchange', 'Sharepoint', 'DPMUnknown'
 	WorkloadType DataSourceType `json:"workloadType,omitempty"`
@@ -5729,13 +5729,13 @@ type BasicProtectionContainer interface {
 type ProtectionContainer struct {
 	// FriendlyName - Friendly name of the container.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupManagementType - The backup managemenent type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
+	// BackupManagementType - The backup management type for the container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 	// RegistrationStatus - The container's registration status with the Recovery Services vault.
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these propertes are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -7181,7 +7181,7 @@ type BasicWorkloadProtectableItem interface {
 // WorkloadProtectableItem the base class for backup item. Workload-specific backup items are derived from this
 // class.
 type WorkloadProtectableItem struct {
-	// BackupManagementType - The backup managemenent type.
+	// BackupManagementType - The backup management type.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// FriendlyName - The friendly name of the backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`

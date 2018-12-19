@@ -25,13 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-12-30-preview/consumption"
 )
 
-type BudgetsClient = original.BudgetsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type OperatorType = original.OperatorType
 
 const (
@@ -48,10 +45,12 @@ const (
 	Quarterly TimeGrainType = original.Quarterly
 )
 
+type BaseClient = original.BaseClient
 type Budget = original.Budget
 type BudgetProperties = original.BudgetProperties
-type BudgetsListResult = original.BudgetsListResult
 type BudgetTimePeriod = original.BudgetTimePeriod
+type BudgetsClient = original.BudgetsClient
+type BudgetsListResult = original.BudgetsListResult
 type CurrentSpend = original.CurrentSpend
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -61,26 +60,17 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
-type ProxyResource = original.ProxyResource
 type OperationsClient = original.OperationsClient
+type ProxyResource = original.ProxyResource
 
+func New(subscriptionID string, name string) BaseClient {
+	return original.New(subscriptionID, name)
+}
 func NewBudgetsClient(subscriptionID string, name string) BudgetsClient {
 	return original.NewBudgetsClient(subscriptionID, name)
 }
 func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, name string) BudgetsClient {
 	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID, name)
-}
-func New(subscriptionID string, name string) BaseClient {
-	return original.New(subscriptionID, name)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, name string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, name)
-}
-func PossibleOperatorTypeValues() []OperatorType {
-	return original.PossibleOperatorTypeValues()
-}
-func PossibleTimeGrainTypeValues() []TimeGrainType {
-	return original.PossibleTimeGrainTypeValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -93,6 +83,15 @@ func NewOperationsClient(subscriptionID string, name string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, name string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, name)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, name string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, name)
+}
+func PossibleOperatorTypeValues() []OperatorType {
+	return original.PossibleOperatorTypeValues()
+}
+func PossibleTimeGrainTypeValues() []TimeGrainType {
+	return original.PossibleTimeGrainTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

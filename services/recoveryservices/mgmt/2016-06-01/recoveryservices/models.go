@@ -185,7 +185,7 @@ type ClientDiscoveryForServiceSpecification struct {
 // ClientDiscoveryResponse operations List response which contains list of available APIs.
 type ClientDiscoveryResponse struct {
 	autorest.Response `json:"-"`
-	// Value - List of available operationss.
+	// Value - List of available operations.
 	Value *[]ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
 	// NextLink - Link to the next chunk of the response
 	NextLink *string `json:"nextLink,omitempty"`
@@ -520,7 +520,7 @@ type ResourceCertificateAndAadDetails struct {
 	AzureManagementEndpointAudience *string `json:"azureManagementEndpointAudience,omitempty"`
 	// Certificate - The base64 encoded certificate raw data string.
 	Certificate *[]byte `json:"certificate,omitempty"`
-	// FriendlyName - Certificate friendlyname.
+	// FriendlyName - Certificate friendly name.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// Issuer - Certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
@@ -617,7 +617,7 @@ type ResourceCertificateAndAcsDetails struct {
 	GlobalAcsRPRealm *string `json:"globalAcsRPRealm,omitempty"`
 	// Certificate - The base64 encoded certificate raw data string.
 	Certificate *[]byte `json:"certificate,omitempty"`
-	// FriendlyName - Certificate friendlyname.
+	// FriendlyName - Certificate friendly name.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// Issuer - Certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
@@ -709,7 +709,7 @@ type BasicResourceCertificateDetails interface {
 type ResourceCertificateDetails struct {
 	// Certificate - The base64 encoded certificate raw data string.
 	Certificate *[]byte `json:"certificate,omitempty"`
-	// FriendlyName - Certificate friendlyname.
+	// FriendlyName - Certificate friendly name.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// Issuer - Certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
@@ -882,7 +882,7 @@ type UpgradeDetails struct {
 	Status VaultUpgradeState `json:"status,omitempty"`
 	// Message - Message to the user containing information about the upgrade operation.
 	Message *string `json:"message,omitempty"`
-	// TriggerType - The way the vault upgradation was triggered. Possible values include: 'UserTriggered', 'ForcedUpgrade'
+	// TriggerType - The way the vault upgrade was triggered. Possible values include: 'UserTriggered', 'ForcedUpgrade'
 	TriggerType TriggerType `json:"triggerType,omitempty"`
 	// UpgradedResourceID - Resource ID of the upgraded vault.
 	UpgradedResourceID *string `json:"upgradedResourceId,omitempty"`

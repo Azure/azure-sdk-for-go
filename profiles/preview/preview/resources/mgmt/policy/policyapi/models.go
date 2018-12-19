@@ -22,5 +22,5 @@ package policyapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-06-01-preview/policy/policyapi"
 
 type AssignmentsClientAPI = original.AssignmentsClientAPI
-type SetDefinitionsClientAPI = original.SetDefinitionsClientAPI
 type DefinitionsClientAPI = original.DefinitionsClientAPI
+type SetDefinitionsClientAPI = original.SetDefinitionsClientAPI

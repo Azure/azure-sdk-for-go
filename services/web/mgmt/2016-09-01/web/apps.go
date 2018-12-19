@@ -21715,7 +21715,7 @@ func (client AppsClient) ListRelayServiceConnectionsSlotResponder(resp *http.Res
 	return
 }
 
-// ListSiteExtensions get list of siteextensions for a web site, or a deployment slot.
+// ListSiteExtensions get list of site extensions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21838,7 +21838,7 @@ func (client AppsClient) ListSiteExtensionsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListSiteExtensionsSlot get list of siteextensions for a web site, or a deployment slot.
+// ListSiteExtensionsSlot get list of site extensions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.

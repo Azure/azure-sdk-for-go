@@ -347,7 +347,7 @@ type Resource struct {
 
 // SoaRecord an SOA record.
 type SoaRecord struct {
-	// Host - Gets or sets the domain name of the authoritative name server, without a temrinating dot.
+	// Host - Gets or sets the domain name of the authoritative name server, without a terminating dot.
 	Host *string `json:"host,omitempty"`
 	// Email - Gets or sets the email for this record.
 	Email *string `json:"email,omitempty"`
@@ -367,7 +367,7 @@ type SoaRecord struct {
 type SrvRecord struct {
 	// Priority - Gets or sets the priority metric for this record.
 	Priority *int32 `json:"priority,omitempty"`
-	// Weight - Gets or sets the weight metric for this this record.
+	// Weight - Gets or sets the weight metric for this record.
 	Weight *int32 `json:"weight,omitempty"`
 	// Port - Gets or sets the port of the service for this record.
 	Port *int32 `json:"port,omitempty"`

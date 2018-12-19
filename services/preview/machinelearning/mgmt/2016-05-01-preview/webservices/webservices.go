@@ -151,7 +151,7 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result WebSer
 	return
 }
 
-// Get gets the Web Service Definiton as specified by a subscription, resource group, and name. Note that the storage
+// Get gets the Web Service Definition as specified by a subscription, resource group, and name. Note that the storage
 // credentials and web service keys are not returned by this call. To get the web service access keys, call List Keys.
 // Parameters:
 // resourceGroupName - name of the resource group in which the web service is located.

@@ -47,7 +47,7 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 // zoneName - the name of the DNS zone (without a terminating dot).
 // parameters - parameters supplied to the CreateOrUpdate operation.
 // ifMatch - the etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
-// last-seen etag value to prevent accidentally overwritting any concurrent changes.
+// last-seen etag value to prevent accidentally overwriting any concurrent changes.
 // ifNoneMatch - set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
 // Other values will be ignored.
 func (client ZonesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (result Zone, err error) {
@@ -577,7 +577,7 @@ func (client ZonesClient) ListByResourceGroupComplete(ctx context.Context, resou
 // zoneName - the name of the DNS zone (without a terminating dot).
 // parameters - parameters supplied to the Update operation.
 // ifMatch - the etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
-// last-seen etag value to prevent accidentally overwritting any concurrent changes.
+// last-seen etag value to prevent accidentally overwriting any concurrent changes.
 func (client ZonesClient) Update(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, ifMatch string) (result Zone, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ZonesClient.Update")

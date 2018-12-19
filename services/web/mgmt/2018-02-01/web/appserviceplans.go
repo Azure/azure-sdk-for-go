@@ -829,7 +829,7 @@ func (client AppServicePlansClient) GetRouteForVnetResponder(resp *http.Response
 	return
 }
 
-// GetServerFarmSkus gets all selectable sku's for a given App Service Plan
+// GetServerFarmSkus gets all selectable SKUs for a given App Service Plan
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of App Service Plan
@@ -1090,7 +1090,7 @@ func (client AppServicePlansClient) GetVnetGatewayResponder(resp *http.Response)
 	return
 }
 
-// List get all App Service plans for a subcription.
+// List get all App Service plans for a subscription.
 // Parameters:
 // detailed - specify <code>true</code> to return all App Service plan properties. The default is
 // <code>false</code>, which returns a subset of the properties.
@@ -1748,7 +1748,7 @@ func (client AppServicePlansClient) ListMetricDefintionsComplete(ctx context.Con
 	return
 }
 
-// ListMetrics get metrics for an App Serice plan.
+// ListMetrics get metrics for an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2535,7 +2535,7 @@ func (client AppServicePlansClient) RebootWorkerResponder(resp *http.Response) (
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
-// softRestart - specify <code>true</code> to performa a soft restart, applies the configuration settings and
+// softRestart - specify <code>true</code> to perform a soft restart, applies the configuration settings and
 // restarts the apps if necessary. The default is <code>false</code>, which always restarts and reprovisions
 // the apps
 func (client AppServicePlansClient) RestartWebApps(ctx context.Context, resourceGroupName string, name string, softRestart *bool) (result autorest.Response, err error) {

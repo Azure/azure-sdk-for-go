@@ -29,8 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type FactoryClient = original.FactoryClient
 type OfferType = original.OfferType
 
 const (
@@ -57,9 +55,11 @@ const (
 )
 
 type AdPrincipal = original.AdPrincipal
+type BaseClient = original.BaseClient
 type CreationParameters = original.CreationParameters
 type CreationResult = original.CreationResult
 type ErrorResponse = original.ErrorResponse
+type FactoryClient = original.FactoryClient
 type FactoryCreateSubscriptionInEnrollmentAccountFuture = original.FactoryCreateSubscriptionInEnrollmentAccountFuture
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
@@ -72,21 +72,18 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultType = original.OperationListResultType
 type OperationType = original.OperationType
+type OperationsClient = original.OperationsClient
+type OperationsGroupClient = original.OperationsGroupClient
 type Policies = original.Policies
+type SubscriptionsClient = original.SubscriptionsClient
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
-type OperationsClient = original.OperationsClient
-type OperationsGroupClient = original.OperationsGroupClient
-type SubscriptionsClient = original.SubscriptionsClient
 type TenantsClient = original.TenantsClient
 
 func New() BaseClient {
 	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }
 func NewFactoryClient() FactoryClient {
 	return original.NewFactoryClient()
@@ -94,26 +91,11 @@ func NewFactoryClient() FactoryClient {
 func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
 	return original.NewFactoryClientWithBaseURI(baseURI)
 }
-func PossibleOfferTypeValues() []OfferType {
-	return original.PossibleOfferTypeValues()
-}
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return original.PossibleSpendingLimitValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
 func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
 	return original.NewListResultPage(getNextPage)
-}
-func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
-	return original.NewTenantListResultIterator(page)
-}
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return original.NewTenantListResultPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
@@ -133,11 +115,29 @@ func NewSubscriptionsClient() SubscriptionsClient {
 func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI)
 }
+func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
+	return original.NewTenantListResultIterator(page)
+}
+func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return original.NewTenantListResultPage(getNextPage)
+}
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
 }
 func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return original.NewTenantsClientWithBaseURI(baseURI)
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleOfferTypeValues() []OfferType {
+	return original.PossibleOfferTypeValues()
+}
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

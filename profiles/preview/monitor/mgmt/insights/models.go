@@ -21,25 +21,10 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2017-09-01/insights"
 
-type ActionGroupsClient = original.ActionGroupsClient
-type ActivityLogAlertsClient = original.ActivityLogAlertsClient
-type ActivityLogsClient = original.ActivityLogsClient
-type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
-type AlertRulesClient = original.AlertRulesClient
-type AutoscaleSettingsClient = original.AutoscaleSettingsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type DiagnosticSettingsClient = original.DiagnosticSettingsClient
-type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
-type EventCategoriesClient = original.EventCategoriesClient
-type LogProfilesClient = original.LogProfilesClient
-type MetricBaselineClient = original.MetricBaselineClient
-type MetricDefinitionsClient = original.MetricDefinitionsClient
-type MetricsClient = original.MetricsClient
 type AggregationType = original.AggregationType
 
 const (
@@ -213,6 +198,7 @@ type ActionGroupList = original.ActionGroupList
 type ActionGroupPatch = original.ActionGroupPatch
 type ActionGroupPatchBody = original.ActionGroupPatchBody
 type ActionGroupResource = original.ActionGroupResource
+type ActionGroupsClient = original.ActionGroupsClient
 type ActivityLogAlert = original.ActivityLogAlert
 type ActivityLogAlertActionGroup = original.ActivityLogAlertActionGroup
 type ActivityLogAlertActionList = original.ActivityLogAlertActionList
@@ -222,10 +208,14 @@ type ActivityLogAlertList = original.ActivityLogAlertList
 type ActivityLogAlertPatch = original.ActivityLogAlertPatch
 type ActivityLogAlertPatchBody = original.ActivityLogAlertPatchBody
 type ActivityLogAlertResource = original.ActivityLogAlertResource
+type ActivityLogAlertsClient = original.ActivityLogAlertsClient
+type ActivityLogsClient = original.ActivityLogsClient
 type AlertRule = original.AlertRule
+type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
 type AlertRuleResource = original.AlertRuleResource
 type AlertRuleResourceCollection = original.AlertRuleResourceCollection
 type AlertRuleResourcePatch = original.AlertRuleResourcePatch
+type AlertRulesClient = original.AlertRulesClient
 type AutomationRunbookReceiver = original.AutomationRunbookReceiver
 type AutoscaleNotification = original.AutoscaleNotification
 type AutoscaleProfile = original.AutoscaleProfile
@@ -235,22 +225,30 @@ type AutoscaleSettingResourceCollection = original.AutoscaleSettingResourceColle
 type AutoscaleSettingResourceCollectionIterator = original.AutoscaleSettingResourceCollectionIterator
 type AutoscaleSettingResourceCollectionPage = original.AutoscaleSettingResourceCollectionPage
 type AutoscaleSettingResourcePatch = original.AutoscaleSettingResourcePatch
+type AutoscaleSettingsClient = original.AutoscaleSettingsClient
 type AzureAppPushReceiver = original.AzureAppPushReceiver
+type BaseClient = original.BaseClient
 type Baseline = original.Baseline
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
 type BaselineResponse = original.BaselineResponse
+type BasicRuleAction = original.BasicRuleAction
+type BasicRuleCondition = original.BasicRuleCondition
+type BasicRuleDataSource = original.BasicRuleDataSource
 type CalculateBaselineResponse = original.CalculateBaselineResponse
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
+type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
 type DiagnosticSettingsCategoryResource = original.DiagnosticSettingsCategoryResource
 type DiagnosticSettingsCategoryResourceCollection = original.DiagnosticSettingsCategoryResourceCollection
+type DiagnosticSettingsClient = original.DiagnosticSettingsClient
 type DiagnosticSettingsResource = original.DiagnosticSettingsResource
 type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceCollection
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
 type ErrorResponse = original.ErrorResponse
+type EventCategoriesClient = original.EventCategoriesClient
 type EventCategoryCollection = original.EventCategoryCollection
 type EventData = original.EventData
 type EventDataCollection = original.EventDataCollection
@@ -266,31 +264,33 @@ type LogProfileCollection = original.LogProfileCollection
 type LogProfileProperties = original.LogProfileProperties
 type LogProfileResource = original.LogProfileResource
 type LogProfileResourcePatch = original.LogProfileResourcePatch
+type LogProfilesClient = original.LogProfilesClient
 type LogSettings = original.LogSettings
 type ManagementEventAggregationCondition = original.ManagementEventAggregationCondition
 type ManagementEventRuleCondition = original.ManagementEventRuleCondition
 type MetadataValue = original.MetadataValue
 type Metric = original.Metric
 type MetricAvailability = original.MetricAvailability
+type MetricBaselineClient = original.MetricBaselineClient
 type MetricDefinition = original.MetricDefinition
 type MetricDefinitionCollection = original.MetricDefinitionCollection
+type MetricDefinitionsClient = original.MetricDefinitionsClient
 type MetricSettings = original.MetricSettings
 type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
+type MetricsClient = original.MetricsClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type OperationsClient = original.OperationsClient
 type ProxyOnlyResource = original.ProxyOnlyResource
 type Recurrence = original.Recurrence
 type RecurrentSchedule = original.RecurrentSchedule
 type Resource = original.Resource
 type Response = original.Response
 type RetentionPolicy = original.RetentionPolicy
-type BasicRuleAction = original.BasicRuleAction
 type RuleAction = original.RuleAction
-type BasicRuleCondition = original.BasicRuleCondition
 type RuleCondition = original.RuleCondition
-type BasicRuleDataSource = original.BasicRuleDataSource
 type RuleDataSource = original.RuleDataSource
 type RuleEmailAction = original.RuleEmailAction
 type RuleManagementEventClaimsDataSource = original.RuleManagementEventClaimsDataSource
@@ -302,6 +302,7 @@ type ScaleCapacity = original.ScaleCapacity
 type ScaleRule = original.ScaleRule
 type SenderAuthorization = original.SenderAuthorization
 type SmsReceiver = original.SmsReceiver
+type TenantActivityLogsClient = original.TenantActivityLogsClient
 type ThresholdRuleCondition = original.ThresholdRuleCondition
 type TimeSeriesElement = original.TimeSeriesElement
 type TimeSeriesInformation = original.TimeSeriesInformation
@@ -309,9 +310,10 @@ type TimeWindow = original.TimeWindow
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
-type OperationsClient = original.OperationsClient
-type TenantActivityLogsClient = original.TenantActivityLogsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
 	return original.NewActionGroupsClient(subscriptionID)
 }
@@ -348,23 +350,17 @@ func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
 	return original.NewDiagnosticSettingsClient(subscriptionID)
 }
 func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
 	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
-}
-func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEventCategoriesClient(subscriptionID string) EventCategoriesClient {
 	return original.NewEventCategoriesClient(subscriptionID)
@@ -407,6 +403,9 @@ func NewTenantActivityLogsClient(subscriptionID string) TenantActivityLogsClient
 }
 func NewTenantActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) TenantActivityLogsClient {
 	return original.NewTenantActivityLogsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -21,7 +21,7 @@ package visualstudioapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio/visualstudioapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type AccountsClientAPI = original.AccountsClientAPI
 type ExtensionsClientAPI = original.ExtensionsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type ProjectsClientAPI = original.ProjectsClientAPI

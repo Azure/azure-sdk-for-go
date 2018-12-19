@@ -103,6 +103,29 @@ type ReplicationProtectionContainersClientAPI interface {
 
 var _ ReplicationProtectionContainersClientAPI = (*siterecovery.ReplicationProtectionContainersClient)(nil)
 
+// ReplicationMigrationItemsClientAPI contains the set of methods on the ReplicationMigrationItemsClient type.
+type ReplicationMigrationItemsClientAPI interface {
+	Create(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input siterecovery.EnableMigrationInput) (result siterecovery.ReplicationMigrationItemsCreateFuture, err error)
+	Delete(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, deleteOption string) (result siterecovery.ReplicationMigrationItemsDeleteFuture, err error)
+	Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string) (result siterecovery.MigrationItem, err error)
+	List(ctx context.Context, skipToken string, filter string) (result siterecovery.MigrationItemCollectionPage, err error)
+	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.MigrationItemCollectionPage, err error)
+	Migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput siterecovery.MigrateInput) (result siterecovery.ReplicationMigrationItemsMigrateFuture, err error)
+	TestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput siterecovery.TestMigrateInput) (result siterecovery.ReplicationMigrationItemsTestMigrateFuture, err error)
+	TestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput siterecovery.TestMigrateCleanupInput) (result siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture, err error)
+	Update(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input siterecovery.UpdateMigrationItemInput) (result siterecovery.ReplicationMigrationItemsUpdateFuture, err error)
+}
+
+var _ ReplicationMigrationItemsClientAPI = (*siterecovery.ReplicationMigrationItemsClient)(nil)
+
+// MigrationRecoveryPointsClientAPI contains the set of methods on the MigrationRecoveryPointsClient type.
+type MigrationRecoveryPointsClientAPI interface {
+	Get(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrationRecoveryPointName string) (result siterecovery.MigrationRecoveryPoint, err error)
+	ListByReplicationMigrationItems(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string) (result siterecovery.MigrationRecoveryPointCollectionPage, err error)
+}
+
+var _ MigrationRecoveryPointsClientAPI = (*siterecovery.MigrationRecoveryPointsClient)(nil)
+
 // ReplicationProtectableItemsClientAPI contains the set of methods on the ReplicationProtectableItemsClient type.
 type ReplicationProtectableItemsClientAPI interface {
 	Get(ctx context.Context, fabricName string, protectionContainerName string, protectableItemName string) (result siterecovery.ProtectableItem, err error)
@@ -163,6 +186,7 @@ var _ ReplicationProtectionContainerMappingsClientAPI = (*siterecovery.Replicati
 
 // ReplicationRecoveryServicesProvidersClientAPI contains the set of methods on the ReplicationRecoveryServicesProvidersClient type.
 type ReplicationRecoveryServicesProvidersClientAPI interface {
+	Create(ctx context.Context, fabricName string, providerName string, addProviderInput siterecovery.AddRecoveryServicesProviderInput) (result siterecovery.ReplicationRecoveryServicesProvidersCreateFuture, err error)
 	Delete(ctx context.Context, fabricName string, providerName string) (result siterecovery.ReplicationRecoveryServicesProvidersDeleteFuture, err error)
 	Get(ctx context.Context, fabricName string, providerName string) (result siterecovery.RecoveryServicesProvider, err error)
 	List(ctx context.Context) (result siterecovery.RecoveryServicesProviderCollectionPage, err error)

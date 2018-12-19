@@ -152,13 +152,13 @@ func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
 type CertificateVisibility string
 
 const (
-	// CertificateVisibilityRemoteUser The certificate should be visibile to the user accounts under which
-	// users remotely access the node.
+	// CertificateVisibilityRemoteUser The certificate should be visible to the user accounts under which users
+	// remotely access the node.
 	CertificateVisibilityRemoteUser CertificateVisibility = "remoteuser"
 	// CertificateVisibilityStartTask The certificate should be visible to the user account under which the
 	// start task is run.
 	CertificateVisibilityStartTask CertificateVisibility = "starttask"
-	// CertificateVisibilityTask The certificate should be visibile to the user accounts under which job tasks
+	// CertificateVisibilityTask The certificate should be visible to the user accounts under which job tasks
 	// are run.
 	CertificateVisibilityTask CertificateVisibility = "task"
 )
@@ -272,7 +272,7 @@ const (
 	// Offline The node is not currently running a task, and scheduling of new tasks to the node is disabled.
 	Offline ComputeNodeState = "offline"
 	// Preempted The low-priority node has been preempted. Tasks which were running on the node when it was
-	// pre-empted will be rescheduled when another node becomes available.
+	// preempted will be rescheduled when another node becomes available.
 	Preempted ComputeNodeState = "preempted"
 	// Rebooting The node is rebooting.
 	Rebooting ComputeNodeState = "rebooting"
@@ -2245,7 +2245,7 @@ type ComputeNode struct {
 	// ID - Every node that is added to a pool is assigned a unique ID. Whenever a node is removed from a pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new nodes.
 	ID  *string `json:"id,omitempty"`
 	URL *string `json:"url,omitempty"`
-	// State - The low-priority node has been preempted. Tasks which were running on the node when it was pre-empted will be rescheduled when another node becomes available. Possible values include: 'Idle', 'Rebooting', 'Reimaging', 'Running', 'Unusable', 'Creating', 'Starting', 'WaitingForStartTask', 'StartTaskFailed', 'Unknown', 'LeavingPool', 'Offline', 'Preempted'
+	// State - The low-priority node has been preempted. Tasks which were running on the node when it was preempted will be rescheduled when another node becomes available. Possible values include: 'Idle', 'Rebooting', 'Reimaging', 'Running', 'Unusable', 'Creating', 'Starting', 'WaitingForStartTask', 'StartTaskFailed', 'Unknown', 'LeavingPool', 'Offline', 'Preempted'
 	State ComputeNodeState `json:"state,omitempty"`
 	// SchedulingState - Possible values include: 'Enabled', 'Disabled'
 	SchedulingState     SchedulingState `json:"schedulingState,omitempty"`
@@ -2540,13 +2540,13 @@ type ExitConditions struct {
 	PreProcessingError *ExitOptions            `json:"preProcessingError,omitempty"`
 	// FileUploadError - If the task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes precedence.
 	FileUploadError *ExitOptions `json:"fileUploadError,omitempty"`
-	// Default - This value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behaviour on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
+	// Default - This value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
 	Default *ExitOptions `json:"default,omitempty"`
 }
 
 // ExitOptions ...
 type ExitOptions struct {
-	// JobAction - The default is none for exit code 0 and terminate for all other exit conditions. If the job's onTaskFailed property is noaction, then specifying this property returns an error and the add task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). Possible values include: 'JobActionNone', 'JobActionDisable', 'JobActionTerminate'
+	// JobAction - The default is none for exit code 0 and terminate for all other exit conditions. If the job's onTaskFailed property is noAction, then specifying this property returns an error and the add task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). Possible values include: 'JobActionNone', 'JobActionDisable', 'JobActionTerminate'
 	JobAction JobAction `json:"jobAction,omitempty"`
 	// DependencyAction - The default is 'satisfy' for exit code 0, and 'block' for all other exit conditions. If the job's usesTaskDependencies property is set to false, then specifying the dependencyAction property returns an error and the add task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400  (Bad Request). Possible values include: 'Satisfy', 'Block'
 	DependencyAction DependencyAction `json:"dependencyAction,omitempty"`
@@ -2763,7 +2763,7 @@ type JobPreparationTask struct {
 	Constraints         *TaskConstraints      `json:"constraints,omitempty"`
 	// WaitForSuccess - If true and the Job Preparation task fails on a compute node, the Batch service retries the Job Preparation task up to its maximum retry count (as specified in the constraints element). If the task has still not completed successfully after all retries, then the Batch service will not schedule tasks of the job to the compute node. The compute node remains active and eligible to run tasks of other jobs. If false, the Batch service will not wait for the Job Preparation task to complete. In this case, other tasks of the job can start executing on the compute node while the Job Preparation task is still running; and even if the Job Preparation task fails, new tasks will continue to be scheduled on the node. The default value is true.
 	WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a a non-administrative user unique to the pool on Linux nodes.
+	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a non-administrative user unique to the pool on Linux nodes.
 	UserIdentity *UserIdentity `json:"userIdentity,omitempty"`
 	// RerunOnNodeRebootAfterSuccess - The Job Preparation task is always rerun if a compute node is reimaged, or if the Job Preparation task did not complete (e.g. because the reboot occurred while the task was running). Therefore, you should always write a Job Preparation task to be idempotent and to behave correctly if run multiple times. The default value is true.
 	RerunOnNodeRebootAfterSuccess *bool `json:"rerunOnNodeRebootAfterSuccess,omitempty"`

@@ -45,7 +45,7 @@ func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptio
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
-// certificateDistinguishedName - distinguished name to to use for the certificate order.
+// certificateDistinguishedName - distinguished name to use for the certificate order.
 func (client AppServiceCertificateOrdersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder) (result AppServiceCertificateOrdersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceCertificateOrdersClient.CreateOrUpdate")
@@ -1529,7 +1529,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveSiteSealResponder(resp *
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
-// certificateDistinguishedName - distinguished name to to use for the certificate order.
+// certificateDistinguishedName - distinguished name to use for the certificate order.
 func (client AppServiceCertificateOrdersClient) Update(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrderPatchResource) (result AppServiceCertificateOrder, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceCertificateOrdersClient.Update")

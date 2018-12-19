@@ -1446,7 +1446,7 @@ func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, R
 	return RemediationDeploymentsListResultPage{fn: getNextPage}
 }
 
-// RemediationDeploymentSummary the deployment status summary for all deplyoments created by the
+// RemediationDeploymentSummary the deployment status summary for all deployments created by the
 // remediation.
 type RemediationDeploymentSummary struct {
 	// TotalDeployments - The number of deployments required by the remediation.
@@ -1623,7 +1623,7 @@ type RemediationProperties struct {
 	LastUpdatedOn *date.Time `json:"lastUpdatedOn,omitempty"`
 	// Filters - The filters that will be applied to determine which resources to remediate.
 	Filters *RemediationFilters `json:"filters,omitempty"`
-	// DeploymentStatus - The deployment status summary for all deplyoments created by the remediation.
+	// DeploymentStatus - The deployment status summary for all deployments created by the remediation.
 	DeploymentStatus *RemediationDeploymentSummary `json:"deploymentStatus,omitempty"`
 }
 

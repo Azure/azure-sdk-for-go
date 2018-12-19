@@ -44,7 +44,7 @@ func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID str
 // List check available SKUs.
 // Parameters:
 // location - resource location.
-// parameters - check SKU Availablity POST body.
+// parameters - check SKU Availability POST body.
 func (client CheckSkuAvailabilityClient) List(ctx context.Context, location string, parameters CheckSkuAvailabilityParameter) (result CheckSkuAvailabilityResultList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CheckSkuAvailabilityClient.List")
@@ -59,6 +59,7 @@ func (client CheckSkuAvailabilityClient) List(ctx context.Context, location stri
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Skus", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Kind", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cognitiveservices.CheckSkuAvailabilityClient", "List", err.Error())
 	}

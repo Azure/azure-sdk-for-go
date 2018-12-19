@@ -21,7 +21,6 @@ package training
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.2/customvision/training"
 
-type BaseClient = original.BaseClient
 type Classifier = original.Classifier
 
 const (
@@ -93,6 +92,7 @@ const (
 	Regular  TagType = original.Regular
 )
 
+type BaseClient = original.BaseClient
 type BoundingBox = original.BoundingBox
 type Domain = original.Domain
 type Export = original.Export

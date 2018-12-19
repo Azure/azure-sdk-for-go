@@ -21,10 +21,10 @@ package deploymentmanagerapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2018-09-01-preview/deploymentmanager/deploymentmanagerapi"
 
-type ServiceTopologiesClientAPI = original.ServiceTopologiesClientAPI
-type ServicesClientAPI = original.ServicesClientAPI
-type ServiceUnitsClientAPI = original.ServiceUnitsClientAPI
-type StepsClientAPI = original.StepsClientAPI
-type RolloutsClientAPI = original.RolloutsClientAPI
 type ArtifactSourcesClientAPI = original.ArtifactSourcesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RolloutsClientAPI = original.RolloutsClientAPI
+type ServiceTopologiesClientAPI = original.ServiceTopologiesClientAPI
+type ServiceUnitsClientAPI = original.ServiceUnitsClientAPI
+type ServicesClientAPI = original.ServicesClientAPI
+type StepsClientAPI = original.StepsClientAPI

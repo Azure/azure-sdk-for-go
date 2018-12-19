@@ -21,20 +21,20 @@ package securityapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security/securityapi"
 
-type PricingsClientAPI = original.PricingsClientAPI
-type ContactsClientAPI = original.ContactsClientAPI
-type WorkspaceSettingsClientAPI = original.WorkspaceSettingsClientAPI
+type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
+type AlertsClientAPI = original.AlertsClientAPI
+type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI
-type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
-type SettingsClientAPI = original.SettingsClientAPI
-type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
-type LocationsClientAPI = original.LocationsClientAPI
-type TasksClientAPI = original.TasksClientAPI
-type AlertsClientAPI = original.AlertsClientAPI
+type ContactsClientAPI = original.ContactsClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
-type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
+type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
+type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
+type LocationsClientAPI = original.LocationsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type PricingsClientAPI = original.PricingsClientAPI
+type SettingsClientAPI = original.SettingsClientAPI
+type TasksClientAPI = original.TasksClientAPI
 type TopologyClientAPI = original.TopologyClientAPI
-type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
+type WorkspaceSettingsClientAPI = original.WorkspaceSettingsClientAPI

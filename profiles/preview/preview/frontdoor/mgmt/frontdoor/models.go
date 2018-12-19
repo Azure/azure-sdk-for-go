@@ -25,18 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
 )
 
-type BackendPoolsClient = original.BackendPoolsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type EndpointsClient = original.EndpointsClient
-type FrontDoorsClient = original.FrontDoorsClient
-type FrontendEndpointsClient = original.FrontendEndpointsClient
-type HealthProbeSettingsClient = original.HealthProbeSettingsClient
-type LoadBalancingSettingsClient = original.LoadBalancingSettingsClient
 type Action = original.Action
 
 const (
@@ -260,9 +252,12 @@ type BackendPoolListResult = original.BackendPoolListResult
 type BackendPoolListResultIterator = original.BackendPoolListResultIterator
 type BackendPoolListResultPage = original.BackendPoolListResultPage
 type BackendPoolProperties = original.BackendPoolProperties
+type BackendPoolUpdateParameters = original.BackendPoolUpdateParameters
+type BackendPoolsClient = original.BackendPoolsClient
 type BackendPoolsCreateOrUpdateFuture = original.BackendPoolsCreateOrUpdateFuture
 type BackendPoolsDeleteFuture = original.BackendPoolsDeleteFuture
-type BackendPoolUpdateParameters = original.BackendPoolUpdateParameters
+type BaseClient = original.BaseClient
+type BasicManagedRuleSet = original.BasicManagedRuleSet
 type CacheConfiguration = original.CacheConfiguration
 type CertificateSourceParameters = original.CertificateSourceParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
@@ -270,15 +265,20 @@ type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CustomHTTPSConfiguration = original.CustomHTTPSConfiguration
 type CustomRule = original.CustomRule
 type CustomRules = original.CustomRules
+type EndpointsClient = original.EndpointsClient
 type EndpointsPurgeContentFuture = original.EndpointsPurgeContentFuture
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type FrontDoor = original.FrontDoor
+type FrontDoorsClient = original.FrontDoorsClient
 type FrontDoorsCreateOrUpdateFutureType = original.FrontDoorsCreateOrUpdateFutureType
 type FrontDoorsDeleteFutureType = original.FrontDoorsDeleteFutureType
 type FrontendEndpoint = original.FrontendEndpoint
 type FrontendEndpointProperties = original.FrontendEndpointProperties
+type FrontendEndpointUpdateParameters = original.FrontendEndpointUpdateParameters
+type FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink = original.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink
+type FrontendEndpointsClient = original.FrontendEndpointsClient
 type FrontendEndpointsCreateOrUpdateFuture = original.FrontendEndpointsCreateOrUpdateFuture
 type FrontendEndpointsDeleteFuture = original.FrontendEndpointsDeleteFuture
 type FrontendEndpointsDisableHTTPSFuture = original.FrontendEndpointsDisableHTTPSFuture
@@ -286,8 +286,7 @@ type FrontendEndpointsEnableHTTPSFuture = original.FrontendEndpointsEnableHTTPSF
 type FrontendEndpointsListResult = original.FrontendEndpointsListResult
 type FrontendEndpointsListResultIterator = original.FrontendEndpointsListResultIterator
 type FrontendEndpointsListResultPage = original.FrontendEndpointsListResultPage
-type FrontendEndpointUpdateParameters = original.FrontendEndpointUpdateParameters
-type FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink = original.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink
+type HealthProbeSettingsClient = original.HealthProbeSettingsClient
 type HealthProbeSettingsCreateOrUpdateFuture = original.HealthProbeSettingsCreateOrUpdateFuture
 type HealthProbeSettingsDeleteFuture = original.HealthProbeSettingsDeleteFuture
 type HealthProbeSettingsListResult = original.HealthProbeSettingsListResult
@@ -301,6 +300,7 @@ type KeyVaultCertificateSourceParametersVault = original.KeyVaultCertificateSour
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
+type LoadBalancingSettingsClient = original.LoadBalancingSettingsClient
 type LoadBalancingSettingsCreateOrUpdateFuture = original.LoadBalancingSettingsCreateOrUpdateFuture
 type LoadBalancingSettingsDeleteFuture = original.LoadBalancingSettingsDeleteFuture
 type LoadBalancingSettingsListResult = original.LoadBalancingSettingsListResult
@@ -309,10 +309,10 @@ type LoadBalancingSettingsListResultPage = original.LoadBalancingSettingsListRes
 type LoadBalancingSettingsModel = original.LoadBalancingSettingsModel
 type LoadBalancingSettingsProperties = original.LoadBalancingSettingsProperties
 type LoadBalancingSettingsUpdateParameters = original.LoadBalancingSettingsUpdateParameters
-type BasicManagedRuleSet = original.BasicManagedRuleSet
 type ManagedRuleSet = original.ManagedRuleSet
 type ManagedRuleSets = original.ManagedRuleSets
 type MatchCondition1 = original.MatchCondition1
+type PoliciesClient = original.PoliciesClient
 type PoliciesDeleteFuture = original.PoliciesDeleteFuture
 type PolicySettings = original.PolicySettings
 type Properties = original.Properties
@@ -323,9 +323,10 @@ type RoutingRuleListResult = original.RoutingRuleListResult
 type RoutingRuleListResultIterator = original.RoutingRuleListResultIterator
 type RoutingRuleListResultPage = original.RoutingRuleListResultPage
 type RoutingRuleProperties = original.RoutingRuleProperties
+type RoutingRuleUpdateParameters = original.RoutingRuleUpdateParameters
+type RoutingRulesClient = original.RoutingRulesClient
 type RoutingRulesCreateOrUpdateFuture = original.RoutingRulesCreateOrUpdateFuture
 type RoutingRulesDeleteFuture = original.RoutingRulesDeleteFuture
-type RoutingRuleUpdateParameters = original.RoutingRuleUpdateParameters
 type SubResource = original.SubResource
 type TagsObject = original.TagsObject
 type UpdateParameters = original.UpdateParameters
@@ -336,20 +337,21 @@ type WebApplicationFirewallPolicyListResult = original.WebApplicationFirewallPol
 type WebApplicationFirewallPolicyListResultIterator = original.WebApplicationFirewallPolicyListResultIterator
 type WebApplicationFirewallPolicyListResultPage = original.WebApplicationFirewallPolicyListResultPage
 type WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormat
-type PoliciesClient = original.PoliciesClient
-type RoutingRulesClient = original.RoutingRulesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewBackendPoolListResultIterator(page BackendPoolListResultPage) BackendPoolListResultIterator {
+	return original.NewBackendPoolListResultIterator(page)
+}
+func NewBackendPoolListResultPage(getNextPage func(context.Context, BackendPoolListResult) (BackendPoolListResult, error)) BackendPoolListResultPage {
+	return original.NewBackendPoolListResultPage(getNextPage)
+}
 func NewBackendPoolsClient(subscriptionID string) BackendPoolsClient {
 	return original.NewBackendPoolsClient(subscriptionID)
 }
 func NewBackendPoolsClientWithBaseURI(baseURI string, subscriptionID string) BackendPoolsClient {
 	return original.NewBackendPoolsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewEndpointsClient(subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClient(subscriptionID)
@@ -369,17 +371,68 @@ func NewFrontendEndpointsClient(subscriptionID string) FrontendEndpointsClient {
 func NewFrontendEndpointsClientWithBaseURI(baseURI string, subscriptionID string) FrontendEndpointsClient {
 	return original.NewFrontendEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewFrontendEndpointsListResultIterator(page FrontendEndpointsListResultPage) FrontendEndpointsListResultIterator {
+	return original.NewFrontendEndpointsListResultIterator(page)
+}
+func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return original.NewFrontendEndpointsListResultPage(getNextPage)
+}
 func NewHealthProbeSettingsClient(subscriptionID string) HealthProbeSettingsClient {
 	return original.NewHealthProbeSettingsClient(subscriptionID)
 }
 func NewHealthProbeSettingsClientWithBaseURI(baseURI string, subscriptionID string) HealthProbeSettingsClient {
 	return original.NewHealthProbeSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewHealthProbeSettingsListResultIterator(page HealthProbeSettingsListResultPage) HealthProbeSettingsListResultIterator {
+	return original.NewHealthProbeSettingsListResultIterator(page)
+}
+func NewHealthProbeSettingsListResultPage(getNextPage func(context.Context, HealthProbeSettingsListResult) (HealthProbeSettingsListResult, error)) HealthProbeSettingsListResultPage {
+	return original.NewHealthProbeSettingsListResultPage(getNextPage)
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
 func NewLoadBalancingSettingsClient(subscriptionID string) LoadBalancingSettingsClient {
 	return original.NewLoadBalancingSettingsClient(subscriptionID)
 }
 func NewLoadBalancingSettingsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancingSettingsClient {
 	return original.NewLoadBalancingSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLoadBalancingSettingsListResultIterator(page LoadBalancingSettingsListResultPage) LoadBalancingSettingsListResultIterator {
+	return original.NewLoadBalancingSettingsListResultIterator(page)
+}
+func NewLoadBalancingSettingsListResultPage(getNextPage func(context.Context, LoadBalancingSettingsListResult) (LoadBalancingSettingsListResult, error)) LoadBalancingSettingsListResultPage {
+	return original.NewLoadBalancingSettingsListResultPage(getNextPage)
+}
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
+}
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoutingRuleListResultIterator(page RoutingRuleListResultPage) RoutingRuleListResultIterator {
+	return original.NewRoutingRuleListResultIterator(page)
+}
+func NewRoutingRuleListResultPage(getNextPage func(context.Context, RoutingRuleListResult) (RoutingRuleListResult, error)) RoutingRuleListResultPage {
+	return original.NewRoutingRuleListResultPage(getNextPage)
+}
+func NewRoutingRulesClient(subscriptionID string) RoutingRulesClient {
+	return original.NewRoutingRulesClient(subscriptionID)
+}
+func NewRoutingRulesClientWithBaseURI(baseURI string, subscriptionID string) RoutingRulesClient {
+	return original.NewRoutingRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return original.NewWebApplicationFirewallPolicyListResultIterator(page)
+}
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return original.NewWebApplicationFirewallPolicyListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
@@ -402,11 +455,11 @@ func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSu
 func PossibleDynamicCompressionEnabledValues() []DynamicCompressionEnabled {
 	return original.PossibleDynamicCompressionEnabledValues()
 }
-func PossibleEnabledStateValues() []EnabledState {
-	return original.PossibleEnabledStateValues()
-}
 func PossibleEnabledStateEnumValues() []EnabledStateEnum {
 	return original.PossibleEnabledStateEnumValues()
+}
+func PossibleEnabledStateValues() []EnabledState {
+	return original.PossibleEnabledStateValues()
 }
 func PossibleForwardingProtocolValues() []ForwardingProtocol {
 	return original.PossibleForwardingProtocolValues()
@@ -455,60 +508,6 @@ func PossibleTransformValues() []Transform {
 }
 func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
 	return original.PossibleWebApplicationFirewallPolicyValues()
-}
-func NewBackendPoolListResultIterator(page BackendPoolListResultPage) BackendPoolListResultIterator {
-	return original.NewBackendPoolListResultIterator(page)
-}
-func NewBackendPoolListResultPage(getNextPage func(context.Context, BackendPoolListResult) (BackendPoolListResult, error)) BackendPoolListResultPage {
-	return original.NewBackendPoolListResultPage(getNextPage)
-}
-func NewFrontendEndpointsListResultIterator(page FrontendEndpointsListResultPage) FrontendEndpointsListResultIterator {
-	return original.NewFrontendEndpointsListResultIterator(page)
-}
-func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
-	return original.NewFrontendEndpointsListResultPage(getNextPage)
-}
-func NewHealthProbeSettingsListResultIterator(page HealthProbeSettingsListResultPage) HealthProbeSettingsListResultIterator {
-	return original.NewHealthProbeSettingsListResultIterator(page)
-}
-func NewHealthProbeSettingsListResultPage(getNextPage func(context.Context, HealthProbeSettingsListResult) (HealthProbeSettingsListResult, error)) HealthProbeSettingsListResultPage {
-	return original.NewHealthProbeSettingsListResultPage(getNextPage)
-}
-func NewListResultIterator(page ListResultPage) ListResultIterator {
-	return original.NewListResultIterator(page)
-}
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
-}
-func NewLoadBalancingSettingsListResultIterator(page LoadBalancingSettingsListResultPage) LoadBalancingSettingsListResultIterator {
-	return original.NewLoadBalancingSettingsListResultIterator(page)
-}
-func NewLoadBalancingSettingsListResultPage(getNextPage func(context.Context, LoadBalancingSettingsListResult) (LoadBalancingSettingsListResult, error)) LoadBalancingSettingsListResultPage {
-	return original.NewLoadBalancingSettingsListResultPage(getNextPage)
-}
-func NewRoutingRuleListResultIterator(page RoutingRuleListResultPage) RoutingRuleListResultIterator {
-	return original.NewRoutingRuleListResultIterator(page)
-}
-func NewRoutingRuleListResultPage(getNextPage func(context.Context, RoutingRuleListResult) (RoutingRuleListResult, error)) RoutingRuleListResultPage {
-	return original.NewRoutingRuleListResultPage(getNextPage)
-}
-func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
-	return original.NewWebApplicationFirewallPolicyListResultIterator(page)
-}
-func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
-	return original.NewWebApplicationFirewallPolicyListResultPage(getNextPage)
-}
-func NewPoliciesClient(subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClient(subscriptionID)
-}
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoutingRulesClient(subscriptionID string) RoutingRulesClient {
-	return original.NewRoutingRulesClient(subscriptionID)
-}
-func NewRoutingRulesClientWithBaseURI(baseURI string, subscriptionID string) RoutingRulesClient {
-	return original.NewRoutingRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

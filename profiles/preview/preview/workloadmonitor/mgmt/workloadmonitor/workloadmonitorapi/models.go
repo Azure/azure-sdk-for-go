@@ -21,10 +21,10 @@ package workloadmonitorapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor/workloadmonitorapi"
 
-type MonitorsClientAPI = original.MonitorsClientAPI
 type ComponentsClientAPI = original.ComponentsClientAPI
-type MonitorInstancesClientAPI = original.MonitorInstancesClientAPI
-type NotificationSettingsClientAPI = original.NotificationSettingsClientAPI
 type ComponentsSummaryClientAPI = original.ComponentsSummaryClientAPI
+type MonitorInstancesClientAPI = original.MonitorInstancesClientAPI
 type MonitorInstancesSummaryClientAPI = original.MonitorInstancesSummaryClientAPI
+type MonitorsClientAPI = original.MonitorsClientAPI
+type NotificationSettingsClientAPI = original.NotificationSettingsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

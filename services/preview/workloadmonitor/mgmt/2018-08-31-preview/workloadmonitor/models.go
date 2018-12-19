@@ -653,9 +653,9 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 type MonitorCriteria struct {
 	// HealthState - Target health state of the criteria. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// Threshold - Treshold value for this criteria
+	// Threshold - Threshold value for this criteria
 	Threshold *float64 `json:"threshold,omitempty"`
-	// ComparisonOperator - Comparison enum on theshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
+	// ComparisonOperator - Comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
 	ComparisonOperator Operator `json:"comparisonOperator,omitempty"`
 }
 
@@ -1037,7 +1037,7 @@ type MonitorProperties struct {
 	ComponentTypeDisplayName *string `json:"componentTypeDisplayName,omitempty"`
 	// MonitorState - Is the monitor state enabled or disabled. Possible values include: 'MonitorStateEnabled', 'MonitorStateDisabled'
 	MonitorState MonitorState `json:"monitorState,omitempty"`
-	// Criteria - Collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updation.
+	// Criteria - Collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updating.
 	Criteria *[]MonitorCriteria `json:"criteria,omitempty"`
 	// AlertGeneration - Generates alerts or not. Possible values include: 'Enabled', 'Disabled'
 	AlertGeneration AlertGeneration `json:"alertGeneration,omitempty"`
@@ -1199,11 +1199,12 @@ func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollect
 	return MonitorsCollectionPage{fn: getNextPage}
 }
 
-// NotificationSetting model for component.
+// NotificationSetting model for NotificationSetting.
 type NotificationSetting struct {
+	autorest.Response `json:"-"`
 	// Etag - For optimistic concurrency control.
 	Etag *string `json:"etag,omitempty"`
-	// NotificationSettingProperties - Properties of the component.
+	// NotificationSettingProperties - Properties of Notification Settings
 	*NotificationSettingProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1296,17 +1297,16 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 
 // NotificationSettingProperties model for properties of a NotificationSetting.
 type NotificationSettingProperties struct {
-	// ActionGroups - List of action group resource ids to be notified
-	ActionGroups *[]string `json:"actionGroups,omitempty"`
+	// ActionGroupResourceIds - List of action group resource ids to be notified
+	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
 }
 
 // NotificationSettingsCollection model for collection of notificationSettings.
 type NotificationSettingsCollection struct {
 	autorest.Response `json:"-"`
+	Value             *[]NotificationSetting `json:"value,omitempty"`
 	// NextLink - URL to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Collection of components.
-	Value *[]NotificationSetting `json:"value,omitempty"`
 }
 
 // NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting

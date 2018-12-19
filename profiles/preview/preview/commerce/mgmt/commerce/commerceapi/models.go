@@ -21,5 +21,5 @@ package commerceapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce/commerceapi"
 
-type UsageAggregatesClientAPI = original.UsageAggregatesClientAPI
 type RateCardClientAPI = original.RateCardClientAPI
+type UsageAggregatesClientAPI = original.UsageAggregatesClientAPI

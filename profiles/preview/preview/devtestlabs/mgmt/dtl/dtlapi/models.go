@@ -21,16 +21,16 @@ package dtlapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl/dtlapi"
 
-type LabClientAPI = original.LabClientAPI
-type ArtifactSourceClientAPI = original.ArtifactSourceClientAPI
 type ArtifactClientAPI = original.ArtifactClientAPI
-type CostInsightClientAPI = original.CostInsightClientAPI
+type ArtifactSourceClientAPI = original.ArtifactSourceClientAPI
 type CostClientAPI = original.CostClientAPI
+type CostInsightClientAPI = original.CostInsightClientAPI
 type CustomImageClientAPI = original.CustomImageClientAPI
 type FormulaClientAPI = original.FormulaClientAPI
 type GalleryImageClientAPI = original.GalleryImageClientAPI
-type PolicySetClientAPI = original.PolicySetClientAPI
+type LabClientAPI = original.LabClientAPI
 type PolicyClientAPI = original.PolicyClientAPI
+type PolicySetClientAPI = original.PolicySetClientAPI
 type ScheduleClientAPI = original.ScheduleClientAPI
 type VirtualMachineClientAPI = original.VirtualMachineClientAPI
 type VirtualNetworkClientAPI = original.VirtualNetworkClientAPI

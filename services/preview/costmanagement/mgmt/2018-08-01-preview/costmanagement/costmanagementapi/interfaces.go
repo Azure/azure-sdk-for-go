@@ -97,10 +97,24 @@ var _ ConnectorClientAPI = (*costmanagement.ConnectorClient)(nil)
 
 // AlertsClientAPI contains the set of methods on the AlertsClient type.
 type AlertsClientAPI interface {
+	GetAlertByManagementGroups(ctx context.Context, managementGroupID string, alertID string) (result costmanagement.Alert, err error)
+	GetByAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string) (result costmanagement.Alert, err error)
+	GetByDepartment(ctx context.Context, billingAccountID string, departmentID string, alertID string) (result costmanagement.Alert, err error)
+	GetByEnrollment(ctx context.Context, billingAccountID string, alertID string) (result costmanagement.Alert, err error)
 	GetByResourceGroupName(ctx context.Context, resourceGroupName string, alertID string) (result costmanagement.Alert, err error)
 	GetBySubscription(ctx context.Context, alertID string) (result costmanagement.Alert, err error)
 	List(ctx context.Context, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByEnrollment(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByManagementGroups(ctx context.Context, managementGroupID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
 	ListByResourceGroupName(ctx context.Context, resourceGroupName string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	UpdateBillingAccountAlertStatus(ctx context.Context, billingAccountID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
+	UpdateDepartmentsAlertStatus(ctx context.Context, billingAccountID string, departmentID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
+	UpdateEnrollmentAccountAlertStatus(ctx context.Context, billingAccountID string, enrollmentAccountID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
+	UpdateManagementGroupAlertStatus(ctx context.Context, managementGroupID string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
+	UpdateResourceGroupNameAlertStatus(ctx context.Context, resourceGroupName string, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
+	UpdateSubscriptionAlertStatus(ctx context.Context, alertID string, parameters costmanagement.Alert) (result costmanagement.Alert, err error)
 }
 
 var _ AlertsClientAPI = (*costmanagement.AlertsClient)(nil)

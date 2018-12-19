@@ -889,13 +889,13 @@ func (a *Alert) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AlertErrorDetails errordetails for the alert
+// AlertErrorDetails error details for the alert
 type AlertErrorDetails struct {
 	// ErrorCode - Error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// ErrorMessage - Error Message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// Occurences - Number of occurences.
+	// Occurences - Number of occurrences.
 	Occurences *int32 `json:"occurences,omitempty"`
 }
 
@@ -1221,7 +1221,7 @@ func (as *AlertSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AlertSettingsProperties class containing the properties of Alertsettings
+// AlertSettingsProperties class containing the properties of AlertSettings
 type AlertSettingsProperties struct {
 	// EmailNotification - Value indicating whether user/admins will receive emails when an alert condition occurs on the system. Possible values include: 'Enabled', 'Disabled'
 	EmailNotification AlertEmailNotificationStatus `json:"emailNotification,omitempty"`
@@ -1229,7 +1229,7 @@ type AlertSettingsProperties struct {
 	NotificationToServiceOwners ServiceOwnersAlertNotificationStatus `json:"notificationToServiceOwners,omitempty"`
 	// AlertNotificationCulture - Culture setting to be used while building alert emails. For eg: "en-US"
 	AlertNotificationCulture *string `json:"alertNotificationCulture,omitempty"`
-	// AdditionalRecipientEmailList - List of email addresses (apart from admin/coadmin of subscription) to whom the alert emails need to be sent
+	// AdditionalRecipientEmailList - List of email addresses (apart from admin/co-admin of subscription) to whom the alert emails need to be sent
 	AdditionalRecipientEmailList *[]string `json:"additionalRecipientEmailList,omitempty"`
 }
 
@@ -2002,7 +2002,7 @@ type ChapProperties struct {
 	Password *AsymmetricEncryptedSecret `json:"password,omitempty"`
 }
 
-// ChapSettings challenge-Handshake Authentical Protocol (CHAP) setting
+// ChapSettings challenge-Handshake Authentication Protocol (CHAP) setting
 type ChapSettings struct {
 	autorest.Response `json:"-"`
 	// ChapProperties - Chap properties
@@ -2194,7 +2194,7 @@ func (cr *CloneRequest) UnmarshalJSON(body []byte) error {
 type CloneRequestProperties struct {
 	// TargetDeviceID - DeviceId of the device which will act as the Clone target
 	TargetDeviceID *string `json:"targetDeviceId,omitempty"`
-	// TargetAccessPointID - Accesspoint Id on which clone job will performed.
+	// TargetAccessPointID - Access point Id on which clone job will performed.
 	TargetAccessPointID *string `json:"targetAccessPointId,omitempty"`
 	// NewEndpointName - Name of new endpoint which will created as part of clone job.
 	NewEndpointName *string `json:"newEndpointName,omitempty"`
@@ -3016,7 +3016,7 @@ func (future *FileSharesDeleteFuture) Result(client FileSharesClient) (ar autore
 
 // IPConfig details related to the IP address configuration
 type IPConfig struct {
-	// IPAddress - The ipaddress of the network adapter, either ipv4 or ipv6.
+	// IPAddress - The IP address of the network adapter, either ipv4 or ipv6.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// PrefixLength - The prefix length of the network adapter.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
@@ -3024,7 +3024,7 @@ type IPConfig struct {
 	Gateway *string `json:"gateway,omitempty"`
 }
 
-// ISCSIDisk the iscsi disk.
+// ISCSIDisk the iSCSI disk.
 type ISCSIDisk struct {
 	autorest.Response `json:"-"`
 	// ISCSIDiskProperties - The properties.
@@ -3113,7 +3113,7 @@ type ISCSIDiskList struct {
 	Value *[]ISCSIDisk `json:"value,omitempty"`
 }
 
-// ISCSIDiskProperties the iscsi disk properties.
+// ISCSIDiskProperties the iSCSI disk properties.
 type ISCSIDiskProperties struct {
 	// Description - The description.
 	Description *string `json:"description,omitempty"`
@@ -3185,7 +3185,7 @@ func (future *IscsiDisksDeleteFuture) Result(client IscsiDisksClient) (ar autore
 	return
 }
 
-// ISCSIServer the iscsi server.
+// ISCSIServer the iSCSI server.
 type ISCSIServer struct {
 	autorest.Response `json:"-"`
 	// ISCSIServerProperties - The properties.
@@ -3274,7 +3274,7 @@ type ISCSIServerList struct {
 	Value *[]ISCSIServer `json:"value,omitempty"`
 }
 
-// ISCSIServerProperties the iscsi server properties.
+// ISCSIServerProperties the iSCSI server properties.
 type ISCSIServerProperties struct {
 	// StorageDomainID - The storage domain id.
 	StorageDomainID *string `json:"storageDomainId,omitempty"`
@@ -3985,13 +3985,13 @@ type ManagerExtendedInfoProperties struct {
 	Algorithm *string `json:"algorithm,omitempty"`
 }
 
-// ManagerIntrinsicSettings intrinsic settings which refers to the type of the Storsimple manager
+// ManagerIntrinsicSettings intrinsic settings which refers to the type of the StorSimple manager
 type ManagerIntrinsicSettings struct {
 	// Type - Refers to the type of the StorSimple Manager. Possible values include: 'GardaV1', 'HelsinkiV1'
 	Type ManagerType `json:"type,omitempty"`
 }
 
-// ManagerList list of storsimple Managers under a particular resourceGroup
+// ManagerList list of StorSimple Managers under a particular resourceGroup
 type ManagerList struct {
 	autorest.Response `json:"-"`
 	// Value - List of Managers
@@ -4329,9 +4329,9 @@ type ResourceCertificateAndAADDetails struct {
 	ValidFrom *date.Time `json:"validFrom,omitempty"`
 	// ValidTo - Certificate Validity End Date time
 	ValidTo *date.Time `json:"validTo,omitempty"`
-	// Thumbprint - Certificate thumbrprint
+	// Thumbprint - Certificate thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// FriendlyName - Certificate friendlyname
+	// FriendlyName - Certificate friendly name
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// Issuer - Certificate issuer
 	Issuer *string `json:"issuer,omitempty"`
@@ -4968,7 +4968,7 @@ type UpdatesProperties struct {
 	DeviceLastScannedTime *date.Time `json:"deviceLastScannedTime,omitempty"`
 	// RegularUpdatesAvailable - Set to true if regular updates were detected for the current version of the device.
 	RegularUpdatesAvailable *bool `json:"regularUpdatesAvailable,omitempty"`
-	// RebootRequiredForInstall - Set to true if RegularUpdatesAvailable is true and if atleast one of the updateItems detected has needs a reboot to install.
+	// RebootRequiredForInstall - Set to true if RegularUpdatesAvailable is true and if at least one of the updateItems detected has needs a reboot to install.
 	RebootRequiredForInstall *bool `json:"rebootRequiredForInstall,omitempty"`
 	// TotalItemsPendingForDownload - The total number of items pending for download.
 	TotalItemsPendingForDownload *int32 `json:"totalItemsPendingForDownload,omitempty"`

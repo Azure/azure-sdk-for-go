@@ -21,8 +21,8 @@ package timeseriesinsightsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2018-08-15-preview/timeseriesinsights/timeseriesinsightsapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
+type AccessPoliciesClientAPI = original.AccessPoliciesClientAPI
 type EnvironmentsClientAPI = original.EnvironmentsClientAPI
 type EventSourcesClientAPI = original.EventSourcesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type ReferenceDataSetsClientAPI = original.ReferenceDataSetsClientAPI
-type AccessPoliciesClientAPI = original.AccessPoliciesClientAPI

@@ -583,7 +583,7 @@ type DeploymentPropertiesExtended struct {
 	CorrelationID *string `json:"correlationId,omitempty"`
 	// Timestamp - The timestamp of the template deployment.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Outputs - Key/value pairs that represent deploymentoutput.
+	// Outputs - Key/value pairs that represent deployment output.
 	Outputs interface{} `json:"outputs,omitempty"`
 	// Providers - The list of resource providers needed for the deployment.
 	Providers *[]Provider `json:"providers,omitempty"`
@@ -1213,7 +1213,7 @@ func (future *MoveResourcesFuture) Result(client Client) (ar autorest.Response, 
 	return
 }
 
-// ParametersLink entity representing the reference to the deployment paramaters.
+// ParametersLink entity representing the reference to the deployment parameters.
 type ParametersLink struct {
 	// URI - The URI of the parameters file.
 	URI *string `json:"uri,omitempty"`

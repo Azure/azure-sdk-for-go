@@ -176,7 +176,7 @@ type ApnsCredentialProperties struct {
 	CertificateKey *string `json:"certificateKey,omitempty"`
 	// Endpoint - The endpoint of this credential.
 	Endpoint *string `json:"endpoint,omitempty"`
-	// Thumbprint - The Apns certificate Thumbprint
+	// Thumbprint - The APNS certificate Thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
 	// KeyID - A 10-character key identifier (kid) key, obtained from your developer account
 	KeyID *string `json:"keyId,omitempty"`
@@ -283,7 +283,7 @@ func (capVar CheckAvailabilityParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CheckAvailabilityResult description of a CheckAvailibility resource.
+// CheckAvailabilityResult description of a CheckAvailability resource.
 type CheckAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// IsAvailiable - True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
@@ -586,7 +586,7 @@ type DebugSendResult struct {
 	Results interface{} `json:"results,omitempty"`
 }
 
-// ErrorResponse error reponse indicates NotificationHubs service is not able to process the incoming
+// ErrorResponse error response indicates NotificationHubs service is not able to process the incoming
 // request. The reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -833,7 +833,7 @@ type MpnsCredentialProperties struct {
 	MpnsCertificate *string `json:"mpnsCertificate,omitempty"`
 	// CertificateKey - The certificate key for this credential.
 	CertificateKey *string `json:"certificateKey,omitempty"`
-	// Thumbprint - The Mpns certificate Thumbprint
+	// Thumbprint - The MPNS certificate Thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
 }
 
@@ -2120,7 +2120,7 @@ type SharedAccessAuthorizationRuleProperties struct {
 // SharedAccessAuthorizationRuleResource description of a Namespace AuthorizationRules.
 type SharedAccessAuthorizationRuleResource struct {
 	autorest.Response `json:"-"`
-	// SharedAccessAuthorizationRuleProperties - Pproperties of the Namespace AuthorizationRule.
+	// SharedAccessAuthorizationRuleProperties - Properties of the Namespace AuthorizationRule.
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`

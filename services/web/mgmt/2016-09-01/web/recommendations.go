@@ -292,7 +292,7 @@ func (client RecommendationsClient) DisableRecommendationForSubscriptionResponde
 // siteName - name of the app.
 // name - name of the recommendation.
 // updateSeen - specify <code>true</code> to update the last-seen timestamp of the recommendation object.
-// recommendationID - the GUID of the recommedation object if you query an expired one. You don't need to
+// recommendationID - the GUID of the recommendation object if you query an expired one. You don't need to
 // specify it to query an active entry.
 func (client RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context, resourceGroupName string, siteName string, name string, updateSeen *bool, recommendationID string) (result RecommendationRule, err error) {
 	if tracing.IsEnabled() {

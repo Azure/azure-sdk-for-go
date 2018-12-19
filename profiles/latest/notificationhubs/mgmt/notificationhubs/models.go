@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type AccessRights = original.AccessRights
 
 const (
@@ -59,8 +58,10 @@ type ApnsCredential = original.ApnsCredential
 type ApnsCredentialProperties = original.ApnsCredentialProperties
 type BaiduCredential = original.BaiduCredential
 type BaiduCredentialProperties = original.BaiduCredentialProperties
+type BaseClient = original.BaseClient
 type CheckAvailabilityParameters = original.CheckAvailabilityParameters
 type CheckAvailabilityResult = original.CheckAvailabilityResult
+type Client = original.Client
 type CreateOrUpdateParameters = original.CreateOrUpdateParameters
 type DebugSendResponse = original.DebugSendResponse
 type DebugSendResult = original.DebugSendResult
@@ -79,12 +80,14 @@ type NamespaceListResultPage = original.NamespaceListResultPage
 type NamespacePatchParameters = original.NamespacePatchParameters
 type NamespaceProperties = original.NamespaceProperties
 type NamespaceResource = original.NamespaceResource
+type NamespacesClient = original.NamespacesClient
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type PatchParameters = original.PatchParameters
 type PnsCredentialsProperties = original.PnsCredentialsProperties
 type PnsCredentialsResource = original.PnsCredentialsResource
@@ -103,24 +106,15 @@ type Sku = original.Sku
 type SubResource = original.SubResource
 type WnsCredential = original.WnsCredential
 type WnsCredentialProperties = original.WnsCredentialProperties
-type NamespacesClient = original.NamespacesClient
-type Client = original.Client
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
 }
-func PossibleAccessRightsValues() []AccessRights {
-	return original.PossibleAccessRightsValues()
-}
-func PossibleNamespaceTypeValues() []NamespaceType {
-	return original.PossibleNamespaceTypeValues()
-}
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -134,11 +128,23 @@ func NewNamespaceListResultIterator(page NamespaceListResultPage) NamespaceListR
 func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
 	return original.NewNamespaceListResultPage(getNextPage)
 }
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSharedAccessAuthorizationRuleListResultIterator(page SharedAccessAuthorizationRuleListResultPage) SharedAccessAuthorizationRuleListResultIterator {
 	return original.NewSharedAccessAuthorizationRuleListResultIterator(page)
@@ -146,23 +152,17 @@ func NewSharedAccessAuthorizationRuleListResultIterator(page SharedAccessAuthori
 func NewSharedAccessAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
 	return original.NewSharedAccessAuthorizationRuleListResultPage(getNextPage)
 }
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+func PossibleAccessRightsValues() []AccessRights {
+	return original.PossibleAccessRightsValues()
 }
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
+func PossibleNamespaceTypeValues() []NamespaceType {
+	return original.PossibleNamespaceTypeValues()
 }
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

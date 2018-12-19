@@ -789,9 +789,9 @@ type Diagnostics struct {
 	Message *string `json:"message,omitempty"`
 	// Severity - The severity of the error. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
 	Severity SeverityTypes `json:"severity,omitempty"`
-	// LineNumber - The line number the error occured on.
+	// LineNumber - The line number the error occurred on.
 	LineNumber *int32 `json:"lineNumber,omitempty"`
-	// ColumnNumber - The column where the error occured.
+	// ColumnNumber - The column where the error occurred.
 	ColumnNumber *int32 `json:"columnNumber,omitempty"`
 	// Start - The starting index of the error.
 	Start *int32 `json:"start,omitempty"`
@@ -813,7 +813,7 @@ type ErrorDetails struct {
 	Description *string `json:"description,omitempty"`
 	// Details - The details of the error message.
 	Details *string `json:"details,omitempty"`
-	// LineNumber - The specific line number in the job where the error occured.
+	// LineNumber - The specific line number in the job where the error occurred.
 	LineNumber *int32 `json:"lineNumber,omitempty"`
 	// StartOffset - The start offset in the job where the error was found
 	StartOffset *int32 `json:"startOffset,omitempty"`
@@ -2127,7 +2127,7 @@ type StatisticsVertexStage struct {
 	DataWritten *int64 `json:"dataWritten,omitempty"`
 	// DuplicateDiscardCount - The number of duplicates that were discarded.
 	DuplicateDiscardCount *int32 `json:"duplicateDiscardCount,omitempty"`
-	// FailedCount - The number of failures that occured in this stage.
+	// FailedCount - The number of failures that occurred in this stage.
 	FailedCount *int32 `json:"failedCount,omitempty"`
 	// MaxVertexDataRead - The maximum amount of data read in a single vertex, in bytes.
 	MaxVertexDataRead *int64 `json:"maxVertexDataRead,omitempty"`

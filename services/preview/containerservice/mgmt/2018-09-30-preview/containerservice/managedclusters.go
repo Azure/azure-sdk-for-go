@@ -848,13 +848,13 @@ func (client ManagedClustersClient) ListClusterUserCredentialsResponder(resp *ht
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
 // parameters - parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
-func (client ManagedClustersClient) ResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile) (result ManagedClustersResetAADProfileFuture, err error) {
+func (client ManagedClustersClient) ResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile) (result ManagedCluster, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.ResetAADProfile")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -872,10 +872,16 @@ func (client ManagedClustersClient) ResetAADProfile(ctx context.Context, resourc
 		return
 	}
 
-	result, err = client.ResetAADProfileSender(req)
+	resp, err := client.ResetAADProfileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.ResetAADProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetAADProfile", resp, "Failure responding to request")
 	}
 
 	return
@@ -906,15 +912,9 @@ func (client ManagedClustersClient) ResetAADProfilePreparer(ctx context.Context,
 
 // ResetAADProfileSender sends the ResetAADProfile request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) ResetAADProfileSender(req *http.Request) (future ManagedClustersResetAADProfileFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client ManagedClustersClient) ResetAADProfileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // ResetAADProfileResponder handles the response to the ResetAADProfile request. The method always
@@ -935,13 +935,13 @@ func (client ManagedClustersClient) ResetAADProfileResponder(resp *http.Response
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
 // parameters - parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
-func (client ManagedClustersClient) ResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile) (result ManagedClustersResetServicePrincipalProfileFuture, err error) {
+func (client ManagedClustersClient) ResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile) (result ManagedCluster, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.ResetServicePrincipalProfile")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -958,10 +958,16 @@ func (client ManagedClustersClient) ResetServicePrincipalProfile(ctx context.Con
 		return
 	}
 
-	result, err = client.ResetServicePrincipalProfileSender(req)
+	resp, err := client.ResetServicePrincipalProfileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.ResetServicePrincipalProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ResetServicePrincipalProfile", resp, "Failure responding to request")
 	}
 
 	return
@@ -992,15 +998,9 @@ func (client ManagedClustersClient) ResetServicePrincipalProfilePreparer(ctx con
 
 // ResetServicePrincipalProfileSender sends the ResetServicePrincipalProfile request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) ResetServicePrincipalProfileSender(req *http.Request) (future ManagedClustersResetServicePrincipalProfileFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client ManagedClustersClient) ResetServicePrincipalProfileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // ResetServicePrincipalProfileResponder handles the response to the ResetServicePrincipalProfile request. The method always

@@ -405,7 +405,6 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 	amqpMsg.Properties.ReplyTo = m.ReplyTo
 	amqpMsg.Properties.ReplyToGroupID = m.ReplyToGroupID
 
-
 	if m.SystemProperties != nil {
 		sysPropMap, err := encodeStructureToMap(m.SystemProperties)
 		if err != nil {

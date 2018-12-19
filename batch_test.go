@@ -18,7 +18,7 @@ func TestMessageBatch_AddOneMessage(t *testing.T) {
 	msg := NewMessageFromString("Foo")
 	ok, err := mb.Add(msg)
 	assert.True(t, ok)
-	assert.NoError(t,err)
+	assert.NoError(t, err)
 }
 
 func TestMessageBatch_AddManyMessages(t *testing.T) {
@@ -29,7 +29,7 @@ func TestMessageBatch_AddManyMessages(t *testing.T) {
 	msg := NewMessageFromString("Foo")
 	ok, err := mb.Add(msg)
 	assert.True(t, ok)
-	assert.NoError(t,err)
+	assert.NoError(t, err)
 	msgSize := mb.Size() - wrapperSize
 
 	limit := ((int(mb.MaxSize) - 100) / msgSize) - 1

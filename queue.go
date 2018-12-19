@@ -179,8 +179,9 @@ func (q *Queue) Send(ctx context.Context, msg *Message) error {
 	return q.sender.Send(ctx, msg)
 }
 
+// SendBatch sends a batch of messages to the Queue
 func (q *Queue) SendBatch(ctx context.Context, batch *MessageBatch) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatch")
 	defer span.Finish()
 
 	err := q.ensureSender(ctx)

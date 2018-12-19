@@ -543,7 +543,6 @@ func testSendBatch(ctx context.Context, t *testing.T, q *Queue) {
 	for !mbi.Done() {
 		batch, err := mbi.Next()
 		assert.NoError(t, err)
-		fmt.Println(mbi.Cursor)
 		assert.NoError(t, q.SendBatch(ctx, batch))
 	}
 
@@ -745,7 +744,7 @@ func (suite *serviceBusSuite) queueMessageTest(
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), 15 * time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 			defer cancel()
 			cleanup := makeQueue(ctx, t, ns, queueName, mgmtOptions...)
 			q, err := ns.NewQueue(queueName, queueOpts...)

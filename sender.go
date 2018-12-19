@@ -162,6 +162,7 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 
 	msg, err := evt.toMsg()
 	if err != nil {
+		log.For(ctx).Error(err)
 		return err
 	}
 
@@ -172,6 +173,9 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 	for {
 		select {
 		case <-ctx.Done():
+			if ctx.Err() != nil {
+				log.For(ctx).Error(err)
+			}
 			return ctx.Err()
 		default:
 			// try as long as the context is not dead
@@ -180,8 +184,6 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 				// successful send
 				return err
 			}
-
-			fmt.Println("trying but got err: ", err)
 
 			switch err.(type) {
 			case *amqp.Error, *amqp.DetachError:
@@ -194,6 +196,7 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 				}
 				log.For(ctx).Debug("recovered connection")
 			default:
+				log.For(ctx).Error(err)
 				return err
 			}
 		}

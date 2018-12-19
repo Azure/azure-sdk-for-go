@@ -539,13 +539,8 @@ func testSendBatch(ctx context.Context, t *testing.T, q *Queue) {
 		messages[i] = NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))
 	}
 
-	mbi := NewMessageBatchIterator(StandardMaxMessageSizeInBytes, messages...)
-	for !mbi.Done() {
-		batch, err := mbi.Next()
-		assert.NoError(t, err)
-		assert.NoError(t, q.SendBatch(ctx, batch))
-	}
-
+	iterator := NewMessageBatchIterator(StandardMaxMessageSizeInBytes, messages...)
+	assert.NoError(t, q.SendBatch(ctx, iterator))
 	assertMessageCount(ctx, t, q.namespace, q.Name, 5000)
 }
 

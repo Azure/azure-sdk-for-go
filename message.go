@@ -367,7 +367,7 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 	return nil
 }
 
-func (m *Message) toMsgCore() *amqp.Message {
+func (m *Message) toMsg() (*amqp.Message, error) {
 	amqpMsg := m.message
 	if amqpMsg == nil {
 		amqpMsg = amqp.NewMessage(m.Data)
@@ -379,12 +379,6 @@ func (m *Message) toMsgCore() *amqp.Message {
 		}
 		amqpMsg.Header.TTL = *m.TTL
 	}
-
-	return amqpMsg
-}
-
-func (m *Message) toMsg() (*amqp.Message, error) {
-	amqpMsg := m.toMsgCore()
 
 	amqpMsg.Properties = &amqp.MessageProperties{
 		MessageID: m.ID,

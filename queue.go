@@ -180,7 +180,7 @@ func (q *Queue) Send(ctx context.Context, msg *Message) error {
 }
 
 // SendBatch sends a batch of messages to the Queue
-func (q *Queue) SendBatch(ctx context.Context, batch *MessageBatch) error {
+func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatch")
 	defer span.Finish()
 
@@ -190,7 +190,28 @@ func (q *Queue) SendBatch(ctx context.Context, batch *MessageBatch) error {
 		return err
 	}
 
-	return q.sender.trySend(ctx, batch)
+	for !iterator.Done() {
+		id, err := uuid.NewV4()
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		batch, err := iterator.Next(id.String(), &BatchOptions{
+			SessionID: q.sender.sessionID,
+		})
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		if err := q.sender.trySend(ctx, batch); err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+	}
+
+	return nil
 }
 
 // ScheduleAt will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers

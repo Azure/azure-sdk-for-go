@@ -1,11 +1,21 @@
 package servicebus
 
 import (
-	"github.com/Azure/azure-amqp-common-go/uuid"
 	"pack.ag/amqp"
 )
 
 type (
+	// BatchOptions are optional information to add to a batch of messages
+	BatchOptions struct {
+		SessionID *string
+	}
+
+	// BatchIterator offers a simple mechanism for batching a list of messages
+	BatchIterator interface {
+		Done() bool
+		Next(messageID string, opts *BatchOptions) (*MessageBatch, error)
+	}
+
 	// MessageBatchIterator provides an easy way to iterate over a slice of messages to reliably create batches
 	MessageBatchIterator struct {
 		Messages []*Message
@@ -15,9 +25,8 @@ type (
 
 	// MessageBatch represents a batch of messages to send to Service Bus in a single message
 	MessageBatch struct {
+		*Message
 		marshaledMessages [][]byte
-		SessionID         *string
-		ID                *string
 		MaxSize           MaxMessageSizeInBytes
 		size              int
 	}
@@ -51,16 +60,16 @@ func (mbi *MessageBatchIterator) Done() bool {
 }
 
 // Next fetches the batch of messages in the message slice at a position one larger than the last one accessed.
-func (mbi *MessageBatchIterator) Next() (*MessageBatch, error) {
+func (mbi *MessageBatchIterator) Next(messageID string, opts *BatchOptions) (*MessageBatch, error) {
 	if mbi.Done() {
 		return nil, ErrNoMessages{}
 	}
 
-	mb, err := NewMessageBatch(mbi.MaxSize)
-	if err != nil {
-		return nil, err
+	if opts == nil {
+		opts = &BatchOptions{}
 	}
 
+	mb := NewMessageBatch(mbi.MaxSize, messageID, opts)
 	for mbi.Cursor < len(mbi.Messages) {
 		ok, err := mb.Add(mbi.Messages[mbi.Cursor])
 		if err != nil {
@@ -76,16 +85,20 @@ func (mbi *MessageBatchIterator) Next() (*MessageBatch, error) {
 }
 
 // NewMessageBatch builds a new message batch with a default standard max message size
-func NewMessageBatch(maxSize MaxMessageSizeInBytes) (*MessageBatch, error) {
-	id, err := uuid.NewV4()
-	if err != nil {
-		return nil, err
+func NewMessageBatch(maxSize MaxMessageSizeInBytes, messageID string, opts *BatchOptions) *MessageBatch {
+	if opts == nil {
+		opts = &BatchOptions{}
 	}
 
-	return &MessageBatch{
+	mb := &MessageBatch{
 		MaxSize: maxSize,
-		ID:      ptrString(id.String()),
-	}, err
+		Message: &Message{
+			ID:        messageID,
+			SessionID: opts.SessionID,
+		},
+	}
+
+	return mb
 }
 
 // Add adds a message to the batch if the message will not exceed the max size of the batch
@@ -94,8 +107,11 @@ func (mb *MessageBatch) Add(m *Message) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
 	msg.Properties.MessageID = mb.ID
-	msg.Format = batchMessageFormat
+	if mb.SessionID != nil {
+		msg.Properties.GroupID = *mb.SessionID
+	}
 
 	bin, err := msg.MarshalBinary()
 	if err != nil {
@@ -121,18 +137,6 @@ func (mb *MessageBatch) Clear() {
 func (mb *MessageBatch) Size() int {
 	// calculated data size + batch message wrapper + data wrapper portions of the message
 	return mb.size + batchMessageWrapperSize + (len(mb.marshaledMessages) * 5)
-}
-
-// ToMessage builds a Azure Service Bus message from the buffered batch messages
-func (mb *MessageBatch) ToMessage() (*Message, error) {
-	batchMessage := mb.amqpBatchMessage()
-
-	batchMessage.Data = make([][]byte, len(mb.marshaledMessages))
-	for idx, bytes := range mb.marshaledMessages {
-		batchMessage.Data[idx] = bytes
-	}
-
-	return messageFromAMQPMessage(batchMessage)
 }
 
 func (mb *MessageBatch) toMsg() (*amqp.Message, error) {

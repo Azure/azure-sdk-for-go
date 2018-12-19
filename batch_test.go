@@ -7,14 +7,12 @@ import (
 )
 
 func TestNewMessageBatch(t *testing.T) {
-	mb, err := NewMessageBatch(StandardMaxMessageSizeInBytes)
-	assert.NoError(t, err)
+	mb := NewMessageBatch(StandardMaxMessageSizeInBytes, "messageID", &BatchOptions{})
 	assert.Equal(t, StandardMaxMessageSizeInBytes, mb.MaxSize)
 }
 
 func TestMessageBatch_AddOneMessage(t *testing.T) {
-	mb, err := NewMessageBatch(StandardMaxMessageSizeInBytes)
-	assert.NoError(t, err)
+	mb := NewMessageBatch(StandardMaxMessageSizeInBytes, "messageID", &BatchOptions{})
 	msg := NewMessageFromString("Foo")
 	ok, err := mb.Add(msg)
 	assert.True(t, ok)
@@ -22,9 +20,10 @@ func TestMessageBatch_AddOneMessage(t *testing.T) {
 }
 
 func TestMessageBatch_AddManyMessages(t *testing.T) {
-	mb, err := NewMessageBatch(StandardMaxMessageSizeInBytes)
-	assert.NoError(t, err)
-
+	bOpts := &BatchOptions{
+		SessionID: ptrString("foobarbazzbuzz"),
+	}
+	mb := NewMessageBatch(StandardMaxMessageSizeInBytes, "messageID", bOpts)
 	wrapperSize := mb.Size()
 	msg := NewMessageFromString("Foo")
 	ok, err := mb.Add(msg)
@@ -45,13 +44,11 @@ func TestMessageBatch_AddManyMessages(t *testing.T) {
 }
 
 func TestMessageBatch_Clear(t *testing.T) {
-	mb, err := NewMessageBatch(StandardMaxMessageSizeInBytes)
-	assert.NoError(t, err)
-
+	mb := NewMessageBatch(StandardMaxMessageSizeInBytes, "messageID", &BatchOptions{})
 	ok, err := mb.Add(NewMessageFromString("foo"))
 	assert.True(t, ok)
 	assert.NoError(t, err)
-	assert.Equal(t, 139, mb.Size())
+	assert.Equal(t, 148, mb.Size())
 
 	mb.Clear()
 	assert.Equal(t, 100, mb.Size())

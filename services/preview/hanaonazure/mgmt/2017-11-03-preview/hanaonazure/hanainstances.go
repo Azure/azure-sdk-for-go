@@ -417,3 +417,84 @@ func (client HanaInstancesClient) RestartResponder(resp *http.Response) (result 
 	result.Response = resp
 	return
 }
+
+// UpdateTags patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and
+// instance name.
+// Parameters:
+// resourceGroupName - name of the resource group.
+// hanaInstanceName - name of the SAP HANA on Azure instance.
+// hanaInstancePatchTagsParameter - request body that contains the new Tags field for the HANA instance
+func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupName string, hanaInstanceName string, hanaInstancePatchTagsParameter Tags) (result HanaInstance, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.UpdateTags")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, hanaInstanceName, hanaInstancePatchTagsParameter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateTagsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client HanaInstancesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, hanaInstancePatchTagsParameter Tags) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"hanaInstanceName":  autorest.Encode("path", hanaInstanceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-11-03-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}", pathParameters),
+		autorest.WithJSON(hanaInstancePatchTagsParameter),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client HanaInstancesClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client HanaInstancesClient) UpdateTagsResponder(resp *http.Response) (result HanaInstance, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

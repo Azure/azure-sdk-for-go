@@ -1,5 +1,49 @@
 # CHANGELOG
 
+## `v24.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| batch | 2018-12-01<br/>2018-12-01.8.0 |
+| devices | 2018-12-01-preview |
+| eventgrid | 2019-01-01 |
+| storagedatalake | 2018-06-17<br/>2018-11-09 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-01-01<br/>2018-06-01-preview |
+| containerinstance | 2018-10-01 |
+| containerregistry | 2017-10-01<br/>2018-02-01<br/>2018-09-01 |
+| containerservice | 2018-08-01-preview<br/>2018-09-30-preview |
+| costmanagement | 2018-08-01-preview |
+| datafactory | 2018-06-01 |
+| eventhub | 2018-01-01-preview |
+| hanaonazure | 2017-11-03-preview |
+| hdinsight | 2018-11-01-preview |
+| network | 2018-10-01 |
+| resourcehealth | 2015-01-01<br/>2017-07-01 |
+| sql | 2017-03-01-preview |
+| storagesync | 2018-10-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authoring | luis |
+| cognitiveservices | 2017-04-18 |
+| computervision | v2.0 |
+| datamigration | 2018-04-19<br/>2018-07-15-preview |
+| labservices | 2018-10-15 |
+| logic | 2018-07-01-preview |
+| media | 2018-07-01 |
+| siterecovery | 2018-01-10 |
+| sqlvirtualmachine | 2017-03-01-preview |
+| workloadmonitor | 2018-08-31-preview |
+
 ## `v23.2.0`
 
 ### New Packages

@@ -311,6 +311,36 @@ func PossibleOperatorValues() []Operator {
 	return []Operator{Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual}
 }
 
+// PreservePath enumerates the values for preserve path.
+type PreservePath string
+
+const (
+	// No ...
+	No PreservePath = "No"
+	// Yes ...
+	Yes PreservePath = "Yes"
+)
+
+// PossiblePreservePathValues returns an array of possible values for the PreservePath const type.
+func PossiblePreservePathValues() []PreservePath {
+	return []PreservePath{No, Yes}
+}
+
+// PreserveQueryString enumerates the values for preserve query string.
+type PreserveQueryString string
+
+const (
+	// PreserveQueryStringNo ...
+	PreserveQueryStringNo PreserveQueryString = "No"
+	// PreserveQueryStringYes ...
+	PreserveQueryStringYes PreserveQueryString = "Yes"
+)
+
+// PossiblePreserveQueryStringValues returns an array of possible values for the PreserveQueryString const type.
+func PossiblePreserveQueryStringValues() []PreserveQueryString {
+	return []PreserveQueryString{PreserveQueryStringNo, PreserveQueryStringYes}
+}
+
 // Protocol enumerates the values for protocol.
 type Protocol string
 
@@ -345,19 +375,19 @@ func PossibleQueryValues() []Query {
 type RedirectProtocol string
 
 const (
-	// Found302 ...
-	Found302 RedirectProtocol = "Found(302)"
-	// Moved301 ...
-	Moved301 RedirectProtocol = "Moved(301)"
-	// PermanentRedirect308 ...
-	PermanentRedirect308 RedirectProtocol = "PermanentRedirect(308)"
-	// TemporaryRedirect307 ...
-	TemporaryRedirect307 RedirectProtocol = "TemporaryRedirect(307)"
+	// Found ...
+	Found RedirectProtocol = "Found"
+	// Moved ...
+	Moved RedirectProtocol = "Moved"
+	// PermanentRedirect ...
+	PermanentRedirect RedirectProtocol = "PermanentRedirect"
+	// TemporaryRedirect ...
+	TemporaryRedirect RedirectProtocol = "TemporaryRedirect"
 )
 
 // PossibleRedirectProtocolValues returns an array of possible values for the RedirectProtocol const type.
 func PossibleRedirectProtocolValues() []RedirectProtocol {
-	return []RedirectProtocol{Found302, Moved301, PermanentRedirect308, TemporaryRedirect307}
+	return []RedirectProtocol{Found, Moved, PermanentRedirect, TemporaryRedirect}
 }
 
 // ResourceState enumerates the values for resource state.
@@ -402,15 +432,15 @@ func PossibleResourceTypeValues() []ResourceType {
 type RouteType string
 
 const (
-	// Forward ...
-	Forward RouteType = "Forward"
+	// Forwarding ...
+	Forwarding RouteType = "Forwarding"
 	// Redirect ...
 	Redirect RouteType = "Redirect"
 )
 
 // PossibleRouteTypeValues returns an array of possible values for the RouteType const type.
 func PossibleRouteTypeValues() []RouteType {
-	return []RouteType{Forward, Redirect}
+	return []RouteType{Forwarding, Redirect}
 }
 
 // RuleGroupOverride enumerates the values for rule group override.
@@ -2606,7 +2636,7 @@ type PurgeParameters struct {
 // RedirectConfiguration the configuration for a redirect routing rule. This object is needed only if the
 // type property of RoutingRule is set to Redirect.
 type RedirectConfiguration struct {
-	// RedirectType - The redirect type the rule will use when redirecting traffic. Possible values include: 'Moved301', 'Found302', 'TemporaryRedirect307', 'PermanentRedirect308'
+	// RedirectType - The redirect type the rule will use when redirecting traffic. Possible values include: 'Moved', 'Found', 'TemporaryRedirect', 'PermanentRedirect'
 	RedirectType RedirectProtocol `json:"redirectType,omitempty"`
 	// DestinationProtocol - The protocol of the destination where the traffic is forwarded to. Possible values include: 'MatchRequest', 'HTTP', 'HTTPS'
 	DestinationProtocol DestinationProtocol `json:"destinationProtocol,omitempty"`
@@ -2616,10 +2646,10 @@ type RedirectConfiguration struct {
 	DestinationPath *string `json:"destinationPath,omitempty"`
 	// DestinationFragment - Fragment is the part of the URL that comes after #. Do not include the #.
 	DestinationFragment *string `json:"destinationFragment,omitempty"`
-	// PreservePath - Indicates whether the path is preserved.
-	PreservePath *bool `json:"preservePath,omitempty"`
-	// PreserveQueryString - Indicates whether the query string is preserved.
-	PreserveQueryString *bool `json:"preserveQueryString,omitempty"`
+	// PreservePath - Indicates whether the path is preserved. Possible values include: 'Yes', 'No'
+	PreservePath PreservePath `json:"preservePath,omitempty"`
+	// PreserveQueryString - Indicates whether the query string is preserved. Possible values include: 'PreserveQueryStringYes', 'PreserveQueryStringNo'
+	PreserveQueryString PreserveQueryString `json:"preserveQueryString,omitempty"`
 	// ExtraQueryString - Any string to be added to the query string in the destination URL. ? and & will be added automatically so do not include them.
 	ExtraQueryString *string `json:"extraQueryString,omitempty"`
 }
@@ -2893,7 +2923,7 @@ func NewRoutingRuleListResultPage(getNextPage func(context.Context, RoutingRuleL
 type RoutingRuleProperties struct {
 	// ResourceState - Resource status. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
 	ResourceState ResourceState `json:"resourceState,omitempty"`
-	// RouteType - Route type. Possible values include: 'Forward', 'Redirect'
+	// RouteType - The type of a routing rule. It must be set to Redirect for a redirect routing rule. To be backwards-compatible, it is not needed for a forwarding routing rule. Possible values include: 'Forwarding', 'Redirect'
 	RouteType RouteType `json:"routeType,omitempty"`
 	// FrontendEndpoints - Frontend endpoints associated with this rule
 	FrontendEndpoints *[]SubResource `json:"frontendEndpoints,omitempty"`
@@ -2911,7 +2941,7 @@ type RoutingRuleProperties struct {
 	BackendPool *SubResource `json:"backendPool,omitempty"`
 	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
 	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
-	// RedirectConfiguration - A reference to the redirect routing configuration.
+	// RedirectConfiguration - A reference to the redirect routing configuration. It is null for a forward-routing rule. But it must not be null if the routeType property is set to Redirect.
 	RedirectConfiguration *RedirectConfiguration `json:"redirectConfiguration,omitempty"`
 }
 
@@ -2969,7 +2999,7 @@ func (future *RoutingRulesDeleteFuture) Result(client RoutingRulesClient) (ar au
 
 // RoutingRuleUpdateParameters routing rules to apply to an endpoint
 type RoutingRuleUpdateParameters struct {
-	// RouteType - Route type. Possible values include: 'Forward', 'Redirect'
+	// RouteType - The type of a routing rule. It must be set to Redirect for a redirect routing rule. To be backwards-compatible, it is not needed for a forwarding routing rule. Possible values include: 'Forwarding', 'Redirect'
 	RouteType RouteType `json:"routeType,omitempty"`
 	// FrontendEndpoints - Frontend endpoints associated with this rule
 	FrontendEndpoints *[]SubResource `json:"frontendEndpoints,omitempty"`
@@ -2987,7 +3017,7 @@ type RoutingRuleUpdateParameters struct {
 	BackendPool *SubResource `json:"backendPool,omitempty"`
 	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
 	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
-	// RedirectConfiguration - A reference to the redirect routing configuration.
+	// RedirectConfiguration - A reference to the redirect routing configuration. It is null for a forward-routing rule. But it must not be null if the routeType property is set to Redirect.
 	RedirectConfiguration *RedirectConfiguration `json:"redirectConfiguration,omitempty"`
 }
 

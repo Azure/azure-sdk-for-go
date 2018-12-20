@@ -162,6 +162,20 @@ const (
 	LessThanOrEqual    Operator = original.LessThanOrEqual
 )
 
+type PreservePath = original.PreservePath
+
+const (
+	No  PreservePath = original.No
+	Yes PreservePath = original.Yes
+)
+
+type PreserveQueryString = original.PreserveQueryString
+
+const (
+	PreserveQueryStringNo  PreserveQueryString = original.PreserveQueryStringNo
+	PreserveQueryStringYes PreserveQueryString = original.PreserveQueryStringYes
+)
+
 type Protocol = original.Protocol
 
 const (
@@ -179,10 +193,10 @@ const (
 type RedirectProtocol = original.RedirectProtocol
 
 const (
-	Found302             RedirectProtocol = original.Found302
-	Moved301             RedirectProtocol = original.Moved301
-	PermanentRedirect308 RedirectProtocol = original.PermanentRedirect308
-	TemporaryRedirect307 RedirectProtocol = original.TemporaryRedirect307
+	Found             RedirectProtocol = original.Found
+	Moved             RedirectProtocol = original.Moved
+	PermanentRedirect RedirectProtocol = original.PermanentRedirect
+	TemporaryRedirect RedirectProtocol = original.TemporaryRedirect
 )
 
 type ResourceState = original.ResourceState
@@ -206,8 +220,8 @@ const (
 type RouteType = original.RouteType
 
 const (
-	Forward  RouteType = original.Forward
-	Redirect RouteType = original.Redirect
+	Forwarding RouteType = original.Forwarding
+	Redirect   RouteType = original.Redirect
 )
 
 type RuleGroupOverride = original.RuleGroupOverride
@@ -503,6 +517,12 @@ func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
+}
+func PossiblePreservePathValues() []PreservePath {
+	return original.PossiblePreservePathValues()
+}
+func PossiblePreserveQueryStringValues() []PreserveQueryString {
+	return original.PossiblePreserveQueryStringValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()

@@ -919,14 +919,13 @@ func (client ManagedClustersClient) ResetAADProfileSender(req *http.Request) (fu
 
 // ResetAADProfileResponder handles the response to the ResetAADProfile request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) ResetAADProfileResponder(resp *http.Response) (result ManagedCluster, err error) {
+func (client ManagedClustersClient) ResetAADProfileResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 

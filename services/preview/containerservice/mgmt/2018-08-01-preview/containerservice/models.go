@@ -1588,7 +1588,7 @@ type ManagedClustersResetServicePrincipalProfileFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
+func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1599,13 +1599,7 @@ func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client M
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
-		mc, err = client.ResetServicePrincipalProfileResponder(mc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetServicePrincipalProfileFuture", "Result", mc.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 

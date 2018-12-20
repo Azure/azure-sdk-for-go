@@ -37,6 +37,30 @@ import (
 )
 
 const (
+	ruleDescription = `
+		<RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+			xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+			<Filter i:type="TrueFilter">
+				<SqlExpression>1=1</SqlExpression>
+				<CompatibilityLevel>20</CompatibilityLevel>
+			</Filter>
+			<Action i:type="EmptyRuleAction"/>
+			<CreatedAt>2018-12-19T19:37:23.9128676Z</CreatedAt>
+			<Name>$Default</Name>
+		</RuleDescription>
+`
+	ruleEntryContent = `
+			<entry xml:base="https://azuresbtests-bmjlfhyx.servicebus.windows.net/goqsgk5tt-tagtdd84njqj7/subscriptions/goqe6ci2n-tagtdd84njqj7/rules?api-version=2017-04">
+				<id>https://azuresbtests-bmjlfhyx.servicebus.windows.net/goqsgk5tt-tagtdd84njqj7/subscriptions/goqe6ci2n-tagtdd84njqj7/rules/$Default?api-version=2017-04</id>
+				<title type="text">$Default</title>
+				<published>2018-12-19T19:37:23Z</published>
+				<updated>2018-12-19T19:37:23Z</updated>
+				<link rel="self" href="rules/$Default?api-version=2017-04"/>
+				<content type="application/xml"> ` + ruleDescription + `
+				</content>
+			</entry>
+`
+
 	subscriptionDescriptionContent = `
 	<SubscriptionDescription
       xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
@@ -55,7 +79,7 @@ const (
       <AccessedAt>0001-01-01T00:00:00</AccessedAt>
       <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
       <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
-  </SubscriptionDescription>`
+  	</SubscriptionDescription>`
 
 	subscriptionEntryContent = `
 	<entry xmlns="http://www.w3.org/2005/Atom">
@@ -69,31 +93,44 @@ const (
 	</entry>`
 )
 
+func (suite *serviceBusSuite) TestSubscriptionRuleEntryUnmarshal() {
+	var entry ruleEntry
+	err := xml.Unmarshal([]byte(ruleEntryContent), &entry)
+	suite.NoError(err)
+	suite.Equal("https://azuresbtests-bmjlfhyx.servicebus.windows.net/goqsgk5tt-tagtdd84njqj7/subscriptions/goqe6ci2n-tagtdd84njqj7/rules/$Default?api-version=2017-04", entry.ID)
+	suite.Equal("$Default", entry.Title)
+	suite.Equal("rules/$Default?api-version=2017-04", entry.Link.HREF)
+	suite.Require().NotNil(entry.Content)
+	suite.Require().NotNil(entry.Content.RuleDescription)
+	//suite.Equal("TrueFilter", entry.Content.RuleDescription.Filter.Attributes)
+	suite.Equal("TrueFilter", entry.Content.RuleDescription.Filter.Type)
+}
+
 func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
 	var entry subscriptionEntry
 	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04", entry.ID)
-	assert.Equal(suite.T(), "gosbwg424p-tagz3cfzrp93m", entry.Title)
-	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04", entry.Link.HREF)
-	assert.Equal(suite.T(), "PT1M", *entry.Content.SubscriptionDescription.LockDuration)
-	assert.NotNil(suite.T(), entry.Content)
+	suite.NoError(err)
+	suite.Equal("https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04", entry.ID)
+	suite.Equal("gosbwg424p-tagz3cfzrp93m", entry.Title)
+	suite.Equal("https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04", entry.Link.HREF)
+	suite.Require().NotNil(entry.Content)
+	suite.Require().NotNil(entry.Content.SubscriptionDescription)
+	suite.Equal("PT1M", *entry.Content.SubscriptionDescription.LockDuration)
 }
 
 func (suite *serviceBusSuite) TestSubscriptionUnmarshal() {
 	var entry subscriptionEntry
 	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
-	assert.Nil(suite.T(), err)
-	t := suite.T()
+	suite.NoError(err)
 	s := entry.Content.SubscriptionDescription
-	assert.Equal(t, "PT1M", *s.LockDuration)
-	assert.Equal(t, false, *s.RequiresSession)
-	assert.Equal(t, "P10675199DT2H48M5.4775807S", *s.DefaultMessageTimeToLive)
-	assert.Equal(t, false, *s.DeadLetteringOnMessageExpiration)
-	assert.Equal(t, int32(10), *s.MaxDeliveryCount)
-	assert.Equal(t, true, *s.EnableBatchedOperations)
-	assert.Equal(t, int64(0), *s.MessageCount)
-	assert.EqualValues(t, servicebus.EntityStatusActive, *s.Status)
+	suite.Equal("PT1M", *s.LockDuration)
+	suite.Equal(false, *s.RequiresSession)
+	suite.Equal("P10675199DT2H48M5.4775807S", *s.DefaultMessageTimeToLive)
+	suite.Equal(false, *s.DeadLetteringOnMessageExpiration)
+	suite.Equal(int32(10), *s.MaxDeliveryCount)
+	suite.Equal(true, *s.EnableBatchedOperations)
+	suite.Equal(int64(0), *s.MessageCount)
+	suite.EqualValues(servicebus.EntityStatusActive, *s.Status)
 }
 
 func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
@@ -174,7 +211,7 @@ func testSubscriptionWithAutoForward(ctx context.Context, t *testing.T, sm *Subs
 }
 
 func (suite *serviceBusSuite) TestSubscriptionManagement() {
-	tests := map[string]func(context.Context, *testing.T, *SubscriptionManager, string, string){
+	tests := map[string]func(ctx context.Context, t *testing.T, sm *SubscriptionManager, topicName, name string){
 		"TestSubscriptionDefaultSettings":                      testDefaultSubscription,
 		"TestSubscriptionWithAutoDeleteOnIdle":                 testSubscriptionWithAutoDeleteOnIdle,
 		"TestSubscriptionWithRequiredSessions":                 testSubscriptionWithRequiredSessions,
@@ -182,6 +219,12 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 		"TestSubscriptionWithMessageTimeToLive":                testSubscriptionWithMessageTimeToLive,
 		"TestSubscriptionWithLockDuration":                     testSubscriptionWithLockDuration,
 		"TestSubscriptionWithBatchedOperations":                testSubscriptionWithBatchedOperations,
+		"TestSubscriptionWithDefaultRule":                      testSubscriptionWithDefaultRule,
+		"TestSubscriptionWithFalseRule":                        testSubscriptionWithFalseRule,
+		"TestSubscriptionWithSQLFilterRule":                    testSubscriptionWithSQLFilterRule,
+		"TestSubscriptionWithCorrelationFilterRule":            testSubscriptionWithCorrelationFilterRule,
+		"TestSubscriptionWithDeleteRule":                       testSubscriptionWithDeleteRule,
+		"TestSubscriptionWithActionRule":                       testSubscriptionWithActionRule,
 	}
 
 	suite.testSubscriptionManager(tests)
@@ -228,6 +271,89 @@ func testSubscriptionWithLockDuration(ctx context.Context, t *testing.T, sm *Sub
 	window := time.Duration(3 * time.Minute)
 	s := buildSubscription(ctx, t, sm, name, SubscriptionWithLockDuration(&window))
 	assert.Equal(t, "PT3M", *s.LockDuration)
+}
+
+func testSubscriptionWithDefaultRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name)
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.NoError(t, err)
+	require.Len(t, rules, 1)
+	rule := rules[0]
+	assert.Equal(t, rule.Filter.Type, "TrueFilter")
+	assert.Equal(t, *rule.Filter.SQLExpression, "1=1")
+}
+
+func testSubscriptionWithFalseRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name)
+	_, err := sm.PutRule(ctx, s.Name, "falseRule", FalseFilter{})
+	require.NoError(t, err)
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.Len(t, rules, 2)
+	rule := rules[1]
+	assert.Equal(t, "falseRule", rule.Name)
+	assert.Equal(t, "FalseFilter", rule.Filter.Type)
+	assert.Equal(t, "1=0", *rule.Filter.SQLExpression)
+}
+
+func testSubscriptionWithSQLFilterRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name)
+	_, err := sm.PutRule(ctx, s.Name, "sqlRuleNotNullLabel", SQLFilter{Expression: "label IS NOT NULL"})
+	require.NoError(t, err)
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.Len(t, rules, 2)
+	rule := rules[1]
+	assert.Equal(t, "sqlRuleNotNullLabel", rule.Name)
+	assert.Equal(t, "SqlFilter", rule.Filter.Type)
+	assert.Equal(t, "label IS NOT NULL", *rule.Filter.SQLExpression)
+}
+
+func testSubscriptionWithCorrelationFilterRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name)
+
+	// filter messages that only contain label=="foo" and CorrelationID=="bazz"
+	filter := CorrelationFilter{
+		Label:         ptrString("foo"),
+		CorrelationID: ptrString("bazz"),
+	}
+	_, err := sm.PutRule(ctx, s.Name, "correlationRule", filter)
+	require.NoError(t, err)
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.Len(t, rules, 2)
+	rule := rules[1]
+	assert.Equal(t, "correlationRule", rule.Name)
+	assert.Equal(t, "CorrelationFilter", rule.Filter.Type)
+	assert.Equal(t, "bazz", *rule.Filter.CorrelationID)
+	assert.Equal(t, "foo", *rule.Filter.Label)
+}
+
+func testSubscriptionWithDeleteRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name)
+	_, err := sm.PutRule(ctx, s.Name, "falseRule", FalseFilter{})
+	require.NoError(t, err)
+
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.NoError(t, err)
+	require.Len(t, rules, 2)
+
+	assert.NoError(t, sm.DeleteRule(ctx, s.Name, "falseRule"))
+
+	rules, err = sm.ListRules(ctx, s.Name)
+	assert.NoError(t, err)
+	assert.Len(t, rules, 1)
+}
+
+func testSubscriptionWithActionRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
+	s := buildSubscription(ctx, t, sm, name)
+	action := SQLAction{Expression: `set label = "1"`}
+	_, err := sm.PutRuleWithAction(ctx, s.Name, "actionOnAll", TrueFilter{}, action)
+	require.NoError(t, err)
+
+	rules, err := sm.ListRules(ctx, s.Name)
+	require.NoError(t, err)
+	require.Len(t, rules, 2)
+
+	rule := rules[1]
+	assert.Equal(t, action.Expression, rule.Action.SQLExpression)
 }
 
 func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionManagementOption) *SubscriptionEntity {
@@ -372,7 +498,6 @@ func testSubscriptionSendAndReceive(ctx context.Context, t *testing.T, topic *To
 	}
 	assert.Len(t, messages, count)
 }
-
 
 func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
 	tests := map[string]func(context.Context, *testing.T, *TopicSession, *SubscriptionSession){

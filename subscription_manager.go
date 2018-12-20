@@ -6,9 +6,11 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 
 	"github.com/Azure/azure-service-bus-go/atom"
@@ -19,6 +21,101 @@ type (
 	SubscriptionManager struct {
 		*entityManager
 		Topic *Topic
+	}
+
+	// FilterDescriber can transform itself into a FilterDescription
+	FilterDescriber interface {
+		ToFilterDescription() FilterDescription
+	}
+
+	// ActionDescriber can transform itself into a ActionDescription
+	ActionDescriber interface {
+		ToActionDescription() ActionDescription
+	}
+
+	// RuleDescription is the content type for Subscription Rule management requests
+	RuleDescription struct {
+		XMLName xml.Name `xml:"RuleDescription"`
+		BaseEntityDescription
+		CreatedAt *date.Time         `xml:"CreatedAt,omitempty"`
+		Filter    FilterDescription  `xml:"Filter"`
+		Action    *ActionDescription `xml:"Action,omitempty"`
+	}
+
+	// FilterDescription describes a filter which can be applied to a subscription to filter messages from the topic.
+	//
+	// Subscribers can define which messages they want to receive from a topic. These messages are specified in the
+	// form of one or more named subscription rules. Each rule consists of a condition that selects particular messages
+	// and an action that annotates the selected message. For each matching rule condition, the subscription produces a
+	// copy of the message, which may be differently annotated for each matching rule.
+	//
+	// Each newly created topic subscription has an initial default subscription rule. If you don't explicitly specify a
+	// filter condition for the rule, the applied filter is the true filter that enables all messages to be selected
+	// into the subscription. The default rule has no associated annotation action.
+	FilterDescription struct {
+		XMLName xml.Name `xml:"Filter"`
+		CorrelationFilter
+		Type               string  `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+		SQLExpression      *string `xml:"SqlExpression,omitempty"`
+		CompatibilityLevel int     `xml:"CompatibilityLevel,omitempty"`
+	}
+
+	// ActionDescription describes an action upon a message that matches a filter
+	//
+	// With SQL filter conditions, you can define an action that can annotate the message by adding, removing, or
+	// replacing properties and their values. The action uses a SQL-like expression that loosely leans on the SQL
+	// UPDATE statement syntax. The action is performed on the message after it has been matched and before the message
+	// is selected into the subscription. The changes to the message properties are private to the message copied into
+	// the subscription.
+	ActionDescription struct {
+		Type                  string `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+		SQLExpression         string `xml:"SqlExpression"`
+		RequiresPreprocessing bool   `xml:"RequiresPreprocessing"`
+		CompatibilityLevel    int    `xml:"CompatibilityLevel,omitempty"`
+	}
+
+	// RuleEntity is the Azure Service Bus description of a Subscription Rule for management activities
+	RuleEntity struct {
+		*RuleDescription
+		*Entity
+	}
+
+	// ruleContent is a specialized Subscription body for an Atom entry
+	ruleContent struct {
+		XMLName         xml.Name        `xml:"content"`
+		Type            string          `xml:"type,attr"`
+		RuleDescription RuleDescription `xml:"RuleDescription"`
+	}
+
+	ruleEntry struct {
+		*atom.Entry
+		Content *ruleContent `xml:"content"`
+	}
+
+	ruleFeed struct {
+		*atom.Feed
+		Entries []ruleEntry `xml:"entry"`
+	}
+
+	// SubscriptionDescription is the content type for Subscription management requests
+	SubscriptionDescription struct {
+		XMLName xml.Name `xml:"SubscriptionDescription"`
+		BaseEntityDescription
+		LockDuration                              *string       `xml:"LockDuration,omitempty"` // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+		RequiresSession                           *bool         `xml:"RequiresSession,omitempty"`
+		DefaultMessageTimeToLive                  *string       `xml:"DefaultMessageTimeToLive,omitempty"`         // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		DeadLetteringOnMessageExpiration          *bool         `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
+		DeadLetteringOnFilterEvaluationExceptions *bool         `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
+		MessageCount                              *int64        `xml:"MessageCount,omitempty"`            // MessageCount - The number of messages in the queue.
+		MaxDeliveryCount                          *int32        `xml:"MaxDeliveryCount,omitempty"`        // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
+		EnableBatchedOperations                   *bool         `xml:"EnableBatchedOperations,omitempty"` // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		Status                                    *EntityStatus `xml:"Status,omitempty"`
+		CreatedAt                                 *date.Time    `xml:"CreatedAt,omitempty"`
+		UpdatedAt                                 *date.Time    `xml:"UpdatedAt,omitempty"`
+		AccessedAt                                *date.Time    `xml:"AccessedAt,omitempty"`
+		AutoDeleteOnIdle                          *string       `xml:"AutoDeleteOnIdle,omitempty"`
+		ForwardTo                                 *string       `xml:"ForwardTo,omitempty"`                     // ForwardTo - absolute URI of the entity to forward messages
+		ForwardDeadLetteredMessagesTo             *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
 	}
 
 	// SubscriptionEntity is the Azure Service Bus description of a topic Subscription for management activities
@@ -202,6 +299,141 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	return subscriptionEntryToEntity(&entry), nil
 }
 
+// ListRules returns the slice of subscription filter rules
+//
+// By default when the subscription is created, there exists a single "true" filter which matches all messages.
+func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName string) ([]*RuleEntity, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.ListRules")
+	defer span.Finish()
+
+	res, err := sm.entityManager.Get(ctx, sm.getRulesResourceURI(subscriptionName))
+	defer closeRes(ctx, res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var feed ruleFeed
+	err = xml.Unmarshal(b, &feed)
+	if err != nil {
+		return nil, formatManagementError(b)
+	}
+
+	rules := make([]*RuleEntity, len(feed.Entries))
+	for idx, entry := range feed.Entries {
+		rules[idx] = ruleEntryToEntity(&entry)
+	}
+	return rules, nil
+}
+
+// PutRuleWithAction creates a new Subscription rule to filter messages from the topic and then perform an action
+func (sm *SubscriptionManager) PutRuleWithAction(ctx context.Context, subscriptionName, ruleName string, filter FilterDescriber, action ActionDescriber) (*RuleEntity, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRuleWithAction")
+	defer span.Finish()
+
+	ad := action.ToActionDescription()
+	rd := &RuleDescription{
+		BaseEntityDescription: BaseEntityDescription{
+			ServiceBusSchema:       to.StringPtr(serviceBusSchema),
+			InstanceMetadataSchema: to.StringPtr(schemaInstance),
+		},
+		Filter: filter.ToFilterDescription(),
+		Action: &ad,
+	}
+
+	return sm.putRule(ctx, subscriptionName, ruleName, rd)
+}
+
+// PutRule creates a new Subscription rule to filter messages from the topic
+func (sm *SubscriptionManager) PutRule(ctx context.Context, subscriptionName, ruleName string, filter FilterDescriber) (*RuleEntity, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRule")
+	defer span.Finish()
+
+	rd := &RuleDescription{
+		BaseEntityDescription: BaseEntityDescription{
+			ServiceBusSchema:       to.StringPtr(serviceBusSchema),
+			InstanceMetadataSchema: to.StringPtr(schemaInstance),
+		},
+		Filter: filter.ToFilterDescription(),
+	}
+
+	return sm.putRule(ctx, subscriptionName, ruleName, rd)
+}
+
+func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ruleName string, rd *RuleDescription) (*RuleEntity, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.putRule")
+	defer span.Finish()
+
+	re := &ruleEntry{
+		Entry: &atom.Entry{
+			AtomSchema: atomSchema,
+		},
+		Content: &ruleContent{
+			Type:            applicationXML,
+			RuleDescription: *rd,
+		},
+	}
+
+	reqBytes, err := xml.Marshal(re)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: fix the unmarshal / marshal of xml with this attribute or ask the service to fix it. This is sad, but works.
+	str := string(reqBytes)
+	str = strings.Replace(str, `xmlns:XMLSchema-instance="`+schemaInstance+`" XMLSchema-instance:type`, "i:type", -1)
+
+	reqBytes = xmlDoc([]byte(str))
+	res, err := sm.entityManager.Put(ctx, sm.getRuleResourceURI(subscriptionName, ruleName), reqBytes)
+	defer closeRes(ctx, res)
+
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var entry ruleEntry
+	err = xml.Unmarshal(b, &entry)
+	if err != nil {
+		return nil, formatManagementError(b)
+	}
+	return ruleEntryToEntity(&entry), nil
+}
+
+// DeleteRule will delete a rule on the subscription
+func (sm *SubscriptionManager) DeleteRule(ctx context.Context, subscriptionName, ruleName string) error {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.DeleteRule")
+	defer span.Finish()
+
+	res, err := sm.entityManager.Delete(ctx, sm.getRuleResourceURI(subscriptionName, ruleName))
+	defer closeRes(ctx, res)
+
+	return err
+}
+
+func ruleEntryToEntity(entry *ruleEntry) *RuleEntity {
+	return &RuleEntity{
+		RuleDescription: &entry.Content.RuleDescription,
+		Entity: &Entity{
+			Name: entry.Title,
+			ID:   entry.ID,
+		},
+	}
+}
+
 func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
 	return &SubscriptionEntity{
 		SubscriptionDescription: &entry.Content.SubscriptionDescription,
@@ -214,6 +446,14 @@ func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
 
 func (sm *SubscriptionManager) getResourceURI(name string) string {
 	return "/" + sm.Topic.Name + "/subscriptions/" + name
+}
+
+func (sm *SubscriptionManager) getRulesResourceURI(subscriptionName string) string {
+	return sm.getResourceURI(subscriptionName) + "/rules"
+}
+
+func (sm *SubscriptionManager) getRuleResourceURI(subscriptionName, ruleName string) string {
+	return sm.getResourceURI(subscriptionName) + "/rules/" + ruleName
 }
 
 // SubscriptionWithBatchedOperations configures the subscription to batch server-side operations.

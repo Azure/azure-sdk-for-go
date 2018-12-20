@@ -24,12 +24,10 @@ package servicebus
 
 import (
 	"context"
-	"encoding/xml"
 	"strings"
 	"sync"
 
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 type (
@@ -44,27 +42,6 @@ type (
 		receiveMode       ReceiveMode
 		requiredSessionID *string
 		prefetchCount     *uint32
-	}
-
-	// SubscriptionDescription is the content type for Subscription management requests
-	SubscriptionDescription struct {
-		XMLName xml.Name `xml:"SubscriptionDescription"`
-		BaseEntityDescription
-		LockDuration                              *string       `xml:"LockDuration,omitempty"` // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
-		RequiresSession                           *bool         `xml:"RequiresSession,omitempty"`
-		DefaultMessageTimeToLive                  *string       `xml:"DefaultMessageTimeToLive,omitempty"`         // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
-		DeadLetteringOnMessageExpiration          *bool         `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
-		DeadLetteringOnFilterEvaluationExceptions *bool         `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
-		MessageCount                              *int64        `xml:"MessageCount,omitempty"`            // MessageCount - The number of messages in the queue.
-		MaxDeliveryCount                          *int32        `xml:"MaxDeliveryCount,omitempty"`        // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
-		EnableBatchedOperations                   *bool         `xml:"EnableBatchedOperations,omitempty"` // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
-		Status                                    *EntityStatus `xml:"Status,omitempty"`
-		CreatedAt                                 *date.Time    `xml:"CreatedAt,omitempty"`
-		UpdatedAt                                 *date.Time    `xml:"UpdatedAt,omitempty"`
-		AccessedAt                                *date.Time    `xml:"AccessedAt,omitempty"`
-		AutoDeleteOnIdle                          *string       `xml:"AutoDeleteOnIdle,omitempty"`
-		ForwardTo                                 *string       `xml:"ForwardTo,omitempty"`                     // ForwardTo - absolute URI of the entity to forward messages
-		ForwardDeadLetteredMessagesTo             *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
 	}
 
 	// SubscriptionOption configures the Subscription Azure Service Bus client

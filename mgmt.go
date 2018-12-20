@@ -40,6 +40,7 @@ import (
 
 const (
 	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+	schemaInstance   = "http://www.w3.org/2001/XMLSchema-instance"
 	atomSchema       = "http://www.w3.org/2005/Atom"
 	applicationXML   = "application/xml"
 )

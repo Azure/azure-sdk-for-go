@@ -441,6 +441,7 @@ func (suite *serviceBusSuite) TestQueueClient() {
 		"DuplicateDetection":     testDuplicateDetection,
 		"MessageProperties":      testMessageProperties,
 		"Retry":                  testRequeueOnFail,
+		"Defer":                  testDeferMessage,
 	}
 
 	window := time.Duration(30 * time.Second)
@@ -505,7 +506,29 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 
 func testQueueSend(ctx context.Context, t *testing.T, queue *Queue) {
 	rmsg := test.RandomString("foo", 10)
-	assert.Nil(t, queue.Send(ctx, NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))))
+	assert.NoError(t, queue.Send(ctx, NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))))
+}
+
+func testDeferMessage(ctx context.Context, t *testing.T, queue *Queue) {
+	rmsg := test.RandomString("foo", 10)
+	require.NoError(t, queue.Send(ctx, NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))))
+
+	var sequenceNumber *int64
+	err := queue.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+		sequenceNumber = msg.SystemProperties.SequenceNumber
+		return msg.Defer(ctx)
+	}))
+	require.NoError(t, err)
+	require.NotNil(t, sequenceNumber)
+
+	handled := false
+	err = queue.ReceiveDeferred(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+		handled = true
+		return msg.Complete(ctx)
+	}), *sequenceNumber)
+
+	assert.True(t, handled, "expected message handler to be called")
+	assert.NoError(t, err)
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {

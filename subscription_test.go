@@ -34,6 +34,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-service-bus-go/internal/test"
 )
 
 const (
@@ -420,6 +422,7 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
 		"SimpleReceive": testSubscriptionReceive,
 		"ReceiveOne":    testSubscriptionReceiveOne,
+		"Defer":         testSubscriptionDeferMessage,
 	}
 
 	suite.subscriptionMessageTestWithMgmtOptions(tests)
@@ -443,6 +446,28 @@ func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic,
 		}))
 		assert.NoError(t, err)
 	}
+}
+
+func testSubscriptionDeferMessage(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
+	rmsg := test.RandomString("foo", 10)
+	require.NoError(t, topic.Send(ctx, NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))))
+
+	var sequenceNumber *int64
+	err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+		sequenceNumber = msg.SystemProperties.SequenceNumber
+		return msg.Defer(ctx)
+	}))
+	require.NoError(t, err)
+	require.NotNil(t, sequenceNumber)
+
+	handled := false
+	err = sub.ReceiveDeferred(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+		handled = true
+		return msg.Complete(ctx)
+	}), *sequenceNumber)
+
+	assert.True(t, handled, "expected message handler to be called")
+	assert.NoError(t, err)
 }
 
 func (suite *serviceBusSuite) TestSubscription_NewDeadLetter() {

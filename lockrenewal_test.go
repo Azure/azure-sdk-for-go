@@ -75,7 +75,7 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 	go func() {
 		for runRenewal {
 			time.Sleep(renewEvery)
-			err := queue.RenewLocks(ctx, activeMessages)
+			err := queue.RenewLocks(ctx, activeMessages...)
 			if err != nil {
 				fmt.Println(err.Error())
 			}

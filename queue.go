@@ -27,6 +27,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -100,6 +101,11 @@ type (
 
 	// ReceiveMode represents the behavior when consuming a message from a queue
 	ReceiveMode int
+
+	entityConnector interface {
+		EntityManagementAddresser
+		connection(ctx context.Context) (*amqp.Client, error)
+	}
 )
 
 const (
@@ -321,7 +327,7 @@ func (q *Queue) Peek(ctx context.Context, options ...PeekOption) (MessageIterato
 		return nil, err
 	}
 
-	return newPeekIterator(q.entity, q.receiver.connection, options...)
+	return newPeekIterator(q, options...)
 }
 
 // PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
@@ -337,11 +343,34 @@ func (q *Queue) PeekOne(ctx context.Context, options ...PeekOption) (*Message, e
 	//   be unread.
 	options = append(options, PeekWithPageSize(1))
 
-	it, err := newPeekIterator(q.entity, q.receiver.connection, options...)
+	it, err := newPeekIterator(q, options...)
 	if err != nil {
 		return nil, err
 	}
 	return it.Next(ctx)
+}
+
+// ReceiveDeferred will receive and handle a set of deferred messages
+//
+// When a queue or subscription client receives a message that it is willing to process, but for which processing is
+// not currently possible due to special circumstances inside of the application, it has the option of "deferring"
+// retrieval of the message to a later point. The message remains in the queue or subscription, but it is set aside.
+//
+// Deferral is a feature specifically created for workflow processing scenarios. Workflow frameworks may require certain
+// operations to be processed in a particular order, and may have to postpone processing of some received messages
+// until prescribed prior work that is informed by other messages has been completed.
+//
+// A simple illustrative example is an order processing sequence in which a payment notification from an external
+// payment provider appears in a system before the matching purchase order has been propagated from the store front
+// to the fulfillment system. In that case, the fulfillment system might defer processing the payment notification
+// until there is an order with which to associate it. In rendezvous scenarios, where messages from different sources
+// drive a workflow forward, the real-time execution order may indeed be correct, but the messages reflecting the
+// outcomes may arrive out of order.
+//
+// Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
+// processed, while leaving those messages safely in the message store for which processing needs to be postponed.
+func (q *Queue) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
+	return receiveDeferred(ctx, q, handler, sequenceNumbers...)
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
@@ -462,6 +491,112 @@ func (q *Queue) NewTransferDeadLetterReceiver(ctx context.Context, opts ...Recei
 	return q.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
 }
 
+// RenewLocks renews the locks on messages provided
+func (q *Queue) RenewLocks(ctx context.Context, messages ...*Message) error {
+	return renewLocks(ctx, q, messages...)
+}
+
+func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, sequenceNumbers ...int64) error {
+	span, ctx := startConsumerSpanFromContext(ctx, "sb.receiveDeferred")
+	defer span.Finish()
+
+	const messagesField, messageField = "messages", "message"
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			operationFieldName: "com.microsoft:receive-by-sequence-number",
+		},
+		Value: map[string]interface{}{
+			"sequence-numbers":     sequenceNumbers,
+			"receiver-settle-mode": uint32(1), // pick up messages with peek lock
+		},
+	}
+
+	conn, err := ec.connection(ctx)
+	if err != nil {
+		return err
+	}
+
+	link, err := rpc.NewLink(conn, ec.ManagementPath())
+	if err != nil {
+		return err
+	}
+
+	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
+	if err != nil {
+		return err
+	}
+
+	if rsp.Code == 204 {
+		return ErrNoMessages{}
+	}
+
+	// Deferred messages come back in a relatively convoluted manner:
+	// a map (always with one key: "messages")
+	// 	of arrays
+	// 		of maps (always with one key: "message")
+	// 			of an array with raw encoded Service Bus messages
+	val, ok := rsp.Message.Value.(map[string]interface{})
+	if !ok {
+		return newErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
+	}
+
+	rawMessages, ok := val[messagesField]
+	if !ok {
+		return ErrMissingField(messagesField)
+	}
+
+	messages, ok := rawMessages.([]interface{})
+	if !ok {
+		return newErrIncorrectType(messagesField, []interface{}{}, rawMessages)
+	}
+
+	transformedMessages := make([]*Message, len(messages))
+	for i := range messages {
+		rawEntry, ok := messages[i].(map[string]interface{})
+		if !ok {
+			return newErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
+		}
+
+		rawMessage, ok := rawEntry[messageField]
+		if !ok {
+			return ErrMissingField(messageField)
+		}
+
+		marshaled, ok := rawMessage.([]byte)
+		if !ok {
+			return new(ErrMalformedMessage)
+		}
+
+		var rehydrated amqp.Message
+		err = rehydrated.UnmarshalBinary(marshaled)
+		if err != nil {
+			return err
+		}
+
+		transformedMessages[i], err = messageFromAMQPMessage(&rehydrated)
+		if err != nil {
+			return err
+		}
+	}
+
+	// This sort is done to ensure that folks wanting to peek messages in sequence order may do so.
+	sort.Slice(transformedMessages, func(i, j int) bool {
+		iSeq := *transformedMessages[i].SystemProperties.SequenceNumber
+		jSeq := *transformedMessages[j].SystemProperties.SequenceNumber
+		return iSeq < jSeq
+	})
+
+	for _, msg := range transformedMessages {
+		msg.ec = ec
+		err := handler.Handle(ctx, msg)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // Close the underlying connection to Service Bus
 func (q *Queue) Close(ctx context.Context) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Close")
@@ -540,6 +675,21 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 	return nil
 }
 
-func (e *entity) ManagementPath() string {
-	return fmt.Sprintf("%s/$management", e.Name)
+// ManagementPath is the relative uri to address the entity's management functionality
+func (q *Queue) ManagementPath() string {
+	return fmt.Sprintf("%s/$management", q.Name)
+}
+
+func (q *Queue) connection(ctx context.Context) (*amqp.Client, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.connection")
+	defer span.Finish()
+
+	if err := q.ensureReceiver(ctx); err != nil {
+		return nil, err
+	}
+	return q.receiver.connection, nil
+}
+
+func (e *entity) lockMutex() *sync.Mutex {
+	return &e.renewMessageLockMutex
 }

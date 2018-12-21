@@ -66,6 +66,61 @@ type PriorityMessage struct {
 	Priority int
 }
 
+func Example_auto_forward() {
+	ctx, cancel := context.WithTimeout(context.Background(), 40*time.Second)
+	defer cancel()
+
+	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	if connStr == "" {
+		fmt.Println("FATAL: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
+		return
+	}
+
+	// Create a client to communicate with a Service Bus Namespace.
+	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	qm := ns.NewQueueManager()
+	target, err := ensureQueue(ctx, qm, "AutoForwardTargetQueue")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	source, err := ensureQueue(ctx, qm, "AutoForwardSourceQueue", servicebus.QueueEntityWithAutoForward(target))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	sourceQueue, err := ns.NewQueue(source.Name)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if err := sourceQueue.Send(ctx, servicebus.NewMessageFromString("forward me to target!")); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	targetQueue, err := ns.NewQueue(target.Name)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if err := targetQueue.ReceiveOne(ctx, MessagePrinter{}); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Output: forward me to target!
+}
+
 func Example_priority_subscriptions() {
 	ctx, cancel := context.WithTimeout(context.Background(), 40*time.Second)
 	defer cancel()
@@ -200,42 +255,64 @@ func Example_priority_subscriptions() {
 	// PriorityGreaterThan2_buzz_4
 }
 
+type MessagePrinter struct {}
+
+func (mp MessagePrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
+	fmt.Println(string(msg.Data))
+	return msg.Complete(ctx)
+}
+
 type PriorityPrinter struct {
 	SubName string
 }
 
-func (mp PriorityPrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
+func (pp PriorityPrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
 	i, ok := msg.UserProperties["Priority"].(int64)
 	if !ok {
 		fmt.Println("Priority is not an int64")
 	}
 
-	fmt.Println(strings.Join([]string{mp.SubName, string(msg.Data), strconv.Itoa(int(i))}, "_"))
+	fmt.Println(strings.Join([]string{pp.SubName, string(msg.Data), strconv.Itoa(int(i))}, "_"))
 	return msg.Complete(ctx)
 }
 
-func ensureTopic(ctx context.Context, tm *servicebus.TopicManager, name string) (*servicebus.TopicEntity, error) {
-	topicEntity, err := tm.Get(ctx, name)
+func ensureTopic(ctx context.Context, tm *servicebus.TopicManager, name string, opts ...servicebus.TopicManagementOption) (*servicebus.TopicEntity, error) {
+	te, err := tm.Get(ctx, name)
 	if err == nil {
-		return topicEntity, nil
+		_ = tm.Delete(ctx, name)
 	}
 
-	topicEntity, err = tm.Put(ctx, name)
+	te, err = tm.Put(ctx, name, opts...)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
 	}
 
-	return topicEntity, nil
+	return te, nil
 }
 
-func ensureSubscription(ctx context.Context, sm *servicebus.SubscriptionManager, name string) (*servicebus.SubscriptionEntity, error) {
+func ensureQueue(ctx context.Context, qm *servicebus.QueueManager, name string, opts ...servicebus.QueueManagementOption) (*servicebus.QueueEntity, error) {
+	qe, err := qm.Get(ctx, name)
+	if err == nil {
+		_ = qm.Delete(ctx, name)
+	}
+
+	qe, err = qm.Put(ctx, name, opts...)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return qe, nil
+}
+
+func ensureSubscription(ctx context.Context, sm *servicebus.SubscriptionManager, name string, opts ...servicebus.SubscriptionManagementOption) (*servicebus.SubscriptionEntity, error) {
 	subEntity, err := sm.Get(ctx, name)
 	if err == nil {
 		_ = sm.Delete(ctx, name)
 	}
 
-	subEntity, err = sm.Put(ctx, name)
+	subEntity, err = sm.Put(ctx, name, opts...)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

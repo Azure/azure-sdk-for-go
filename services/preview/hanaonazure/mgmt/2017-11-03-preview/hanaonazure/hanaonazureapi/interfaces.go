@@ -36,7 +36,7 @@ type HanaInstancesClientAPI interface {
 	List(ctx context.Context) (result hanaonazure.HanaInstancesListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hanaonazure.HanaInstancesListResultPage, err error)
 	Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result autorest.Response, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter hanaonazure.Tags) (result hanaonazure.HanaInstance, err error)
+	Update(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter hanaonazure.Tags) (result hanaonazure.HanaInstance, err error)
 }
 
 var _ HanaInstancesClientAPI = (*hanaonazure.HanaInstancesClient)(nil)

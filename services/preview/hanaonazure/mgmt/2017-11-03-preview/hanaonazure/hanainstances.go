@@ -418,15 +418,15 @@ func (client HanaInstancesClient) RestartResponder(resp *http.Response) (result 
 	return
 }
 
-// UpdateTags patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and
-// instance name.
+// Update patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance
+// name.
 // Parameters:
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
 // tagsParameter - request body that only contains the new Tags field
-func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter Tags) (result HanaInstance, err error) {
+func (client HanaInstancesClient) Update(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter Tags) (result HanaInstance, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.UpdateTags")
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -435,29 +435,29 @@ func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, hanaInstanceName, tagsParameter)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, hanaInstanceName, tagsParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateTagsSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Update", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateTagsResponder(resp)
+	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateTagsPreparer prepares the UpdateTags request.
-func (client HanaInstancesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter Tags) (*http.Request, error) {
+// UpdatePreparer prepares the Update request.
+func (client HanaInstancesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter Tags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hanaInstanceName":  autorest.Encode("path", hanaInstanceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -479,16 +479,16 @@ func (client HanaInstancesClient) UpdateTagsPreparer(ctx context.Context, resour
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateTagsSender sends the UpdateTags request. The method will close the
+// UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client HanaInstancesClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+func (client HanaInstancesClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client HanaInstancesClient) UpdateTagsResponder(resp *http.Response) (result HanaInstance, err error) {
+func (client HanaInstancesClient) UpdateResponder(resp *http.Response) (result HanaInstance, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

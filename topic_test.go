@@ -30,8 +30,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
-	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Azure/azure-service-bus-go/atom"
 )
 
 const (
@@ -267,7 +268,7 @@ func testTopicWithMessageTimeToLive(ctx context.Context, t *testing.T, tm *Topic
 }
 
 func testTopicWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, tm *TopicManager, name string) {
-	size := 2 * Megabytes
+	size := 2 * 1024
 	topic := buildTopic(ctx, t, tm, name, TopicWithMaxSizeInMegabytes(size))
 	assert.Equal(t, int32(size), *topic.MaxSizeInMegabytes)
 }

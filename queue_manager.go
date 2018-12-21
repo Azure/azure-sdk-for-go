@@ -99,10 +99,12 @@ func QueueEntityWithPartitioning() QueueManagementOption {
 
 // QueueEntityWithMaxSizeInMegabytes configures the maximum size of the queue in megabytes (1 * 1024 - 5 * 1024), which is the size of
 // the memory allocated for the queue. Default is 1 MB (1 * 1024).
+//
+// size must be between 1024 and 5 * 1024 for the Standard sku and up to 80 * 1024 for Premium sku
 func QueueEntityWithMaxSizeInMegabytes(size int) QueueManagementOption {
 	return func(q *QueueDescription) error {
-		if size < 1*Megabytes || size > 5*Megabytes {
-			return errors.New("QueueEntityWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
+		if size < 1024 || size > 80*1024 {
+			return errors.New("QueueEntityWithMaxSizeInMegabytes: must be between 1024 and 5 * 1024 for the Standard sku and up to 80 * 1024 for Premium sku")
 		}
 		int32Size := int32(size)
 		q.MaxSizeInMegabytes = &int32Size

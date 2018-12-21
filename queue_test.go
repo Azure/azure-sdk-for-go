@@ -359,7 +359,7 @@ func testDefaultQueue(ctx context.Context, t *testing.T, qm *QueueManager, name 
 	assert.False(t, *q.RequiresSession, "should not require session")
 	assert.Equal(t, "P10675199DT2H48M5.4775807S", *q.AutoDeleteOnIdle, "auto delete is not 10 minutes")
 	assert.Equal(t, "PT10M", *q.DuplicateDetectionHistoryTimeWindow, "dup detection is not 10 minutes")
-	assert.Equal(t, int32(1*Megabytes), *q.MaxSizeInMegabytes, "max size in MBs")
+	assert.Equal(t, int32(1024), *q.MaxSizeInMegabytes, "max size in MBs")
 	assert.Equal(t, "P10675199DT2H48M5.4775807S", *q.DefaultMessageTimeToLive, "default TTL")
 	assert.Equal(t, "PT1M", *q.LockDuration, "lock duration")
 }
@@ -386,7 +386,7 @@ func testQueueWithPartitioning(ctx context.Context, t *testing.T, qm *QueueManag
 }
 
 func testQueueWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
-	size := 3 * Megabytes
+	size := 3 * 1024
 	q := buildQueue(ctx, t, qm, name, QueueEntityWithMaxSizeInMegabytes(size))
 	assert.Equal(t, int32(size), *q.MaxSizeInMegabytes)
 }
@@ -661,7 +661,7 @@ func (suite *serviceBusSuite) TestIssue73QueueClient() {
 		QueueEntityWithMessageTimeToLive(&ttl),
 		QueueEntityWithDuplicateDetection(&window),
 		QueueEntityWithMaxDeliveryCount(10),
-		QueueEntityWithMaxSizeInMegabytes(1*Megabytes),
+		QueueEntityWithMaxSizeInMegabytes(1024),
 	)
 }
 

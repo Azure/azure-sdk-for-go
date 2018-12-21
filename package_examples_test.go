@@ -66,7 +66,7 @@ type PriorityMessage struct {
 	Priority int
 }
 
-func Example_PrioritySubscriptions() {
+func Example_priority_subscriptions() {
 	ctx, cancel := context.WithTimeout(context.Background(), 40*time.Second)
 	defer cancel()
 
@@ -165,7 +165,7 @@ func Example_PrioritySubscriptions() {
 
 	for _, pMessage := range priorityMessages {
 		msg := servicebus.NewMessageFromString(pMessage.Body)
-		msg.UserProperties = map[string]interface{} { "Priority": pMessage.Priority }
+		msg.UserProperties = map[string]interface{}{"Priority": pMessage.Priority}
 		if err := topic.Send(ctx, msg); err != nil {
 			fmt.Println(err)
 			return

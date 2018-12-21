@@ -28,6 +28,7 @@ import (
 	"sync"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"pack.ag/amqp"
 )
 
 type (
@@ -106,7 +107,7 @@ func (s *Subscription) Peek(ctx context.Context, options ...PeekOption) (Message
 		return nil, err
 	}
 
-	return newPeekIterator(s.entity, s.receiver.connection, options...)
+	return newPeekIterator(s, options...)
 }
 
 // PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
@@ -122,7 +123,7 @@ func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Mes
 	//   be unread.
 	options = append(options, PeekWithPageSize(1))
 
-	it, err := newPeekIterator(s.entity, s.receiver.connection, options...)
+	it, err := newPeekIterator(s, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -160,6 +161,29 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	handle := s.receiver.Listen(ctx, handler)
 	<-handle.Done()
 	return handle.Err()
+}
+
+// ReceiveDeferred will receive and handle a set of deferred messages
+//
+// When a queue or subscription client receives a message that it is willing to process, but for which processing is
+// not currently possible due to special circumstances inside of the application, it has the option of "deferring"
+// retrieval of the message to a later point. The message remains in the queue or subscription, but it is set aside.
+//
+// Deferral is a feature specifically created for workflow processing scenarios. Workflow frameworks may require certain
+// operations to be processed in a particular order, and may have to postpone processing of some received messages
+// until prescribed prior work that is informed by other messages has been completed.
+//
+// A simple illustrative example is an order processing sequence in which a payment notification from an external
+// payment provider appears in a system before the matching purchase order has been propagated from the store front
+// to the fulfillment system. In that case, the fulfillment system might defer processing the payment notification
+// until there is an order with which to associate it. In rendezvous scenarios, where messages from different sources
+// drive a workflow forward, the real-time execution order may indeed be correct, but the messages reflecting the
+// outcomes may arrive out of order.
+//
+// Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
+// processed, while leaving those messages safely in the message store for which processing needs to be postponed.
+func (s *Subscription) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
+	return receiveDeferred(ctx, s, handler, sequenceNumbers...)
 }
 
 // NewSession will create a new session based receiver for the subscription
@@ -237,8 +261,13 @@ func (s *Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts .
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewTransferDeadLetterReceiver")
 	defer span.Finish()
 
-	transferDeadLetterEntityPath := strings.Join([]string{s.Topic.Name, "Subscriptions", s.Name, TransferDeadLetterQueueName}, "/")
+	transferDeadLetterEntityPath := strings.Join([]string{s.Topic.Name, "subscriptions", s.Name, TransferDeadLetterQueueName}, "/")
 	return s.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
+}
+
+// RenewLocks renews the locks on messages provided
+func (s *Subscription) RenewLocks(ctx context.Context, messages ...*Message) error {
+	return renewLocks(ctx, s, messages...)
 }
 
 // Close the underlying connection to Service Bus
@@ -247,6 +276,11 @@ func (s *Subscription) Close(ctx context.Context) error {
 		return s.receiver.Close(ctx)
 	}
 	return nil
+}
+
+// ManagementPath is the relative uri to address the entity's management functionality
+func (s *Subscription) ManagementPath() string {
+	return strings.Join([]string{s.Topic.Name, "subscriptions", s.Name, "$management"}, "/")
 }
 
 func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
@@ -269,4 +303,14 @@ func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOptio
 
 	s.receiver = receiver
 	return nil
+}
+
+func (s *Subscription) connection(ctx context.Context) (*amqp.Client, error) {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.connection")
+	defer span.Finish()
+
+	if err := s.ensureReceiver(ctx); err != nil {
+		return nil, err
+	}
+	return s.receiver.connection, nil
 }

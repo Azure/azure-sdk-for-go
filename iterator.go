@@ -6,6 +6,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
 	"pack.ag/amqp"
 )
@@ -24,8 +25,7 @@ type (
 	}
 
 	peekIterator struct {
-		entity             *entity
-		connection         *amqp.Client
+		entity             entityConnector
 		buffer             chan *Message
 		lastSequenceNumber int64
 	}
@@ -62,10 +62,9 @@ func (ms *MessageSliceIterator) Next(_ context.Context) (*Message, error) {
 	return retval, nil
 }
 
-func newPeekIterator(entity *entity, connection *amqp.Client, options ...PeekOption) (*peekIterator, error) {
+func newPeekIterator(entityConnector entityConnector, options ...PeekOption) (*peekIterator, error) {
 	retval := &peekIterator{
-		entity:     entity,
-		connection: connection,
+		entity: entityConnector,
 	}
 
 	foundPageSize := false
@@ -119,6 +118,9 @@ func (pi peekIterator) Done() bool {
 }
 
 func (pi *peekIterator) Next(ctx context.Context) (*Message, error) {
+	span, ctx := startConsumerSpanFromContext(ctx, "sb.peekIterator.Next")
+	defer span.Finish()
+
 	if len(pi.buffer) == 0 {
 		if err := pi.getNextPage(ctx); err != nil {
 			return nil, err
@@ -134,6 +136,9 @@ func (pi *peekIterator) Next(ctx context.Context) (*Message, error) {
 }
 
 func (pi *peekIterator) getNextPage(ctx context.Context) error {
+	span, ctx := startConsumerSpanFromContext(ctx, "sb.peekIterator.getNextPage")
+	defer span.Finish()
+
 	const messagesField, messageField = "messages", "message"
 
 	msg := &amqp.Message{
@@ -150,13 +155,21 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	link, err := rpc.NewLink(pi.connection, pi.entity.ManagementPath())
+	conn, err := pi.entity.connection(ctx)
 	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	link, err := rpc.NewLink(conn, pi.entity.ManagementPath())
+	if err != nil {
+		log.For(ctx).Error(err)
 		return err
 	}
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return err
 	}
 
@@ -169,56 +182,81 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 	// 	of arrays
 	// 		of maps (always with one key: "message")
 	// 			of an array with raw encoded Service Bus messages
-	if val, ok := rsp.Message.Value.(map[string]interface{}); ok {
-		if rawMessages, ok := val[messagesField]; ok {
-			if messages, ok := rawMessages.([]interface{}); ok {
-				transformedMessages := make([]*Message, len(messages))
-
-				for i := range messages {
-					if rawEntry, ok := messages[i].(map[string]interface{}); ok {
-						if rawMessage, ok := rawEntry[messageField]; ok {
-							if marshaled, ok := rawMessage.([]byte); ok {
-								var rehydrated amqp.Message
-								err = rehydrated.UnmarshalBinary(marshaled)
-								if err != nil {
-									return err
-								}
-
-								transformedMessages[i], err = messageFromAMQPMessage(&rehydrated)
-								if err != nil {
-									return err
-								}
-								continue
-							}
-						}
-						return ErrMissingField(messageField)
-					}
-					return newErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
-				}
-
-				// This sort is done to ensure that folks wanting to peek messages in sequence order may do so.
-				sort.Slice(transformedMessages, func(i, j int) bool {
-					iSeq := *transformedMessages[i].SystemProperties.SequenceNumber
-					jSeq := *transformedMessages[j].SystemProperties.SequenceNumber
-					return iSeq < jSeq
-				})
-
-				for i := range transformedMessages {
-					select {
-					case pi.buffer <- transformedMessages[i]:
-						// Intentionally Left Blank
-					case <-ctx.Done():
-						return ctx.Err()
-					}
-				}
-
-				// Update last seen sequence number so that the next read starts from where this ended.
-				pi.lastSequenceNumber = *transformedMessages[len(transformedMessages)-1].SystemProperties.SequenceNumber + 1
-				return nil
-			}
-			return newErrIncorrectType(messagesField, []interface{}{}, rawMessages)
-		}
-		return ErrMissingField(messagesField)
+	val, ok := rsp.Message.Value.(map[string]interface{})
+	if !ok {
+		err = newErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
+		log.For(ctx).Error(err)
+		return err
 	}
-	return newErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
+
+	rawMessages, ok := val[messagesField]
+	if !ok {
+		err = ErrMissingField(messagesField)
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	messages, ok := rawMessages.([]interface{})
+	if !ok {
+		err = newErrIncorrectType(messagesField, []interface{}{}, rawMessages)
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	transformedMessages := make([]*Message, len(messages))
+	for i := range messages {
+		rawEntry, ok := messages[i].(map[string]interface{})
+		if !ok {
+			err = newErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		rawMessage, ok := rawEntry[messageField]
+		if !ok {
+			err = ErrMissingField(messageField)
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		marshaled, ok := rawMessage.([]byte)
+		if !ok {
+			err = new(ErrMalformedMessage)
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		var rehydrated amqp.Message
+		err = rehydrated.UnmarshalBinary(marshaled)
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		transformedMessages[i], err = messageFromAMQPMessage(&rehydrated)
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+	}
+
+	// This sort is done to ensure that folks wanting to peek messages in sequence order may do so.
+	sort.Slice(transformedMessages, func(i, j int) bool {
+		iSeq := *transformedMessages[i].SystemProperties.SequenceNumber
+		jSeq := *transformedMessages[j].SystemProperties.SequenceNumber
+		return iSeq < jSeq
+	})
+
+	for i := range transformedMessages {
+		select {
+		case pi.buffer <- transformedMessages[i]:
+			// Intentionally Left Blank
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+
+	// Update last seen sequence number so that the next read starts from where this ended.
+	pi.lastSequenceNumber = *transformedMessages[len(transformedMessages)-1].SystemProperties.SequenceNumber + 1
+	return nil
 }

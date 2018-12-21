@@ -3,6 +3,7 @@ package servicebus
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
@@ -11,9 +12,15 @@ import (
 	"pack.ag/amqp"
 )
 
-//RenewLocks renews the locks on messages provided
-func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
-	span, ctx := e.startSpanFromContext(ctx, "sb.entity.renewLocks")
+type (
+	lockRenewer interface {
+		entityConnector
+		lockMutex() *sync.Mutex
+	}
+)
+
+func renewLocks(ctx context.Context, lr lockRenewer, messages ...*Message) error {
+	span, ctx := startConsumerSpanFromContext(ctx, "sb.RenewLocks")
 	defer span.Finish()
 
 	lockTokens := make([]amqp.UUID, 0, len(messages))
@@ -32,8 +39,8 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 		return nil
 	}
 
-	e.renewMessageLockMutex.Lock()
-	defer e.renewMessageLockMutex.Unlock()
+	lr.lockMutex().Lock()
+	defer lr.lockMutex().Unlock()
 
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
@@ -44,14 +51,9 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 		},
 	}
 
-	entityManagementAddress := e.ManagementPath()
-	conn, err := e.namespace.newConnection()
+	entityManagementAddress := lr.ManagementPath()
+	conn, err := lr.connection(ctx)
 	if err != nil {
-		return err
-	}
-	err = e.namespace.negotiateClaim(ctx, conn, entityManagementAddress)
-	if err != nil {
-		log.For(ctx).Error(err)
 		return err
 	}
 

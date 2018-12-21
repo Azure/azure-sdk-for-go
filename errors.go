@@ -11,6 +11,10 @@ type (
 	// encountered when there is an error with this library, or the server has altered its behavior unexpectedly.
 	ErrMissingField string
 
+	// ErrMalformedMessage indicates that a message was expected in the form of []byte was not a []byte. This is likely
+	// a bug and should be reported.
+	ErrMalformedMessage string
+
 	// ErrIncorrectType indicates that type assertion failed. This should only be encountered when there is an error
 	// with this library, or the server has altered its behavior unexpectedly.
 	ErrIncorrectType struct {
@@ -29,6 +33,10 @@ type (
 
 func (e ErrMissingField) Error() string {
 	return fmt.Sprintf("missing value %q", string(e))
+}
+
+func (e ErrMalformedMessage) Error() string {
+	return fmt.Sprintf("message was expected in the form of []byte was not a []byte")
 }
 
 // NewErrIncorrectType lets you skip using the `reflect` package. Just provide a variable of the desired type as

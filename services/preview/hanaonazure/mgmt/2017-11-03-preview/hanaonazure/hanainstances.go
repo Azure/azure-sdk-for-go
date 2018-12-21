@@ -423,8 +423,8 @@ func (client HanaInstancesClient) RestartResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
-// hanaInstancePatchTagsParameter - request body that contains the new Tags field for the HANA instance
-func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupName string, hanaInstanceName string, hanaInstancePatchTagsParameter Tags) (result HanaInstance, err error) {
+// tagsParameter - request body that only contains the new Tags field
+func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter Tags) (result HanaInstance, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.UpdateTags")
 		defer func() {
@@ -435,7 +435,7 @@ func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, hanaInstanceName, hanaInstancePatchTagsParameter)
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, hanaInstanceName, tagsParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "UpdateTags", nil, "Failure preparing request")
 		return
@@ -457,7 +457,7 @@ func (client HanaInstancesClient) UpdateTags(ctx context.Context, resourceGroupN
 }
 
 // UpdateTagsPreparer prepares the UpdateTags request.
-func (client HanaInstancesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, hanaInstancePatchTagsParameter Tags) (*http.Request, error) {
+func (client HanaInstancesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter Tags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hanaInstanceName":  autorest.Encode("path", hanaInstanceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -474,7 +474,7 @@ func (client HanaInstancesClient) UpdateTagsPreparer(ctx context.Context, resour
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}", pathParameters),
-		autorest.WithJSON(hanaInstancePatchTagsParameter),
+		autorest.WithJSON(tagsParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

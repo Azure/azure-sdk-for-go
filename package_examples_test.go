@@ -103,6 +103,9 @@ func Example_auto_forward() {
 		fmt.Println(err)
 		return
 	}
+	defer func(){
+		_ := sourceQueue.Close(ctx)
+	}()
 
 	if err := sourceQueue.Send(ctx, servicebus.NewMessageFromString("forward me to target!")); err != nil {
 		fmt.Println(err)
@@ -114,6 +117,9 @@ func Example_auto_forward() {
 		fmt.Println(err)
 		return
 	}
+	defer func(){
+		_ := targetQueue.Close(ctx)
+	}()
 
 	if err := targetQueue.ReceiveOne(ctx, MessagePrinter{}); err != nil {
 		fmt.Println(err)
@@ -152,6 +158,9 @@ func Example_deadletter_queues() {
 		fmt.Println(err)
 		return
 	}
+	defer func(){
+		_ := q.Close(ctx)
+	}()
 
 	if err := q.Send(ctx, servicebus.NewMessageFromString("foo")); err != nil {
 		fmt.Println(err)
@@ -177,6 +186,10 @@ func Example_deadletter_queues() {
 		fmt.Println(err)
 		return
 	}
+	defer func(){
+		_ := qdl.Close(ctx)
+	}()
+
 
 	// Output:
 	// count: 1
@@ -221,6 +234,9 @@ func Example_defer_messages() {
 		fmt.Println(err)
 		return
 	}
+	defer func() {
+		_ := q.Close(ctx)
+	}()
 
 	type recipeStep struct {
 		Step  int    `json:"step,omitempty"`
@@ -264,8 +280,8 @@ func Example_defer_messages() {
 				Label: "RecipeStep",
 			}
 
-			// the way we shuffle the message order is to introduce
-			// a tiny random delay before each of the messages is sent
+			// we shuffle the message order to introduce a random delay before each of the messages is sent to
+			// simulate out of order sending
 			time.Sleep(time.Duration(rand.Intn(2000)) * time.Millisecond)
 			if err := q.Send(ctx, msg); err != nil {
 				fmt.Println(err)

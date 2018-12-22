@@ -45,12 +45,9 @@ const (
 	//`
 
 	// Version is the semantic version number
-	Version = "0.1.0"
+	Version = "0.2.0"
 
 	rootUserAgent = "/golang-service-bus"
-
-	// Megabytes is a helper for specifying MaxSizeInMegabytes and equals 1024, thus 5 GB is 5 * Megabytes
-	Megabytes = 1024
 )
 
 type (

@@ -89,6 +89,7 @@ type OperationList = original.OperationList
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type StorageProfile = original.StorageProfile
+type Tags = original.Tags
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

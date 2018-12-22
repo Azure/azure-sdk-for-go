@@ -74,5 +74,6 @@ func Example_autoForward() {
 		return
 	}
 
-	// Output: forward me to target!
+	// Output:
+	// forward me to target!
 }

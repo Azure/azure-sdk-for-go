@@ -1078,6 +1078,9 @@ type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTyp
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
 type ExecutionActivity = original.ExecutionActivity
+type ExposureControlClient = original.ExposureControlClient
+type ExposureControlRequest = original.ExposureControlRequest
+type ExposureControlResponse = original.ExposureControlResponse
 type Expression = original.Expression
 type FactoriesClient = original.FactoriesClient
 type Factory = original.Factory
@@ -1472,6 +1475,12 @@ func NewDatasetsClient(subscriptionID string) DatasetsClient {
 }
 func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExposureControlClient(subscriptionID string) ExposureControlClient {
+	return original.NewExposureControlClient(subscriptionID)
+}
+func NewExposureControlClientWithBaseURI(baseURI string, subscriptionID string) ExposureControlClient {
+	return original.NewExposureControlClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFactoriesClient(subscriptionID string) FactoriesClient {
 	return original.NewFactoriesClient(subscriptionID)

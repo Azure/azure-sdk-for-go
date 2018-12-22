@@ -507,3 +507,18 @@ type StorageProfile struct {
 	// OsDisks - Specifies information about the operating system disk used by the hana instance.
 	OsDisks *[]Disk `json:"osDisks,omitempty"`
 }
+
+// Tags tags field of the HANA instance.
+type Tags struct {
+	// Tags - Tags field of the HANA instance.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Tags.
+func (t Tags) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
+	}
+	return json.Marshal(objectMap)
+}

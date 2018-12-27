@@ -6343,6 +6343,14 @@ type ModuleUpdateProperties struct {
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
 }
 
+// NonAzureQueryProperties non Azure query for the update configuration.
+type NonAzureQueryProperties struct {
+	// FunctionAlias - Log Analytics Saved Search name.
+	FunctionAlias *string `json:"functionAlias,omitempty"`
+	// WorkspaceID - Workspace Id for Log Analytics in which the saved Search is resided.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+}
+
 // Operation automation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -9007,6 +9015,8 @@ func (tsp TagSettingsProperties) MarshalJSON() ([]byte, error) {
 type TargetProperties struct {
 	// AzureQueries - List of Azure queries in the software update configuration.
 	AzureQueries *[]AzureQueryProperties `json:"azureQueries,omitempty"`
+	// NonAzureQueries - List of non Azure queries in the software update configuration.
+	NonAzureQueries *[]NonAzureQueryProperties `json:"nonAzureQueries,omitempty"`
 }
 
 // TaskProperties task properties of the software update configuration.

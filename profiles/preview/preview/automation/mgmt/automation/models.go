@@ -509,6 +509,7 @@ type NodeCountInformationClient = original.NodeCountInformationClient
 type NodeCountProperties = original.NodeCountProperties
 type NodeCounts = original.NodeCounts
 type NodeReportsClient = original.NodeReportsClient
+type NonAzureQueryProperties = original.NonAzureQueryProperties
 type ObjectDataTypesClient = original.ObjectDataTypesClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

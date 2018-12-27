@@ -120,14 +120,14 @@ func (client ExposureControlClient) GetFeatureResponder(resp *http.Response) (re
 	return
 }
 
-// GetFeatureForSubscription get exposure control feature for specific data factory.
+// GetFeatureBySubscription get exposure control feature for specific data factory.
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // exposureControlRequest - the exposure control request.
-func (client ExposureControlClient) GetFeatureForSubscription(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest) (result ExposureControlResponse, err error) {
+func (client ExposureControlClient) GetFeatureBySubscription(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest) (result ExposureControlResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ExposureControlClient.GetFeatureForSubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExposureControlClient.GetFeatureBySubscription")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -145,32 +145,32 @@ func (client ExposureControlClient) GetFeatureForSubscription(ctx context.Contex
 			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.ExposureControlClient", "GetFeatureForSubscription", err.Error())
+		return result, validation.NewError("datafactory.ExposureControlClient", "GetFeatureBySubscription", err.Error())
 	}
 
-	req, err := client.GetFeatureForSubscriptionPreparer(ctx, resourceGroupName, factoryName, exposureControlRequest)
+	req, err := client.GetFeatureBySubscriptionPreparer(ctx, resourceGroupName, factoryName, exposureControlRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.ExposureControlClient", "GetFeatureForSubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datafactory.ExposureControlClient", "GetFeatureBySubscription", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetFeatureForSubscriptionSender(req)
+	resp, err := client.GetFeatureBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.ExposureControlClient", "GetFeatureForSubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.ExposureControlClient", "GetFeatureBySubscription", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetFeatureForSubscriptionResponder(resp)
+	result, err = client.GetFeatureBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.ExposureControlClient", "GetFeatureForSubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datafactory.ExposureControlClient", "GetFeatureBySubscription", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetFeatureForSubscriptionPreparer prepares the GetFeatureForSubscription request.
-func (client ExposureControlClient) GetFeatureForSubscriptionPreparer(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest) (*http.Request, error) {
+// GetFeatureBySubscriptionPreparer prepares the GetFeatureBySubscription request.
+func (client ExposureControlClient) GetFeatureBySubscriptionPreparer(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"factoryName":       autorest.Encode("path", factoryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -192,16 +192,16 @@ func (client ExposureControlClient) GetFeatureForSubscriptionPreparer(ctx contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetFeatureForSubscriptionSender sends the GetFeatureForSubscription request. The method will close the
+// GetFeatureBySubscriptionSender sends the GetFeatureBySubscription request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExposureControlClient) GetFeatureForSubscriptionSender(req *http.Request) (*http.Response, error) {
+func (client ExposureControlClient) GetFeatureBySubscriptionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetFeatureForSubscriptionResponder handles the response to the GetFeatureForSubscription request. The method always
+// GetFeatureBySubscriptionResponder handles the response to the GetFeatureBySubscription request. The method always
 // closes the http.Response Body.
-func (client ExposureControlClient) GetFeatureForSubscriptionResponder(resp *http.Response) (result ExposureControlResponse, err error) {
+func (client ExposureControlClient) GetFeatureBySubscriptionResponder(resp *http.Response) (result ExposureControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

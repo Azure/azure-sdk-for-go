@@ -602,13 +602,13 @@ type SyncType string
 const (
 	// FullSync ...
 	FullSync SyncType = "FullSync"
-	// PartialSync ...
-	PartialSync SyncType = "PartialSync"
+	// IncrementalSync ...
+	IncrementalSync SyncType = "IncrementalSync"
 )
 
 // PossibleSyncTypeValues returns an array of possible values for the SyncType const type.
 func PossibleSyncTypeValues() []SyncType {
-	return []SyncType{FullSync, PartialSync}
+	return []SyncType{FullSync, IncrementalSync}
 }
 
 // TagOperators enumerates the values for tag operators.
@@ -1425,7 +1425,7 @@ type AdvancedScheduleMonthlyOccurrence struct {
 	Day ScheduleDay `json:"day,omitempty"`
 }
 
-// AgentRegistration definition of the agent registration information type.
+// AgentRegistration definition of the agent registration infomration type.
 type AgentRegistration struct {
 	autorest.Response `json:"-"`
 	// DscMetaConfiguration - Gets or sets the dsc meta configuration.
@@ -1456,8 +1456,8 @@ type AgentRegistrationRegenerateKeyParameter struct {
 type AzureQueryProperties struct {
 	// Scope - List of Subscription or Resource Group ARM Ids.
 	Scope *[]string `json:"scope,omitempty"`
-	// Locations - List of locations to scope the query to.
-	Locations *[]string `json:"locations,omitempty"`
+	// Location - List of locations to scope the query to.
+	Location *[]string `json:"location,omitempty"`
 	// TagSettings - Tag settings for the VM.
 	TagSettings *TagSettingsProperties `json:"tagSettings,omitempty"`
 }
@@ -2762,7 +2762,7 @@ func (ccoup *CredentialCreateOrUpdateParameters) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// CredentialCreateOrUpdateProperties the properties of the create credential operation.
+// CredentialCreateOrUpdateProperties the properties of the create cerdential operation.
 type CredentialCreateOrUpdateProperties struct {
 	// UserName - Gets or sets the user name of the credential.
 	UserName *string `json:"userName,omitempty"`
@@ -3835,7 +3835,7 @@ func NewDscConfigurationListResultPage(getNextPage func(context.Context, DscConf
 type DscConfigurationParameter struct {
 	// Type - Gets or sets the type of the parameter.
 	Type *string `json:"type,omitempty"`
-	// IsMandatory - Gets or sets a Boolean value to indicate whether the parameter is mandatory or not.
+	// IsMandatory - Gets or sets a Boolean value to indicate whether the parameter is madatory or not.
 	IsMandatory *bool `json:"isMandatory,omitempty"`
 	// Position - Get or sets the position of the parameter.
 	Position *int32 `json:"position,omitempty"`
@@ -4153,9 +4153,9 @@ func (dnc *DscNodeConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DscNodeConfigurationAssociationProperty the dsc node configuration property associated with the entity.
+// DscNodeConfigurationAssociationProperty the dsc nodeconfiguration property associated with the entity.
 type DscNodeConfigurationAssociationProperty struct {
-	// Name - Gets or sets the name of the dsc node configuration.
+	// Name - Gets or sets the name of the dsc nodeconfiguration.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -4426,7 +4426,7 @@ type DscNodeConfigurationProperties struct {
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// Source - Source of node configuration.
 	Source *string `json:"source,omitempty"`
-	// NodeCount - Number of nodes with this node configuration assigned
+	// NodeCount - Number of nodes with this nodeconfiguration assigned
 	NodeCount *int64 `json:"nodeCount,omitempty"`
 	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
 	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
@@ -6821,6 +6821,14 @@ type NodeCounts struct {
 	TotalCount *int32 `json:"totalCount,omitempty"`
 }
 
+// NonAzureQueryProperties non Azure query for the update configuration.
+type NonAzureQueryProperties struct {
+	// FunctionAlias - Log Analytics Saved Search name.
+	FunctionAlias *string `json:"functionAlias,omitempty"`
+	// WorkspaceID - Workspace Id for Log Analytics in which the saved Search is resided.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+}
+
 // Operation automation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -6872,7 +6880,7 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// RunAsCredentialAssociationProperty definition of RunAs credential to use for hybrid worker.
+// RunAsCredentialAssociationProperty definition of runas credential to use for hybrid worker.
 type RunAsCredentialAssociationProperty struct {
 	// Name - Gets or sets the name of the credential.
 	Name *string `json:"name,omitempty"`
@@ -7014,7 +7022,7 @@ type RunbookCreateOrUpdateDraftParameters struct {
 	RunbookContent *string `json:"runbookContent,omitempty"`
 }
 
-// RunbookCreateOrUpdateDraftProperties the parameters supplied to the create or update draft runbook
+// RunbookCreateOrUpdateDraftProperties the parameters supplied to the create or update dratft runbook
 // properties.
 type RunbookCreateOrUpdateDraftProperties struct {
 	// LogVerbose - Gets or sets verbose log option.
@@ -7223,7 +7231,7 @@ func (future *RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient
 	return
 }
 
-// RunbookDraftUndoEditResult the response model for the undo edit runbook operation.
+// RunbookDraftUndoEditResult the response model for the undoedit runbook operation.
 type RunbookDraftUndoEditResult struct {
 	autorest.Response `json:"-"`
 	// StatusCode - Possible values include: 'Continue', 'SwitchingProtocols', 'OK', 'Created', 'Accepted', 'NonAuthoritativeInformation', 'NoContent', 'ResetContent', 'PartialContent', 'MultipleChoices', 'Ambiguous', 'MovedPermanently', 'Moved', 'Found', 'Redirect', 'SeeOther', 'RedirectMethod', 'NotModified', 'UseProxy', 'Unused', 'TemporaryRedirect', 'RedirectKeepVerb', 'BadRequest', 'Unauthorized', 'PaymentRequired', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout', 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed', 'RequestEntityTooLarge', 'RequestURITooLong', 'UnsupportedMediaType', 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired', 'InternalServerError', 'NotImplemented', 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout', 'HTTPVersionNotSupported'
@@ -7381,7 +7389,7 @@ func NewRunbookListResultPage(getNextPage func(context.Context, RunbookListResul
 type RunbookParameter struct {
 	// Type - Gets or sets the type of the parameter.
 	Type *string `json:"type,omitempty"`
-	// IsMandatory - Gets or sets a Boolean value to indicate whether the parameter is mandatory or not.
+	// IsMandatory - Gets or sets a Boolean value to indicate whether the parameter is madatory or not.
 	IsMandatory *bool `json:"isMandatory,omitempty"`
 	// Position - Get or sets the position of the parameter.
 	Position *int32 `json:"position,omitempty"`
@@ -7981,24 +7989,6 @@ type Sku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// SoftareUpdateConfigurationRunTaskProperties task properties of the software update configuration.
-type SoftareUpdateConfigurationRunTaskProperties struct {
-	// Status - The status of the task.
-	Status *string `json:"status,omitempty"`
-	// Source - The name of the source of the task.
-	Source *string `json:"source,omitempty"`
-	// JobID - The job id of the task.
-	JobID *string `json:"jobId,omitempty"`
-}
-
-// SoftareUpdateConfigurationRunTasks software update configuration run tasks model.
-type SoftareUpdateConfigurationRunTasks struct {
-	// PreTask - Pre task properties.
-	PreTask *SoftareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
-	// PostTask - Post task properties.
-	PostTask *SoftareUpdateConfigurationRunTaskProperties `json:"postTask,omitempty"`
-}
-
 // SoftwareUpdateConfiguration software update configuration properties.
 type SoftwareUpdateConfiguration struct {
 	autorest.Response `json:"-"`
@@ -8260,18 +8250,16 @@ type SoftwareUpdateConfigurationProperties struct {
 	ScheduleInfo *ScheduleProperties `json:"scheduleInfo,omitempty"`
 	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// Error - Details of provisioning error
+	// Error - detailes of provisioning error
 	Error *ErrorResponse `json:"error,omitempty"`
-	// CreationTime - Creation time of the resource, which only appears in the response.
+	// CreationTime - Creation time of theresource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - CreatedBy property, which only appears in the response.
+	// CreatedBy - createdBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// LastModifiedTime - Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// Tasks - Tasks information for the Software update configuration.
-	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
 }
 
 // SoftwareUpdateConfigurationRun software update configuration Run properties.
@@ -8357,11 +8345,11 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
 	// Status - Status of the software update configuration run.
 	Status *string `json:"status,omitempty"`
-	// ConfiguredDuration - Configured duration for the software update configuration run.
+	// ConfiguredDuration - configured duration for the software update configuration run.
 	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
 	// OsType - Operating system target of the software update configuration triggered this run
 	OsType *string `json:"osType,omitempty"`
-	// StartTime - Start time of the software update configuration run.
+	// StartTime - Etart time of the software update configuration run.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - End time of the software update configuration run.
 	EndTime *date.Time `json:"endTime,omitempty"`
@@ -8369,24 +8357,14 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	ComputerCount *int32 `json:"computerCount,omitempty"`
 	// FailedCount - Number of computers with failed status.
 	FailedCount *int32 `json:"failedCount,omitempty"`
-	// CreationTime - Creation time of the resource, which only appears in the response.
+	// CreationTime - Creation time of theresource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - CreatedBy property, which only appears in the response.
+	// CreatedBy - createdBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// LastModifiedTime - Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// Tasks - Software update configuration tasks triggered in this run
-	Tasks *SoftareUpdateConfigurationRunTasks `json:"tasks,omitempty"`
-}
-
-// SoftwareUpdateConfigurationTasks task properties of the software update configuration.
-type SoftwareUpdateConfigurationTasks struct {
-	// PreTask - Pre task properties.
-	PreTask *TaskProperties `json:"preTask,omitempty"`
-	// PostTask - Post task properties.
-	PostTask *TaskProperties `json:"postTask,omitempty"`
 }
 
 // SourceControl definition of the source control.
@@ -8534,7 +8512,7 @@ type SourceControlCreateOrUpdateProperties struct {
 // SourceControlListResult the response model for the list source controls operation.
 type SourceControlListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of source controls.
+	// Value - The list of souce controls.
 	Value *[]SourceControl `json:"value,omitempty"`
 	// NextLink - The next link.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -8857,9 +8835,9 @@ type SourceControlSyncJobByIDProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
+	// SyncType - The sync type. Possible values include: 'IncrementalSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
-	// Exception - The exceptions that occurred while running the sync job.
+	// Exception - The exceptions that occured while running the sync job.
 	Exception *string `json:"exception,omitempty"`
 }
 
@@ -9068,7 +9046,7 @@ type SourceControlSyncJobProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
+	// SyncType - The sync type. Possible values include: 'IncrementalSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
 }
 
@@ -9485,26 +9463,8 @@ func (tsp TagSettingsProperties) MarshalJSON() ([]byte, error) {
 type TargetProperties struct {
 	// AzureQueries - List of Azure queries in the software update configuration.
 	AzureQueries *[]AzureQueryProperties `json:"azureQueries,omitempty"`
-}
-
-// TaskProperties task properties of the software update configuration.
-type TaskProperties struct {
-	// Parameters - Gets or sets the parameters of the task.
-	Parameters map[string]*string `json:"parameters"`
-	// Source - Gets or sets the name of the runbook.
-	Source *string `json:"source,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TaskProperties.
-func (tp TaskProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tp.Parameters != nil {
-		objectMap["parameters"] = tp.Parameters
-	}
-	if tp.Source != nil {
-		objectMap["source"] = tp.Source
-	}
-	return json.Marshal(objectMap)
+	// NonAzureQueries - List of non Azure queries in the software update configuration.
+	NonAzureQueries *[]NonAzureQueryProperties `json:"nonAzureQueries,omitempty"`
 }
 
 // TestJob definition of the test job.
@@ -9643,7 +9603,7 @@ type TypeFieldListResult struct {
 	Value *[]TypeField `json:"value,omitempty"`
 }
 
-// UpdateConfiguration update specific properties of the software update configuration.
+// UpdateConfiguration update specifc properties of the software update configuration.
 type UpdateConfiguration struct {
 	// OperatingSystem - operating system of target machines. Possible values include: 'Windows', 'Linux'
 	OperatingSystem OperatingSystemType `json:"operatingSystem,omitempty"`
@@ -9685,7 +9645,7 @@ type UpdateConfigurationMachineRunProperties struct {
 	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
 	// Job - Job associated with the software update configuration machine run
 	Job *JobNavigation `json:"job,omitempty"`
-	// CreationTime - Creation time of the resource, which only appears in the response.
+	// CreationTime - Creation time of theresource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// CreatedBy - createdBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
@@ -9693,8 +9653,6 @@ type UpdateConfigurationMachineRunProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// Error - Details of provisioning error
-	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // UpdateConfigurationNavigation software update configuration Run Navigation model.
@@ -9734,7 +9692,7 @@ type UsageListResult struct {
 	Value *[]Usage `json:"value,omitempty"`
 }
 
-// Variable definition of the variable.
+// Variable definition of the varible.
 type Variable struct {
 	autorest.Response `json:"-"`
 	// VariableProperties - Gets or sets the properties of the variable.
@@ -10025,7 +9983,7 @@ func NewVariableListResultPage(getNextPage func(context.Context, VariableListRes
 	return VariableListResultPage{fn: getNextPage}
 }
 
-// VariableProperties definition of the variable properties
+// VariableProperties definition of the varible properties
 type VariableProperties struct {
 	// Value - Gets or sets the value of the variable.
 	Value *string `json:"value,omitempty"`

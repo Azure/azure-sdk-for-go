@@ -301,8 +301,8 @@ const (
 type SyncType = original.SyncType
 
 const (
-	FullSync    SyncType = original.FullSync
-	PartialSync SyncType = original.PartialSync
+	FullSync        SyncType = original.FullSync
+	IncrementalSync SyncType = original.IncrementalSync
 )
 
 type TagOperators = original.TagOperators
@@ -509,6 +509,7 @@ type NodeCountInformationClient = original.NodeCountInformationClient
 type NodeCountProperties = original.NodeCountProperties
 type NodeCounts = original.NodeCounts
 type NodeReportsClient = original.NodeReportsClient
+type NonAzureQueryProperties = original.NonAzureQueryProperties
 type ObjectDataTypesClient = original.ObjectDataTypesClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -554,8 +555,6 @@ type ScheduleUpdateParameters = original.ScheduleUpdateParameters
 type ScheduleUpdateProperties = original.ScheduleUpdateProperties
 type SetObject = original.SetObject
 type Sku = original.Sku
-type SoftareUpdateConfigurationRunTaskProperties = original.SoftareUpdateConfigurationRunTaskProperties
-type SoftareUpdateConfigurationRunTasks = original.SoftareUpdateConfigurationRunTasks
 type SoftwareUpdateConfiguration = original.SoftwareUpdateConfiguration
 type SoftwareUpdateConfigurationCollectionItem = original.SoftwareUpdateConfigurationCollectionItem
 type SoftwareUpdateConfigurationCollectionItemProperties = original.SoftwareUpdateConfigurationCollectionItemProperties
@@ -568,7 +567,6 @@ type SoftwareUpdateConfigurationRun = original.SoftwareUpdateConfigurationRun
 type SoftwareUpdateConfigurationRunListResult = original.SoftwareUpdateConfigurationRunListResult
 type SoftwareUpdateConfigurationRunProperties = original.SoftwareUpdateConfigurationRunProperties
 type SoftwareUpdateConfigurationRunsClient = original.SoftwareUpdateConfigurationRunsClient
-type SoftwareUpdateConfigurationTasks = original.SoftwareUpdateConfigurationTasks
 type SoftwareUpdateConfigurationsClient = original.SoftwareUpdateConfigurationsClient
 type SourceControl = original.SourceControl
 type SourceControlClient = original.SourceControlClient
@@ -605,7 +603,6 @@ type StatisticsListResult = original.StatisticsListResult
 type String = original.String
 type TagSettingsProperties = original.TagSettingsProperties
 type TargetProperties = original.TargetProperties
-type TaskProperties = original.TaskProperties
 type TestJob = original.TestJob
 type TestJobClient = original.TestJobClient
 type TestJobCreateParameters = original.TestJobCreateParameters

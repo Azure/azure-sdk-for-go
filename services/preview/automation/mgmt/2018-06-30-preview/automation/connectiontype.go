@@ -41,12 +41,12 @@ func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string, c
 	return ConnectionTypeClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
 }
 
-// CreateOrUpdate create a connection type.
+// CreateOrUpdate create a connectiontype.
 // Parameters:
 // resourceGroupName - name of an Azure Resource group.
 // automationAccountName - the name of the automation account.
-// connectionTypeName - the parameters supplied to the create or update connection type operation.
-// parameters - the parameters supplied to the create or update connection type operation.
+// connectionTypeName - the parameters supplied to the create or update connectiontype operation.
+// parameters - the parameters supplied to the create or update connectiontype operation.
 func (client ConnectionTypeClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string, parameters ConnectionTypeCreateOrUpdateParameters) (result ConnectionType, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionTypeClient.CreateOrUpdate")
@@ -135,11 +135,11 @@ func (client ConnectionTypeClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Delete delete the connection type.
+// Delete delete the connectiontype.
 // Parameters:
 // resourceGroupName - name of an Azure Resource group.
 // automationAccountName - the name of the automation account.
-// connectionTypeName - the name of connection type.
+// connectionTypeName - the name of connectiontype.
 func (client ConnectionTypeClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionTypeClient.Delete")
@@ -221,11 +221,11 @@ func (client ConnectionTypeClient) DeleteResponder(resp *http.Response) (result 
 	return
 }
 
-// Get retrieve the connection type identified by connection type name.
+// Get retrieve the connectiontype identified by connectiontype name.
 // Parameters:
 // resourceGroupName - name of an Azure Resource group.
 // automationAccountName - the name of the automation account.
-// connectionTypeName - the name of connection type.
+// connectionTypeName - the name of connectiontype.
 func (client ConnectionTypeClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string) (result ConnectionType, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionTypeClient.Get")
@@ -308,7 +308,7 @@ func (client ConnectionTypeClient) GetResponder(resp *http.Response) (result Con
 	return
 }
 
-// ListByAutomationAccount retrieve a list of connection types.
+// ListByAutomationAccount retrieve a list of connectiontypes.
 // Parameters:
 // resourceGroupName - name of an Azure Resource group.
 // automationAccountName - the name of the automation account.

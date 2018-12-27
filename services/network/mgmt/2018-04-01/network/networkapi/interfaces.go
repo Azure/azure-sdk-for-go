@@ -421,7 +421,7 @@ var _ UsagesClientAPI = (*network.UsagesClient)(nil)
 
 // VirtualNetworksClientAPI contains the set of methods on the VirtualNetworksClient type.
 type VirtualNetworksClientAPI interface {
-	CheckIPAddressAvailability(ctx context.Context, resourceGroupName string, virtualNetworkName string, IPAddress string) (result network.IPAddressAvailabilityResult, err error)
+	CheckIPAddressAvailability(ctx context.Context, IPAddress string, resourceGroupName string, virtualNetworkName string) (result network.IPAddressAvailabilityResult, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters network.VirtualNetwork) (result network.VirtualNetworksCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, expand string) (result network.VirtualNetwork, err error)
@@ -569,7 +569,7 @@ type VpnConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters network.VpnConnection) (result network.VpnConnectionsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.VpnConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.VpnConnection, err error)
-	ListByVpnGateway(ctx context.Context, resourceGroupName string, gatewayName string) (result network.ListVpnConnectionsResultPage, err error)
+	ListByVpnGateway(ctx context.Context, gatewayName string) (result network.ListVpnConnectionsResultPage, err error)
 }
 
 var _ VpnConnectionsClientAPI = (*network.VpnConnectionsClient)(nil)

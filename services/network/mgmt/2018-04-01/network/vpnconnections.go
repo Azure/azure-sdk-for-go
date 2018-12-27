@@ -282,9 +282,8 @@ func (client VpnConnectionsClient) GetResponder(resp *http.Response) (result Vpn
 
 // ListByVpnGateway retrieves all vpn connections for a particular virtual wan vpn gateway.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnGateway.
 // gatewayName - the name of the gateway.
-func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, resourceGroupName string, gatewayName string) (result ListVpnConnectionsResultPage, err error) {
+func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, gatewayName string) (result ListVpnConnectionsResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.ListByVpnGateway")
 		defer func() {
@@ -296,7 +295,7 @@ func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, resourc
 		}()
 	}
 	result.fn = client.listByVpnGatewayNextResults
-	req, err := client.ListByVpnGatewayPreparer(ctx, resourceGroupName, gatewayName)
+	req, err := client.ListByVpnGatewayPreparer(ctx, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnConnectionsClient", "ListByVpnGateway", nil, "Failure preparing request")
 		return
@@ -318,11 +317,10 @@ func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, resourc
 }
 
 // ListByVpnGatewayPreparer prepares the ListByVpnGateway request.
-func (client VpnConnectionsClient) ListByVpnGatewayPreparer(ctx context.Context, resourceGroupName string, gatewayName string) (*http.Request, error) {
+func (client VpnConnectionsClient) ListByVpnGatewayPreparer(ctx context.Context, gatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"gatewayName":       autorest.Encode("path", gatewayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"gatewayName":    autorest.Encode("path", gatewayName),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-04-01"
@@ -333,7 +331,7 @@ func (client VpnConnectionsClient) ListByVpnGatewayPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -380,7 +378,7 @@ func (client VpnConnectionsClient) listByVpnGatewayNextResults(ctx context.Conte
 }
 
 // ListByVpnGatewayComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VpnConnectionsClient) ListByVpnGatewayComplete(ctx context.Context, resourceGroupName string, gatewayName string) (result ListVpnConnectionsResultIterator, err error) {
+func (client VpnConnectionsClient) ListByVpnGatewayComplete(ctx context.Context, gatewayName string) (result ListVpnConnectionsResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.ListByVpnGateway")
 		defer func() {
@@ -391,6 +389,6 @@ func (client VpnConnectionsClient) ListByVpnGatewayComplete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByVpnGateway(ctx, resourceGroupName, gatewayName)
+	result.page, err = client.ListByVpnGateway(ctx, gatewayName)
 	return
 }

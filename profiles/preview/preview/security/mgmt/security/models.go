@@ -154,6 +154,7 @@ type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
 type AllowedConnectionsListPage = original.AllowedConnectionsListPage
 type AllowedConnectionsResource = original.AllowedConnectionsResource
 type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
+type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -189,8 +190,10 @@ type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
 type ContactsClient = original.ContactsClient
+type CustomAlertRule = original.CustomAlertRule
 type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
+type DenylistCustomAlertRule = original.DenylistCustomAlertRule
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
@@ -213,6 +216,10 @@ type InformationProtectionPolicyListIterator = original.InformationProtectionPol
 type InformationProtectionPolicyListPage = original.InformationProtectionPolicyListPage
 type InformationProtectionPolicyProperties = original.InformationProtectionPolicyProperties
 type InformationType = original.InformationType
+type IotSecurityGroup = original.IotSecurityGroup
+type IotSecurityGroupList = original.IotSecurityGroupList
+type IotSecurityGroupProperties = original.IotSecurityGroupProperties
+type IotSecurityGroupsClient = original.IotSecurityGroupsClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
@@ -258,6 +265,8 @@ type TaskListPage = original.TaskListPage
 type TaskParameters = original.TaskParameters
 type TaskProperties = original.TaskProperties
 type TasksClient = original.TasksClient
+type ThresholdCustomAlertRule = original.ThresholdCustomAlertRule
+type TimeWindowCustomAlertRule = original.TimeWindowCustomAlertRule
 type TopologyClient = original.TopologyClient
 type TopologyList = original.TopologyList
 type TopologyListIterator = original.TopologyListIterator
@@ -384,6 +393,12 @@ func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicy
 }
 func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
 	return original.NewInformationProtectionPolicyListPage(getNextPage)
+}
+func NewIotSecurityGroupsClient(subscriptionID string, ascLocation string) IotSecurityGroupsClient {
+	return original.NewIotSecurityGroupsClient(subscriptionID, ascLocation)
+}
+func NewIotSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecurityGroupsClient {
+	return original.NewIotSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
 	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)

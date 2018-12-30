@@ -82,6 +82,16 @@ type AdvancedThreatProtectionClientAPI interface {
 
 var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
 
+// IotSecurityGroupsClientAPI contains the set of methods on the IotSecurityGroupsClient type.
+type IotSecurityGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceID string, iotSecurityGroupName string, iotSecurityGroup security.IotSecurityGroup) (result security.IotSecurityGroup, err error)
+	Delete(ctx context.Context, resourceID string, iotSecurityGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceID string, iotSecurityGroupName string) (result security.IotSecurityGroup, err error)
+	List(ctx context.Context, resourceID string) (result security.IotSecurityGroupList, err error)
+}
+
+var _ IotSecurityGroupsClientAPI = (*security.IotSecurityGroupsClient)(nil)
+
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
 	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)

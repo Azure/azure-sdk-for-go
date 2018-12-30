@@ -30,6 +30,7 @@ type ContactsClientAPI = original.ContactsClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
 type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
+type IotSecurityGroupsClientAPI = original.IotSecurityGroupsClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

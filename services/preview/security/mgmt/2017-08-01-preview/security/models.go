@@ -1077,6 +1077,21 @@ type AllowedConnectionsResourceProperties struct {
 	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
 }
 
+// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is allowed
+type AllowlistCustomAlertRule struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // AscLocation the ASC location of the subscription is in the "name" field
 type AscLocation struct {
 	autorest.Response `json:"-"`
@@ -2374,6 +2389,18 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
+// CustomAlertRule a custom alert rule
+type CustomAlertRule struct {
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // DataExportSetting represents a data export setting
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
@@ -2489,6 +2516,21 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// denied
+type DenylistCustomAlertRule struct {
+	// DenylistValues - The values to deny. The format of the values depends on the rule type.
+	DenylistValues *[]string `json:"denylistValues,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
 }
 
 // DiscoveredSecuritySolution ...
@@ -3423,6 +3465,107 @@ type InformationType struct {
 	Custom *bool `json:"custom,omitempty"`
 	// Keywords - The information type keywords.
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
+}
+
+// IotSecurityGroup the IoT security group resource
+type IotSecurityGroup struct {
+	autorest.Response `json:"-"`
+	// IotSecurityGroupProperties - IoT Security group data
+	*IotSecurityGroupProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotSecurityGroup.
+func (isg IotSecurityGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if isg.IotSecurityGroupProperties != nil {
+		objectMap["properties"] = isg.IotSecurityGroupProperties
+	}
+	if isg.ID != nil {
+		objectMap["id"] = isg.ID
+	}
+	if isg.Name != nil {
+		objectMap["name"] = isg.Name
+	}
+	if isg.Type != nil {
+		objectMap["type"] = isg.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IotSecurityGroup struct.
+func (isg *IotSecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var iotSecurityGroupProperties IotSecurityGroupProperties
+				err = json.Unmarshal(*v, &iotSecurityGroupProperties)
+				if err != nil {
+					return err
+				}
+				isg.IotSecurityGroupProperties = &iotSecurityGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				isg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				isg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				isg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IotSecurityGroupList list of IoT security groups
+type IotSecurityGroupList struct {
+	autorest.Response `json:"-"`
+	// Value - List of IoT security group objects
+	Value *[]IotSecurityGroup `json:"value,omitempty"`
+}
+
+// IotSecurityGroupProperties describes properties of a security group.
+type IotSecurityGroupProperties struct {
+	// ThresholdRules - A list of threshold custom alert rules.
+	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	// TimeWindowRules - A list of time window custom alert rules.
+	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	// AllowlistRules - A list of allow-list custom alert rules.
+	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	// DenylistRules - A list of deny-list custom alert rules.
+	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // JitNetworkAccessPoliciesList ...
@@ -4784,6 +4927,42 @@ type TaskProperties struct {
 	LastStateChangeTimeUtc *date.Time `json:"lastStateChangeTimeUtc,omitempty"`
 	// SubState - Additional data on the state of the task
 	SubState *string `json:"subState,omitempty"`
+}
+
+// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is within the given range.
+type ThresholdCustomAlertRule struct {
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
+// custom alert type) in a time window is within the given range.
+type TimeWindowCustomAlertRule struct {
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
 }
 
 // TopologyList ...

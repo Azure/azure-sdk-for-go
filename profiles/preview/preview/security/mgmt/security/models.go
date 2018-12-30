@@ -85,17 +85,10 @@ const (
 type KindEnum = original.KindEnum
 
 const (
-	KindDataExportSetting KindEnum = original.KindDataExportSetting
-	KindSetting           KindEnum = original.KindSetting
-)
-
-type KindEnum1 = original.KindEnum1
-
-const (
-	KindAAD                      KindEnum1 = original.KindAAD
-	KindATA                      KindEnum1 = original.KindATA
-	KindCEF                      KindEnum1 = original.KindCEF
-	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
+	KindAAD                      KindEnum = original.KindAAD
+	KindATA                      KindEnum = original.KindATA
+	KindCEF                      KindEnum = original.KindCEF
+	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
 )
 
 type PricingTier = original.PricingTier
@@ -116,7 +109,8 @@ const (
 type SettingKind = original.SettingKind
 
 const (
-	SettingKindDataExportSetting SettingKind = original.SettingKindDataExportSetting
+	SettingKindAlertSuppressionSetting SettingKind = original.SettingKindAlertSuppressionSetting
+	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
 )
 
 type Status = original.Status
@@ -168,7 +162,6 @@ type AutoProvisioningSettingProperties = original.AutoProvisioningSettingPropert
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 type BaseClient = original.BaseClient
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
-type BasicSetting = original.BasicSetting
 type CefExternalSecuritySolution = original.CefExternalSecuritySolution
 type CefSolutionProperties = original.CefSolutionProperties
 type CloudError = original.CloudError
@@ -245,8 +238,7 @@ type PricingsClient = original.PricingsClient
 type Resource = original.Resource
 type SensitivityLabel = original.SensitivityLabel
 type Setting = original.Setting
-type SettingKind1 = original.SettingKind1
-type SettingModel = original.SettingModel
+type SettingResource = original.SettingResource
 type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
@@ -498,9 +490,6 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 }
 func PossibleFamilyValues() []Family {
 	return original.PossibleFamilyValues()
-}
-func PossibleKindEnum1Values() []KindEnum1 {
-	return original.PossibleKindEnum1Values()
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()

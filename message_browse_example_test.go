@@ -48,11 +48,12 @@ func Example_messageBrowse() {
 	}
 
 	txRxCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 	go sendMessages(txRxCtx, q)
-	time.Sleep(1*time.Second) // wait a second to ensure a message has landed in the queue
+	time.Sleep(1 * time.Second) // wait a second to ensure a message has landed in the queue
 	go peekMessages(txRxCtx, q)
 
-	<- txRxCtx.Done() // wait for the context to finish
+	<-txRxCtx.Done() // wait for the context to finish
 
 	// Output:
 	// Firstname: Albert, Surname: Einstein
@@ -119,7 +120,7 @@ func sendMessages(ctx context.Context, q *servicebus.Queue) {
 			return
 		}
 
-		ttl := 2*time.Minute
+		ttl := 2 * time.Minute
 		msg := servicebus.NewMessage(bits)
 		msg.ContentType = "application/json"
 		msg.TTL = &ttl
@@ -134,7 +135,7 @@ func peekMessages(ctx context.Context, q *servicebus.Queue) {
 	var opts []servicebus.PeekOption
 	for {
 		select {
-		case <- ctx.Done():
+		case <-ctx.Done():
 			return
 		default:
 			msg, err := q.PeekOne(ctx, opts...)

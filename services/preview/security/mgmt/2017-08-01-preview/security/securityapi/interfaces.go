@@ -84,9 +84,9 @@ var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionCli
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
-	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)
+	Get(ctx context.Context, settingName string) (result security.Setting, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
-	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.SettingModel, err error)
+	Update(ctx context.Context, settingName string, setting security.Setting) (result security.Setting, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)

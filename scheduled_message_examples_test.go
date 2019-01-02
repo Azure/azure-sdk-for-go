@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func ExampleMessage_ScheduleAt() {
+func Example_scheduledMessage() {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 

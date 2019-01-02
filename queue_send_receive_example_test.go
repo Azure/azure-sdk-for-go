@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-service-bus-go"
 )
 
-func Example_helloWorld() {
+func Example_queueSendAndReceive() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -51,49 +51,4 @@ func Example_helloWorld() {
 	}
 
 	// Output: Hello, World!!!
-}
-
-func ensureTopic(ctx context.Context, tm *servicebus.TopicManager, name string, opts ...servicebus.TopicManagementOption) (*servicebus.TopicEntity, error) {
-	te, err := tm.Get(ctx, name)
-	if err == nil {
-		_ = tm.Delete(ctx, name)
-	}
-
-	te, err = tm.Put(ctx, name, opts...)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return te, nil
-}
-
-func ensureQueue(ctx context.Context, qm *servicebus.QueueManager, name string, opts ...servicebus.QueueManagementOption) (*servicebus.QueueEntity, error) {
-	qe, err := qm.Get(ctx, name)
-	if err == nil {
-		_ = qm.Delete(ctx, name)
-	}
-
-	qe, err = qm.Put(ctx, name, opts...)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return qe, nil
-}
-
-func ensureSubscription(ctx context.Context, sm *servicebus.SubscriptionManager, name string, opts ...servicebus.SubscriptionManagementOption) (*servicebus.SubscriptionEntity, error) {
-	subEntity, err := sm.Get(ctx, name)
-	if err == nil {
-		_ = sm.Delete(ctx, name)
-	}
-
-	subEntity, err = sm.Put(ctx, name, opts...)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return subEntity, nil
 }

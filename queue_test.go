@@ -534,7 +534,7 @@ func testDeferMessage(ctx context.Context, t *testing.T, queue *Queue) {
 
 func (suite *serviceBusSuite) TestQueueWithoutDuplicateDetection() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SendBatch_NoZeroCheck":  testSendBatch,
+		"SendBatch_NoZeroCheck": testSendBatch,
 	}
 
 	mgmtOpts := []QueueManagementOption{

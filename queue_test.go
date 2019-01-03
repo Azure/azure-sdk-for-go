@@ -750,7 +750,7 @@ func (suite *serviceBusSuite) queueMessageTest(
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			cleanup := makeQueue(ctx, t, ns, queueName, mgmtOptions...)
 			q, err := ns.NewQueue(queueName, queueOpts...)

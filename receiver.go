@@ -24,7 +24,6 @@ package servicebus
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go"

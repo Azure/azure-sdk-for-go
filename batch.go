@@ -1,6 +1,7 @@
 package servicebus
 
 import (
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"pack.ag/amqp"
 )
 
@@ -76,10 +77,10 @@ func (mbi *MessageBatchIterator) Next(messageID string, opts *BatchOptions) (*Me
 			return nil, err
 		}
 
-		mbi.Cursor++
 		if !ok {
 			return mb, nil
 		}
+		mbi.Cursor++
 	}
 	return mb, nil
 }
@@ -108,7 +109,14 @@ func (mb *MessageBatch) Add(m *Message) (bool, error) {
 		return false, err
 	}
 
-	msg.Properties.MessageID = mb.ID
+	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
+		uid, err := uuid.NewV4()
+		if err != nil {
+			return false, err
+		}
+		msg.Properties.MessageID = uid.String()
+	}
+
 	if mb.SessionID != nil {
 		msg.Properties.GroupID = *mb.SessionID
 	}

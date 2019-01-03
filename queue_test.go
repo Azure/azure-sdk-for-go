@@ -532,6 +532,17 @@ func testDeferMessage(ctx context.Context, t *testing.T, queue *Queue) {
 	assert.NoError(t, err)
 }
 
+func (suite *serviceBusSuite) TestQueueWithoutDuplicateDetection() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SendBatch_NoZeroCheck":  testSendBatch,
+	}
+
+	mgmtOpts := []QueueManagementOption{
+		QueueEntityWithPartitioning(),
+	}
+	suite.queueMessageTestWithMgmtOptions(tests, mgmtOpts...)
+}
+
 func testSendBatch(ctx context.Context, t *testing.T, q *Queue) {
 	messages := make([]*Message, 5000)
 	for i := 0; i < 5000; i++ {

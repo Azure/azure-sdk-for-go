@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package storagesyncapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-07-01/storagesync/storagesyncapi"
+import original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-10-01/storagesync/storagesyncapi"
 
 type CloudEndpointsClientAPI = original.CloudEndpointsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

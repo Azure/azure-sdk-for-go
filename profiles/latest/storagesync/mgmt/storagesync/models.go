@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-07-01/storagesync"
+	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-10-01/storagesync"
 )
 
 const (
@@ -50,11 +50,61 @@ const (
 	CloudTiering2On  CloudTiering2 = original.CloudTiering2On
 )
 
+type CombinedHealth = original.CombinedHealth
+
+const (
+	CombinedHealthError                                    CombinedHealth = original.CombinedHealthError
+	CombinedHealthHealthy                                  CombinedHealth = original.CombinedHealthHealthy
+	CombinedHealthNoActivity                               CombinedHealth = original.CombinedHealthNoActivity
+	CombinedHealthSyncBlockedForChangeDetectionPostRestore CombinedHealth = original.CombinedHealthSyncBlockedForChangeDetectionPostRestore
+	CombinedHealthSyncBlockedForRestore                    CombinedHealth = original.CombinedHealthSyncBlockedForRestore
+)
+
+type DownloadHealth = original.DownloadHealth
+
+const (
+	DownloadHealthError                                    DownloadHealth = original.DownloadHealthError
+	DownloadHealthHealthy                                  DownloadHealth = original.DownloadHealthHealthy
+	DownloadHealthNoActivity                               DownloadHealth = original.DownloadHealthNoActivity
+	DownloadHealthSyncBlockedForChangeDetectionPostRestore DownloadHealth = original.DownloadHealthSyncBlockedForChangeDetectionPostRestore
+	DownloadHealthSyncBlockedForRestore                    DownloadHealth = original.DownloadHealthSyncBlockedForRestore
+)
+
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
 	AlreadyExists NameAvailabilityReason = original.AlreadyExists
 	Invalid       NameAvailabilityReason = original.Invalid
+)
+
+type OfflineDataTransfer = original.OfflineDataTransfer
+
+const (
+	OfflineDataTransferOff OfflineDataTransfer = original.OfflineDataTransferOff
+	OfflineDataTransferOn  OfflineDataTransfer = original.OfflineDataTransferOn
+)
+
+type OfflineDataTransfer1 = original.OfflineDataTransfer1
+
+const (
+	OfflineDataTransfer1Off OfflineDataTransfer1 = original.OfflineDataTransfer1Off
+	OfflineDataTransfer1On  OfflineDataTransfer1 = original.OfflineDataTransfer1On
+)
+
+type OfflineDataTransfer2 = original.OfflineDataTransfer2
+
+const (
+	OfflineDataTransfer2Off OfflineDataTransfer2 = original.OfflineDataTransfer2Off
+	OfflineDataTransfer2On  OfflineDataTransfer2 = original.OfflineDataTransfer2On
+)
+
+type OfflineDataTransferStatus = original.OfflineDataTransferStatus
+
+const (
+	Complete   OfflineDataTransferStatus = original.Complete
+	InProgress OfflineDataTransferStatus = original.InProgress
+	NotRunning OfflineDataTransferStatus = original.NotRunning
+	Stopping   OfflineDataTransferStatus = original.Stopping
 )
 
 type Operation = original.Operation
@@ -83,6 +133,26 @@ const (
 	Expired   Status = original.Expired
 	Failed    Status = original.Failed
 	Succeeded Status = original.Succeeded
+)
+
+type SyncDirection = original.SyncDirection
+
+const (
+	Download   SyncDirection = original.Download
+	Initialize SyncDirection = original.Initialize
+	None       SyncDirection = original.None
+	Recall     SyncDirection = original.Recall
+	Upload     SyncDirection = original.Upload
+)
+
+type UploadHealth = original.UploadHealth
+
+const (
+	UploadHealthError                                    UploadHealth = original.UploadHealthError
+	UploadHealthHealthy                                  UploadHealth = original.UploadHealthHealthy
+	UploadHealthNoActivity                               UploadHealth = original.UploadHealthNoActivity
+	UploadHealthSyncBlockedForChangeDetectionPostRestore UploadHealth = original.UploadHealthSyncBlockedForChangeDetectionPostRestore
+	UploadHealthSyncBlockedForRestore                    UploadHealth = original.UploadHealthSyncBlockedForRestore
 )
 
 type APIError = original.APIError
@@ -134,6 +204,7 @@ type ServerEndpoint = original.ServerEndpoint
 type ServerEndpointArray = original.ServerEndpointArray
 type ServerEndpointCreateParameters = original.ServerEndpointCreateParameters
 type ServerEndpointCreateParametersProperties = original.ServerEndpointCreateParametersProperties
+type ServerEndpointHealth = original.ServerEndpointHealth
 type ServerEndpointProperties = original.ServerEndpointProperties
 type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
 type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
@@ -154,6 +225,8 @@ type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type SyncGroupsClient = original.SyncGroupsClient
+type SyncProgressStatus = original.SyncProgressStatus
+type SyncSessionStatus = original.SyncSessionStatus
 type TrackedResource = original.TrackedResource
 type TriggerRolloverRequest = original.TriggerRolloverRequest
 type Workflow = original.Workflow
@@ -224,8 +297,26 @@ func PossibleCloudTiering2Values() []CloudTiering2 {
 func PossibleCloudTieringValues() []CloudTiering {
 	return original.PossibleCloudTieringValues()
 }
+func PossibleCombinedHealthValues() []CombinedHealth {
+	return original.PossibleCombinedHealthValues()
+}
+func PossibleDownloadHealthValues() []DownloadHealth {
+	return original.PossibleDownloadHealthValues()
+}
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
+}
+func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
+	return original.PossibleOfflineDataTransfer1Values()
+}
+func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
+	return original.PossibleOfflineDataTransfer2Values()
+}
+func PossibleOfflineDataTransferStatusValues() []OfflineDataTransferStatus {
+	return original.PossibleOfflineDataTransferStatusValues()
+}
+func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
+	return original.PossibleOfflineDataTransferValues()
 }
 func PossibleOperationValues() []Operation {
 	return original.PossibleOperationValues()
@@ -235,6 +326,12 @@ func PossibleReasonValues() []Reason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleSyncDirectionValues() []SyncDirection {
+	return original.PossibleSyncDirectionValues()
+}
+func PossibleUploadHealthValues() []UploadHealth {
+	return original.PossibleUploadHealthValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

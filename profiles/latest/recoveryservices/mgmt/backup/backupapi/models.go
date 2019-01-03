@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgm
 type BackupsClientAPI = original.BackupsClientAPI
 type EnginesClientAPI = original.EnginesClientAPI
 type ExportJobsOperationResultsClientAPI = original.ExportJobsOperationResultsClientAPI
+type FabricsClientAPI = original.FabricsClientAPI
 type FeatureSupportClientAPI = original.FeatureSupportClientAPI
 type ItemLevelRecoveryConnectionsClientAPI = original.ItemLevelRecoveryConnectionsClientAPI
 type JobCancellationsClientAPI = original.JobCancellationsClientAPI
@@ -42,10 +43,12 @@ type ProtectedItemOperationResultsClientAPI = original.ProtectedItemOperationRes
 type ProtectedItemOperationStatusesClientAPI = original.ProtectedItemOperationStatusesClientAPI
 type ProtectedItemsClientAPI = original.ProtectedItemsClientAPI
 type ProtectedItemsGroupClientAPI = original.ProtectedItemsGroupClientAPI
+type ProtectedItemsInContainerClientAPI = original.ProtectedItemsInContainerClientAPI
 type ProtectionContainerOperationResultsClientAPI = original.ProtectionContainerOperationResultsClientAPI
 type ProtectionContainerRefreshOperationResultsClientAPI = original.ProtectionContainerRefreshOperationResultsClientAPI
 type ProtectionContainersClientAPI = original.ProtectionContainersClientAPI
 type ProtectionContainersGroupClientAPI = original.ProtectionContainersGroupClientAPI
+type ProtectionContainersInFabricClientAPI = original.ProtectionContainersInFabricClientAPI
 type ProtectionIntentClientAPI = original.ProtectionIntentClientAPI
 type ProtectionIntentGroupClientAPI = original.ProtectionIntentGroupClientAPI
 type ProtectionPoliciesClientAPI = original.ProtectionPoliciesClientAPI
@@ -55,6 +58,10 @@ type RecoveryPointsClientAPI = original.RecoveryPointsClientAPI
 type ResourceStorageConfigsClientAPI = original.ResourceStorageConfigsClientAPI
 type ResourceVaultConfigsClientAPI = original.ResourceVaultConfigsClientAPI
 type RestoresClientAPI = original.RestoresClientAPI
+type ScopedBackupPoliciesClientAPI = original.ScopedBackupPoliciesClientAPI
+type ScopedProtectionPoliciesClientAPI = original.ScopedProtectionPoliciesClientAPI
+type ScopedProtectionPolicyOperationResultsClientAPI = original.ScopedProtectionPolicyOperationResultsClientAPI
+type ScopedProtectionPolicyOperationStatusesClientAPI = original.ScopedProtectionPolicyOperationStatusesClientAPI
 type SecurityPINsClientAPI = original.SecurityPINsClientAPI
 type StatusClientAPI = original.StatusClientAPI
 type UsageSummariesClientAPI = original.UsageSummariesClientAPI

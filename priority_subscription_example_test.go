@@ -169,3 +169,33 @@ func Example_prioritySubscriptions() {
 	// PriorityGreaterThan2_bazz_3
 	// PriorityGreaterThan2_buzz_4
 }
+
+func ensureTopic(ctx context.Context, tm *servicebus.TopicManager, name string, opts ...servicebus.TopicManagementOption) (*servicebus.TopicEntity, error) {
+	te, err := tm.Get(ctx, name)
+	if err == nil {
+		_ = tm.Delete(ctx, name)
+	}
+
+	te, err = tm.Put(ctx, name, opts...)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return te, nil
+}
+
+func ensureSubscription(ctx context.Context, sm *servicebus.SubscriptionManager, name string, opts ...servicebus.SubscriptionManagementOption) (*servicebus.SubscriptionEntity, error) {
+	subEntity, err := sm.Get(ctx, name)
+	if err == nil {
+		_ = sm.Delete(ctx, name)
+	}
+
+	subEntity, err = sm.Put(ctx, name, opts...)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return subEntity, nil
+}

@@ -74,5 +74,21 @@ func Example_autoForward() {
 		return
 	}
 
-	// Output: forward me to target!
+	// Output:
+	// forward me to target!
+}
+
+func ensureQueue(ctx context.Context, qm *servicebus.QueueManager, name string, opts ...servicebus.QueueManagementOption) (*servicebus.QueueEntity, error) {
+	qe, err := qm.Get(ctx, name)
+	if err == nil {
+		_ = qm.Delete(ctx, name)
+	}
+
+	qe, err = qm.Put(ctx, name, opts...)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return qe, nil
 }

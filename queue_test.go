@@ -442,7 +442,6 @@ func (suite *serviceBusSuite) TestQueueClient() {
 		"MessageProperties":      testMessageProperties,
 		"Retry":                  testRequeueOnFail,
 		"Defer":                  testDeferMessage,
-		"SendBatch_NoZeroCheck":  testSendBatch,
 	}
 
 	window := time.Duration(30 * time.Second)

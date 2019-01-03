@@ -399,6 +399,13 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 	amqpMsg.Properties.ReplyTo = m.ReplyTo
 	amqpMsg.Properties.ReplyToGroupID = m.ReplyToGroupID
 
+	if len(m.UserProperties) > 0 {
+		amqpMsg.ApplicationProperties = make(map[string]interface{})
+		for key, value := range m.UserProperties {
+			amqpMsg.ApplicationProperties[key] = value
+		}
+	}
+
 	if m.SystemProperties != nil {
 		sysPropMap, err := encodeStructureToMap(m.SystemProperties)
 		if err != nil {

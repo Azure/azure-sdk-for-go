@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package eventgridapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-01-01/eventgrid/eventgridapi"
+import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2019-01-01/eventgrid/eventgridapi"
 
 type EventSubscriptionsClientAPI = original.EventSubscriptionsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

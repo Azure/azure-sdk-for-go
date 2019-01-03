@@ -55,6 +55,7 @@ type (
 		LockToken        *uuid.UUID
 		SystemProperties *SystemProperties
 		UserProperties   map[string]interface{}
+		Format           uint32
 		message          *amqp.Message
 		ec               entityConnector // if an entity connector is present, a message should send disposition via mgmt
 	}
@@ -372,6 +373,13 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 		amqpMsg = amqp.NewMessage(m.Data)
 	}
 
+	if m.TTL != nil {
+		if amqpMsg.Header == nil {
+			amqpMsg.Header = new(amqp.MessageHeader)
+		}
+		amqpMsg.Header.TTL = *m.TTL
+	}
+
 	amqpMsg.Properties = &amqp.MessageProperties{
 		MessageID: m.ID,
 	}
@@ -413,13 +421,6 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 		amqpMsg.DeliveryAnnotations[lockTokenName] = *m.LockToken
 	}
 
-	if m.TTL != nil {
-		if amqpMsg.Header == nil {
-			amqpMsg.Header = new(amqp.MessageHeader)
-		}
-		amqpMsg.Header.TTL = *m.TTL
-	}
-
 	return amqpMsg, nil
 }
 
@@ -459,8 +460,10 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		msg.To = amqpMsg.Properties.To
 		msg.ReplyTo = amqpMsg.Properties.ReplyTo
 		msg.ReplyToGroupID = amqpMsg.Properties.ReplyToGroupID
-		msg.DeliveryCount = amqpMsg.Header.DeliveryCount + 1
-		msg.TTL = &amqpMsg.Header.TTL
+		if amqpMsg.Header != nil {
+			msg.DeliveryCount = amqpMsg.Header.DeliveryCount + 1
+			msg.TTL = &amqpMsg.Header.TTL
+		}
 	}
 
 	if amqpMsg.ApplicationProperties != nil {
@@ -491,6 +494,7 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		}
 	}
 
+	msg.Format = amqpMsg.Format
 	return msg, nil
 }
 

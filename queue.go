@@ -167,7 +167,7 @@ func (ns *Namespace) NewQueue(name string, opts ...QueueOption) (*Queue, error) 
 }
 
 // Send sends messages to the Queue
-func (q *Queue) Send(ctx context.Context, event *Message) error {
+func (q *Queue) Send(ctx context.Context, msg *Message) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
 	defer span.Finish()
 
@@ -176,7 +176,42 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 		log.For(ctx).Error(err)
 		return err
 	}
-	return q.sender.Send(ctx, event)
+	return q.sender.Send(ctx, msg)
+}
+
+// SendBatch sends a batch of messages to the Queue
+func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatch")
+	defer span.Finish()
+
+	err := q.ensureSender(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	for !iterator.Done() {
+		id, err := uuid.NewV4()
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		batch, err := iterator.Next(id.String(), &BatchOptions{
+			SessionID: q.sender.sessionID,
+		})
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		if err := q.sender.trySend(ctx, batch); err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+	}
+
+	return nil
 }
 
 // ScheduleAt will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers

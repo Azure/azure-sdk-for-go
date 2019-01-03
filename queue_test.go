@@ -531,6 +531,29 @@ func testDeferMessage(ctx context.Context, t *testing.T, queue *Queue) {
 	assert.NoError(t, err)
 }
 
+func (suite *serviceBusSuite) TestQueueWithoutDuplicateDetection() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SendBatch_NoZeroCheck": testSendBatch,
+	}
+
+	mgmtOpts := []QueueManagementOption{
+		QueueEntityWithPartitioning(),
+	}
+	suite.queueMessageTestWithMgmtOptions(tests, mgmtOpts...)
+}
+
+func testSendBatch(ctx context.Context, t *testing.T, q *Queue) {
+	messages := make([]*Message, 5000)
+	for i := 0; i < 5000; i++ {
+		rmsg := test.RandomString("foo", 10)
+		messages[i] = NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))
+	}
+
+	iterator := NewMessageBatchIterator(StandardMaxMessageSizeInBytes, messages...)
+	assert.NoError(t, q.SendBatch(ctx, iterator))
+	assertMessageCount(ctx, t, q.namespace, q.Name, 5000)
+}
+
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	messages := []*Message{
 		NewMessageFromString("hello, "),
@@ -648,10 +671,11 @@ func testQueueSendAndReceive(ctx context.Context, t *testing.T, q *Queue) {
 func (suite *serviceBusSuite) TestIssue73QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"SimpleSend200_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {
-			for i := 0; i < 200; i++ {
+			const count = 50
+			for i := 0; i < count; i++ {
 				testQueueSend(ctx, t, queue)
 			}
-			checkMessageCount(ctx, t, queue.namespace, queue.Name, 200)
+			assertMessageCount(ctx, t, queue.namespace, queue.Name, count)
 		},
 	}
 	window := time.Duration(20 * time.Second)
@@ -726,7 +750,7 @@ func (suite *serviceBusSuite) queueMessageTest(
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 			defer cancel()
 			cleanup := makeQueue(ctx, t, ns, queueName, mgmtOptions...)
 			q, err := ns.NewQueue(queueName, queueOpts...)
@@ -737,7 +761,7 @@ func (suite *serviceBusSuite) queueMessageTest(
 			testFunc(ctx, t, q)
 			suite.NoError(q.Close(ctx))
 			if !t.Failed() && !strings.HasSuffix(name, "NoZeroCheck") {
-				checkZeroQueueMessages(ctx, t, ns, queueName)
+				assertZeroQueueMessages(ctx, t, ns, queueName)
 			}
 		}
 		suite.T().Run(name, setupTestTeardown)
@@ -765,11 +789,11 @@ func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 	}
 }
 
-func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, name string) {
-	checkMessageCount(ctx, t, ns, name, 0)
+func assertZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, name string) {
+	assertMessageCount(ctx, t, ns, name, 0)
 }
 
-func checkMessageCount(ctx context.Context, t *testing.T, ns *Namespace, name string, count int64) {
+func assertMessageCount(ctx context.Context, t *testing.T, ns *Namespace, name string, count int64) {
 	qm := ns.NewQueueManager()
 	maxTries := 10
 	for i := 0; i < maxTries; i++ {
@@ -780,7 +804,7 @@ func checkMessageCount(ctx context.Context, t *testing.T, ns *Namespace, name st
 		if *q.MessageCount == count {
 			return
 		}
-		t.Logf("try %d out of %d, message count was %d, not 0", i+1, maxTries, *q.MessageCount)
+		t.Logf("try %d out of %d, message count was %d, not %d", i+1, maxTries, *q.MessageCount, count)
 		time.Sleep(1 * time.Second)
 	}
 

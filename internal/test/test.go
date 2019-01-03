@@ -71,7 +71,9 @@ func init() {
 
 // SetupSuite prepares the test suite and provisions a standard Service Bus Namespace
 func (suite *BaseSuite) SetupSuite() {
-	godotenv.Load()
+	if err := godotenv.Load(); err != nil {
+		suite.T().Log(err)
+	}
 
 	setFromEnv := func(key string, target *string) {
 		v := os.Getenv(key)

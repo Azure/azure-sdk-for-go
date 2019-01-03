@@ -202,6 +202,7 @@ func (r *Receiver) handleMessages(ctx context.Context, messages chan *amqp.Messa
 
 func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
 	const optName = "sb.Receiver.handleMessage"
+
 	event, err := messageFromAMQPMessage(msg)
 	if err != nil {
 		_, ctx := r.startConsumerSpanFromContext(ctx, optName)

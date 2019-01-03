@@ -11,6 +11,11 @@ import (
 	"github.com/Azure/azure-service-bus-go"
 )
 
+type RecipeStep struct {
+	Step  int    `json:"step,omitempty"`
+	Title string `json:"title,omitempty"`
+}
+
 func Example_deferMessages() {
 	ctx, cancel := context.WithTimeout(context.Background(), 40*time.Second)
 	defer cancel()
@@ -44,12 +49,7 @@ func Example_deferMessages() {
 		_ = q.Close(ctx)
 	}()
 
-	type recipeStep struct {
-		Step  int    `json:"step,omitempty"`
-		Title string `json:"title,omitempty"`
-	}
-
-	steps := []recipeStep{
+	steps := []RecipeStep{
 		{
 			Step:  1,
 			Title: "Shop",
@@ -73,7 +73,7 @@ func Example_deferMessages() {
 	}
 
 	for _, step := range steps {
-		go func(s recipeStep) {
+		go func(s RecipeStep) {
 			j, err := json.Marshal(s)
 			if err != nil {
 				fmt.Println(err)
@@ -100,7 +100,7 @@ func Example_deferMessages() {
 	// collect and defer messages
 	for i := 0; i < len(steps); i++ {
 		err = q.ReceiveOne(ctx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
-			var step recipeStep
+			var step RecipeStep
 			if err := json.Unmarshal(msg.Data, &step); err != nil {
 				return err
 			}
@@ -115,7 +115,7 @@ func Example_deferMessages() {
 
 	for i := 0; i < len(steps); i++ {
 		err := q.ReceiveDeferred(ctx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
-			var step recipeStep
+			var step RecipeStep
 			if err := json.Unmarshal(msg.Data, &step); err != nil {
 				return err
 			}

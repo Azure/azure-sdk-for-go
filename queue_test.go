@@ -671,7 +671,7 @@ func testQueueSendAndReceive(ctx context.Context, t *testing.T, q *Queue) {
 func (suite *serviceBusSuite) TestIssue73QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"SimpleSend200_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {
-			for i := 0; i < 200; i++ {
+			for i := 0; i < 50; i++ {
 				testQueueSend(ctx, t, queue)
 			}
 			assertMessageCount(ctx, t, queue.namespace, queue.Name, 200)

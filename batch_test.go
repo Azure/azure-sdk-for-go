@@ -48,7 +48,7 @@ func TestMessageBatch_Clear(t *testing.T) {
 	ok, err := mb.Add(NewMessageFromString("foo"))
 	assert.True(t, ok)
 	assert.NoError(t, err)
-	assert.Equal(t, 148, mb.Size())
+	assert.Equal(t, 175, mb.Size())
 
 	mb.Clear()
 	assert.Equal(t, 100, mb.Size())

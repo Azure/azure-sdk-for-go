@@ -71,7 +71,7 @@ terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(in
 
 .Phony: destroy-sb
 destroy-sb: ; $(info $(M) running sb destroy...)
-	$(Q) terraform destroy -target=azurerm_servicebus_namespace.test -auto-approve
+	$(Q) terraform destroy -auto-approve
 
 # Dependency management
 go.sum: go.mod

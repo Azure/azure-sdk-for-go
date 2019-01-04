@@ -63,7 +63,7 @@ cyclo: ; $(info $(M) running gocyclo...) @ ## Run gocyclo on all source files
 	$Q cd $(BASE) && $(GOCYCLO) -over 19 $$($(GO_FILES))
 
 terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(info $(M) running terraform...) @ ## Run terraform to provision infrastructure needed for testing
-	$Q terraform apply -auto-approve
+	$Q TF_VAR_azure_client_secret="$${ARM_CLIENT_SECRET}" terraform apply -auto-approve
 	$Q terraform output > .env
 
 .terraform:
@@ -71,7 +71,7 @@ terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(in
 
 .Phony: destroy-sb
 destroy-sb: ; $(info $(M) running sb destroy...)
-	$(Q) terraform destroy -target=azurerm_servicebus_namespace.test -auto-approve
+	$(Q) terraform destroy -auto-approve
 
 # Dependency management
 go.sum: go.mod

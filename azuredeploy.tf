@@ -8,26 +8,27 @@ variable "servicebus_name_prefix" {
   default = "azuresbtests"
 }
 
-variable "resource_group_name" {
+variable "resource_group_name_prefix" {
   description = "Resource group to provision test infrastructure in."
   default = "servicebus-go-tests"
 }
 
-resource "random_string" "name" {
-  keepers = {
-    # Generate a new id each time we switch to a new resource group
-    group_name = "${var.resource_group_name}"
-  }
+variable "azure_client_secret" {
+  description = "(Optional) piped in from env var so .env will be updated if there is an existing client secret"
+  default     = "foo"
+}
 
+resource "random_string" "name" {
   length  = 8
   upper   = false
   special = false
   number  = false
 }
 
+# Create resource group for all of the things
 resource "azurerm_resource_group" "test" {
-  name = "${var.resource_group_name}"
-  location = "${var.location}"
+  name      = "${var.resource_group_name_prefix}-${random_string.name.result}"
+  location  = "${var.location}"
 }
 
 resource "azurerm_servicebus_namespace" "test" {
@@ -35,6 +36,56 @@ resource "azurerm_servicebus_namespace" "test" {
   location = "${azurerm_resource_group.test.location}"
   resource_group_name = "${azurerm_resource_group.test.name}"
   sku = "standard"
+}
+
+# Generate a random secret fo the service principal
+resource "random_string" "secret" {
+  count   = "${data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0}"
+  length  = 32
+  upper   = true
+  special = true
+  number  = true
+}
+
+// Application for AAD authentication
+resource "azurerm_azuread_application" "test" {
+  count                       = "${data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0}"
+  name                        = "servicebustest"
+  homepage                    = "https://servicebustest"
+  identifier_uris             = ["https://servicebustest"]
+  reply_urls                  = ["https://servicebustest"]
+  available_to_other_tenants  = false
+  oauth2_allow_implicit_flow  = true
+}
+
+# Create a service principal, which represents a linkage between the AAD application and the password
+resource "azurerm_azuread_service_principal" "test" {
+  count          = "${data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0}"
+  application_id = "${azurerm_azuread_application.test.application_id}"
+}
+
+# Create a new service principal password which will be the AZURE_CLIENT_SECRET env var
+resource "azurerm_azuread_service_principal_password" "test" {
+  count                 = "${data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0}"
+  service_principal_id  = "${azurerm_azuread_service_principal.test.id}"
+  value                 = "${random_string.secret.result}"
+  end_date              = "2030-01-01T01:02:03Z"
+}
+
+# This provides the new AAD application the rights to managed, send and receive from the Event Hubs instance
+resource "azurerm_role_assignment" "service_principal_eh" {
+  count                 = "${data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0}"
+  scope                 = "subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.test.name}/providers/Microsoft.ServiceBus/namespaces/${azurerm_servicebus_namespace.test.name}"
+  role_definition_name  = "Owner"
+  principal_id          = "${azurerm_azuread_service_principal.test.id}"
+}
+
+# This provides the new AAD application the rights to managed the resource group
+resource "azurerm_role_assignment" "service_principal_rg" {
+  count                 = "${data.azurerm_client_config.current.service_principal_application_id == "" ? 1 : 0}"
+  scope                 = "subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${azurerm_resource_group.test.name}"
+  role_definition_name  = "Owner"
+  principal_id          = "${azurerm_azuread_service_principal.test.id}"
 }
 
 # Most tests should create and destroy their own Queues, Topics, and Subscriptions. However, to keep examples from being
@@ -70,7 +121,7 @@ resource "azurerm_servicebus_queue" "receiveSession" {
 data "azurerm_client_config" "current" {}
 
 output "TEST_SERVICEBUS_RESOURCE_GROUP" {
-  value = "${var.resource_group_name}"
+  value = "${azurerm_resource_group.test.name}"
 }
 
 output "SERVICEBUS_CONNECTION_STRING" {
@@ -83,9 +134,18 @@ output "AZURE_SUBSCRIPTION_ID" {
 }
 
 output "TEST_SERVICEBUS_LOCATION" {
-  value = "${var.location}"
+  value = "${azurerm_servicebus_namespace.test.location}"
 }
 
 output "AZURE_TENANT_ID" {
   value = "${data.azurerm_client_config.current.tenant_id}"
+}
+
+output "AZURE_CLIENT_ID" {
+  value = "${element(compact(concat(azurerm_azuread_application.test.*.application_id, list(data.azurerm_client_config.current.client_id))),0)}"
+}
+
+output "AZURE_CLIENT_SECRET" {
+  value     = "${element(compact(concat(azurerm_azuread_service_principal_password.test.*.value, list(var.azure_client_secret))),0)}"
+  sensitive = true
 }

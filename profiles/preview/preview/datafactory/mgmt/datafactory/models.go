@@ -382,13 +382,6 @@ const (
 	Year         RecurrenceFrequency = original.Year
 )
 
-type SSISExecutionRuntime = original.SSISExecutionRuntime
-
-const (
-	X64 SSISExecutionRuntime = original.X64
-	X86 SSISExecutionRuntime = original.X86
-)
-
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
 
 const (
@@ -1574,9 +1567,6 @@ func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
 }
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
-}
-func PossibleSSISExecutionRuntimeValues() []SSISExecutionRuntime {
-	return original.PossibleSSISExecutionRuntimeValues()
 }
 func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 	return original.PossibleSalesforceSinkWriteBehaviorValues()

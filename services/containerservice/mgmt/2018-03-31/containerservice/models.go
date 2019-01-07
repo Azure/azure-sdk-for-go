@@ -1411,6 +1411,52 @@ type ManagedClusterServicePrincipalProfile struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
+// ManagedClustersResetAADProfileFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ManagedClustersResetAADProfileFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedClustersResetAADProfileFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetAADProfileFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetAADProfileFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ManagedClustersResetServicePrincipalProfileFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ManagedClustersResetServicePrincipalProfileFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetServicePrincipalProfileFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedClustersUpdateTagsFuture struct {

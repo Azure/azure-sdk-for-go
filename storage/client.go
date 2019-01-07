@@ -592,15 +592,11 @@ func (c Client) GetAccountSASToken(options AccountSASTokenOptions) (url.Values, 
 	// build start time, if exists
 	start := ""
 	if options.Start != (time.Time{}) {
-		start = options.Start.Format(time.RFC3339)
-		// For some reason I don't understand, it fails when the rest of the string is included
-		start = start[:10]
+		start = options.Start.UTC().Format(time.RFC3339)
 	}
 
 	// build expiry time
-	expiry := options.Expiry.Format(time.RFC3339)
-	// For some reason I don't understand, it fails when the rest of the string is included
-	expiry = expiry[:10]
+	expiry := options.Expiry.UTC().Format(time.RFC3339)
 
 	protocol := "https,http"
 	if options.UseHTTPS {

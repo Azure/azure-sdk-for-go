@@ -17,6 +17,9 @@ env:
   global:
     - DEP_RELEASE_TAG=v0.5.0 # so the script knows which version to use
     - IGNORE_BREAKING_CHANGES=true
+  matrix:
+    - GOARCH="amd64"
+    - GOARCH="386"
 
 matrix:
   allow_failures:

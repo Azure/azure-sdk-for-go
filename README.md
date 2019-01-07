@@ -84,12 +84,12 @@ Apply the following general steps to use packages in this repo. For more on
 authentication and the `Authorizer` interface see [the next
 section](#authentication).
 
-1. Import a package from the [services][services_dir] directory.
-2. Create and authenticate a client with a `New*Client` func, e.g.
-   `c := compute.NewVirtualMachinesClient(...)`.
-3. Invoke API methods using the client, e.g.
-   `res, err := c.CreateOrUpdate(...)`.
-4. Handle responses and errors.
+1.  Import a package from the [services][services_dir] directory.
+2.  Create and authenticate a client with a `New*Client` func, e.g.
+    `c := compute.NewVirtualMachinesClient(...)`.
+3.  Invoke API methods using the client, e.g.
+    `res, err := c.CreateOrUpdate(...)`.
+4.  Handle responses and errors.
 
 [services_dir]: https://github.com/Azure/azure-sdk-for-go/tree/master/services
 

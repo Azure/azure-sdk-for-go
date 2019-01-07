@@ -114,10 +114,10 @@ type DeltaOperationType string
 const (
 	// DeltaOperationTypeAdd ...
 	DeltaOperationTypeAdd DeltaOperationType = "Add"
-	// DeltaOperationTypeDeletAdd ...
-	DeltaOperationTypeDeletAdd DeltaOperationType = "DeletAdd"
 	// DeltaOperationTypeDelete ...
 	DeltaOperationTypeDelete DeltaOperationType = "Delete"
+	// DeltaOperationTypeDeleteAdd ...
+	DeltaOperationTypeDeleteAdd DeltaOperationType = "DeleteAdd"
 	// DeltaOperationTypeNone ...
 	DeltaOperationTypeNone DeltaOperationType = "None"
 	// DeltaOperationTypeObsolete ...
@@ -132,7 +132,7 @@ const (
 
 // PossibleDeltaOperationTypeValues returns an array of possible values for the DeltaOperationType const type.
 func PossibleDeltaOperationTypeValues() []DeltaOperationType {
-	return []DeltaOperationType{DeltaOperationTypeAdd, DeltaOperationTypeDeletAdd, DeltaOperationTypeDelete, DeltaOperationTypeNone, DeltaOperationTypeObsolete, DeltaOperationTypeReplace, DeltaOperationTypeUndefined, DeltaOperationTypeUpdate}
+	return []DeltaOperationType{DeltaOperationTypeAdd, DeltaOperationTypeDelete, DeltaOperationTypeDeleteAdd, DeltaOperationTypeNone, DeltaOperationTypeObsolete, DeltaOperationTypeReplace, DeltaOperationTypeUndefined, DeltaOperationTypeUpdate}
 }
 
 // HealthStatus enumerates the values for health status.
@@ -974,7 +974,7 @@ type ChangeNotReimportedDelta struct {
 	DnAttributes *[]AttributeDelta `json:"dnAttributes,omitempty"`
 	// Attributes - The attributes.
 	Attributes *[]AttributeDelta `json:"attributes,omitempty"`
-	// OperationType - The operation type. Possible values include: 'DeltaOperationTypeUndefined', 'DeltaOperationTypeNone', 'DeltaOperationTypeAdd', 'DeltaOperationTypeReplace', 'DeltaOperationTypeUpdate', 'DeltaOperationTypeDelete', 'DeltaOperationTypeObsolete', 'DeltaOperationTypeDeletAdd'
+	// OperationType - The operation type. Possible values include: 'DeltaOperationTypeUndefined', 'DeltaOperationTypeNone', 'DeltaOperationTypeAdd', 'DeltaOperationTypeReplace', 'DeltaOperationTypeUpdate', 'DeltaOperationTypeDelete', 'DeltaOperationTypeObsolete', 'DeltaOperationTypeDeleteAdd'
 	OperationType DeltaOperationType `json:"operationType,omitempty"`
 }
 
@@ -3043,7 +3043,7 @@ type Tenant struct {
 	// DisabledReason - The reason due to which the tenant was disabled in Azure Active Directory Connect Health.
 	DisabledReason *int32 `json:"disabledReason,omitempty"`
 	// GlobalAdminsEmail - The list of global administrators for the tenant.
-	GlobalAdminsEmail interface{} `json:"globalAdminsEmail,omitempty"`
+	GlobalAdminsEmail *[]string `json:"globalAdminsEmail,omitempty"`
 	// InitialDomain - The initial domain of the tenant.
 	InitialDomain *string `json:"initialDomain,omitempty"`
 	// LastDisabled - The date and time, in UTC, when the tenant was last disabled in Azure Active Directory Connect Health.

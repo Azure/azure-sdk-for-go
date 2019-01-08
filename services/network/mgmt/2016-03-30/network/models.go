@@ -1208,7 +1208,7 @@ func (agic *ApplicationGatewayIPConfiguration) UnmarshalJSON(body []byte) error 
 
 // ApplicationGatewayIPConfigurationPropertiesFormat properties of IP configuration of application gateway
 type ApplicationGatewayIPConfigurationPropertiesFormat struct {
-	// Subnet - Gets or sets the reference of the subnet resource.A subnet from where appliation gateway gets its private address
+	// Subnet - Gets or sets the reference of the subnet resource.A subnet from where application gateway gets its private address
 	Subnet *SubResource `json:"subnet,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the application gateway subnet resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -1576,7 +1576,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	URLPathMaps *[]ApplicationGatewayURLPathMap `json:"urlPathMaps,omitempty"`
 	// RequestRoutingRules - Gets or sets request routing rules of application gateway resource
 	RequestRoutingRules *[]ApplicationGatewayRequestRoutingRule `json:"requestRoutingRules,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the ApplicationGateway resource
+	// ResourceGUID - Gets or sets resource GUID property of the ApplicationGateway resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the ApplicationGateway resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -2130,7 +2130,7 @@ type AuthorizationPropertiesFormat struct {
 }
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is inprogress, or has failed. Note that this status is distinct
+// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct
 // from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
 // operation succeeded, the response body includes the HTTP status code for the successful request. If the
 // asynchronous operation failed, the response body includes the HTTP status code for the failed request
@@ -2141,7 +2141,7 @@ type AzureAsyncOperationResult struct {
 	Error  *Error          `json:"error,omitempty"`
 }
 
-// BackendAddressPool pool of backend IP addresseses
+// BackendAddressPool pool of backend IP addresses
 type BackendAddressPool struct {
 	*BackendAddressPoolPropertiesFormat `json:"properties,omitempty"`
 	// Name - Gets name of the resource that is unique within a resource group. This name can be used to access the resource
@@ -2250,14 +2250,14 @@ type ConnectionResetSharedKey struct {
 	KeyLength *int64 `json:"keyLength,omitempty"`
 }
 
-// ConnectionSharedKey response for GetConnectionSharedKey Api servive call
+// ConnectionSharedKey response for GetConnectionSharedKey Api service call
 type ConnectionSharedKey struct {
 	autorest.Response `json:"-"`
 	// Value - The virtual network connection shared key value
 	Value *string `json:"value,omitempty"`
 }
 
-// ConnectionSharedKeyResult response for CheckConnectionSharedKey Api servive call
+// ConnectionSharedKeyResult response for CheckConnectionSharedKey Api service call
 type ConnectionSharedKeyResult struct {
 	autorest.Response `json:"-"`
 	// Value - The virtual network connection shared key value
@@ -2271,7 +2271,7 @@ type DhcpOptions struct {
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 }
 
-// DNSNameAvailabilityResult response for CheckDnsNameAvailability Api servive call
+// DNSNameAvailabilityResult response for CheckDnsNameAvailability Api service call
 type DNSNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// Available - Domain availability (True/False)
@@ -2804,7 +2804,7 @@ func (ercp *ExpressRouteCircuitPeering) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ExpressRouteCircuitPeeringConfig specfies the peering config
+// ExpressRouteCircuitPeeringConfig specifies the peering config
 type ExpressRouteCircuitPeeringConfig struct {
 	// AdvertisedPublicPrefixes - Gets or sets the reference of AdvertisedPublicPrefixes
 	AdvertisedPublicPrefixes *[]string `json:"advertisedPublicPrefixes,omitempty"`
@@ -2986,7 +2986,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	SharedKey *string `json:"sharedKey,omitempty"`
 	// VlanID - Gets or sets the vlan id
 	VlanID *int32 `json:"vlanId,omitempty"`
-	// MicrosoftPeeringConfig - Gets or sets the mircosoft peering config
+	// MicrosoftPeeringConfig - Gets or sets the Microsoft peering config
 	MicrosoftPeeringConfig *ExpressRouteCircuitPeeringConfig `json:"microsoftPeeringConfig,omitempty"`
 	// Stats - Gets or peering stats
 	Stats *ExpressRouteCircuitStats `json:"stats,omitempty"`
@@ -3758,13 +3758,13 @@ func (inp *InboundNatPool) UnmarshalJSON(body []byte) error {
 type InboundNatPoolPropertiesFormat struct {
 	// FrontendIPConfiguration - Gets or sets a reference to frontend IP Addresses
 	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
-	// Protocol - Gets or sets the transport potocol for the external endpoint. Possible values are Udp or Tcp. Possible values include: 'TransportProtocolUDP', 'TransportProtocolTCP'
+	// Protocol - Gets or sets the transport protocol for the external endpoint. Possible values are Udp or Tcp. Possible values include: 'TransportProtocolUDP', 'TransportProtocolTCP'
 	Protocol TransportProtocol `json:"protocol,omitempty"`
-	// FrontendPortRangeStart - Gets or sets the starting port range for the NAT pool. You can spcify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
+	// FrontendPortRangeStart - Gets or sets the starting port range for the NAT pool. You can specify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
 	FrontendPortRangeStart *int32 `json:"frontendPortRangeStart,omitempty"`
-	// FrontendPortRangeEnd - Gets or sets the ending port range for the NAT pool. You can spcify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
+	// FrontendPortRangeEnd - Gets or sets the ending port range for the NAT pool. You can specify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
 	FrontendPortRangeEnd *int32 `json:"frontendPortRangeEnd,omitempty"`
-	// BackendPort - Gets or sets a port used for internal connections on the endpoint. The localPort attribute maps the eternal port of the endpoint to an internal port on a role. This is useful in scenarios where a role must communicate to an internal compotnent on a port that is different from the one that is exposed externally. If not specified, the value of localPort is the same as the port attribute. Set the value of localPort to '*' to automatically assign an unallocated port that is discoverable using the runtime API
+	// BackendPort - Gets or sets a port used for internal connections on the endpoint. The localPort attribute maps the eternal port of the endpoint to an internal port on a role. This is useful in scenarios where a role must communicate to an internal component on a port that is different from the one that is exposed externally. If not specified, the value of localPort is the same as the port attribute. Set the value of localPort to '*' to automatically assign an unallocated port that is discoverable using the runtime API
 	BackendPort *int32 `json:"backendPort,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -3856,13 +3856,13 @@ type InboundNatRulePropertiesFormat struct {
 	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
 	// BackendIPConfiguration - Gets or sets a reference to a private ip address defined on a NetworkInterface of a VM. Traffic sent to frontendPort of each of the frontendIPConfigurations is forwarded to the backed IP
 	BackendIPConfiguration *InterfaceIPConfiguration `json:"backendIPConfiguration,omitempty"`
-	// Protocol - Gets or sets the transport potocol for the external endpoint. Possible values are Udp or Tcp. Possible values include: 'TransportProtocolUDP', 'TransportProtocolTCP'
+	// Protocol - Gets or sets the transport protocol for the external endpoint. Possible values are Udp or Tcp. Possible values include: 'TransportProtocolUDP', 'TransportProtocolTCP'
 	Protocol TransportProtocol `json:"protocol,omitempty"`
-	// FrontendPort - Gets or sets the port for the external endpoint. You can spcify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
+	// FrontendPort - Gets or sets the port for the external endpoint. You can specify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
 	FrontendPort *int32 `json:"frontendPort,omitempty"`
-	// BackendPort - Gets or sets a port used for internal connections on the endpoint. The localPort attribute maps the eternal port of the endpoint to an internal port on a role. This is useful in scenarios where a role must communicate to an internal compotnent on a port that is different from the one that is exposed externally. If not specified, the value of localPort is the same as the port attribute. Set the value of localPort to '*' to automatically assign an unallocated port that is discoverable using the runtime API
+	// BackendPort - Gets or sets a port used for internal connections on the endpoint. The localPort attribute maps the eternal port of the endpoint to an internal port on a role. This is useful in scenarios where a role must communicate to an internal component on a port that is different from the one that is exposed externally. If not specified, the value of localPort is the same as the port attribute. Set the value of localPort to '*' to automatically assign an unallocated port that is discoverable using the runtime API
 	BackendPort *int32 `json:"backendPort,omitempty"`
-	// IdleTimeoutInMinutes - Gets or sets the timeout for the Tcp idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This emlement is only used when the protocol is set to Tcp
+	// IdleTimeoutInMinutes - Gets or sets the timeout for the Tcp idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to Tcp
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 	// EnableFloatingIP - Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn availability Group. This setting is required when using the SQL Always ON availability Groups in SQL server. This setting can't be changed after you create the endpoint
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
@@ -4001,7 +4001,7 @@ type InterfaceDNSSettings struct {
 	AppliedDNSServers *[]string `json:"appliedDnsServers,omitempty"`
 	// InternalDNSNameLabel - Gets or sets the Internal DNS name
 	InternalDNSNameLabel *string `json:"internalDnsNameLabel,omitempty"`
-	// InternalFqdn - Gets or sets the internal fqdn.
+	// InternalFqdn - Gets or sets the internal FQDN.
 	InternalFqdn *string `json:"internalFqdn,omitempty"`
 	// InternalDomainNameSuffix - Gets or sets internal domain name suffix of the NIC.
 	InternalDomainNameSuffix *string `json:"internalDomainNameSuffix,omitempty"`
@@ -4269,7 +4269,7 @@ type InterfacePropertiesFormat struct {
 	Primary *bool `json:"primary,omitempty"`
 	// EnableIPForwarding - Gets or sets whether IPForwarding is enabled on the NIC
 	EnableIPForwarding *bool `json:"enableIPForwarding,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the network interface resource
+	// ResourceGUID - Gets or sets resource GUID property of the network interface resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -4694,9 +4694,9 @@ func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalance
 type LoadBalancerPropertiesFormat struct {
 	// FrontendIPConfigurations - Gets or sets frontend IP addresses of the load balancer
 	FrontendIPConfigurations *[]FrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
-	// BackendAddressPools - Gets or sets Pools of backend IP addresseses
+	// BackendAddressPools - Gets or sets Pools of backend IP addresses
 	BackendAddressPools *[]BackendAddressPool `json:"backendAddressPools,omitempty"`
-	// LoadBalancingRules - Gets or sets loadbalancing rules
+	// LoadBalancingRules - Gets or sets load balancing rules
 	LoadBalancingRules *[]LoadBalancingRule `json:"loadBalancingRules,omitempty"`
 	// Probes - Gets or sets list of Load balancer probes
 	Probes *[]Probe `json:"probes,omitempty"`
@@ -4706,7 +4706,7 @@ type LoadBalancerPropertiesFormat struct {
 	InboundNatPools *[]InboundNatPool `json:"inboundNatPools,omitempty"`
 	// OutboundNatRules - Gets or sets outbound NAT rules
 	OutboundNatRules *[]OutboundNatRule `json:"outboundNatRules,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the Load balancer resource
+	// ResourceGUID - Gets or sets resource GUID property of the Load balancer resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -4858,9 +4858,9 @@ type LoadBalancingRulePropertiesFormat struct {
 	LoadDistribution LoadDistribution `json:"loadDistribution,omitempty"`
 	// FrontendPort - Gets or sets the port for the external endpoint. You can specify any port number you choose, but the port numbers specified for each role in the service must be unique. Possible values range between 1 and 65535, inclusive
 	FrontendPort *int32 `json:"frontendPort,omitempty"`
-	// BackendPort - Gets or sets a port used for internal connections on the endpoint. The localPort attribute maps the eternal port of the endpoint to an internal port on a role. This is useful in scenarios where a role must communicate to an internal compotnent on a port that is different from the one that is exposed externally. If not specified, the value of localPort is the same as the port attribute. Set the value of localPort to '*' to automatically assign an unallocated port that is discoverable using the runtime API
+	// BackendPort - Gets or sets a port used for internal connections on the endpoint. The localPort attribute maps the eternal port of the endpoint to an internal port on a role. This is useful in scenarios where a role must communicate to an internal component on a port that is different from the one that is exposed externally. If not specified, the value of localPort is the same as the port attribute. Set the value of localPort to '*' to automatically assign an unallocated port that is discoverable using the runtime API
 	BackendPort *int32 `json:"backendPort,omitempty"`
-	// IdleTimeoutInMinutes - Gets or sets the timeout for the Tcp idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This emlement is only used when the protocol is set to Tcp
+	// IdleTimeoutInMinutes - Gets or sets the timeout for the Tcp idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to Tcp
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 	// EnableFloatingIP - Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn availability Group. This setting is required when using the SQL Always ON availability Groups in SQL server. This setting can't be changed after you create the endpoint
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
@@ -5146,7 +5146,7 @@ type LocalNetworkGatewayPropertiesFormat struct {
 	GatewayIPAddress *string `json:"gatewayIpAddress,omitempty"`
 	// BgpSettings - Local network gateway's BGP speaker settings
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the LocalNetworkGateway resource
+	// ResourceGUID - Gets or sets resource GUID property of the LocalNetworkGateway resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the LocalNetworkGateway resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -5386,7 +5386,7 @@ type ProbePropertiesFormat struct {
 	Port *int32 `json:"port,omitempty"`
 	// IntervalInSeconds - Gets or sets the interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
-	// NumberOfProbes - Gets or sets the number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint. This values allows endponints to be taken out of rotation faster or slower than the typical times used in Azure.
+	// NumberOfProbes - Gets or sets the number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or slower than the typical times used in Azure.
 	NumberOfProbes *int32 `json:"numberOfProbes,omitempty"`
 	// RequestPath - Gets or sets the URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is not allowed. There is no default value
 	RequestPath *string `json:"requestPath,omitempty"`
@@ -5523,7 +5523,7 @@ type PublicIPAddressDNSSettings struct {
 	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
 	// Fqdn - Gets the FQDN, Fully qualified domain name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.
 	Fqdn *string `json:"fqdn,omitempty"`
-	// ReverseFqdn - Gets or Sests the Reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.
+	// ReverseFqdn - Gets or Sets the Reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.
 	ReverseFqdn *string `json:"reverseFqdn,omitempty"`
 }
 
@@ -5735,9 +5735,9 @@ type PublicIPAddressPropertiesFormat struct {
 	// DNSSettings - Gets or sets FQDN of the DNS record associated with the public IP address
 	DNSSettings *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
 	IPAddress   *string                     `json:"ipAddress,omitempty"`
-	// IdleTimeoutInMinutes - Gets or sets the Idletimeout of the public IP address
+	// IdleTimeoutInMinutes - Gets or sets the idle timeout of the public IP address
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the PublicIP resource
+	// ResourceGUID - Gets or sets resource GUID property of the PublicIP resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -5859,7 +5859,7 @@ func (r *Route) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RouteListResult response for ListRoute Api servive call
+// RouteListResult response for ListRoute Api service call
 type RouteListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets List of Routes in a resource group
@@ -6191,7 +6191,7 @@ func (rt *RouteTable) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RouteTableListResult response for ListRouteTable Api servive call
+// RouteTableListResult response for ListRouteTable Api service call
 type RouteTableListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets List of RouteTables in a resource group
@@ -6522,7 +6522,7 @@ func (sg *SecurityGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SecurityGroupListResult response for ListNetworkSecurityGroups Api servive call
+// SecurityGroupListResult response for ListNetworkSecurityGroups Api service call
 type SecurityGroupListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets List of NetworkSecurityGroups in a resource group
@@ -6678,7 +6678,7 @@ type SecurityGroupPropertiesFormat struct {
 	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
 	// Subnets - Gets collection of references to subnets
 	Subnets *[]Subnet `json:"subnets,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the network security group resource
+	// ResourceGUID - Gets or sets resource GUID property of the network security group resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -6970,19 +6970,19 @@ type SecurityRulePropertiesFormat struct {
 	Description *string `json:"description,omitempty"`
 	// Protocol - Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or All(*). Possible values include: 'TCP', 'UDP', 'Asterisk'
 	Protocol SecurityRuleProtocol `json:"protocol,omitempty"`
-	// SourcePortRange - Gets or sets Source Port or Range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+	// SourcePortRange - Gets or sets Source Port or Range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
-	// DestinationPortRange - Gets or sets Destination Port or Range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+	// DestinationPortRange - Gets or sets Destination Port or Range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
-	// SourceAddressPrefix - Gets or sets source address prefix. CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
+	// SourceAddressPrefix - Gets or sets source address prefix. CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
-	// DestinationAddressPrefix - Gets or sets destination address prefix. CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+	// DestinationAddressPrefix - Gets or sets destination address prefix. CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 	// Access - Gets or sets network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'
 	Access SecurityRuleAccess `json:"access,omitempty"`
 	// Priority - Gets or sets the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.
 	Priority *int32 `json:"priority,omitempty"`
-	// Direction - Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values include: 'Inbound', 'Outbound'
+	// Direction - Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values include: 'Inbound', 'Outbound'
 	Direction SecurityRuleDirection `json:"direction,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -7046,7 +7046,7 @@ type String struct {
 	Value             *string `json:"value,omitempty"`
 }
 
-// Subnet subnet in a VirtualNework resource
+// Subnet subnet in a VirtualNetwork resource
 type Subnet struct {
 	autorest.Response       `json:"-"`
 	*SubnetPropertiesFormat `json:"properties,omitempty"`
@@ -7890,18 +7890,18 @@ func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.C
 	return VirtualNetworkGatewayConnectionListResultPage{fn: getNextPage}
 }
 
-// VirtualNetworkGatewayConnectionPropertiesFormat virtualNeworkGatewayConnection properties
+// VirtualNetworkGatewayConnectionPropertiesFormat virtualNetworkGatewayConnection properties
 type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	// AuthorizationKey - The authorizationKey.
 	AuthorizationKey       *string                `json:"authorizationKey,omitempty"`
 	VirtualNetworkGateway1 *VirtualNetworkGateway `json:"virtualNetworkGateway1,omitempty"`
 	VirtualNetworkGateway2 *VirtualNetworkGateway `json:"virtualNetworkGateway2,omitempty"`
 	LocalNetworkGateway2   *LocalNetworkGateway   `json:"localNetworkGateway2,omitempty"`
-	// ConnectionType - Gateway connection type -Ipsec/Dedicated/VpnClient/Vnet2Vnet. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+	// ConnectionType - Gateway connection type IPsec/Dedicated/VpnClient/Vnet2Vnet. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
 	// RoutingWeight - The Routing weight.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
-	// SharedKey - The Ipsec share key.
+	// SharedKey - The IPsec share key.
 	SharedKey *string `json:"sharedKey,omitempty"`
 	// ConnectionStatus - Virtual network Gateway connection status. Possible values include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'
 	ConnectionStatus VirtualNetworkGatewayConnectionStatus `json:"connectionStatus,omitempty"`
@@ -7913,7 +7913,7 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	Peer *SubResource `json:"peer,omitempty"`
 	// EnableBgp - EnableBgp Flag
 	EnableBgp *bool `json:"enableBgp,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the VirtualNetworkGatewayConnection resource
+	// ResourceGUID - Gets or sets resource GUID property of the VirtualNetworkGatewayConnection resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the VirtualNetworkGatewayConnection resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -8270,7 +8270,7 @@ func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, Vi
 	return VirtualNetworkGatewayListResultPage{fn: getNextPage}
 }
 
-// VirtualNetworkGatewayPropertiesFormat virtualNeworkGateay properties
+// VirtualNetworkGatewayPropertiesFormat virtualNetworkGateway properties
 type VirtualNetworkGatewayPropertiesFormat struct {
 	// IPConfigurations - IpConfigurations for Virtual network gateway.
 	IPConfigurations *[]VirtualNetworkGatewayIPConfiguration `json:"ipConfigurations,omitempty"`
@@ -8288,7 +8288,7 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	VpnClientConfiguration *VpnClientConfiguration `json:"vpnClientConfiguration,omitempty"`
 	// BgpSettings - Virtual network gateway's BGP speaker settings
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the VirtualNetworkGateway resource
+	// ResourceGUID - Gets or sets resource GUID property of the VirtualNetworkGateway resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the VirtualNetworkGateway resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -8385,7 +8385,7 @@ func (future *VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGat
 	return
 }
 
-// VirtualNetworkListResult response for ListVirtualNetworks Api servive call
+// VirtualNetworkListResult response for ListVirtualNetworks Api service call
 type VirtualNetworkListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets list of VirtualNetworks in a resource group
@@ -8539,7 +8539,7 @@ type VirtualNetworkPropertiesFormat struct {
 	DhcpOptions *DhcpOptions `json:"dhcpOptions,omitempty"`
 	// Subnets - Gets or sets List of subnets in a VirtualNetwork
 	Subnets *[]Subnet `json:"subnets,omitempty"`
-	// ResourceGUID - Gets or sets resource guid property of the VirtualNetwork resource
+	// ResourceGUID - Gets or sets resource GUID property of the VirtualNetwork resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Gets or sets Provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`

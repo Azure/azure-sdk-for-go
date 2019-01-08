@@ -19,7 +19,11 @@
 
 package policy
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-10-01-preview/policy"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2015-10-01-preview/policy"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -50,11 +54,23 @@ type DefinitionsClient = original.DefinitionsClient
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewAssignmentListResultIterator(page AssignmentListResultPage) AssignmentListResultIterator {
+	return original.NewAssignmentListResultIterator(page)
+}
+func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return original.NewAssignmentListResultPage(getNextPage)
+}
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)
 }
 func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
+	return original.NewDefinitionListResultIterator(page)
+}
+func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return original.NewDefinitionListResultPage(getNextPage)
 }
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClient(subscriptionID)

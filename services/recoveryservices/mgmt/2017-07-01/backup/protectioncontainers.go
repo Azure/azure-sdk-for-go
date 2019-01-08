@@ -40,6 +40,90 @@ func NewProtectionContainersClientWithBaseURI(baseURI string, subscriptionID str
 	return ProtectionContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// AccessRestore grants restore access to container.
+// Parameters:
+// vaultName - the name of the recovery services vault.
+// resourceGroupName - the name of the resource group where the recovery services vault is present.
+// fabricName - fabric name associated the container.
+// containerName - name of the container for which access is required
+// parameters - restore access request
+func (client ProtectionContainersClient) AccessRestore(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters GenericRestoreAccessRequest) (result GenericRestoreAccessResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionContainersClient.AccessRestore")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.AccessRestorePreparer(ctx, vaultName, resourceGroupName, fabricName, containerName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "AccessRestore", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AccessRestoreSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "AccessRestore", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AccessRestoreResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "AccessRestore", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AccessRestorePreparer prepares the AccessRestore request.
+func (client ProtectionContainersClient) AccessRestorePreparer(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters GenericRestoreAccessRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"containerName":     autorest.Encode("path", containerName),
+		"fabricName":        autorest.Encode("path", fabricName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vaultName":         autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/restoreAccess", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AccessRestoreSender sends the AccessRestore request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProtectionContainersClient) AccessRestoreSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// AccessRestoreResponder handles the response to the AccessRestore request. The method always
+// closes the http.Response Body.
+func (client ProtectionContainersClient) AccessRestoreResponder(resp *http.Response) (result GenericRestoreAccessResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Get gets details of the specific container registered to your Recovery Services Vault.
 // Parameters:
 // vaultName - the name of the recovery services vault.

@@ -25,29 +25,30 @@ import (
 	"net/http"
 )
 
-// ProtectableContainersClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
-type ProtectableContainersClient struct {
+// ProtectionContainersInFabricClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
+type ProtectionContainersInFabricClient struct {
 	BaseClient
 }
 
-// NewProtectableContainersClient creates an instance of the ProtectableContainersClient client.
-func NewProtectableContainersClient(subscriptionID string) ProtectableContainersClient {
-	return NewProtectableContainersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProtectionContainersInFabricClient creates an instance of the ProtectionContainersInFabricClient client.
+func NewProtectionContainersInFabricClient(subscriptionID string) ProtectionContainersInFabricClient {
+	return NewProtectionContainersInFabricClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProtectableContainersClientWithBaseURI creates an instance of the ProtectableContainersClient client.
-func NewProtectableContainersClientWithBaseURI(baseURI string, subscriptionID string) ProtectableContainersClient {
-	return ProtectableContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProtectionContainersInFabricClientWithBaseURI creates an instance of the ProtectionContainersInFabricClient
+// client.
+func NewProtectionContainersInFabricClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainersInFabricClient {
+	return ProtectionContainersInFabricClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists the containers that can be registered to Recovery Services Vault.
+// List lists the containers registered to a backup fabric.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
 // filter - oData filter options.
-func (client ProtectableContainersClient) List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, filter string) (result ProtectableContainerResourceListPage, err error) {
+func (client ProtectionContainersInFabricClient) List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, filter string) (result ProtectionContainerResourceListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectableContainersClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionContainersInFabricClient.List")
 		defer func() {
 			sc := -1
 			if result.pcrl.Response.Response != nil {
@@ -59,27 +60,27 @@ func (client ProtectableContainersClient) List(ctx context.Context, vaultName st
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, vaultName, resourceGroupName, fabricName, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectableContainersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersInFabricClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.pcrl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "backup.ProtectableContainersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersInFabricClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.pcrl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectableContainersClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersInFabricClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProtectableContainersClient) ListPreparer(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, filter string) (*http.Request, error) {
+func (client ProtectionContainersInFabricClient) ListPreparer(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"fabricName":        autorest.Encode("path", fabricName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -87,7 +88,7 @@ func (client ProtectableContainersClient) ListPreparer(ctx context.Context, vaul
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2016-12-01"
+	const APIVersion = "2017-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -98,21 +99,21 @@ func (client ProtectableContainersClient) ListPreparer(ctx context.Context, vaul
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectableContainers", pathParameters),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProtectableContainersClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProtectionContainersInFabricClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProtectableContainersClient) ListResponder(resp *http.Response) (result ProtectableContainerResourceList, err error) {
+func (client ProtectionContainersInFabricClient) ListResponder(resp *http.Response) (result ProtectionContainerResourceList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -124,10 +125,10 @@ func (client ProtectableContainersClient) ListResponder(resp *http.Response) (re
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ProtectableContainersClient) listNextResults(ctx context.Context, lastResults ProtectableContainerResourceList) (result ProtectableContainerResourceList, err error) {
-	req, err := lastResults.protectableContainerResourceListPreparer(ctx)
+func (client ProtectionContainersInFabricClient) listNextResults(ctx context.Context, lastResults ProtectionContainerResourceList) (result ProtectionContainerResourceList, err error) {
+	req, err := lastResults.protectionContainerResourceListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "backup.ProtectableContainersClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "backup.ProtectionContainersInFabricClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -135,19 +136,19 @@ func (client ProtectableContainersClient) listNextResults(ctx context.Context, l
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "backup.ProtectableContainersClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "backup.ProtectionContainersInFabricClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectableContainersClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersInFabricClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProtectableContainersClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, filter string) (result ProtectableContainerResourceListIterator, err error) {
+func (client ProtectionContainersInFabricClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, filter string) (result ProtectionContainerResourceListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectableContainersClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionContainersInFabricClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

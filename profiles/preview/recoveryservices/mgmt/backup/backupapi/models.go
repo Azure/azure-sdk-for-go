@@ -55,7 +55,6 @@ type ProtectionPoliciesClientAPI = original.ProtectionPoliciesClientAPI
 type ProtectionPolicyOperationResultsClientAPI = original.ProtectionPolicyOperationResultsClientAPI
 type ProtectionPolicyOperationStatusesClientAPI = original.ProtectionPolicyOperationStatusesClientAPI
 type RecoveryPointsClientAPI = original.RecoveryPointsClientAPI
-type ResourceStorageConfigClientAPI = original.ResourceStorageConfigClientAPI
 type ResourceStorageConfigsClientAPI = original.ResourceStorageConfigsClientAPI
 type ResourceVaultConfigsClientAPI = original.ResourceVaultConfigsClientAPI
 type RestoresClientAPI = original.RestoresClientAPI

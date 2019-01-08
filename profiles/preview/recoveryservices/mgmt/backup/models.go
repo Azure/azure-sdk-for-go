@@ -1115,7 +1115,6 @@ type Resource = original.Resource
 type ResourceConfig = original.ResourceConfig
 type ResourceConfigResource = original.ResourceConfigResource
 type ResourceList = original.ResourceList
-type ResourceStorageConfigClient = original.ResourceStorageConfigClient
 type ResourceStorageConfigsClient = original.ResourceStorageConfigsClient
 type ResourceVaultConfig = original.ResourceVaultConfig
 type ResourceVaultConfigResource = original.ResourceVaultConfigResource
@@ -1432,12 +1431,6 @@ func NewRecoveryPointsClient(subscriptionID string) RecoveryPointsClient {
 }
 func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceStorageConfigClient(subscriptionID string) ResourceStorageConfigClient {
-	return original.NewResourceStorageConfigClient(subscriptionID)
-}
-func NewResourceStorageConfigClientWithBaseURI(baseURI string, subscriptionID string) ResourceStorageConfigClient {
-	return original.NewResourceStorageConfigClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceStorageConfigsClient(subscriptionID string) ResourceStorageConfigsClient {
 	return original.NewResourceStorageConfigsClient(subscriptionID)

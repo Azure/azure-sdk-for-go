@@ -47,8 +47,7 @@ var _ FactoriesClientAPI = (*datafactory.FactoriesClient)(nil)
 
 // ExposureControlClientAPI contains the set of methods on the ExposureControlClient type.
 type ExposureControlClientAPI interface {
-	GetFeature(ctx context.Context, locationID string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
-	GetFeatureBySubscription(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
+	GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
 }
 
 var _ ExposureControlClientAPI = (*datafactory.ExposureControlClient)(nil)

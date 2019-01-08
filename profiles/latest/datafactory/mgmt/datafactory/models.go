@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -395,13 +395,6 @@ const (
 	RunQueryOrderByFieldStatus              RunQueryOrderByField = original.RunQueryOrderByFieldStatus
 	RunQueryOrderByFieldTriggerName         RunQueryOrderByField = original.RunQueryOrderByFieldTriggerName
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
-)
-
-type SSISExecutionRuntime = original.SSISExecutionRuntime
-
-const (
-	X64 SSISExecutionRuntime = original.X64
-	X86 SSISExecutionRuntime = original.X86
 )
 
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
@@ -1718,9 +1711,6 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 }
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
-}
-func PossibleSSISExecutionRuntimeValues() []SSISExecutionRuntime {
-	return original.PossibleSSISExecutionRuntimeValues()
 }
 func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 	return original.PossibleSalesforceSinkWriteBehaviorValues()

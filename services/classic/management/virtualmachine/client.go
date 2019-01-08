@@ -307,24 +307,7 @@ func (vm VirtualMachineClient) UpdateDeploymentStatusByName(
 //
 //https://msdn.microsoft.com/en-us/library/azure/ee460804.aspx
 func (vm VirtualMachineClient) GetDeploymentName(cloudServiceName string) (string, error) {
-	var deployment DeploymentResponse
-	if cloudServiceName == "" {
-		return "", fmt.Errorf(errParamNotSpecified, "cloudServiceName")
-	}
-	requestURL := fmt.Sprintf(azureDeploymentSlotURL, cloudServiceName, "Production")
-	response, err := vm.client.SendAzureGetRequest(requestURL)
-	if err != nil {
-		if management.IsResourceNotFoundError(err) {
-			return "", nil
-		}
-		return "", err
-	}
-	err = xml.Unmarshal(response, &deployment)
-	if err != nil {
-		return "", err
-	}
-
-	return deployment.Name, nil
+	return vm.GetDeploymentNameForSlot(cloudServiceName, DeploymentSlotProduction)
 }
 
 // GetDeploymentNameForSlot queries an existing Azure cloud service for the name of the Deployment,

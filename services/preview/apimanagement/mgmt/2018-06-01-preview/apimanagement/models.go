@@ -203,6 +203,12 @@ func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 type ContentFormat string
 
 const (
+	// Openapi The contents are inline and Content Type is a OpenApi 3.0 Document in YAML format.
+	Openapi ContentFormat = "openapi"
+	// Openapijson The contents are inline and Content Type is a OpenApi 3.0 Document in JSON format.
+	Openapijson ContentFormat = "openapi+json"
+	// OpenapiLink The Open Api 3.0 document is hosted on a publicly accessible internet address.
+	OpenapiLink ContentFormat = "openapi-link"
 	// SwaggerJSON The contents are inline and Content Type is a OpenApi 2.0 Document.
 	SwaggerJSON ContentFormat = "swagger-json"
 	// SwaggerLinkJSON The Open Api 2.0 document is hosted on a publicly accessible internet address.
@@ -219,7 +225,7 @@ const (
 
 // PossibleContentFormatValues returns an array of possible values for the ContentFormat const type.
 func PossibleContentFormatValues() []ContentFormat {
-	return []ContentFormat{SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
+	return []ContentFormat{Openapi, Openapijson, OpenapiLink, SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
 }
 
 // ExportFormat enumerates the values for export format.
@@ -230,6 +236,8 @@ const (
 	ExportFormatSwagger ExportFormat = "swagger-link"
 	// ExportFormatWadl Export the Api Definition in WADL Schema to Storage Blob.
 	ExportFormatWadl ExportFormat = "wadl-link"
+	// ExportFormatWadl1 Export the Api Definition in OpenApi Specification 3.0 to Storage Blob.
+	ExportFormatWadl1 ExportFormat = "openapi-link"
 	// ExportFormatWsdl Export the Api Definition in WSDL Schema to Storage Blob. This is only supported for
 	// APIs of Type `soap`
 	ExportFormatWsdl ExportFormat = "wsdl-link"
@@ -237,7 +245,7 @@ const (
 
 // PossibleExportFormatValues returns an array of possible values for the ExportFormat const type.
 func PossibleExportFormatValues() []ExportFormat {
-	return []ExportFormat{ExportFormatSwagger, ExportFormatWadl, ExportFormatWsdl}
+	return []ExportFormat{ExportFormatSwagger, ExportFormatWadl, ExportFormatWadl1, ExportFormatWsdl}
 }
 
 // GrantType enumerates the values for grant type.
@@ -1085,7 +1093,7 @@ func (acoup *APICreateOrUpdateParameter) UnmarshalJSON(body []byte) error {
 type APICreateOrUpdateProperties struct {
 	// ContentValue - Content value when Importing an API.
 	ContentValue *string `json:"contentValue,omitempty"`
-	// ContentFormat - Format of the Content in which the API is getting imported. Possible values include: 'WadlXML', 'WadlLinkJSON', 'SwaggerJSON', 'SwaggerLinkJSON', 'Wsdl', 'WsdlLink'
+	// ContentFormat - Format of the Content in which the API is getting imported. Possible values include: 'WadlXML', 'WadlLinkJSON', 'SwaggerJSON', 'SwaggerLinkJSON', 'Wsdl', 'WsdlLink', 'Openapi', 'Openapijson', 'OpenapiLink'
 	ContentFormat ContentFormat `json:"contentFormat,omitempty"`
 	// WsdlSelector - Criteria to limit import of WSDL to a subset of the document.
 	WsdlSelector *APICreateOrUpdatePropertiesWsdlSelector `json:"wsdlSelector,omitempty"`

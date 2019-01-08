@@ -110,6 +110,9 @@ const (
 type ContentFormat = original.ContentFormat
 
 const (
+	Openapi         ContentFormat = original.Openapi
+	Openapijson     ContentFormat = original.Openapijson
+	OpenapiLink     ContentFormat = original.OpenapiLink
 	SwaggerJSON     ContentFormat = original.SwaggerJSON
 	SwaggerLinkJSON ContentFormat = original.SwaggerLinkJSON
 	WadlLinkJSON    ContentFormat = original.WadlLinkJSON
@@ -123,6 +126,7 @@ type ExportFormat = original.ExportFormat
 const (
 	ExportFormatSwagger ExportFormat = original.ExportFormatSwagger
 	ExportFormatWadl    ExportFormat = original.ExportFormatWadl
+	ExportFormatWadl1   ExportFormat = original.ExportFormatWadl1
 	ExportFormatWsdl    ExportFormat = original.ExportFormatWsdl
 )
 

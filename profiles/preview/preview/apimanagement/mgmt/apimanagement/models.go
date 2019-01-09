@@ -110,6 +110,9 @@ const (
 type ContentFormat = original.ContentFormat
 
 const (
+	Openapi         ContentFormat = original.Openapi
+	Openapijson     ContentFormat = original.Openapijson
+	OpenapiLink     ContentFormat = original.OpenapiLink
 	SwaggerJSON     ContentFormat = original.SwaggerJSON
 	SwaggerLinkJSON ContentFormat = original.SwaggerLinkJSON
 	WadlLinkJSON    ContentFormat = original.WadlLinkJSON
@@ -121,9 +124,10 @@ const (
 type ExportFormat = original.ExportFormat
 
 const (
-	ExportFormatSwagger ExportFormat = original.ExportFormatSwagger
-	ExportFormatWadl    ExportFormat = original.ExportFormatWadl
-	ExportFormatWsdl    ExportFormat = original.ExportFormatWsdl
+	ExportFormatOpenAPI3 ExportFormat = original.ExportFormatOpenAPI3
+	ExportFormatSwagger  ExportFormat = original.ExportFormatSwagger
+	ExportFormatWadl     ExportFormat = original.ExportFormatWadl
+	ExportFormatWsdl     ExportFormat = original.ExportFormatWsdl
 )
 
 type GrantType = original.GrantType

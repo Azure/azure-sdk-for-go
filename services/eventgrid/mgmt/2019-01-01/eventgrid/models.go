@@ -1094,7 +1094,7 @@ func (sbdld *StorageBlobDeadLetterDestination) UnmarshalJSON(body []byte) error 
 
 // StorageBlobDeadLetterDestinationProperties properties of the storage blob based dead letter destination.
 type StorageBlobDeadLetterDestinationProperties struct {
-	// ResourceID - The Azure Resource ID of the storage blob container that is the destination of the deadletter events. For example: /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}
+	// ResourceID - The Azure Resource ID of the storage account that is the destination of the deadletter events. For example: /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}
 	ResourceID *string `json:"resourceId,omitempty"`
 	// BlobContainerName - The name of the Storage blob container that is the destination of the deadletter events
 	BlobContainerName *string `json:"blobContainerName,omitempty"`

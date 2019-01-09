@@ -46,6 +46,18 @@ const (
 	AuthorizationTypeRBAC                               AuthorizationType = original.AuthorizationTypeRBAC
 )
 
+type AzureFunctionActivityMethod = original.AzureFunctionActivityMethod
+
+const (
+	DELETE  AzureFunctionActivityMethod = original.DELETE
+	GET     AzureFunctionActivityMethod = original.GET
+	HEAD    AzureFunctionActivityMethod = original.HEAD
+	OPTIONS AzureFunctionActivityMethod = original.OPTIONS
+	POST    AzureFunctionActivityMethod = original.POST
+	PUT     AzureFunctionActivityMethod = original.PUT
+	TRACE   AzureFunctionActivityMethod = original.TRACE
+)
+
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
@@ -528,6 +540,7 @@ type TypeBasicActivity = original.TypeBasicActivity
 
 const (
 	TypeActivity                 TypeBasicActivity = original.TypeActivity
+	TypeAzureFunctionActivity    TypeBasicActivity = original.TypeAzureFunctionActivity
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
 	TypeContainer                TypeBasicActivity = original.TypeContainer
@@ -743,6 +756,7 @@ const (
 	TypeAzureDatabricks          TypeBasicLinkedService = original.TypeAzureDatabricks
 	TypeAzureDataLakeAnalytics   TypeBasicLinkedService = original.TypeAzureDataLakeAnalytics
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
+	TypeAzureFunction            TypeBasicLinkedService = original.TypeAzureFunction
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
@@ -823,10 +837,10 @@ const (
 type WebActivityMethod = original.WebActivityMethod
 
 const (
-	DELETE WebActivityMethod = original.DELETE
-	GET    WebActivityMethod = original.GET
-	POST   WebActivityMethod = original.POST
-	PUT    WebActivityMethod = original.PUT
+	WebActivityMethodDELETE WebActivityMethod = original.WebActivityMethodDELETE
+	WebActivityMethodGET    WebActivityMethod = original.WebActivityMethodGET
+	WebActivityMethodPOST   WebActivityMethod = original.WebActivityMethodPOST
+	WebActivityMethodPUT    WebActivityMethod = original.WebActivityMethodPUT
 )
 
 type Activity = original.Activity
@@ -863,6 +877,10 @@ type AzureDataLakeStoreSink = original.AzureDataLakeStoreSink
 type AzureDataLakeStoreSource = original.AzureDataLakeStoreSource
 type AzureDatabricksLinkedService = original.AzureDatabricksLinkedService
 type AzureDatabricksLinkedServiceTypeProperties = original.AzureDatabricksLinkedServiceTypeProperties
+type AzureFunctionActivity = original.AzureFunctionActivity
+type AzureFunctionActivityTypeProperties = original.AzureFunctionActivityTypeProperties
+type AzureFunctionLinkedService = original.AzureFunctionLinkedService
+type AzureFunctionLinkedServiceTypeProperties = original.AzureFunctionLinkedServiceTypeProperties
 type AzureKeyVaultLinkedService = original.AzureKeyVaultLinkedService
 type AzureKeyVaultLinkedServiceTypeProperties = original.AzureKeyVaultLinkedServiceTypeProperties
 type AzureKeyVaultSecretReference = original.AzureKeyVaultSecretReference
@@ -1454,6 +1472,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 }
 func PossibleAuthorizationTypeValues() []AuthorizationType {
 	return original.PossibleAuthorizationTypeValues()
+}
+func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
+	return original.PossibleAzureFunctionActivityMethodValues()
 }
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()

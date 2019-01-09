@@ -232,12 +232,12 @@ func PossibleContentFormatValues() []ContentFormat {
 type ExportFormat string
 
 const (
+	// ExportFormatOpenAPI3 Export the Api Definition in OpenApi Specification 3.0 to Storage Blob.
+	ExportFormatOpenAPI3 ExportFormat = "openapi-link"
 	// ExportFormatSwagger Export the Api Definition in OpenApi Specification 2.0 format to the Storage Blob.
 	ExportFormatSwagger ExportFormat = "swagger-link"
 	// ExportFormatWadl Export the Api Definition in WADL Schema to Storage Blob.
 	ExportFormatWadl ExportFormat = "wadl-link"
-	// ExportFormatWadl1 Export the Api Definition in OpenApi Specification 3.0 to Storage Blob.
-	ExportFormatWadl1 ExportFormat = "openapi-link"
 	// ExportFormatWsdl Export the Api Definition in WSDL Schema to Storage Blob. This is only supported for
 	// APIs of Type `soap`
 	ExportFormatWsdl ExportFormat = "wsdl-link"
@@ -245,7 +245,7 @@ const (
 
 // PossibleExportFormatValues returns an array of possible values for the ExportFormat const type.
 func PossibleExportFormatValues() []ExportFormat {
-	return []ExportFormat{ExportFormatSwagger, ExportFormatWadl, ExportFormatWadl1, ExportFormatWsdl}
+	return []ExportFormat{ExportFormatOpenAPI3, ExportFormatSwagger, ExportFormatWadl, ExportFormatWsdl}
 }
 
 // GrantType enumerates the values for grant type.

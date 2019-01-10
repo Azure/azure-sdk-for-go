@@ -877,14 +877,6 @@ const (
 	VariableTypeString VariableType = original.VariableTypeString
 )
 
-type WebActivityAuthenticationType = original.WebActivityAuthenticationType
-
-const (
-	WebActivityAuthenticationTypeBasic             WebActivityAuthenticationType = original.WebActivityAuthenticationTypeBasic
-	WebActivityAuthenticationTypeClientCertificate WebActivityAuthenticationType = original.WebActivityAuthenticationTypeClientCertificate
-	WebActivityAuthenticationTypeMSI               WebActivityAuthenticationType = original.WebActivityAuthenticationTypeMSI
-)
-
 type WebActivityMethod = original.WebActivityMethod
 
 const (
@@ -1818,9 +1810,6 @@ func PossibleTypeValues() []Type {
 }
 func PossibleVariableTypeValues() []VariableType {
 	return original.PossibleVariableTypeValues()
-}
-func PossibleWebActivityAuthenticationTypeValues() []WebActivityAuthenticationType {
-	return original.PossibleWebActivityAuthenticationTypeValues()
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()

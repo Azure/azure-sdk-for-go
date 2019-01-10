@@ -877,6 +877,14 @@ const (
 	VariableTypeString VariableType = original.VariableTypeString
 )
 
+type WebActivityAuthenticationType = original.WebActivityAuthenticationType
+
+const (
+	WebActivityAuthenticationTypeBasic             WebActivityAuthenticationType = original.WebActivityAuthenticationTypeBasic
+	WebActivityAuthenticationTypeClientCertificate WebActivityAuthenticationType = original.WebActivityAuthenticationTypeClientCertificate
+	WebActivityAuthenticationTypeMSI               WebActivityAuthenticationType = original.WebActivityAuthenticationTypeMSI
+)
+
 type WebActivityMethod = original.WebActivityMethod
 
 const (
@@ -1439,7 +1447,6 @@ type WebAnonymousAuthentication = original.WebAnonymousAuthentication
 type WebBasicAuthentication = original.WebBasicAuthentication
 type WebClientCertificateAuthentication = original.WebClientCertificateAuthentication
 type WebHookActivity = original.WebHookActivity
-type WebHookActivityAuthentication = original.WebHookActivityAuthentication
 type WebHookActivityTypeProperties = original.WebHookActivityTypeProperties
 type WebLinkedService = original.WebLinkedService
 type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
@@ -1811,6 +1818,9 @@ func PossibleTypeValues() []Type {
 }
 func PossibleVariableTypeValues() []VariableType {
 	return original.PossibleVariableTypeValues()
+}
+func PossibleWebActivityAuthenticationTypeValues() []WebActivityAuthenticationType {
+	return original.PossibleWebActivityAuthenticationTypeValues()
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()

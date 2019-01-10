@@ -835,28 +835,28 @@ type AS2EnvelopeSettings struct {
 type AS2ErrorSettings struct {
 	// SuspendDuplicateMessage - The value indicating whether to suspend duplicate message.
 	SuspendDuplicateMessage *bool `json:"suspendDuplicateMessage,omitempty"`
-	// ResendIfMdnNotReceived - The value indicating whether to resend message If MDN is not received.
-	ResendIfMdnNotReceived *bool `json:"resendIfMdnNotReceived,omitempty"`
+	// ResendIfMDNNotReceived - The value indicating whether to resend message If MDN is not received.
+	ResendIfMDNNotReceived *bool `json:"resendIfMDNNotReceived,omitempty"`
 }
 
 // AS2MdnSettings the AS2 agreement mdn settings.
 type AS2MdnSettings struct {
-	// NeedMdn - The value indicating whether to send or request a MDN.
-	NeedMdn *bool `json:"needMdn,omitempty"`
-	// SignMdn - The value indicating whether the MDN needs to be signed or not.
-	SignMdn *bool `json:"signMdn,omitempty"`
-	// SendMdnAsynchronously - The value indicating whether to send the asynchronous MDN.
-	SendMdnAsynchronously *bool `json:"sendMdnAsynchronously,omitempty"`
+	// NeedMDN - The value indicating whether to send or request a MDN.
+	NeedMDN *bool `json:"needMDN,omitempty"`
+	// SignMDN - The value indicating whether the MDN needs to be signed or not.
+	SignMDN *bool `json:"signMDN,omitempty"`
+	// SendMDNAsynchronously - The value indicating whether to send the asynchronous MDN.
+	SendMDNAsynchronously *bool `json:"sendMDNAsynchronously,omitempty"`
 	// ReceiptDeliveryURL - The receipt delivery URL.
 	ReceiptDeliveryURL *string `json:"receiptDeliveryUrl,omitempty"`
 	// DispositionNotificationTo - The disposition notification to header value.
 	DispositionNotificationTo *string `json:"dispositionNotificationTo,omitempty"`
-	// SignOutboundMdnIfOptional - The value indicating whether to sign the outbound MDN if optional.
-	SignOutboundMdnIfOptional *bool `json:"signOutboundMdnIfOptional,omitempty"`
+	// SignOutboundMDNIfOptional - The value indicating whether to sign the outbound MDN if optional.
+	SignOutboundMDNIfOptional *bool `json:"signOutboundMDNIfOptional,omitempty"`
 	// MdnText - The MDN text.
 	MdnText *string `json:"mdnText,omitempty"`
-	// SendInboundMdnToMessageBox - The value indicating whether to send inbound MDN to message box.
-	SendInboundMdnToMessageBox *bool `json:"sendInboundMdnToMessageBox,omitempty"`
+	// SendInboundMDNToMessageBox - The value indicating whether to send inbound MDN to message box.
+	SendInboundMDNToMessageBox *bool `json:"sendInboundMDNToMessageBox,omitempty"`
 	// MicHashingAlgorithm - The signing or hashing algorithm. Possible values include: 'HashingAlgorithmNotSpecified', 'HashingAlgorithmNone', 'HashingAlgorithmMD5', 'HashingAlgorithmSHA1', 'HashingAlgorithmSHA2256', 'HashingAlgorithmSHA2384', 'HashingAlgorithmSHA2512'
 	MicHashingAlgorithm HashingAlgorithm `json:"micHashingAlgorithm,omitempty"`
 }
@@ -909,18 +909,18 @@ type AS2SecuritySettings struct {
 	SigningCertificateName *string `json:"signingCertificateName,omitempty"`
 	// EncryptionCertificateName - The name of the encryption certificate.
 	EncryptionCertificateName *string `json:"encryptionCertificateName,omitempty"`
-	// EnableNrrForInboundEncodedMessages - The value indicating whether to enable NRR for inbound encoded messages.
-	EnableNrrForInboundEncodedMessages *bool `json:"enableNrrForInboundEncodedMessages,omitempty"`
-	// EnableNrrForInboundDecodedMessages - The value indicating whether to enable NRR for inbound decoded messages.
-	EnableNrrForInboundDecodedMessages *bool `json:"enableNrrForInboundDecodedMessages,omitempty"`
-	// EnableNrrForOutboundMdn - The value indicating whether to enable NRR for outbound MDN.
-	EnableNrrForOutboundMdn *bool `json:"enableNrrForOutboundMdn,omitempty"`
-	// EnableNrrForOutboundEncodedMessages - The value indicating whether to enable NRR for outbound encoded messages.
-	EnableNrrForOutboundEncodedMessages *bool `json:"enableNrrForOutboundEncodedMessages,omitempty"`
-	// EnableNrrForOutboundDecodedMessages - The value indicating whether to enable NRR for outbound decoded messages.
-	EnableNrrForOutboundDecodedMessages *bool `json:"enableNrrForOutboundDecodedMessages,omitempty"`
-	// EnableNrrForInboundMdn - The value indicating whether to enable NRR for inbound MDN.
-	EnableNrrForInboundMdn *bool `json:"enableNrrForInboundMdn,omitempty"`
+	// EnableNRRForInboundEncodedMessages - The value indicating whether to enable NRR for inbound encoded messages.
+	EnableNRRForInboundEncodedMessages *bool `json:"enableNRRForInboundEncodedMessages,omitempty"`
+	// EnableNRRForInboundDecodedMessages - The value indicating whether to enable NRR for inbound decoded messages.
+	EnableNRRForInboundDecodedMessages *bool `json:"enableNRRForInboundDecodedMessages,omitempty"`
+	// EnableNRRForOutboundMDN - The value indicating whether to enable NRR for outbound MDN.
+	EnableNRRForOutboundMDN *bool `json:"enableNRRForOutboundMDN,omitempty"`
+	// EnableNRRForOutboundEncodedMessages - The value indicating whether to enable NRR for outbound encoded messages.
+	EnableNRRForOutboundEncodedMessages *bool `json:"enableNRRForOutboundEncodedMessages,omitempty"`
+	// EnableNRRForOutboundDecodedMessages - The value indicating whether to enable NRR for outbound decoded messages.
+	EnableNRRForOutboundDecodedMessages *bool `json:"enableNRRForOutboundDecodedMessages,omitempty"`
+	// EnableNRRForInboundMDN - The value indicating whether to enable NRR for inbound MDN.
+	EnableNRRForInboundMDN *bool `json:"enableNRRForInboundMDN,omitempty"`
 	// Sha2AlgorithmFormat - The Sha2 algorithm format. Valid values are Sha2, ShaHashSize, ShaHyphenHashSize, Sha2UnderscoreHashSize.
 	Sha2AlgorithmFormat *string `json:"sha2AlgorithmFormat,omitempty"`
 }

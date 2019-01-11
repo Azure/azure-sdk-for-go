@@ -157,9 +157,9 @@ func (client client) sendRequest(httpClient *http.Client, url, requestType, cont
 				if numberOfRetries == 0 {
 					return nil, azureErr
 				}
-				if response.StatusCode == http.StatusServiceUnavailable {
+				if response.StatusCode == http.StatusServiceUnavailable || response.StatusCode == http.StatusTooManyRequests {
 					// Wait before retrying the operation
-					time.Sleep(30 * time.Second)
+					time.Sleep(client.config.OperationPollInterval)
 				}
 
 				return client.sendRequest(httpClient, url, requestType, contentType, data, numberOfRetries-1)

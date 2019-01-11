@@ -87,12 +87,7 @@ func (client client) sendAzureRequest(method, url, contentType string, data []by
 		return nil, fmt.Errorf(errParamNotSpecified, "url")
 	}
 
-	httpClient, err := client.createHTTPClient()
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := client.sendRequest(httpClient, url, method, contentType, data, 5)
+	response, err := client.sendRequest(client.httpClient, url, method, contentType, data, 5)
 	if err != nil {
 		return nil, err
 	}
@@ -101,26 +96,22 @@ func (client client) sendAzureRequest(method, url, contentType string, data []by
 }
 
 // createHTTPClient creates an HTTP Client configured with the key pair for
-// the subscription for this client. If a client already exists, then it returns
-// the instance
+// the subscription for this client.
 func (client client) createHTTPClient() (*http.Client, error) {
-	if client.httpClient == nil {
-		cert, err := tls.X509KeyPair(client.publishSettings.SubscriptionCert, client.publishSettings.SubscriptionKey)
-		if err != nil {
-			return nil, err
-		}
-
-		client.httpClient = &http.Client{
-			Transport: &http.Transport{
-				Proxy: http.ProxyFromEnvironment,
-				TLSClientConfig: &tls.Config{
-					Renegotiation: tls.RenegotiateFreelyAsClient,
-					Certificates:  []tls.Certificate{cert},
-				},
-			},
-		}
+	cert, err := tls.X509KeyPair(client.publishSettings.SubscriptionCert, client.publishSettings.SubscriptionKey)
+	if err != nil {
+		return nil, err
 	}
-	return client.httpClient, nil
+
+	return &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			TLSClientConfig: &tls.Config{
+				Renegotiation: tls.RenegotiateFreelyAsClient,
+				Certificates:  []tls.Certificate{cert},
+			},
+		},
+	}, nil
 }
 
 // sendRequest sends a request to the Azure management API using the given

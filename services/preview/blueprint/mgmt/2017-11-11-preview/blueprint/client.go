@@ -1,4 +1,4 @@
-// Package blueprint implements the Azure ARM Blueprint service API version 2017-11-11-preview.
+// Package blueprint implements the Azure ARM Blueprint service API version .
 //
 // Blueprint Client
 package blueprint

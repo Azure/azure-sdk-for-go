@@ -24,55 +24,56 @@ import (
 
 // BlueprintsClientAPI contains the set of methods on the BlueprintsClient type.
 type BlueprintsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, managementGroupName string, blueprintName string, blueprint blueprint.Model) (result blueprint.Model, err error)
-	Delete(ctx context.Context, managementGroupName string, blueprintName string) (result blueprint.Model, err error)
-	Get(ctx context.Context, managementGroupName string, blueprintName string) (result blueprint.Model, err error)
-	List(ctx context.Context, managementGroupName string) (result blueprint.ListPage, err error)
+	CreateOrUpdate(ctx context.Context, scope string, blueprintName string, blueprint blueprint.Model) (result blueprint.Model, err error)
+	Delete(ctx context.Context, scope string, blueprintName string) (result blueprint.Model, err error)
+	Get(ctx context.Context, scope string, blueprintName string) (result blueprint.Model, err error)
+	List(ctx context.Context, scope string) (result blueprint.ListPage, err error)
 }
 
 var _ BlueprintsClientAPI = (*blueprint.BlueprintsClient)(nil)
 
 // ArtifactsClientAPI contains the set of methods on the ArtifactsClient type.
 type ArtifactsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, managementGroupName string, blueprintName string, artifactName string, artifact blueprint.BasicArtifact) (result blueprint.ArtifactModel, err error)
-	Delete(ctx context.Context, managementGroupName string, blueprintName string, artifactName string) (result blueprint.ArtifactModel, err error)
-	Get(ctx context.Context, managementGroupName string, blueprintName string, artifactName string) (result blueprint.ArtifactModel, err error)
-	List(ctx context.Context, managementGroupName string, blueprintName string) (result blueprint.ArtifactListPage, err error)
+	CreateOrUpdate(ctx context.Context, scope string, blueprintName string, artifactName string, artifact blueprint.BasicArtifact) (result blueprint.ArtifactModel, err error)
+	Delete(ctx context.Context, scope string, blueprintName string, artifactName string) (result blueprint.ArtifactModel, err error)
+	Get(ctx context.Context, scope string, blueprintName string, artifactName string) (result blueprint.ArtifactModel, err error)
+	List(ctx context.Context, scope string, blueprintName string) (result blueprint.ArtifactListPage, err error)
 }
 
 var _ ArtifactsClientAPI = (*blueprint.ArtifactsClient)(nil)
 
 // PublishedBlueprintsClientAPI contains the set of methods on the PublishedBlueprintsClient type.
 type PublishedBlueprintsClientAPI interface {
-	Create(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
-	Delete(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
-	Get(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
-	List(ctx context.Context, managementGroupName string, blueprintName string) (result blueprint.PublishedBlueprintListPage, err error)
+	Create(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
+	Delete(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
+	Get(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.PublishedBlueprint, err error)
+	List(ctx context.Context, scope string, blueprintName string) (result blueprint.PublishedBlueprintListPage, err error)
 }
 
 var _ PublishedBlueprintsClientAPI = (*blueprint.PublishedBlueprintsClient)(nil)
 
 // PublishedArtifactsClientAPI contains the set of methods on the PublishedArtifactsClient type.
 type PublishedArtifactsClientAPI interface {
-	Get(ctx context.Context, managementGroupName string, blueprintName string, versionID string, artifactName string) (result blueprint.ArtifactModel, err error)
-	List(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result blueprint.ArtifactListPage, err error)
+	Get(ctx context.Context, scope string, blueprintName string, versionID string, artifactName string) (result blueprint.ArtifactModel, err error)
+	List(ctx context.Context, scope string, blueprintName string, versionID string) (result blueprint.ArtifactListPage, err error)
 }
 
 var _ PublishedArtifactsClientAPI = (*blueprint.PublishedArtifactsClient)(nil)
 
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result blueprint.ResourceProviderOperationList, err error)
-}
-
-var _ OperationsClientAPI = (*blueprint.OperationsClient)(nil)
-
 // AssignmentsClientAPI contains the set of methods on the AssignmentsClient type.
 type AssignmentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, subscriptionID string, assignmentName string, assignment blueprint.Assignment) (result blueprint.Assignment, err error)
-	Delete(ctx context.Context, subscriptionID string, assignmentName string) (result blueprint.Assignment, err error)
-	Get(ctx context.Context, subscriptionID string, assignmentName string) (result blueprint.Assignment, err error)
-	List(ctx context.Context, subscriptionID string) (result blueprint.AssignmentListPage, err error)
+	CreateOrUpdate(ctx context.Context, scope string, assignmentName string, assignment blueprint.Assignment) (result blueprint.Assignment, err error)
+	Delete(ctx context.Context, scope string, assignmentName string) (result blueprint.Assignment, err error)
+	Get(ctx context.Context, scope string, assignmentName string) (result blueprint.Assignment, err error)
+	List(ctx context.Context, scope string) (result blueprint.AssignmentListPage, err error)
 }
 
 var _ AssignmentsClientAPI = (*blueprint.AssignmentsClient)(nil)
+
+// AssignmentOperationsClientAPI contains the set of methods on the AssignmentOperationsClient type.
+type AssignmentOperationsClientAPI interface {
+	Get(ctx context.Context, scope string, assignmentName string, assignmentOperationName string) (result blueprint.AssignmentOperation, err error)
+	List(ctx context.Context, scope string, assignmentName string) (result blueprint.AssignmentOperationListPage, err error)
+}
+
+var _ AssignmentOperationsClientAPI = (*blueprint.AssignmentOperationsClient)(nil)

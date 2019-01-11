@@ -572,6 +572,62 @@ func (a *Assignment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AssignmentDeploymentJob represents individual job in given assignment operation.
+type AssignmentDeploymentJob struct {
+	// Kind - Kind of the job.
+	Kind *string `json:"kind,omitempty"`
+	// Action - Name of the action performed in this job.
+	Action *string `json:"action,omitempty"`
+	// JobID - Id of this job.
+	JobID *string `json:"jobId,omitempty"`
+	// JobState - State of this job.
+	JobState *string `json:"jobState,omitempty"`
+	// Result - Deployment job result.
+	Result *AssignmentDeploymentJobResult `json:"result,omitempty"`
+	// History - Result of this deployment job for each retry.
+	History *[]AssignmentDeploymentJobResult `json:"history,omitempty"`
+	// RequestURI - Reference to deployment job resource id.
+	RequestURI *string `json:"requestUri,omitempty"`
+}
+
+// AssignmentDeploymentJobResult result of each individual deployment in a blueprint assignment.
+type AssignmentDeploymentJobResult struct {
+	// Error - Contains error details if deployment job failed.
+	Error *AzureResourceManagerError `json:"error,omitempty"`
+	// Resources - Resources created as result of the deployment job.
+	Resources *[]AssignmentJobCreatedResource `json:"resources,omitempty"`
+}
+
+// AssignmentJobCreatedResource azure resource created from deployment job.
+type AssignmentJobCreatedResource struct {
+	// Properties - Additional properties in a dictionary.
+	Properties map[string]*string `json:"properties"`
+	// ID - String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty"`
+	// Type - Type of this resource.
+	Type *string `json:"type,omitempty"`
+	// Name - Name of this resource.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssignmentJobCreatedResource.
+func (ajcr AssignmentJobCreatedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ajcr.Properties != nil {
+		objectMap["properties"] = ajcr.Properties
+	}
+	if ajcr.ID != nil {
+		objectMap["id"] = ajcr.ID
+	}
+	if ajcr.Type != nil {
+		objectMap["type"] = ajcr.Type
+	}
+	if ajcr.Name != nil {
+		objectMap["name"] = ajcr.Name
+	}
+	return json.Marshal(objectMap)
+}
+
 // AssignmentList list of Blueprint assignments
 type AssignmentList struct {
 	autorest.Response `json:"-"`
@@ -724,6 +780,250 @@ type AssignmentLockSettings struct {
 	Mode AssignmentLockMode `json:"mode,omitempty"`
 }
 
+// AssignmentOperation represents underlying deployment detail for each update to the assignment.
+type AssignmentOperation struct {
+	autorest.Response `json:"-"`
+	// AssignmentOperationProperties - Properties for AssignmentOperation
+	*AssignmentOperationProperties `json:"properties,omitempty"`
+	// ID - String Id used to locate any resource on Azure.
+	ID *string `json:"id,omitempty"`
+	// Type - Type of this resource.
+	Type *string `json:"type,omitempty"`
+	// Name - Name of this resource.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssignmentOperation.
+func (ao AssignmentOperation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ao.AssignmentOperationProperties != nil {
+		objectMap["properties"] = ao.AssignmentOperationProperties
+	}
+	if ao.ID != nil {
+		objectMap["id"] = ao.ID
+	}
+	if ao.Type != nil {
+		objectMap["type"] = ao.Type
+	}
+	if ao.Name != nil {
+		objectMap["name"] = ao.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssignmentOperation struct.
+func (ao *AssignmentOperation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var assignmentOperationProperties AssignmentOperationProperties
+				err = json.Unmarshal(*v, &assignmentOperationProperties)
+				if err != nil {
+					return err
+				}
+				ao.AssignmentOperationProperties = &assignmentOperationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ao.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ao.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ao.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssignmentOperationList list of AssignmentOperation.
+type AssignmentOperationList struct {
+	autorest.Response `json:"-"`
+	// Value - List of AssignmentOperation.
+	Value *[]AssignmentOperation `json:"value,omitempty"`
+	// NextLink - Link to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AssignmentOperationListIterator provides access to a complete listing of AssignmentOperation values.
+type AssignmentOperationListIterator struct {
+	i    int
+	page AssignmentOperationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssignmentOperationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AssignmentOperationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssignmentOperationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssignmentOperationListIterator) Response() AssignmentOperationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssignmentOperationListIterator) Value() AssignmentOperation {
+	if !iter.page.NotDone() {
+		return AssignmentOperation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AssignmentOperationListIterator type.
+func NewAssignmentOperationListIterator(page AssignmentOperationListPage) AssignmentOperationListIterator {
+	return AssignmentOperationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aol AssignmentOperationList) IsEmpty() bool {
+	return aol.Value == nil || len(*aol.Value) == 0
+}
+
+// assignmentOperationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aol AssignmentOperationList) assignmentOperationListPreparer(ctx context.Context) (*http.Request, error) {
+	if aol.NextLink == nil || len(to.String(aol.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aol.NextLink)))
+}
+
+// AssignmentOperationListPage contains a page of AssignmentOperation values.
+type AssignmentOperationListPage struct {
+	fn  func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)
+	aol AssignmentOperationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssignmentOperationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aol)
+	if err != nil {
+		return err
+	}
+	page.aol = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AssignmentOperationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssignmentOperationListPage) NotDone() bool {
+	return !page.aol.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssignmentOperationListPage) Response() AssignmentOperationList {
+	return page.aol
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssignmentOperationListPage) Values() []AssignmentOperation {
+	if page.aol.IsEmpty() {
+		return nil
+	}
+	return *page.aol.Value
+}
+
+// Creates a new instance of the AssignmentOperationListPage type.
+func NewAssignmentOperationListPage(getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
+	return AssignmentOperationListPage{fn: getNextPage}
+}
+
+// AssignmentOperationProperties properties of AssignmentOperation.
+type AssignmentOperationProperties struct {
+	// BlueprintVersion - The blueprint version used for the assignment operation.
+	BlueprintVersion *string `json:"blueprintVersion,omitempty"`
+	// AssignmentState - State of this assignment operation.
+	AssignmentState *string `json:"assignmentState,omitempty"`
+	// TimeCreated - Create time of this Assignment Operation.
+	TimeCreated *string `json:"timeCreated,omitempty"`
+	// TimeStarted - Start time of the underlying deployment.
+	TimeStarted *string `json:"timeStarted,omitempty"`
+	// TimeFinished - Finish time of the overall underlying deployments.
+	TimeFinished *string `json:"timeFinished,omitempty"`
+	// Deployments - List of jobs in this assignment operation.
+	Deployments *[]AssignmentDeploymentJob `json:"deployments,omitempty"`
+}
+
 // AssignmentProperties detailed properties for Assignment.
 type AssignmentProperties struct {
 	// BlueprintID - ID of the Blueprint definition resource.
@@ -790,6 +1090,14 @@ type AzureResourceBase struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Name of this resource.
 	Name *string `json:"name,omitempty"`
+}
+
+// AzureResourceManagerError error code and message
+type AzureResourceManagerError struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message.
+	Message *string `json:"message,omitempty"`
 }
 
 // KeyVaultReference specifies the link to a KeyVault.
@@ -952,6 +1260,26 @@ type ManagedServiceIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - ID of the Azure Active Directory.
 	TenantID *string `json:"tenantId,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the resource, key will be Azure resource Id of the ManagedIdentity.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
+func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msi.Type != "" {
+		objectMap["type"] = msi.Type
+	}
+	if msi.PrincipalID != nil {
+		objectMap["principalId"] = msi.PrincipalID
+	}
+	if msi.TenantID != nil {
+		objectMap["tenantId"] = msi.TenantID
+	}
+	if msi.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
 }
 
 // Model represents a Blueprint definition.
@@ -1143,7 +1471,7 @@ type ParameterValueBase struct {
 
 // PolicyAssignmentArtifact blueprint artifact applies Policy assignments.
 type PolicyAssignmentArtifact struct {
-	// PolicyAssignmentArtifactProperties - properties for policyAssignment Artifact
+	// PolicyAssignmentArtifactProperties - properties for policyAssginment Artifact
 	*PolicyAssignmentArtifactProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`
@@ -1749,7 +2077,6 @@ type ResourceProviderOperationDisplay struct {
 
 // ResourceProviderOperationList result of the request to list operations.
 type ResourceProviderOperationList struct {
-	autorest.Response `json:"-"`
 	// Value - List of operations supported by this resource provider.
 	Value *[]ResourceProviderOperation `json:"value,omitempty"`
 }
@@ -2136,4 +2463,12 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Name of this resource.
 	Name *string `json:"name,omitempty"`
+}
+
+// UserAssignedIdentity user assigned Identity
+type UserAssignedIdentity struct {
+	// PrincipalID - Azure Active Directory principal ID associated with this Identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - Client App Id associated with this identity.
+	ClientID *string `json:"clientId,omitempty"`
 }

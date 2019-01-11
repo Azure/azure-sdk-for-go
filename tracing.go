@@ -27,96 +27,96 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Azure/azure-amqp-common-go/trace"
+	"github.com/devigned/tab"
 )
 
-func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
 	return ctx, span
 }
 
-func (m *Message) startSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func (m *Message) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	attrs := []trace.Attribute{trace.StringAttribute("amqp.message.id", m.ID)}
+	attrs := []tab.Attribute{tab.StringAttribute("amqp.message.id", m.ID)}
 	if m.SessionID != nil {
-		attrs = append(attrs, trace.StringAttribute("amqp.session.id", *m.SessionID))
+		attrs = append(attrs, tab.StringAttribute("amqp.session.id", *m.SessionID))
 	}
 	if m.GroupSequence != nil {
-		attrs = append(attrs, trace.Int64Attribute("amqp.sequence_number", int64(*m.GroupSequence)))
+		attrs = append(attrs, tab.Int64Attribute("amqp.sequence_number", int64(*m.GroupSequence)))
 	}
 	return ctx, span
 }
 
-func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	span.AddAttributes(trace.StringAttribute("span.kind", "client"))
+	span.AddAttributes(tab.StringAttribute("span.kind", "client"))
 	return ctx, span
 }
 
-func applyRequestInfo(span trace.Spanner, req *http.Request) {
+func applyRequestInfo(span tab.Spanner, req *http.Request) {
 	span.AddAttributes(
-		trace.StringAttribute("http.url", req.URL.String()),
-		trace.StringAttribute("http.method", req.Method),
+		tab.StringAttribute("http.url", req.URL.String()),
+		tab.StringAttribute("http.method", req.Method),
 	)
 }
 
-func applyResponseInfo(span trace.Spanner, res *http.Response) {
+func applyResponseInfo(span tab.Spanner, res *http.Response) {
 	if res != nil {
-		span.AddAttributes(trace.Int64Attribute("http.status_code", int64(res.StatusCode)))
+		span.AddAttributes(tab.Int64Attribute("http.status_code", int64(res.StatusCode)))
 	}
 }
 
-func (e *entity) startSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func (e *entity) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
 	return ctx, span
 }
 
-func (si sessionIdentifiable) startSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func (si sessionIdentifiable) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
 	return ctx, span
 }
 
-func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
 	span.AddAttributes(
-		trace.StringAttribute("span.kind", "producer"),
-		trace.StringAttribute("message_bus.destination", s.getFullIdentifier()),
+		tab.StringAttribute("span.kind", "producer"),
+		tab.StringAttribute("message_bus.destination", s.getFullIdentifier()),
 	)
 	return ctx, span
 }
 
-func (r *Receiver) startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
+func (r *Receiver) startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := startConsumerSpanFromContext(ctx, operationName)
-	span.AddAttributes(trace.StringAttribute("message_bus.destination", r.entityPath))
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", r.entityPath))
 	return ctx, span
 }
 
-func startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, trace.Spanner) {
-	ctx, span := trace.StartSpan(ctx, operationName)
+func startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	span.AddAttributes(trace.StringAttribute("span.kind", "consumer"))
+	span.AddAttributes(tab.StringAttribute("span.kind", "consumer"))
 	return ctx, span
 }
 
-func applyComponentInfo(span trace.Spanner) {
+func applyComponentInfo(span tab.Spanner) {
 	span.AddAttributes(
-		trace.StringAttribute("component", "github.com/Azure/azure-service-bus-go"),
-		trace.StringAttribute("version", Version),
+		tab.StringAttribute("component", "github.com/Azure/azure-service-bus-go"),
+		tab.StringAttribute("version", Version),
 	)
 	applyNetworkInfo(span)
 }
 
-func applyNetworkInfo(span trace.Spanner) {
+func applyNetworkInfo(span tab.Spanner) {
 	hostname, err := os.Hostname()
 	if err == nil {
 		span.AddAttributes(
-			trace.StringAttribute("peer.hostname", hostname),
+			tab.StringAttribute("peer.hostname", hostname),
 		)
 	}
 }

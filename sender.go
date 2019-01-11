@@ -28,8 +28,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/azure-amqp-common-go/trace"
 	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -89,7 +89,7 @@ func (s *Sender) Recover(ctx context.Context) error {
 
 	// we expect the Sender, session or client is in an error state, ignore errors
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	closeCtx = trace.NewContext(closeCtx, span)
+	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
 	_ = s.sender.Close(closeCtx)
 	_ = s.session.Close(closeCtx)
@@ -168,7 +168,7 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 	}
 
 	if msg.Properties != nil {
-		sp.AddAttributes(trace.StringAttribute("sb.message.id", msg.Properties.MessageID.(string)))
+		sp.AddAttributes(tab.StringAttribute("sb.message.id", msg.Properties.MessageID.(string)))
 	}
 
 	for {

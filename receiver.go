@@ -28,7 +28,7 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go"
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/azure-amqp-common-go/trace"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -148,7 +148,7 @@ func (r *Receiver) Recover(ctx context.Context) error {
 
 	// we expect the Sender, session or client is in an error state, ignore errors
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	closeCtx = trace.NewContext(closeCtx, span)
+	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
 	_ = r.receiver.Close(closeCtx)
 	_ = r.session.Close(closeCtx)
@@ -210,12 +210,12 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		return
 	}
 
-	ctx, span := trace.StartSpanWithRemoteParent(ctx, optName, event)
+	ctx, span := tab.StartSpanWithRemoteParent(ctx, optName, event)
 	defer span.End()
 
 	id := messageID(msg)
 	if idStr, ok := id.(string); ok {
-		span.AddAttributes(trace.StringAttribute("amqp.message.id", idStr))
+		span.AddAttributes(tab.StringAttribute("amqp.message.id", idStr))
 	}
 
 	if err := handler.Handle(ctx, event); err != nil {
@@ -309,7 +309,7 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 
 	id := messageID(msg)
 	if idStr, ok := id.(string); ok {
-		span.AddAttributes(trace.StringAttribute("amqp.message.id", idStr))
+		span.AddAttributes(tab.StringAttribute("amqp.message.id", idStr))
 	}
 
 	return msg, nil

@@ -21,6 +21,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 const (
@@ -100,22 +101,26 @@ func (client client) sendAzureRequest(method, url, contentType string, data []by
 }
 
 // createHTTPClient creates an HTTP Client configured with the key pair for
-// the subscription for this client.
+// the subscription for this client. If a client already exists, then it returns
+// the instance
 func (client client) createHTTPClient() (*http.Client, error) {
-	cert, err := tls.X509KeyPair(client.publishSettings.SubscriptionCert, client.publishSettings.SubscriptionKey)
-	if err != nil {
-		return nil, err
-	}
+	if client.httpClient == nil {
+		cert, err := tls.X509KeyPair(client.publishSettings.SubscriptionCert, client.publishSettings.SubscriptionKey)
+		if err != nil {
+			return nil, err
+		}
 
-	return &http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyFromEnvironment,
-			TLSClientConfig: &tls.Config{
-				Renegotiation: tls.RenegotiateOnceAsClient,
-				Certificates:  []tls.Certificate{cert},
+		client.httpClient = &http.Client{
+			Transport: &http.Transport{
+				Proxy: http.ProxyFromEnvironment,
+				TLSClientConfig: &tls.Config{
+					Renegotiation: tls.RenegotiateFreelyAsClient,
+					Certificates:  []tls.Certificate{cert},
+				},
 			},
-		},
-	}, nil
+		}
+	}
+	return client.httpClient, nil
 }
 
 // sendRequest sends a request to the Azure management API using the given
@@ -160,6 +165,10 @@ func (client client) sendRequest(httpClient *http.Client, url, requestType, cont
 			if azureErr != nil {
 				if numberOfRetries == 0 {
 					return nil, azureErr
+				}
+				if response.StatusCode == http.StatusServiceUnavailable {
+					// Wait before retrying the operation
+					time.Sleep(30 * time.Second)
 				}
 
 				return client.sendRequest(httpClient, url, requestType, contentType, data, numberOfRetries-1)

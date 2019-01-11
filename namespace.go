@@ -32,6 +32,7 @@ import (
 	"github.com/Azure/azure-amqp-common-go/auth"
 	"github.com/Azure/azure-amqp-common-go/cbs"
 	"github.com/Azure/azure-amqp-common-go/conn"
+	_ "github.com/Azure/azure-amqp-common-go/opencensus"
 	"github.com/Azure/azure-amqp-common-go/sas"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"golang.org/x/net/websocket"

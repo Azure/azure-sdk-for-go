@@ -107,7 +107,7 @@ func (client client) createHTTPClient() (*http.Client, error) {
 		Transport: &http.Transport{
 			Proxy: http.ProxyFromEnvironment,
 			TLSClientConfig: &tls.Config{
-				Renegotiation: tls.RenegotiateFreelyAsClient,
+				Renegotiation: tls.RenegotiateOnceAsClient,
 				Certificates:  []tls.Certificate{cert},
 			},
 		},

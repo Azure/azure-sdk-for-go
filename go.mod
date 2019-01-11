@@ -7,7 +7,6 @@ require (
 	github.com/Azure/go-autorest v12.0.0+incompatible
 	github.com/joho/godotenv v1.3.0
 	github.com/mitchellh/mapstructure v1.1.2
-	github.com/opentracing/opentracing-go v1.0.2
 	github.com/stretchr/objx v0.1.1 // indirect
 	github.com/stretchr/testify v1.2.2
 	go.opencensus.io v0.21.0

@@ -28,7 +28,6 @@ import (
 	"sync/atomic"
 
 	"github.com/Azure/azure-amqp-common-go/log"
-
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"pack.ag/amqp"
 )
@@ -41,28 +40,32 @@ type (
 		counter   uint32
 	}
 
+	sessionIdentifiable struct {
+		sessionID *string
+	}
+
 	// QueueSession wraps Service Bus session functionality over a Queue
 	QueueSession struct {
+		sessionIdentifiable
 		builder   SendAndReceiveBuilder
 		builderMu sync.Mutex
-		sessionID *string
 		receiver  *Receiver
 		sender    *Sender
 	}
 
 	// SubscriptionSession wraps Service Bus session functionality over a Subscription
 	SubscriptionSession struct {
+		sessionIdentifiable
 		builder   ReceiveBuilder
 		builderMu sync.Mutex
-		sessionID *string
 		receiver  *Receiver
 	}
 
 	// TopicSession wraps Service Bus session functionality over a Topic
 	TopicSession struct {
+		sessionIdentifiable
 		builder   SenderBuilder
 		builderMu sync.Mutex
-		sessionID *string
 		sender    *Sender
 	}
 
@@ -126,8 +129,10 @@ func (s *session) String() string {
 // sequence starts or ends.
 func NewQueueSession(builder SendAndReceiveBuilder, sessionID *string) *QueueSession {
 	return &QueueSession{
-		sessionID: sessionID,
-		builder:   builder,
+		sessionIdentifiable: sessionIdentifiable{
+			sessionID: sessionID,
+		},
+		builder: builder,
 	}
 }
 
@@ -139,8 +144,8 @@ func NewQueueSession(builder SendAndReceiveBuilder, sessionID *string) *QueueSes
 //
 // If the handler returns an error, the receive loop will be terminated.
 func (qs *QueueSession) ReceiveOne(ctx context.Context, handler SessionHandler) error {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.QueueSession.ReceiveOneSession")
-	defer span.Finish()
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.ReceiveOne")
+	defer span.End()
 
 	if err := qs.ensureReceiver(ctx); err != nil {
 		return err
@@ -169,6 +174,9 @@ func (qs *QueueSession) ReceiveOne(ctx context.Context, handler SessionHandler) 
 
 // Send the message to the queue within a session
 func (qs *QueueSession) Send(ctx context.Context, msg *Message) error {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.Send")
+	defer span.End()
+
 	if err := qs.ensureSender(ctx); err != nil {
 		return err
 	}
@@ -181,6 +189,9 @@ func (qs *QueueSession) Send(ctx context.Context, msg *Message) error {
 
 // Close the underlying connection to Service Bus
 func (qs *QueueSession) Close(ctx context.Context) error {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.Close")
+	defer span.End()
+
 	if qs.receiver != nil {
 		if err := qs.receiver.Close(ctx); err != nil {
 			log.For(ctx).Error(err)
@@ -208,6 +219,9 @@ func (qs *QueueSession) SessionID() *string {
 }
 
 func (qs *QueueSession) ensureSender(ctx context.Context) error {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.ensureSender")
+	defer span.End()
+
 	qs.builderMu.Lock()
 	defer qs.builderMu.Unlock()
 
@@ -221,6 +235,9 @@ func (qs *QueueSession) ensureSender(ctx context.Context) error {
 }
 
 func (qs *QueueSession) ensureReceiver(ctx context.Context) error {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.ensureReceiver")
+	defer span.End()
+
 	qs.builderMu.Lock()
 	defer qs.builderMu.Unlock()
 
@@ -241,8 +258,10 @@ func (qs *QueueSession) ensureReceiver(ctx context.Context) error {
 // sequence starts or ends.
 func NewSubscriptionSession(builder ReceiveBuilder, sessionID *string) *SubscriptionSession {
 	return &SubscriptionSession{
-		sessionID: sessionID,
-		builder:   builder,
+		sessionIdentifiable: sessionIdentifiable{
+			sessionID: sessionID,
+		},
+		builder: builder,
 	}
 }
 
@@ -254,8 +273,8 @@ func NewSubscriptionSession(builder ReceiveBuilder, sessionID *string) *Subscrip
 //
 // If the handler returns an error, the receive loop will be terminated.
 func (ss *SubscriptionSession) ReceiveOne(ctx context.Context, handler SessionHandler) error {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.SubscriptionSession.ReceiveOneSession")
-	defer span.Finish()
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.ReceiveOne")
+	defer span.End()
 
 	if err := ss.ensureReceiver(ctx); err != nil {
 		return err
@@ -284,6 +303,9 @@ func (ss *SubscriptionSession) ReceiveOne(ctx context.Context, handler SessionHa
 
 // Close the underlying connection to Service Bus
 func (ss *SubscriptionSession) Close(ctx context.Context) error {
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.Close")
+	defer span.End()
+
 	if ss.receiver != nil {
 		return ss.receiver.Close(ctx)
 	}
@@ -291,6 +313,9 @@ func (ss *SubscriptionSession) Close(ctx context.Context) error {
 }
 
 func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.ensureReceiver")
+	defer span.End()
+
 	ss.builderMu.Lock()
 	defer ss.builderMu.Unlock()
 
@@ -316,13 +341,18 @@ func (ss *SubscriptionSession) SessionID() *string {
 // sequence starts or ends.
 func NewTopicSession(builder SenderBuilder, sessionID *string) *TopicSession {
 	return &TopicSession{
-		sessionID: sessionID,
-		builder:   builder,
+		sessionIdentifiable: sessionIdentifiable{
+			sessionID: sessionID,
+		},
+		builder: builder,
 	}
 }
 
 // Send the message to the queue within a session
 func (ts *TopicSession) Send(ctx context.Context, msg *Message) error {
+	ctx, span := ts.startSpanFromContext(ctx, "sb.TopicSession.Send")
+	defer span.End()
+
 	if err := ts.ensureSender(ctx); err != nil {
 		return err
 	}
@@ -335,6 +365,9 @@ func (ts *TopicSession) Send(ctx context.Context, msg *Message) error {
 
 // Close the underlying connection to Service Bus
 func (ts *TopicSession) Close(ctx context.Context) error {
+	ctx, span := ts.startSpanFromContext(ctx, "sb.TopicSession.Close")
+	defer span.End()
+
 	if ts.sender != nil {
 		if err := ts.sender.Close(ctx); err != nil {
 			log.For(ctx).Error(err)
@@ -350,6 +383,9 @@ func (ts *TopicSession) SessionID() *string {
 }
 
 func (ts *TopicSession) ensureSender(ctx context.Context) error {
+	ctx, span := ts.startSpanFromContext(ctx, "sb.TopicSession.ensureSender")
+	defer span.End()
+
 	ts.builderMu.Lock()
 	defer ts.builderMu.Unlock()
 

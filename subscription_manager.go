@@ -170,8 +170,8 @@ func (ns *Namespace) NewSubscriptionManager(topicName string) (*SubscriptionMana
 
 // Delete deletes a Service Bus Topic entity by name
 func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
+	defer span.End()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
 	defer closeRes(ctx, res)
@@ -181,8 +181,8 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Topic
 func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionManagementOption) (*SubscriptionEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
+	defer span.End()
 
 	sd := new(SubscriptionDescription)
 	for _, opt := range opts {
@@ -240,8 +240,8 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
+	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
 	defer closeRes(ctx, res)
@@ -270,8 +270,8 @@ func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity,
 
 // Get fetches a Service Bus Topic entity by name
 func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*SubscriptionEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
+	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, sm.getResourceURI(name))
 	defer closeRes(ctx, res)
@@ -306,8 +306,8 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 //
 // By default when the subscription is created, there exists a single "true" filter which matches all messages.
 func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName string) ([]*RuleEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.ListRules")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.ListRules")
+	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, sm.getRulesResourceURI(subscriptionName))
 	defer closeRes(ctx, res)
@@ -340,8 +340,8 @@ func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName s
 
 // PutRuleWithAction creates a new Subscription rule to filter messages from the topic and then perform an action
 func (sm *SubscriptionManager) PutRuleWithAction(ctx context.Context, subscriptionName, ruleName string, filter FilterDescriber, action ActionDescriber) (*RuleEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRuleWithAction")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRuleWithAction")
+	defer span.End()
 
 	ad := action.ToActionDescription()
 	rd := &RuleDescription{
@@ -358,8 +358,8 @@ func (sm *SubscriptionManager) PutRuleWithAction(ctx context.Context, subscripti
 
 // PutRule creates a new Subscription rule to filter messages from the topic
 func (sm *SubscriptionManager) PutRule(ctx context.Context, subscriptionName, ruleName string, filter FilterDescriber) (*RuleEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRule")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRule")
+	defer span.End()
 
 	rd := &RuleDescription{
 		BaseEntityDescription: BaseEntityDescription{
@@ -373,8 +373,8 @@ func (sm *SubscriptionManager) PutRule(ctx context.Context, subscriptionName, ru
 }
 
 func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ruleName string, rd *RuleDescription) (*RuleEntity, error) {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.putRule")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.putRule")
+	defer span.End()
 
 	re := &ruleEntry{
 		Entry: &atom.Entry{
@@ -418,8 +418,8 @@ func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ru
 
 // DeleteRule will delete a rule on the subscription
 func (sm *SubscriptionManager) DeleteRule(ctx context.Context, subscriptionName, ruleName string) error {
-	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.DeleteRule")
-	defer span.Finish()
+	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.DeleteRule")
+	defer span.End()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getRuleResourceURI(subscriptionName, ruleName))
 	defer closeRes(ctx, res)

@@ -134,8 +134,8 @@ func NewMessage(data []byte) *Message {
 // queue
 func (m *Message) CompleteAction() DispositionAction {
 	return func(ctx context.Context) error {
-		span, _ := m.startSpanFromContext(ctx, "sb.Message.CompleteAction")
-		defer span.Finish()
+		_, span := m.startSpanFromContext(ctx, "sb.Message.CompleteAction")
+		defer span.End()
 
 		return m.Complete(ctx)
 	}
@@ -144,8 +144,8 @@ func (m *Message) CompleteAction() DispositionAction {
 // AbandonAction will notify Azure Service Bus the message failed but should be re-queued for delivery.
 func (m *Message) AbandonAction() DispositionAction {
 	return func(ctx context.Context) error {
-		span, _ := m.startSpanFromContext(ctx, "sb.Message.AbandonAction")
-		defer span.Finish()
+		_, span := m.startSpanFromContext(ctx, "sb.Message.AbandonAction")
+		defer span.End()
 
 		return m.Abandon(ctx)
 	}
@@ -154,8 +154,8 @@ func (m *Message) AbandonAction() DispositionAction {
 // DeadLetterAction will notify Azure Service Bus the message failed and should not re-queued
 func (m *Message) DeadLetterAction(err error) DispositionAction {
 	return func(ctx context.Context) error {
-		span, _ := m.startSpanFromContext(ctx, "sb.Message.DeadLetterAction")
-		defer span.Finish()
+		_, span := m.startSpanFromContext(ctx, "sb.Message.DeadLetterAction")
+		defer span.End()
 
 		return m.DeadLetter(ctx, err)
 	}
@@ -165,8 +165,8 @@ func (m *Message) DeadLetterAction(err error) DispositionAction {
 // context
 func (m *Message) DeadLetterWithInfoAction(err error, condition MessageErrorCondition, additionalData map[string]string) DispositionAction {
 	return func(ctx context.Context) error {
-		span, _ := m.startSpanFromContext(ctx, "sb.Message.DeadLetterWithInfoAction")
-		defer span.Finish()
+		_, span := m.startSpanFromContext(ctx, "sb.Message.DeadLetterWithInfoAction")
+		defer span.End()
 
 		return m.DeadLetterWithInfo(ctx, err, condition, additionalData)
 	}
@@ -174,8 +174,8 @@ func (m *Message) DeadLetterWithInfoAction(err error, condition MessageErrorCond
 
 // Complete will notify Azure Service Bus that the message was successfully handled and should be deleted from the queue
 func (m *Message) Complete(ctx context.Context) error {
-	span, _ := m.startSpanFromContext(ctx, "sb.Message.Complete")
-	defer span.Finish()
+	_, span := m.startSpanFromContext(ctx, "sb.Message.Complete")
+	defer span.End()
 
 	if m.ec != nil {
 		return sendMgmtDisposition(ctx, m, disposition{Status: completedDisposition})
@@ -186,8 +186,8 @@ func (m *Message) Complete(ctx context.Context) error {
 
 // Abandon will notify Azure Service Bus the message failed but should be re-queued for delivery.
 func (m *Message) Abandon(ctx context.Context) error {
-	span, _ := m.startSpanFromContext(ctx, "sb.Message.Abandon")
-	defer span.Finish()
+	_, span := m.startSpanFromContext(ctx, "sb.Message.Abandon")
+	defer span.End()
 
 	if m.ec != nil {
 		d := disposition{
@@ -219,8 +219,8 @@ func (m *Message) Abandon(ctx context.Context) error {
 // Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
 // processed, while leaving those messages safely in the message store for which processing needs to be postponed.
 func (m *Message) Defer(ctx context.Context) error {
-	span, _ := m.startSpanFromContext(ctx, "sb.Message.Defer")
-	defer span.Finish()
+	_, span := m.startSpanFromContext(ctx, "sb.Message.Defer")
+	defer span.End()
 
 	return m.message.Modify(true, true, nil)
 }
@@ -237,8 +237,8 @@ func (m *Message) Defer(ctx context.Context) error {
 
 // DeadLetter will notify Azure Service Bus the message failed and should not re-queued
 func (m *Message) DeadLetter(ctx context.Context, err error) error {
-	span, _ := m.startSpanFromContext(ctx, "sb.Message.DeadLetter")
-	defer span.Finish()
+	_, span := m.startSpanFromContext(ctx, "sb.Message.DeadLetter")
+	defer span.End()
 
 	if m.ec != nil {
 		d := disposition{
@@ -260,8 +260,8 @@ func (m *Message) DeadLetter(ctx context.Context, err error) error {
 // DeadLetterWithInfo will notify Azure Service Bus the message failed and should not be re-queued with additional
 // context
 func (m *Message) DeadLetterWithInfo(ctx context.Context, err error, condition MessageErrorCondition, additionalData map[string]string) error {
-	span, _ := m.startSpanFromContext(ctx, "sb.Message.DeadLetterWithInfo")
-	defer span.Finish()
+	_, span := m.startSpanFromContext(ctx, "sb.Message.DeadLetterWithInfo")
+	defer span.End()
 
 	if m.ec != nil {
 		d := disposition{
@@ -298,28 +298,22 @@ func (m *Message) ScheduleAt(t time.Time) {
 	m.SystemProperties.ScheduledEnqueueTime = &utcTime
 }
 
-// Set implements opentracing.TextMapWriter and sets properties on the event to be propagated to the message broker
-func (m *Message) Set(key, value string) {
+// Set implements trace.Carrier
+func (m *Message) Set(key string, value interface{}) {
 	if m.UserProperties == nil {
 		m.UserProperties = make(map[string]interface{})
 	}
 	m.UserProperties[key] = value
 }
 
-// ForeachKey implements the opentracing.TextMapReader and gets properties on the event to be propagated from the message broker
-func (m *Message) ForeachKey(handler func(key, val string) error) error {
-	for key, value := range m.UserProperties {
-		err := handler(key, value.(string))
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// GetKeyValues implements trace.Carrier
+func (m *Message) GetKeyValues() map[string]interface{} {
+	return m.UserProperties
 }
 
 func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) error {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.sendMgmtDisposition")
-	defer span.Finish()
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.sendMgmtDisposition")
+	defer span.End()
 
 	if m.LockToken == nil {
 		return errors.New("lock token on the message is not set, thus cannot send disposition")

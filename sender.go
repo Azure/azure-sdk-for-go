@@ -28,8 +28,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-amqp-common-go/trace"
 	"github.com/Azure/azure-amqp-common-go/uuid"
-	"github.com/opentracing/opentracing-go"
 	"pack.ag/amqp"
 )
 
@@ -50,6 +50,8 @@ type (
 
 	eventer interface {
 		toMsg() (*amqp.Message, error)
+		GetKeyValues() map[string]interface{}
+		Set(key string, value interface{})
 	}
 
 	// SenderOption provides a way to customize a Sender
@@ -58,8 +60,8 @@ type (
 
 // NewSender creates a new Service Bus message Sender given an AMQP client and entity path
 func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...SenderOption) (*Sender, error) {
-	span, ctx := ns.startSpanFromContext(ctx, "sb.Sender.NewSender")
-	defer span.Finish()
+	ctx, span := ns.startSpanFromContext(ctx, "sb.Namespace.NewSender")
+	defer span.End()
 
 	s := &Sender{
 		namespace:  ns,
@@ -82,12 +84,12 @@ func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...S
 
 // Recover will attempt to close the current session and link, then rebuild them
 func (s *Sender) Recover(ctx context.Context) error {
-	span, ctx := s.startProducerSpanFromContext(ctx, "sb.Sender.Recover")
-	defer span.Finish()
+	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Recover")
+	defer span.End()
 
 	// we expect the Sender, session or client is in an error state, ignore errors
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	closeCtx = opentracing.ContextWithSpan(closeCtx, span)
+	closeCtx = trace.NewContext(closeCtx, span)
 	defer cancel()
 	_ = s.sender.Close(closeCtx)
 	_ = s.session.Close(closeCtx)
@@ -97,8 +99,8 @@ func (s *Sender) Recover(ctx context.Context) error {
 
 // Close will close the AMQP connection, session and link of the Sender
 func (s *Sender) Close(ctx context.Context) error {
-	span, _ := s.startProducerSpanFromContext(ctx, "sb.Sender.Close")
-	defer span.Finish()
+	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Close")
+	defer span.End()
 
 	err := s.sender.Close(ctx)
 	if err != nil {
@@ -120,8 +122,8 @@ func (s *Sender) Close(ctx context.Context) error {
 //
 // This will retry sending the message if the server responds with a busy error.
 func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) error {
-	span, ctx := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
-	defer span.Finish()
+	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
+	defer span.End()
 
 	if msg.SessionID == nil {
 		msg.SessionID = &s.session.SessionID
@@ -150,10 +152,10 @@ func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) err
 }
 
 func (s *Sender) trySend(ctx context.Context, evt eventer) error {
-	sp, ctx := s.startProducerSpanFromContext(ctx, "sb.Sender.trySend")
-	defer sp.Finish()
+	ctx, sp := s.startProducerSpanFromContext(ctx, "sb.Sender.trySend")
+	defer sp.End()
 
-	err := opentracing.GlobalTracer().Inject(sp.Context(), opentracing.TextMap, evt)
+	err := sp.Inject(evt)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err
@@ -166,7 +168,7 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 	}
 
 	if msg.Properties != nil {
-		sp.SetTag("sb.message-id", msg.Properties.MessageID)
+		sp.AddAttributes(trace.StringAttribute("sb.message.id", msg.Properties.MessageID.(string)))
 	}
 
 	for {
@@ -216,8 +218,8 @@ func (s *Sender) getFullIdentifier() string {
 
 // newSessionAndLink will replace the existing session and link
 func (s *Sender) newSessionAndLink(ctx context.Context) error {
-	span, ctx := s.startProducerSpanFromContext(ctx, "sb.Sender.newSessionAndLink")
-	defer span.Finish()
+	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.newSessionAndLink")
+	defer span.End()
 
 	connection, err := s.namespace.newConnection()
 	if err != nil {

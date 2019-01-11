@@ -58,8 +58,8 @@ func (ns *Namespace) NewTopicManager() *TopicManager {
 
 // Delete deletes a Service Bus Topic entity by name
 func (tm *TopicManager) Delete(ctx context.Context, name string) error {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
+	defer span.End()
 
 	res, err := tm.entityManager.Delete(ctx, "/"+name)
 	defer closeRes(ctx, res)
@@ -69,8 +69,8 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Topic
 func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManagementOption) (*TopicEntity, error) {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
+	defer span.End()
 
 	td := new(TopicDescription)
 	for _, opt := range opts {
@@ -123,8 +123,8 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
+	defer span.End()
 
 	res, err := tm.entityManager.Get(ctx, `/$Resources/Topics`)
 	defer closeRes(ctx, res)
@@ -155,8 +155,8 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 
 // Get fetches a Service Bus Topic entity by name
 func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, error) {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
+	defer span.End()
 
 	res, err := tm.entityManager.Get(ctx, name)
 	defer closeRes(ctx, res)

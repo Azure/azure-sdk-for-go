@@ -20,8 +20,8 @@ type (
 )
 
 func renewLocks(ctx context.Context, lr lockRenewer, messages ...*Message) error {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.RenewLocks")
-	defer span.Finish()
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.RenewLocks")
+	defer span.End()
 
 	lockTokens := make([]amqp.UUID, 0, len(messages))
 	for _, m := range messages {

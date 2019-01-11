@@ -37,9 +37,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
-	"github.com/uber/jaeger-client-go"
-	"github.com/uber/jaeger-client-go/config"
-	jaegerlog "github.com/uber/jaeger-client-go/log"
 )
 
 type (
@@ -103,7 +100,7 @@ func (suite *BaseSuite) SetupSuite() {
 	suite.Token = suite.servicePrincipalToken()
 	suite.Environment = azure.PublicCloud
 	suite.TagID = RandomString("tag", 10)
-	suite.setupTracing()
+	//suite.setupTracing()
 
 	if !suite.NoError(suite.ensureProvisioned(sbmgmt.SkuTierStandard)) {
 		suite.FailNow("failed to ensure provisioned")
@@ -175,35 +172,35 @@ func (suite *BaseSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 	return nil
 }
 
-func (suite *BaseSuite) setupTracing() error {
-	if os.Getenv("TRACING") == "true" {
-		// Sample configuration for testing. Use constant sampling to sample every trace
-		// and enable LogSpan to log every span via configured Logger.
-		cfg := config.Configuration{
-			Sampler: &config.SamplerConfig{
-				Type:  jaeger.SamplerTypeConst,
-				Param: 1,
-			},
-			Reporter: &config.ReporterConfig{
-				LocalAgentHostPort: "0.0.0.0:6831",
-			},
-		}
-
-		// Example logger and metrics factory. Use github.com/uber/jaeger-client-go/log
-		// and github.com/uber/jaeger-lib/metrics respectively to bind to real logging and metrics
-		// frameworks.
-		jLogger := jaegerlog.StdLogger
-
-		closer, err := cfg.InitGlobalTracer(
-			"ehtests",
-			config.Logger(jLogger),
-		)
-
-		suite.closer = closer
-		return err
-	}
-	return nil
-}
+//func (suite *BaseSuite) setupTracing() error {
+//	if os.Getenv("TRACING") == "true" {
+//		// Sample configuration for testing. Use constant sampling to sample every trace
+//		// and enable LogSpan to log every span via configured Logger.
+//		cfg := config.Configuration{
+//			Sampler: &config.SamplerConfig{
+//				Type:  jaeger.SamplerTypeConst,
+//				Param: 1,
+//			},
+//			Reporter: &config.ReporterConfig{
+//				LocalAgentHostPort: "0.0.0.0:6831",
+//			},
+//		}
+//
+//		// Example logger and metrics factory. Use github.com/uber/jaeger-client-go/log
+//		// and github.com/uber/jaeger-lib/metrics respectively to bind to real logging and metrics
+//		// frameworks.
+//		jLogger := jaegerlog.StdLogger
+//
+//		closer, err := cfg.InitGlobalTracer(
+//			"ehtests",
+//			config.Logger(jLogger),
+//		)
+//
+//		suite.closer = closer
+//		return err
+//	}
+//	return nil
+//}
 
 // RandomName generates a random Event Hub name tagged with the suite id
 func (suite *BaseSuite) RandomName(prefix string, length int) string {

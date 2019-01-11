@@ -227,8 +227,8 @@ func (ns *Namespace) NewQueueManager() *QueueManager {
 
 // Delete deletes a Service Bus Queue entity by name
 func (qm *QueueManager) Delete(ctx context.Context, name string) error {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
+	defer span.End()
 
 	res, err := qm.entityManager.Delete(ctx, "/"+name)
 	defer closeRes(ctx, res)
@@ -238,8 +238,8 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Queue
 func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManagementOption) (*QueueEntity, error) {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
+	defer span.End()
 
 	qd := new(QueueDescription)
 	for _, opt := range opts {
@@ -301,8 +301,8 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 // List fetches all of the queues for a Service Bus Namespace
 func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
+	defer span.End()
 
 	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
 	defer closeRes(ctx, res)
@@ -333,8 +333,8 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 
 // Get fetches a Service Bus Queue entity by name
 func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, error) {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
+	defer span.End()
 
 	res, err := qm.entityManager.Get(ctx, name)
 	defer closeRes(ctx, res)

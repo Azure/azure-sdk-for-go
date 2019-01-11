@@ -168,8 +168,8 @@ func (ns *Namespace) NewQueue(name string, opts ...QueueOption) (*Queue, error) 
 
 // Send sends messages to the Queue
 func (q *Queue) Send(ctx context.Context, msg *Message) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.Send")
+	defer span.End()
 
 	err := q.ensureSender(ctx)
 	if err != nil {
@@ -181,8 +181,8 @@ func (q *Queue) Send(ctx context.Context, msg *Message) error {
 
 // SendBatch sends a batch of messages to the Queue
 func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatch")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.SendBatch")
+	defer span.End()
 
 	err := q.ensureSender(ctx)
 	if err != nil {
@@ -217,6 +217,9 @@ func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
 // ScheduleAt will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
 func (q *Queue) ScheduleAt(ctx context.Context, enqueueTime time.Time, messages ...*Message) ([]int64, error) {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ScheduleAt")
+	defer span.End()
+
 	if len(messages) <= 0 {
 		return nil, errors.New("expected one or more messages")
 	}
@@ -312,6 +315,9 @@ func (q *Queue) ScheduleAt(ctx context.Context, enqueueTime time.Time, messages 
 // CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
 func (q *Queue) CancelScheduled(ctx context.Context, seq ...int64) error {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.CancelScheduled")
+	defer span.End()
+
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			operationFieldName: cancelScheduledOperationID,
@@ -357,6 +363,9 @@ func (q *Queue) CancelScheduled(ctx context.Context, seq ...int64) error {
 // unable to complete the operation, or an empty slice of messages and an instance of "ErrNoMessages" signifying that
 // there are currently no messages in the queue with a sequence ID larger than previously viewed ones.
 func (q *Queue) Peek(ctx context.Context, options ...PeekOption) (MessageIterator, error) {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.Peek")
+	defer span.End()
+
 	err := q.ensureReceiver(ctx)
 	if err != nil {
 		return nil, err
@@ -367,6 +376,9 @@ func (q *Queue) Peek(ctx context.Context, options ...PeekOption) (MessageIterato
 
 // PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
 func (q *Queue) PeekOne(ctx context.Context, options ...PeekOption) (*Message, error) {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.PeekOne")
+	defer span.End()
+
 	err := q.ensureReceiver(ctx)
 	if err != nil {
 		return nil, err
@@ -405,6 +417,9 @@ func (q *Queue) PeekOne(ctx context.Context, options ...PeekOption) (*Message, e
 // Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
 // processed, while leaving those messages safely in the message store for which processing needs to be postponed.
 func (q *Queue) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
+	defer span.End()
+
 	return receiveDeferred(ctx, q, handler, sequenceNumbers...)
 }
 
@@ -413,8 +428,8 @@ func (q *Queue) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNu
 // Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
 // have a disposition set, the Queue's DefaultDisposition will be used.
 func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")
+	defer span.End()
 
 	if err := q.ensureReceiver(ctx); err != nil {
 		return err
@@ -431,8 +446,8 @@ func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
 //
 // If the handler returns an error, the receive loop will be terminated.
 func (q *Queue) Receive(ctx context.Context, handler Handler) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Receive")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.Receive")
+	defer span.End()
 
 	err := q.ensureReceiver(ctx)
 	if err != nil {
@@ -456,8 +471,8 @@ func (q *Queue) NewSession(sessionID *string) *QueueSession {
 
 // NewReceiver will create a new Receiver for receiving messages off of a queue
 func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
+	defer span.End()
 
 	opts = append(opts, ReceiverWithReceiveMode(q.receiveMode))
 	return q.namespace.NewReceiver(ctx, q.Name, opts...)
@@ -465,8 +480,8 @@ func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Recei
 
 // NewSender will create a new Sender for sending messages to the queue
 func (q *Queue) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewSender")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewSender")
+	defer span.End()
 
 	return q.namespace.NewSender(ctx, q.Name)
 }
@@ -495,8 +510,8 @@ func (q *Queue) NewDeadLetter() *DeadLetter {
 
 // NewDeadLetterReceiver builds a receiver for the Queue's dead letter queue
 func (q *Queue) NewDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewDeadLetterReceiver")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewDeadLetterReceiver")
+	defer span.End()
 
 	deadLetterEntityPath := strings.Join([]string{q.Name, DeadLetterQueueName}, "/")
 	return q.namespace.NewReceiver(ctx, deadLetterEntityPath, opts...)
@@ -519,8 +534,8 @@ func (q *Queue) NewTransferDeadLetter() *TransferDeadLetter {
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
 func (q *Queue) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewTransferDeadLetterReceiver")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewTransferDeadLetterReceiver")
+	defer span.End()
 
 	transferDeadLetterEntityPath := strings.Join([]string{q.Name, TransferDeadLetterQueueName}, "/")
 	return q.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
@@ -528,12 +543,15 @@ func (q *Queue) NewTransferDeadLetterReceiver(ctx context.Context, opts ...Recei
 
 // RenewLocks renews the locks on messages provided
 func (q *Queue) RenewLocks(ctx context.Context, messages ...*Message) error {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.RenewLocks")
+	defer span.End()
+
 	return renewLocks(ctx, q, messages...)
 }
 
 func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, sequenceNumbers ...int64) error {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.receiveDeferred")
-	defer span.Finish()
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.receiveDeferred")
+	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
 	msg := &amqp.Message{
@@ -634,8 +652,8 @@ func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, s
 
 // Close the underlying connection to Service Bus
 func (q *Queue) Close(ctx context.Context) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Close")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.Close")
+	defer span.End()
 
 	if q.receiver != nil {
 		if err := q.receiver.Close(ctx); err != nil {
@@ -669,8 +687,8 @@ func isConnectionClosed(err error) bool {
 }
 
 func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
+	defer span.End()
 
 	opts = append(opts, ReceiverWithReceiveMode(q.receiveMode))
 
@@ -682,8 +700,8 @@ func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (*Recei
 }
 
 func (q *Queue) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
+	defer span.End()
 
 	q.receiverMu.Lock()
 	defer q.receiverMu.Unlock()
@@ -703,8 +721,8 @@ func (q *Queue) ensureReceiver(ctx context.Context, opts ...ReceiverOption) erro
 }
 
 func (q *Queue) ensureSender(ctx context.Context) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureSender")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.ensureSender")
+	defer span.End()
 
 	q.senderMu.Lock()
 	defer q.senderMu.Unlock()
@@ -728,8 +746,8 @@ func (q *Queue) ManagementPath() string {
 }
 
 func (q *Queue) connection(ctx context.Context) (*amqp.Client, error) {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.connection")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.connection")
+	defer span.End()
 
 	if err := q.ensureReceiver(ctx); err != nil {
 		return nil, err

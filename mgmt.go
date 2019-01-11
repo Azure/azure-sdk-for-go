@@ -118,8 +118,8 @@ var (
 
 	applyTracing MiddlewareFunc = func(next RestHandler) RestHandler {
 		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			span, ctx := startConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing")
-			defer span.Finish()
+			ctx, span := startConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing")
+			defer span.End()
 
 			applyRequestInfo(span, req)
 			res, err := next(ctx, req)
@@ -170,39 +170,39 @@ func newEntityManager(host string, tokenProvider auth.TokenProvider) *entityMana
 
 // Get performs an HTTP Get for a given entity path
 func (em *entityManager) Get(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
-	defer span.Finish()
+	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
+	defer span.End()
 
 	return em.Execute(ctx, http.MethodGet, entityPath, http.NoBody, mw...)
 }
 
 // Put performs an HTTP PUT for a given entity path and body
 func (em *entityManager) Put(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
-	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
-	defer span.Finish()
+	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
+	defer span.End()
 
 	return em.Execute(ctx, http.MethodPut, entityPath, bytes.NewReader(body), mw...)
 }
 
 // Delete performs an HTTP DELETE for a given entity path
 func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
-	defer span.Finish()
+	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
+	defer span.End()
 
 	return em.Execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
 }
 
 // Post performs an HTTP POST for a given entity path and body
 func (em *entityManager) Post(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
-	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
-	defer span.Finish()
+	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
+	defer span.End()
 
 	return em.Execute(ctx, http.MethodPost, entityPath, bytes.NewReader(body), mw...)
 }
 
 func (em *entityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
-	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
-	defer span.Finish()
+	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
+	defer span.End()
 
 	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
 	if err != nil {

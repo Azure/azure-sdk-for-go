@@ -170,8 +170,8 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 }
 
 func (ns *Namespace) negotiateClaim(ctx context.Context, conn *amqp.Client, entityPath string) error {
-	span, ctx := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
-	defer span.Finish()
+	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
+	defer span.End()
 
 	audience := ns.getEntityAudience(entityPath)
 	return cbs.NegotiateClaim(ctx, audience, conn, ns.TokenProvider)

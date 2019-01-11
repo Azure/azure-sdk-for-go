@@ -118,8 +118,8 @@ func (pi peekIterator) Done() bool {
 }
 
 func (pi *peekIterator) Next(ctx context.Context) (*Message, error) {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.peekIterator.Next")
-	defer span.Finish()
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.peekIterator.Next")
+	defer span.End()
 
 	if len(pi.buffer) == 0 {
 		if err := pi.getNextPage(ctx); err != nil {
@@ -136,8 +136,8 @@ func (pi *peekIterator) Next(ctx context.Context) (*Message, error) {
 }
 
 func (pi *peekIterator) getNextPage(ctx context.Context) error {
-	span, ctx := startConsumerSpanFromContext(ctx, "sb.peekIterator.getNextPage")
-	defer span.Finish()
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.peekIterator.getNextPage")
+	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
 

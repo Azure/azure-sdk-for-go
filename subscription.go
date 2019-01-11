@@ -102,6 +102,9 @@ func (t *Topic) NewSubscription(name string, opts ...SubscriptionOption) (*Subsc
 // unable to complete the operation, or an empty slice of messages and an instance of "ErrNoMessages" signifying that
 // there are currently no messages in the subscription with a sequence ID larger than previously viewed ones.
 func (s *Subscription) Peek(ctx context.Context, options ...PeekOption) (MessageIterator, error) {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.Peek")
+	defer span.End()
+
 	err := s.ensureReceiver(ctx)
 	if err != nil {
 		return nil, err
@@ -112,6 +115,9 @@ func (s *Subscription) Peek(ctx context.Context, options ...PeekOption) (Message
 
 // PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
 func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Message, error) {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.PeekOne")
+	defer span.End()
+
 	err := s.ensureReceiver(ctx)
 	if err != nil {
 		return nil, err
@@ -135,8 +141,8 @@ func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Mes
 // Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
 // have a disposition set, the Queue's DefaultDisposition will be used.
 func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")
+	defer span.End()
 
 	if err := s.ensureReceiver(ctx); err != nil {
 		return err
@@ -152,8 +158,8 @@ func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 //
 // If the handler returns an error, the receive loop will be terminated.
 func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
+	defer span.End()
 
 	if err := s.ensureReceiver(ctx); err != nil {
 		return err
@@ -183,6 +189,9 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 // Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
 // processed, while leaving those messages safely in the message store for which processing needs to be postponed.
 func (s *Subscription) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveDeferred")
+	defer span.End()
+
 	return receiveDeferred(ctx, s, handler, sequenceNumbers...)
 }
 
@@ -198,8 +207,8 @@ func (s *Subscription) NewSession(sessionID *string) *SubscriptionSession {
 
 // NewReceiver will create a new Receiver for receiving messages off of the queue
 func (s *Subscription) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewReceiver")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.NewReceiver")
+	defer span.End()
 
 	opts = append(opts, ReceiverWithReceiveMode(s.receiveMode))
 
@@ -234,8 +243,8 @@ func (s *Subscription) NewDeadLetter() *DeadLetter {
 
 // NewDeadLetterReceiver builds a receiver for the Subscriptions's dead letter queue
 func (s *Subscription) NewDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewDeadLetterReceiver")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.NewDeadLetterReceiver")
+	defer span.End()
 
 	deadLetterEntityPath := strings.Join([]string{s.Topic.Name, "Subscriptions", s.Name, DeadLetterQueueName}, "/")
 	return s.namespace.NewReceiver(ctx, deadLetterEntityPath, opts...)
@@ -258,8 +267,8 @@ func (s *Subscription) NewTransferDeadLetter() *TransferDeadLetter {
 //   - The destination queue or topic is disabled or deleted.
 //   - The destination queue or topic exceeds the maximum entity size.
 func (s *Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.NewTransferDeadLetterReceiver")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.NewTransferDeadLetterReceiver")
+	defer span.End()
 
 	transferDeadLetterEntityPath := strings.Join([]string{s.Topic.Name, "subscriptions", s.Name, TransferDeadLetterQueueName}, "/")
 	return s.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
@@ -267,11 +276,17 @@ func (s *Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts .
 
 // RenewLocks renews the locks on messages provided
 func (s *Subscription) RenewLocks(ctx context.Context, messages ...*Message) error {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.RenewLocks")
+	defer span.End()
+
 	return renewLocks(ctx, s, messages...)
 }
 
 // Close the underlying connection to Service Bus
 func (s *Subscription) Close(ctx context.Context) error {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.Close")
+	defer span.End()
+
 	if s.receiver != nil {
 		err := s.receiver.Close(ctx)
 		if err != nil && !isConnectionClosed(err) {
@@ -288,8 +303,8 @@ func (s *Subscription) ManagementPath() string {
 }
 
 func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ensureReceiver")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.ensureReceiver")
+	defer span.End()
 
 	s.receiverMu.Lock()
 	defer s.receiverMu.Unlock()
@@ -310,8 +325,8 @@ func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOptio
 }
 
 func (s *Subscription) connection(ctx context.Context) (*amqp.Client, error) {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.connection")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.connection")
+	defer span.End()
 
 	if err := s.ensureReceiver(ctx); err != nil {
 		return nil, err

@@ -32,10 +32,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -173,7 +173,7 @@ func (q *Queue) Send(ctx context.Context, msg *Message) error {
 
 	err := q.ensureSender(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 	return q.sender.Send(ctx, msg)
@@ -186,14 +186,14 @@ func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
 
 	err := q.ensureSender(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	for !iterator.Done() {
 		id, err := uuid.NewV4()
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
@@ -201,12 +201,12 @@ func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
 			SessionID: q.sender.sessionID,
 		})
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
 		if err := q.sender.trySend(ctx, batch); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -659,12 +659,12 @@ func (q *Queue) Close(ctx context.Context) error {
 		if err := q.receiver.Close(ctx); err != nil {
 			if q.sender != nil {
 				if err := q.sender.Close(ctx); err != nil && !isConnectionClosed(err) {
-					log.For(ctx).Error(err)
+					tab.For(ctx).Error(err)
 				}
 			}
 
 			if !isConnectionClosed(err) {
-				log.For(ctx).Error(err)
+				tab.For(ctx).Error(err)
 				return err
 			}
 
@@ -712,7 +712,7 @@ func (q *Queue) ensureReceiver(ctx context.Context, opts ...ReceiverOption) erro
 
 	receiver, err := q.newReceiver(ctx, opts...)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -733,7 +733,7 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 
 	s, err := q.NewSender(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 	q.sender = s

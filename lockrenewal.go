@@ -6,9 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
-	"go.opencensus.io/trace"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -26,7 +25,7 @@ func renewLocks(ctx context.Context, lr lockRenewer, messages ...*Message) error
 	lockTokens := make([]amqp.UUID, 0, len(messages))
 	for _, m := range messages {
 		if m.LockToken == nil {
-			log.For(ctx).Error(fmt.Errorf("failed: message has nil lock token, cannot renew lock"), trace.StringAttribute("messageId", m.ID))
+			tab.For(ctx).Error(fmt.Errorf("failed: message has nil lock token, cannot renew lock"), tab.StringAttribute("messageId", m.ID))
 			continue
 		}
 
@@ -35,7 +34,7 @@ func renewLocks(ctx context.Context, lr lockRenewer, messages ...*Message) error
 	}
 
 	if len(lockTokens) < 1 {
-		log.For(ctx).Info("no lock tokens present to renew")
+		tab.For(ctx).Info("no lock tokens present to renew")
 		return nil
 	}
 

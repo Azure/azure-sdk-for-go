@@ -27,7 +27,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go"
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
@@ -163,7 +162,7 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 
 	amqpMsg, err := r.listenForMessage(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -241,7 +240,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	if err := r.DefaultDisposition(ctx); err != nil {
 		// if an error is returned by the default disposition, then we must alert the message consumer as we can't
 		// be sure the final message disposition.
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		r.lastError = err
 		r.done()
 		return
@@ -261,7 +260,7 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 
 		select {
 		case <-ctx.Done():
-			log.For(ctx).Debug("context done")
+			tab.For(ctx).Debug("context done")
 			close(msgChan)
 			return
 		default:
@@ -269,10 +268,10 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 				ctx, sp := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessages.tryRecover")
 				defer sp.End()
 
-				log.For(ctx).Debug("recovering connection")
+				tab.For(ctx).Debug("recovering connection")
 				err := r.Recover(ctx)
 				if err == nil {
-					log.For(ctx).Debug("recovered connection")
+					tab.For(ctx).Debug("recovered connection")
 					return nil, nil
 				}
 
@@ -285,10 +284,10 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 			})
 
 			if retryErr != nil {
-				log.For(ctx).Debug("retried, but error was unrecoverable")
+				tab.For(ctx).Debug("retried, but error was unrecoverable")
 				r.lastError = retryErr
 				if err := r.Close(ctx); err != nil {
-					log.For(ctx).Error(err)
+					tab.For(ctx).Error(err)
 				}
 				close(msgChan)
 				return
@@ -303,7 +302,7 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 
 	msg, err := r.receiver.Receive(ctx)
 	if err != nil {
-		log.For(ctx).Debug(err.Error())
+		tab.For(ctx).Debug(err.Error())
 		return nil, err
 	}
 
@@ -328,19 +327,19 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 
 	err = r.namespace.negotiateClaim(ctx, connection, r.entityPath)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	amqpSession, err := connection.NewSession()
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	r.session, err = newSession(amqpSession)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 

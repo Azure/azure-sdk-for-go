@@ -6,8 +6,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -157,19 +157,19 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 
 	conn, err := pi.entity.connection(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	link, err := rpc.NewLink(conn, pi.entity.ManagementPath())
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -185,21 +185,21 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 	val, ok := rsp.Message.Value.(map[string]interface{})
 	if !ok {
 		err = newErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	rawMessages, ok := val[messagesField]
 	if !ok {
 		err = ErrMissingField(messagesField)
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	messages, ok := rawMessages.([]interface{})
 	if !ok {
 		err = newErrIncorrectType(messagesField, []interface{}{}, rawMessages)
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -208,34 +208,34 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 		rawEntry, ok := messages[i].(map[string]interface{})
 		if !ok {
 			err = newErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
 		rawMessage, ok := rawEntry[messageField]
 		if !ok {
 			err = ErrMissingField(messageField)
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
 		marshaled, ok := rawMessage.([]byte)
 		if !ok {
 			err = new(ErrMalformedMessage)
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
 		var rehydrated amqp.Message
 		err = rehydrated.UnmarshalBinary(marshaled)
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
 		transformedMessages[i], err = messageFromAMQPMessage(&rehydrated)
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}

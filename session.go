@@ -27,8 +27,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -194,10 +194,10 @@ func (qs *QueueSession) Close(ctx context.Context) error {
 
 	if qs.receiver != nil {
 		if err := qs.receiver.Close(ctx); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			if qs.sender != nil {
 				if senderErr := qs.sender.Close(ctx); err != nil {
-					log.For(ctx).Error(senderErr)
+					tab.For(ctx).Error(senderErr)
 				}
 			}
 			return err
@@ -206,7 +206,7 @@ func (qs *QueueSession) Close(ctx context.Context) error {
 
 	if qs.sender != nil {
 		if err := qs.sender.Close(ctx); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -370,7 +370,7 @@ func (ts *TopicSession) Close(ctx context.Context) error {
 
 	if ts.sender != nil {
 		if err := ts.sender.Close(ctx); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}

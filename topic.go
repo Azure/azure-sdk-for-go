@@ -28,9 +28,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/devigned/tab"
 )
 
 type (
@@ -101,7 +101,7 @@ func (t *Topic) Send(ctx context.Context, event *Message, opts ...SendOption) er
 
 	err := t.ensureSender(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 	return t.sender.Send(ctx, event, opts...)
@@ -114,14 +114,14 @@ func (t *Topic) SendBatch(ctx context.Context, iterator BatchIterator) error {
 
 	err := t.ensureSender(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	for !iterator.Done() {
 		id, err := uuid.NewV4()
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
@@ -129,12 +129,12 @@ func (t *Topic) SendBatch(ctx context.Context, iterator BatchIterator) error {
 			SessionID: t.sender.sessionID,
 		})
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 
 		if err := t.sender.trySend(ctx, batch); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -165,7 +165,7 @@ func (t *Topic) Close(ctx context.Context) error {
 	if t.sender != nil {
 		err := t.sender.Close(ctx)
 		if err != nil && !isConnectionClosed(err) {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -210,7 +210,7 @@ func (t *Topic) ensureSender(ctx context.Context) error {
 
 	s, err := t.namespace.NewSender(ctx, t.Name)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 	t.sender = s

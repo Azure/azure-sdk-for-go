@@ -27,7 +27,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -290,7 +290,7 @@ func (s *Subscription) Close(ctx context.Context) error {
 	if s.receiver != nil {
 		err := s.receiver.Close(ctx)
 		if err != nil && !isConnectionClosed(err) {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -316,7 +316,7 @@ func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOptio
 
 	receiver, err := s.NewReceiver(ctx, opts...)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 

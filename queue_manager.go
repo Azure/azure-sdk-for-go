@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
 )
@@ -244,7 +244,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	qd := new(QueueDescription)
 	for _, opt := range opts {
 		if err := opt(qd); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -272,7 +272,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -281,13 +281,13 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -308,13 +308,13 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -340,7 +340,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -350,7 +350,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 

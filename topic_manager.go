@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
 )
@@ -75,7 +75,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	td := new(TopicDescription)
 	for _, opt := range opts {
 		if err := opt(td); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -94,7 +94,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -103,13 +103,13 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -130,13 +130,13 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -162,7 +162,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -172,7 +172,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 

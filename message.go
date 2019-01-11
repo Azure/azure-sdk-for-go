@@ -30,9 +30,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
 	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/devigned/tab"
 	"github.com/mitchellh/mapstructure"
 	"pack.ag/amqp"
 )
@@ -341,20 +341,20 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 
 	conn, err := m.ec.connection(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	link, err := rpc.NewLink(conn, m.ec.ManagementPath())
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	// no error, then it was successful
 	_, err = link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 

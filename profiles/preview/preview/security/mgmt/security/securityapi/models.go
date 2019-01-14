@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI
 type ContactsClientAPI = original.ContactsClientAPI
+type DeviceSecurityGroupsClientAPI = original.DeviceSecurityGroupsClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
 type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
-type IotSecurityGroupsClientAPI = original.IotSecurityGroupsClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

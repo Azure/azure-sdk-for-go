@@ -82,21 +82,21 @@ type AdvancedThreatProtectionClientAPI interface {
 
 var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
 
-// IotSecurityGroupsClientAPI contains the set of methods on the IotSecurityGroupsClient type.
-type IotSecurityGroupsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceID string, iotSecurityGroupName string, iotSecurityGroup security.IotSecurityGroup) (result security.IotSecurityGroup, err error)
-	Delete(ctx context.Context, resourceID string, iotSecurityGroupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceID string, iotSecurityGroupName string) (result security.IotSecurityGroup, err error)
-	List(ctx context.Context, resourceID string) (result security.IotSecurityGroupList, err error)
+// DeviceSecurityGroupsClientAPI contains the set of methods on the DeviceSecurityGroupsClient type.
+type DeviceSecurityGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup security.DeviceSecurityGroup) (result security.DeviceSecurityGroup, err error)
+	Delete(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result security.DeviceSecurityGroup, err error)
+	List(ctx context.Context, resourceID string) (result security.DeviceSecurityGroupListPage, err error)
 }
 
-var _ IotSecurityGroupsClientAPI = (*security.IotSecurityGroupsClient)(nil)
+var _ DeviceSecurityGroupsClientAPI = (*security.DeviceSecurityGroupsClient)(nil)
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
-	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)
+	Get(ctx context.Context, settingName string) (result security.Setting, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
-	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.SettingModel, err error)
+	Update(ctx context.Context, settingName string, setting security.Setting) (result security.Setting, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)

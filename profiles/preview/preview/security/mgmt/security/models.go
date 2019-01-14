@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
+// Copyright 2019 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,17 +85,10 @@ const (
 type KindEnum = original.KindEnum
 
 const (
-	KindDataExportSetting KindEnum = original.KindDataExportSetting
-	KindSetting           KindEnum = original.KindSetting
-)
-
-type KindEnum1 = original.KindEnum1
-
-const (
-	KindAAD                      KindEnum1 = original.KindAAD
-	KindATA                      KindEnum1 = original.KindATA
-	KindCEF                      KindEnum1 = original.KindCEF
-	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
+	KindAAD                      KindEnum = original.KindAAD
+	KindATA                      KindEnum = original.KindATA
+	KindCEF                      KindEnum = original.KindCEF
+	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
 )
 
 type PricingTier = original.PricingTier
@@ -116,7 +109,8 @@ const (
 type SettingKind = original.SettingKind
 
 const (
-	SettingKindDataExportSetting SettingKind = original.SettingKindDataExportSetting
+	SettingKindAlertSuppressionSetting SettingKind = original.SettingKindAlertSuppressionSetting
+	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
 )
 
 type Status = original.Status
@@ -169,7 +163,6 @@ type AutoProvisioningSettingProperties = original.AutoProvisioningSettingPropert
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 type BaseClient = original.BaseClient
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
-type BasicSetting = original.BasicSetting
 type CefExternalSecuritySolution = original.CefExternalSecuritySolution
 type CefSolutionProperties = original.CefSolutionProperties
 type CloudError = original.CloudError
@@ -194,6 +187,12 @@ type CustomAlertRule = original.CustomAlertRule
 type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
 type DenylistCustomAlertRule = original.DenylistCustomAlertRule
+type DeviceSecurityGroup = original.DeviceSecurityGroup
+type DeviceSecurityGroupList = original.DeviceSecurityGroupList
+type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
+type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
+type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
+type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
@@ -216,10 +215,6 @@ type InformationProtectionPolicyListIterator = original.InformationProtectionPol
 type InformationProtectionPolicyListPage = original.InformationProtectionPolicyListPage
 type InformationProtectionPolicyProperties = original.InformationProtectionPolicyProperties
 type InformationType = original.InformationType
-type IotSecurityGroup = original.IotSecurityGroup
-type IotSecurityGroupList = original.IotSecurityGroupList
-type IotSecurityGroupProperties = original.IotSecurityGroupProperties
-type IotSecurityGroupsClient = original.IotSecurityGroupsClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
@@ -252,8 +247,7 @@ type PricingsClient = original.PricingsClient
 type Resource = original.Resource
 type SensitivityLabel = original.SensitivityLabel
 type Setting = original.Setting
-type SettingKind1 = original.SettingKind1
-type SettingModel = original.SettingModel
+type SettingResource = original.SettingResource
 type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
@@ -358,6 +352,18 @@ func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient
 func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return original.NewDeviceSecurityGroupListIterator(page)
+}
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return original.NewDeviceSecurityGroupListPage(getNextPage)
+}
+func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
+}
+func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
 }
@@ -393,12 +399,6 @@ func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicy
 }
 func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
 	return original.NewInformationProtectionPolicyListPage(getNextPage)
-}
-func NewIotSecurityGroupsClient(subscriptionID string, ascLocation string) IotSecurityGroupsClient {
-	return original.NewIotSecurityGroupsClient(subscriptionID, ascLocation)
-}
-func NewIotSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecurityGroupsClient {
-	return original.NewIotSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
 	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)
@@ -513,9 +513,6 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 }
 func PossibleFamilyValues() []Family {
 	return original.PossibleFamilyValues()
-}
-func PossibleKindEnum1Values() []KindEnum1 {
-	return original.PossibleKindEnum1Values()
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()

@@ -148,34 +148,19 @@ func PossibleFamilyValues() []Family {
 type KindEnum string
 
 const (
-	// KindDataExportSetting ...
-	KindDataExportSetting KindEnum = "DataExportSetting"
-	// KindSetting ...
-	KindSetting KindEnum = "Setting"
+	// KindAAD ...
+	KindAAD KindEnum = "AAD"
+	// KindATA ...
+	KindATA KindEnum = "ATA"
+	// KindCEF ...
+	KindCEF KindEnum = "CEF"
+	// KindExternalSecuritySolution ...
+	KindExternalSecuritySolution KindEnum = "ExternalSecuritySolution"
 )
 
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
-	return []KindEnum{KindDataExportSetting, KindSetting}
-}
-
-// KindEnum1 enumerates the values for kind enum 1.
-type KindEnum1 string
-
-const (
-	// KindAAD ...
-	KindAAD KindEnum1 = "AAD"
-	// KindATA ...
-	KindATA KindEnum1 = "ATA"
-	// KindCEF ...
-	KindCEF KindEnum1 = "CEF"
-	// KindExternalSecuritySolution ...
-	KindExternalSecuritySolution KindEnum1 = "ExternalSecuritySolution"
-)
-
-// PossibleKindEnum1Values returns an array of possible values for the KindEnum1 const type.
-func PossibleKindEnum1Values() []KindEnum1 {
-	return []KindEnum1{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
+	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
 // PricingTier enumerates the values for pricing tier.
@@ -214,13 +199,15 @@ func PossibleProtocolValues() []Protocol {
 type SettingKind string
 
 const (
+	// SettingKindAlertSuppressionSetting ...
+	SettingKindAlertSuppressionSetting SettingKind = "AlertSuppressionSetting"
 	// SettingKindDataExportSetting ...
 	SettingKindDataExportSetting SettingKind = "DataExportSetting"
 )
 
 // PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
 func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{SettingKindDataExportSetting}
+	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
 }
 
 // Status enumerates the values for status.
@@ -274,7 +261,7 @@ type AadExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum1 `json:"kind,omitempty"`
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AadExternalSecuritySolution.
@@ -1261,7 +1248,7 @@ type AtaExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum1 `json:"kind,omitempty"`
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AtaExternalSecuritySolution.
@@ -1655,7 +1642,7 @@ type CefExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum1 `json:"kind,omitempty"`
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CefExternalSecuritySolution.
@@ -2405,22 +2392,24 @@ type CustomAlertRule struct {
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
 	*DataExportSettingProperties `json:"properties,omitempty"`
+	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
+	Kind SettingKind `json:"kind,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
-	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataExportSetting.
 func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
-	desVar.Kind = KindDataExportSetting
 	objectMap := make(map[string]interface{})
 	if desVar.DataExportSettingProperties != nil {
 		objectMap["properties"] = desVar.DataExportSettingProperties
+	}
+	if desVar.Kind != "" {
+		objectMap["kind"] = desVar.Kind
 	}
 	if desVar.ID != nil {
 		objectMap["id"] = desVar.ID
@@ -2431,25 +2420,7 @@ func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
 	if desVar.Type != nil {
 		objectMap["type"] = desVar.Type
 	}
-	if desVar.Kind != "" {
-		objectMap["kind"] = desVar.Kind
-	}
 	return json.Marshal(objectMap)
-}
-
-// AsDataExportSetting is the BasicSetting implementation for DataExportSetting.
-func (desVar DataExportSetting) AsDataExportSetting() (*DataExportSetting, bool) {
-	return &desVar, true
-}
-
-// AsSetting is the BasicSetting implementation for DataExportSetting.
-func (desVar DataExportSetting) AsSetting() (*Setting, bool) {
-	return nil, false
-}
-
-// AsBasicSetting is the BasicSetting implementation for DataExportSetting.
-func (desVar DataExportSetting) AsBasicSetting() (BasicSetting, bool) {
-	return &desVar, true
 }
 
 // UnmarshalJSON is the custom unmarshaler for DataExportSetting struct.
@@ -2469,6 +2440,15 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				desVar.DataExportSettingProperties = &dataExportSettingProperties
+			}
+		case "kind":
+			if v != nil {
+				var kind SettingKind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				desVar.Kind = kind
 			}
 		case "id":
 			if v != nil {
@@ -2497,15 +2477,6 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 				}
 				desVar.Type = &typeVar
 			}
-		case "kind":
-			if v != nil {
-				var kind KindEnum
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				desVar.Kind = kind
-			}
 		}
 	}
 
@@ -2531,6 +2502,246 @@ type DenylistCustomAlertRule struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - The type of the custom alert rule.
 	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// DeviceSecurityGroup the device security group resource
+type DeviceSecurityGroup struct {
+	autorest.Response `json:"-"`
+	// DeviceSecurityGroupProperties - Device Security group data
+	*DeviceSecurityGroupProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceSecurityGroup.
+func (dsg DeviceSecurityGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsg.DeviceSecurityGroupProperties != nil {
+		objectMap["properties"] = dsg.DeviceSecurityGroupProperties
+	}
+	if dsg.ID != nil {
+		objectMap["id"] = dsg.ID
+	}
+	if dsg.Name != nil {
+		objectMap["name"] = dsg.Name
+	}
+	if dsg.Type != nil {
+		objectMap["type"] = dsg.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeviceSecurityGroup struct.
+func (dsg *DeviceSecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deviceSecurityGroupProperties DeviceSecurityGroupProperties
+				err = json.Unmarshal(*v, &deviceSecurityGroupProperties)
+				if err != nil {
+					return err
+				}
+				dsg.DeviceSecurityGroupProperties = &deviceSecurityGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dsg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeviceSecurityGroupList list of device security groups
+type DeviceSecurityGroupList struct {
+	autorest.Response `json:"-"`
+	// Value - List of device security group objects
+	Value *[]DeviceSecurityGroup `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeviceSecurityGroupListIterator provides access to a complete listing of DeviceSecurityGroup values.
+type DeviceSecurityGroupListIterator struct {
+	i    int
+	page DeviceSecurityGroupListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeviceSecurityGroupListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DeviceSecurityGroupListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeviceSecurityGroupListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeviceSecurityGroupListIterator) Response() DeviceSecurityGroupList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeviceSecurityGroupListIterator) Value() DeviceSecurityGroup {
+	if !iter.page.NotDone() {
+		return DeviceSecurityGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DeviceSecurityGroupListIterator type.
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return DeviceSecurityGroupListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsgl DeviceSecurityGroupList) IsEmpty() bool {
+	return dsgl.Value == nil || len(*dsgl.Value) == 0
+}
+
+// deviceSecurityGroupListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsgl DeviceSecurityGroupList) deviceSecurityGroupListPreparer(ctx context.Context) (*http.Request, error) {
+	if dsgl.NextLink == nil || len(to.String(dsgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsgl.NextLink)))
+}
+
+// DeviceSecurityGroupListPage contains a page of DeviceSecurityGroup values.
+type DeviceSecurityGroupListPage struct {
+	fn   func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)
+	dsgl DeviceSecurityGroupList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeviceSecurityGroupListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dsgl)
+	if err != nil {
+		return err
+	}
+	page.dsgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DeviceSecurityGroupListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeviceSecurityGroupListPage) NotDone() bool {
+	return !page.dsgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeviceSecurityGroupListPage) Response() DeviceSecurityGroupList {
+	return page.dsgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeviceSecurityGroupListPage) Values() []DeviceSecurityGroup {
+	if page.dsgl.IsEmpty() {
+		return nil
+	}
+	return *page.dsgl.Value
+}
+
+// Creates a new instance of the DeviceSecurityGroupListPage type.
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return DeviceSecurityGroupListPage{fn: getNextPage}
+}
+
+// DeviceSecurityGroupProperties describes properties of a security group.
+type DeviceSecurityGroupProperties struct {
+	// ThresholdRules - A list of threshold custom alert rules.
+	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	// TimeWindowRules - A list of time window custom alert rules.
+	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	// AllowlistRules - A list of allow-list custom alert rules.
+	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	// DenylistRules - A list of deny-list custom alert rules.
+	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // DiscoveredSecuritySolution ...
@@ -2808,7 +3019,7 @@ type ExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum1 `json:"kind,omitempty"`
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 func unmarshalBasicExternalSecuritySolution(body []byte) (BasicExternalSecuritySolution, error) {
@@ -3465,107 +3676,6 @@ type InformationType struct {
 	Custom *bool `json:"custom,omitempty"`
 	// Keywords - The information type keywords.
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
-}
-
-// IotSecurityGroup the IoT security group resource
-type IotSecurityGroup struct {
-	autorest.Response `json:"-"`
-	// IotSecurityGroupProperties - IoT Security group data
-	*IotSecurityGroupProperties `json:"properties,omitempty"`
-	// ID - Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IotSecurityGroup.
-func (isg IotSecurityGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if isg.IotSecurityGroupProperties != nil {
-		objectMap["properties"] = isg.IotSecurityGroupProperties
-	}
-	if isg.ID != nil {
-		objectMap["id"] = isg.ID
-	}
-	if isg.Name != nil {
-		objectMap["name"] = isg.Name
-	}
-	if isg.Type != nil {
-		objectMap["type"] = isg.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IotSecurityGroup struct.
-func (isg *IotSecurityGroup) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var iotSecurityGroupProperties IotSecurityGroupProperties
-				err = json.Unmarshal(*v, &iotSecurityGroupProperties)
-				if err != nil {
-					return err
-				}
-				isg.IotSecurityGroupProperties = &iotSecurityGroupProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				isg.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				isg.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				isg.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IotSecurityGroupList list of IoT security groups
-type IotSecurityGroupList struct {
-	autorest.Response `json:"-"`
-	// Value - List of IoT security group objects
-	Value *[]IotSecurityGroup `json:"value,omitempty"`
-}
-
-// IotSecurityGroupProperties describes properties of a security group.
-type IotSecurityGroupProperties struct {
-	// ThresholdRules - A list of threshold custom alert rules.
-	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
-	// TimeWindowRules - A list of time window custom alert rules.
-	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
-	// AllowlistRules - A list of allow-list custom alert rules.
-	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
-	// DenylistRules - A list of deny-list custom alert rules.
-	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // JitNetworkAccessPoliciesList ...
@@ -4342,158 +4452,38 @@ type SensitivityLabel struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// BasicSetting represents a security setting in Azure Security Center.
-type BasicSetting interface {
-	AsDataExportSetting() (*DataExportSetting, bool)
-	AsSetting() (*Setting, bool)
-}
-
 // Setting represents a security setting in Azure Security Center.
 type Setting struct {
 	autorest.Response `json:"-"`
+	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
+	Kind SettingKind `json:"kind,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
-	Kind KindEnum `json:"kind,omitempty"`
 }
 
-func unmarshalBasicSetting(body []byte) (BasicSetting, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["kind"] {
-	case string(KindDataExportSetting):
-		var desVar DataExportSetting
-		err := json.Unmarshal(body, &desVar)
-		return desVar, err
-	default:
-		var s Setting
-		err := json.Unmarshal(body, &s)
-		return s, err
-	}
-}
-func unmarshalBasicSettingArray(body []byte) ([]BasicSetting, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	sArray := make([]BasicSetting, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		s, err := unmarshalBasicSetting(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		sArray[index] = s
-	}
-	return sArray, nil
-}
-
-// MarshalJSON is the custom marshaler for Setting.
-func (s Setting) MarshalJSON() ([]byte, error) {
-	s.Kind = KindSetting
-	objectMap := make(map[string]interface{})
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
-	}
-	if s.Kind != "" {
-		objectMap["kind"] = s.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDataExportSetting is the BasicSetting implementation for Setting.
-func (s Setting) AsDataExportSetting() (*DataExportSetting, bool) {
-	return nil, false
-}
-
-// AsSetting is the BasicSetting implementation for Setting.
-func (s Setting) AsSetting() (*Setting, bool) {
-	return &s, true
-}
-
-// AsBasicSetting is the BasicSetting implementation for Setting.
-func (s Setting) AsBasicSetting() (BasicSetting, bool) {
-	return &s, true
-}
-
-// SettingKind1 the kind of the security setting
-type SettingKind1 struct {
-	// Kind - the kind of the settings string. Possible values include: 'SettingKindDataExportSetting'
+// SettingResource the kind of the security setting
+type SettingResource struct {
+	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
 	Kind SettingKind `json:"kind,omitempty"`
-}
-
-// SettingModel ...
-type SettingModel struct {
-	autorest.Response `json:"-"`
-	Value             BasicSetting `json:"value,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for SettingModel struct.
-func (sm *SettingModel) UnmarshalJSON(body []byte) error {
-	s, err := unmarshalBasicSetting(body)
-	if err != nil {
-		return err
-	}
-	sm.Value = s
-
-	return nil
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // SettingsList subscription settings list.
 type SettingsList struct {
 	autorest.Response `json:"-"`
 	// Value - The settings list.
-	Value *[]BasicSetting `json:"value,omitempty"`
+	Value *[]Setting `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for SettingsList struct.
-func (sl *SettingsList) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "value":
-			if v != nil {
-				value, err := unmarshalBasicSettingArray(*v)
-				if err != nil {
-					return err
-				}
-				sl.Value = &value
-			}
-		case "nextLink":
-			if v != nil {
-				var nextLink string
-				err = json.Unmarshal(*v, &nextLink)
-				if err != nil {
-					return err
-				}
-				sl.NextLink = &nextLink
-			}
-		}
-	}
-
-	return nil
 }
 
 // SettingsListIterator provides access to a complete listing of Setting values.
@@ -4547,7 +4537,7 @@ func (iter SettingsListIterator) Response() SettingsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter SettingsListIterator) Value() BasicSetting {
+func (iter SettingsListIterator) Value() Setting {
 	if !iter.page.NotDone() {
 		return Setting{}
 	}
@@ -4576,7 +4566,7 @@ func (sl SettingsList) settingsListPreparer(ctx context.Context) (*http.Request,
 		autorest.WithBaseURL(to.String(sl.NextLink)))
 }
 
-// SettingsListPage contains a page of BasicSetting values.
+// SettingsListPage contains a page of Setting values.
 type SettingsListPage struct {
 	fn func(context.Context, SettingsList) (SettingsList, error)
 	sl SettingsList
@@ -4621,7 +4611,7 @@ func (page SettingsListPage) Response() SettingsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page SettingsListPage) Values() []BasicSetting {
+func (page SettingsListPage) Values() []Setting {
 	if page.sl.IsEmpty() {
 		return nil
 	}

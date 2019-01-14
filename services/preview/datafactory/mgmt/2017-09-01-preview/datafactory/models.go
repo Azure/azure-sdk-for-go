@@ -36303,6 +36303,8 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	LoggingLevel *string `json:"loggingLevel,omitempty"`
 	// EnvironmentPath - The environment path to execute the SSIS package.
 	EnvironmentPath *string `json:"environmentPath,omitempty"`
+	// ExecutionCredential - The package execution credential.
+	ExecutionCredential map[string]*SSISExecutionCredential `json:"executionCredential"`
 	// ConnectVia - The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
 	// ProjectParameters - The project level parameters to execute the SSIS package.
@@ -36331,6 +36333,9 @@ func (espatp ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, er
 	}
 	if espatp.EnvironmentPath != nil {
 		objectMap["environmentPath"] = espatp.EnvironmentPath
+	}
+	if espatp.ExecutionCredential != nil {
+		objectMap["executionCredential"] = espatp.ExecutionCredential
 	}
 	if espatp.ConnectVia != nil {
 		objectMap["connectVia"] = espatp.ConnectVia
@@ -95518,6 +95523,16 @@ func (ss *SquareSource) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// SSISExecutionCredential SSIS package execution credential.
+type SSISExecutionCredential struct {
+	// Domain - Domain for windows authentication.
+	Domain interface{} `json:"domain,omitempty"`
+	// UserName - UseName for windows authentication.
+	UserName interface{} `json:"userName,omitempty"`
+	// Password - Password for windows authentication.
+	Password *SecureString `json:"password,omitempty"`
 }
 
 // SSISExecutionParameter SSIS execution parameter.

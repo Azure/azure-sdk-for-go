@@ -42,10 +42,12 @@ func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprints
 
 // Create publish a new version of the Blueprint with the latest artifacts. Published Blueprints are immutable.
 // Parameters:
-// managementGroupName - managementGroup where blueprint stores.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
-func (client PublishedBlueprintsClient) Create(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
+func (client PublishedBlueprintsClient) Create(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Create")
 		defer func() {
@@ -56,7 +58,7 @@ func (client PublishedBlueprintsClient) Create(ctx context.Context, managementGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, managementGroupName, blueprintName, versionID)
+	req, err := client.CreatePreparer(ctx, scope, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "Create", nil, "Failure preparing request")
 		return
@@ -78,14 +80,14 @@ func (client PublishedBlueprintsClient) Create(ctx context.Context, managementGr
 }
 
 // CreatePreparer prepares the Create request.
-func (client PublishedBlueprintsClient) CreatePreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (*http.Request, error) {
+func (client PublishedBlueprintsClient) CreatePreparer(ctx context.Context, scope string, blueprintName string, versionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"blueprintName":       autorest.Encode("path", blueprintName),
-		"managementGroupName": autorest.Encode("path", managementGroupName),
-		"versionId":           autorest.Encode("path", versionID),
+		"blueprintName": autorest.Encode("path", blueprintName),
+		"scope":         scope,
+		"versionId":     autorest.Encode("path", versionID),
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -93,7 +95,7 @@ func (client PublishedBlueprintsClient) CreatePreparer(ctx context.Context, mana
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -120,10 +122,12 @@ func (client PublishedBlueprintsClient) CreateResponder(resp *http.Response) (re
 
 // Delete delete a published Blueprint.
 // Parameters:
-// managementGroupName - managementGroup where blueprint stores.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
-func (client PublishedBlueprintsClient) Delete(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
+func (client PublishedBlueprintsClient) Delete(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Delete")
 		defer func() {
@@ -134,7 +138,7 @@ func (client PublishedBlueprintsClient) Delete(ctx context.Context, managementGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, managementGroupName, blueprintName, versionID)
+	req, err := client.DeletePreparer(ctx, scope, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -156,14 +160,14 @@ func (client PublishedBlueprintsClient) Delete(ctx context.Context, managementGr
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PublishedBlueprintsClient) DeletePreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (*http.Request, error) {
+func (client PublishedBlueprintsClient) DeletePreparer(ctx context.Context, scope string, blueprintName string, versionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"blueprintName":       autorest.Encode("path", blueprintName),
-		"managementGroupName": autorest.Encode("path", managementGroupName),
-		"versionId":           autorest.Encode("path", versionID),
+		"blueprintName": autorest.Encode("path", blueprintName),
+		"scope":         scope,
+		"versionId":     autorest.Encode("path", versionID),
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -171,7 +175,7 @@ func (client PublishedBlueprintsClient) DeletePreparer(ctx context.Context, mana
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -198,10 +202,12 @@ func (client PublishedBlueprintsClient) DeleteResponder(resp *http.Response) (re
 
 // Get get a published Blueprint.
 // Parameters:
-// managementGroupName - managementGroup where blueprint stores.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
-func (client PublishedBlueprintsClient) Get(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
+func (client PublishedBlueprintsClient) Get(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Get")
 		defer func() {
@@ -212,7 +218,7 @@ func (client PublishedBlueprintsClient) Get(ctx context.Context, managementGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, managementGroupName, blueprintName, versionID)
+	req, err := client.GetPreparer(ctx, scope, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "Get", nil, "Failure preparing request")
 		return
@@ -234,14 +240,14 @@ func (client PublishedBlueprintsClient) Get(ctx context.Context, managementGroup
 }
 
 // GetPreparer prepares the Get request.
-func (client PublishedBlueprintsClient) GetPreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (*http.Request, error) {
+func (client PublishedBlueprintsClient) GetPreparer(ctx context.Context, scope string, blueprintName string, versionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"blueprintName":       autorest.Encode("path", blueprintName),
-		"managementGroupName": autorest.Encode("path", managementGroupName),
-		"versionId":           autorest.Encode("path", versionID),
+		"blueprintName": autorest.Encode("path", blueprintName),
+		"scope":         scope,
+		"versionId":     autorest.Encode("path", versionID),
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -249,7 +255,7 @@ func (client PublishedBlueprintsClient) GetPreparer(ctx context.Context, managem
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -276,9 +282,11 @@ func (client PublishedBlueprintsClient) GetResponder(resp *http.Response) (resul
 
 // List list published versions of given Blueprint.
 // Parameters:
-// managementGroupName - managementGroup where blueprint stores.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // blueprintName - name of the blueprint.
-func (client PublishedBlueprintsClient) List(ctx context.Context, managementGroupName string, blueprintName string) (result PublishedBlueprintListPage, err error) {
+func (client PublishedBlueprintsClient) List(ctx context.Context, scope string, blueprintName string) (result PublishedBlueprintListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.List")
 		defer func() {
@@ -290,7 +298,7 @@ func (client PublishedBlueprintsClient) List(ctx context.Context, managementGrou
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, managementGroupName, blueprintName)
+	req, err := client.ListPreparer(ctx, scope, blueprintName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "List", nil, "Failure preparing request")
 		return
@@ -312,13 +320,13 @@ func (client PublishedBlueprintsClient) List(ctx context.Context, managementGrou
 }
 
 // ListPreparer prepares the List request.
-func (client PublishedBlueprintsClient) ListPreparer(ctx context.Context, managementGroupName string, blueprintName string) (*http.Request, error) {
+func (client PublishedBlueprintsClient) ListPreparer(ctx context.Context, scope string, blueprintName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"blueprintName":       autorest.Encode("path", blueprintName),
-		"managementGroupName": autorest.Encode("path", managementGroupName),
+		"blueprintName": autorest.Encode("path", blueprintName),
+		"scope":         scope,
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -326,7 +334,7 @@ func (client PublishedBlueprintsClient) ListPreparer(ctx context.Context, manage
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -373,7 +381,7 @@ func (client PublishedBlueprintsClient) listNextResults(ctx context.Context, las
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PublishedBlueprintsClient) ListComplete(ctx context.Context, managementGroupName string, blueprintName string) (result PublishedBlueprintListIterator, err error) {
+func (client PublishedBlueprintsClient) ListComplete(ctx context.Context, scope string, blueprintName string) (result PublishedBlueprintListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.List")
 		defer func() {
@@ -384,6 +392,6 @@ func (client PublishedBlueprintsClient) ListComplete(ctx context.Context, manage
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, managementGroupName, blueprintName)
+	result.page, err = client.List(ctx, scope, blueprintName)
 	return
 }

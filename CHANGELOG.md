@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## `v24.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| edgegateway | 2018-07-01 |
+| network | 2018-11-01 |
+| storagesync | 2018-10-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-06-01-preview |
+| automation | 2017-05-15-preview<br/>2018-01-15-preview<br/>2018-06-30-preview |
+| classic | management |
+| containerservice | 2018-03-31<br/>2018-08-01-preview<br/>2018-09-30-preview |
+| hanaonazure | 2017-11-03-preview |
+| maps | 2018-05-01 |
+
 ## `v24.0.0`
 
 ### New Packages

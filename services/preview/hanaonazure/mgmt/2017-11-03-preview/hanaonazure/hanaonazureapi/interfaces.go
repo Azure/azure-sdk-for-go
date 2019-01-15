@@ -20,7 +20,6 @@ package hanaonazureapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
-	"github.com/Azure/go-autorest/autorest"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
@@ -35,7 +34,7 @@ type HanaInstancesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstance, err error)
 	List(ctx context.Context) (result hanaonazure.HanaInstancesListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hanaonazure.HanaInstancesListResultPage, err error)
-	Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result autorest.Response, err error)
+	Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesRestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter hanaonazure.Tags) (result hanaonazure.HanaInstance, err error)
 }
 

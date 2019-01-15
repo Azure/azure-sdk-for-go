@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -416,6 +417,29 @@ func (page HanaInstancesListResultPage) Values() []HanaInstance {
 // Creates a new instance of the HanaInstancesListResultPage type.
 func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
 	return HanaInstancesListResultPage{fn: getNextPage}
+}
+
+// HanaInstancesRestartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesRestartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesRestartFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesRestartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesRestartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // HardwareProfile specifies the hardware settings for the HANA instance.

@@ -30,8 +30,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
 
-// DiscoverTenants a Tenant properties Resource
-type DiscoverTenants struct {
+// DiscoverTenant a Tenant properties Resource
+type DiscoverTenant struct {
 	autorest.Response `json:"-"`
 	// BillingProfileName - The Billing Profile name.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`

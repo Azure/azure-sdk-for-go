@@ -30,7 +30,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type DiscoverTenants = original.DiscoverTenants
+type DiscoverTenant = original.DiscoverTenant
 type DiscoverTenantsClient = original.DiscoverTenantsClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount

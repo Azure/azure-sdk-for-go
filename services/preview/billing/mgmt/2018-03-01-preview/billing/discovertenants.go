@@ -43,7 +43,7 @@ func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) 
 // Get gets a Tenant Properties.
 // Parameters:
 // billingProfileID - billing Profile Id.
-func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID string) (result DiscoverTenants, err error) {
+func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID string) (result DiscoverTenant, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DiscoverTenantsClient.Get")
 		defer func() {
@@ -103,7 +103,7 @@ func (client DiscoverTenantsClient) GetSender(req *http.Request) (*http.Response
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DiscoverTenantsClient) GetResponder(resp *http.Response) (result DiscoverTenants, err error) {
+func (client DiscoverTenantsClient) GetResponder(resp *http.Response) (result DiscoverTenant, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

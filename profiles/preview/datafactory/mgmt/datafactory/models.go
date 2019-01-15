@@ -572,6 +572,7 @@ const (
 	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
+	TypeValidation               TypeBasicActivity = original.TypeValidation
 	TypeWait                     TypeBasicActivity = original.TypeWait
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
 	TypeWebHook                  TypeBasicActivity = original.TypeWebHook
@@ -1426,6 +1427,8 @@ type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNode
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
 type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
+type ValidationActivity = original.ValidationActivity
+type ValidationActivityTypeProperties = original.ValidationActivityTypeProperties
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService
 type VerticaLinkedServiceTypeProperties = original.VerticaLinkedServiceTypeProperties

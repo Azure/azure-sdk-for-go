@@ -951,21 +951,6 @@ func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol
 	return []SparkThriftTransportProtocol{SparkThriftTransportProtocolBinary, SparkThriftTransportProtocolHTTP, SparkThriftTransportProtocolSASL}
 }
 
-// SSISExecutionRuntime enumerates the values for ssis execution runtime.
-type SSISExecutionRuntime string
-
-const (
-	// X64 ...
-	X64 SSISExecutionRuntime = "x64"
-	// X86 ...
-	X86 SSISExecutionRuntime = "x86"
-)
-
-// PossibleSSISExecutionRuntimeValues returns an array of possible values for the SSISExecutionRuntime const type.
-func PossibleSSISExecutionRuntimeValues() []SSISExecutionRuntime {
-	return []SSISExecutionRuntime{X64, X86}
-}
-
 // StoredProcedureParameterType enumerates the values for stored procedure parameter type.
 type StoredProcedureParameterType string
 
@@ -36297,12 +36282,12 @@ func (espa *ExecuteSSISPackageActivity) UnmarshalJSON(body []byte) error {
 type ExecuteSSISPackageActivityTypeProperties struct {
 	// PackageLocation - SSIS package location.
 	PackageLocation *SSISPackageLocation `json:"packageLocation,omitempty"`
-	// Runtime - Specifies the runtime to execute SSIS package. Possible values include: 'X64', 'X86'
-	Runtime SSISExecutionRuntime `json:"runtime,omitempty"`
-	// LoggingLevel - The logging level of SSIS package execution.
-	LoggingLevel *string `json:"loggingLevel,omitempty"`
-	// EnvironmentPath - The environment path to execute the SSIS package.
-	EnvironmentPath *string `json:"environmentPath,omitempty"`
+	// Runtime - Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression with resultType string).
+	Runtime interface{} `json:"runtime,omitempty"`
+	// LoggingLevel - The logging level of SSIS package execution. Type: string (or Expression with resultType string).
+	LoggingLevel interface{} `json:"loggingLevel,omitempty"`
+	// EnvironmentPath - The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
+	EnvironmentPath interface{} `json:"environmentPath,omitempty"`
 	// ExecutionCredential - The package execution credential.
 	ExecutionCredential map[string]*SSISExecutionCredential `json:"executionCredential"`
 	// ConnectVia - The integration runtime reference.
@@ -36325,7 +36310,7 @@ func (espatp ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, er
 	if espatp.PackageLocation != nil {
 		objectMap["packageLocation"] = espatp.PackageLocation
 	}
-	if espatp.Runtime != "" {
+	if espatp.Runtime != nil {
 		objectMap["runtime"] = espatp.Runtime
 	}
 	if espatp.LoggingLevel != nil {
@@ -95543,8 +95528,8 @@ type SSISExecutionParameter struct {
 
 // SSISPackageLocation SSIS package location.
 type SSISPackageLocation struct {
-	// PackagePath - The SSIS package path.
-	PackagePath *string `json:"packagePath,omitempty"`
+	// PackagePath - The SSIS package path. Type: string (or Expression with resultType string).
+	PackagePath interface{} `json:"packagePath,omitempty"`
 }
 
 // SSISPropertyOverride SSIS property override.

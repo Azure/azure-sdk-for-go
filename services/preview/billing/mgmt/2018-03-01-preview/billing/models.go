@@ -943,3 +943,14 @@ type Resource struct {
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
 }
+
+// TenantProperties a Tenant properties Resource
+type TenantProperties struct {
+	autorest.Response `json:"-"`
+	// BillingProfileName - The Billing Profile name.
+	BillingProfileName *string `json:"BillingProfileName,omitempty"`
+	// BillingAccountID - The Billing AccountId.
+	BillingAccountID *string `json:"BillingAccountId,omitempty"`
+	// TenantID - The TenantId.
+	TenantID *string `json:"TenantId,omitempty"`
+}

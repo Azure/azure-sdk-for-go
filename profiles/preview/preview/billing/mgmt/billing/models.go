@@ -58,6 +58,8 @@ type PeriodsListResult = original.PeriodsListResult
 type PeriodsListResultIterator = original.PeriodsListResultIterator
 type PeriodsListResultPage = original.PeriodsListResultPage
 type Resource = original.Resource
+type TenantProperties = original.TenantProperties
+type TenantPropertiesClient = original.TenantPropertiesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -109,6 +111,12 @@ func NewPeriodsListResultIterator(page PeriodsListResultPage) PeriodsListResultI
 }
 func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
 	return original.NewPeriodsListResultPage(getNextPage)
+}
+func NewTenantPropertiesClient(subscriptionID string) TenantPropertiesClient {
+	return original.NewTenantPropertiesClient(subscriptionID)
+}
+func NewTenantPropertiesClientWithBaseURI(baseURI string, subscriptionID string) TenantPropertiesClient {
+	return original.NewTenantPropertiesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

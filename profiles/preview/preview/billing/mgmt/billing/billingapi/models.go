@@ -25,3 +25,4 @@ type EnrollmentAccountsClientAPI = original.EnrollmentAccountsClientAPI
 type InvoicesClientAPI = original.InvoicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PeriodsClientAPI = original.PeriodsClientAPI
+type TenantPropertiesClientAPI = original.TenantPropertiesClientAPI

@@ -25,27 +25,27 @@ import (
 	"net/http"
 )
 
-// TenantPropertiesClient is the billing client provides access to billing resources for Azure subscriptions.
-type TenantPropertiesClient struct {
+// DiscoverTenantsClient is the billing client provides access to billing resources for Azure subscriptions.
+type DiscoverTenantsClient struct {
 	BaseClient
 }
 
-// NewTenantPropertiesClient creates an instance of the TenantPropertiesClient client.
-func NewTenantPropertiesClient(subscriptionID string) TenantPropertiesClient {
-	return NewTenantPropertiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDiscoverTenantsClient creates an instance of the DiscoverTenantsClient client.
+func NewDiscoverTenantsClient(subscriptionID string) DiscoverTenantsClient {
+	return NewDiscoverTenantsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTenantPropertiesClientWithBaseURI creates an instance of the TenantPropertiesClient client.
-func NewTenantPropertiesClientWithBaseURI(baseURI string, subscriptionID string) TenantPropertiesClient {
-	return TenantPropertiesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewDiscoverTenantsClientWithBaseURI creates an instance of the DiscoverTenantsClient client.
+func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) DiscoverTenantsClient {
+	return DiscoverTenantsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a Tenant Properties.
 // Parameters:
 // billingProfileID - billing Profile Id.
-func (client TenantPropertiesClient) Get(ctx context.Context, billingProfileID string) (result TenantProperties, err error) {
+func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID string) (result DiscoverTenants, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TenantPropertiesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiscoverTenantsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -56,27 +56,27 @@ func (client TenantPropertiesClient) Get(ctx context.Context, billingProfileID s
 	}
 	req, err := client.GetPreparer(ctx, billingProfileID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.TenantPropertiesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.DiscoverTenantsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.TenantPropertiesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.DiscoverTenantsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.TenantPropertiesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.DiscoverTenantsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client TenantPropertiesClient) GetPreparer(ctx context.Context, billingProfileID string) (*http.Request, error) {
+func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingProfileID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingProfileId": autorest.Encode("path", billingProfileID),
 	}
@@ -96,14 +96,14 @@ func (client TenantPropertiesClient) GetPreparer(ctx context.Context, billingPro
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client TenantPropertiesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client DiscoverTenantsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TenantPropertiesClient) GetResponder(resp *http.Response) (result TenantProperties, err error) {
+func (client DiscoverTenantsClient) GetResponder(resp *http.Response) (result DiscoverTenants, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

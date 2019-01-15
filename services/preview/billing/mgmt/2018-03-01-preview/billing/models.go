@@ -30,6 +30,17 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
 
+// DiscoverTenants a Tenant properties Resource
+type DiscoverTenants struct {
+	autorest.Response `json:"-"`
+	// BillingProfileName - The Billing Profile name.
+	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// BillingAccountID - The Billing AccountId.
+	BillingAccountID *string `json:"billingAccountId,omitempty"`
+	// TenantID - The TenantId.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // DownloadURL a secure URL that can be used to download a PDF invoice until the URL expires.
 type DownloadURL struct {
 	// ExpiryTime - The time in UTC at which this download URL will expire.
@@ -942,15 +953,4 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-}
-
-// TenantProperties a Tenant properties Resource
-type TenantProperties struct {
-	autorest.Response `json:"-"`
-	// BillingProfileName - The Billing Profile name.
-	BillingProfileName *string `json:"billingProfileName,omitempty"`
-	// BillingAccountID - The Billing AccountId.
-	BillingAccountID *string `json:"billingAccountId,omitempty"`
-	// TenantID - The TenantId.
-	TenantID *string `json:"tenantId,omitempty"`
 }

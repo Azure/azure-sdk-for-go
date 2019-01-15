@@ -38,12 +38,12 @@ type PeriodsClientAPI interface {
 
 var _ PeriodsClientAPI = (*billing.PeriodsClient)(nil)
 
-// TenantPropertiesClientAPI contains the set of methods on the TenantPropertiesClient type.
-type TenantPropertiesClientAPI interface {
-	Get(ctx context.Context, billingProfileID string) (result billing.TenantProperties, err error)
+// DiscoverTenantsClientAPI contains the set of methods on the DiscoverTenantsClient type.
+type DiscoverTenantsClientAPI interface {
+	Get(ctx context.Context, billingProfileID string) (result billing.DiscoverTenants, err error)
 }
 
-var _ TenantPropertiesClientAPI = (*billing.TenantPropertiesClient)(nil)
+var _ DiscoverTenantsClientAPI = (*billing.DiscoverTenantsClient)(nil)
 
 // InvoicesClientAPI contains the set of methods on the InvoicesClient type.
 type InvoicesClientAPI interface {

@@ -36304,7 +36304,7 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	// EnvironmentPath - The environment path to execute the SSIS package.
 	EnvironmentPath *string `json:"environmentPath,omitempty"`
 	// ExecutionCredential - The package execution credential.
-	ExecutionCredential map[string]*SSISExecutionCredential `json:"executionCredential"`
+	ExecutionCredential *SSISExecutionCredential `json:"executionCredential,omitempty"`
 	// ConnectVia - The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
 	// ProjectParameters - The project level parameters to execute the SSIS package.

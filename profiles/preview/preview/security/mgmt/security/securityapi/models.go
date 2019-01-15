@@ -21,6 +21,7 @@ package securityapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security/securityapi"
 
+type AdaptiveNetworkControlsClientAPI = original.AdaptiveNetworkControlsClientAPI
 type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI

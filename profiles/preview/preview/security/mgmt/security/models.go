@@ -65,6 +65,13 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
+type Direction = original.Direction
+
+const (
+	Inbound  Direction = original.Inbound
+	Outbound Direction = original.Outbound
+)
+
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
 
 const (
@@ -128,9 +135,25 @@ const (
 	UserRequested         StatusReason = original.UserRequested
 )
 
+type TransportProtocol = original.TransportProtocol
+
+const (
+	TransportProtocolTCP TransportProtocol = original.TransportProtocolTCP
+	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
+)
+
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type AdaptiveNetworkControls = original.AdaptiveNetworkControls
+type AdaptiveNetworkControlsClient = original.AdaptiveNetworkControlsClient
+type AdaptiveNetworkControlsEffectiveNetworkSecurityGroups = original.AdaptiveNetworkControlsEffectiveNetworkSecurityGroups
+type AdaptiveNetworkControlsEnforceFuture = original.AdaptiveNetworkControlsEnforceFuture
+type AdaptiveNetworkControlsList = original.AdaptiveNetworkControlsList
+type AdaptiveNetworkControlsListIterator = original.AdaptiveNetworkControlsListIterator
+type AdaptiveNetworkControlsListPage = original.AdaptiveNetworkControlsListPage
+type AdaptiveNetworkControlsProperties = original.AdaptiveNetworkControlsProperties
+type AdaptiveNetworkControlsRule = original.AdaptiveNetworkControlsRule
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
 type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
@@ -268,6 +291,18 @@ type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
 func New(subscriptionID string, ascLocation string) BaseClient {
 	return original.New(subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkControlsClient(subscriptionID string, ascLocation string) AdaptiveNetworkControlsClient {
+	return original.NewAdaptiveNetworkControlsClient(subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveNetworkControlsClient {
+	return original.NewAdaptiveNetworkControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkControlsListIterator(page AdaptiveNetworkControlsListPage) AdaptiveNetworkControlsListIterator {
+	return original.NewAdaptiveNetworkControlsListIterator(page)
+}
+func NewAdaptiveNetworkControlsListPage(getNextPage func(context.Context, AdaptiveNetworkControlsList) (AdaptiveNetworkControlsList, error)) AdaptiveNetworkControlsListPage {
+	return original.NewAdaptiveNetworkControlsListPage(getNextPage)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -485,6 +520,9 @@ func PossibleAutoProvisionValues() []AutoProvision {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
+func PossibleDirectionValues() []Direction {
+	return original.PossibleDirectionValues()
+}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
 }
@@ -508,6 +546,9 @@ func PossibleStatusReasonValues() []StatusReason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return original.PossibleTransportProtocolValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

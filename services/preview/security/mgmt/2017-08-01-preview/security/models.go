@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -106,6 +107,21 @@ const (
 // PossibleConnectionTypeValues returns an array of possible values for the ConnectionType const type.
 func PossibleConnectionTypeValues() []ConnectionType {
 	return []ConnectionType{External, Internal}
+}
+
+// Direction enumerates the values for direction.
+type Direction string
+
+const (
+	// Inbound ...
+	Inbound Direction = "Inbound"
+	// Outbound ...
+	Outbound Direction = "Outbound"
+)
+
+// PossibleDirectionValues returns an array of possible values for the Direction const type.
+func PossibleDirectionValues() []Direction {
+	return []Direction{Inbound, Outbound}
 }
 
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
@@ -242,6 +258,21 @@ func PossibleStatusReasonValues() []StatusReason {
 	return []StatusReason{Expired, NewerRequestInitiated, UserRequested}
 }
 
+// TransportProtocol enumerates the values for transport protocol.
+type TransportProtocol string
+
+const (
+	// TransportProtocolTCP ...
+	TransportProtocolTCP TransportProtocol = "TCP"
+	// TransportProtocolUDP ...
+	TransportProtocolUDP TransportProtocol = "UDP"
+)
+
+// PossibleTransportProtocolValues returns an array of possible values for the TransportProtocol const type.
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return []TransportProtocol{TransportProtocolTCP, TransportProtocolUDP}
+}
+
 // AadConnectivityState1 describes an Azure resource with kind
 type AadConnectivityState1 struct {
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
@@ -321,6 +352,293 @@ type AadSolutionProperties struct {
 	Workspace    *ConnectedWorkspace `json:"workspace,omitempty"`
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
+}
+
+// AdaptiveNetworkControls the resource whose properties describes the Adaptive Network Controls settings
+// for some Azure resource
+type AdaptiveNetworkControls struct {
+	autorest.Response `json:"-"`
+	// AdaptiveNetworkControlsProperties - Properties of the Adaptive Network Controls resource
+	*AdaptiveNetworkControlsProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdaptiveNetworkControls.
+func (anc AdaptiveNetworkControls) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if anc.AdaptiveNetworkControlsProperties != nil {
+		objectMap["properties"] = anc.AdaptiveNetworkControlsProperties
+	}
+	if anc.ID != nil {
+		objectMap["id"] = anc.ID
+	}
+	if anc.Name != nil {
+		objectMap["name"] = anc.Name
+	}
+	if anc.Type != nil {
+		objectMap["type"] = anc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AdaptiveNetworkControls struct.
+func (anc *AdaptiveNetworkControls) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var adaptiveNetworkControlsProperties AdaptiveNetworkControlsProperties
+				err = json.Unmarshal(*v, &adaptiveNetworkControlsProperties)
+				if err != nil {
+					return err
+				}
+				anc.AdaptiveNetworkControlsProperties = &adaptiveNetworkControlsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				anc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				anc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				anc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AdaptiveNetworkControlsEffectiveNetworkSecurityGroups describes the Network Security Groups effective on
+// a network interface
+type AdaptiveNetworkControlsEffectiveNetworkSecurityGroups struct {
+	// NetworkInterface - The Azure resource ID of the network interface
+	NetworkInterface *string `json:"networkInterface,omitempty"`
+	// NetworkSecurityGroups - The Network Security Groups effective on the network interface
+	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
+}
+
+// AdaptiveNetworkControlsEnforceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AdaptiveNetworkControlsEnforceFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AdaptiveNetworkControlsEnforceFuture) Result(client AdaptiveNetworkControlsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkControlsEnforceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("security.AdaptiveNetworkControlsEnforceFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AdaptiveNetworkControlsList response for ListAdaptiveNetworkControls API service call
+type AdaptiveNetworkControlsList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of Adaptive Network Controls resources
+	Value *[]AdaptiveNetworkControls `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AdaptiveNetworkControlsListIterator provides access to a complete listing of AdaptiveNetworkControls
+// values.
+type AdaptiveNetworkControlsListIterator struct {
+	i    int
+	page AdaptiveNetworkControlsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AdaptiveNetworkControlsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveNetworkControlsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AdaptiveNetworkControlsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AdaptiveNetworkControlsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AdaptiveNetworkControlsListIterator) Response() AdaptiveNetworkControlsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AdaptiveNetworkControlsListIterator) Value() AdaptiveNetworkControls {
+	if !iter.page.NotDone() {
+		return AdaptiveNetworkControls{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AdaptiveNetworkControlsListIterator type.
+func NewAdaptiveNetworkControlsListIterator(page AdaptiveNetworkControlsListPage) AdaptiveNetworkControlsListIterator {
+	return AdaptiveNetworkControlsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ancl AdaptiveNetworkControlsList) IsEmpty() bool {
+	return ancl.Value == nil || len(*ancl.Value) == 0
+}
+
+// adaptiveNetworkControlsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ancl AdaptiveNetworkControlsList) adaptiveNetworkControlsListPreparer(ctx context.Context) (*http.Request, error) {
+	if ancl.NextLink == nil || len(to.String(ancl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ancl.NextLink)))
+}
+
+// AdaptiveNetworkControlsListPage contains a page of AdaptiveNetworkControls values.
+type AdaptiveNetworkControlsListPage struct {
+	fn   func(context.Context, AdaptiveNetworkControlsList) (AdaptiveNetworkControlsList, error)
+	ancl AdaptiveNetworkControlsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AdaptiveNetworkControlsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveNetworkControlsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ancl)
+	if err != nil {
+		return err
+	}
+	page.ancl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AdaptiveNetworkControlsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AdaptiveNetworkControlsListPage) NotDone() bool {
+	return !page.ancl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AdaptiveNetworkControlsListPage) Response() AdaptiveNetworkControlsList {
+	return page.ancl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AdaptiveNetworkControlsListPage) Values() []AdaptiveNetworkControls {
+	if page.ancl.IsEmpty() {
+		return nil
+	}
+	return *page.ancl.Value
+}
+
+// Creates a new instance of the AdaptiveNetworkControlsListPage type.
+func NewAdaptiveNetworkControlsListPage(getNextPage func(context.Context, AdaptiveNetworkControlsList) (AdaptiveNetworkControlsList, error)) AdaptiveNetworkControlsListPage {
+	return AdaptiveNetworkControlsListPage{fn: getNextPage}
+}
+
+// AdaptiveNetworkControlsProperties adaptive Network Controls resource properties
+type AdaptiveNetworkControlsProperties struct {
+	// Rules - The security rules which are recommended to be effective on the VM
+	Rules *[]AdaptiveNetworkControlsRule `json:"rules,omitempty"`
+	// RulesCalculationTime - The UTC time on which the rules were calculated
+	RulesCalculationTime *date.Time `json:"rulesCalculationTime,omitempty"`
+	// EffectiveNetworkSecurityGroups - The Network Security Groups effective on the network interfaces of the protected resource
+	EffectiveNetworkSecurityGroups *[]AdaptiveNetworkControlsEffectiveNetworkSecurityGroups `json:"effectiveNetworkSecurityGroups,omitempty"`
+}
+
+// AdaptiveNetworkControlsRule describes remote addresses that is recommended to communicate with the Azure
+// resource on some (Protocol, Port, Direction). All other remote addresses are recommended to be blocked
+type AdaptiveNetworkControlsRule struct {
+	// Name - The name of the rule
+	Name *string `json:"name,omitempty"`
+	// Direction - The rule's direction. Possible values include: 'Inbound', 'Outbound'
+	Direction Direction `json:"direction,omitempty"`
+	// DestinationPort - The rule's destination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocols - The rule's transport protocols
+	Protocols *[]TransportProtocol `json:"protocols,omitempty"`
+	// IPAddresses - The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
 }
 
 // AdvancedThreatProtectionProperties the Advanced Threat Protection settings.

@@ -174,6 +174,15 @@ type ExternalSecuritySolutionsClientAPI interface {
 
 var _ ExternalSecuritySolutionsClientAPI = (*security.ExternalSecuritySolutionsClient)(nil)
 
+// AdaptiveNetworkControlsClientAPI contains the set of methods on the AdaptiveNetworkControlsClient type.
+type AdaptiveNetworkControlsClientAPI interface {
+	Enforce(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, adaptiveNetworkControlsResourceName string) (result security.AdaptiveNetworkControlsEnforceFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string, adaptiveNetworkControlsResourceName string) (result security.AdaptiveNetworkControls, err error)
+	ListByExtendedResource(ctx context.Context, resourceGroupName string, extendedResourceProvider string, extendedResourceType string, extendedResourceName string) (result security.AdaptiveNetworkControlsListPage, err error)
+}
+
+var _ AdaptiveNetworkControlsClientAPI = (*security.AdaptiveNetworkControlsClient)(nil)
+
 // TopologyClientAPI contains the set of methods on the TopologyClient type.
 type TopologyClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, topologyResourceName string) (result security.TopologyResource, err error)

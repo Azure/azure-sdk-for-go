@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-10-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-11-01/network"
 )
 
 const (
@@ -267,6 +267,23 @@ const (
 	ConnectionStatusUnknown      ConnectionStatus = original.ConnectionStatusUnknown
 )
 
+type DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocol
+
+const (
+	DdosCustomPolicyProtocolSyn DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolSyn
+	DdosCustomPolicyProtocolTCP DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolTCP
+	DdosCustomPolicyProtocolUDP DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolUDP
+)
+
+type DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverride
+
+const (
+	Default DdosCustomPolicyTriggerSensitivityOverride = original.Default
+	High    DdosCustomPolicyTriggerSensitivityOverride = original.High
+	Low     DdosCustomPolicyTriggerSensitivityOverride = original.Low
+	Relaxed DdosCustomPolicyTriggerSensitivityOverride = original.Relaxed
+)
+
 type DhGroup = original.DhGroup
 
 const (
@@ -500,9 +517,9 @@ const (
 type LoadDistribution = original.LoadDistribution
 
 const (
-	Default          LoadDistribution = original.Default
-	SourceIP         LoadDistribution = original.SourceIP
-	SourceIPProtocol LoadDistribution = original.SourceIPProtocol
+	LoadDistributionDefault          LoadDistribution = original.LoadDistributionDefault
+	LoadDistributionSourceIP         LoadDistribution = original.LoadDistributionSourceIP
+	LoadDistributionSourceIPProtocol LoadDistribution = original.LoadDistributionSourceIPProtocol
 )
 
 type NextHopType = original.NextHopType
@@ -596,6 +613,13 @@ type ProcessorArchitecture = original.ProcessorArchitecture
 const (
 	Amd64 ProcessorArchitecture = original.Amd64
 	X86   ProcessorArchitecture = original.X86
+)
+
+type ProtectionCoverage = original.ProtectionCoverage
+
+const (
+	ProtectionCoverageBasic    ProtectionCoverage = original.ProtectionCoverageBasic
+	ProtectionCoverageStandard ProtectionCoverage = original.ProtectionCoverageStandard
 )
 
 type Protocol = original.Protocol
@@ -838,6 +862,9 @@ type ApplicationGateway = original.ApplicationGateway
 type ApplicationGatewayAuthenticationCertificate = original.ApplicationGatewayAuthenticationCertificate
 type ApplicationGatewayAuthenticationCertificatePropertiesFormat = original.ApplicationGatewayAuthenticationCertificatePropertiesFormat
 type ApplicationGatewayAutoscaleConfiguration = original.ApplicationGatewayAutoscaleConfiguration
+type ApplicationGatewayAvailableRequestHeadersResult = original.ApplicationGatewayAvailableRequestHeadersResult
+type ApplicationGatewayAvailableResponseHeadersResult = original.ApplicationGatewayAvailableResponseHeadersResult
+type ApplicationGatewayAvailableServerVariablesResult = original.ApplicationGatewayAvailableServerVariablesResult
 type ApplicationGatewayAvailableSslOptions = original.ApplicationGatewayAvailableSslOptions
 type ApplicationGatewayAvailableSslOptionsPropertiesFormat = original.ApplicationGatewayAvailableSslOptionsPropertiesFormat
 type ApplicationGatewayAvailableSslPredefinedPolicies = original.ApplicationGatewayAvailableSslPredefinedPolicies
@@ -913,6 +940,7 @@ type ApplicationSecurityGroupPropertiesFormat = original.ApplicationSecurityGrou
 type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
 type ApplicationSecurityGroupsCreateOrUpdateFuture = original.ApplicationSecurityGroupsCreateOrUpdateFuture
 type ApplicationSecurityGroupsDeleteFuture = original.ApplicationSecurityGroupsDeleteFuture
+type ApplicationSecurityGroupsUpdateTagsFuture = original.ApplicationSecurityGroupsUpdateTagsFuture
 type AuthorizationListResult = original.AuthorizationListResult
 type AuthorizationListResultIterator = original.AuthorizationListResultIterator
 type AuthorizationListResultPage = original.AuthorizationListResultPage
@@ -977,6 +1005,8 @@ type BgpServiceCommunityListResultIterator = original.BgpServiceCommunityListRes
 type BgpServiceCommunityListResultPage = original.BgpServiceCommunityListResultPage
 type BgpServiceCommunityPropertiesFormat = original.BgpServiceCommunityPropertiesFormat
 type BgpSettings = original.BgpSettings
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type ConfigurationDiagnosticParameters = original.ConfigurationDiagnosticParameters
 type ConfigurationDiagnosticProfile = original.ConfigurationDiagnosticProfile
 type ConfigurationDiagnosticResponse = original.ConfigurationDiagnosticResponse
@@ -1012,6 +1042,12 @@ type ContainerNetworkInterfaceIPConfiguration = original.ContainerNetworkInterfa
 type ContainerNetworkInterfaceIPConfigurationPropertiesFormat = original.ContainerNetworkInterfaceIPConfigurationPropertiesFormat
 type ContainerNetworkInterfacePropertiesFormat = original.ContainerNetworkInterfacePropertiesFormat
 type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
+type DdosCustomPoliciesClient = original.DdosCustomPoliciesClient
+type DdosCustomPoliciesCreateOrUpdateFuture = original.DdosCustomPoliciesCreateOrUpdateFuture
+type DdosCustomPoliciesDeleteFuture = original.DdosCustomPoliciesDeleteFuture
+type DdosCustomPoliciesUpdateTagsFuture = original.DdosCustomPoliciesUpdateTagsFuture
+type DdosCustomPolicy = original.DdosCustomPolicy
+type DdosCustomPolicyPropertiesFormat = original.DdosCustomPolicyPropertiesFormat
 type DdosProtectionPlan = original.DdosProtectionPlan
 type DdosProtectionPlanListResult = original.DdosProtectionPlanListResult
 type DdosProtectionPlanListResultIterator = original.DdosProtectionPlanListResultIterator
@@ -1020,6 +1056,7 @@ type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesF
 type DdosProtectionPlansClient = original.DdosProtectionPlansClient
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
+type DdosSettings = original.DdosSettings
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation
 type DeviceProperties = original.DeviceProperties
@@ -1348,6 +1385,7 @@ type ProfileListResultPage = original.ProfileListResultPage
 type ProfilePropertiesFormat = original.ProfilePropertiesFormat
 type ProfilesClient = original.ProfilesClient
 type ProtocolConfiguration = original.ProtocolConfiguration
+type ProtocolCustomSettingsFormat = original.ProtocolCustomSettingsFormat
 type PublicIPAddress = original.PublicIPAddress
 type PublicIPAddressDNSSettings = original.PublicIPAddressDNSSettings
 type PublicIPAddressListResult = original.PublicIPAddressListResult
@@ -1724,6 +1762,12 @@ func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient
 }
 func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionMonitorsClient {
 	return original.NewConnectionMonitorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDdosCustomPoliciesClient(subscriptionID string) DdosCustomPoliciesClient {
+	return original.NewDdosCustomPoliciesClient(subscriptionID)
+}
+func NewDdosCustomPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DdosCustomPoliciesClient {
+	return original.NewDdosCustomPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDdosProtectionPlanListResultIterator(page DdosProtectionPlanListResultPage) DdosProtectionPlanListResultIterator {
 	return original.NewDdosProtectionPlanListResultIterator(page)
@@ -2475,6 +2519,12 @@ func PossibleConnectionStateValues() []ConnectionState {
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
 }
+func PossibleDdosCustomPolicyProtocolValues() []DdosCustomPolicyProtocol {
+	return original.PossibleDdosCustomPolicyProtocolValues()
+}
+func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPolicyTriggerSensitivityOverride {
+	return original.PossibleDdosCustomPolicyTriggerSensitivityOverrideValues()
+}
 func PossibleDhGroupValues() []DhGroup {
 	return original.PossibleDhGroupValues()
 }
@@ -2588,6 +2638,9 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 }
 func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return original.PossibleProcessorArchitectureValues()
+}
+func PossibleProtectionCoverageValues() []ProtectionCoverage {
+	return original.PossibleProtectionCoverageValues()
 }
 func PossibleProtocol1Values() []Protocol1 {
 	return original.PossibleProtocol1Values()

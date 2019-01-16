@@ -2052,8 +2052,10 @@ type ApplicationGatewayAuthenticationCertificatePropertiesFormat struct {
 
 // ApplicationGatewayAutoscaleConfiguration application Gateway autoscale configuration.
 type ApplicationGatewayAutoscaleConfiguration struct {
-	// MinCapacity - Lower bound on number of Application Gateway instances
+	// MinCapacity - Lower bound on number of Application Gateway capacity
 	MinCapacity *int32 `json:"minCapacity,omitempty"`
+	// MaxCapacity - Upper bound on number of Application Gateway capacity
+	MaxCapacity *int32 `json:"maxCapacity,omitempty"`
 }
 
 // ApplicationGatewayAvailableRequestHeadersResult response for ApplicationGatewayAvailableRequestHeaders

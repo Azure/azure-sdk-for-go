@@ -572,6 +572,7 @@ const (
 	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
+	TypeValidation               TypeBasicActivity = original.TypeValidation
 	TypeWait                     TypeBasicActivity = original.TypeWait
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
 	TypeWebHook                  TypeBasicActivity = original.TypeWebHook
@@ -1073,11 +1074,15 @@ type EloquaLinkedService = original.EloquaLinkedService
 type EloquaLinkedServiceTypeProperties = original.EloquaLinkedServiceTypeProperties
 type EloquaObjectDataset = original.EloquaObjectDataset
 type EloquaSource = original.EloquaSource
+type EnableInteractiveQueryForIntegrationRuntimeRequest = original.EnableInteractiveQueryForIntegrationRuntimeRequest
 type ExecutePipelineActivity = original.ExecutePipelineActivity
 type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTypeProperties
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
 type ExecutionActivity = original.ExecutionActivity
+type ExposureControlClient = original.ExposureControlClient
+type ExposureControlRequest = original.ExposureControlRequest
+type ExposureControlResponse = original.ExposureControlResponse
 type Expression = original.Expression
 type FactoriesClient = original.FactoriesClient
 type Factory = original.Factory
@@ -1180,6 +1185,7 @@ type IntegrationRuntimeStatus = original.IntegrationRuntimeStatus
 type IntegrationRuntimeStatusListResponse = original.IntegrationRuntimeStatusListResponse
 type IntegrationRuntimeStatusResponse = original.IntegrationRuntimeStatusResponse
 type IntegrationRuntimeVNetProperties = original.IntegrationRuntimeVNetProperties
+type IntegrationRuntimeVirtualNetworkProperties = original.IntegrationRuntimeVirtualNetworkProperties
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
 type IntegrationRuntimesStartFuture = original.IntegrationRuntimesStartFuture
 type IntegrationRuntimesStopFuture = original.IntegrationRuntimesStopFuture
@@ -1330,6 +1336,7 @@ type SQLServerTableDataset = original.SQLServerTableDataset
 type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypeProperties
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
+type SSISExecutionCredential = original.SSISExecutionCredential
 type SSISExecutionParameter = original.SSISExecutionParameter
 type SSISPackageLocation = original.SSISPackageLocation
 type SSISPropertyOverride = original.SSISPropertyOverride
@@ -1425,6 +1432,8 @@ type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNode
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
 type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
+type ValidationActivity = original.ValidationActivity
+type ValidationActivityTypeProperties = original.ValidationActivityTypeProperties
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService
 type VerticaLinkedServiceTypeProperties = original.VerticaLinkedServiceTypeProperties
@@ -1474,6 +1483,12 @@ func NewDatasetsClient(subscriptionID string) DatasetsClient {
 }
 func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExposureControlClient(subscriptionID string) ExposureControlClient {
+	return original.NewExposureControlClient(subscriptionID)
+}
+func NewExposureControlClientWithBaseURI(baseURI string, subscriptionID string) ExposureControlClient {
+	return original.NewExposureControlClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFactoriesClient(subscriptionID string) FactoriesClient {
 	return original.NewFactoriesClient(subscriptionID)

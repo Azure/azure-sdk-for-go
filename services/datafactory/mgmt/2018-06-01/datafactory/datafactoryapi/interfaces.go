@@ -45,11 +45,20 @@ type FactoriesClientAPI interface {
 
 var _ FactoriesClientAPI = (*datafactory.FactoriesClient)(nil)
 
+// ExposureControlClientAPI contains the set of methods on the ExposureControlClient type.
+type ExposureControlClientAPI interface {
+	GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
+}
+
+var _ ExposureControlClientAPI = (*datafactory.ExposureControlClient)(nil)
+
 // IntegrationRuntimesClientAPI contains the set of methods on the IntegrationRuntimesClient type.
 type IntegrationRuntimesClientAPI interface {
 	CreateLinkedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest datafactory.CreateLinkedIntegrationRuntimeRequest) (result datafactory.IntegrationRuntimeStatusResponse, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntime datafactory.IntegrationRuntimeResource, ifMatch string) (result datafactory.IntegrationRuntimeResource, err error)
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result autorest.Response, err error)
+	DisableIntegrationRuntimeInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result autorest.Response, err error)
+	EnableIntegrationRuntimeInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryForIntegrationRuntimeRequest datafactory.EnableInteractiveQueryForIntegrationRuntimeRequest) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, ifNoneMatch string) (result datafactory.IntegrationRuntimeResource, err error)
 	GetConnectionInfo(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeConnectionInfo, err error)
 	GetMonitoringData(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result datafactory.IntegrationRuntimeMonitoringData, err error)

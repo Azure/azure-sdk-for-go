@@ -196,7 +196,7 @@ func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
-// Get the Get ntework interface operation retreives information about the specified network interface.
+// Get the Get network interface operation retrieves information about the specified network interface.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // loadBalancerName - the name of the loadBalancer.
@@ -277,7 +277,7 @@ func (client LoadBalancersClient) GetResponder(resp *http.Response) (result Load
 	return
 }
 
-// List the List loadBalancer opertion retrieves all the loadbalancers in a resource group.
+// List the List loadBalancer operation retrieves all the load balancers in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client LoadBalancersClient) List(ctx context.Context, resourceGroupName string) (result LoadBalancerListResultPage, err error) {
@@ -390,7 +390,7 @@ func (client LoadBalancersClient) ListComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListAll the List loadBalancer opertion retrieves all the loadbalancers in a subscription.
+// ListAll the List loadBalancer operation retrieves all the load balancers in a subscription.
 func (client LoadBalancersClient) ListAll(ctx context.Context) (result LoadBalancerListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoadBalancersClient.ListAll")

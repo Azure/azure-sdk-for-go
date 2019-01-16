@@ -209,7 +209,7 @@ func PossibleUnavailableReasonValues() []UnavailableReason {
 
 // CheckNameAvailability description of a Check Name availability request properties.
 type CheckNameAvailability struct {
-	// Name - The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+	// Name - The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -2107,7 +2107,7 @@ func NewTopicListResultPage(getNextPage func(context.Context, TopicListResult) (
 	return TopicListResultPage{fn: getNextPage}
 }
 
-// TopicProperties the Tpoic Properties definition.
+// TopicProperties the Topic Properties definition.
 type TopicProperties struct {
 	// AccessedAt - Last time the message was sent, or a request was received, for this topic.
 	AccessedAt *date.Time `json:"accessedAt,omitempty"`

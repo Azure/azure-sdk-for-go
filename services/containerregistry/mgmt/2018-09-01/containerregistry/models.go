@@ -674,7 +674,7 @@ type DockerBuildRequest struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
@@ -942,7 +942,7 @@ type EncodedTaskRunRequest struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
@@ -1422,7 +1422,7 @@ type FileTaskRunRequest struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
@@ -3523,7 +3523,7 @@ type Source struct {
 type SourceProperties struct {
 	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
-	// RepositoryURL - The full URL to the source code respository
+	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
 	// Branch - The branch name of the source code.
 	Branch *string `json:"branch,omitempty"`
@@ -3586,7 +3586,7 @@ type SourceTriggerUpdateParameters struct {
 type SourceUpdateParameters struct {
 	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
-	// RepositoryURL - The full URL to the source code respository
+	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
 	// Branch - The branch name of the source code.
 	Branch *string `json:"branch,omitempty"`

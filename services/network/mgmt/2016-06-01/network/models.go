@@ -3237,7 +3237,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	SharedKey *string `json:"sharedKey,omitempty"`
 	// VlanID - Gets or sets the vlan id
 	VlanID *int32 `json:"vlanId,omitempty"`
-	// MicrosoftPeeringConfig - Gets or sets the mircosoft peering config
+	// MicrosoftPeeringConfig - Gets or sets the Microsoft peering config
 	MicrosoftPeeringConfig *ExpressRouteCircuitPeeringConfig `json:"microsoftPeeringConfig,omitempty"`
 	// Stats - Gets or peering stats
 	Stats *ExpressRouteCircuitStats `json:"stats,omitempty"`
@@ -6059,7 +6059,7 @@ type PublicIPAddressPropertiesFormat struct {
 	// DNSSettings - Gets or sets FQDN of the DNS record associated with the public IP address
 	DNSSettings *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
 	IPAddress   *string                     `json:"ipAddress,omitempty"`
-	// IdleTimeoutInMinutes - Gets or sets the Idletimeout of the public IP address
+	// IdleTimeoutInMinutes - Gets or sets the idle timeout of the public IP address
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 	// ResourceGUID - Gets or sets resource guid property of the PublicIP resource
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
@@ -7384,19 +7384,19 @@ type SecurityRulePropertiesFormat struct {
 	Description *string `json:"description,omitempty"`
 	// Protocol - Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or All(*). Possible values include: 'TCP', 'UDP', 'Asterisk'
 	Protocol SecurityRuleProtocol `json:"protocol,omitempty"`
-	// SourcePortRange - Gets or sets Source Port or Range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+	// SourcePortRange - Gets or sets Source Port or Range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
-	// DestinationPortRange - Gets or sets Destination Port or Range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+	// DestinationPortRange - Gets or sets Destination Port or Range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
-	// SourceAddressPrefix - Gets or sets source address prefix. CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
+	// SourceAddressPrefix - Gets or sets source address prefix. CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
-	// DestinationAddressPrefix - Gets or sets destination address prefix. CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+	// DestinationAddressPrefix - Gets or sets destination address prefix. CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 	// Access - Gets or sets network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'
 	Access SecurityRuleAccess `json:"access,omitempty"`
 	// Priority - Gets or sets the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.
 	Priority *int32 `json:"priority,omitempty"`
-	// Direction - Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values include: 'Inbound', 'Outbound'
+	// Direction - Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values include: 'Inbound', 'Outbound'
 	Direction SecurityRuleDirection `json:"direction,omitempty"`
 	// ProvisioningState - Gets provisioning state of the PublicIP resource Updating/Deleting/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -7460,7 +7460,7 @@ type String struct {
 	Value             *string `json:"value,omitempty"`
 }
 
-// Subnet subnet in a VirtualNework resource
+// Subnet subnet in a VirtualNetwork resource
 type Subnet struct {
 	autorest.Response       `json:"-"`
 	*SubnetPropertiesFormat `json:"properties,omitempty"`
@@ -8452,11 +8452,11 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	VirtualNetworkGateway1 *VirtualNetworkGateway `json:"virtualNetworkGateway1,omitempty"`
 	VirtualNetworkGateway2 *VirtualNetworkGateway `json:"virtualNetworkGateway2,omitempty"`
 	LocalNetworkGateway2   *LocalNetworkGateway   `json:"localNetworkGateway2,omitempty"`
-	// ConnectionType - Gateway connection type -Ipsec/Dedicated/VpnClient/Vnet2Vnet. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+	// ConnectionType - Gateway connection type IPsec/Dedicated/VpnClient/Vnet2Vnet. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
 	// RoutingWeight - The Routing weight.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
-	// SharedKey - The Ipsec share key.
+	// SharedKey - The IPsec share key.
 	SharedKey *string `json:"sharedKey,omitempty"`
 	// ConnectionStatus - Virtual network Gateway connection status. Possible values include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'
 	ConnectionStatus VirtualNetworkGatewayConnectionStatus `json:"connectionStatus,omitempty"`
@@ -9086,7 +9086,7 @@ func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNe
 	return VirtualNetworkListResultPage{fn: getNextPage}
 }
 
-// VirtualNetworkPeering peerings in a VirtualNework resource
+// VirtualNetworkPeering peerings in a VirtualNetwork resource
 type VirtualNetworkPeering struct {
 	autorest.Response                      `json:"-"`
 	*VirtualNetworkPeeringPropertiesFormat `json:"properties,omitempty"`

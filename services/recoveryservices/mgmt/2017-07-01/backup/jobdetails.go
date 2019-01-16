@@ -40,7 +40,7 @@ func NewJobDetailsClientWithBaseURI(baseURI string, subscriptionID string) JobDe
 	return JobDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets exteded information associated with the job.
+// Get gets extended information associated with the job.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

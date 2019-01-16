@@ -45,6 +45,13 @@ type FactoriesClientAPI interface {
 
 var _ FactoriesClientAPI = (*datafactory.FactoriesClient)(nil)
 
+// ExposureControlClientAPI contains the set of methods on the ExposureControlClient type.
+type ExposureControlClientAPI interface {
+	GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
+}
+
+var _ ExposureControlClientAPI = (*datafactory.ExposureControlClient)(nil)
+
 // IntegrationRuntimesClientAPI contains the set of methods on the IntegrationRuntimesClient type.
 type IntegrationRuntimesClientAPI interface {
 	CreateLinkedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, createLinkedIntegrationRuntimeRequest datafactory.CreateLinkedIntegrationRuntimeRequest) (result datafactory.IntegrationRuntimeStatusResponse, err error)

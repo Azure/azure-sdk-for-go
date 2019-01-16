@@ -122,7 +122,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Re
 	return
 }
 
-// Delete the Delete VirtualNetworkGateway operation deletes the specifed virtual network Gateway through Network
+// Delete the Delete VirtualNetworkGateway operation deletes the specified virtual network Gateway through Network
 // resource provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -359,7 +359,7 @@ func (client VirtualNetworkGatewaysClient) GetResponder(resp *http.Response) (re
 	return
 }
 
-// List the List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
+// List the List VirtualNetworkGateways operation retrieves all the virtual network gateways stored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client VirtualNetworkGatewaysClient) List(ctx context.Context, resourceGroupName string) (result VirtualNetworkGatewayListResultPage, err error) {

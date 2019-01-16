@@ -555,7 +555,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(res
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkGatewayConnectionName - the virtual network gateway connection name.
-// parameters - parameters supplied to the Begin Set Virtual Network Gateway conection Shared key operation
+// parameters - parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
 // throughNetwork resource provider.
 func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result VirtualNetworkGatewayConnectionsSetSharedKeyFuture, err error) {
 	if tracing.IsEnabled() {

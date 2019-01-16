@@ -1179,6 +1179,31 @@ func (mjoped *MediaJobOutputProcessingEventData) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
+// MediaJobOutputProgressEventData job Output Progress Event Data.
+type MediaJobOutputProgressEventData struct {
+	// Label - Gets the Job output label.
+	Label *string `json:"label,omitempty"`
+	// Progress - Gets the Job output progress.
+	Progress *int64 `json:"progress,omitempty"`
+	// JobCorrelationData - Gets the Job correlation data.
+	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
+}
+
+// MarshalJSON is the custom marshaler for MediaJobOutputProgressEventData.
+func (mjoped MediaJobOutputProgressEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mjoped.Label != nil {
+		objectMap["label"] = mjoped.Label
+	}
+	if mjoped.Progress != nil {
+		objectMap["progress"] = mjoped.Progress
+	}
+	if mjoped.JobCorrelationData != nil {
+		objectMap["jobCorrelationData"] = mjoped.JobCorrelationData
+	}
+	return json.Marshal(objectMap)
+}
+
 // MediaJobOutputScheduledEventData job output scheduled event data
 type MediaJobOutputScheduledEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'

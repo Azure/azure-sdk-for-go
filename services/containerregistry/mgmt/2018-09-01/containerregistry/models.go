@@ -664,7 +664,7 @@ type DockerBuildRequest struct {
 	NoCache *bool `json:"noCache,omitempty"`
 	// DockerFilePath - The Docker file path relative to the source location.
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
-	// Target - Gets or sets the name of the target build stage for the docker build.
+	// Target - The name of the target build stage for the docker build.
 	Target *string `json:"target,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing the run.
 	Arguments *[]Argument `json:"arguments,omitempty"`
@@ -771,7 +771,7 @@ type DockerBuildStep struct {
 	NoCache *bool `json:"noCache,omitempty"`
 	// DockerFilePath - The Docker file path relative to the source context.
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
-	// Target - Gets or sets the name of the target build stage for the docker build.
+	// Target - The name of the target build stage for the docker build.
 	Target *string `json:"target,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing this build step.
 	Arguments *[]Argument `json:"arguments,omitempty"`
@@ -859,7 +859,7 @@ type DockerBuildStepUpdateParameters struct {
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing this build step.
 	Arguments *[]Argument `json:"arguments,omitempty"`
-	// Target - Gets or sets the name of the target build stage for the docker build.
+	// Target - The name of the target build stage for the docker build.
 	Target *string `json:"target,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`

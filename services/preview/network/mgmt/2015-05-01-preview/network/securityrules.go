@@ -211,7 +211,7 @@ func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
-// Get the Get NetworkSecurityRule operation retreives information about the specified network security rule.
+// Get the Get NetworkSecurityRule operation retrieves information about the specified network security rule.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkSecurityGroupName - the name of the network security group.
@@ -290,7 +290,7 @@ func (client SecurityRulesClient) GetResponder(resp *http.Response) (result Secu
 	return
 }
 
-// List the List network security rule opertion retrieves all the security rules in a network security group.
+// List the List network security rule operation retrieves all the security rules in a network security group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkSecurityGroupName - the name of the network security group.

@@ -120,7 +120,7 @@ func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response)
 	return
 }
 
-// Delete the Delete VirtualNetwork operation deletes the specifed virtual network
+// Delete the Delete VirtualNetwork operation deletes the specified virtual network
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkName - the name of the virtual network.

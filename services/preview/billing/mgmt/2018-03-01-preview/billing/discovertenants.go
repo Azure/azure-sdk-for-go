@@ -89,7 +89,7 @@ func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingProf
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/discoverTenants", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingProfiles/{billingProfileId}/discoverTenants", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

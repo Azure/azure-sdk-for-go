@@ -46,6 +46,18 @@ const (
 	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
+type AzureFunctionActivityMethod = original.AzureFunctionActivityMethod
+
+const (
+	DELETE  AzureFunctionActivityMethod = original.DELETE
+	GET     AzureFunctionActivityMethod = original.GET
+	HEAD    AzureFunctionActivityMethod = original.HEAD
+	OPTIONS AzureFunctionActivityMethod = original.OPTIONS
+	POST    AzureFunctionActivityMethod = original.POST
+	PUT     AzureFunctionActivityMethod = original.PUT
+	TRACE   AzureFunctionActivityMethod = original.TRACE
+)
+
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
@@ -546,6 +558,7 @@ type TypeBasicActivity = original.TypeBasicActivity
 const (
 	TypeActivity                 TypeBasicActivity = original.TypeActivity
 	TypeAppendVariable           TypeBasicActivity = original.TypeAppendVariable
+	TypeAzureFunctionActivity    TypeBasicActivity = original.TypeAzureFunctionActivity
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
 	TypeContainer                TypeBasicActivity = original.TypeContainer
@@ -572,7 +585,6 @@ const (
 	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
-	TypeValidation               TypeBasicActivity = original.TypeValidation
 	TypeWait                     TypeBasicActivity = original.TypeWait
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
 )
@@ -784,6 +796,7 @@ const (
 	TypeAzureDatabricks          TypeBasicLinkedService = original.TypeAzureDatabricks
 	TypeAzureDataLakeAnalytics   TypeBasicLinkedService = original.TypeAzureDataLakeAnalytics
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
+	TypeAzureFunction            TypeBasicLinkedService = original.TypeAzureFunction
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
@@ -880,10 +893,10 @@ const (
 type WebActivityMethod = original.WebActivityMethod
 
 const (
-	DELETE WebActivityMethod = original.DELETE
-	GET    WebActivityMethod = original.GET
-	POST   WebActivityMethod = original.POST
-	PUT    WebActivityMethod = original.PUT
+	WebActivityMethodDELETE WebActivityMethod = original.WebActivityMethodDELETE
+	WebActivityMethodGET    WebActivityMethod = original.WebActivityMethodGET
+	WebActivityMethodPOST   WebActivityMethod = original.WebActivityMethodPOST
+	WebActivityMethodPUT    WebActivityMethod = original.WebActivityMethodPUT
 )
 
 type AccessPolicyResponse = original.AccessPolicyResponse
@@ -923,6 +936,10 @@ type AzureDataLakeStoreSink = original.AzureDataLakeStoreSink
 type AzureDataLakeStoreSource = original.AzureDataLakeStoreSource
 type AzureDatabricksLinkedService = original.AzureDatabricksLinkedService
 type AzureDatabricksLinkedServiceTypeProperties = original.AzureDatabricksLinkedServiceTypeProperties
+type AzureFunctionActivity = original.AzureFunctionActivity
+type AzureFunctionActivityTypeProperties = original.AzureFunctionActivityTypeProperties
+type AzureFunctionLinkedService = original.AzureFunctionLinkedService
+type AzureFunctionLinkedServiceTypeProperties = original.AzureFunctionLinkedServiceTypeProperties
 type AzureKeyVaultLinkedService = original.AzureKeyVaultLinkedService
 type AzureKeyVaultLinkedServiceTypeProperties = original.AzureKeyVaultLinkedServiceTypeProperties
 type AzureKeyVaultSecretReference = original.AzureKeyVaultSecretReference
@@ -1423,8 +1440,6 @@ type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNode
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
 type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
-type ValidationActivity = original.ValidationActivity
-type ValidationActivityTypeProperties = original.ValidationActivityTypeProperties
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService
 type VerticaLinkedServiceTypeProperties = original.VerticaLinkedServiceTypeProperties
@@ -1595,6 +1610,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 }
 func PossibleAuthorizationTypeValues() []AuthorizationType {
 	return original.PossibleAuthorizationTypeValues()
+}
+func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
+	return original.PossibleAzureFunctionActivityMethodValues()
 }
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()

@@ -108,6 +108,8 @@ type ChargeSummaryProperties = original.ChargeSummaryProperties
 type ChargesClient = original.ChargesClient
 type ChargesListResult = original.ChargesListResult
 type CurrentSpend = original.CurrentSpend
+type DiscoverTenant = original.DiscoverTenant
+type DiscoverTenantsClient = original.DiscoverTenantsClient
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Filters = original.Filters
@@ -200,6 +202,12 @@ func NewChargesClient(subscriptionID string) ChargesClient {
 }
 func NewChargesClientWithBaseURI(baseURI string, subscriptionID string) ChargesClient {
 	return original.NewChargesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDiscoverTenantsClient(subscriptionID string) DiscoverTenantsClient {
+	return original.NewDiscoverTenantsClient(subscriptionID)
+}
+func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) DiscoverTenantsClient {
+	return original.NewDiscoverTenantsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewForecastsClient(subscriptionID string) ForecastsClient {
 	return original.NewForecastsClient(subscriptionID)

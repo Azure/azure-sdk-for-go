@@ -728,6 +728,17 @@ type CurrentSpend struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
+// DiscoverTenant a Tenant properties Resource
+type DiscoverTenant struct {
+	autorest.Response `json:"-"`
+	// BillingProfileName - The Billing Profile name.
+	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// BillingAccountID - The Billing AccountId.
+	BillingAccountID *string `json:"billingAccountId,omitempty"`
+	// TenantID - The TenantId.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - Error code.

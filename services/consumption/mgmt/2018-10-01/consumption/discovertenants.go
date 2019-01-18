@@ -1,4 +1,4 @@
-package billing
+package consumption
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,7 +25,8 @@ import (
 	"net/http"
 )
 
-// DiscoverTenantsClient is the billing client provides access to billing resources for Azure subscriptions.
+// DiscoverTenantsClient is the consumption management client provides access to consumption resources for Azure
+// Enterprise Subscriptions.
 type DiscoverTenantsClient struct {
 	BaseClient
 }
@@ -56,20 +57,20 @@ func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID st
 	}
 	req, err := client.GetPreparer(ctx, billingProfileID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.DiscoverTenantsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.DiscoverTenantsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.DiscoverTenantsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -81,7 +82,7 @@ func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingProf
 		"billingProfileId": autorest.Encode("path", billingProfileID),
 	}
 
-	const APIVersion = "2018-03-01-preview"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -89,7 +90,7 @@ func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingProf
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingProfiles/{billingProfileId}/discoverTenants", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Consumption/billingProfiles/{billingProfileId}/discoverTenants", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

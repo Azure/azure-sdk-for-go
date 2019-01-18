@@ -21,7 +21,6 @@ package billingapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing/billingapi"
 
-type DiscoverTenantsClientAPI = original.DiscoverTenantsClientAPI
 type EnrollmentAccountsClientAPI = original.EnrollmentAccountsClientAPI
 type InvoicesClientAPI = original.InvoicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

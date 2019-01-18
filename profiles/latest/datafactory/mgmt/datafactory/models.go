@@ -574,7 +574,6 @@ const (
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
 	TypeWait                     TypeBasicActivity = original.TypeWait
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
-	TypeWebHook                  TypeBasicActivity = original.TypeWebHook
 )
 
 type TypeBasicCopySink = original.TypeBasicCopySink
@@ -884,12 +883,6 @@ const (
 	GET    WebActivityMethod = original.GET
 	POST   WebActivityMethod = original.POST
 	PUT    WebActivityMethod = original.PUT
-)
-
-type WebHookActivityMethod = original.WebHookActivityMethod
-
-const (
-	WebHookActivityMethodPOST WebHookActivityMethod = original.WebHookActivityMethodPOST
 )
 
 type AccessPolicyResponse = original.AccessPolicyResponse
@@ -1442,8 +1435,6 @@ type WebActivityTypeProperties = original.WebActivityTypeProperties
 type WebAnonymousAuthentication = original.WebAnonymousAuthentication
 type WebBasicAuthentication = original.WebBasicAuthentication
 type WebClientCertificateAuthentication = original.WebClientCertificateAuthentication
-type WebHookActivity = original.WebHookActivity
-type WebHookActivityTypeProperties = original.WebHookActivityTypeProperties
 type WebLinkedService = original.WebLinkedService
 type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
 type WebSource = original.WebSource
@@ -1823,9 +1814,6 @@ func PossibleVariableTypeValues() []VariableType {
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()
-}
-func PossibleWebHookActivityMethodValues() []WebHookActivityMethod {
-	return original.PossibleWebHookActivityMethodValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

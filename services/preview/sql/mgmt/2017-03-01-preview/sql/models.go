@@ -9871,6 +9871,276 @@ type RestorableDroppedDatabaseProperties struct {
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 }
 
+// RestorableDroppedManagedDatabase a restorable dropped managed database resource.
+type RestorableDroppedManagedDatabase struct {
+	autorest.Response `json:"-"`
+	// RestorableDroppedManagedDatabaseProperties - Resource properties.
+	*RestorableDroppedManagedDatabaseProperties `json:"properties,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorableDroppedManagedDatabase.
+func (rdmd RestorableDroppedManagedDatabase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rdmd.RestorableDroppedManagedDatabaseProperties != nil {
+		objectMap["properties"] = rdmd.RestorableDroppedManagedDatabaseProperties
+	}
+	if rdmd.Location != nil {
+		objectMap["location"] = rdmd.Location
+	}
+	if rdmd.Tags != nil {
+		objectMap["tags"] = rdmd.Tags
+	}
+	if rdmd.ID != nil {
+		objectMap["id"] = rdmd.ID
+	}
+	if rdmd.Name != nil {
+		objectMap["name"] = rdmd.Name
+	}
+	if rdmd.Type != nil {
+		objectMap["type"] = rdmd.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RestorableDroppedManagedDatabase struct.
+func (rdmd *RestorableDroppedManagedDatabase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var restorableDroppedManagedDatabaseProperties RestorableDroppedManagedDatabaseProperties
+				err = json.Unmarshal(*v, &restorableDroppedManagedDatabaseProperties)
+				if err != nil {
+					return err
+				}
+				rdmd.RestorableDroppedManagedDatabaseProperties = &restorableDroppedManagedDatabaseProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				rdmd.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rdmd.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rdmd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rdmd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rdmd.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RestorableDroppedManagedDatabaseListResult a list of restorable dropped managed databases.
+type RestorableDroppedManagedDatabaseListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]RestorableDroppedManagedDatabase `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RestorableDroppedManagedDatabaseListResultIterator provides access to a complete listing of
+// RestorableDroppedManagedDatabase values.
+type RestorableDroppedManagedDatabaseListResultIterator struct {
+	i    int
+	page RestorableDroppedManagedDatabaseListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RestorableDroppedManagedDatabaseListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableDroppedManagedDatabaseListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RestorableDroppedManagedDatabaseListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RestorableDroppedManagedDatabaseListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RestorableDroppedManagedDatabaseListResultIterator) Response() RestorableDroppedManagedDatabaseListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RestorableDroppedManagedDatabaseListResultIterator) Value() RestorableDroppedManagedDatabase {
+	if !iter.page.NotDone() {
+		return RestorableDroppedManagedDatabase{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RestorableDroppedManagedDatabaseListResultIterator type.
+func NewRestorableDroppedManagedDatabaseListResultIterator(page RestorableDroppedManagedDatabaseListResultPage) RestorableDroppedManagedDatabaseListResultIterator {
+	return RestorableDroppedManagedDatabaseListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rdmdlr RestorableDroppedManagedDatabaseListResult) IsEmpty() bool {
+	return rdmdlr.Value == nil || len(*rdmdlr.Value) == 0
+}
+
+// restorableDroppedManagedDatabaseListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rdmdlr RestorableDroppedManagedDatabaseListResult) restorableDroppedManagedDatabaseListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rdmdlr.NextLink == nil || len(to.String(rdmdlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rdmdlr.NextLink)))
+}
+
+// RestorableDroppedManagedDatabaseListResultPage contains a page of RestorableDroppedManagedDatabase
+// values.
+type RestorableDroppedManagedDatabaseListResultPage struct {
+	fn     func(context.Context, RestorableDroppedManagedDatabaseListResult) (RestorableDroppedManagedDatabaseListResult, error)
+	rdmdlr RestorableDroppedManagedDatabaseListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RestorableDroppedManagedDatabaseListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableDroppedManagedDatabaseListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rdmdlr)
+	if err != nil {
+		return err
+	}
+	page.rdmdlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RestorableDroppedManagedDatabaseListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RestorableDroppedManagedDatabaseListResultPage) NotDone() bool {
+	return !page.rdmdlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RestorableDroppedManagedDatabaseListResultPage) Response() RestorableDroppedManagedDatabaseListResult {
+	return page.rdmdlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RestorableDroppedManagedDatabaseListResultPage) Values() []RestorableDroppedManagedDatabase {
+	if page.rdmdlr.IsEmpty() {
+		return nil
+	}
+	return *page.rdmdlr.Value
+}
+
+// Creates a new instance of the RestorableDroppedManagedDatabaseListResultPage type.
+func NewRestorableDroppedManagedDatabaseListResultPage(getNextPage func(context.Context, RestorableDroppedManagedDatabaseListResult) (RestorableDroppedManagedDatabaseListResult, error)) RestorableDroppedManagedDatabaseListResultPage {
+	return RestorableDroppedManagedDatabaseListResultPage{fn: getNextPage}
+}
+
+// RestorableDroppedManagedDatabaseProperties the restorable dropped managed database's properties.
+type RestorableDroppedManagedDatabaseProperties struct {
+	// DatabaseName - The name of the database.
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// CreationDate - The creation date of the database (ISO8601 format).
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// DeletionDate - The deletion date of the database (ISO8601 format).
+	DeletionDate *date.Time `json:"deletionDate,omitempty"`
+	// EarliestRestoreDate - The earliest restore date of the database (ISO8601 format).
+	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
+}
+
 // RestorePoint database restore points.
 type RestorePoint struct {
 	autorest.Response `json:"-"`

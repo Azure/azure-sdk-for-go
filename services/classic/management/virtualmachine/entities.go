@@ -52,6 +52,7 @@ type DeploymentResponse struct {
 
 	Name                   string
 	DeploymentSlot         string
+	PrivateID              string
 	Status                 DeploymentStatus
 	Label                  string
 	URL                    string `xml:"Url"`

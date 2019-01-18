@@ -25,6 +25,7 @@ type AggregatedCostClientAPI = original.AggregatedCostClientAPI
 type BalancesClientAPI = original.BalancesClientAPI
 type BudgetsClientAPI = original.BudgetsClientAPI
 type ChargesClientAPI = original.ChargesClientAPI
+type DiscoverTenantsClientAPI = original.DiscoverTenantsClientAPI
 type ForecastsClientAPI = original.ForecastsClientAPI
 type MarketplacesClientAPI = original.MarketplacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

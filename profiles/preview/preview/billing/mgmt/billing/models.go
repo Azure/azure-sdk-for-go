@@ -30,8 +30,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type DiscoverTenant = original.DiscoverTenant
-type DiscoverTenantsClient = original.DiscoverTenantsClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
 type EnrollmentAccountListResult = original.EnrollmentAccountListResult
@@ -63,12 +61,6 @@ type Resource = original.Resource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewDiscoverTenantsClient(subscriptionID string) DiscoverTenantsClient {
-	return original.NewDiscoverTenantsClient(subscriptionID)
-}
-func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) DiscoverTenantsClient {
-	return original.NewDiscoverTenantsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEnrollmentAccountListResultIterator(page EnrollmentAccountListResultPage) EnrollmentAccountListResultIterator {
 	return original.NewEnrollmentAccountListResultIterator(page)

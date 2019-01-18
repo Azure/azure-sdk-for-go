@@ -585,10 +585,8 @@ const (
 	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
-	TypeValidation               TypeBasicActivity = original.TypeValidation
 	TypeWait                     TypeBasicActivity = original.TypeWait
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
-	TypeWebHook                  TypeBasicActivity = original.TypeWebHook
 )
 
 type TypeBasicCopySink = original.TypeBasicCopySink
@@ -899,12 +897,6 @@ const (
 	WebActivityMethodGET    WebActivityMethod = original.WebActivityMethodGET
 	WebActivityMethodPOST   WebActivityMethod = original.WebActivityMethodPOST
 	WebActivityMethodPUT    WebActivityMethod = original.WebActivityMethodPUT
-)
-
-type WebHookActivityMethod = original.WebHookActivityMethod
-
-const (
-	WebHookActivityMethodPOST WebHookActivityMethod = original.WebHookActivityMethodPOST
 )
 
 type AccessPolicyResponse = original.AccessPolicyResponse
@@ -1448,8 +1440,6 @@ type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNode
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
 type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
-type ValidationActivity = original.ValidationActivity
-type ValidationActivityTypeProperties = original.ValidationActivityTypeProperties
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService
 type VerticaLinkedServiceTypeProperties = original.VerticaLinkedServiceTypeProperties
@@ -1463,8 +1453,6 @@ type WebActivityTypeProperties = original.WebActivityTypeProperties
 type WebAnonymousAuthentication = original.WebAnonymousAuthentication
 type WebBasicAuthentication = original.WebBasicAuthentication
 type WebClientCertificateAuthentication = original.WebClientCertificateAuthentication
-type WebHookActivity = original.WebHookActivity
-type WebHookActivityTypeProperties = original.WebHookActivityTypeProperties
 type WebLinkedService = original.WebLinkedService
 type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
 type WebSource = original.WebSource
@@ -1847,9 +1835,6 @@ func PossibleVariableTypeValues() []VariableType {
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()
-}
-func PossibleWebHookActivityMethodValues() []WebHookActivityMethod {
-	return original.PossibleWebHookActivityMethodValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

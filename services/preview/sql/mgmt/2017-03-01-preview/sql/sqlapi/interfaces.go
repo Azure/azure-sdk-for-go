@@ -580,6 +580,14 @@ type ServerSecurityAlertPoliciesClientAPI interface {
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*sql.ServerSecurityAlertPoliciesClient)(nil)
 
+// RestorableDroppedManagedDatabasesClientAPI contains the set of methods on the RestorableDroppedManagedDatabasesClient type.
+type RestorableDroppedManagedDatabasesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string) (result sql.RestorableDroppedManagedDatabase, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.RestorableDroppedManagedDatabaseListResultPage, err error)
+}
+
+var _ RestorableDroppedManagedDatabasesClientAPI = (*sql.RestorableDroppedManagedDatabasesClient)(nil)
+
 // RestorePointsClientAPI contains the set of methods on the RestorePointsClient type.
 type RestorePointsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.CreateDatabaseRestorePointDefinition) (result sql.RestorePointsCreateFuture, err error)

@@ -10436,7 +10436,7 @@ func (future *RestorePointsCreateFuture) Result(client RestorePointsClient) (rp 
 
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
-	// State - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
+	// State - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific resource. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
 	State SecurityAlertPolicyState `json:"state,omitempty"`
 	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action
 	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`

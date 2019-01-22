@@ -128,3 +128,16 @@ type LargeFaceListClientAPI interface {
 }
 
 var _ LargeFaceListClientAPI = (*face.LargeFaceListClient)(nil)
+
+// SnapshotClientAPI contains the set of methods on the SnapshotClient type.
+type SnapshotClientAPI interface {
+	Apply(ctx context.Context, snapshotID uuid.UUID, body face.ApplySnapshotRequest) (result autorest.Response, err error)
+	Delete(ctx context.Context, snapshotID uuid.UUID) (result autorest.Response, err error)
+	Get(ctx context.Context, snapshotID uuid.UUID) (result face.Snapshot, err error)
+	GetOperationStatus(ctx context.Context, operationID uuid.UUID) (result face.OperationStatus, err error)
+	List(ctx context.Context, typeParameter face.SnapshotObjectType, applyScope []uuid.UUID) (result face.ListSnapshot, err error)
+	Take(ctx context.Context, body face.TakeSnapshotRequest) (result autorest.Response, err error)
+	Update(ctx context.Context, snapshotID uuid.UUID, body face.UpdateSnapshotRequest) (result autorest.Response, err error)
+}
+
+var _ SnapshotClientAPI = (*face.SnapshotClient)(nil)

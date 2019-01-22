@@ -326,6 +326,12 @@ type MaxSizeRangeCapability = original.MaxSizeRangeCapability
 type PartnerRegionInfo = original.PartnerRegionInfo
 type PerformanceLevelCapability = original.PerformanceLevelCapability
 type ProxyResource = original.ProxyResource
+type RecoverableManagedDatabase = original.RecoverableManagedDatabase
+type RecoverableManagedDatabaseListResult = original.RecoverableManagedDatabaseListResult
+type RecoverableManagedDatabaseListResultIterator = original.RecoverableManagedDatabaseListResultIterator
+type RecoverableManagedDatabaseListResultPage = original.RecoverableManagedDatabaseListResultPage
+type RecoverableManagedDatabaseProperties = original.RecoverableManagedDatabaseProperties
+type RecoverableManagedDatabasesClient = original.RecoverableManagedDatabasesClient
 type Resource = original.Resource
 type ResourceMoveDefinition = original.ResourceMoveDefinition
 type ServerVersionCapability = original.ServerVersionCapability
@@ -484,6 +490,18 @@ func NewManagedInstanceTdeCertificatesClient(subscriptionID string) ManagedInsta
 }
 func NewManagedInstanceTdeCertificatesClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceTdeCertificatesClient {
 	return original.NewManagedInstanceTdeCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecoverableManagedDatabaseListResultIterator(page RecoverableManagedDatabaseListResultPage) RecoverableManagedDatabaseListResultIterator {
+	return original.NewRecoverableManagedDatabaseListResultIterator(page)
+}
+func NewRecoverableManagedDatabaseListResultPage(getNextPage func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error)) RecoverableManagedDatabaseListResultPage {
+	return original.NewRecoverableManagedDatabaseListResultPage(getNextPage)
+}
+func NewRecoverableManagedDatabasesClient(subscriptionID string) RecoverableManagedDatabasesClient {
+	return original.NewRecoverableManagedDatabasesClient(subscriptionID)
+}
+func NewRecoverableManagedDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RecoverableManagedDatabasesClient {
+	return original.NewRecoverableManagedDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTdeCertificatesClient(subscriptionID string) TdeCertificatesClient {
 	return original.NewTdeCertificatesClient(subscriptionID)

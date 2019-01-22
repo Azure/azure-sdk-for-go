@@ -28,3 +28,4 @@ type LargePersonGroupPersonClientAPI = original.LargePersonGroupPersonClientAPI
 type ListClientAPI = original.ListClientAPI
 type PersonGroupClientAPI = original.PersonGroupClientAPI
 type PersonGroupPersonClientAPI = original.PersonGroupPersonClientAPI
+type SnapshotClientAPI = original.SnapshotClientAPI

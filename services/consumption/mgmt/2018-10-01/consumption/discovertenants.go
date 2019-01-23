@@ -43,8 +43,9 @@ func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // Get gets a Tenant Properties.
 // Parameters:
+// billingAccountID - billing Account Id.
 // billingProfileID - billing Profile Id.
-func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID string) (result DiscoverTenant, err error) {
+func (client DiscoverTenantsClient) Get(ctx context.Context, billingAccountID string, billingProfileID string) (result DiscoverTenant, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DiscoverTenantsClient.Get")
 		defer func() {
@@ -55,7 +56,7 @@ func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingProfileID)
+	req, err := client.GetPreparer(ctx, billingAccountID, billingProfileID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", nil, "Failure preparing request")
 		return
@@ -77,8 +78,9 @@ func (client DiscoverTenantsClient) Get(ctx context.Context, billingProfileID st
 }
 
 // GetPreparer prepares the Get request.
-func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingProfileID string) (*http.Request, error) {
+func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"billingProfileId": autorest.Encode("path", billingProfileID),
 	}
 
@@ -90,7 +92,7 @@ func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingProf
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Consumption/billingProfiles/{billingProfileId}/discoverTenants", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/discoverTenants", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

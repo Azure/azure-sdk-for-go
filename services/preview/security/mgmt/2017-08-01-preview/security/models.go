@@ -195,6 +195,25 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{All, TCP, UDP}
 }
 
+// ReportedSeverity enumerates the values for reported severity.
+type ReportedSeverity string
+
+const (
+	// High ...
+	High ReportedSeverity = "High"
+	// Information ...
+	Information ReportedSeverity = "Information"
+	// Low ...
+	Low ReportedSeverity = "Low"
+	// Silent ...
+	Silent ReportedSeverity = "Silent"
+)
+
+// PossibleReportedSeverityValues returns an array of possible values for the ReportedSeverity const type.
+func PossibleReportedSeverityValues() []ReportedSeverity {
+	return []ReportedSeverity{High, Information, Low, Silent}
+}
+
 // SettingKind enumerates the values for setting kind.
 type SettingKind string
 
@@ -720,8 +739,8 @@ type AlertProperties struct {
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
 	// ActionTaken - The action that was taken as a response to the alert (Active, Blocked etc.)
 	ActionTaken *string `json:"actionTaken,omitempty"`
-	// ReportedSeverity - Estimated severity of this alert
-	ReportedSeverity *string `json:"reportedSeverity,omitempty"`
+	// ReportedSeverity - Estimated severity of this alert. Possible values include: 'Silent', 'Information', 'Low', 'High'
+	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// CompromisedEntity - The entity that the incident happened on
 	CompromisedEntity *string `json:"compromisedEntity,omitempty"`
 	// AssociatedResource - Azure resource ID of the associated resource
@@ -731,6 +750,8 @@ type AlertProperties struct {
 	SystemSource *string `json:"systemSource,omitempty"`
 	// CanBeInvestigated - Whether this alert can be investigated with Azure Security Center
 	CanBeInvestigated *bool `json:"canBeInvestigated,omitempty"`
+	// IsIncident - Whether this alert is for incident type or not (otherwise - single alert)
+	IsIncident *bool `json:"isIncident,omitempty"`
 	// Entities - objects that are related to this alerts
 	Entities *[]AlertEntity `json:"entities,omitempty"`
 	// ConfidenceScore - level of confidence we have on the alert
@@ -775,7 +796,7 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	if ap.ActionTaken != nil {
 		objectMap["actionTaken"] = ap.ActionTaken
 	}
-	if ap.ReportedSeverity != nil {
+	if ap.ReportedSeverity != "" {
 		objectMap["reportedSeverity"] = ap.ReportedSeverity
 	}
 	if ap.CompromisedEntity != nil {
@@ -792,6 +813,9 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.CanBeInvestigated != nil {
 		objectMap["canBeInvestigated"] = ap.CanBeInvestigated
+	}
+	if ap.IsIncident != nil {
+		objectMap["isIncident"] = ap.IsIncident
 	}
 	if ap.Entities != nil {
 		objectMap["entities"] = ap.Entities

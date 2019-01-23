@@ -1834,6 +1834,10 @@ type StorageAccount struct {
 	FileSystem *string `json:"fileSystem,omitempty"`
 	// Key - The storage account access key.
 	Key *string `json:"key,omitempty"`
+	// ResourceID - The resource ID of storage account, only to be specified for Azure Data Lake Storage Gen 2.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// MsiResourceID - The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage Gen 2.
+	MsiResourceID *string `json:"msiResourceId,omitempty"`
 }
 
 // StorageProfile the storage profile.

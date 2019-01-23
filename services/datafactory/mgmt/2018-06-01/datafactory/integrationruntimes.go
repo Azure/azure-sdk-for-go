@@ -340,6 +340,198 @@ func (client IntegrationRuntimesClient) DeleteResponder(resp *http.Response) (re
 	return
 }
 
+// DisableIntegrationRuntimeInteractiveQuery disable interactive query for an Azure-VNet integration runtime.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// integrationRuntimeName - the integration runtime name.
+func (client IntegrationRuntimesClient) DisableIntegrationRuntimeInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimesClient.DisableIntegrationRuntimeInteractiveQuery")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: integrationRuntimeName,
+			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "DisableIntegrationRuntimeInteractiveQuery", err.Error())
+	}
+
+	req, err := client.DisableIntegrationRuntimeInteractiveQueryPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "DisableIntegrationRuntimeInteractiveQuery", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DisableIntegrationRuntimeInteractiveQuerySender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "DisableIntegrationRuntimeInteractiveQuery", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DisableIntegrationRuntimeInteractiveQueryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "DisableIntegrationRuntimeInteractiveQuery", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DisableIntegrationRuntimeInteractiveQueryPreparer prepares the DisableIntegrationRuntimeInteractiveQuery request.
+func (client IntegrationRuntimesClient) DisableIntegrationRuntimeInteractiveQueryPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/disableInteractiveQuery", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DisableIntegrationRuntimeInteractiveQuerySender sends the DisableIntegrationRuntimeInteractiveQuery request. The method will close the
+// http.Response Body if it receives an error.
+func (client IntegrationRuntimesClient) DisableIntegrationRuntimeInteractiveQuerySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DisableIntegrationRuntimeInteractiveQueryResponder handles the response to the DisableIntegrationRuntimeInteractiveQuery request. The method always
+// closes the http.Response Body.
+func (client IntegrationRuntimesClient) DisableIntegrationRuntimeInteractiveQueryResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// EnableIntegrationRuntimeInteractiveQuery enable interactive query for an Azure-VNet integration runtime.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// integrationRuntimeName - the integration runtime name.
+// enableInteractiveQueryForIntegrationRuntimeRequest - the request parameter for enabling interactive query of
+// a integration runtime.
+func (client IntegrationRuntimesClient) EnableIntegrationRuntimeInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryForIntegrationRuntimeRequest EnableInteractiveQueryForIntegrationRuntimeRequest) (result IntegrationRuntimesEnableIntegrationRuntimeInteractiveQueryFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimesClient.EnableIntegrationRuntimeInteractiveQuery")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: integrationRuntimeName,
+			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "EnableIntegrationRuntimeInteractiveQuery", err.Error())
+	}
+
+	req, err := client.EnableIntegrationRuntimeInteractiveQueryPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, enableInteractiveQueryForIntegrationRuntimeRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "EnableIntegrationRuntimeInteractiveQuery", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.EnableIntegrationRuntimeInteractiveQuerySender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "EnableIntegrationRuntimeInteractiveQuery", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// EnableIntegrationRuntimeInteractiveQueryPreparer prepares the EnableIntegrationRuntimeInteractiveQuery request.
+func (client IntegrationRuntimesClient) EnableIntegrationRuntimeInteractiveQueryPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryForIntegrationRuntimeRequest EnableInteractiveQueryForIntegrationRuntimeRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/enableInteractiveQuery", pathParameters),
+		autorest.WithJSON(enableInteractiveQueryForIntegrationRuntimeRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EnableIntegrationRuntimeInteractiveQuerySender sends the EnableIntegrationRuntimeInteractiveQuery request. The method will close the
+// http.Response Body if it receives an error.
+func (client IntegrationRuntimesClient) EnableIntegrationRuntimeInteractiveQuerySender(req *http.Request) (future IntegrationRuntimesEnableIntegrationRuntimeInteractiveQueryFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// EnableIntegrationRuntimeInteractiveQueryResponder handles the response to the EnableIntegrationRuntimeInteractiveQuery request. The method always
+// closes the http.Response Body.
+func (client IntegrationRuntimesClient) EnableIntegrationRuntimeInteractiveQueryResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get gets an integration runtime.
 // Parameters:
 // resourceGroupName - the resource group name.

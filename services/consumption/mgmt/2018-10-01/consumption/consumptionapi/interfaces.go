@@ -147,9 +147,9 @@ type ChargesClientAPI interface {
 
 var _ ChargesClientAPI = (*consumption.ChargesClient)(nil)
 
-// DiscoverTenantsClientAPI contains the set of methods on the DiscoverTenantsClient type.
-type DiscoverTenantsClientAPI interface {
-	Get(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.DiscoverTenant, err error)
+// TenantsClientAPI contains the set of methods on the TenantsClient type.
+type TenantsClientAPI interface {
+	Get(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.TenantListResult, err error)
 }
 
-var _ DiscoverTenantsClientAPI = (*consumption.DiscoverTenantsClient)(nil)
+var _ TenantsClientAPI = (*consumption.TenantsClient)(nil)

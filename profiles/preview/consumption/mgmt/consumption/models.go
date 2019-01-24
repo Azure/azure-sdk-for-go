@@ -108,8 +108,6 @@ type ChargeSummaryProperties = original.ChargeSummaryProperties
 type ChargesClient = original.ChargesClient
 type ChargesListResult = original.ChargesListResult
 type CurrentSpend = original.CurrentSpend
-type DiscoverTenant = original.DiscoverTenant
-type DiscoverTenantsClient = original.DiscoverTenantsClient
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Filters = original.Filters
@@ -163,6 +161,10 @@ type Tag = original.Tag
 type TagProperties = original.TagProperties
 type TagsClient = original.TagsClient
 type TagsResult = original.TagsResult
+type Tenant = original.Tenant
+type TenantListResult = original.TenantListResult
+type TenantProperties = original.TenantProperties
+type TenantsClient = original.TenantsClient
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsClient = original.UsageDetailsClient
@@ -202,12 +204,6 @@ func NewChargesClient(subscriptionID string) ChargesClient {
 }
 func NewChargesClientWithBaseURI(baseURI string, subscriptionID string) ChargesClient {
 	return original.NewChargesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDiscoverTenantsClient(subscriptionID string) DiscoverTenantsClient {
-	return original.NewDiscoverTenantsClient(subscriptionID)
-}
-func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) DiscoverTenantsClient {
-	return original.NewDiscoverTenantsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewForecastsClient(subscriptionID string) ForecastsClient {
 	return original.NewForecastsClient(subscriptionID)
@@ -286,6 +282,12 @@ func NewTagsClient(subscriptionID string) TagsClient {
 }
 func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
 	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTenantsClient(subscriptionID string) TenantsClient {
+	return original.NewTenantsClient(subscriptionID)
+}
+func NewTenantsClientWithBaseURI(baseURI string, subscriptionID string) TenantsClient {
+	return original.NewTenantsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)

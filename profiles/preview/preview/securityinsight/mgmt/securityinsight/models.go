@@ -29,9 +29,24 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type AlertRule = original.AlertRule
-type AlertRuleProperties = original.AlertRuleProperties
-type AlertRulesClient = original.AlertRulesClient
+type AlertTriggerOperator = original.AlertTriggerOperator
+
+const (
+	Eq AlertTriggerOperator = original.Eq
+	Gt AlertTriggerOperator = original.Gt
+	Lt AlertTriggerOperator = original.Lt
+	Ne AlertTriggerOperator = original.Ne
+)
+
+type Severity = original.Severity
+
+const (
+	High          Severity = original.High
+	Informational Severity = original.Informational
+	Low           Severity = original.Low
+	Medium        Severity = original.Medium
+)
+
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -42,15 +57,15 @@ type OperationsList = original.OperationsList
 type OperationsListIterator = original.OperationsListIterator
 type OperationsListPage = original.OperationsListPage
 type Resource = original.Resource
+type ScheduledAlertRule = original.ScheduledAlertRule
+type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
+type ScheduledAlertRulesClient = original.ScheduledAlertRulesClient
+type ScheduledAlertRulesList = original.ScheduledAlertRulesList
+type ScheduledAlertRulesListIterator = original.ScheduledAlertRulesListIterator
+type ScheduledAlertRulesListPage = original.ScheduledAlertRulesListPage
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
-	return original.NewAlertRulesClient(subscriptionID)
-}
-func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
-	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -64,8 +79,26 @@ func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
 	return original.NewOperationsListPage(getNextPage)
 }
+func NewScheduledAlertRulesClient(subscriptionID string) ScheduledAlertRulesClient {
+	return original.NewScheduledAlertRulesClient(subscriptionID)
+}
+func NewScheduledAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) ScheduledAlertRulesClient {
+	return original.NewScheduledAlertRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScheduledAlertRulesListIterator(page ScheduledAlertRulesListPage) ScheduledAlertRulesListIterator {
+	return original.NewScheduledAlertRulesListIterator(page)
+}
+func NewScheduledAlertRulesListPage(getNextPage func(context.Context, ScheduledAlertRulesList) (ScheduledAlertRulesList, error)) ScheduledAlertRulesListPage {
+	return original.NewScheduledAlertRulesListPage(getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAlertTriggerOperatorValues() []AlertTriggerOperator {
+	return original.PossibleAlertTriggerOperatorValues()
+}
+func PossibleSeverityValues() []Severity {
+	return original.PossibleSeverityValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

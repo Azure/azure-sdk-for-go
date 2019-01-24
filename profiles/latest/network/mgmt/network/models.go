@@ -245,9 +245,9 @@ const (
 type ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatus
 
 const (
-	Active   ConnectionMonitorSourceStatus = original.Active
-	Inactive ConnectionMonitorSourceStatus = original.Inactive
-	Uknown   ConnectionMonitorSourceStatus = original.Uknown
+	ConnectionMonitorSourceStatusActive   ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusActive
+	ConnectionMonitorSourceStatusInactive ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusInactive
+	ConnectionMonitorSourceStatusUnknown  ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusUnknown
 )
 
 type ConnectionState = original.ConnectionState
@@ -299,8 +299,8 @@ const (
 type EffectiveRouteState = original.EffectiveRouteState
 
 const (
-	EffectiveRouteStateActive  EffectiveRouteState = original.EffectiveRouteStateActive
-	EffectiveRouteStateInvalid EffectiveRouteState = original.EffectiveRouteStateInvalid
+	Active  EffectiveRouteState = original.Active
+	Invalid EffectiveRouteState = original.Invalid
 )
 
 type EffectiveSecurityRuleProtocol = original.EffectiveSecurityRuleProtocol

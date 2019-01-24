@@ -25,29 +25,29 @@ import (
 	"net/http"
 )
 
-// DiscoverTenantsClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type DiscoverTenantsClient struct {
+// TenantsClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// Subscriptions.
+type TenantsClient struct {
 	BaseClient
 }
 
-// NewDiscoverTenantsClient creates an instance of the DiscoverTenantsClient client.
-func NewDiscoverTenantsClient(subscriptionID string) DiscoverTenantsClient {
-	return NewDiscoverTenantsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewTenantsClient creates an instance of the TenantsClient client.
+func NewTenantsClient(subscriptionID string) TenantsClient {
+	return NewTenantsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDiscoverTenantsClientWithBaseURI creates an instance of the DiscoverTenantsClient client.
-func NewDiscoverTenantsClientWithBaseURI(baseURI string, subscriptionID string) DiscoverTenantsClient {
-	return DiscoverTenantsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewTenantsClientWithBaseURI creates an instance of the TenantsClient client.
+func NewTenantsClientWithBaseURI(baseURI string, subscriptionID string) TenantsClient {
+	return TenantsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a Tenant Properties.
 // Parameters:
 // billingAccountID - billing Account Id.
 // billingProfileID - billing Profile Id.
-func (client DiscoverTenantsClient) Get(ctx context.Context, billingAccountID string, billingProfileID string) (result DiscoverTenant, err error) {
+func (client TenantsClient) Get(ctx context.Context, billingAccountID string, billingProfileID string) (result TenantListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DiscoverTenantsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TenantsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -58,27 +58,27 @@ func (client DiscoverTenantsClient) Get(ctx context.Context, billingAccountID st
 	}
 	req, err := client.GetPreparer(ctx, billingAccountID, billingProfileID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.TenantsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.TenantsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.DiscoverTenantsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.TenantsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
+func (client TenantsClient) GetPreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"billingProfileId": autorest.Encode("path", billingProfileID),
@@ -92,21 +92,21 @@ func (client DiscoverTenantsClient) GetPreparer(ctx context.Context, billingAcco
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/discoverTenants", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/tenants", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiscoverTenantsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client TenantsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DiscoverTenantsClient) GetResponder(resp *http.Response) (result DiscoverTenant, err error) {
+func (client TenantsClient) GetResponder(resp *http.Response) (result TenantListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

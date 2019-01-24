@@ -310,7 +310,6 @@ type AgentPoolListResult = original.AgentPoolListResult
 type AgentPoolListResultIterator = original.AgentPoolListResultIterator
 type AgentPoolListResultPage = original.AgentPoolListResultPage
 type AgentPoolProfile = original.AgentPoolProfile
-type AgentPoolProperties = original.AgentPoolProperties
 type AgentPoolsClient = original.AgentPoolsClient
 type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
 type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture

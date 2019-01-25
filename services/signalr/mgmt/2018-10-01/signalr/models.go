@@ -196,6 +196,52 @@ type Dimension struct {
 	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
+// Feature feature of a SignalR resource, which controls the SignalR runtime behavior.
+type Feature struct {
+	// Flag - Name of the feature. Required.
+	Flag *string `json:"flag,omitempty"`
+	// Value - Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/en-us/azure/azure-signalr/ for allowed values.
+	Value *string `json:"value,omitempty"`
+	// Properties - Optional properties related to this feature.
+	Properties map[string]*string `json:"properties"`
+}
+
+// MarshalJSON is the custom marshaler for Feature.
+func (f Feature) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if f.Flag != nil {
+		objectMap["flag"] = f.Flag
+	}
+	if f.Value != nil {
+		objectMap["value"] = f.Value
+	}
+	if f.Properties != nil {
+		objectMap["properties"] = f.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// FeatureList a class that represents a list of SignalRFeatures related to SignalR resource.
+type FeatureList struct {
+	autorest.Response `json:"-"`
+	// Value - List of features.
+	// Note that, if a feature is not included in the list, which only means user never set it explicitly rather than 'false'.
+	// In this case, SignalR service will use a globally default value which might be 'true' or 'false'.
+	Value *[]Feature `json:"value,omitempty"`
+	// NextLink - The URL the client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// FeaturesParameters parameters for SignalR service instance features management opreations.
+type FeaturesParameters struct {
+	// Features - List of features.
+	//
+	// If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+	// Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+	Features *[]Feature `json:"features,omitempty"`
+}
+
 // Keys a class represents the access keys of SignalR service.
 type Keys struct {
 	autorest.Response `json:"-"`
@@ -437,9 +483,9 @@ type Properties struct {
 	ExternalIP *string `json:"externalIP,omitempty"`
 	// HostName - FQDN of the SignalR service instance. Format: xxx.service.signalr.net
 	HostName *string `json:"hostName,omitempty"`
-	// PublicPort - The publicly accessibly port of the SignalR service which is designed for browser/client side usage.
+	// PublicPort - The publicly accessible port of the SignalR service which is designed for browser/client side usage.
 	PublicPort *int32 `json:"publicPort,omitempty"`
-	// ServerPort - The publicly accessibly port of the SignalR service which is designed for customer server side usage.
+	// ServerPort - The publicly accessible port of the SignalR service which is designed for customer server side usage.
 	ServerPort *int32 `json:"serverPort,omitempty"`
 	// Version - Version of the SignalR resource. Probably you need the same or higher version of client SDKs.
 	Version *string `json:"version,omitempty"`
@@ -644,7 +690,7 @@ func NewResourceListPage(getNextPage func(context.Context, ResourceList) (Resour
 type ResourceSku struct {
 	// Name - The name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified)
 	Name *string `json:"name,omitempty"`
-	// Tier - Optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
+	// Tier - Optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// Size - Optional, string. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
@@ -779,10 +825,61 @@ func (rt *ResourceType) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// RestartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type RestartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RestartFuture) Result(client Client) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.RestartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("signalr.RestartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ServiceSpecification an object that describes a specification.
 type ServiceSpecification struct {
 	// MetricSpecifications - Specifications of the Metrics for Azure Monitoring.
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+}
+
+// SwitchFeaturesFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SwitchFeaturesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SwitchFeaturesFuture) Result(client Client) (fl FeatureList, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.SwitchFeaturesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("signalr.SwitchFeaturesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if fl.Response.Response, err = future.GetResult(sender); err == nil && fl.Response.Response.StatusCode != http.StatusNoContent {
+		fl, err = client.SwitchFeaturesResponder(fl.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "signalr.SwitchFeaturesFuture", "Result", fl.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource.

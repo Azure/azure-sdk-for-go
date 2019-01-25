@@ -37,8 +37,11 @@ type ClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.ResourceType, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result signalr.ResourceListPage, err error)
 	ListBySubscription(ctx context.Context) (result signalr.ResourceListPage, err error)
+	ListFeatures(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.FeatureList, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.Keys, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.RegenerateKeyParameters) (result signalr.RegenerateKeyFuture, err error)
+	Restart(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.RestartFuture, err error)
+	SwitchFeatures(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.FeaturesParameters) (result signalr.SwitchFeaturesFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.UpdateParameters) (result signalr.UpdateFuture, err error)
 }
 

@@ -32,7 +32,7 @@ var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
 
 // ScheduledAlertRulesClientAPI contains the set of methods on the ScheduledAlertRulesClient type.
 type ScheduledAlertRulesClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertScheduledtRule securityinsight.ScheduledAlertRule) (result securityinsight.ScheduledAlertRule, err error)
+	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, scheduledAlertRule securityinsight.ScheduledAlertRule) (result securityinsight.ScheduledAlertRule, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ScheduledAlertRule, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.ScheduledAlertRulesListPage, err error)

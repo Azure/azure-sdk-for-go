@@ -32,10 +32,10 @@ const (
 type AlertTriggerOperator = original.AlertTriggerOperator
 
 const (
-	Eq AlertTriggerOperator = original.Eq
-	Gt AlertTriggerOperator = original.Gt
-	Lt AlertTriggerOperator = original.Lt
-	Ne AlertTriggerOperator = original.Ne
+	Equal       AlertTriggerOperator = original.Equal
+	GreaterThan AlertTriggerOperator = original.GreaterThan
+	LessThan    AlertTriggerOperator = original.LessThan
+	NotEqual    AlertTriggerOperator = original.NotEqual
 )
 
 type Severity = original.Severity

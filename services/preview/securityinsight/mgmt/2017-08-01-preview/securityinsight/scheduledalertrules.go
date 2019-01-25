@@ -49,8 +49,8 @@ func NewScheduledAlertRulesClientWithBaseURI(baseURI string, subscriptionID stri
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
-// alertScheduledtRule - the alert rule
-func (client ScheduledAlertRulesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertScheduledtRule ScheduledAlertRule) (result ScheduledAlertRule, err error) {
+// scheduledAlertRule - the alert rule
+func (client ScheduledAlertRulesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, scheduledAlertRule ScheduledAlertRule) (result ScheduledAlertRule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ScheduledAlertRulesClient.Create")
 		defer func() {
@@ -73,25 +73,22 @@ func (client ScheduledAlertRulesClient) Create(ctx context.Context, resourceGrou
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: ruleID,
 			Constraints: []validation.Constraint{{Target: "ruleID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: alertScheduledtRule,
-			Constraints: []validation.Constraint{{Target: "alertScheduledtRule.ScheduledAlertRuleProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.RuleName", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.Description", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.QueryFrequency", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.QueryFrequency", Name: validation.Pattern, Rule: `^(\d+\.)?\d{2}\:\d{2}\:\d{2}$`, Chain: nil}}},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.QueryPeriod", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.QueryPeriod", Name: validation.Pattern, Rule: `^(\d+\.)?\d{2}\:\d{2}\:\d{2}$`, Chain: nil}}},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.AlertTriggerThreshold", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.SuppressionEnabled", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.SuppressionDuration", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "alertScheduledtRule.ScheduledAlertRuleProperties.SuppressionDuration", Name: validation.Pattern, Rule: `^(\d+\.)?\d{2}\:\d{2}\:\d{2}$`, Chain: nil}}},
+		{TargetValue: scheduledAlertRule,
+			Constraints: []validation.Constraint{{Target: "scheduledAlertRule.ScheduledAlertRuleProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.RuleName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.Description", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.QueryFrequency", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.QueryPeriod", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.AlertTriggerThreshold", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.SuppressionEnabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.SuppressionDuration", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.ScheduledAlertRulesClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, alertScheduledtRule)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, scheduledAlertRule)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.ScheduledAlertRulesClient", "Create", nil, "Failure preparing request")
 		return
@@ -113,7 +110,7 @@ func (client ScheduledAlertRulesClient) Create(ctx context.Context, resourceGrou
 }
 
 // CreatePreparer prepares the Create request.
-func (client ScheduledAlertRulesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertScheduledtRule ScheduledAlertRule) (*http.Request, error) {
+func (client ScheduledAlertRulesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, scheduledAlertRule ScheduledAlertRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -132,7 +129,7 @@ func (client ScheduledAlertRulesClient) CreatePreparer(ctx context.Context, reso
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/scheduledAlertRules/{ruleId}", pathParameters),
-		autorest.WithJSON(alertScheduledtRule),
+		autorest.WithJSON(scheduledAlertRule),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

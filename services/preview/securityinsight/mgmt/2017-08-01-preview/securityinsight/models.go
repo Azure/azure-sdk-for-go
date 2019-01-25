@@ -33,19 +33,19 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight
 type AlertTriggerOperator string
 
 const (
-	// Eq ...
-	Eq AlertTriggerOperator = "eq"
-	// Gt ...
-	Gt AlertTriggerOperator = "gt"
-	// Lt ...
-	Lt AlertTriggerOperator = "lt"
-	// Ne ...
-	Ne AlertTriggerOperator = "ne"
+	// Equal ...
+	Equal AlertTriggerOperator = "Equal"
+	// GreaterThan ...
+	GreaterThan AlertTriggerOperator = "GreaterThan"
+	// LessThan ...
+	LessThan AlertTriggerOperator = "LessThan"
+	// NotEqual ...
+	NotEqual AlertTriggerOperator = "NotEqual"
 )
 
 // PossibleAlertTriggerOperatorValues returns an array of possible values for the AlertTriggerOperator const type.
 func PossibleAlertTriggerOperatorValues() []AlertTriggerOperator {
-	return []AlertTriggerOperator{Eq, Gt, Lt, Ne}
+	return []AlertTriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
 }
 
 // Severity enumerates the values for severity.
@@ -398,17 +398,17 @@ type ScheduledAlertRuleProperties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// Query - The query that creates alerts for this rule.
 	Query *string `json:"query,omitempty"`
-	// QueryFrequency - TimeSpan format represents the frequncy for this alert rule to run.
+	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
 	QueryFrequency *string `json:"queryFrequency,omitempty"`
-	// QueryPeriod - TimeSpan format represents the period that this alert rule looks at.
+	// QueryPeriod - The period (in ISO 8601 duration format) that this alert rule looks at.
 	QueryPeriod *string `json:"queryPeriod,omitempty"`
-	// AlertTriggerOperator - The operation against the threahold that triggers alert rule. Possible values include: 'Gt', 'Lt', 'Ne', 'Eq'
+	// AlertTriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
 	AlertTriggerOperator AlertTriggerOperator `json:"alertTriggerOperator,omitempty"`
-	// AlertTriggerThreshold - The threahold triggers this alert rule.
+	// AlertTriggerThreshold - The threshold triggers this alert rule.
 	AlertTriggerThreshold *int32 `json:"alertTriggerThreshold,omitempty"`
 	// SuppressionEnabled - Determines whether the suppression for this alert rule is enabled or disabled.
 	SuppressionEnabled *bool `json:"suppressionEnabled,omitempty"`
-	// SuppressionDuration - TimeSpan format represents the suppression to wait since last time this alert rule been triggered.
+	// SuppressionDuration - The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
 	// LastModifiedUtc - The last time that this alert has been modified.
 	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`

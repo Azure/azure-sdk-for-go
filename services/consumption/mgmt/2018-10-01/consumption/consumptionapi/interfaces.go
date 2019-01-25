@@ -146,3 +146,31 @@ type ChargesClientAPI interface {
 }
 
 var _ ChargesClientAPI = (*consumption.ChargesClient)(nil)
+
+// ReservationsUsageDetailsClientAPI contains the set of methods on the ReservationsUsageDetailsClient type.
+type ReservationsUsageDetailsClientAPI interface {
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.ReservationDetailsListResultPage, err error)
+}
+
+var _ ReservationsUsageDetailsClientAPI = (*consumption.ReservationsUsageDetailsClient)(nil)
+
+// ReservationsUsageSummariesClientAPI contains the set of methods on the ReservationsUsageSummariesClient type.
+type ReservationsUsageSummariesClientAPI interface {
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, grain consumption.Datagrain) (result consumption.ReservationSummariesListResultPage, err error)
+}
+
+var _ ReservationsUsageSummariesClientAPI = (*consumption.ReservationsUsageSummariesClient)(nil)
+
+// ReservationRecommendationsSharedClientAPI contains the set of methods on the ReservationRecommendationsSharedClient type.
+type ReservationRecommendationsSharedClientAPI interface {
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.ReservationRecommendationsSharedListResult, err error)
+}
+
+var _ ReservationRecommendationsSharedClientAPI = (*consumption.ReservationRecommendationsSharedClient)(nil)
+
+// ReservationRecommendationsSingleClientAPI contains the set of methods on the ReservationRecommendationsSingleClient type.
+type ReservationRecommendationsSingleClientAPI interface {
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.ReservationRecommendationsSingleListResult, err error)
+}
+
+var _ ReservationRecommendationsSingleClientAPI = (*consumption.ReservationRecommendationsSingleClient)(nil)

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -33,13 +34,13 @@ type MarketplacesClient struct {
 }
 
 // NewMarketplacesClient creates an instance of the MarketplacesClient client.
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewMarketplacesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) MarketplacesClient {
+	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
 }
 
 // NewMarketplacesClientWithBaseURI creates an instance of the MarketplacesClient client.
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) MarketplacesClient {
+	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
 }
 
 // List lists the marketplaces for a scope by subscriptionId and current billing period. Marketplaces are available via

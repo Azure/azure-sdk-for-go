@@ -160,6 +160,14 @@ func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return []TimeGrainType{TimeGrainTypeAnnually, TimeGrainTypeMonthly, TimeGrainTypeQuarterly}
 }
 
+// Amount denotes an instance of product charges.
+type Amount struct {
+	// Currency - The currency for the amount value.
+	Currency *string `json:"currency,omitempty"`
+	// Value - Tha actual amount value.
+	Value *float64 `json:"value,omitempty"`
+}
+
 // Balance a balance resource.
 type Balance struct {
 	autorest.Response  `json:"-"`
@@ -2058,6 +2066,57 @@ type ReservationRecommendationProperties struct {
 	Scope *string `json:"scope,omitempty"`
 }
 
+// ReservationRecommendationPropertiesWithAmount the properties of the reservation recommendation.
+type ReservationRecommendationPropertiesWithAmount struct {
+	// LookBackPeriod - The number of days of usage to look back for recommendation.
+	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
+	// MeterID - The meter id (GUID)
+	MeterID *uuid.UUID `json:"meterId,omitempty"`
+	// SkuName - Sku name of the reserved instance resource.
+	SkuName *string `json:"skuName,omitempty"`
+	// Region - Region of the reserved instance resource.
+	Region *string `json:"region,omitempty"`
+	// Term - RI recommendations in one or three year terms.
+	Term *string `json:"term,omitempty"`
+	// CostWithNoRI - The total amount of cost without reserved instances.
+	CostWithNoRI *decimal.Decimal `json:"costWithNoRI,omitempty"`
+	// RecommendedQuantity - Recommended quality for reserved instances.
+	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
+	// TotalCostWithRI - The total amount of cost with reserved instances.
+	TotalCostWithRI *decimal.Decimal `json:"totalCostWithRI,omitempty"`
+	// NetSavings - Total estimated savings with reserved instances.
+	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
+	// FirstUsageDate - The usage date for looking back.
+	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
+}
+
+// ReservationRecommendationSingleProperties the properties of the reservation recommendation for single
+// subscription.
+type ReservationRecommendationSingleProperties struct {
+	// SubscriptionID - Subscription Id.
+	SubscriptionID *uuid.UUID `json:"subscriptionId,omitempty"`
+	// LookBackPeriod - The number of days of usage to look back for recommendation.
+	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
+	// MeterID - The meter id (GUID)
+	MeterID *uuid.UUID `json:"meterId,omitempty"`
+	// SkuName - Sku name of the reserved instance resource.
+	SkuName *string `json:"skuName,omitempty"`
+	// Region - Region of the reserved instance resource.
+	Region *string `json:"region,omitempty"`
+	// Term - RI recommendations in one or three year terms.
+	Term *string `json:"term,omitempty"`
+	// CostWithNoRI - The total amount of cost without reserved instances.
+	CostWithNoRI *decimal.Decimal `json:"costWithNoRI,omitempty"`
+	// RecommendedQuantity - Recommended quality for reserved instances.
+	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
+	// TotalCostWithRI - The total amount of cost with reserved instances.
+	TotalCostWithRI *decimal.Decimal `json:"totalCostWithRI,omitempty"`
+	// NetSavings - Total estimated savings with reserved instances.
+	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
+	// FirstUsageDate - The usage date for looking back.
+	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
+}
+
 // ReservationRecommendationsListResult result of listing reservation recommendations.
 type ReservationRecommendationsListResult struct {
 	autorest.Response `json:"-"`
@@ -2203,6 +2262,214 @@ func (page ReservationRecommendationsListResultPage) Values() []ReservationRecom
 // Creates a new instance of the ReservationRecommendationsListResultPage type.
 func NewReservationRecommendationsListResultPage(getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
 	return ReservationRecommendationsListResultPage{fn: getNextPage}
+}
+
+// ReservationRecommendationsShared reservation Recommendation for shared scope.
+type ReservationRecommendationsShared struct {
+	*ReservationRecommendationPropertiesWithAmount `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationRecommendationsShared.
+func (rrs ReservationRecommendationsShared) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rrs.ReservationRecommendationPropertiesWithAmount != nil {
+		objectMap["properties"] = rrs.ReservationRecommendationPropertiesWithAmount
+	}
+	if rrs.ID != nil {
+		objectMap["id"] = rrs.ID
+	}
+	if rrs.Name != nil {
+		objectMap["name"] = rrs.Name
+	}
+	if rrs.Type != nil {
+		objectMap["type"] = rrs.Type
+	}
+	if rrs.Tags != nil {
+		objectMap["tags"] = rrs.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReservationRecommendationsShared struct.
+func (rrs *ReservationRecommendationsShared) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var reservationRecommendationPropertiesWithAmount ReservationRecommendationPropertiesWithAmount
+				err = json.Unmarshal(*v, &reservationRecommendationPropertiesWithAmount)
+				if err != nil {
+					return err
+				}
+				rrs.ReservationRecommendationPropertiesWithAmount = &reservationRecommendationPropertiesWithAmount
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rrs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rrs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rrs.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rrs.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReservationRecommendationsSharedListResult result of reservation recommendations listing by billing
+// account and billing profile.
+type ReservationRecommendationsSharedListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of reservation recommendations by billing account and billing profile.
+	Value *[]ReservationRecommendationsShared `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ReservationRecommendationsSingle reservation Recommendation for single subscription scope.
+type ReservationRecommendationsSingle struct {
+	*ReservationRecommendationSingleProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationRecommendationsSingle.
+func (rrs ReservationRecommendationsSingle) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rrs.ReservationRecommendationSingleProperties != nil {
+		objectMap["properties"] = rrs.ReservationRecommendationSingleProperties
+	}
+	if rrs.ID != nil {
+		objectMap["id"] = rrs.ID
+	}
+	if rrs.Name != nil {
+		objectMap["name"] = rrs.Name
+	}
+	if rrs.Type != nil {
+		objectMap["type"] = rrs.Type
+	}
+	if rrs.Tags != nil {
+		objectMap["tags"] = rrs.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReservationRecommendationsSingle struct.
+func (rrs *ReservationRecommendationsSingle) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var reservationRecommendationSingleProperties ReservationRecommendationSingleProperties
+				err = json.Unmarshal(*v, &reservationRecommendationSingleProperties)
+				if err != nil {
+					return err
+				}
+				rrs.ReservationRecommendationSingleProperties = &reservationRecommendationSingleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rrs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rrs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rrs.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rrs.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReservationRecommendationsSingleListResult result of reservation recommendations listing by billing
+// account and billing profile for each subscription.
+type ReservationRecommendationsSingleListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of reservation recommendations by billing account and billing profile and subscription.
+	Value *[]ReservationRecommendationsSingle `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ReservationSummariesListResult result of listing reservation summaries.

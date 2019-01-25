@@ -22,6 +22,7 @@ package consumption
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 const (
@@ -34,18 +35,24 @@ type BaseClient struct {
 	autorest.Client
 	BaseURI        string
 	SubscriptionID string
+	StartDate      date.Time
+	EndDate        date.Time
+	LookBackPeriod string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BaseClient {
 	return BaseClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
+		StartDate:      startDate,
+		EndDate:        endDate,
+		LookBackPeriod: lookBackPeriod,
 	}
 }

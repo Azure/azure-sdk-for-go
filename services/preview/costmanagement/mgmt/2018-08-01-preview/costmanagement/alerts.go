@@ -195,6 +195,160 @@ func (client AlertsClient) GetByAccountResponder(resp *http.Response) (result Al
 	return
 }
 
+// GetByBillingAccount gets the alert for a billing account by alert ID.
+// Parameters:
+// billingAccountID - billingAccount ID
+// alertID - alert ID.
+func (client AlertsClient) GetByBillingAccount(ctx context.Context, billingAccountID string, alertID string) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetByBillingAccountPreparer(ctx, billingAccountID, alertID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByBillingAccount", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetByBillingAccountSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByBillingAccount", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetByBillingAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByBillingAccount", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetByBillingAccountPreparer prepares the GetByBillingAccount request.
+func (client AlertsClient) GetByBillingAccountPreparer(ctx context.Context, billingAccountID string, alertID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertId":          autorest.Encode("path", alertID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetByBillingAccountSender sends the GetByBillingAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) GetByBillingAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetByBillingAccountResponder handles the response to the GetByBillingAccount request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) GetByBillingAccountResponder(resp *http.Response) (result Alert, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetByBillingProfile gets the alert for a billing profile by alert ID.
+// Parameters:
+// billingAccountID - billingAccount ID
+// billingProfileID - billingProfile ID
+// alertID - alert ID.
+func (client AlertsClient) GetByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, alertID string) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByBillingProfile")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetByBillingProfilePreparer(ctx, billingAccountID, billingProfileID, alertID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByBillingProfile", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetByBillingProfileSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByBillingProfile", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetByBillingProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByBillingProfile", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetByBillingProfilePreparer prepares the GetByBillingProfile request.
+func (client AlertsClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string, alertID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertId":          autorest.Encode("path", alertID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingProfileId": autorest.Encode("path", billingProfileID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetByBillingProfileSender sends the GetByBillingProfile request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetByBillingProfileResponder handles the response to the GetByBillingProfile request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) GetByBillingProfileResponder(resp *http.Response) (result Alert, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetByDepartment gets the alert for a department by alert ID.
 // Parameters:
 // billingAccountID - billingAccount ID
@@ -273,13 +427,14 @@ func (client AlertsClient) GetByDepartmentResponder(resp *http.Response) (result
 	return
 }
 
-// GetByEnrollment gets the alert for an enrollment by alert ID.
+// GetByInvoiceSection gets the alert for an invoice section by alert ID.
 // Parameters:
 // billingAccountID - billingAccount ID
+// invoiceSectionID - invoiceSection ID
 // alertID - alert ID.
-func (client AlertsClient) GetByEnrollment(ctx context.Context, billingAccountID string, alertID string) (result Alert, err error) {
+func (client AlertsClient) GetByInvoiceSection(ctx context.Context, billingAccountID string, invoiceSectionID string, alertID string) (result Alert, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByEnrollment")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByInvoiceSection")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -288,32 +443,33 @@ func (client AlertsClient) GetByEnrollment(ctx context.Context, billingAccountID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByEnrollmentPreparer(ctx, billingAccountID, alertID)
+	req, err := client.GetByInvoiceSectionPreparer(ctx, billingAccountID, invoiceSectionID, alertID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByEnrollment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByInvoiceSection", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetByEnrollmentSender(req)
+	resp, err := client.GetByInvoiceSectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByEnrollment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByInvoiceSection", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetByEnrollmentResponder(resp)
+	result, err = client.GetByInvoiceSectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByEnrollment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByInvoiceSection", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetByEnrollmentPreparer prepares the GetByEnrollment request.
-func (client AlertsClient) GetByEnrollmentPreparer(ctx context.Context, billingAccountID string, alertID string) (*http.Request, error) {
+// GetByInvoiceSectionPreparer prepares the GetByInvoiceSection request.
+func (client AlertsClient) GetByInvoiceSectionPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, alertID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertId":          autorest.Encode("path", alertID),
 		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
 	}
 
 	const APIVersion = "2018-08-01-preview"
@@ -324,21 +480,21 @@ func (client AlertsClient) GetByEnrollmentPreparer(ctx context.Context, billingA
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/providers/Microsoft.CostManagement/alerts/{alertId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetByEnrollmentSender sends the GetByEnrollment request. The method will close the
+// GetByInvoiceSectionSender sends the GetByInvoiceSection request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertsClient) GetByEnrollmentSender(req *http.Request) (*http.Response, error) {
+func (client AlertsClient) GetByInvoiceSectionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetByEnrollmentResponder handles the response to the GetByEnrollment request. The method always
+// GetByInvoiceSectionResponder handles the response to the GetByInvoiceSection request. The method always
 // closes the http.Response Body.
-func (client AlertsClient) GetByEnrollmentResponder(resp *http.Response) (result Alert, err error) {
+func (client AlertsClient) GetByInvoiceSectionResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -776,6 +932,282 @@ func (client AlertsClient) ListByAccountComplete(ctx context.Context, billingAcc
 	return
 }
 
+// ListByBillingAccount list all alerts for a billing account.
+// Parameters:
+// billingAccountID - billingAccount ID
+// filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
+// properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
+// properties/status, properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the most recent N alerts.
+func (client AlertsClient) ListByBillingAccount(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("costmanagement.AlertsClient", "ListByBillingAccount", err.Error())
+	}
+
+	result.fn = client.listByBillingAccountNextResults
+	req, err := client.ListByBillingAccountPreparer(ctx, billingAccountID, filter, skiptoken, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByBillingAccount", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByBillingAccountSender(req)
+	if err != nil {
+		result.alr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByBillingAccount", resp, "Failure sending request")
+		return
+	}
+
+	result.alr, err = client.ListByBillingAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByBillingAccount", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByBillingAccountPreparer prepares the ListByBillingAccount request.
+func (client AlertsClient) ListByBillingAccountPreparer(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/alerts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) ListByBillingAccountResponder(resp *http.Response) (result AlertListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByBillingAccountNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listByBillingAccountNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+	req, err := lastResults.alertListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByBillingAccountNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByBillingAccountSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByBillingAccountNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByBillingAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByBillingAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListByBillingAccountComplete(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByBillingAccount(ctx, billingAccountID, filter, skiptoken, top)
+	return
+}
+
+// ListByBillingProfile list all alerts for a billing profile.
+// Parameters:
+// billingAccountID - billingAccount ID
+// billingProfileID - billingProfile ID
+// filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
+// properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
+// properties/status, properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the most recent N alerts.
+func (client AlertsClient) ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByBillingProfile")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("costmanagement.AlertsClient", "ListByBillingProfile", err.Error())
+	}
+
+	result.fn = client.listByBillingProfileNextResults
+	req, err := client.ListByBillingProfilePreparer(ctx, billingAccountID, billingProfileID, filter, skiptoken, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByBillingProfile", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByBillingProfileSender(req)
+	if err != nil {
+		result.alr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByBillingProfile", resp, "Failure sending request")
+		return
+	}
+
+	result.alr, err = client.ListByBillingProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByBillingProfilePreparer prepares the ListByBillingProfile request.
+func (client AlertsClient) ListByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingProfileId": autorest.Encode("path", billingProfileID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/alerts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByBillingProfileSender sends the ListByBillingProfile request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) ListByBillingProfileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByBillingProfileResponder handles the response to the ListByBillingProfile request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) ListByBillingProfileResponder(resp *http.Response) (result AlertListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByBillingProfileNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listByBillingProfileNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+	req, err := lastResults.alertListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByBillingProfileNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByBillingProfileSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByBillingProfileNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByBillingProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByBillingProfileComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListByBillingProfileComplete(ctx context.Context, billingAccountID string, billingProfileID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByBillingProfile")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByBillingProfile(ctx, billingAccountID, billingProfileID, filter, skiptoken, top)
+	return
+}
+
 // ListByDepartment list all alerts for a department.
 // Parameters:
 // billingAccountID - billingAccount ID
@@ -915,9 +1347,10 @@ func (client AlertsClient) ListByDepartmentComplete(ctx context.Context, billing
 	return
 }
 
-// ListByEnrollment list all alerts for an enrollment.
+// ListByInvoiceSection list all alerts for an invoice section.
 // Parameters:
 // billingAccountID - billingAccount ID
+// invoiceSectionID - invoiceSection ID
 // filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
 // properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
 // properties/status, properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
@@ -925,9 +1358,9 @@ func (client AlertsClient) ListByDepartmentComplete(ctx context.Context, billing
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N alerts.
-func (client AlertsClient) ListByEnrollment(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+func (client AlertsClient) ListByInvoiceSection(ctx context.Context, billingAccountID string, invoiceSectionID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByEnrollment")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByInvoiceSection")
 		defer func() {
 			sc := -1
 			if result.alr.Response.Response != nil {
@@ -942,35 +1375,36 @@ func (client AlertsClient) ListByEnrollment(ctx context.Context, billingAccountI
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("costmanagement.AlertsClient", "ListByEnrollment", err.Error())
+		return result, validation.NewError("costmanagement.AlertsClient", "ListByInvoiceSection", err.Error())
 	}
 
-	result.fn = client.listByEnrollmentNextResults
-	req, err := client.ListByEnrollmentPreparer(ctx, billingAccountID, filter, skiptoken, top)
+	result.fn = client.listByInvoiceSectionNextResults
+	req, err := client.ListByInvoiceSectionPreparer(ctx, billingAccountID, invoiceSectionID, filter, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByEnrollment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByInvoiceSection", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByEnrollmentSender(req)
+	resp, err := client.ListByInvoiceSectionSender(req)
 	if err != nil {
 		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByEnrollment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByInvoiceSection", resp, "Failure sending request")
 		return
 	}
 
-	result.alr, err = client.ListByEnrollmentResponder(resp)
+	result.alr, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByEnrollment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByInvoiceSection", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByEnrollmentPreparer prepares the ListByEnrollment request.
-func (client AlertsClient) ListByEnrollmentPreparer(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+// ListByInvoiceSectionPreparer prepares the ListByInvoiceSection request.
+func (client AlertsClient) ListByInvoiceSectionPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
 	}
 
 	const APIVersion = "2018-08-01-preview"
@@ -990,21 +1424,21 @@ func (client AlertsClient) ListByEnrollmentPreparer(ctx context.Context, billing
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/alerts", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/providers/Microsoft.CostManagement/alerts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByEnrollmentSender sends the ListByEnrollment request. The method will close the
+// ListByInvoiceSectionSender sends the ListByInvoiceSection request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertsClient) ListByEnrollmentSender(req *http.Request) (*http.Response, error) {
+func (client AlertsClient) ListByInvoiceSectionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListByEnrollmentResponder handles the response to the ListByEnrollment request. The method always
+// ListByInvoiceSectionResponder handles the response to the ListByInvoiceSection request. The method always
 // closes the http.Response Body.
-func (client AlertsClient) ListByEnrollmentResponder(resp *http.Response) (result AlertListResult, err error) {
+func (client AlertsClient) ListByInvoiceSectionResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1015,31 +1449,31 @@ func (client AlertsClient) ListByEnrollmentResponder(resp *http.Response) (resul
 	return
 }
 
-// listByEnrollmentNextResults retrieves the next set of results, if any.
-func (client AlertsClient) listByEnrollmentNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+// listByInvoiceSectionNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listByInvoiceSectionNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
 	req, err := lastResults.alertListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByEnrollmentNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByInvoiceSectionNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByEnrollmentSender(req)
+	resp, err := client.ListByInvoiceSectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByEnrollmentNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByInvoiceSectionNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByEnrollmentResponder(resp)
+	result, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByEnrollmentNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByInvoiceSectionNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByEnrollmentComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) ListByEnrollmentComplete(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+// ListByInvoiceSectionComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListByInvoiceSectionComplete(ctx context.Context, billingAccountID string, invoiceSectionID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByEnrollment")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByInvoiceSection")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -1048,7 +1482,7 @@ func (client AlertsClient) ListByEnrollmentComplete(ctx context.Context, billing
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByEnrollment(ctx, billingAccountID, filter, skiptoken, top)
+	result.page, err = client.ListByInvoiceSection(ctx, billingAccountID, invoiceSectionID, filter, skiptoken, top)
 	return
 }
 

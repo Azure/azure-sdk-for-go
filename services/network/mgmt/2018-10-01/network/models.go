@@ -489,17 +489,17 @@ func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
 type ConnectionMonitorSourceStatus string
 
 const (
-	// ConnectionMonitorSourceStatusActive ...
-	ConnectionMonitorSourceStatusActive ConnectionMonitorSourceStatus = "Active"
-	// ConnectionMonitorSourceStatusInactive ...
-	ConnectionMonitorSourceStatusInactive ConnectionMonitorSourceStatus = "Inactive"
-	// ConnectionMonitorSourceStatusUnknown ...
-	ConnectionMonitorSourceStatusUnknown ConnectionMonitorSourceStatus = "Unknown"
+	// Active ...
+	Active ConnectionMonitorSourceStatus = "Active"
+	// Inactive ...
+	Inactive ConnectionMonitorSourceStatus = "Inactive"
+	// Uknown ...
+	Uknown ConnectionMonitorSourceStatus = "Uknown"
 )
 
 // PossibleConnectionMonitorSourceStatusValues returns an array of possible values for the ConnectionMonitorSourceStatus const type.
 func PossibleConnectionMonitorSourceStatusValues() []ConnectionMonitorSourceStatus {
-	return []ConnectionMonitorSourceStatus{ConnectionMonitorSourceStatusActive, ConnectionMonitorSourceStatusInactive, ConnectionMonitorSourceStatusUnknown}
+	return []ConnectionMonitorSourceStatus{Active, Inactive, Uknown}
 }
 
 // ConnectionState enumerates the values for connection state.
@@ -603,15 +603,15 @@ func PossibleEffectiveRouteSourceValues() []EffectiveRouteSource {
 type EffectiveRouteState string
 
 const (
-	// Active ...
-	Active EffectiveRouteState = "Active"
-	// Invalid ...
-	Invalid EffectiveRouteState = "Invalid"
+	// EffectiveRouteStateActive ...
+	EffectiveRouteStateActive EffectiveRouteState = "Active"
+	// EffectiveRouteStateInvalid ...
+	EffectiveRouteStateInvalid EffectiveRouteState = "Invalid"
 )
 
 // PossibleEffectiveRouteStateValues returns an array of possible values for the EffectiveRouteState const type.
 func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
-	return []EffectiveRouteState{Active, Invalid}
+	return []EffectiveRouteState{EffectiveRouteStateActive, EffectiveRouteStateInvalid}
 }
 
 // EffectiveSecurityRuleProtocol enumerates the values for effective security rule protocol.
@@ -6910,7 +6910,7 @@ type ConnectionMonitorParameters struct {
 // ConnectionMonitorQueryResult list of connection states snaphots.
 type ConnectionMonitorQueryResult struct {
 	autorest.Response `json:"-"`
-	// SourceStatus - Status of connection monitor source. Possible values include: 'ConnectionMonitorSourceStatusUnknown', 'ConnectionMonitorSourceStatusActive', 'ConnectionMonitorSourceStatusInactive'
+	// SourceStatus - Status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'
 	SourceStatus ConnectionMonitorSourceStatus `json:"sourceStatus,omitempty"`
 	// States - Information about connection states.
 	States *[]ConnectionStateSnapshot `json:"states,omitempty"`
@@ -8145,7 +8145,7 @@ type EffectiveRoute struct {
 	Name *string `json:"name,omitempty"`
 	// Source - Who created the route. Possible values are: 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'. Possible values include: 'EffectiveRouteSourceUnknown', 'EffectiveRouteSourceUser', 'EffectiveRouteSourceVirtualNetworkGateway', 'EffectiveRouteSourceDefault'
 	Source EffectiveRouteSource `json:"source,omitempty"`
-	// State - The value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'Active', 'Invalid'
+	// State - The value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'EffectiveRouteStateActive', 'EffectiveRouteStateInvalid'
 	State EffectiveRouteState `json:"state,omitempty"`
 	// AddressPrefix - The address prefixes of the effective routes in CIDR notation.
 	AddressPrefix *[]string `json:"addressPrefix,omitempty"`

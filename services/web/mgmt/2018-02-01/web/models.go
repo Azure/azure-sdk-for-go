@@ -17560,7 +17560,7 @@ type SiteAuthSettingsProperties struct {
 	// Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users.
 	// More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
 	ClientSecret *string `json:"clientSecret,omitempty"`
-	// ClientSecretCertificateThumbprint - An alternative to the client secret, that is the thumbprint of a certifite used for signing purposes. This property acts as
+	// ClientSecretCertificateThumbprint - An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as
 	// a replacement for the Client Secret. It is also optional.
 	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
 	// Issuer - The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.

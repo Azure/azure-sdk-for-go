@@ -1432,6 +1432,8 @@ type ManagedClusterProperties struct {
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
 	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
+	// APIServerAuthorizedIPRanges - Authorized IP Ranges to kubernetes API server.
+	APIServerAuthorizedIPRanges *[]string `json:"apiServerAuthorizedIPRanges,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedClusterProperties.
@@ -1472,6 +1474,9 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mcp.AadProfile != nil {
 		objectMap["aadProfile"] = mcp.AadProfile
+	}
+	if mcp.APIServerAuthorizedIPRanges != nil {
+		objectMap["apiServerAuthorizedIPRanges"] = mcp.APIServerAuthorizedIPRanges
 	}
 	return json.Marshal(objectMap)
 }

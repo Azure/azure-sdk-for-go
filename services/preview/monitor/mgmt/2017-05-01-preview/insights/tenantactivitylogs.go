@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -43,24 +44,35 @@ func NewTenantActivityLogsClientWithBaseURI(baseURI string, subscriptionID strin
 // the subscription is applicable to this API (the parameters, $filter, etc.).<br>One thing to point out here is that
 // this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces the logs that
 // were generated at the tenant level.
-//
-// filter is reduces the set of data collected. <br>The **$filter** is very restricted and allows only the
+// Parameters:
+// filter - reduces the set of data collected. <br>The **$filter** is very restricted and allows only the
 // following patterns.<br>- List events for a resource group: $filter=eventTimestamp ge '<Start Time>' and
 // eventTimestamp le '<End Time>' and eventChannels eq 'Admin, Operation' and resourceGroupName eq
 // '<ResourceGroupName>'.<br>- List events for resource: $filter=eventTimestamp ge '<Start Time>' and
-// eventTimestamp le '<End Time>' and eventChannels eq 'Admin, Operation' and resourceUri eq '<ResourceURI>'.<br>-
-// List events for a subscription: $filter=eventTimestamp ge '<Start Time>' and eventTimestamp le '<End Time>' and
-// eventChannels eq 'Admin, Operation'.<br>- List events for a resource provider: $filter=eventTimestamp ge '<Start
-// Time>' and eventTimestamp le '<End Time>' and eventChannels eq 'Admin, Operation' and resourceProvider eq
-// '<ResourceProviderName>'.<br>- List events for a correlation Id: api-version=2014-04-01&$filter=eventTimestamp
-// ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq
-// 'Admin, Operation' and correlationId eq '<CorrelationID>'.<br>**NOTE**: No other syntax is allowed.
-// selectParameter is used to fetch events with only the given properties.<br>The **$select** argument is a comma
-// separated list of property names to be returned. Possible values are: *authorization*, *claims*,
+// eventTimestamp le '<End Time>' and eventChannels eq 'Admin, Operation' and resourceUri eq
+// '<ResourceURI>'.<br>- List events for a subscription: $filter=eventTimestamp ge '<Start Time>' and
+// eventTimestamp le '<End Time>' and eventChannels eq 'Admin, Operation'.<br>- List events for a resource
+// provider: $filter=eventTimestamp ge '<Start Time>' and eventTimestamp le '<End Time>' and eventChannels eq
+// 'Admin, Operation' and resourceProvider eq '<ResourceProviderName>'.<br>- List events for a correlation Id:
+// api-version=2014-04-01&$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
+// '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
+// '<CorrelationID>'.<br>**NOTE**: No other syntax is allowed.
+// selectParameter - used to fetch events with only the given properties.<br>The **$select** argument is a
+// comma separated list of property names to be returned. Possible values are: *authorization*, *claims*,
 // *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
 // *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
 // *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*
 func (client TenantActivityLogsClient) List(ctx context.Context, filter string, selectParameter string) (result EventDataCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TenantActivityLogsClient.List")
+		defer func() {
+			sc := -1
+			if result.edc.Response.Response != nil {
+				sc = result.edc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, selectParameter)
 	if err != nil {
@@ -125,8 +137,8 @@ func (client TenantActivityLogsClient) ListResponder(resp *http.Response) (resul
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client TenantActivityLogsClient) listNextResults(lastResults EventDataCollection) (result EventDataCollection, err error) {
-	req, err := lastResults.eventDataCollectionPreparer()
+func (client TenantActivityLogsClient) listNextResults(ctx context.Context, lastResults EventDataCollection) (result EventDataCollection, err error) {
+	req, err := lastResults.eventDataCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "insights.TenantActivityLogsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -147,6 +159,16 @@ func (client TenantActivityLogsClient) listNextResults(lastResults EventDataColl
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client TenantActivityLogsClient) ListComplete(ctx context.Context, filter string, selectParameter string) (result EventDataCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TenantActivityLogsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, filter, selectParameter)
 	return
 }

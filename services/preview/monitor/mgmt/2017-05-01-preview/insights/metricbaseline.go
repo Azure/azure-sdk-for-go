@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -41,13 +42,23 @@ func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) M
 }
 
 // CalculateBaseline **Lists the baseline values for a resource**.
-//
-// resourceURI is the identifier of the resource. It has the following structure:
-// subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For
-// example:
+// Parameters:
+// resourceURI - the identifier of the resource. It has the following structure:
+// subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+// For example:
 // subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
-// timeSeriesInformation is information that need to be specified to calculate a baseline on a time series.
+// timeSeriesInformation - information that need to be specified to calculate a baseline on a time series.
 func (client MetricBaselineClient) CalculateBaseline(ctx context.Context, resourceURI string, timeSeriesInformation TimeSeriesInformation) (result CalculateBaselineResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetricBaselineClient.CalculateBaseline")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: timeSeriesInformation,
 			Constraints: []validation.Constraint{{Target: "timeSeriesInformation.Sensitivities", Name: validation.Null, Rule: true, Chain: nil},
@@ -88,7 +99,7 @@ func (client MetricBaselineClient) CalculateBaselinePreparer(ctx context.Context
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/calculatebaseline", pathParameters),
@@ -118,17 +129,29 @@ func (client MetricBaselineClient) CalculateBaselineResponder(resp *http.Respons
 }
 
 // Get **Gets the baseline values for a specific metric**.
-//
-// resourceURI is the identifier of the resource. It has the following structure:
-// subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}. For
-// example:
+// Parameters:
+// resourceURI - the identifier of the resource. It has the following structure:
+// subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+// For example:
 // subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
-// metricName is the name of the metric to retrieve the baseline for. timespan is the timespan of the query. It is
-// a string with the following format 'startDateTime_ISO/endDateTime_ISO'. interval is the interval (i.e.
-// timegrain) of the query. aggregation is the aggregation type of the metric to retrieve the baseline for.
-// sensitivities is the list of sensitivities (comma separated) to retrieve. resultType is allows retrieving only
-// metadata of the baseline. On data request all information is retrieved.
+// metricName - the name of the metric to retrieve the baseline for.
+// timespan - the timespan of the query. It is a string with the following format
+// 'startDateTime_ISO/endDateTime_ISO'.
+// interval - the interval (i.e. timegrain) of the query.
+// aggregation - the aggregation type of the metric to retrieve the baseline for.
+// sensitivities - the list of sensitivities (comma separated) to retrieve.
+// resultType - allows retrieving only metadata of the baseline. On data request all information is retrieved.
 func (client MetricBaselineClient) Get(ctx context.Context, resourceURI string, metricName string, timespan string, interval *string, aggregation string, sensitivities string, resultType ResultType) (result BaselineResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetricBaselineClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceURI, metricName, timespan, interval, aggregation, sensitivities, resultType)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricBaselineClient", "Get", nil, "Failure preparing request")

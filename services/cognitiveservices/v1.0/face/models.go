@@ -395,7 +395,7 @@ type FacialHair struct {
 type FindSimilarRequest struct {
 	// FaceID - FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
 	FaceID *uuid.UUID `json:"faceId,omitempty"`
-	// FaceListID - An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。
+	// FaceListID - An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	FaceListID *string `json:"faceListId,omitempty"`
 	// LargeFaceListID - An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	LargeFaceListID *string `json:"largeFaceListId,omitempty"`

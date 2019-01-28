@@ -10,7 +10,7 @@
   version = "v0.2.0"
 
 [[projects]]
-  digest = "1:d24286bb45f3859bfdb461df19693dc8e66f4586ffb9f6721935bd79f748c37f"
+  digest = "1:f7b7b2c96bc64c56ecb2666cf42b0c46d894ca7cce775431c9bb23aafe9d0a77"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -25,8 +25,8 @@
     "tracing",
   ]
   pruneopts = ""
-  revision = "7324aa01f00acb1ae6e502ac06e0213cfdf09bdb"
-  version = "v11.3.2"
+  revision = "71d02b67e17a3d80abf8db171f1ca80c39eb2e90"
+  version = "v11.4.0"
 
 [[projects]]
   digest = "1:0b2d5839372f6dc106fcaa70b6bd5832789a633c4e470540f76c2ec6c560e1c1"
@@ -211,14 +211,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:278d561dd1f1743e1b8995f202f56314e33364b395b95514d7df91df48b267da"
+  digest = "1:237f78dc98975fe36424378555dd59d7b974759b5396ea315502d1837f1c1eda"
   name = "golang.org/x/crypto"
   packages = [
     "pkcs12",
     "pkcs12/internal/rc2",
   ]
   pruneopts = ""
-  revision = "057139ce5d2bdbe6fe73c53679e24e9cf007f637"
+  revision = "c7b33c32a30bae9ba07d37eb4d86f1f8b0f644fb"
 
 [[projects]]
   branch = "master"

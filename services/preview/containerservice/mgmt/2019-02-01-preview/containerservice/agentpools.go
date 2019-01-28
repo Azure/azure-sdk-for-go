@@ -95,7 +95,7 @@ func (client AgentPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01-preview"
+	const APIVersion = "2019-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -182,7 +182,7 @@ func (client AgentPoolsClient) DeletePreparer(ctx context.Context, resourceGroup
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01-preview"
+	const APIVersion = "2019-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -272,7 +272,7 @@ func (client AgentPoolsClient) GetPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01-preview"
+	const APIVersion = "2019-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -349,7 +349,7 @@ func (client AgentPoolsClient) ListPreparer(ctx context.Context, managedClusterN
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01-preview"
+	const APIVersion = "2019-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

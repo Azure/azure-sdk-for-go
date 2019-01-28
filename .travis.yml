@@ -2,11 +2,9 @@ sudo: false
 
 language: go
 go:
-  - 1.8.x
   - 1.9.x
   - 1.10.x
   - 1.11.x
-  - master
 
 branches:
   only:
@@ -17,10 +15,6 @@ env:
   global:
     - DEP_RELEASE_TAG=v0.5.0 # so the script knows which version to use
     - IGNORE_BREAKING_CHANGES=true
-
-matrix:
-  allow_failures:
-    - go: master
 
 before_install:
   - curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh

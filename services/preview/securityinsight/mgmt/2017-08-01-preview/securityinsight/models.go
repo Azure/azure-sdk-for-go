@@ -472,8 +472,8 @@ type Resource struct {
 
 // ScheduledAlertRule represents scheduled alert rule.
 type ScheduledAlertRule struct {
-	// ScheduledAlertRuleProperties - Scheduled alert rule properties
-	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	// Properties - Scheduled alert rule properties
+	Properties *ScheduledAlertRuleProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
@@ -484,99 +484,6 @@ type ScheduledAlertRule struct {
 	Kind AlertRuleKind `json:"kind,omitempty"`
 	// Etag - Etag of the alert rule.
 	Etag *string `json:"etag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ScheduledAlertRule.
-func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sar.ScheduledAlertRuleProperties != nil {
-		objectMap["properties"] = sar.ScheduledAlertRuleProperties
-	}
-	if sar.ID != nil {
-		objectMap["id"] = sar.ID
-	}
-	if sar.Type != nil {
-		objectMap["type"] = sar.Type
-	}
-	if sar.Name != nil {
-		objectMap["name"] = sar.Name
-	}
-	if sar.Kind != "" {
-		objectMap["kind"] = sar.Kind
-	}
-	if sar.Etag != nil {
-		objectMap["etag"] = sar.Etag
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ScheduledAlertRule struct.
-func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var scheduledAlertRuleProperties ScheduledAlertRuleProperties
-				err = json.Unmarshal(*v, &scheduledAlertRuleProperties)
-				if err != nil {
-					return err
-				}
-				sar.ScheduledAlertRuleProperties = &scheduledAlertRuleProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				sar.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				sar.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				sar.Name = &name
-			}
-		case "kind":
-			if v != nil {
-				var kind AlertRuleKind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				sar.Kind = kind
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				sar.Etag = &etag
-			}
-		}
-	}
-
-	return nil
 }
 
 // ScheduledAlertRuleProperties alert rule property bag.

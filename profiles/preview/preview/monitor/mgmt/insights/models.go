@@ -22,7 +22,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-09-01/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-11-01-preview/insights"
 )
 
 const (
@@ -92,6 +92,13 @@ const (
 	CriterionTypeStaticThresholdCriterion CriterionType = original.CriterionTypeStaticThresholdCriterion
 )
 
+type DataStatus = original.DataStatus
+
+const (
+	NotPresent DataStatus = original.NotPresent
+	Present    DataStatus = original.Present
+)
+
 type Enabled = original.Enabled
 
 const (
@@ -102,11 +109,11 @@ const (
 type EventLevel = original.EventLevel
 
 const (
-	Critical      EventLevel = original.Critical
-	Error         EventLevel = original.Error
-	Informational EventLevel = original.Informational
-	Verbose       EventLevel = original.Verbose
-	Warning       EventLevel = original.Warning
+	EventLevelCritical      EventLevel = original.EventLevelCritical
+	EventLevelError         EventLevel = original.EventLevelError
+	EventLevelInformational EventLevel = original.EventLevelInformational
+	EventLevelVerbose       EventLevel = original.EventLevelVerbose
+	EventLevelWarning       EventLevel = original.EventLevelWarning
 )
 
 type MetricStatisticType = original.MetricStatisticType
@@ -164,6 +171,14 @@ const (
 	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
 	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
 	OdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeRuleCondition
+)
+
+type OnboardingStatus = original.OnboardingStatus
+
+const (
+	NotOnboarded OnboardingStatus = original.NotOnboarded
+	Onboarded    OnboardingStatus = original.Onboarded
+	Unknown      OnboardingStatus = original.Unknown
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -320,6 +335,7 @@ type BasicRuleCondition = original.BasicRuleCondition
 type BasicRuleDataSource = original.BasicRuleDataSource
 type CalculateBaselineResponse = original.CalculateBaselineResponse
 type Criteria = original.Criteria
+type DataContainer = original.DataContainer
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
 type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
@@ -332,6 +348,7 @@ type Dimension = original.Dimension
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
+type Error = original.Error
 type ErrorResponse = original.ErrorResponse
 type EventCategoriesClient = original.EventCategoriesClient
 type EventCategoryCollection = original.EventCategoryCollection
@@ -397,10 +414,12 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
 type ProxyOnlyResource = original.ProxyOnlyResource
+type ProxyResource = original.ProxyResource
 type Recurrence = original.Recurrence
 type RecurrentSchedule = original.RecurrentSchedule
 type Resource = original.Resource
 type Response = original.Response
+type ResponseWithError = original.ResponseWithError
 type RetentionPolicy = original.RetentionPolicy
 type RuleAction = original.RuleAction
 type RuleCondition = original.RuleCondition
@@ -424,9 +443,14 @@ type TimeSeriesElement = original.TimeSeriesElement
 type TimeSeriesInformation = original.TimeSeriesInformation
 type TimeWindow = original.TimeWindow
 type TriggerCondition = original.TriggerCondition
+type VMInsightsClient = original.VMInsightsClient
+type VMInsightsOnboardingStatus = original.VMInsightsOnboardingStatus
+type VMInsightsOnboardingStatusProperties = original.VMInsightsOnboardingStatusProperties
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
+type WorkspaceInfo = original.WorkspaceInfo
+type WorkspaceInfoProperties = original.WorkspaceInfoProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -557,6 +581,12 @@ func NewTenantActivityLogsClient(subscriptionID string) TenantActivityLogsClient
 func NewTenantActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) TenantActivityLogsClient {
 	return original.NewTenantActivityLogsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVMInsightsClient(subscriptionID string) VMInsightsClient {
+	return original.NewVMInsightsClient(subscriptionID)
+}
+func NewVMInsightsClientWithBaseURI(baseURI string, subscriptionID string) VMInsightsClient {
+	return original.NewVMInsightsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -580,6 +610,9 @@ func PossibleConditionalOperatorValues() []ConditionalOperator {
 }
 func PossibleCriterionTypeValues() []CriterionType {
 	return original.PossibleCriterionTypeValues()
+}
+func PossibleDataStatusValues() []DataStatus {
+	return original.PossibleDataStatusValues()
 }
 func PossibleEnabledValues() []Enabled {
 	return original.PossibleEnabledValues()
@@ -607,6 +640,9 @@ func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
 }
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
+}
+func PossibleOnboardingStatusValues() []OnboardingStatus {
+	return original.PossibleOnboardingStatusValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

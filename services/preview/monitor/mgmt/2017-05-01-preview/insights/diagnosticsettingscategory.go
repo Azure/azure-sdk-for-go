@@ -80,7 +80,7 @@ func (client DiagnosticSettingsCategoryClient) Get(ctx context.Context, resource
 func (client DiagnosticSettingsCategoryClient) GetPreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
-		"resourceUri": autorest.Encode("path", resourceURI),
+		"resourceUri": resourceURI,
 	}
 
 	const APIVersion = "2017-05-01-preview"
@@ -154,7 +154,7 @@ func (client DiagnosticSettingsCategoryClient) List(ctx context.Context, resourc
 // ListPreparer prepares the List request.
 func (client DiagnosticSettingsCategoryClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceUri": autorest.Encode("path", resourceURI),
+		"resourceUri": resourceURI,
 	}
 
 	const APIVersion = "2017-05-01-preview"

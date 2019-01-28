@@ -19,7 +19,7 @@ package insightsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2017-05-01-preview/insights"
+	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-11-01-preview/insights"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -139,14 +139,14 @@ var _ TenantActivityLogsClientAPI = (*insights.TenantActivityLogsClient)(nil)
 
 // MetricDefinitionsClientAPI contains the set of methods on the MetricDefinitionsClient type.
 type MetricDefinitionsClientAPI interface {
-	List(ctx context.Context, resourceURI string) (result insights.MetricDefinitionCollection, err error)
+	List(ctx context.Context, resourceURI string, metricnamespace string) (result insights.MetricDefinitionCollection, err error)
 }
 
 var _ MetricDefinitionsClientAPI = (*insights.MetricDefinitionsClient)(nil)
 
 // MetricsClientAPI contains the set of methods on the MetricsClient type.
 type MetricsClientAPI interface {
-	List(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType insights.ResultType) (result insights.Response, err error)
+	List(ctx context.Context, resourceURI string, timespan string, interval *string, metricnames string, aggregation string, top *int32, orderby string, filter string, resultType insights.ResultType, metricnamespace string) (result insights.Response, err error)
 }
 
 var _ MetricsClientAPI = (*insights.MetricsClient)(nil)
@@ -158,3 +158,49 @@ type MetricBaselineClientAPI interface {
 }
 
 var _ MetricBaselineClientAPI = (*insights.MetricBaselineClient)(nil)
+
+// MetricAlertsClientAPI contains the set of methods on the MetricAlertsClient type.
+type MetricAlertsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters insights.MetricAlertResource) (result insights.MetricAlertResource, err error)
+	Delete(ctx context.Context, resourceGroupName string, ruleName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, ruleName string) (result insights.MetricAlertResource, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result insights.MetricAlertResourceCollection, err error)
+	ListBySubscription(ctx context.Context) (result insights.MetricAlertResourceCollection, err error)
+	Update(ctx context.Context, resourceGroupName string, ruleName string, parameters insights.MetricAlertResourcePatch) (result insights.MetricAlertResource, err error)
+}
+
+var _ MetricAlertsClientAPI = (*insights.MetricAlertsClient)(nil)
+
+// MetricAlertsStatusClientAPI contains the set of methods on the MetricAlertsStatusClient type.
+type MetricAlertsStatusClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, ruleName string) (result insights.MetricAlertStatusCollection, err error)
+	ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string) (result insights.MetricAlertStatusCollection, err error)
+}
+
+var _ MetricAlertsStatusClientAPI = (*insights.MetricAlertsStatusClient)(nil)
+
+// ScheduledQueryRulesClientAPI contains the set of methods on the ScheduledQueryRulesClient type.
+type ScheduledQueryRulesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters insights.LogSearchRuleResource) (result insights.LogSearchRuleResource, err error)
+	Delete(ctx context.Context, resourceGroupName string, ruleName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, ruleName string) (result insights.LogSearchRuleResource, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result insights.LogSearchRuleResourceCollection, err error)
+	ListBySubscription(ctx context.Context, filter string) (result insights.LogSearchRuleResourceCollection, err error)
+	Update(ctx context.Context, resourceGroupName string, ruleName string, parameters insights.LogSearchRuleResourcePatch) (result insights.LogSearchRuleResource, err error)
+}
+
+var _ ScheduledQueryRulesClientAPI = (*insights.ScheduledQueryRulesClient)(nil)
+
+// MetricNamespacesClientAPI contains the set of methods on the MetricNamespacesClient type.
+type MetricNamespacesClientAPI interface {
+	List(ctx context.Context, resourceURI string, startTime string) (result insights.MetricNamespaceCollection, err error)
+}
+
+var _ MetricNamespacesClientAPI = (*insights.MetricNamespacesClient)(nil)
+
+// VMInsightsClientAPI contains the set of methods on the VMInsightsClient type.
+type VMInsightsClientAPI interface {
+	GetOnboardingStatus(ctx context.Context, resourceURI string) (result insights.VMInsightsOnboardingStatus, err error)
+}
+
+var _ VMInsightsClientAPI = (*insights.VMInsightsClient)(nil)

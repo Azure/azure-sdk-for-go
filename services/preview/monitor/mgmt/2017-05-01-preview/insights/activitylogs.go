@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -40,23 +41,35 @@ func NewActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) Act
 }
 
 // List provides the list of records from the activity logs.
-//
-// filter is reduces the set of data collected.<br>The **$filter** argument is very restricted and allows only the
-// following patterns.<br>- *List events for a resource group*: $filter=eventTimestamp ge
+// Parameters:
+// filter - reduces the set of data collected.<br>The **$filter** argument is very restricted and allows only
+// the following patterns.<br>- *List events for a resource group*: $filter=eventTimestamp ge
 // '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceGroupName eq
-// 'resourceGroupName'.<br>- *List events for resource*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
-// and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceUri eq 'resourceURI'.<br>- *List events for a
-// subscription in a time range*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-// '2014-07-20T04:36:37.6407898Z'.<br>- *List events for a resource provider*: $filter=eventTimestamp ge
-// '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceProvider eq
-// 'resourceProviderName'.<br>- *List events for a correlation Id*: $filter=eventTimestamp ge
-// '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and correlationId eq
-// 'correlationID'.<br><br>**NOTE**: No other syntax is allowed. selectParameter is used to fetch events with only
-// the given properties.<br>The **$select** argument is a comma separated list of property names to be returned.
-// Possible values are: *authorization*, *claims*, *correlationId*, *description*, *eventDataId*, *eventName*,
-// *eventTimestamp*, *httpRequest*, *level*, *operationId*, *operationName*, *properties*, *resourceGroupName*,
-// *resourceProviderName*, *resourceId*, *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*
+// 'resourceGroupName'.<br>- *List events for resource*: $filter=eventTimestamp ge
+// '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceUri eq
+// 'resourceURI'.<br>- *List events for a subscription in a time range*: $filter=eventTimestamp ge
+// '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'.<br>- *List events for a
+// resource provider*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
+// '2014-07-20T04:36:37.6407898Z' and resourceProvider eq 'resourceProviderName'.<br>- *List events for a
+// correlation Id*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
+// '2014-07-20T04:36:37.6407898Z' and correlationId eq 'correlationID'.<br><br>**NOTE**: No other syntax is
+// allowed.
+// selectParameter - used to fetch events with only the given properties.<br>The **$select** argument is a
+// comma separated list of property names to be returned. Possible values are: *authorization*, *claims*,
+// *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
+// *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
+// *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*
 func (client ActivityLogsClient) List(ctx context.Context, filter string, selectParameter string) (result EventDataCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActivityLogsClient.List")
+		defer func() {
+			sc := -1
+			if result.edc.Response.Response != nil {
+				sc = result.edc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, selectParameter)
 	if err != nil {
@@ -125,8 +138,8 @@ func (client ActivityLogsClient) ListResponder(resp *http.Response) (result Even
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ActivityLogsClient) listNextResults(lastResults EventDataCollection) (result EventDataCollection, err error) {
-	req, err := lastResults.eventDataCollectionPreparer()
+func (client ActivityLogsClient) listNextResults(ctx context.Context, lastResults EventDataCollection) (result EventDataCollection, err error) {
+	req, err := lastResults.eventDataCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "insights.ActivityLogsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -147,6 +160,16 @@ func (client ActivityLogsClient) listNextResults(lastResults EventDataCollection
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ActivityLogsClient) ListComplete(ctx context.Context, filter string, selectParameter string) (result EventDataCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActivityLogsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, filter, selectParameter)
 	return
 }

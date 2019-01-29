@@ -16,7 +16,7 @@
         "../../services/resources/mgmt/2016-09-01/links/linksapi",
         "../../services/resources/mgmt/2015-01-01/locks",
         "../../services/resources/mgmt/2015-01-01/locks/locksapi",
-        "../../services/resources/mgmt/2015-10-01-preview/policy",
+        "../../services/preview/resources/mgmt/2015-10-01-preview/policy",
         "../../services/resources/mgmt/2016-02-01/resources",
         "../../services/resources/mgmt/2016-02-01/resources/resourcesapi",
         "../../services/resources/mgmt/2016-06-01/subscriptions",

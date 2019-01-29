@@ -796,7 +796,8 @@ type CredentialResult struct {
 // CredentialResults the list of credential result response.
 type CredentialResults struct {
 	autorest.Response `json:"-"`
-	Kubeconfigs       *[]CredentialResult `json:"kubeconfigs,omitempty"`
+	// Kubeconfigs - Base64-encoded Kubernetes configuration file.
+	Kubeconfigs *[]CredentialResult `json:"kubeconfigs,omitempty"`
 }
 
 // CustomProfile properties to configure a custom container service cluster.
@@ -1431,6 +1432,8 @@ type ManagedClusterProperties struct {
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
 	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
+	// APIServerAuthorizedIPRanges - Authorized IP Ranges to kubernetes API server.
+	APIServerAuthorizedIPRanges *[]string `json:"apiServerAuthorizedIPRanges,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedClusterProperties.
@@ -1471,6 +1474,9 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mcp.AadProfile != nil {
 		objectMap["aadProfile"] = mcp.AadProfile
+	}
+	if mcp.APIServerAuthorizedIPRanges != nil {
+		objectMap["apiServerAuthorizedIPRanges"] = mcp.APIServerAuthorizedIPRanges
 	}
 	return json.Marshal(objectMap)
 }
@@ -1544,7 +1550,7 @@ type ManagedClustersResetAADProfileFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ManagedClustersResetAADProfileFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
+func (future *ManagedClustersResetAADProfileFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1555,13 +1561,7 @@ func (future *ManagedClustersResetAADProfileFuture) Result(client ManagedCluster
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetAADProfileFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
-		mc, err = client.ResetAADProfileResponder(mc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetAADProfileFuture", "Result", mc.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -1573,7 +1573,7 @@ type ManagedClustersResetServicePrincipalProfileFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
+func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1584,13 +1584,7 @@ func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client M
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
-		mc, err = client.ResetServicePrincipalProfileResponder(mc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersResetServicePrincipalProfileFuture", "Result", mc.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 

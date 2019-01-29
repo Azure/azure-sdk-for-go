@@ -293,7 +293,8 @@ var _ SecurityPINsClientAPI = (*backup.SecurityPINsClient)(nil)
 // ResourceStorageConfigsClientAPI contains the set of methods on the ResourceStorageConfigsClient type.
 type ResourceStorageConfigsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceConfigResource, err error)
-	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceConfigResource) (result autorest.Response, err error)
+	Patch(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceConfigResource) (result autorest.Response, err error)
+	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceConfigResource) (result backup.ResourceConfigResource, err error)
 }
 
 var _ ResourceStorageConfigsClientAPI = (*backup.ResourceStorageConfigsClient)(nil)

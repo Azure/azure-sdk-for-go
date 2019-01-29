@@ -43,10 +43,12 @@ func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 
 // CreateOrUpdate create or update a Blueprint assignment.
 // Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // assignmentName - name of the assignment.
 // assignment - assignment object to save.
-func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, subscriptionID string, assignmentName string, assignment Assignment) (result Assignment, err error) {
+func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, assignmentName string, assignment Assignment) (result Assignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.CreateOrUpdate")
 		defer func() {
@@ -67,7 +69,7 @@ func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, subscription
 		return result, validation.NewError("blueprint.AssignmentsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, subscriptionID, assignmentName, assignment)
+	req, err := client.CreateOrUpdatePreparer(ctx, scope, assignmentName, assignment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -89,13 +91,13 @@ func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, subscription
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, subscriptionID string, assignmentName string, assignment Assignment) (*http.Request, error) {
+func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, assignmentName string, assignment Assignment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assignmentName": autorest.Encode("path", assignmentName),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"scope":          scope,
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -104,7 +106,7 @@ func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, subs
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
 		autorest.WithJSON(assignment),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -114,7 +116,7 @@ func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, subs
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -132,9 +134,11 @@ func (client AssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 
 // Delete delete a Blueprint assignment.
 // Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // assignmentName - name of the assignment.
-func (client AssignmentsClient) Delete(ctx context.Context, subscriptionID string, assignmentName string) (result Assignment, err error) {
+func (client AssignmentsClient) Delete(ctx context.Context, scope string, assignmentName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.Delete")
 		defer func() {
@@ -145,7 +149,7 @@ func (client AssignmentsClient) Delete(ctx context.Context, subscriptionID strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, subscriptionID, assignmentName)
+	req, err := client.DeletePreparer(ctx, scope, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -167,13 +171,13 @@ func (client AssignmentsClient) Delete(ctx context.Context, subscriptionID strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AssignmentsClient) DeletePreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
+func (client AssignmentsClient) DeletePreparer(ctx context.Context, scope string, assignmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assignmentName": autorest.Encode("path", assignmentName),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"scope":          scope,
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -181,7 +185,7 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, subscription
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -190,7 +194,7 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, subscription
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -208,9 +212,11 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 
 // Get get a Blueprint assignment.
 // Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
 // assignmentName - name of the assignment.
-func (client AssignmentsClient) Get(ctx context.Context, subscriptionID string, assignmentName string) (result Assignment, err error) {
+func (client AssignmentsClient) Get(ctx context.Context, scope string, assignmentName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.Get")
 		defer func() {
@@ -221,7 +227,7 @@ func (client AssignmentsClient) Get(ctx context.Context, subscriptionID string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, subscriptionID, assignmentName)
+	req, err := client.GetPreparer(ctx, scope, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", nil, "Failure preparing request")
 		return
@@ -243,13 +249,13 @@ func (client AssignmentsClient) Get(ctx context.Context, subscriptionID string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client AssignmentsClient) GetPreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
+func (client AssignmentsClient) GetPreparer(ctx context.Context, scope string, assignmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assignmentName": autorest.Encode("path", assignmentName),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"scope":          scope,
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -257,7 +263,7 @@ func (client AssignmentsClient) GetPreparer(ctx context.Context, subscriptionID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -266,7 +272,7 @@ func (client AssignmentsClient) GetPreparer(ctx context.Context, subscriptionID 
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -284,8 +290,10 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 
 // List list Blueprint assignments within a subscription.
 // Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
-func (client AssignmentsClient) List(ctx context.Context, subscriptionID string) (result AssignmentListPage, err error) {
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
+func (client AssignmentsClient) List(ctx context.Context, scope string) (result AssignmentListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.List")
 		defer func() {
@@ -297,7 +305,7 @@ func (client AssignmentsClient) List(ctx context.Context, subscriptionID string)
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, subscriptionID)
+	req, err := client.ListPreparer(ctx, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", nil, "Failure preparing request")
 		return
@@ -319,12 +327,12 @@ func (client AssignmentsClient) List(ctx context.Context, subscriptionID string)
 }
 
 // ListPreparer prepares the List request.
-func (client AssignmentsClient) ListPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
+func (client AssignmentsClient) ListPreparer(ctx context.Context, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"scope": scope,
 	}
 
-	const APIVersion = "2017-11-11-preview"
+	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -332,7 +340,7 @@ func (client AssignmentsClient) ListPreparer(ctx context.Context, subscriptionID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -341,7 +349,7 @@ func (client AssignmentsClient) ListPreparer(ctx context.Context, subscriptionID
 // http.Response Body if it receives an error.
 func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -379,7 +387,7 @@ func (client AssignmentsClient) listNextResults(ctx context.Context, lastResults
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssignmentsClient) ListComplete(ctx context.Context, subscriptionID string) (result AssignmentListIterator, err error) {
+func (client AssignmentsClient) ListComplete(ctx context.Context, scope string) (result AssignmentListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.List")
 		defer func() {
@@ -390,6 +398,6 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, subscriptionID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, subscriptionID)
+	result.page, err = client.List(ctx, scope)
 	return
 }

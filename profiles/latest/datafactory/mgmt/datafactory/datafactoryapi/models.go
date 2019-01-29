@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/201
 
 type ActivityRunsClientAPI = original.ActivityRunsClientAPI
 type DatasetsClientAPI = original.DatasetsClientAPI
+type ExposureControlClientAPI = original.ExposureControlClientAPI
 type FactoriesClientAPI = original.FactoriesClientAPI
 type IntegrationRuntimeNodesClientAPI = original.IntegrationRuntimeNodesClientAPI
 type IntegrationRuntimeObjectMetadataClientAPI = original.IntegrationRuntimeObjectMetadataClientAPI

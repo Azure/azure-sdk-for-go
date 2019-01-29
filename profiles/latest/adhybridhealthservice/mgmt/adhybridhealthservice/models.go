@@ -70,8 +70,8 @@ type DeltaOperationType = original.DeltaOperationType
 
 const (
 	DeltaOperationTypeAdd       DeltaOperationType = original.DeltaOperationTypeAdd
-	DeltaOperationTypeDeletAdd  DeltaOperationType = original.DeltaOperationTypeDeletAdd
 	DeltaOperationTypeDelete    DeltaOperationType = original.DeltaOperationTypeDelete
+	DeltaOperationTypeDeleteAdd DeltaOperationType = original.DeltaOperationTypeDeleteAdd
 	DeltaOperationTypeNone      DeltaOperationType = original.DeltaOperationTypeNone
 	DeltaOperationTypeObsolete  DeltaOperationType = original.DeltaOperationTypeObsolete
 	DeltaOperationTypeReplace   DeltaOperationType = original.DeltaOperationTypeReplace

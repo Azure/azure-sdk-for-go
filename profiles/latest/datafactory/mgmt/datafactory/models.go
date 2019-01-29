@@ -46,6 +46,18 @@ const (
 	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
+type AzureFunctionActivityMethod = original.AzureFunctionActivityMethod
+
+const (
+	DELETE  AzureFunctionActivityMethod = original.DELETE
+	GET     AzureFunctionActivityMethod = original.GET
+	HEAD    AzureFunctionActivityMethod = original.HEAD
+	OPTIONS AzureFunctionActivityMethod = original.OPTIONS
+	POST    AzureFunctionActivityMethod = original.POST
+	PUT     AzureFunctionActivityMethod = original.PUT
+	TRACE   AzureFunctionActivityMethod = original.TRACE
+)
+
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
@@ -397,13 +409,6 @@ const (
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
-type SSISExecutionRuntime = original.SSISExecutionRuntime
-
-const (
-	X64 SSISExecutionRuntime = original.X64
-	X86 SSISExecutionRuntime = original.X86
-)
-
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
 
 const (
@@ -553,6 +558,7 @@ type TypeBasicActivity = original.TypeBasicActivity
 const (
 	TypeActivity                 TypeBasicActivity = original.TypeActivity
 	TypeAppendVariable           TypeBasicActivity = original.TypeAppendVariable
+	TypeAzureFunctionActivity    TypeBasicActivity = original.TypeAzureFunctionActivity
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
 	TypeContainer                TypeBasicActivity = original.TypeContainer
@@ -790,6 +796,7 @@ const (
 	TypeAzureDatabricks          TypeBasicLinkedService = original.TypeAzureDatabricks
 	TypeAzureDataLakeAnalytics   TypeBasicLinkedService = original.TypeAzureDataLakeAnalytics
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
+	TypeAzureFunction            TypeBasicLinkedService = original.TypeAzureFunction
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
@@ -886,10 +893,10 @@ const (
 type WebActivityMethod = original.WebActivityMethod
 
 const (
-	DELETE WebActivityMethod = original.DELETE
-	GET    WebActivityMethod = original.GET
-	POST   WebActivityMethod = original.POST
-	PUT    WebActivityMethod = original.PUT
+	WebActivityMethodDELETE WebActivityMethod = original.WebActivityMethodDELETE
+	WebActivityMethodGET    WebActivityMethod = original.WebActivityMethodGET
+	WebActivityMethodPOST   WebActivityMethod = original.WebActivityMethodPOST
+	WebActivityMethodPUT    WebActivityMethod = original.WebActivityMethodPUT
 )
 
 type AccessPolicyResponse = original.AccessPolicyResponse
@@ -929,6 +936,10 @@ type AzureDataLakeStoreSink = original.AzureDataLakeStoreSink
 type AzureDataLakeStoreSource = original.AzureDataLakeStoreSource
 type AzureDatabricksLinkedService = original.AzureDatabricksLinkedService
 type AzureDatabricksLinkedServiceTypeProperties = original.AzureDatabricksLinkedServiceTypeProperties
+type AzureFunctionActivity = original.AzureFunctionActivity
+type AzureFunctionActivityTypeProperties = original.AzureFunctionActivityTypeProperties
+type AzureFunctionLinkedService = original.AzureFunctionLinkedService
+type AzureFunctionLinkedServiceTypeProperties = original.AzureFunctionLinkedServiceTypeProperties
 type AzureKeyVaultLinkedService = original.AzureKeyVaultLinkedService
 type AzureKeyVaultLinkedServiceTypeProperties = original.AzureKeyVaultLinkedServiceTypeProperties
 type AzureKeyVaultSecretReference = original.AzureKeyVaultSecretReference
@@ -1078,6 +1089,9 @@ type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTyp
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
 type ExecutionActivity = original.ExecutionActivity
+type ExposureControlClient = original.ExposureControlClient
+type ExposureControlRequest = original.ExposureControlRequest
+type ExposureControlResponse = original.ExposureControlResponse
 type Expression = original.Expression
 type FactoriesClient = original.FactoriesClient
 type Factory = original.Factory
@@ -1330,6 +1344,7 @@ type SQLServerTableDataset = original.SQLServerTableDataset
 type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypeProperties
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
+type SSISExecutionCredential = original.SSISExecutionCredential
 type SSISExecutionParameter = original.SSISExecutionParameter
 type SSISPackageLocation = original.SSISPackageLocation
 type SSISPropertyOverride = original.SSISPropertyOverride
@@ -1473,6 +1488,12 @@ func NewDatasetsClient(subscriptionID string) DatasetsClient {
 func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewExposureControlClient(subscriptionID string) ExposureControlClient {
+	return original.NewExposureControlClient(subscriptionID)
+}
+func NewExposureControlClientWithBaseURI(baseURI string, subscriptionID string) ExposureControlClient {
+	return original.NewExposureControlClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewFactoriesClient(subscriptionID string) FactoriesClient {
 	return original.NewFactoriesClient(subscriptionID)
 }
@@ -1589,6 +1610,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 }
 func PossibleAuthorizationTypeValues() []AuthorizationType {
 	return original.PossibleAuthorizationTypeValues()
+}
+func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
+	return original.PossibleAzureFunctionActivityMethodValues()
 }
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
@@ -1709,9 +1733,6 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 }
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
-}
-func PossibleSSISExecutionRuntimeValues() []SSISExecutionRuntime {
-	return original.PossibleSSISExecutionRuntimeValues()
 }
 func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 	return original.PossibleSalesforceSinkWriteBehaviorValues()

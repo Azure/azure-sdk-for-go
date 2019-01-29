@@ -394,8 +394,9 @@ type LuisResult struct {
 	// Entities - The entities extracted from the utterance.
 	Entities *[]EntityModel `json:"entities,omitempty"`
 	// CompositeEntities - The composite entities extracted from the utterance.
-	CompositeEntities *[]CompositeEntityModel `json:"compositeEntities,omitempty"`
-	SentimentAnalysis *Sentiment              `json:"sentimentAnalysis,omitempty"`
+	CompositeEntities      *[]CompositeEntityModel `json:"compositeEntities,omitempty"`
+	SentimentAnalysis      *Sentiment              `json:"sentimentAnalysis,omitempty"`
+	ConnectedServiceResult *LuisResult             `json:"connectedServiceResult,omitempty"`
 }
 
 // Sentiment sentiment of the input utterance.

@@ -250,6 +250,19 @@ func PossibleRunTypeValues() []RunType {
 	return []RunType{AutoBuild, AutoRun, QuickBuild, QuickRun}
 }
 
+// SecretObjectType enumerates the values for secret object type.
+type SecretObjectType string
+
+const (
+	// Opaque ...
+	Opaque SecretObjectType = "Opaque"
+)
+
+// PossibleSecretObjectTypeValues returns an array of possible values for the SecretObjectType const type.
+func PossibleSecretObjectTypeValues() []SecretObjectType {
+	return []SecretObjectType{Opaque}
+}
+
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -301,6 +314,21 @@ const (
 // PossibleSourceControlTypeValues returns an array of possible values for the SourceControlType const type.
 func PossibleSourceControlTypeValues() []SourceControlType {
 	return []SourceControlType{Github, VisualStudioTeamService}
+}
+
+// SourceRegistryLoginMode enumerates the values for source registry login mode.
+type SourceRegistryLoginMode string
+
+const (
+	// Default ...
+	Default SourceRegistryLoginMode = "Default"
+	// None ...
+	None SourceRegistryLoginMode = "None"
+)
+
+// PossibleSourceRegistryLoginModeValues returns an array of possible values for the SourceRegistryLoginMode const type.
+func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
+	return []SourceRegistryLoginMode{Default, None}
 }
 
 // SourceTriggerEvent enumerates the values for source trigger event.
@@ -594,6 +622,38 @@ func (cc CallbackConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Credentials the parameters that describes a set of credentials that will be used when a run is invoked.
+type Credentials struct {
+	// SourceRegistry - Describes the credential parameters for accessing the source registry.
+	SourceRegistry *SourceRegistryCredentials `json:"sourceRegistry,omitempty"`
+	// CustomRegistries - Describes the credential parameters for accessing other custom registries. The key
+	// for the dictionary item will be the registry login server (myregistry.azurecr.io) and
+	// the value of the item will be the registry credentials for accessing the registry.
+	CustomRegistries map[string]*CustomRegistryCredentials `json:"customRegistries"`
+}
+
+// MarshalJSON is the custom marshaler for Credentials.
+func (c Credentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.SourceRegistry != nil {
+		objectMap["sourceRegistry"] = c.SourceRegistry
+	}
+	if c.CustomRegistries != nil {
+		objectMap["customRegistries"] = c.CustomRegistries
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomRegistryCredentials describes the credentials that will be used to access a custom registry during
+// a run.
+type CustomRegistryCredentials struct {
+	// UserName - The username for logging into the custom registry.
+	UserName *SecretObject `json:"userName,omitempty"`
+	// Password - The password for logging into the custom registry. The password is a secret
+	// object that allows multiple ways of providing the value for it.
+	Password *SecretObject `json:"password,omitempty"`
+}
+
 // DockerBuildRequest the parameters for a docker quick build.
 type DockerBuildRequest struct {
 	// ImageNames - The fully qualified image names including the repository and tag.
@@ -604,6 +664,8 @@ type DockerBuildRequest struct {
 	NoCache *bool `json:"noCache,omitempty"`
 	// DockerFilePath - The Docker file path relative to the source location.
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing the run.
 	Arguments *[]Argument `json:"arguments,omitempty"`
 	// Timeout - Run timeout in seconds.
@@ -615,6 +677,8 @@ type DockerBuildRequest struct {
 	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
@@ -637,6 +701,9 @@ func (dbr DockerBuildRequest) MarshalJSON() ([]byte, error) {
 	if dbr.DockerFilePath != nil {
 		objectMap["dockerFilePath"] = dbr.DockerFilePath
 	}
+	if dbr.Target != nil {
+		objectMap["target"] = dbr.Target
+	}
 	if dbr.Arguments != nil {
 		objectMap["arguments"] = dbr.Arguments
 	}
@@ -651,6 +718,9 @@ func (dbr DockerBuildRequest) MarshalJSON() ([]byte, error) {
 	}
 	if dbr.SourceLocation != nil {
 		objectMap["sourceLocation"] = dbr.SourceLocation
+	}
+	if dbr.Credentials != nil {
+		objectMap["credentials"] = dbr.Credentials
 	}
 	if dbr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = dbr.IsArchiveEnabled
@@ -701,6 +771,8 @@ type DockerBuildStep struct {
 	NoCache *bool `json:"noCache,omitempty"`
 	// DockerFilePath - The Docker file path relative to the source context.
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing this build step.
 	Arguments *[]Argument `json:"arguments,omitempty"`
 	// BaseImageDependencies - List of base image dependencies for a step.
@@ -728,6 +800,9 @@ func (dbs DockerBuildStep) MarshalJSON() ([]byte, error) {
 	}
 	if dbs.DockerFilePath != nil {
 		objectMap["dockerFilePath"] = dbs.DockerFilePath
+	}
+	if dbs.Target != nil {
+		objectMap["target"] = dbs.Target
 	}
 	if dbs.Arguments != nil {
 		objectMap["arguments"] = dbs.Arguments
@@ -784,6 +859,8 @@ type DockerBuildStepUpdateParameters struct {
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing this build step.
 	Arguments *[]Argument `json:"arguments,omitempty"`
+	// Target - The name of the target build stage for the docker build.
+	Target *string `json:"target,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
 	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
@@ -810,6 +887,9 @@ func (dbsup DockerBuildStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if dbsup.Arguments != nil {
 		objectMap["arguments"] = dbsup.Arguments
+	}
+	if dbsup.Target != nil {
+		objectMap["target"] = dbsup.Target
 	}
 	if dbsup.ContextPath != nil {
 		objectMap["contextPath"] = dbsup.ContextPath
@@ -865,6 +945,8 @@ type EncodedTaskRunRequest struct {
 	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
@@ -895,6 +977,9 @@ func (etrr EncodedTaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if etrr.SourceLocation != nil {
 		objectMap["sourceLocation"] = etrr.SourceLocation
+	}
+	if etrr.Credentials != nil {
+		objectMap["credentials"] = etrr.Credentials
 	}
 	if etrr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = etrr.IsArchiveEnabled
@@ -1340,6 +1425,8 @@ type FileTaskRunRequest struct {
 	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
@@ -1370,6 +1457,9 @@ func (ftrr FileTaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if ftrr.SourceLocation != nil {
 		objectMap["sourceLocation"] = ftrr.SourceLocation
+	}
+	if ftrr.Credentials != nil {
+		objectMap["credentials"] = ftrr.Credentials
 	}
 	if ftrr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = ftrr.IsArchiveEnabled
@@ -3250,14 +3340,18 @@ type RunProperties struct {
 	ImageUpdateTrigger *ImageUpdateTrigger `json:"imageUpdateTrigger,omitempty"`
 	// SourceTrigger - The source trigger that caused the run.
 	SourceTrigger *SourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
-	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Platform - The platform properties against which the run will happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceRegistryAuth - The scope of the credentials that were used to login to the source registry during this run.
+	SourceRegistryAuth *string `json:"sourceRegistryAuth,omitempty"`
+	// CustomRegistries - The list of custom registries that were logged in during this run.
+	CustomRegistries *[]string `json:"customRegistries,omitempty"`
 	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 }
 
 // BasicRunRequest the request parameters for scheduling a run.
@@ -3425,6 +3519,17 @@ type RunUpdateParameters struct {
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 }
 
+// SecretObject describes the properties of a secret object value.
+type SecretObject struct {
+	// Value - The value of the secret. The format of this value will be determined
+	// based on the type of the secret object. If the type is Opaque, the value will be
+	// used as is without any modification.
+	Value *string `json:"value,omitempty"`
+	// Type - The type of the secret object which determines how the value of the secret object has to be
+	// interpreted. Possible values include: 'Opaque'
+	Type SecretObjectType `json:"type,omitempty"`
+}
+
 // SetValue the properties of a overridable value that can be passed to a task template.
 type SetValue struct {
 	// Name - The name of the overridable value.
@@ -3463,6 +3568,14 @@ type SourceProperties struct {
 	// SourceControlAuthProperties - The authorization properties for accessing the source code repository and to set up
 	// webhooks for notifications.
 	SourceControlAuthProperties *AuthInfo `json:"sourceControlAuthProperties,omitempty"`
+}
+
+// SourceRegistryCredentials describes the credential parameters for accessing the source registry.
+type SourceRegistryCredentials struct {
+	// LoginMode - The authentication mode which determines the source registry login scope. The credentials for the source registry
+	// will be generated using the given scope. These credentials will be used to login to
+	// the source registry during the run. Possible values include: 'None', 'Default'
+	LoginMode SourceRegistryLoginMode `json:"loginMode,omitempty"`
 }
 
 // SourceTrigger the properties of a source based trigger.
@@ -3839,6 +3952,8 @@ type TaskProperties struct {
 	Step BasicTaskStepProperties `json:"step,omitempty"`
 	// Trigger - The properties that describe all triggers for the task.
 	Trigger *TriggerProperties `json:"trigger,omitempty"`
+	// Credentials - The properties that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for TaskProperties struct.
@@ -3921,6 +4036,15 @@ func (tp *TaskProperties) UnmarshalJSON(body []byte) error {
 				}
 				tp.Trigger = &trigger
 			}
+		case "credentials":
+			if v != nil {
+				var credentials Credentials
+				err = json.Unmarshal(*v, &credentials)
+				if err != nil {
+					return err
+				}
+				tp.Credentials = &credentials
+			}
 		}
 	}
 
@@ -3941,6 +4065,8 @@ type TaskPropertiesUpdateParameters struct {
 	Step BasicTaskStepUpdateParameters `json:"step,omitempty"`
 	// Trigger - The properties for updating trigger properties.
 	Trigger *TriggerUpdateParameters `json:"trigger,omitempty"`
+	// Credentials - The parameters that describes a set of credentials that will be used when this run is invoked.
+	Credentials *Credentials `json:"credentials,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for TaskPropertiesUpdateParameters struct.
@@ -4004,6 +4130,15 @@ func (tpup *TaskPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				tpup.Trigger = &trigger
+			}
+		case "credentials":
+			if v != nil {
+				var credentials Credentials
+				err = json.Unmarshal(*v, &credentials)
+				if err != nil {
+					return err
+				}
+				tpup.Credentials = &credentials
 			}
 		}
 	}

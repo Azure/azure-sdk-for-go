@@ -346,13 +346,13 @@ func (client HanaInstancesClient) ListByResourceGroupComplete(ctx context.Contex
 // Parameters:
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
-func (client HanaInstancesClient) Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result autorest.Response, err error) {
+func (client HanaInstancesClient) Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result HanaInstancesRestartFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Restart")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -363,16 +363,10 @@ func (client HanaInstancesClient) Restart(ctx context.Context, resourceGroupName
 		return
 	}
 
-	resp, err := client.RestartSender(req)
+	result, err = client.RestartSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.RestartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", resp, "Failure responding to request")
 	}
 
 	return
@@ -401,9 +395,15 @@ func (client HanaInstancesClient) RestartPreparer(ctx context.Context, resourceG
 
 // RestartSender sends the Restart request. The method will close the
 // http.Response Body if it receives an error.
-func (client HanaInstancesClient) RestartSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client HanaInstancesClient) RestartSender(req *http.Request) (future HanaInstancesRestartFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // RestartResponder handles the response to the Restart request. The method always

@@ -132,6 +132,12 @@ const (
 	QuickRun   RunType = original.QuickRun
 )
 
+type SecretObjectType = original.SecretObjectType
+
+const (
+	Opaque SecretObjectType = original.Opaque
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -155,6 +161,13 @@ type SourceControlType = original.SourceControlType
 const (
 	Github                  SourceControlType = original.Github
 	VisualStudioTeamService SourceControlType = original.VisualStudioTeamService
+)
+
+type SourceRegistryLoginMode = original.SourceRegistryLoginMode
+
+const (
+	Default SourceRegistryLoginMode = original.Default
+	None    SourceRegistryLoginMode = original.None
 )
 
 type SourceTriggerEvent = original.SourceTriggerEvent
@@ -257,6 +270,8 @@ type BasicRunRequest = original.BasicRunRequest
 type BasicTaskStepProperties = original.BasicTaskStepProperties
 type BasicTaskStepUpdateParameters = original.BasicTaskStepUpdateParameters
 type CallbackConfig = original.CallbackConfig
+type Credentials = original.Credentials
+type CustomRegistryCredentials = original.CustomRegistryCredentials
 type DockerBuildRequest = original.DockerBuildRequest
 type DockerBuildStep = original.DockerBuildStep
 type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
@@ -341,10 +356,12 @@ type RunUpdateParameters = original.RunUpdateParameters
 type RunsCancelFuture = original.RunsCancelFuture
 type RunsClient = original.RunsClient
 type RunsUpdateFuture = original.RunsUpdateFuture
+type SecretObject = original.SecretObject
 type SetValue = original.SetValue
 type Sku = original.Sku
 type Source = original.Source
 type SourceProperties = original.SourceProperties
+type SourceRegistryCredentials = original.SourceRegistryCredentials
 type SourceTrigger = original.SourceTrigger
 type SourceTriggerDescriptor = original.SourceTriggerDescriptor
 type SourceTriggerUpdateParameters = original.SourceTriggerUpdateParameters
@@ -508,6 +525,9 @@ func PossibleRunStatusValues() []RunStatus {
 func PossibleRunTypeValues() []RunType {
 	return original.PossibleRunTypeValues()
 }
+func PossibleSecretObjectTypeValues() []SecretObjectType {
+	return original.PossibleSecretObjectTypeValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
@@ -516,6 +536,9 @@ func PossibleSkuTierValues() []SkuTier {
 }
 func PossibleSourceControlTypeValues() []SourceControlType {
 	return original.PossibleSourceControlTypeValues()
+}
+func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
+	return original.PossibleSourceRegistryLoginModeValues()
 }
 func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
 	return original.PossibleSourceTriggerEventValues()

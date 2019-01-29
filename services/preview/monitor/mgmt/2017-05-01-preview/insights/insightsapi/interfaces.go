@@ -115,3 +115,46 @@ type ActivityLogAlertsClientAPI interface {
 }
 
 var _ ActivityLogAlertsClientAPI = (*insights.ActivityLogAlertsClient)(nil)
+
+// ActivityLogsClientAPI contains the set of methods on the ActivityLogsClient type.
+type ActivityLogsClientAPI interface {
+	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
+}
+
+var _ ActivityLogsClientAPI = (*insights.ActivityLogsClient)(nil)
+
+// EventCategoriesClientAPI contains the set of methods on the EventCategoriesClient type.
+type EventCategoriesClientAPI interface {
+	List(ctx context.Context) (result insights.EventCategoryCollection, err error)
+}
+
+var _ EventCategoriesClientAPI = (*insights.EventCategoriesClient)(nil)
+
+// TenantActivityLogsClientAPI contains the set of methods on the TenantActivityLogsClient type.
+type TenantActivityLogsClientAPI interface {
+	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
+}
+
+var _ TenantActivityLogsClientAPI = (*insights.TenantActivityLogsClient)(nil)
+
+// MetricDefinitionsClientAPI contains the set of methods on the MetricDefinitionsClient type.
+type MetricDefinitionsClientAPI interface {
+	List(ctx context.Context, resourceURI string) (result insights.MetricDefinitionCollection, err error)
+}
+
+var _ MetricDefinitionsClientAPI = (*insights.MetricDefinitionsClient)(nil)
+
+// MetricsClientAPI contains the set of methods on the MetricsClient type.
+type MetricsClientAPI interface {
+	List(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType insights.ResultType) (result insights.Response, err error)
+}
+
+var _ MetricsClientAPI = (*insights.MetricsClient)(nil)
+
+// MetricBaselineClientAPI contains the set of methods on the MetricBaselineClient type.
+type MetricBaselineClientAPI interface {
+	CalculateBaseline(ctx context.Context, resourceURI string, timeSeriesInformation insights.TimeSeriesInformation) (result insights.CalculateBaselineResponse, err error)
+	Get(ctx context.Context, resourceURI string, metricName string, timespan string, interval *string, aggregation string, sensitivities string, resultType insights.ResultType) (result insights.BaselineResponse, err error)
+}
+
+var _ MetricBaselineClientAPI = (*insights.MetricBaselineClient)(nil)

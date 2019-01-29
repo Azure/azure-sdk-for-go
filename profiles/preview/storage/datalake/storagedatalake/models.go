@@ -19,7 +19,7 @@
 
 package storagedatalake
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/datalake/2018-06-17/storagedatalake"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/datalake/2018-11-09/storagedatalake"
 
 const (
 	DefaultDNSSuffix = original.DefaultDNSSuffix
@@ -29,6 +29,7 @@ type PathGetPropertiesAction = original.PathGetPropertiesAction
 
 const (
 	GetAccessControl PathGetPropertiesAction = original.GetAccessControl
+	GetStatus        PathGetPropertiesAction = original.GetStatus
 )
 
 type PathLeaseAction = original.PathLeaseAction
@@ -62,13 +63,6 @@ const (
 	Flush            PathUpdateAction = original.Flush
 	SetAccessControl PathUpdateAction = original.SetAccessControl
 	SetProperties    PathUpdateAction = original.SetProperties
-)
-
-type PathUpdateLeaseAction = original.PathUpdateLeaseAction
-
-const (
-	PathUpdateLeaseActionRelease PathUpdateLeaseAction = original.PathUpdateLeaseActionRelease
-	PathUpdateLeaseActionRenew   PathUpdateLeaseAction = original.PathUpdateLeaseActionRenew
 )
 
 type BaseClient = original.BaseClient
@@ -108,9 +102,6 @@ func PossiblePathResourceTypeValues() []PathResourceType {
 }
 func PossiblePathUpdateActionValues() []PathUpdateAction {
 	return original.PossiblePathUpdateActionValues()
-}
-func PossiblePathUpdateLeaseActionValues() []PathUpdateLeaseAction {
-	return original.PossiblePathUpdateLeaseActionValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

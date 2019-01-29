@@ -155,19 +155,19 @@ type ContainerRegistryArtifactEventData struct {
 
 // ContainerRegistryArtifactEventTarget the target of the event.
 type ContainerRegistryArtifactEventTarget struct {
-	// MediaType - The MIME type of the referenced object.
+	// MediaType - The MIME type of the artifact.
 	MediaType *string `json:"mediaType,omitempty"`
-	// Size - The number of bytes of the content.
+	// Size - The size in bytes of the artifact.
 	Size *int64 `json:"size,omitempty"`
-	// Digest - The digest of the helm chart.
+	// Digest - The digest of the artifact.
 	Digest *string `json:"digest,omitempty"`
-	// Repository - The repository name.
+	// Repository - The repository name of the artifact.
 	Repository *string `json:"repository,omitempty"`
-	// Tag - The tag name.
+	// Tag - The tag of the artifact.
 	Tag *string `json:"tag,omitempty"`
-	// Name - The name of the helm chart.
+	// Name - The name of the artifact.
 	Name *string `json:"name,omitempty"`
-	// Version - The version of the helm chart.
+	// Version - The version of the artifact.
 	Version *string `json:"version,omitempty"`
 }
 

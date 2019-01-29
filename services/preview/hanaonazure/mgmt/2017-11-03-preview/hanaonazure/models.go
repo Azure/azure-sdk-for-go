@@ -271,6 +271,8 @@ type HanaInstanceProperties struct {
 	HanaInstanceID *string `json:"hanaInstanceId,omitempty"`
 	// PowerState - Resource power state. Possible values include: 'Starting', 'Started', 'Stopping', 'Stopped', 'Restarting', 'Unknown'
 	PowerState HanaInstancePowerStateEnum `json:"powerState,omitempty"`
+	// ProximityPlacementGroup - Resource proximity placement group
+	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
 }
 
 // HanaInstancesListResult the response from the List HANA Instances operation.

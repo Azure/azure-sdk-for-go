@@ -42,6 +42,21 @@ func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return []AlertRuleKind{Scheduled}
 }
 
+// Kind enumerates the values for kind.
+type Kind string
+
+const (
+	// KindAlertRule ...
+	KindAlertRule Kind = "AlertRule"
+	// KindScheduled ...
+	KindScheduled Kind = "Scheduled"
+)
+
+// PossibleKindValues returns an array of possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{KindAlertRule, KindScheduled}
+}
+
 // Severity enumerates the values for severity.
 type Severity string
 
@@ -80,6 +95,12 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 	return []TriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
 }
 
+// BasicAlertRule alert rule.
+type BasicAlertRule interface {
+	AsScheduledAlertRule() (*ScheduledAlertRule, bool)
+	AsAlertRule() (*AlertRule, bool)
+}
+
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
@@ -89,10 +110,84 @@ type AlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - The kind of the alert rule. Possible values include: 'Scheduled'
-	Kind AlertRuleKind `json:"kind,omitempty"`
 	// Etag - Etag of the alert rule.
 	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindScheduled):
+		var sar ScheduledAlertRule
+		err := json.Unmarshal(body, &sar)
+		return sar, err
+	default:
+		var ar AlertRule
+		err := json.Unmarshal(body, &ar)
+		return ar, err
+	}
+}
+func unmarshalBasicAlertRuleArray(body []byte) ([]BasicAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	arArray := make([]BasicAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ar, err := unmarshalBasicAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		arArray[index] = ar
+	}
+	return arArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AlertRule.
+func (ar AlertRule) MarshalJSON() ([]byte, error) {
+	ar.Kind = KindAlertRule
+	objectMap := make(map[string]interface{})
+	if ar.ID != nil {
+		objectMap["id"] = ar.ID
+	}
+	if ar.Type != nil {
+		objectMap["type"] = ar.Type
+	}
+	if ar.Name != nil {
+		objectMap["name"] = ar.Name
+	}
+	if ar.Etag != nil {
+		objectMap["etag"] = ar.Etag
+	}
+	if ar.Kind != "" {
+		objectMap["kind"] = ar.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+	return nil, false
+}
+
+// AsAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsAlertRule() (*AlertRule, bool) {
+	return &ar, true
+}
+
+// AsBasicAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
+	return &ar, true
 }
 
 // AlertRuleKind1 describes an Azure resource with kind.
@@ -101,13 +196,62 @@ type AlertRuleKind1 struct {
 	Kind AlertRuleKind `json:"kind,omitempty"`
 }
 
+// AlertRuleModel ...
+type AlertRuleModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicAlertRule `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleModel struct.
+func (arm *AlertRuleModel) UnmarshalJSON(body []byte) error {
+	ar, err := unmarshalBasicAlertRule(body)
+	if err != nil {
+		return err
+	}
+	arm.Value = ar
+
+	return nil
+}
+
 // AlertRulesList list all the alert rules.
 type AlertRulesList struct {
 	autorest.Response `json:"-"`
 	// NextLink - URL to fetch the next set of alert rules.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of alert rules.
-	Value *[]AlertRule `json:"value,omitempty"`
+	Value *[]BasicAlertRule `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRulesList struct.
+func (arl *AlertRulesList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				arl.NextLink = &nextLink
+			}
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicAlertRuleArray(*v)
+				if err != nil {
+					return err
+				}
+				arl.Value = &value
+			}
+		}
+	}
+
+	return nil
 }
 
 // AlertRulesListIterator provides access to a complete listing of AlertRule values.
@@ -161,7 +305,7 @@ func (iter AlertRulesListIterator) Response() AlertRulesList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter AlertRulesListIterator) Value() AlertRule {
+func (iter AlertRulesListIterator) Value() BasicAlertRule {
 	if !iter.page.NotDone() {
 		return AlertRule{}
 	}
@@ -190,7 +334,7 @@ func (arl AlertRulesList) alertRulesListPreparer(ctx context.Context) (*http.Req
 		autorest.WithBaseURL(to.String(arl.NextLink)))
 }
 
-// AlertRulesListPage contains a page of AlertRule values.
+// AlertRulesListPage contains a page of BasicAlertRule values.
 type AlertRulesListPage struct {
 	fn  func(context.Context, AlertRulesList) (AlertRulesList, error)
 	arl AlertRulesList
@@ -235,7 +379,7 @@ func (page AlertRulesListPage) Response() AlertRulesList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page AlertRulesListPage) Values() []AlertRule {
+func (page AlertRulesListPage) Values() []BasicAlertRule {
 	if page.arl.IsEmpty() {
 		return nil
 	}
@@ -472,18 +616,127 @@ type Resource struct {
 
 // ScheduledAlertRule represents scheduled alert rule.
 type ScheduledAlertRule struct {
-	// Properties - Scheduled alert rule properties
-	Properties *ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	// ScheduledAlertRuleProperties - Scheduled alert rule properties
+	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - The kind of the alert rule. Possible values include: 'Scheduled'
-	Kind AlertRuleKind `json:"kind,omitempty"`
 	// Etag - Etag of the alert rule.
 	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScheduledAlertRule.
+func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
+	sar.Kind = KindScheduled
+	objectMap := make(map[string]interface{})
+	if sar.ScheduledAlertRuleProperties != nil {
+		objectMap["properties"] = sar.ScheduledAlertRuleProperties
+	}
+	if sar.ID != nil {
+		objectMap["id"] = sar.ID
+	}
+	if sar.Type != nil {
+		objectMap["type"] = sar.Type
+	}
+	if sar.Name != nil {
+		objectMap["name"] = sar.Name
+	}
+	if sar.Etag != nil {
+		objectMap["etag"] = sar.Etag
+	}
+	if sar.Kind != "" {
+		objectMap["kind"] = sar.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+	return &sar, true
+}
+
+// AsAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsAlertRule() (*AlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
+	return &sar, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScheduledAlertRule struct.
+func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scheduledAlertRuleProperties ScheduledAlertRuleProperties
+				err = json.Unmarshal(*v, &scheduledAlertRuleProperties)
+				if err != nil {
+					return err
+				}
+				sar.ScheduledAlertRuleProperties = &scheduledAlertRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sar.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sar.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sar.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sar.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sar.Kind = kind
+			}
+		}
+	}
+
+	return nil
 }
 
 // ScheduledAlertRuleProperties alert rule property bag.

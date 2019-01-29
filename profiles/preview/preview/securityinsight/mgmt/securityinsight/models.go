@@ -35,6 +35,13 @@ const (
 	Scheduled AlertRuleKind = original.Scheduled
 )
 
+type Kind = original.Kind
+
+const (
+	KindAlertRule Kind = original.KindAlertRule
+	KindScheduled Kind = original.KindScheduled
+)
+
 type Severity = original.Severity
 
 const (
@@ -55,11 +62,13 @@ const (
 
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
+type AlertRuleModel = original.AlertRuleModel
 type AlertRulesClient = original.AlertRulesClient
 type AlertRulesList = original.AlertRulesList
 type AlertRulesListIterator = original.AlertRulesListIterator
 type AlertRulesListPage = original.AlertRulesListPage
 type BaseClient = original.BaseClient
+type BasicAlertRule = original.BasicAlertRule
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Operation = original.Operation
@@ -104,6 +113,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return original.PossibleAlertRuleKindValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()

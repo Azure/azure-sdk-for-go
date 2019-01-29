@@ -50,7 +50,7 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
 // alertRule - the alert rule
-func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule AlertRule) (result AlertRule, err error) {
+func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (result AlertRuleModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.Create")
 		defer func() {
@@ -98,7 +98,7 @@ func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName str
 }
 
 // CreatePreparer prepares the Create request.
-func (client AlertRulesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule AlertRule) (*http.Request, error) {
+func (client AlertRulesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -131,7 +131,7 @@ func (client AlertRulesClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) CreateResponder(resp *http.Response) (result AlertRule, err error) {
+func (client AlertRulesClient) CreateResponder(resp *http.Response) (result AlertRuleModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -247,7 +247,7 @@ func (client AlertRulesClient) DeleteResponder(resp *http.Response) (result auto
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
-func (client AlertRulesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result AlertRule, err error) {
+func (client AlertRulesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result AlertRuleModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.Get")
 		defer func() {
@@ -326,7 +326,7 @@ func (client AlertRulesClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRule, err error) {
+func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRuleModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

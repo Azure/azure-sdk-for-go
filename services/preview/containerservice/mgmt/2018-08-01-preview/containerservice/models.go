@@ -1267,6 +1267,8 @@ type ManagedClusterAgentPoolProfile struct {
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
 	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
 	Type AgentPoolType `json:"type,omitempty"`
+	// AvailabilityZones - Availability zones for nodes
+	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
 }
 
 // ManagedClusterListResult the response from the List Managed Clusters operation.

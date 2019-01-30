@@ -20,6 +20,7 @@ package securityinsightapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2017-08-01-preview/securityinsight"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
@@ -31,8 +32,10 @@ var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
 
 // AlertRulesClientAPI contains the set of methods on the AlertRulesClient type.
 type AlertRulesClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule securityinsight.AlertRule) (result securityinsight.AlertRule, err error)
-	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.AlertRule, err error)
+	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule securityinsight.BasicAlertRule) (result securityinsight.AlertRuleModel, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.AlertRuleModel, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRulesListPage, err error)
 }
 
 var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)

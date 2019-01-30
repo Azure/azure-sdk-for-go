@@ -29,25 +29,134 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2017-08-01-preview/securityinsight"
 
+// AlertRuleKind enumerates the values for alert rule kind.
+type AlertRuleKind string
+
+const (
+	// Scheduled ...
+	Scheduled AlertRuleKind = "Scheduled"
+)
+
+// PossibleAlertRuleKindValues returns an array of possible values for the AlertRuleKind const type.
+func PossibleAlertRuleKindValues() []AlertRuleKind {
+	return []AlertRuleKind{Scheduled}
+}
+
+// Kind enumerates the values for kind.
+type Kind string
+
+const (
+	// KindAlertRule ...
+	KindAlertRule Kind = "AlertRule"
+	// KindScheduled ...
+	KindScheduled Kind = "Scheduled"
+)
+
+// PossibleKindValues returns an array of possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{KindAlertRule, KindScheduled}
+}
+
+// Severity enumerates the values for severity.
+type Severity string
+
+const (
+	// High ...
+	High Severity = "High"
+	// Informational ...
+	Informational Severity = "Informational"
+	// Low ...
+	Low Severity = "Low"
+	// Medium ...
+	Medium Severity = "Medium"
+)
+
+// PossibleSeverityValues returns an array of possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{High, Informational, Low, Medium}
+}
+
+// TriggerOperator enumerates the values for trigger operator.
+type TriggerOperator string
+
+const (
+	// Equal ...
+	Equal TriggerOperator = "Equal"
+	// GreaterThan ...
+	GreaterThan TriggerOperator = "GreaterThan"
+	// LessThan ...
+	LessThan TriggerOperator = "LessThan"
+	// NotEqual ...
+	NotEqual TriggerOperator = "NotEqual"
+)
+
+// PossibleTriggerOperatorValues returns an array of possible values for the TriggerOperator const type.
+func PossibleTriggerOperatorValues() []TriggerOperator {
+	return []TriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
+}
+
+// BasicAlertRule alert rule.
+type BasicAlertRule interface {
+	AsScheduledAlertRule() (*ScheduledAlertRule, bool)
+	AsAlertRule() (*AlertRule, bool)
+}
+
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
-	// AlertRuleProperties - Alert rule properties
-	*AlertRuleProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - Azure resource name
 	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindScheduled):
+		var sar ScheduledAlertRule
+		err := json.Unmarshal(body, &sar)
+		return sar, err
+	default:
+		var ar AlertRule
+		err := json.Unmarshal(body, &ar)
+		return ar, err
+	}
+}
+func unmarshalBasicAlertRuleArray(body []byte) ([]BasicAlertRule, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	arArray := make([]BasicAlertRule, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ar, err := unmarshalBasicAlertRule(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		arArray[index] = ar
+	}
+	return arArray, nil
 }
 
 // MarshalJSON is the custom marshaler for AlertRule.
 func (ar AlertRule) MarshalJSON() ([]byte, error) {
+	ar.Kind = KindAlertRule
 	objectMap := make(map[string]interface{})
-	if ar.AlertRuleProperties != nil {
-		objectMap["properties"] = ar.AlertRuleProperties
-	}
 	if ar.ID != nil {
 		objectMap["id"] = ar.ID
 	}
@@ -57,11 +166,64 @@ func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	if ar.Name != nil {
 		objectMap["name"] = ar.Name
 	}
+	if ar.Etag != nil {
+		objectMap["etag"] = ar.Etag
+	}
+	if ar.Kind != "" {
+		objectMap["kind"] = ar.Kind
+	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for AlertRule struct.
-func (ar *AlertRule) UnmarshalJSON(body []byte) error {
+// AsScheduledAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+	return nil, false
+}
+
+// AsAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsAlertRule() (*AlertRule, bool) {
+	return &ar, true
+}
+
+// AsBasicAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
+	return &ar, true
+}
+
+// AlertRuleKind1 describes an Azure resource with kind.
+type AlertRuleKind1 struct {
+	// Kind - The kind of the alert rule. Possible values include: 'Scheduled'
+	Kind AlertRuleKind `json:"kind,omitempty"`
+}
+
+// AlertRuleModel ...
+type AlertRuleModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicAlertRule `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleModel struct.
+func (arm *AlertRuleModel) UnmarshalJSON(body []byte) error {
+	ar, err := unmarshalBasicAlertRule(body)
+	if err != nil {
+		return err
+	}
+	arm.Value = ar
+
+	return nil
+}
+
+// AlertRulesList list all the alert rules.
+type AlertRulesList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of alert rules.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of alert rules.
+	Value *[]BasicAlertRule `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRulesList struct.
+func (arl *AlertRulesList) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -69,41 +231,22 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
+		case "nextLink":
 			if v != nil {
-				var alertRuleProperties AlertRuleProperties
-				err = json.Unmarshal(*v, &alertRuleProperties)
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
 				if err != nil {
 					return err
 				}
-				ar.AlertRuleProperties = &alertRuleProperties
+				arl.NextLink = &nextLink
 			}
-		case "id":
+		case "value":
 			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
+				value, err := unmarshalBasicAlertRuleArray(*v)
 				if err != nil {
 					return err
 				}
-				ar.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ar.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ar.Name = &name
+				arl.Value = &value
 			}
 		}
 	}
@@ -111,12 +254,141 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AlertRuleProperties alert rule property bag.
-type AlertRuleProperties struct {
-	// Query - The query that will create alerts for this rule.
-	Query *string `json:"query,omitempty"`
-	// Period - The period that the alert will look at.
-	Period *string `json:"period,omitempty"`
+// AlertRulesListIterator provides access to a complete listing of AlertRule values.
+type AlertRulesListIterator struct {
+	i    int
+	page AlertRulesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AlertRulesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AlertRulesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AlertRulesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AlertRulesListIterator) Response() AlertRulesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AlertRulesListIterator) Value() BasicAlertRule {
+	if !iter.page.NotDone() {
+		return AlertRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AlertRulesListIterator type.
+func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
+	return AlertRulesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (arl AlertRulesList) IsEmpty() bool {
+	return arl.Value == nil || len(*arl.Value) == 0
+}
+
+// alertRulesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (arl AlertRulesList) alertRulesListPreparer(ctx context.Context) (*http.Request, error) {
+	if arl.NextLink == nil || len(to.String(arl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(arl.NextLink)))
+}
+
+// AlertRulesListPage contains a page of BasicAlertRule values.
+type AlertRulesListPage struct {
+	fn  func(context.Context, AlertRulesList) (AlertRulesList, error)
+	arl AlertRulesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AlertRulesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.arl)
+	if err != nil {
+		return err
+	}
+	page.arl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AlertRulesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AlertRulesListPage) NotDone() bool {
+	return !page.arl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AlertRulesListPage) Response() AlertRulesList {
+	return page.arl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AlertRulesListPage) Values() []BasicAlertRule {
+	if page.arl.IsEmpty() {
+		return nil
+	}
+	return *page.arl.Value
+}
+
+// Creates a new instance of the AlertRulesListPage type.
+func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return AlertRulesListPage{fn: getNextPage}
 }
 
 // CloudError error response structure.
@@ -189,7 +461,7 @@ type OperationDisplay struct {
 // OperationsList lists the operations available in the SecurityInsights RP.
 type OperationsList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of alerts.
+	// NextLink - URL to fetch the next set of operations.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of operations
 	Value *[]Operation `json:"value,omitempty"`
@@ -340,4 +612,157 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Azure resource name
 	Name *string `json:"name,omitempty"`
+}
+
+// ScheduledAlertRule represents scheduled alert rule.
+type ScheduledAlertRule struct {
+	// ScheduledAlertRuleProperties - Scheduled alert rule properties
+	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScheduledAlertRule.
+func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
+	sar.Kind = KindScheduled
+	objectMap := make(map[string]interface{})
+	if sar.ScheduledAlertRuleProperties != nil {
+		objectMap["properties"] = sar.ScheduledAlertRuleProperties
+	}
+	if sar.ID != nil {
+		objectMap["id"] = sar.ID
+	}
+	if sar.Type != nil {
+		objectMap["type"] = sar.Type
+	}
+	if sar.Name != nil {
+		objectMap["name"] = sar.Name
+	}
+	if sar.Etag != nil {
+		objectMap["etag"] = sar.Etag
+	}
+	if sar.Kind != "" {
+		objectMap["kind"] = sar.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+	return &sar, true
+}
+
+// AsAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsAlertRule() (*AlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
+	return &sar, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScheduledAlertRule struct.
+func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scheduledAlertRuleProperties ScheduledAlertRuleProperties
+				err = json.Unmarshal(*v, &scheduledAlertRuleProperties)
+				if err != nil {
+					return err
+				}
+				sar.ScheduledAlertRuleProperties = &scheduledAlertRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sar.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sar.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sar.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sar.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sar.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// ScheduledAlertRuleProperties alert rule property bag.
+type ScheduledAlertRuleProperties struct {
+	// RuleName - The name for alerts created by this alert rule.
+	RuleName *string `json:"ruleName,omitempty"`
+	// Description - The description of the alert rule.
+	Description *string `json:"description,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'Low', 'Medium', 'High', 'Informational'
+	Severity Severity `json:"severity,omitempty"`
+	// Enabled - Determines whether this alert rule is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Query - The query that creates alerts for this rule.
+	Query *string `json:"query,omitempty"`
+	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
+	QueryFrequency *string `json:"queryFrequency,omitempty"`
+	// QueryPeriod - The period (in ISO 8601 duration format) that this alert rule looks at.
+	QueryPeriod *string `json:"queryPeriod,omitempty"`
+	// TriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
+	TriggerOperator TriggerOperator `json:"triggerOperator,omitempty"`
+	// TriggerThreshold - The threshold triggers this alert rule.
+	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
+	// SuppressionEnabled - Determines whether the suppression for this alert rule is enabled or disabled.
+	SuppressionEnabled *bool `json:"suppressionEnabled,omitempty"`
+	// SuppressionDuration - The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
+	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
+	// LastModifiedUtc - The last time that this alert has been modified.
+	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
 }

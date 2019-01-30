@@ -229,13 +229,6 @@ func (client DatabasesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DatabaseProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.DatabaseProperties.SoftDeletePeriodInDays", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("kusto.DatabasesClient", "CreateOrUpdate", err.Error())
-	}
-
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterName, databaseName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.DatabasesClient", "CreateOrUpdate", nil, "Failure preparing request")

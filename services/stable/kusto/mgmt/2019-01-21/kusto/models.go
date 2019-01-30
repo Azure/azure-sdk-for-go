@@ -889,10 +889,10 @@ type DatabasePrincipalListResult struct {
 type DatabaseProperties struct {
 	// ProvisioningState - The provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// SoftDeletePeriodInDays - The number of days data should be kept before it stops being accessible to queries.
-	SoftDeletePeriodInDays *int32 `json:"softDeletePeriodInDays,omitempty"`
-	// HotCachePeriodInDays - The number of days of data that should be kept in cache for fast queries.
-	HotCachePeriodInDays *int32 `json:"hotCachePeriodInDays,omitempty"`
+	// SoftDeletePeriod - The time the data should be kept before it stops being accessible to queries in TimeSpan.
+	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
+	// HotCachePeriod - The time the data that should be kept in cache for fast queries in TimeSpan.
+	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
 	// Statistics - The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 }

@@ -21,5 +21,8 @@
         "../../services/resources/mgmt/2016-02-01/resources/resourcesapi",
         "../../services/resources/mgmt/2016-06-01/subscriptions",
         "../../services/resources/mgmt/2016-06-01/subscriptions/subscriptionsapi"
-    ]
+    ],
+    "pathOverride": {
+        "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2015-10-01-preview/policy": "resources/mgmt/policy"
+    }
 }

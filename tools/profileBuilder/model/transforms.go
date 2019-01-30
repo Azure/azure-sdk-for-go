@@ -43,7 +43,8 @@ import (
 
 // ListDefinition represents a JSON file that contains a list of packages to include
 type ListDefinition struct {
-	Include []string `json:"include"`
+	Include      []string          `json:"include"`
+	PathOverride map[string]string `json:"pathOverride"`
 }
 
 const (
@@ -99,10 +100,15 @@ func BuildProfile(packageList ListDefinition, name, outputLocation string, outpu
 					errLog.Fatalf("failed to create alias package: %v", err)
 				}
 				updateAliasPackageUserAgent(ap, name)
-				// build the profile output directory
-				aliasPath, err := getAliasPath(pd)
-				if err != nil {
-					errLog.Fatalf("failed to calculate alias directory: %v", err)
+				// build the profile output directory, if there's an override path use that
+				var aliasPath string
+				var ok bool
+				if aliasPath, ok = packageList.PathOverride[importPath]; !ok {
+					var err error
+					aliasPath, err = getAliasPath(pd)
+					if err != nil {
+						errLog.Fatalf("failed to calculate alias directory: %v", err)
+					}
 				}
 				aliasPath = filepath.Join(outputLocation, aliasPath)
 				if _, err := os.Stat(aliasPath); os.IsNotExist(err) {

@@ -22,7 +22,7 @@
         "../../services/resources/mgmt/2016-06-01/subscriptions",
         "../../services/resources/mgmt/2016-06-01/subscriptions/subscriptionsapi"
     ],
-    "outDir": {
+    "pathOverride": {
         "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2015-10-01-preview/policy": "resources/mgmt/policy"
     }
 }

@@ -1,5 +1,65 @@
 # CHANGELOG
 
+## `v25.0.0`
+
+NOTE: Go 1.8 has been removed from CI due to a transitive dependency no longer supporting it.
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| devices | 2018-12-01-preview |
+| insights | 2018-11-01-preview |
+| securityinsight | 2017-08-01-preview |
+| storagedatalake | 2018-11-09 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| cognitiveservices | 2017-04-18 |
+| containerregistry | 2018-09-01 |
+| eventgrid | 2018-01-01 |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| network | 2018-11-01 |
+| runtime | luis |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2017-10-01-preview |
+| web | 2018-02-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| adhybridhealthservice | 2014-01-01 |
+| backup | 2016-12-01<br/>2017-07-01 |
+| blueprint | 2017-11-11-preview |
+| containerservice | 2018-03-31<br/>2018-08-01-preview<br/>2018-09-30-preview |
+| datafactory | 2017-09-01-preview<br/>2018-06-01 |
+| face | v1.0 |
+| hanaonazure | 2017-11-03-preview |
+| insights | 2017-05-01-preview |
+| logic | 2018-07-01-preview |
+| security | 2017-08-01-preview |
+| storage | 2015-05-01-preview<br/>2015-06-15<br/>2016-01-01<br/>2016-05-01<br/>2016-12-01<br/>2017-06-01<br/>2017-10-01<br/>2018-02-01<br/>2018-03-01-preview<br/>2018-07-01 |
+| virtualmachine | management |
+
+### Removed Packages
+
+NOTE: Some removed packages are preview packages that were incorrectly placed in the stable location.  The copies under `preview` still exist.
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-01-01 |
+| datafactory | 2017-09-01-preview |
+| dns | 2018-03-01-preview |
+| insights | 2017-09-01 |
+| iothub | 2017-08-21-preview |
+| managedapplications | 2016-09-01-preview |
+| managementpartner | 2018-02-01 |
+| policy | 2015-10-01-preview<br/>2017-06-01-preview |
+| servicefabric | 1.0.0<br/>5.6<br/>6.0<br/>6.1 |
+| storagedatalake | 2018-06-17<br/>2018-11-09 |
+
 ## `v24.1.0`
 
 ### New Packages

@@ -141,6 +141,62 @@ func PossibleOdataTypeValues() []OdataType {
 	return []OdataType{OdataTypeMediaJobOutput, OdataTypeMicrosoftMediaJobOutputAsset}
 }
 
+// ContainerRegistryArtifactEventData the content of the event request message.
+type ContainerRegistryArtifactEventData struct {
+	// ID - The event ID.
+	ID *string `json:"id,omitempty"`
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Action - The action that encompasses the provided event.
+	Action *string `json:"action,omitempty"`
+	// Target - The target of the event.
+	Target *ContainerRegistryArtifactEventTarget `json:"target,omitempty"`
+}
+
+// ContainerRegistryArtifactEventTarget the target of the event.
+type ContainerRegistryArtifactEventTarget struct {
+	// MediaType - The MIME type of the artifact.
+	MediaType *string `json:"mediaType,omitempty"`
+	// Size - The size in bytes of the artifact.
+	Size *int64 `json:"size,omitempty"`
+	// Digest - The digest of the artifact.
+	Digest *string `json:"digest,omitempty"`
+	// Repository - The repository name of the artifact.
+	Repository *string `json:"repository,omitempty"`
+	// Tag - The tag of the artifact.
+	Tag *string `json:"tag,omitempty"`
+	// Name - The name of the artifact.
+	Name *string `json:"name,omitempty"`
+	// Version - The version of the artifact.
+	Version *string `json:"version,omitempty"`
+}
+
+// ContainerRegistryChartDeletedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.ContainerRegistry.ChartDeleted event.
+type ContainerRegistryChartDeletedEventData struct {
+	// ID - The event ID.
+	ID *string `json:"id,omitempty"`
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Action - The action that encompasses the provided event.
+	Action *string `json:"action,omitempty"`
+	// Target - The target of the event.
+	Target *ContainerRegistryArtifactEventTarget `json:"target,omitempty"`
+}
+
+// ContainerRegistryChartPushedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.ContainerRegistry.ChartPushed event.
+type ContainerRegistryChartPushedEventData struct {
+	// ID - The event ID.
+	ID *string `json:"id,omitempty"`
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Action - The action that encompasses the provided event.
+	Action *string `json:"action,omitempty"`
+	// Target - The target of the event.
+	Target *ContainerRegistryArtifactEventTarget `json:"target,omitempty"`
+}
+
 // ContainerRegistryEventActor the agent that initiated the event. For most situations, this could be from
 // the authorization context of the request.
 type ContainerRegistryEventActor struct {

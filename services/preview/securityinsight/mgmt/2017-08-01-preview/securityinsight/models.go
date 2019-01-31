@@ -1258,21 +1258,9 @@ func (dcwa *DataConnectorWithAlerts) UnmarshalJSON(body []byte) error {
 // DataConnectorWithAlertsProperties data connector properties.
 type DataConnectorWithAlertsProperties struct {
 	// DataTypes - The available data types for the connector.
-	DataTypes map[string]*AlertsDataTypeOfDataConnector `json:"dataTypes"`
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
 	ContextID *string `json:"contextId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for DataConnectorWithAlertsProperties.
-func (dcwap DataConnectorWithAlertsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dcwap.DataTypes != nil {
-		objectMap["dataTypes"] = dcwap.DataTypes
-	}
-	if dcwap.ContextID != nil {
-		objectMap["contextId"] = dcwap.ContextID
-	}
-	return json.Marshal(objectMap)
 }
 
 // MCASDataConnector represents MCAS (Microsoft Cloud Aapp Security) data connector.
@@ -1539,21 +1527,9 @@ type OfficeDataConnectorDataTypesSharePoint struct {
 // OfficeDataConnectorProperties office data connector properties.
 type OfficeDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
-	DataTypes map[string]*OfficeDataConnectorDataTypes `json:"dataTypes"`
+	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
 	ContextID *string `json:"contextId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OfficeDataConnectorProperties.
-func (odcp OfficeDataConnectorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if odcp.DataTypes != nil {
-		objectMap["dataTypes"] = odcp.DataTypes
-	}
-	if odcp.ContextID != nil {
-		objectMap["contextId"] = odcp.ContextID
-	}
-	return json.Marshal(objectMap)
 }
 
 // Operation operation provided by provider
@@ -2055,19 +2031,7 @@ type TIDataConnectorDataTypesIndicators struct {
 // TIDataConnectorProperties TI data connector properties.
 type TIDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
-	DataTypes map[string]*TIDataConnectorDataTypes `json:"dataTypes"`
+	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
 	ContextID *string `json:"contextId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TIDataConnectorProperties.
-func (tdcp TIDataConnectorProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tdcp.DataTypes != nil {
-		objectMap["dataTypes"] = tdcp.DataTypes
-	}
-	if tdcp.ContextID != nil {
-		objectMap["contextId"] = tdcp.ContextID
-	}
-	return json.Marshal(objectMap)
 }

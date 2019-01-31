@@ -19,7 +19,7 @@
 
 package consumptionapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption/consumptionapi"
+import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-01-01/consumption/consumptionapi"
 
 type AggregatedCostClientAPI = original.AggregatedCostClientAPI
 type BalancesClientAPI = original.BalancesClientAPI

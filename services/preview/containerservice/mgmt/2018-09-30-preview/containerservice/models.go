@@ -1428,6 +1428,8 @@ type ManagedClusterProperties struct {
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty"`
 	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool `json:"enableRBAC,omitempty"`
+	// EnablePodSecurityPolicy - Whether to enable Pod Security Policy.
+	EnablePodSecurityPolicy *bool `json:"enablePodSecurityPolicy,omitempty"`
 	// NetworkProfile - Profile of network configuration.
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
@@ -1468,6 +1470,9 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mcp.EnableRBAC != nil {
 		objectMap["enableRBAC"] = mcp.EnableRBAC
+	}
+	if mcp.EnablePodSecurityPolicy != nil {
+		objectMap["enablePodSecurityPolicy"] = mcp.EnablePodSecurityPolicy
 	}
 	if mcp.NetworkProfile != nil {
 		objectMap["networkProfile"] = mcp.NetworkProfile

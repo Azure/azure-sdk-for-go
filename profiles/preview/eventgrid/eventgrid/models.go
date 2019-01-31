@@ -73,6 +73,10 @@ const (
 
 type BaseClient = original.BaseClient
 type BasicMediaJobOutput = original.BasicMediaJobOutput
+type ContainerRegistryArtifactEventData = original.ContainerRegistryArtifactEventData
+type ContainerRegistryArtifactEventTarget = original.ContainerRegistryArtifactEventTarget
+type ContainerRegistryChartDeletedEventData = original.ContainerRegistryChartDeletedEventData
+type ContainerRegistryChartPushedEventData = original.ContainerRegistryChartPushedEventData
 type ContainerRegistryEventActor = original.ContainerRegistryEventActor
 type ContainerRegistryEventData = original.ContainerRegistryEventData
 type ContainerRegistryEventRequest = original.ContainerRegistryEventRequest

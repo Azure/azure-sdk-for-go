@@ -22,4 +22,5 @@ package securityinsightapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2017-08-01-preview/securityinsight/securityinsightapi"
 
 type AlertRulesClientAPI = original.AlertRulesClientAPI
+type DataConnectorsClientAPI = original.DataConnectorsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

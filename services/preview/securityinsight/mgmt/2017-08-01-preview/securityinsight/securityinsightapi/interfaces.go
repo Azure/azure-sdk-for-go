@@ -39,3 +39,13 @@ type AlertRulesClientAPI interface {
 }
 
 var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)
+
+// DataConnectorsClientAPI contains the set of methods on the DataConnectorsClient type.
+type DataConnectorsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector securityinsight.BasicDataConnector) (result securityinsight.DataConnectorModel, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result securityinsight.DataConnectorModel, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.DataConnectorListPage, err error)
+}
+
+var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)

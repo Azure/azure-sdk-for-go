@@ -2368,6 +2368,145 @@ type ReservationRecommendationsSharedListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// ReservationRecommendationsSharedListResultIterator provides access to a complete listing of
+// ReservationRecommendationsShared values.
+type ReservationRecommendationsSharedListResultIterator struct {
+	i    int
+	page ReservationRecommendationsSharedListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ReservationRecommendationsSharedListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationRecommendationsSharedListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ReservationRecommendationsSharedListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ReservationRecommendationsSharedListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ReservationRecommendationsSharedListResultIterator) Response() ReservationRecommendationsSharedListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ReservationRecommendationsSharedListResultIterator) Value() ReservationRecommendationsShared {
+	if !iter.page.NotDone() {
+		return ReservationRecommendationsShared{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ReservationRecommendationsSharedListResultIterator type.
+func NewReservationRecommendationsSharedListResultIterator(page ReservationRecommendationsSharedListResultPage) ReservationRecommendationsSharedListResultIterator {
+	return ReservationRecommendationsSharedListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rrslr ReservationRecommendationsSharedListResult) IsEmpty() bool {
+	return rrslr.Value == nil || len(*rrslr.Value) == 0
+}
+
+// reservationRecommendationsSharedListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rrslr ReservationRecommendationsSharedListResult) reservationRecommendationsSharedListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rrslr.NextLink == nil || len(to.String(rrslr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rrslr.NextLink)))
+}
+
+// ReservationRecommendationsSharedListResultPage contains a page of ReservationRecommendationsShared
+// values.
+type ReservationRecommendationsSharedListResultPage struct {
+	fn    func(context.Context, ReservationRecommendationsSharedListResult) (ReservationRecommendationsSharedListResult, error)
+	rrslr ReservationRecommendationsSharedListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ReservationRecommendationsSharedListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationRecommendationsSharedListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rrslr)
+	if err != nil {
+		return err
+	}
+	page.rrslr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ReservationRecommendationsSharedListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ReservationRecommendationsSharedListResultPage) NotDone() bool {
+	return !page.rrslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ReservationRecommendationsSharedListResultPage) Response() ReservationRecommendationsSharedListResult {
+	return page.rrslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ReservationRecommendationsSharedListResultPage) Values() []ReservationRecommendationsShared {
+	if page.rrslr.IsEmpty() {
+		return nil
+	}
+	return *page.rrslr.Value
+}
+
+// Creates a new instance of the ReservationRecommendationsSharedListResultPage type.
+func NewReservationRecommendationsSharedListResultPage(getNextPage func(context.Context, ReservationRecommendationsSharedListResult) (ReservationRecommendationsSharedListResult, error)) ReservationRecommendationsSharedListResultPage {
+	return ReservationRecommendationsSharedListResultPage{fn: getNextPage}
+}
+
 // ReservationRecommendationsSingle reservation Recommendation for single subscription scope.
 type ReservationRecommendationsSingle struct {
 	*ReservationRecommendationSingleProperties `json:"properties,omitempty"`
@@ -2470,6 +2609,145 @@ type ReservationRecommendationsSingleListResult struct {
 	Value *[]ReservationRecommendationsSingle `json:"value,omitempty"`
 	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ReservationRecommendationsSingleListResultIterator provides access to a complete listing of
+// ReservationRecommendationsSingle values.
+type ReservationRecommendationsSingleListResultIterator struct {
+	i    int
+	page ReservationRecommendationsSingleListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ReservationRecommendationsSingleListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationRecommendationsSingleListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ReservationRecommendationsSingleListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ReservationRecommendationsSingleListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ReservationRecommendationsSingleListResultIterator) Response() ReservationRecommendationsSingleListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ReservationRecommendationsSingleListResultIterator) Value() ReservationRecommendationsSingle {
+	if !iter.page.NotDone() {
+		return ReservationRecommendationsSingle{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ReservationRecommendationsSingleListResultIterator type.
+func NewReservationRecommendationsSingleListResultIterator(page ReservationRecommendationsSingleListResultPage) ReservationRecommendationsSingleListResultIterator {
+	return ReservationRecommendationsSingleListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rrslr ReservationRecommendationsSingleListResult) IsEmpty() bool {
+	return rrslr.Value == nil || len(*rrslr.Value) == 0
+}
+
+// reservationRecommendationsSingleListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rrslr ReservationRecommendationsSingleListResult) reservationRecommendationsSingleListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rrslr.NextLink == nil || len(to.String(rrslr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rrslr.NextLink)))
+}
+
+// ReservationRecommendationsSingleListResultPage contains a page of ReservationRecommendationsSingle
+// values.
+type ReservationRecommendationsSingleListResultPage struct {
+	fn    func(context.Context, ReservationRecommendationsSingleListResult) (ReservationRecommendationsSingleListResult, error)
+	rrslr ReservationRecommendationsSingleListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ReservationRecommendationsSingleListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationRecommendationsSingleListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rrslr)
+	if err != nil {
+		return err
+	}
+	page.rrslr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ReservationRecommendationsSingleListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ReservationRecommendationsSingleListResultPage) NotDone() bool {
+	return !page.rrslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ReservationRecommendationsSingleListResultPage) Response() ReservationRecommendationsSingleListResult {
+	return page.rrslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ReservationRecommendationsSingleListResultPage) Values() []ReservationRecommendationsSingle {
+	if page.rrslr.IsEmpty() {
+		return nil
+	}
+	return *page.rrslr.Value
+}
+
+// Creates a new instance of the ReservationRecommendationsSingleListResultPage type.
+func NewReservationRecommendationsSingleListResultPage(getNextPage func(context.Context, ReservationRecommendationsSingleListResult) (ReservationRecommendationsSingleListResult, error)) ReservationRecommendationsSingleListResultPage {
+	return ReservationRecommendationsSingleListResultPage{fn: getNextPage}
 }
 
 // ReservationSummariesListResult result of listing reservation summaries.

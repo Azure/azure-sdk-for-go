@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -33,13 +32,13 @@ type TagsClient struct {
 }
 
 // NewTagsClient creates an instance of the TagsClient client.
-func NewTagsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) TagsClient {
-	return NewTagsClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewTagsClient(subscriptionID string) TagsClient {
+	return NewTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTagsClientWithBaseURI creates an instance of the TagsClient client.
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) TagsClient {
-	return TagsClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return TagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get all available tag keys for a billing account.

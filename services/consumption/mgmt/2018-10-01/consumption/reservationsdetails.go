@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -33,13 +32,13 @@ type ReservationsDetailsClient struct {
 }
 
 // NewReservationsDetailsClient creates an instance of the ReservationsDetailsClient client.
-func NewReservationsDetailsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsDetailsClient {
-	return NewReservationsDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
+	return NewReservationsDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewReservationsDetailsClientWithBaseURI creates an instance of the ReservationsDetailsClient client.
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsDetailsClient {
-	return ReservationsDetailsClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
+	return ReservationsDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByReservationOrder lists the reservations details for provided date range.

@@ -33,13 +33,13 @@ type ReservationsUsageSummariesClient struct {
 }
 
 // NewReservationsUsageSummariesClient creates an instance of the ReservationsUsageSummariesClient client.
-func NewReservationsUsageSummariesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsUsageSummariesClient {
-	return NewReservationsUsageSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsUsageSummariesClient(subscriptionID string) ReservationsUsageSummariesClient {
+	return NewReservationsUsageSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewReservationsUsageSummariesClientWithBaseURI creates an instance of the ReservationsUsageSummariesClient client.
-func NewReservationsUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsUsageSummariesClient {
-	return ReservationsUsageSummariesClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewReservationsUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsUsageSummariesClient {
+	return ReservationsUsageSummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByBillingProfile list the reserved instance usage summary for daily or monthly grain based on billingAccountId
@@ -47,8 +47,10 @@ func NewReservationsUsageSummariesClientWithBaseURI(baseURI string, subscription
 // Parameters:
 // billingAccountID - billingAccount ID
 // billingProfileID - billingProfile ID
+// startDate - the start of the date time range.
+// endDate - the start of the date time range.
 // grain - can be daily or monthly
-func (client ReservationsUsageSummariesClient) ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, grain Datagrain) (result ReservationSummariesListResultPage, err error) {
+func (client ReservationsUsageSummariesClient) ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, startDate date.Time, endDate date.Time, grain Datagrain) (result ReservationSummariesListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationsUsageSummariesClient.ListByBillingProfile")
 		defer func() {
@@ -60,7 +62,7 @@ func (client ReservationsUsageSummariesClient) ListByBillingProfile(ctx context.
 		}()
 	}
 	result.fn = client.listByBillingProfileNextResults
-	req, err := client.ListByBillingProfilePreparer(ctx, billingAccountID, billingProfileID, grain)
+	req, err := client.ListByBillingProfilePreparer(ctx, billingAccountID, billingProfileID, startDate, endDate, grain)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsUsageSummariesClient", "ListByBillingProfile", nil, "Failure preparing request")
 		return
@@ -82,7 +84,7 @@ func (client ReservationsUsageSummariesClient) ListByBillingProfile(ctx context.
 }
 
 // ListByBillingProfilePreparer prepares the ListByBillingProfile request.
-func (client ReservationsUsageSummariesClient) ListByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string, grain Datagrain) (*http.Request, error) {
+func (client ReservationsUsageSummariesClient) ListByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string, startDate date.Time, endDate date.Time, grain Datagrain) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"billingProfileId": autorest.Encode("path", billingProfileID),
@@ -91,9 +93,9 @@ func (client ReservationsUsageSummariesClient) ListByBillingProfilePreparer(ctx 
 	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"endDate":     autorest.Encode("query", client.EndDate),
+		"endDate":     autorest.Encode("query", endDate),
 		"grain":       autorest.Encode("query", grain),
-		"startDate":   autorest.Encode("query", client.StartDate),
+		"startDate":   autorest.Encode("query", startDate),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -146,7 +148,7 @@ func (client ReservationsUsageSummariesClient) listByBillingProfileNextResults(c
 }
 
 // ListByBillingProfileComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ReservationsUsageSummariesClient) ListByBillingProfileComplete(ctx context.Context, billingAccountID string, billingProfileID string, grain Datagrain) (result ReservationSummariesListResultIterator, err error) {
+func (client ReservationsUsageSummariesClient) ListByBillingProfileComplete(ctx context.Context, billingAccountID string, billingProfileID string, startDate date.Time, endDate date.Time, grain Datagrain) (result ReservationSummariesListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationsUsageSummariesClient.ListByBillingProfile")
 		defer func() {
@@ -157,6 +159,6 @@ func (client ReservationsUsageSummariesClient) ListByBillingProfileComplete(ctx 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByBillingProfile(ctx, billingAccountID, billingProfileID, grain)
+	result.page, err = client.ListByBillingProfile(ctx, billingAccountID, billingProfileID, startDate, endDate, grain)
 	return
 }

@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -34,13 +33,13 @@ type UsageDetailsClient struct {
 }
 
 // NewUsageDetailsClient creates an instance of the UsageDetailsClient client.
-func NewUsageDetailsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) UsageDetailsClient {
-	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client.
-func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) UsageDetailsClient {
-	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the usage details for a scope by current billing period. Usage details are available via this API only

@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -33,13 +32,13 @@ type ForecastsClient struct {
 }
 
 // NewForecastsClient creates an instance of the ForecastsClient client.
-func NewForecastsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ForecastsClient {
-	return NewForecastsClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewForecastsClient(subscriptionID string) ForecastsClient {
+	return NewForecastsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewForecastsClientWithBaseURI creates an instance of the ForecastsClient client.
-func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ForecastsClient {
-	return ForecastsClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
+	return ForecastsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the forecast charges by subscriptionId.

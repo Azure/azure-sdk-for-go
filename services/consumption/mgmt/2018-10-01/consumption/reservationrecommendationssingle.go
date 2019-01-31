@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -33,14 +32,14 @@ type ReservationRecommendationsSingleClient struct {
 }
 
 // NewReservationRecommendationsSingleClient creates an instance of the ReservationRecommendationsSingleClient client.
-func NewReservationRecommendationsSingleClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsSingleClient {
-	return NewReservationRecommendationsSingleClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsSingleClient(subscriptionID string) ReservationRecommendationsSingleClient {
+	return NewReservationRecommendationsSingleClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewReservationRecommendationsSingleClientWithBaseURI creates an instance of the
 // ReservationRecommendationsSingleClient client.
-func NewReservationRecommendationsSingleClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsSingleClient {
-	return ReservationRecommendationsSingleClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewReservationRecommendationsSingleClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsSingleClient {
+	return ReservationRecommendationsSingleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByBillingProfile list of recommendations calculated based on past usage for the provided billingAccountId and
@@ -48,18 +47,20 @@ func NewReservationRecommendationsSingleClientWithBaseURI(baseURI string, subscr
 // Parameters:
 // billingAccountID - billingAccount ID
 // billingProfileID - billingProfile ID
-func (client ReservationRecommendationsSingleClient) ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result ReservationRecommendationsSingleListResult, err error) {
+// lookBackPeriod - the number of days of usage data to look back into.
+func (client ReservationRecommendationsSingleClient) ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, lookBackPeriod string) (result ReservationRecommendationsSingleListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationRecommendationsSingleClient.ListByBillingProfile")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.rrslr.Response.Response != nil {
+				sc = result.rrslr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListByBillingProfilePreparer(ctx, billingAccountID, billingProfileID)
+	result.fn = client.listByBillingProfileNextResults
+	req, err := client.ListByBillingProfilePreparer(ctx, billingAccountID, billingProfileID, lookBackPeriod)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsSingleClient", "ListByBillingProfile", nil, "Failure preparing request")
 		return
@@ -67,12 +68,12 @@ func (client ReservationRecommendationsSingleClient) ListByBillingProfile(ctx co
 
 	resp, err := client.ListByBillingProfileSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.rrslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsSingleClient", "ListByBillingProfile", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByBillingProfileResponder(resp)
+	result.rrslr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsSingleClient", "ListByBillingProfile", resp, "Failure responding to request")
 	}
@@ -81,7 +82,7 @@ func (client ReservationRecommendationsSingleClient) ListByBillingProfile(ctx co
 }
 
 // ListByBillingProfilePreparer prepares the ListByBillingProfile request.
-func (client ReservationRecommendationsSingleClient) ListByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
+func (client ReservationRecommendationsSingleClient) ListByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string, lookBackPeriod string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"billingProfileId": autorest.Encode("path", billingProfileID),
@@ -90,7 +91,7 @@ func (client ReservationRecommendationsSingleClient) ListByBillingProfilePrepare
 	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version":    APIVersion,
-		"lookBackPeriod": autorest.Encode("query", client.LookBackPeriod),
+		"lookBackPeriod": autorest.Encode("query", lookBackPeriod),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -118,5 +119,42 @@ func (client ReservationRecommendationsSingleClient) ListByBillingProfileRespond
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByBillingProfileNextResults retrieves the next set of results, if any.
+func (client ReservationRecommendationsSingleClient) listByBillingProfileNextResults(ctx context.Context, lastResults ReservationRecommendationsSingleListResult) (result ReservationRecommendationsSingleListResult, err error) {
+	req, err := lastResults.reservationRecommendationsSingleListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsSingleClient", "listByBillingProfileNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByBillingProfileSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsSingleClient", "listByBillingProfileNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByBillingProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsSingleClient", "listByBillingProfileNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByBillingProfileComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ReservationRecommendationsSingleClient) ListByBillingProfileComplete(ctx context.Context, billingAccountID string, billingProfileID string, lookBackPeriod string) (result ReservationRecommendationsSingleListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationRecommendationsSingleClient.ListByBillingProfile")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByBillingProfile(ctx, billingAccountID, billingProfileID, lookBackPeriod)
 	return
 }

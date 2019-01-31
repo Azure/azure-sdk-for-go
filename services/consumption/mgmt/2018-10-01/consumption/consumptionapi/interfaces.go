@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // UsageDetailsClientAPI contains the set of methods on the UsageDetailsClient type.
@@ -149,28 +150,28 @@ var _ ChargesClientAPI = (*consumption.ChargesClient)(nil)
 
 // ReservationsUsageDetailsClientAPI contains the set of methods on the ReservationsUsageDetailsClient type.
 type ReservationsUsageDetailsClientAPI interface {
-	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.ReservationDetailsListResultPage, err error)
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, startDate date.Time, endDate date.Time) (result consumption.ReservationDetailsListResultPage, err error)
 }
 
 var _ ReservationsUsageDetailsClientAPI = (*consumption.ReservationsUsageDetailsClient)(nil)
 
 // ReservationsUsageSummariesClientAPI contains the set of methods on the ReservationsUsageSummariesClient type.
 type ReservationsUsageSummariesClientAPI interface {
-	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, grain consumption.Datagrain) (result consumption.ReservationSummariesListResultPage, err error)
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, startDate date.Time, endDate date.Time, grain consumption.Datagrain) (result consumption.ReservationSummariesListResultPage, err error)
 }
 
 var _ ReservationsUsageSummariesClientAPI = (*consumption.ReservationsUsageSummariesClient)(nil)
 
 // ReservationRecommendationsSharedClientAPI contains the set of methods on the ReservationRecommendationsSharedClient type.
 type ReservationRecommendationsSharedClientAPI interface {
-	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.ReservationRecommendationsSharedListResult, err error)
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, lookBackPeriod string) (result consumption.ReservationRecommendationsSharedListResultPage, err error)
 }
 
 var _ ReservationRecommendationsSharedClientAPI = (*consumption.ReservationRecommendationsSharedClient)(nil)
 
 // ReservationRecommendationsSingleClientAPI contains the set of methods on the ReservationRecommendationsSingleClient type.
 type ReservationRecommendationsSingleClientAPI interface {
-	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result consumption.ReservationRecommendationsSingleListResult, err error)
+	ListByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, lookBackPeriod string) (result consumption.ReservationRecommendationsSingleListResultPage, err error)
 }
 
 var _ ReservationRecommendationsSingleClientAPI = (*consumption.ReservationRecommendationsSingleClient)(nil)

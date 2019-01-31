@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -34,13 +33,13 @@ type PriceSheetClient struct {
 }
 
 // NewPriceSheetClient creates an instance of the PriceSheetClient client.
-func NewPriceSheetClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) PriceSheetClient {
-	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) PriceSheetClient {
-	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014

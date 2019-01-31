@@ -23,7 +23,6 @@ import (
 	"context"
 
 	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 const (
@@ -155,9 +154,13 @@ type ReservationRecommendationsListResultPage = original.ReservationRecommendati
 type ReservationRecommendationsShared = original.ReservationRecommendationsShared
 type ReservationRecommendationsSharedClient = original.ReservationRecommendationsSharedClient
 type ReservationRecommendationsSharedListResult = original.ReservationRecommendationsSharedListResult
+type ReservationRecommendationsSharedListResultIterator = original.ReservationRecommendationsSharedListResultIterator
+type ReservationRecommendationsSharedListResultPage = original.ReservationRecommendationsSharedListResultPage
 type ReservationRecommendationsSingle = original.ReservationRecommendationsSingle
 type ReservationRecommendationsSingleClient = original.ReservationRecommendationsSingleClient
 type ReservationRecommendationsSingleListResult = original.ReservationRecommendationsSingleListResult
+type ReservationRecommendationsSingleListResultIterator = original.ReservationRecommendationsSingleListResultIterator
+type ReservationRecommendationsSingleListResultPage = original.ReservationRecommendationsSingleListResultPage
 type ReservationSummariesListResult = original.ReservationSummariesListResult
 type ReservationSummariesListResultIterator = original.ReservationSummariesListResultIterator
 type ReservationSummariesListResultPage = original.ReservationSummariesListResultPage
@@ -180,26 +183,26 @@ type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 
-func New(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BaseClient {
-	return original.New(subscriptionID, startDate, endDate, lookBackPeriod)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewAggregatedCostClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) AggregatedCostClient {
-	return original.NewAggregatedCostClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewAggregatedCostClient(subscriptionID string) AggregatedCostClient {
+	return original.NewAggregatedCostClient(subscriptionID)
 }
-func NewAggregatedCostClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) AggregatedCostClient {
-	return original.NewAggregatedCostClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewAggregatedCostClientWithBaseURI(baseURI string, subscriptionID string) AggregatedCostClient {
+	return original.NewAggregatedCostClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBalancesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BalancesClient {
-	return original.NewBalancesClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewBalancesClient(subscriptionID string) BalancesClient {
+	return original.NewBalancesClient(subscriptionID)
 }
-func NewBalancesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BalancesClient {
-	return original.NewBalancesClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewBalancesClientWithBaseURI(baseURI string, subscriptionID string) BalancesClient {
+	return original.NewBalancesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBudgetsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BudgetsClient {
-	return original.NewBudgetsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewBudgetsClient(subscriptionID string) BudgetsClient {
+	return original.NewBudgetsClient(subscriptionID)
 }
-func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BudgetsClient {
-	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
+	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewBudgetsListResultIterator(page BudgetsListResultPage) BudgetsListResultIterator {
 	return original.NewBudgetsListResultIterator(page)
@@ -207,23 +210,23 @@ func NewBudgetsListResultIterator(page BudgetsListResultPage) BudgetsListResultI
 func NewBudgetsListResultPage(getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
 	return original.NewBudgetsListResultPage(getNextPage)
 }
-func NewChargesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ChargesClient {
-	return original.NewChargesClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewChargesClient(subscriptionID string) ChargesClient {
+	return original.NewChargesClient(subscriptionID)
 }
-func NewChargesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ChargesClient {
-	return original.NewChargesClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewChargesClientWithBaseURI(baseURI string, subscriptionID string) ChargesClient {
+	return original.NewChargesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewForecastsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ForecastsClient {
-	return original.NewForecastsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewForecastsClient(subscriptionID string) ForecastsClient {
+	return original.NewForecastsClient(subscriptionID)
 }
-func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ForecastsClient {
-	return original.NewForecastsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
+	return original.NewForecastsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMarketplacesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) MarketplacesClient {
-	return original.NewMarketplacesClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClient(subscriptionID)
 }
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) MarketplacesClient {
-	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMarketplacesListResultIterator(page MarketplacesListResultPage) MarketplacesListResultIterator {
 	return original.NewMarketplacesListResultIterator(page)
@@ -237,17 +240,17 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPriceSheetClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) PriceSheetClient {
-	return original.NewPriceSheetClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID)
 }
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) PriceSheetClient {
-	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewReservationDetailsListResultIterator(page ReservationDetailsListResultPage) ReservationDetailsListResultIterator {
 	return original.NewReservationDetailsListResultIterator(page)
@@ -255,11 +258,11 @@ func NewReservationDetailsListResultIterator(page ReservationDetailsListResultPa
 func NewReservationDetailsListResultPage(getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
 	return original.NewReservationDetailsListResultPage(getNextPage)
 }
-func NewReservationRecommendationsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClient(subscriptionID)
 }
-func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewReservationRecommendationsListResultIterator(page ReservationRecommendationsListResultPage) ReservationRecommendationsListResultIterator {
 	return original.NewReservationRecommendationsListResultIterator(page)
@@ -267,17 +270,29 @@ func NewReservationRecommendationsListResultIterator(page ReservationRecommendat
 func NewReservationRecommendationsListResultPage(getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
 	return original.NewReservationRecommendationsListResultPage(getNextPage)
 }
-func NewReservationRecommendationsSharedClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsSharedClient {
-	return original.NewReservationRecommendationsSharedClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsSharedClient(subscriptionID string) ReservationRecommendationsSharedClient {
+	return original.NewReservationRecommendationsSharedClient(subscriptionID)
 }
-func NewReservationRecommendationsSharedClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsSharedClient {
-	return original.NewReservationRecommendationsSharedClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsSharedClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsSharedClient {
+	return original.NewReservationRecommendationsSharedClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationRecommendationsSingleClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsSingleClient {
-	return original.NewReservationRecommendationsSingleClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsSharedListResultIterator(page ReservationRecommendationsSharedListResultPage) ReservationRecommendationsSharedListResultIterator {
+	return original.NewReservationRecommendationsSharedListResultIterator(page)
 }
-func NewReservationRecommendationsSingleClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationRecommendationsSingleClient {
-	return original.NewReservationRecommendationsSingleClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationRecommendationsSharedListResultPage(getNextPage func(context.Context, ReservationRecommendationsSharedListResult) (ReservationRecommendationsSharedListResult, error)) ReservationRecommendationsSharedListResultPage {
+	return original.NewReservationRecommendationsSharedListResultPage(getNextPage)
+}
+func NewReservationRecommendationsSingleClient(subscriptionID string) ReservationRecommendationsSingleClient {
+	return original.NewReservationRecommendationsSingleClient(subscriptionID)
+}
+func NewReservationRecommendationsSingleClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsSingleClient {
+	return original.NewReservationRecommendationsSingleClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReservationRecommendationsSingleListResultIterator(page ReservationRecommendationsSingleListResultPage) ReservationRecommendationsSingleListResultIterator {
+	return original.NewReservationRecommendationsSingleListResultIterator(page)
+}
+func NewReservationRecommendationsSingleListResultPage(getNextPage func(context.Context, ReservationRecommendationsSingleListResult) (ReservationRecommendationsSingleListResult, error)) ReservationRecommendationsSingleListResultPage {
+	return original.NewReservationRecommendationsSingleListResultPage(getNextPage)
 }
 func NewReservationSummariesListResultIterator(page ReservationSummariesListResultPage) ReservationSummariesListResultIterator {
 	return original.NewReservationSummariesListResultIterator(page)
@@ -285,41 +300,41 @@ func NewReservationSummariesListResultIterator(page ReservationSummariesListResu
 func NewReservationSummariesListResultPage(getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
 	return original.NewReservationSummariesListResultPage(getNextPage)
 }
-func NewReservationsDetailsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClient(subscriptionID)
 }
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsSummariesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClient(subscriptionID)
 }
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsUsageDetailsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsUsageDetailsClient {
-	return original.NewReservationsUsageDetailsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsUsageDetailsClient(subscriptionID string) ReservationsUsageDetailsClient {
+	return original.NewReservationsUsageDetailsClient(subscriptionID)
 }
-func NewReservationsUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsUsageDetailsClient {
-	return original.NewReservationsUsageDetailsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsUsageDetailsClient {
+	return original.NewReservationsUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsUsageSummariesClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsUsageSummariesClient {
-	return original.NewReservationsUsageSummariesClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsUsageSummariesClient(subscriptionID string) ReservationsUsageSummariesClient {
+	return original.NewReservationsUsageSummariesClient(subscriptionID)
 }
-func NewReservationsUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) ReservationsUsageSummariesClient {
-	return original.NewReservationsUsageSummariesClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewReservationsUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsUsageSummariesClient {
+	return original.NewReservationsUsageSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTagsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) TagsClient {
-	return original.NewTagsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
 }
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageDetailsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) UsageDetailsClient {
-	return original.NewUsageDetailsClient(subscriptionID, startDate, endDate, lookBackPeriod)
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClient(subscriptionID)
 }
-func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) UsageDetailsClient {
-	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
 	return original.NewUsageDetailsListResultIterator(page)
@@ -327,8 +342,8 @@ func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDet
 func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
 	return original.NewUsageDetailsListResultPage(getNextPage)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleBillingFrequencyValues() []BillingFrequency {
 	return original.PossibleBillingFrequencyValues()

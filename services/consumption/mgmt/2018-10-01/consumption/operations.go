@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -33,13 +32,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, startDate, endDate, lookBackPeriod)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, startDate date.Time, endDate date.Time, lookBackPeriod string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, startDate, endDate, lookBackPeriod)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available consumption REST API operations.

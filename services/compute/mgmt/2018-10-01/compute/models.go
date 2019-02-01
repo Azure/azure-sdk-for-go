@@ -2419,9 +2419,9 @@ type DiskProperties struct {
 	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
 	// ProvisioningState - The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes.
+	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes. For a description of the range of values you can set, see [Ultra SSD Managed Disk Offerings](https://docs.microsoft.com/azure/virtual-machines/windows/disks-ultra-ssd#ultra-ssd-managed-disk-offerings).
 	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
-	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10. For a description of the range of values you can set, see [Ultra SSD Managed Disk Offerings](https://docs.microsoft.com/azure/virtual-machines/windows/disks-ultra-ssd#ultra-ssd-managed-disk-offerings).
 	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
 }
 

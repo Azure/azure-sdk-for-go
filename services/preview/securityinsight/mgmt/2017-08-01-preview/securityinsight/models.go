@@ -50,17 +50,17 @@ const (
 	AzureActiveDirectory DataConnectorKind = "AzureActiveDirectory"
 	// AzureSecurityCenter ...
 	AzureSecurityCenter DataConnectorKind = "AzureSecurityCenter"
-	// MicrosoftCloudAappSecurity ...
-	MicrosoftCloudAappSecurity DataConnectorKind = "MicrosoftCloudAappSecurity"
+	// MicrosoftCloudAppSecurity ...
+	MicrosoftCloudAppSecurity DataConnectorKind = "MicrosoftCloudAppSecurity"
 	// Office365 ...
 	Office365 DataConnectorKind = "Office365"
-	// ThreatInelegance ...
-	ThreatInelegance DataConnectorKind = "ThreatInelegance"
+	// ThreatIntelligence ...
+	ThreatIntelligence DataConnectorKind = "ThreatIntelligence"
 )
 
 // PossibleDataConnectorKindValues returns an array of possible values for the DataConnectorKind const type.
 func PossibleDataConnectorKindValues() []DataConnectorKind {
-	return []DataConnectorKind{AzureActiveDirectory, AzureSecurityCenter, MicrosoftCloudAappSecurity, Office365, ThreatInelegance}
+	return []DataConnectorKind{AzureActiveDirectory, AzureSecurityCenter, MicrosoftCloudAppSecurity, Office365, ThreatIntelligence}
 }
 
 // DataTypeState enumerates the values for data type state.
@@ -105,17 +105,17 @@ const (
 	KindDataConnector KindBasicDataConnector = "DataConnector"
 	// KindDataConnectorWithAlerts ...
 	KindDataConnectorWithAlerts KindBasicDataConnector = "DataConnectorWithAlerts"
-	// KindMicrosoftCloudAappSecurity ...
-	KindMicrosoftCloudAappSecurity KindBasicDataConnector = "MicrosoftCloudAappSecurity"
+	// KindMicrosoftCloudAppSecurity ...
+	KindMicrosoftCloudAppSecurity KindBasicDataConnector = "MicrosoftCloudAppSecurity"
 	// KindOffice365 ...
 	KindOffice365 KindBasicDataConnector = "Office365"
-	// KindThreatInelegance ...
-	KindThreatInelegance KindBasicDataConnector = "ThreatInelegance"
+	// KindThreatIntelligence ...
+	KindThreatIntelligence KindBasicDataConnector = "ThreatIntelligence"
 )
 
 // PossibleKindBasicDataConnectorValues returns an array of possible values for the KindBasicDataConnector const type.
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
-	return []KindBasicDataConnector{KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindDataConnectorWithAlerts, KindMicrosoftCloudAappSecurity, KindOffice365, KindThreatInelegance}
+	return []KindBasicDataConnector{KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindDataConnectorWithAlerts, KindMicrosoftCloudAppSecurity, KindOffice365, KindThreatIntelligence}
 }
 
 // Severity enumerates the values for severity.
@@ -168,7 +168,7 @@ type AADDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -546,7 +546,7 @@ type AlertsDataTypeOfDataConnector struct {
 
 // AlertsDataTypeOfDataConnectorAlerts alerts data type connection.
 type AlertsDataTypeOfDataConnectorAlerts struct {
-	// State - Describe whther this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	State DataTypeState `json:"state,omitempty"`
 }
 
@@ -562,7 +562,7 @@ type ASCDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -706,7 +706,7 @@ type DataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -722,7 +722,7 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		var odc OfficeDataConnector
 		err := json.Unmarshal(body, &odc)
 		return odc, err
-	case string(KindThreatInelegance):
+	case string(KindThreatIntelligence):
 		var tdc TIDataConnector
 		err := json.Unmarshal(body, &tdc)
 		return tdc, err
@@ -734,7 +734,7 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		var adc ASCDataConnector
 		err := json.Unmarshal(body, &adc)
 		return adc, err
-	case string(KindMicrosoftCloudAappSecurity):
+	case string(KindMicrosoftCloudAppSecurity):
 		var mdc MCASDataConnector
 		err := json.Unmarshal(body, &mdc)
 		return mdc, err
@@ -842,13 +842,13 @@ type DataConnectorContextID struct {
 
 // DataConnectorDataTypeCommon common field for data type in data connectors.
 type DataConnectorDataTypeCommon struct {
-	// State - Describe whther this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	State DataTypeState `json:"state,omitempty"`
 }
 
 // DataConnectorKind1 describes an Azure resource with kind.
 type DataConnectorKind1 struct {
-	// Kind - The kind of the data connector. Possible values include: 'AzureActiveDirectory', 'AzureSecurityCenter', 'MicrosoftCloudAappSecurity', 'ThreatInelegance', 'Office365'
+	// Kind - The kind of the data connector. Possible values include: 'AzureActiveDirectory', 'AzureSecurityCenter', 'MicrosoftCloudAppSecurity', 'ThreatIntelligence', 'Office365'
 	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
@@ -1067,7 +1067,7 @@ type DataConnectorWithAlerts struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -1087,7 +1087,7 @@ func unmarshalBasicDataConnectorWithAlerts(body []byte) (BasicDataConnectorWithA
 		var adc ASCDataConnector
 		err := json.Unmarshal(body, &adc)
 		return adc, err
-	case string(KindMicrosoftCloudAappSecurity):
+	case string(KindMicrosoftCloudAppSecurity):
 		var mdc MCASDataConnector
 		err := json.Unmarshal(body, &mdc)
 		return mdc, err
@@ -1263,7 +1263,7 @@ type DataConnectorWithAlertsProperties struct {
 	ContextID *string `json:"contextId,omitempty"`
 }
 
-// MCASDataConnector represents MCAS (Microsoft Cloud Aapp Security) data connector.
+// MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
 	// DataConnectorWithAlertsProperties - Data connector properties.
 	*DataConnectorWithAlertsProperties `json:"properties,omitempty"`
@@ -1275,13 +1275,13 @@ type MCASDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MCASDataConnector.
 func (mdc MCASDataConnector) MarshalJSON() ([]byte, error) {
-	mdc.Kind = KindMicrosoftCloudAappSecurity
+	mdc.Kind = KindMicrosoftCloudAppSecurity
 	objectMap := make(map[string]interface{})
 	if mdc.DataConnectorWithAlertsProperties != nil {
 		objectMap["properties"] = mdc.DataConnectorWithAlertsProperties
@@ -1361,7 +1361,7 @@ type OfficeDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -1514,13 +1514,13 @@ type OfficeDataConnectorDataTypes struct {
 
 // OfficeDataConnectorDataTypesExchange exchange data type connection.
 type OfficeDataConnectorDataTypesExchange struct {
-	// State - Describe whther this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	State DataTypeState `json:"state,omitempty"`
 }
 
 // OfficeDataConnectorDataTypesSharePoint sharePoint data type connection.
 type OfficeDataConnectorDataTypesSharePoint struct {
-	// State - Describe whther this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	State DataTypeState `json:"state,omitempty"`
 }
 
@@ -1861,7 +1861,7 @@ type ScheduledAlertRuleProperties struct {
 	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
 }
 
-// TIDataConnector represents threat inelegance data connector.
+// TIDataConnector represents threat intelligence data connector.
 type TIDataConnector struct {
 	// TIDataConnectorProperties - TI data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
@@ -1873,13 +1873,13 @@ type TIDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatInelegance', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAappSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TIDataConnector.
 func (tdc TIDataConnector) MarshalJSON() ([]byte, error) {
-	tdc.Kind = KindThreatInelegance
+	tdc.Kind = KindThreatIntelligence
 	objectMap := make(map[string]interface{})
 	if tdc.TIDataConnectorProperties != nil {
 		objectMap["properties"] = tdc.TIDataConnectorProperties
@@ -2024,7 +2024,7 @@ type TIDataConnectorDataTypes struct {
 
 // TIDataConnectorDataTypesIndicators data type for indicators connection.
 type TIDataConnectorDataTypesIndicators struct {
-	// State - Describe whther this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	State DataTypeState `json:"state,omitempty"`
 }
 

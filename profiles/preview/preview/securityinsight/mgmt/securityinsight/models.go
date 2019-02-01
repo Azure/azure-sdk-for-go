@@ -38,11 +38,11 @@ const (
 type DataConnectorKind = original.DataConnectorKind
 
 const (
-	AzureActiveDirectory       DataConnectorKind = original.AzureActiveDirectory
-	AzureSecurityCenter        DataConnectorKind = original.AzureSecurityCenter
-	MicrosoftCloudAappSecurity DataConnectorKind = original.MicrosoftCloudAappSecurity
-	Office365                  DataConnectorKind = original.Office365
-	ThreatInelegance           DataConnectorKind = original.ThreatInelegance
+	AzureActiveDirectory      DataConnectorKind = original.AzureActiveDirectory
+	AzureSecurityCenter       DataConnectorKind = original.AzureSecurityCenter
+	MicrosoftCloudAppSecurity DataConnectorKind = original.MicrosoftCloudAppSecurity
+	Office365                 DataConnectorKind = original.Office365
+	ThreatIntelligence        DataConnectorKind = original.ThreatIntelligence
 )
 
 type DataTypeState = original.DataTypeState
@@ -62,13 +62,13 @@ const (
 type KindBasicDataConnector = original.KindBasicDataConnector
 
 const (
-	KindAzureActiveDirectory       KindBasicDataConnector = original.KindAzureActiveDirectory
-	KindAzureSecurityCenter        KindBasicDataConnector = original.KindAzureSecurityCenter
-	KindDataConnector              KindBasicDataConnector = original.KindDataConnector
-	KindDataConnectorWithAlerts    KindBasicDataConnector = original.KindDataConnectorWithAlerts
-	KindMicrosoftCloudAappSecurity KindBasicDataConnector = original.KindMicrosoftCloudAappSecurity
-	KindOffice365                  KindBasicDataConnector = original.KindOffice365
-	KindThreatInelegance           KindBasicDataConnector = original.KindThreatInelegance
+	KindAzureActiveDirectory      KindBasicDataConnector = original.KindAzureActiveDirectory
+	KindAzureSecurityCenter       KindBasicDataConnector = original.KindAzureSecurityCenter
+	KindDataConnector             KindBasicDataConnector = original.KindDataConnector
+	KindDataConnectorWithAlerts   KindBasicDataConnector = original.KindDataConnectorWithAlerts
+	KindMicrosoftCloudAppSecurity KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
+	KindOffice365                 KindBasicDataConnector = original.KindOffice365
+	KindThreatIntelligence        KindBasicDataConnector = original.KindThreatIntelligence
 )
 
 type Severity = original.Severity

@@ -48,7 +48,7 @@ func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) D
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// dataConnectorID - connecto ID
+// dataConnectorID - connector ID
 // dataConnector - the data connector
 func (client DataConnectorsClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (result DataConnectorModel, err error) {
 	if tracing.IsEnabled() {
@@ -147,7 +147,7 @@ func (client DataConnectorsClient) CreateResponder(resp *http.Response) (result 
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// dataConnectorID - connecto ID
+// dataConnectorID - connector ID
 func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Delete")
@@ -242,7 +242,7 @@ func (client DataConnectorsClient) DeleteResponder(resp *http.Response) (result 
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// dataConnectorID - connecto ID
+// dataConnectorID - connector ID
 func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result DataConnectorModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Get")

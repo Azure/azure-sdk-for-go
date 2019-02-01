@@ -22,7 +22,7 @@ package consumption
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
+	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-01-01/consumption"
 )
 
 const (

@@ -3453,7 +3453,7 @@ func NewAppServiceEnvironmentCollectionPage(getNextPage func(context.Context, Ap
 	return AppServiceEnvironmentCollectionPage{fn: getNextPage}
 }
 
-// AppServiceEnvironmentPatchResource ARM resource for a app service environment.
+// AppServiceEnvironmentPatchResource ARM resource for a app service enviroment.
 type AppServiceEnvironmentPatchResource struct {
 	// AppServiceEnvironment - Core resource properties
 	*AppServiceEnvironment `json:"properties,omitempty"`
@@ -10073,6 +10073,26 @@ type EnabledConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// EndpointDependency ...
+type EndpointDependency struct {
+	// DomainName - The Domain Name of the dependency.
+	DomainName *string `json:"domainName,omitempty"`
+	// EndpointDetails - The IP Addresses and Ports used when connecting to DomainName.
+	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
+}
+
+// EndpointDetail ...
+type EndpointDetail struct {
+	// IPAddress - An IP Address that Domain Name currently resolves to.
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// Port - The port an endpoint is connected to.
+	Port *int32 `json:"port,omitempty"`
+	// Latency - The time in milliseconds it takes to connect to this IpAddress at this Port.
+	Latency *float64 `json:"latency,omitempty"`
+	// IsAccessable - Whether it is possible to connect to IpAddress.
+	IsAccessable *bool `json:"isAccessable,omitempty"`
+}
+
 // ErrorEntity body of the error response returned from the API.
 type ErrorEntity struct {
 	// ExtendedCode - Type of error.
@@ -11848,6 +11868,16 @@ type IdentifierProperties struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// InboundEnvironmentEndpoint endpoints for a particular type
+type InboundEnvironmentEndpoint struct {
+	// Description - Text describing the endpoints.
+	Description *string `json:"description,omitempty"`
+	// Endpoints - The endpoint ip addresses in cidr notation.
+	Endpoints *[]string `json:"endpoints,omitempty"`
+	// Ports - The ports
+	Ports *[]string `json:"ports,omitempty"`
+}
+
 // IPSecurityRestriction IP security restriction on an app.
 type IPSecurityRestriction struct {
 	// IPAddress - IP address the security restriction is valid for.
@@ -12180,6 +12210,12 @@ type ListHostingEnvironmentDiagnostics struct {
 	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
+// ListInboundEnvironmentEndpoint ...
+type ListInboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
+}
+
 // ListNetworkTrace ...
 type ListNetworkTrace struct {
 	autorest.Response `json:"-"`
@@ -12190,6 +12226,12 @@ type ListNetworkTrace struct {
 type ListOperation struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
+}
+
+// ListOutboundEnvironmentEndpoint ...
+type ListOutboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
 }
 
 // ListVnetInfo ...
@@ -13257,6 +13299,14 @@ type Operation struct {
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
 	// GeoMasterOperationID - Applicable only for stamp operation ids.
 	GeoMasterOperationID *uuid.UUID `json:"geoMasterOperationId,omitempty"`
+}
+
+// OutboundEnvironmentEndpoint endpoints of a common type.
+type OutboundEnvironmentEndpoint struct {
+	// Category - Short description of the endpoints.
+	Category *string `json:"category,omitempty"`
+	// Endpoints - The endpoint's domain name and the IP Addresses it currently resolves to.
+	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
 }
 
 // PerfMonCounterCollection collection of performance monitor counters.

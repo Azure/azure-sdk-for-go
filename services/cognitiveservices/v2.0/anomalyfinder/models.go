@@ -84,13 +84,13 @@ type LastDetectResponse struct {
 	SuggestedWindow *int32 `json:"suggestedWindow,omitempty"`
 	// ExpectedValue - Expected value of the latest point.
 	ExpectedValue *float64 `json:"expectedValue,omitempty"`
-	// UpperMargin - Upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoudary and lowerBoudary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
+	// UpperMargin - Upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoundary and lowerBoundary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
 	UpperMargin *float64 `json:"upperMargin,omitempty"`
 	// LowerMargin - Lower margin of the latest point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - sensitivity)*lowerMargin.
 	LowerMargin *float64 `json:"lowerMargin,omitempty"`
 	// IsAnomaly - Anomaly status of the latest point, true means the latest point is an anomaly either in negative direction or positive direction.
 	IsAnomaly *bool `json:"isAnomaly,omitempty"`
-	// IsNegativeAnomaly - Anomaly status in negative direction of the latest point. True means the latest point is an anoamly and its real value is smaller than the expected one.
+	// IsNegativeAnomaly - Anomaly status in negative direction of the latest point. True means the latest point is an anomaly and its real value is smaller than the expected one.
 	IsNegativeAnomaly *bool `json:"isNegativeAnomaly,omitempty"`
 	// IsPositiveAnomaly - Anomaly status in positive direction of the latest point. True means the latest point is an anomaly and its real value is larger than the expected one.
 	IsPositiveAnomaly *bool `json:"isPositiveAnomaly,omitempty"`
@@ -114,8 +114,8 @@ type Request struct {
 	CustomInterval *int32 `json:"customInterval,omitempty"`
 	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
 	Period *int32 `json:"period,omitempty"`
-	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series. Must be between 0 and 0.5 (exclusive)
+	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
 	MaxAnomalyRatio *float64 `json:"maxAnomalyRatio,omitempty"`
-	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted. Must be between 0 and 99 (inclusive)
+	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
 	Sensitivity *float64 `json:"sensitivity,omitempty"`
 }

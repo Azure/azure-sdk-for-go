@@ -24,8 +24,8 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	PostTimeseriesEntireDetect(ctx context.Context, body anomalyfinder.Request) (result anomalyfinder.EntireDetectResponse, err error)
-	PostTimeseriesLastDetect(ctx context.Context, body anomalyfinder.Request) (result anomalyfinder.LastDetectResponse, err error)
+	EntireDetect(ctx context.Context, body anomalyfinder.Request) (result anomalyfinder.EntireDetectResponse, err error)
+	LastDetect(ctx context.Context, body anomalyfinder.Request) (result anomalyfinder.LastDetectResponse, err error)
 }
 
 var _ BaseClientAPI = (*anomalyfinder.BaseClient)(nil)

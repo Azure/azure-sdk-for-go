@@ -2079,13 +2079,13 @@ type ReservationRecommendationPropertiesWithAmount struct {
 	// Term - RI recommendations in one or three year terms.
 	Term *string `json:"term,omitempty"`
 	// CostWithNoRI - The total amount of cost without reserved instances.
-	CostWithNoRI *decimal.Decimal `json:"costWithNoRI,omitempty"`
+	CostWithNoRI *Amount `json:"costWithNoRI,omitempty"`
 	// RecommendedQuantity - Recommended quality for reserved instances.
 	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
 	// TotalCostWithRI - The total amount of cost with reserved instances.
-	TotalCostWithRI *decimal.Decimal `json:"totalCostWithRI,omitempty"`
+	TotalCostWithRI *Amount `json:"totalCostWithRI,omitempty"`
 	// NetSavings - Total estimated savings with reserved instances.
-	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
+	NetSavings *Amount `json:"netSavings,omitempty"`
 	// FirstUsageDate - The usage date for looking back.
 	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
 }
@@ -2106,13 +2106,13 @@ type ReservationRecommendationSingleProperties struct {
 	// Term - RI recommendations in one or three year terms.
 	Term *string `json:"term,omitempty"`
 	// CostWithNoRI - The total amount of cost without reserved instances.
-	CostWithNoRI *decimal.Decimal `json:"costWithNoRI,omitempty"`
+	CostWithNoRI *Amount `json:"costWithNoRI,omitempty"`
 	// RecommendedQuantity - Recommended quality for reserved instances.
 	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
 	// TotalCostWithRI - The total amount of cost with reserved instances.
-	TotalCostWithRI *decimal.Decimal `json:"totalCostWithRI,omitempty"`
+	TotalCostWithRI *Amount `json:"totalCostWithRI,omitempty"`
 	// NetSavings - Total estimated savings with reserved instances.
-	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
+	NetSavings *Amount `json:"netSavings,omitempty"`
 	// FirstUsageDate - The usage date for looking back.
 	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
 }

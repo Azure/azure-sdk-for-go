@@ -44,16 +44,17 @@ func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsC
 // CreateOrUpdate the operation to create or update a export. Update operation requires latest eTag to be set in the
 // request. You may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
 // Parameters:
-// scope - the scope at which the export name exist. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope.
+// for EnrollmentAccount scope' for Management Group scope..
 // exportName - export Name.
 // parameters - parameters supplied to the CreateOrUpdate Export operation.
-func (client ExportsClient) CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters Export) (result Export, err error) {
+func (client ExportsClient) CreateOrUpdate(ctx context.Context, scopeQueryParameter string, exportName string, parameters Export) (result Export, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.CreateOrUpdate")
 		defer func() {
@@ -75,7 +76,7 @@ func (client ExportsClient) CreateOrUpdate(ctx context.Context, scope string, ex
 		return result, validation.NewError("costmanagement.ExportsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, scope, exportName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, scopeQueryParameter, exportName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExportsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -97,10 +98,10 @@ func (client ExportsClient) CreateOrUpdate(ctx context.Context, scope string, ex
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ExportsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, exportName string, parameters Export) (*http.Request, error) {
+func (client ExportsClient) CreateOrUpdatePreparer(ctx context.Context, scopeQueryParameter string, exportName string, parameters Export) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"exportName": autorest.Encode("path", exportName),
-		"scope":      scope,
+		"exportName":          autorest.Encode("path", exportName),
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -112,7 +113,7 @@ func (client ExportsClient) CreateOrUpdatePreparer(ctx context.Context, scope st
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/exports/{exportName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -140,15 +141,16 @@ func (client ExportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 
 // Delete the operation to delete a export.
 // Parameters:
-// scope - the scope at which the export name exist. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope.
+// for EnrollmentAccount scope' for Management Group scope..
 // exportName - export Name.
-func (client ExportsClient) Delete(ctx context.Context, scope string, exportName string) (result autorest.Response, err error) {
+func (client ExportsClient) Delete(ctx context.Context, scopeQueryParameter string, exportName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.Delete")
 		defer func() {
@@ -159,7 +161,7 @@ func (client ExportsClient) Delete(ctx context.Context, scope string, exportName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, scope, exportName)
+	req, err := client.DeletePreparer(ctx, scopeQueryParameter, exportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExportsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -181,10 +183,10 @@ func (client ExportsClient) Delete(ctx context.Context, scope string, exportName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ExportsClient) DeletePreparer(ctx context.Context, scope string, exportName string) (*http.Request, error) {
+func (client ExportsClient) DeletePreparer(ctx context.Context, scopeQueryParameter string, exportName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"exportName": autorest.Encode("path", exportName),
-		"scope":      scope,
+		"exportName":          autorest.Encode("path", exportName),
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -195,7 +197,7 @@ func (client ExportsClient) DeletePreparer(ctx context.Context, scope string, ex
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/exports/{exportName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -221,15 +223,16 @@ func (client ExportsClient) DeleteResponder(resp *http.Response) (result autores
 
 // Execute the operation to execute a export.
 // Parameters:
-// scope - the scope at which the export must be run. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope.
+// for EnrollmentAccount scope' for Management Group scope..
 // exportName - export Name.
-func (client ExportsClient) Execute(ctx context.Context, scope string, exportName string) (result autorest.Response, err error) {
+func (client ExportsClient) Execute(ctx context.Context, scopeQueryParameter string, exportName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.Execute")
 		defer func() {
@@ -240,7 +243,7 @@ func (client ExportsClient) Execute(ctx context.Context, scope string, exportNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ExecutePreparer(ctx, scope, exportName)
+	req, err := client.ExecutePreparer(ctx, scopeQueryParameter, exportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExportsClient", "Execute", nil, "Failure preparing request")
 		return
@@ -262,10 +265,10 @@ func (client ExportsClient) Execute(ctx context.Context, scope string, exportNam
 }
 
 // ExecutePreparer prepares the Execute request.
-func (client ExportsClient) ExecutePreparer(ctx context.Context, scope string, exportName string) (*http.Request, error) {
+func (client ExportsClient) ExecutePreparer(ctx context.Context, scopeQueryParameter string, exportName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"exportName": autorest.Encode("path", exportName),
-		"scope":      scope,
+		"exportName":          autorest.Encode("path", exportName),
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -276,7 +279,7 @@ func (client ExportsClient) ExecutePreparer(ctx context.Context, scope string, e
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/run", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/exports/{exportName}/run", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -302,15 +305,16 @@ func (client ExportsClient) ExecuteResponder(resp *http.Response) (result autore
 
 // Get gets the export for the defined scope by export name.
 // Parameters:
-// scope - the scope at which the export name exist. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope.
+// for EnrollmentAccount scope' for Management Group scope..
 // exportName - export Name.
-func (client ExportsClient) Get(ctx context.Context, scope string, exportName string) (result Export, err error) {
+func (client ExportsClient) Get(ctx context.Context, scopeQueryParameter string, exportName string) (result Export, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.Get")
 		defer func() {
@@ -321,7 +325,7 @@ func (client ExportsClient) Get(ctx context.Context, scope string, exportName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, exportName)
+	req, err := client.GetPreparer(ctx, scopeQueryParameter, exportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExportsClient", "Get", nil, "Failure preparing request")
 		return
@@ -343,10 +347,10 @@ func (client ExportsClient) Get(ctx context.Context, scope string, exportName st
 }
 
 // GetPreparer prepares the Get request.
-func (client ExportsClient) GetPreparer(ctx context.Context, scope string, exportName string) (*http.Request, error) {
+func (client ExportsClient) GetPreparer(ctx context.Context, scopeQueryParameter string, exportName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"exportName": autorest.Encode("path", exportName),
-		"scope":      scope,
+		"exportName":          autorest.Encode("path", exportName),
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -357,7 +361,7 @@ func (client ExportsClient) GetPreparer(ctx context.Context, scope string, expor
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/exports/{exportName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -384,15 +388,16 @@ func (client ExportsClient) GetResponder(resp *http.Response) (result Export, er
 
 // GetExecutionHistory gets the execution history of a export for the defined scope by export name.
 // Parameters:
-// scope - the scope at which the export must be executed. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope.
+// for EnrollmentAccount scope' for Management Group scope..
 // exportName - export Name.
-func (client ExportsClient) GetExecutionHistory(ctx context.Context, scope string, exportName string) (result ExportExecutionListResult, err error) {
+func (client ExportsClient) GetExecutionHistory(ctx context.Context, scopeQueryParameter string, exportName string) (result ExportExecutionListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.GetExecutionHistory")
 		defer func() {
@@ -403,7 +408,7 @@ func (client ExportsClient) GetExecutionHistory(ctx context.Context, scope strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetExecutionHistoryPreparer(ctx, scope, exportName)
+	req, err := client.GetExecutionHistoryPreparer(ctx, scopeQueryParameter, exportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExportsClient", "GetExecutionHistory", nil, "Failure preparing request")
 		return
@@ -425,10 +430,10 @@ func (client ExportsClient) GetExecutionHistory(ctx context.Context, scope strin
 }
 
 // GetExecutionHistoryPreparer prepares the GetExecutionHistory request.
-func (client ExportsClient) GetExecutionHistoryPreparer(ctx context.Context, scope string, exportName string) (*http.Request, error) {
+func (client ExportsClient) GetExecutionHistoryPreparer(ctx context.Context, scopeQueryParameter string, exportName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"exportName": autorest.Encode("path", exportName),
-		"scope":      scope,
+		"exportName":          autorest.Encode("path", exportName),
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -439,7 +444,7 @@ func (client ExportsClient) GetExecutionHistoryPreparer(ctx context.Context, sco
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/exports/{exportName}/runHistory", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/exports/{exportName}/runHistory", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -466,14 +471,15 @@ func (client ExportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 
 // List lists all exports at the given scope.
 // Parameters:
-// scope - the scope at which exports are requested. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope.
-func (client ExportsClient) List(ctx context.Context, scope string) (result ExportListResult, err error) {
+// for EnrollmentAccount scope' for Management Group scope..
+func (client ExportsClient) List(ctx context.Context, scopeQueryParameter string) (result ExportListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.List")
 		defer func() {
@@ -484,7 +490,7 @@ func (client ExportsClient) List(ctx context.Context, scope string) (result Expo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, scope)
+	req, err := client.ListPreparer(ctx, scopeQueryParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ExportsClient", "List", nil, "Failure preparing request")
 		return
@@ -506,9 +512,9 @@ func (client ExportsClient) List(ctx context.Context, scope string) (result Expo
 }
 
 // ListPreparer prepares the List request.
-func (client ExportsClient) ListPreparer(ctx context.Context, scope string) (*http.Request, error) {
+func (client ExportsClient) ListPreparer(ctx context.Context, scopeQueryParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"scope": scope,
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -519,7 +525,7 @@ func (client ExportsClient) ListPreparer(ctx context.Context, scope string) (*ht
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/exports", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/exports", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

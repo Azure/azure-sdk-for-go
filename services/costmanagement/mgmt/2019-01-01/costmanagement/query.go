@@ -43,16 +43,16 @@ func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClien
 
 // UsageByScope query the usage data for scope defined.
 // Parameters:
-// scope - the scope at which to query usage data. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeQueryParameter - the scope associated with query and export operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for
-// Management Group scope.
+// for EnrollmentAccount scope' for Management Group scope..
 // parameters - parameters supplied to the CreateOrUpdate Query Config operation.
-func (client QueryClient) UsageByScope(ctx context.Context, scope string, parameters QueryDefinition) (result QueryResult, err error) {
+func (client QueryClient) UsageByScope(ctx context.Context, scopeQueryParameter string, parameters QueryDefinition) (result QueryResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/QueryClient.UsageByScope")
 		defer func() {
@@ -96,7 +96,7 @@ func (client QueryClient) UsageByScope(ctx context.Context, scope string, parame
 		return result, validation.NewError("costmanagement.QueryClient", "UsageByScope", err.Error())
 	}
 
-	req, err := client.UsageByScopePreparer(ctx, scope, parameters)
+	req, err := client.UsageByScopePreparer(ctx, scopeQueryParameter, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.QueryClient", "UsageByScope", nil, "Failure preparing request")
 		return
@@ -118,9 +118,9 @@ func (client QueryClient) UsageByScope(ctx context.Context, scope string, parame
 }
 
 // UsageByScopePreparer prepares the UsageByScope request.
-func (client QueryClient) UsageByScopePreparer(ctx context.Context, scope string, parameters QueryDefinition) (*http.Request, error) {
+func (client QueryClient) UsageByScopePreparer(ctx context.Context, scopeQueryParameter string, parameters QueryDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"scope": scope,
+		"scopeQueryParameter": scopeQueryParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -132,7 +132,7 @@ func (client QueryClient) UsageByScopePreparer(ctx context.Context, scope string
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/query", pathParameters),
+		autorest.WithPathParameters("/{scopeQueryParameter}/providers/Microsoft.CostManagement/query", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

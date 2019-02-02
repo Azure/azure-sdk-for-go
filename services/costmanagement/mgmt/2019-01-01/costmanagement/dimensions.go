@@ -43,14 +43,15 @@ func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) Dimen
 
 // ListBySubscription lists the dimensions by the defined scope.
 // Parameters:
-// scope - the scope at which to list dimensions. This includes '/subscriptions/{subscriptionId}/' for
-// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// scopeDimensionParameter - the scope associated with dimension operations. This includes
+// '/subscriptions/{subscriptionId}/' for subscription scope,
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
 // for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for
-// Management Group scope.
+// Management Group scope..
 // filter - may be used to filter dimensions by properties/category, properties/usageStart,
 // properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
 // expand - may be used to expand the properties/data within a dimension category. By default, data is not
@@ -59,7 +60,7 @@ func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) Dimen
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N dimension data.
-func (client DimensionsClient) ListBySubscription(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
+func (client DimensionsClient) ListBySubscription(ctx context.Context, scopeDimensionParameter string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DimensionsClient.ListBySubscription")
 		defer func() {
@@ -79,7 +80,7 @@ func (client DimensionsClient) ListBySubscription(ctx context.Context, scope str
 		return result, validation.NewError("costmanagement.DimensionsClient", "ListBySubscription", err.Error())
 	}
 
-	req, err := client.ListBySubscriptionPreparer(ctx, scope, filter, expand, skiptoken, top)
+	req, err := client.ListBySubscriptionPreparer(ctx, scopeDimensionParameter, filter, expand, skiptoken, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListBySubscription", nil, "Failure preparing request")
 		return
@@ -101,9 +102,9 @@ func (client DimensionsClient) ListBySubscription(ctx context.Context, scope str
 }
 
 // ListBySubscriptionPreparer prepares the ListBySubscription request.
-func (client DimensionsClient) ListBySubscriptionPreparer(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
+func (client DimensionsClient) ListBySubscriptionPreparer(ctx context.Context, scopeDimensionParameter string, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"scope": scope,
+		"scopeDimensionParameter": scopeDimensionParameter,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -126,7 +127,7 @@ func (client DimensionsClient) ListBySubscriptionPreparer(ctx context.Context, s
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.CostManagement/dimensions", pathParameters),
+		autorest.WithPathParameters("/{scopeDimensionParameter}/providers/Microsoft.CostManagement/dimensions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

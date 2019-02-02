@@ -653,6 +653,7 @@ const (
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
+	TypeSapOpenHubSource               TypeBasicCopySource = original.TypeSapOpenHubSource
 	TypeServiceNowSource               TypeBasicCopySource = original.TypeServiceNowSource
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
 	TypeSparkSource                    TypeBasicCopySource = original.TypeSparkSource
@@ -720,6 +721,7 @@ const (
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
 	TypeSapEccResource                 TypeBasicDataset = original.TypeSapEccResource
+	TypeSapOpenHubTable                TypeBasicDataset = original.TypeSapOpenHubTable
 	TypeServiceNowObject               TypeBasicDataset = original.TypeServiceNowObject
 	TypeShopifyObject                  TypeBasicDataset = original.TypeShopifyObject
 	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
@@ -850,6 +852,7 @@ const (
 	TypeSapCloudForCustomer      TypeBasicLinkedService = original.TypeSapCloudForCustomer
 	TypeSapEcc                   TypeBasicLinkedService = original.TypeSapEcc
 	TypeSapHana                  TypeBasicLinkedService = original.TypeSapHana
+	TypeSapOpenHub               TypeBasicLinkedService = original.TypeSapOpenHub
 	TypeServiceNow               TypeBasicLinkedService = original.TypeServiceNow
 	TypeSftp                     TypeBasicLinkedService = original.TypeSftp
 	TypeShopify                  TypeBasicLinkedService = original.TypeShopify
@@ -1373,6 +1376,11 @@ type SapEccResourceDatasetTypeProperties = original.SapEccResourceDatasetTypePro
 type SapEccSource = original.SapEccSource
 type SapHanaLinkedService = original.SapHanaLinkedService
 type SapHanaLinkedServiceProperties = original.SapHanaLinkedServiceProperties
+type SapOpenHubLinkedService = original.SapOpenHubLinkedService
+type SapOpenHubLinkedServiceTypeProperties = original.SapOpenHubLinkedServiceTypeProperties
+type SapOpenHubSource = original.SapOpenHubSource
+type SapOpenHubTableDataset = original.SapOpenHubTableDataset
+type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
 type ScheduleTrigger = original.ScheduleTrigger
 type ScheduleTriggerRecurrence = original.ScheduleTriggerRecurrence
 type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties

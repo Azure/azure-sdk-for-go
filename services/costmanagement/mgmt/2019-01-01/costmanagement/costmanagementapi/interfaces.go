@@ -25,60 +25,26 @@ import (
 
 // DimensionsClientAPI contains the set of methods on the DimensionsClient type.
 type DimensionsClientAPI interface {
-	ListByBillingAccount(ctx context.Context, billingAccountID string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
-	ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
-	ListByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
-	ListByManagementGroup(ctx context.Context, managementGroupID string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
-	ListBySubscription(ctx context.Context, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
+	ListBySubscription(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
 }
 
 var _ DimensionsClientAPI = (*costmanagement.DimensionsClient)(nil)
 
 // QueryClientAPI contains the set of methods on the QueryClient type.
 type QueryClientAPI interface {
-	UsageByBillingAccount(ctx context.Context, billingAccountID string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
-	UsageByDepartment(ctx context.Context, billingAccountID string, departmentID string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
-	UsageByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
-	UsageByManagementGroup(ctx context.Context, managementGroupID string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
-	UsageByResourceGroup(ctx context.Context, resourceGroupName string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
-	UsageBySubscription(ctx context.Context, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
+	UsageByScope(ctx context.Context, scope string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
 }
 
 var _ QueryClientAPI = (*costmanagement.QueryClient)(nil)
 
 // ExportsClientAPI contains the set of methods on the ExportsClient type.
 type ExportsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
-	CreateOrUpdateByBillingAccount(ctx context.Context, billingAccountID string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
-	CreateOrUpdateByDepartment(ctx context.Context, departmentID string, billingAccountID string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
-	CreateOrUpdateByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
-	CreateOrUpdateByResourceGroupName(ctx context.Context, resourceGroupName string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
-	Delete(ctx context.Context, exportName string) (result autorest.Response, err error)
-	DeleteByBillingAccount(ctx context.Context, billingAccountID string, exportName string) (result autorest.Response, err error)
-	DeleteByDepartment(ctx context.Context, billingAccountID string, departmentID string, exportName string) (result autorest.Response, err error)
-	DeleteByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, exportName string) (result autorest.Response, err error)
-	DeleteByResourceGroupName(ctx context.Context, resourceGroupName string, exportName string) (result autorest.Response, err error)
-	Execute(ctx context.Context, exportName string) (result autorest.Response, err error)
-	ExecuteByBillingAccount(ctx context.Context, billingAccountID string, exportName string) (result autorest.Response, err error)
-	ExecuteByDepartment(ctx context.Context, billingAccountID string, departmentID string, exportName string) (result autorest.Response, err error)
-	ExecuteByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, exportName string) (result autorest.Response, err error)
-	ExecuteByResourceGroupName(ctx context.Context, resourceGroupName string, exportName string) (result autorest.Response, err error)
-	Get(ctx context.Context, exportName string) (result costmanagement.Export, err error)
-	GetByBillingAccount(ctx context.Context, billingAccountID string, exportName string) (result costmanagement.Export, err error)
-	GetByDepartment(ctx context.Context, billingAccountID string, departmentID string, exportName string) (result costmanagement.Export, err error)
-	GetByEnrollmentAccounts(ctx context.Context, billingAccountID string, enrollmentAccountID string, exportName string) (result costmanagement.Export, err error)
-	GetByResourceGroupName(ctx context.Context, resourceGroupName string, exportName string) (result costmanagement.Export, err error)
-	GetExecutionHistory(ctx context.Context, exportName string) (result costmanagement.ExportExecutionListResult, err error)
-	GetExecutionHistoryByBillingAccount(ctx context.Context, billingAccountID string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
-	GetExecutionHistoryByDepartment(ctx context.Context, billingAccountID string, departmentID string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
-	GetExecutionHistoryByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
-	GetExecutionHistoryByResourceGroupName(ctx context.Context, resourceGroupName string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
-	List(ctx context.Context) (result costmanagement.ExportListResult, err error)
-	ListByBillingAccount(ctx context.Context, billingAccountID string) (result costmanagement.ExportListResult, err error)
-	ListByDepartment(ctx context.Context, billingAccountID string, departmentID string) (result costmanagement.ExportListResult, err error)
-	ListByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string) (result costmanagement.ExportListResult, err error)
-	ListByResourceGroupName(ctx context.Context, resourceGroupName string) (result costmanagement.ExportListResult, err error)
+	CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
+	Delete(ctx context.Context, scope string, exportName string) (result autorest.Response, err error)
+	Execute(ctx context.Context, scope string, exportName string) (result autorest.Response, err error)
+	Get(ctx context.Context, scope string, exportName string) (result costmanagement.Export, err error)
+	GetExecutionHistory(ctx context.Context, scope string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
+	List(ctx context.Context, scope string) (result costmanagement.ExportListResult, err error)
 }
 
 var _ ExportsClientAPI = (*costmanagement.ExportsClient)(nil)

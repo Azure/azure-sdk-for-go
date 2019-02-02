@@ -25,26 +25,26 @@ import (
 
 // DimensionsClientAPI contains the set of methods on the DimensionsClient type.
 type DimensionsClientAPI interface {
-	ListBySubscription(ctx context.Context, scopeDimensionParameter string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
+	ListBySubscription(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
 }
 
 var _ DimensionsClientAPI = (*costmanagement.DimensionsClient)(nil)
 
 // QueryClientAPI contains the set of methods on the QueryClient type.
 type QueryClientAPI interface {
-	UsageByScope(ctx context.Context, scopeQueryParameter string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
+	UsageByScope(ctx context.Context, scope string, parameters costmanagement.QueryDefinition) (result costmanagement.QueryResult, err error)
 }
 
 var _ QueryClientAPI = (*costmanagement.QueryClient)(nil)
 
 // ExportsClientAPI contains the set of methods on the ExportsClient type.
 type ExportsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scopeQueryParameter string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
-	Delete(ctx context.Context, scopeQueryParameter string, exportName string) (result autorest.Response, err error)
-	Execute(ctx context.Context, scopeQueryParameter string, exportName string) (result autorest.Response, err error)
-	Get(ctx context.Context, scopeQueryParameter string, exportName string) (result costmanagement.Export, err error)
-	GetExecutionHistory(ctx context.Context, scopeQueryParameter string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
-	List(ctx context.Context, scopeQueryParameter string) (result costmanagement.ExportListResult, err error)
+	CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters costmanagement.Export) (result costmanagement.Export, err error)
+	Delete(ctx context.Context, scope string, exportName string) (result autorest.Response, err error)
+	Execute(ctx context.Context, scope string, exportName string) (result autorest.Response, err error)
+	Get(ctx context.Context, scope string, exportName string) (result costmanagement.Export, err error)
+	GetExecutionHistory(ctx context.Context, scope string, exportName string) (result costmanagement.ExportExecutionListResult, err error)
+	List(ctx context.Context, scope string) (result costmanagement.ExportListResult, err error)
 }
 
 var _ ExportsClientAPI = (*costmanagement.ExportsClient)(nil)

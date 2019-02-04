@@ -50,7 +50,8 @@ func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClien
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope' for Management Group scope..
+// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// Management Group scope..
 // parameters - parameters supplied to the CreateOrUpdate Query Config operation.
 func (client QueryClient) UsageByScope(ctx context.Context, scope string, parameters QueryDefinition) (result QueryResult, err error) {
 	if tracing.IsEnabled() {

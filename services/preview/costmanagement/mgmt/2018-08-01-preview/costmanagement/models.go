@@ -138,19 +138,23 @@ type ExecutionStatus string
 const (
 	// Completed ...
 	Completed ExecutionStatus = "Completed"
+	// DataNotAvailable ...
+	DataNotAvailable ExecutionStatus = "DataNotAvailable"
 	// Failed ...
 	Failed ExecutionStatus = "Failed"
 	// InProgress ...
 	InProgress ExecutionStatus = "InProgress"
-	// Queud ...
-	Queud ExecutionStatus = "Queud"
+	// NewDataNotAvailable ...
+	NewDataNotAvailable ExecutionStatus = "NewDataNotAvailable"
+	// Queued ...
+	Queued ExecutionStatus = "Queued"
 	// Timeout ...
 	Timeout ExecutionStatus = "Timeout"
 )
 
 // PossibleExecutionStatusValues returns an array of possible values for the ExecutionStatus const type.
 func PossibleExecutionStatusValues() []ExecutionStatus {
-	return []ExecutionStatus{Completed, Failed, InProgress, Queud, Timeout}
+	return []ExecutionStatus{Completed, DataNotAvailable, Failed, InProgress, NewDataNotAvailable, Queued, Timeout}
 }
 
 // ExecutionType enumerates the values for execution type.
@@ -187,11 +191,13 @@ type GranularityType string
 const (
 	// Daily ...
 	Daily GranularityType = "Daily"
+	// Hourly ...
+	Hourly GranularityType = "Hourly"
 )
 
 // PossibleGranularityTypeValues returns an array of possible values for the GranularityType const type.
 func PossibleGranularityTypeValues() []GranularityType {
-	return []GranularityType{Daily}
+	return []GranularityType{Daily, Hourly}
 }
 
 // RecurrenceType enumerates the values for recurrence type.
@@ -1289,7 +1295,7 @@ type ReportComparisonExpression struct {
 
 // ReportDataset the definition of data present in the report.
 type ReportDataset struct {
-	// Granularity - The granularity of rows in the report. Possible values include: 'Daily'
+	// Granularity - The granularity of rows in the report. Possible values include: 'Daily', 'Hourly'
 	Granularity GranularityType `json:"granularity,omitempty"`
 	// Configuration - Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided.
 	Configuration *ReportDatasetConfiguration `json:"configuration,omitempty"`
@@ -1461,7 +1467,7 @@ type ReportExecutionListResult struct {
 type ReportExecutionProperties struct {
 	// ExecutionType - The type of the report execution. Possible values include: 'OnDemand', 'Scheduled'
 	ExecutionType ExecutionType `json:"executionType,omitempty"`
-	// Status - The status of the report execution. Possible values include: 'Queud', 'InProgress', 'Completed', 'Failed', 'Timeout'
+	// Status - The status of the report execution. Possible values include: 'Queued', 'InProgress', 'Completed', 'Failed', 'Timeout', 'NewDataNotAvailable', 'DataNotAvailable'
 	Status ExecutionStatus `json:"status,omitempty"`
 	// SubmittedBy - The identifier for the entity that executed the report. For OnDemand executions, it is the email id. For Scheduled executions, it is the constant value - System.
 	SubmittedBy *string `json:"submittedBy,omitempty"`

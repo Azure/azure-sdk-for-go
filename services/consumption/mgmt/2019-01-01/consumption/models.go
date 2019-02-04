@@ -602,7 +602,6 @@ type BudgetTimePeriod struct {
 
 // ChargesListResult result of listing charge summary.
 type ChargesListResult struct {
-	autorest.Response `json:"-"`
 	// Value - The list of charge summary
 	Value *[]ChargeSummary `json:"value,omitempty"`
 }

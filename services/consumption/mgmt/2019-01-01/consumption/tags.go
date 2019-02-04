@@ -41,10 +41,17 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 	return TagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get all available tag keys for a billing account.
+// Get get all available tag keys for the defined scope
 // Parameters:
-// billingAccountID - billingAccount ID
-func (client TagsClient) Get(ctx context.Context, billingAccountID string) (result TagsResult, err error) {
+// scope - the scope associated with tags operations. This includes '/subscriptions/{subscriptionId}/' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
+// scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
+// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for
+// Management Group scope..
+func (client TagsClient) Get(ctx context.Context, scope string) (result TagsResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TagsClient.Get")
 		defer func() {
@@ -55,7 +62,7 @@ func (client TagsClient) Get(ctx context.Context, billingAccountID string) (resu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID)
+	req, err := client.GetPreparer(ctx, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.TagsClient", "Get", nil, "Failure preparing request")
 		return
@@ -77,9 +84,9 @@ func (client TagsClient) Get(ctx context.Context, billingAccountID string) (resu
 }
 
 // GetPreparer prepares the Get request.
-func (client TagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client TagsClient) GetPreparer(ctx context.Context, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"scope": scope,
 	}
 
 	const APIVersion = "2019-01-01"
@@ -90,7 +97,7 @@ func (client TagsClient) GetPreparer(ctx context.Context, billingAccountID strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/tags", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Consumption/tags", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

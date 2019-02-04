@@ -580,7 +580,7 @@ type ClusterUpdate struct {
 	Location *string `json:"location,omitempty"`
 	// Sku - The SKU of the cluster.
 	Sku *AzureSku `json:"sku,omitempty"`
-	// ClusterProperties - The cluster properites.
+	// ClusterProperties - The cluster properties.
 	*ClusterProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1837,7 +1837,7 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TrustedExternalTenant repersents a tenant ID that is trusted by the cluster.
+// TrustedExternalTenant represents a tenant ID that is trusted by the cluster.
 type TrustedExternalTenant struct {
 	// Value - GUID representing an external tenant.
 	Value *string `json:"value,omitempty"`

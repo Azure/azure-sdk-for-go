@@ -80,11 +80,13 @@ const (
 type ExecutionStatus = original.ExecutionStatus
 
 const (
-	Completed  ExecutionStatus = original.Completed
-	Failed     ExecutionStatus = original.Failed
-	InProgress ExecutionStatus = original.InProgress
-	Queud      ExecutionStatus = original.Queud
-	Timeout    ExecutionStatus = original.Timeout
+	Completed           ExecutionStatus = original.Completed
+	DataNotAvailable    ExecutionStatus = original.DataNotAvailable
+	Failed              ExecutionStatus = original.Failed
+	InProgress          ExecutionStatus = original.InProgress
+	NewDataNotAvailable ExecutionStatus = original.NewDataNotAvailable
+	Queued              ExecutionStatus = original.Queued
+	Timeout             ExecutionStatus = original.Timeout
 )
 
 type ExecutionType = original.ExecutionType
@@ -103,7 +105,8 @@ const (
 type GranularityType = original.GranularityType
 
 const (
-	Daily GranularityType = original.Daily
+	Daily  GranularityType = original.Daily
+	Hourly GranularityType = original.Hourly
 )
 
 type RecurrenceType = original.RecurrenceType

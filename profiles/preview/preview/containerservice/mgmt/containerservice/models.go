@@ -22,11 +22,18 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-09-30-preview/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01/containerservice"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AgentPoolType = original.AgentPoolType
+
+const (
+	AvailabilitySet         AgentPoolType = original.AvailabilitySet
+	VirtualMachineScaleSets AgentPoolType = original.VirtualMachineScaleSets
 )
 
 type Kind = original.Kind
@@ -298,7 +305,14 @@ const (
 )
 
 type AccessProfile = original.AccessProfile
+type AgentPool = original.AgentPool
+type AgentPoolListResult = original.AgentPoolListResult
+type AgentPoolListResultIterator = original.AgentPoolListResultIterator
+type AgentPoolListResultPage = original.AgentPoolListResultPage
 type AgentPoolProfile = original.AgentPoolProfile
+type AgentPoolsClient = original.AgentPoolsClient
+type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
+type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture
 type BaseClient = original.BaseClient
 type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
 type CloudError = original.CloudError
@@ -321,6 +335,7 @@ type ManagedClusterAADProfile = original.ManagedClusterAADProfile
 type ManagedClusterAccessProfile = original.ManagedClusterAccessProfile
 type ManagedClusterAddonProfile = original.ManagedClusterAddonProfile
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
+type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
 type ManagedClusterListResult = original.ManagedClusterListResult
 type ManagedClusterListResultIterator = original.ManagedClusterListResultIterator
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
@@ -369,12 +384,25 @@ type Resource = original.Resource
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type ServicePrincipalProfile = original.ServicePrincipalProfile
+type SubResource = original.SubResource
 type TagsObject = original.TagsObject
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return original.NewAgentPoolListResultIterator(page)
+}
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return original.NewAgentPoolListResultPage(getNextPage)
+}
+func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
+	return original.NewAgentPoolsClient(subscriptionID)
+}
+func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) AgentPoolsClient {
+	return original.NewAgentPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClient(subscriptionID)
@@ -420,6 +448,9 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAgentPoolTypeValues() []AgentPoolType {
+	return original.PossibleAgentPoolTypeValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

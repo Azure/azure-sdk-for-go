@@ -308,8 +308,9 @@ func (client AgentPoolsClient) GetResponder(resp *http.Response) (result AgentPo
 // List gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent
 // pool.
 // Parameters:
+// resourceGroupName - the name of the resource group.
 // managedClusterName - the name of the managed cluster resource.
-func (client AgentPoolsClient) List(ctx context.Context, managedClusterName string) (result AgentPoolListResultPage, err error) {
+func (client AgentPoolsClient) List(ctx context.Context, resourceGroupName string, managedClusterName string) (result AgentPoolListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.List")
 		defer func() {
@@ -320,8 +321,14 @@ func (client AgentPoolsClient) List(ctx context.Context, managedClusterName stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("containerservice.AgentPoolsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, managedClusterName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, managedClusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsClient", "List", nil, "Failure preparing request")
 		return
@@ -343,9 +350,10 @@ func (client AgentPoolsClient) List(ctx context.Context, managedClusterName stri
 }
 
 // ListPreparer prepares the List request.
-func (client AgentPoolsClient) ListPreparer(ctx context.Context, managedClusterName string) (*http.Request, error) {
+func (client AgentPoolsClient) ListPreparer(ctx context.Context, resourceGroupName string, managedClusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managedClusterName": autorest.Encode("path", managedClusterName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -357,7 +365,7 @@ func (client AgentPoolsClient) ListPreparer(ctx context.Context, managedClusterN
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters/{managedClusterName}/agentPools", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{managedClusterName}/agentPools", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -404,7 +412,7 @@ func (client AgentPoolsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AgentPoolsClient) ListComplete(ctx context.Context, managedClusterName string) (result AgentPoolListResultIterator, err error) {
+func (client AgentPoolsClient) ListComplete(ctx context.Context, resourceGroupName string, managedClusterName string) (result AgentPoolListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.List")
 		defer func() {
@@ -415,6 +423,6 @@ func (client AgentPoolsClient) ListComplete(ctx context.Context, managedClusterN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, managedClusterName)
+	result.page, err = client.List(ctx, resourceGroupName, managedClusterName)
 	return
 }

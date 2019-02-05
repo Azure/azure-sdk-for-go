@@ -992,8 +992,7 @@ func (client ServicesClient) ListAlertsComplete(ctx context.Context, serviceName
 	return
 }
 
-// ListAllRiskyIPDownloadReport gets all the blob uris for the Risky IP reports requested for a given service in the
-// last 7 days.
+// ListAllRiskyIPDownloadReport gets all Risky IP report URIs for the last 7 days.
 // Parameters:
 // serviceName - the name of the service.
 func (client ServicesClient) ListAllRiskyIPDownloadReport(ctx context.Context, serviceName string) (result RiskyIPBlobUris, err error) {
@@ -1042,7 +1041,7 @@ func (client ServicesClient) ListAllRiskyIPDownloadReportPreparer(ctx context.Co
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/GetAllBlobUri", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/blobUris", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1067,8 +1066,7 @@ func (client ServicesClient) ListAllRiskyIPDownloadReportResponder(resp *http.Re
 	return
 }
 
-// ListCurrentRiskyIPDownloadReport initiate the generation of a new Risky IP report. Returns the URI for the new one,
-// along with all the blob uris for the Risky IP reports requested in the last 7 days.
+// ListCurrentRiskyIPDownloadReport initiate the generation of a new Risky IP report. Returns the URI for the new one.
 // Parameters:
 // serviceName - the name of the service.
 func (client ServicesClient) ListCurrentRiskyIPDownloadReport(ctx context.Context, serviceName string) (result RiskyIPBlobUris, err error) {
@@ -1115,9 +1113,9 @@ func (client ServicesClient) ListCurrentRiskyIPDownloadReportPreparer(ctx contex
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/GetBlobUri", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/blobUri", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

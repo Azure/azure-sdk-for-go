@@ -434,9 +434,8 @@ func (client SensitivityLabelsClient) ListCurrentByDatabaseComplete(ctx context.
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // databaseName - the name of the database.
-// includeDisabledRecommendations - specifies whether to include disabled recommendations or not.
 // filter - an OData filter expression that filters elements in the collection.
-func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result SensitivityLabelListResultPage, err error) {
+func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (result SensitivityLabelListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.ListRecommendedByDatabase")
 		defer func() {
@@ -448,7 +447,7 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Cont
 		}()
 	}
 	result.fn = client.listRecommendedByDatabaseNextResults
-	req, err := client.ListRecommendedByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName, skipToken, includeDisabledRecommendations, filter)
+	req, err := client.ListRecommendedByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName, skipToken, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "ListRecommendedByDatabase", nil, "Failure preparing request")
 		return
@@ -470,7 +469,7 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Cont
 }
 
 // ListRecommendedByDatabasePreparer prepares the ListRecommendedByDatabase request.
-func (client SensitivityLabelsClient) ListRecommendedByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (*http.Request, error) {
+func (client SensitivityLabelsClient) ListRecommendedByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -484,9 +483,6 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabasePreparer(ctx cont
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
-	}
-	if includeDisabledRecommendations != nil {
-		queryParameters["includeDisabledRecommendations"] = autorest.Encode("query", *includeDisabledRecommendations)
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -542,7 +538,7 @@ func (client SensitivityLabelsClient) listRecommendedByDatabaseNextResults(ctx c
 }
 
 // ListRecommendedByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SensitivityLabelsClient) ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result SensitivityLabelListResultIterator, err error) {
+func (client SensitivityLabelsClient) ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (result SensitivityLabelListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.ListRecommendedByDatabase")
 		defer func() {
@@ -553,6 +549,6 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabaseComplete(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListRecommendedByDatabase(ctx, resourceGroupName, serverName, databaseName, skipToken, includeDisabledRecommendations, filter)
+	result.page, err = client.ListRecommendedByDatabase(ctx, resourceGroupName, serverName, databaseName, skipToken, filter)
 	return
 }

@@ -559,7 +559,7 @@ type SensitivityLabelsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
 	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
-	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, includeDisabledRecommendations *bool, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (result sql.SensitivityLabelListResultPage, err error)
 }
 
 var _ SensitivityLabelsClientAPI = (*sql.SensitivityLabelsClient)(nil)

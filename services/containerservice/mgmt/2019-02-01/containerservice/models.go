@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-08-01-preview/containerservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
 
 // AgentPoolType enumerates the values for agent pool type.
 type AgentPoolType string
@@ -596,6 +596,234 @@ type AccessProfile struct {
 	KubeConfig *[]byte `json:"kubeConfig,omitempty"`
 }
 
+// AgentPool agent Pool.
+type AgentPool struct {
+	autorest.Response `json:"-"`
+	// ManagedClusterAgentPoolProfileProperties - Properties of an agent pool.
+	*ManagedClusterAgentPoolProfileProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AgentPool.
+func (ap AgentPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ManagedClusterAgentPoolProfileProperties != nil {
+		objectMap["properties"] = ap.ManagedClusterAgentPoolProfileProperties
+	}
+	if ap.ID != nil {
+		objectMap["id"] = ap.ID
+	}
+	if ap.Name != nil {
+		objectMap["name"] = ap.Name
+	}
+	if ap.Type != nil {
+		objectMap["type"] = ap.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AgentPool struct.
+func (ap *AgentPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedClusterAgentPoolProfileProperties ManagedClusterAgentPoolProfileProperties
+				err = json.Unmarshal(*v, &managedClusterAgentPoolProfileProperties)
+				if err != nil {
+					return err
+				}
+				ap.ManagedClusterAgentPoolProfileProperties = &managedClusterAgentPoolProfileProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ap.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AgentPoolListResult the response from the List Agent Pools operation.
+type AgentPoolListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of agent pools.
+	Value *[]AgentPool `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of agent pool results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AgentPoolListResultIterator provides access to a complete listing of AgentPool values.
+type AgentPoolListResultIterator struct {
+	i    int
+	page AgentPoolListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AgentPoolListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AgentPoolListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AgentPoolListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AgentPoolListResultIterator) Response() AgentPoolListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AgentPoolListResultIterator) Value() AgentPool {
+	if !iter.page.NotDone() {
+		return AgentPool{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AgentPoolListResultIterator type.
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return AgentPoolListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aplr AgentPoolListResult) IsEmpty() bool {
+	return aplr.Value == nil || len(*aplr.Value) == 0
+}
+
+// agentPoolListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aplr AgentPoolListResult) agentPoolListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if aplr.NextLink == nil || len(to.String(aplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aplr.NextLink)))
+}
+
+// AgentPoolListResultPage contains a page of AgentPool values.
+type AgentPoolListResultPage struct {
+	fn   func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)
+	aplr AgentPoolListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AgentPoolListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aplr)
+	if err != nil {
+		return err
+	}
+	page.aplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AgentPoolListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AgentPoolListResultPage) NotDone() bool {
+	return !page.aplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AgentPoolListResultPage) Response() AgentPoolListResult {
+	return page.aplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AgentPoolListResultPage) Values() []AgentPool {
+	if page.aplr.IsEmpty() {
+		return nil
+	}
+	return *page.aplr.Value
+}
+
+// Creates a new instance of the AgentPoolListResultPage type.
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{fn: getNextPage}
+}
+
 // AgentPoolProfile profile for the container service agent pool.
 type AgentPoolProfile struct {
 	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
@@ -618,6 +846,58 @@ type AgentPoolProfile struct {
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
+}
+
+// AgentPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AgentPoolsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsCreateOrUpdateFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.CreateOrUpdateResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsCreateOrUpdateFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AgentPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsDeleteFuture) Result(client AgentPoolsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // CloudError an error response from the Container service.
@@ -1267,6 +1547,38 @@ type ManagedClusterAgentPoolProfile struct {
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
 	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
 	Type AgentPoolType `json:"type,omitempty"`
+	// OrchestratorVersion - Version of orchestrator specified when creating the managed cluster.
+	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
+	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ManagedClusterAgentPoolProfileProperties properties for the container service agent pool profile.
+type ManagedClusterAgentPoolProfileProperties struct {
+	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+	Count *int32 `json:"count,omitempty"`
+	// VMSize - Size of agent VMs. Possible values include: 'VMSizeTypesStandardA1', 'VMSizeTypesStandardA10', 'VMSizeTypesStandardA11', 'VMSizeTypesStandardA1V2', 'VMSizeTypesStandardA2', 'VMSizeTypesStandardA2V2', 'VMSizeTypesStandardA2mV2', 'VMSizeTypesStandardA3', 'VMSizeTypesStandardA4', 'VMSizeTypesStandardA4V2', 'VMSizeTypesStandardA4mV2', 'VMSizeTypesStandardA5', 'VMSizeTypesStandardA6', 'VMSizeTypesStandardA7', 'VMSizeTypesStandardA8', 'VMSizeTypesStandardA8V2', 'VMSizeTypesStandardA8mV2', 'VMSizeTypesStandardA9', 'VMSizeTypesStandardB2ms', 'VMSizeTypesStandardB2s', 'VMSizeTypesStandardB4ms', 'VMSizeTypesStandardB8ms', 'VMSizeTypesStandardD1', 'VMSizeTypesStandardD11', 'VMSizeTypesStandardD11V2', 'VMSizeTypesStandardD11V2Promo', 'VMSizeTypesStandardD12', 'VMSizeTypesStandardD12V2', 'VMSizeTypesStandardD12V2Promo', 'VMSizeTypesStandardD13', 'VMSizeTypesStandardD13V2', 'VMSizeTypesStandardD13V2Promo', 'VMSizeTypesStandardD14', 'VMSizeTypesStandardD14V2', 'VMSizeTypesStandardD14V2Promo', 'VMSizeTypesStandardD15V2', 'VMSizeTypesStandardD16V3', 'VMSizeTypesStandardD16sV3', 'VMSizeTypesStandardD1V2', 'VMSizeTypesStandardD2', 'VMSizeTypesStandardD2V2', 'VMSizeTypesStandardD2V2Promo', 'VMSizeTypesStandardD2V3', 'VMSizeTypesStandardD2sV3', 'VMSizeTypesStandardD3', 'VMSizeTypesStandardD32V3', 'VMSizeTypesStandardD32sV3', 'VMSizeTypesStandardD3V2', 'VMSizeTypesStandardD3V2Promo', 'VMSizeTypesStandardD4', 'VMSizeTypesStandardD4V2', 'VMSizeTypesStandardD4V2Promo', 'VMSizeTypesStandardD4V3', 'VMSizeTypesStandardD4sV3', 'VMSizeTypesStandardD5V2', 'VMSizeTypesStandardD5V2Promo', 'VMSizeTypesStandardD64V3', 'VMSizeTypesStandardD64sV3', 'VMSizeTypesStandardD8V3', 'VMSizeTypesStandardD8sV3', 'VMSizeTypesStandardDS1', 'VMSizeTypesStandardDS11', 'VMSizeTypesStandardDS11V2', 'VMSizeTypesStandardDS11V2Promo', 'VMSizeTypesStandardDS12', 'VMSizeTypesStandardDS12V2', 'VMSizeTypesStandardDS12V2Promo', 'VMSizeTypesStandardDS13', 'VMSizeTypesStandardDS132V2', 'VMSizeTypesStandardDS134V2', 'VMSizeTypesStandardDS13V2', 'VMSizeTypesStandardDS13V2Promo', 'VMSizeTypesStandardDS14', 'VMSizeTypesStandardDS144V2', 'VMSizeTypesStandardDS148V2', 'VMSizeTypesStandardDS14V2', 'VMSizeTypesStandardDS14V2Promo', 'VMSizeTypesStandardDS15V2', 'VMSizeTypesStandardDS1V2', 'VMSizeTypesStandardDS2', 'VMSizeTypesStandardDS2V2', 'VMSizeTypesStandardDS2V2Promo', 'VMSizeTypesStandardDS3', 'VMSizeTypesStandardDS3V2', 'VMSizeTypesStandardDS3V2Promo', 'VMSizeTypesStandardDS4', 'VMSizeTypesStandardDS4V2', 'VMSizeTypesStandardDS4V2Promo', 'VMSizeTypesStandardDS5V2', 'VMSizeTypesStandardDS5V2Promo', 'VMSizeTypesStandardE16V3', 'VMSizeTypesStandardE16sV3', 'VMSizeTypesStandardE2V3', 'VMSizeTypesStandardE2sV3', 'VMSizeTypesStandardE3216sV3', 'VMSizeTypesStandardE328sV3', 'VMSizeTypesStandardE32V3', 'VMSizeTypesStandardE32sV3', 'VMSizeTypesStandardE4V3', 'VMSizeTypesStandardE4sV3', 'VMSizeTypesStandardE6416sV3', 'VMSizeTypesStandardE6432sV3', 'VMSizeTypesStandardE64V3', 'VMSizeTypesStandardE64sV3', 'VMSizeTypesStandardE8V3', 'VMSizeTypesStandardE8sV3', 'VMSizeTypesStandardF1', 'VMSizeTypesStandardF16', 'VMSizeTypesStandardF16s', 'VMSizeTypesStandardF16sV2', 'VMSizeTypesStandardF1s', 'VMSizeTypesStandardF2', 'VMSizeTypesStandardF2s', 'VMSizeTypesStandardF2sV2', 'VMSizeTypesStandardF32sV2', 'VMSizeTypesStandardF4', 'VMSizeTypesStandardF4s', 'VMSizeTypesStandardF4sV2', 'VMSizeTypesStandardF64sV2', 'VMSizeTypesStandardF72sV2', 'VMSizeTypesStandardF8', 'VMSizeTypesStandardF8s', 'VMSizeTypesStandardF8sV2', 'VMSizeTypesStandardG1', 'VMSizeTypesStandardG2', 'VMSizeTypesStandardG3', 'VMSizeTypesStandardG4', 'VMSizeTypesStandardG5', 'VMSizeTypesStandardGS1', 'VMSizeTypesStandardGS2', 'VMSizeTypesStandardGS3', 'VMSizeTypesStandardGS4', 'VMSizeTypesStandardGS44', 'VMSizeTypesStandardGS48', 'VMSizeTypesStandardGS5', 'VMSizeTypesStandardGS516', 'VMSizeTypesStandardGS58', 'VMSizeTypesStandardH16', 'VMSizeTypesStandardH16m', 'VMSizeTypesStandardH16mr', 'VMSizeTypesStandardH16r', 'VMSizeTypesStandardH8', 'VMSizeTypesStandardH8m', 'VMSizeTypesStandardL16s', 'VMSizeTypesStandardL32s', 'VMSizeTypesStandardL4s', 'VMSizeTypesStandardL8s', 'VMSizeTypesStandardM12832ms', 'VMSizeTypesStandardM12864ms', 'VMSizeTypesStandardM128ms', 'VMSizeTypesStandardM128s', 'VMSizeTypesStandardM6416ms', 'VMSizeTypesStandardM6432ms', 'VMSizeTypesStandardM64ms', 'VMSizeTypesStandardM64s', 'VMSizeTypesStandardNC12', 'VMSizeTypesStandardNC12sV2', 'VMSizeTypesStandardNC12sV3', 'VMSizeTypesStandardNC24', 'VMSizeTypesStandardNC24r', 'VMSizeTypesStandardNC24rsV2', 'VMSizeTypesStandardNC24rsV3', 'VMSizeTypesStandardNC24sV2', 'VMSizeTypesStandardNC24sV3', 'VMSizeTypesStandardNC6', 'VMSizeTypesStandardNC6sV2', 'VMSizeTypesStandardNC6sV3', 'VMSizeTypesStandardND12s', 'VMSizeTypesStandardND24rs', 'VMSizeTypesStandardND24s', 'VMSizeTypesStandardND6s', 'VMSizeTypesStandardNV12', 'VMSizeTypesStandardNV24', 'VMSizeTypesStandardNV6'
+	VMSize VMSizeTypes `json:"vmSize,omitempty"`
+	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
+	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
+	// VnetSubnetID - VNet SubnetID specifies the VNet's subnet identifier.
+	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
+	// MaxPods - Maximum number of pods that can run on a node.
+	MaxPods *int32 `json:"maxPods,omitempty"`
+	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
+	OsType OSType `json:"osType,omitempty"`
+	// MaxCount - Maximum number of nodes for auto-scaling
+	MaxCount *int32 `json:"maxCount,omitempty"`
+	// MinCount - Minimum number of nodes for auto-scaling
+	MinCount *int32 `json:"minCount,omitempty"`
+	// EnableAutoScaling - Whether to enable auto-scaler
+	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
+	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
+	Type AgentPoolType `json:"type,omitempty"`
+	// OrchestratorVersion - Version of orchestrator specified when creating the managed cluster.
+	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
+	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // ManagedClusterListResult the response from the List Managed Clusters operation.
@@ -2642,6 +2954,16 @@ type SSHConfiguration struct {
 type SSHPublicKey struct {
 	// KeyData - Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or without headers.
 	KeyData *string `json:"keyData,omitempty"`
+}
+
+// SubResource reference to another subresource.
+type SubResource struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // TagsObject tags object for patch operations.

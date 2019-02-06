@@ -553,6 +553,17 @@ type ManagedDatabasesClientAPI interface {
 
 var _ ManagedDatabasesClientAPI = (*sql.ManagedDatabasesClient)(nil)
 
+// SensitivityLabelsClientAPI contains the set of methods on the SensitivityLabelsClient type.
+type SensitivityLabelsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters sql.SensitivityLabel) (result sql.SensitivityLabel, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource sql.SensitivityLabelSource) (result sql.SensitivityLabel, err error)
+	ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+	ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (result sql.SensitivityLabelListResultPage, err error)
+}
+
+var _ SensitivityLabelsClientAPI = (*sql.SensitivityLabelsClient)(nil)
+
 // ServerAutomaticTuningClientAPI contains the set of methods on the ServerAutomaticTuningClient type.
 type ServerAutomaticTuningClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAutomaticTuning, err error)

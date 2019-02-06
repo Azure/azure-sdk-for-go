@@ -35,11 +35,40 @@ const (
 	Scheduled AlertRuleKind = original.Scheduled
 )
 
+type DataConnectorKind = original.DataConnectorKind
+
+const (
+	AzureActiveDirectory      DataConnectorKind = original.AzureActiveDirectory
+	AzureSecurityCenter       DataConnectorKind = original.AzureSecurityCenter
+	MicrosoftCloudAppSecurity DataConnectorKind = original.MicrosoftCloudAppSecurity
+	Office365                 DataConnectorKind = original.Office365
+	ThreatIntelligence        DataConnectorKind = original.ThreatIntelligence
+)
+
+type DataTypeState = original.DataTypeState
+
+const (
+	Disabled DataTypeState = original.Disabled
+	Enabled  DataTypeState = original.Enabled
+)
+
 type Kind = original.Kind
 
 const (
 	KindAlertRule Kind = original.KindAlertRule
 	KindScheduled Kind = original.KindScheduled
+)
+
+type KindBasicDataConnector = original.KindBasicDataConnector
+
+const (
+	KindAzureActiveDirectory      KindBasicDataConnector = original.KindAzureActiveDirectory
+	KindAzureSecurityCenter       KindBasicDataConnector = original.KindAzureSecurityCenter
+	KindDataConnector             KindBasicDataConnector = original.KindDataConnector
+	KindDataConnectorWithAlerts   KindBasicDataConnector = original.KindDataConnectorWithAlerts
+	KindMicrosoftCloudAppSecurity KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
+	KindOffice365                 KindBasicDataConnector = original.KindOffice365
+	KindThreatIntelligence        KindBasicDataConnector = original.KindThreatIntelligence
 )
 
 type Severity = original.Severity
@@ -60,6 +89,8 @@ const (
 	NotEqual    TriggerOperator = original.NotEqual
 )
 
+type AADDataConnector = original.AADDataConnector
+type ASCDataConnector = original.ASCDataConnector
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
@@ -67,10 +98,31 @@ type AlertRulesClient = original.AlertRulesClient
 type AlertRulesList = original.AlertRulesList
 type AlertRulesListIterator = original.AlertRulesListIterator
 type AlertRulesListPage = original.AlertRulesListPage
+type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
+type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
 type BaseClient = original.BaseClient
 type BasicAlertRule = original.BasicAlertRule
+type BasicDataConnector = original.BasicDataConnector
+type BasicDataConnectorWithAlerts = original.BasicDataConnectorWithAlerts
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type DataConnector = original.DataConnector
+type DataConnectorContextID = original.DataConnectorContextID
+type DataConnectorDataTypeCommon = original.DataConnectorDataTypeCommon
+type DataConnectorKind1 = original.DataConnectorKind1
+type DataConnectorList = original.DataConnectorList
+type DataConnectorListIterator = original.DataConnectorListIterator
+type DataConnectorListPage = original.DataConnectorListPage
+type DataConnectorModel = original.DataConnectorModel
+type DataConnectorWithAlerts = original.DataConnectorWithAlerts
+type DataConnectorWithAlertsProperties = original.DataConnectorWithAlertsProperties
+type DataConnectorsClient = original.DataConnectorsClient
+type MCASDataConnector = original.MCASDataConnector
+type OfficeDataConnector = original.OfficeDataConnector
+type OfficeDataConnectorDataTypes = original.OfficeDataConnectorDataTypes
+type OfficeDataConnectorDataTypesExchange = original.OfficeDataConnectorDataTypesExchange
+type OfficeDataConnectorDataTypesSharePoint = original.OfficeDataConnectorDataTypesSharePoint
+type OfficeDataConnectorProperties = original.OfficeDataConnectorProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -80,6 +132,10 @@ type OperationsListPage = original.OperationsListPage
 type Resource = original.Resource
 type ScheduledAlertRule = original.ScheduledAlertRule
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
+type TIDataConnector = original.TIDataConnector
+type TIDataConnectorDataTypes = original.TIDataConnectorDataTypes
+type TIDataConnectorDataTypesIndicators = original.TIDataConnectorDataTypesIndicators
+type TIDataConnectorProperties = original.TIDataConnectorProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -95,6 +151,18 @@ func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
 }
 func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
 	return original.NewAlertRulesListPage(getNextPage)
+}
+func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListIterator {
+	return original.NewDataConnectorListIterator(page)
+}
+func NewDataConnectorListPage(getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
+	return original.NewDataConnectorListPage(getNextPage)
+}
+func NewDataConnectorsClient(subscriptionID string) DataConnectorsClient {
+	return original.NewDataConnectorsClient(subscriptionID)
+}
+func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectorsClient {
+	return original.NewDataConnectorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -113,6 +181,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return original.PossibleAlertRuleKindValues()
+}
+func PossibleDataConnectorKindValues() []DataConnectorKind {
+	return original.PossibleDataConnectorKindValues()
+}
+func PossibleDataTypeStateValues() []DataTypeState {
+	return original.PossibleDataTypeStateValues()
+}
+func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
+	return original.PossibleKindBasicDataConnectorValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

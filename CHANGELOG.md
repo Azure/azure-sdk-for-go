@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v25.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| consumption | 2019-01-01 |
+| kusto | 2019-01-21 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authorization | 2015-07-01 |
+| backup | 2017-07-01 |
+| compute | 2018-10-01 |
+| eventgrid | 2018-01-01 |
+| eventhub | 2017-04-01 |
+| sql | 2017-03-01-preview |
+
 ## `v25.0.0`
 
 NOTE: Go 1.8 has been removed from CI due to a transitive dependency no longer supporting it.

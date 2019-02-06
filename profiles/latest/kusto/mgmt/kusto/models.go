@@ -44,10 +44,6 @@ const (
 	D12V2 AzureSkuName = original.D12V2
 	D13V2 AzureSkuName = original.D13V2
 	D14V2 AzureSkuName = original.D14V2
-	KC16  AzureSkuName = original.KC16
-	KC8   AzureSkuName = original.KC8
-	KS16  AzureSkuName = original.KS16
-	KS8   AzureSkuName = original.KS8
 	L16   AzureSkuName = original.L16
 	L4    AzureSkuName = original.L4
 	L8    AzureSkuName = original.L8

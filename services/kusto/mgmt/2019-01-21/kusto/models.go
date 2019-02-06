@@ -59,14 +59,6 @@ const (
 	D13V2 AzureSkuName = "D13_v2"
 	// D14V2 ...
 	D14V2 AzureSkuName = "D14_v2"
-	// KC16 ...
-	KC16 AzureSkuName = "KC16"
-	// KC8 ...
-	KC8 AzureSkuName = "KC8"
-	// KS16 ...
-	KS16 AzureSkuName = "KS16"
-	// KS8 ...
-	KS8 AzureSkuName = "KS8"
 	// L16 ...
 	L16 AzureSkuName = "L16"
 	// L4 ...
@@ -77,7 +69,7 @@ const (
 
 // PossibleAzureSkuNameValues returns an array of possible values for the AzureSkuName const type.
 func PossibleAzureSkuNameValues() []AzureSkuName {
-	return []AzureSkuName{D11V2, D12V2, D13V2, D14V2, KC16, KC8, KS16, KS8, L16, L4, L8}
+	return []AzureSkuName{D11V2, D12V2, D13V2, D14V2, L16, L4, L8}
 }
 
 // DatabasePrincipalRole enumerates the values for database principal role.
@@ -256,7 +248,7 @@ type AzureResourceSku struct {
 
 // AzureSku azure SKU definition.
 type AzureSku struct {
-	// Name - SKU name. Possible values include: 'KC8', 'KC16', 'KS8', 'KS16', 'D13V2', 'D14V2', 'L8', 'L16', 'D11V2', 'D12V2', 'L4'
+	// Name - SKU name. Possible values include: 'D13V2', 'D14V2', 'L8', 'L16', 'D11V2', 'D12V2', 'L4'
 	Name AzureSkuName `json:"name,omitempty"`
 	// Capacity - SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`

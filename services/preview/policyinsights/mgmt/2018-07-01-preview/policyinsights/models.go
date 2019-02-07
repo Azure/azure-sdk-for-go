@@ -71,7 +71,7 @@ type ExpressionEvaluationDetails struct {
 	Result *string `json:"result,omitempty"`
 	// Expression - Expression evaluated.
 	Expression *string `json:"expression,omitempty"`
-	// Path - Property path if the expression is a field or an aliase.
+	// Path - Property path if the expression is a field or an alias.
 	Path *string `json:"path,omitempty"`
 	// ExpressionValue - Value of the expression.
 	ExpressionValue *string `json:"expressionValue,omitempty"`

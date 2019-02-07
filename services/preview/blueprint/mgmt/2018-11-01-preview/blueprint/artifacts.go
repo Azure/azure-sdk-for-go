@@ -40,14 +40,14 @@ func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 	return ArtifactsClient{NewWithBaseURI(baseURI)}
 }
 
-// CreateOrUpdate create or update Blueprint artifact.
+// CreateOrUpdate create or update blueprint artifact.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// artifactName - name of the artifact.
-// artifact - blueprint artifact to save.
+// blueprintName - name of the blueprint definition.
+// artifactName - name of the blueprint artifact.
+// artifact - blueprint artifact to create or update.
 func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, scope string, blueprintName string, artifactName string, artifact BasicArtifact) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.CreateOrUpdate")
@@ -123,13 +123,13 @@ func (client ArtifactsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 	return
 }
 
-// Delete delete a Blueprint artifact.
+// Delete delete a blueprint artifact.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// artifactName - name of the artifact.
+// blueprintName - name of the blueprint definition.
+// artifactName - name of the blueprint artifact.
 func (client ArtifactsClient) Delete(ctx context.Context, scope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.Delete")
@@ -203,13 +203,13 @@ func (client ArtifactsClient) DeleteResponder(resp *http.Response) (result Artif
 	return
 }
 
-// Get get a Blueprint artifact.
+// Get get a blueprint artifact.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// artifactName - name of the artifact.
+// blueprintName - name of the blueprint definition.
+// artifactName - name of the blueprint artifact.
 func (client ArtifactsClient) Get(ctx context.Context, scope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.Get")
@@ -283,12 +283,12 @@ func (client ArtifactsClient) GetResponder(resp *http.Response) (result Artifact
 	return
 }
 
-// List list artifacts for a given Blueprint.
+// List list artifacts for a given blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
+// blueprintName - name of the blueprint definition.
 func (client ArtifactsClient) List(ctx context.Context, scope string, blueprintName string) (result ArtifactListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.List")

@@ -40,13 +40,14 @@ func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprints
 	return PublishedBlueprintsClient{NewWithBaseURI(baseURI)}
 }
 
-// Create publish a new version of the Blueprint with the latest artifacts. Published Blueprints are immutable.
+// Create publish a new version of the blueprint definition with the latest artifacts. Published blueprint definitions
+// are immutable.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
+// blueprintName - name of the blueprint definition.
+// versionID - version of the published blueprint definition.
 func (client PublishedBlueprintsClient) Create(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Create")
@@ -120,13 +121,13 @@ func (client PublishedBlueprintsClient) CreateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete delete a published Blueprint.
+// Delete delete a published version of a blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
+// blueprintName - name of the blueprint definition.
+// versionID - version of the published blueprint definition.
 func (client PublishedBlueprintsClient) Delete(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Delete")
@@ -200,13 +201,13 @@ func (client PublishedBlueprintsClient) DeleteResponder(resp *http.Response) (re
 	return
 }
 
-// Get get a published Blueprint.
+// Get get a published version of a blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
+// blueprintName - name of the blueprint definition.
+// versionID - version of the published blueprint definition.
 func (client PublishedBlueprintsClient) Get(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Get")
@@ -280,12 +281,12 @@ func (client PublishedBlueprintsClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
-// List list published versions of given Blueprint.
+// List list published versions of given blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
+// blueprintName - name of the blueprint definition.
 func (client PublishedBlueprintsClient) List(ctx context.Context, scope string, blueprintName string) (result PublishedBlueprintListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.List")

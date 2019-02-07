@@ -40,13 +40,13 @@ func NewAssignmentOperationsClientWithBaseURI(baseURI string) AssignmentOperatio
 	return AssignmentOperationsClient{NewWithBaseURI(baseURI)}
 }
 
-// Get get a Blueprint assignment operation.
+// Get get a blueprint assignment operation.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// assignmentName - name of the assignment.
-// assignmentOperationName - name of the assignment operation.
+// assignmentName - name of the blueprint assignment.
+// assignmentOperationName - name of the blueprint assignment operation.
 func (client AssignmentOperationsClient) Get(ctx context.Context, scope string, assignmentName string, assignmentOperationName string) (result AssignmentOperation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationsClient.Get")
@@ -120,12 +120,12 @@ func (client AssignmentOperationsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List list Operations for given blueprint assignment within a subscription.
+// List list operations for given blueprint assignment within a subscription.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// assignmentName - name of the assignment.
+// assignmentName - name of the blueprint assignment.
 func (client AssignmentOperationsClient) List(ctx context.Context, scope string, assignmentName string) (result AssignmentOperationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationsClient.List")

@@ -19,7 +19,7 @@ package blueprintapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2017-11-11-preview/blueprint"
+	"github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2018-11-01-preview/blueprint"
 )
 
 // BlueprintsClientAPI contains the set of methods on the BlueprintsClient type.

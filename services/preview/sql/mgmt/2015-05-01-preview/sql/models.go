@@ -301,6 +301,23 @@ func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{SystemAssigned}
 }
 
+// ManagedInstanceProxyOverride enumerates the values for managed instance proxy override.
+type ManagedInstanceProxyOverride string
+
+const (
+	// ManagedInstanceProxyOverrideDefault ...
+	ManagedInstanceProxyOverrideDefault ManagedInstanceProxyOverride = "Default"
+	// ManagedInstanceProxyOverrideProxy ...
+	ManagedInstanceProxyOverrideProxy ManagedInstanceProxyOverride = "Proxy"
+	// ManagedInstanceProxyOverrideRedirect ...
+	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = "Redirect"
+)
+
+// PossibleManagedInstanceProxyOverrideValues returns an array of possible values for the ManagedInstanceProxyOverride const type.
+func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
+	return []ManagedInstanceProxyOverride{ManagedInstanceProxyOverrideDefault, ManagedInstanceProxyOverrideProxy, ManagedInstanceProxyOverrideRedirect}
+}
+
 // MaxSizeUnits enumerates the values for max size units.
 type MaxSizeUnits string
 
@@ -4666,8 +4683,8 @@ type ManagedInstanceProperties struct {
 	DNSZonePartner *string `json:"dnsZonePartner,omitempty"`
 	// PublicDataEndpointEnabled - Whether or not the public data endpoint is enabled.
 	PublicDataEndpointEnabled *bool `json:"publicDataEndpointEnabled,omitempty"`
-	// ProxyOverride - Proxy override of the managed instance.
-	ProxyOverride *string `json:"proxyOverride,omitempty"`
+	// ProxyOverride - Connection type used for connecting to the instance. Possible values include: 'ManagedInstanceProxyOverrideProxy', 'ManagedInstanceProxyOverrideRedirect', 'ManagedInstanceProxyOverrideDefault'
+	ProxyOverride ManagedInstanceProxyOverride `json:"proxyOverride,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

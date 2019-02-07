@@ -19,7 +19,7 @@
 
 package blueprintapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2017-11-11-preview/blueprint/blueprintapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2018-11-01-preview/blueprint/blueprintapi"
 
 type ArtifactsClientAPI = original.ArtifactsClientAPI
 type AssignmentOperationsClientAPI = original.AssignmentOperationsClientAPI

@@ -120,10 +120,10 @@ func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Respo
 	return
 }
 
-// Delete the delete application gateway operation deletes the specified application gateway.
+// Delete the delete applicationgateway operation deletes the specified applicationgateway.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// applicationGatewayName - the name of the application gateway.
+// applicationGatewayName - the name of the applicationgateway.
 func (client ApplicationGatewaysClient) Delete(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result ApplicationGatewaysDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.Delete")
@@ -196,10 +196,10 @@ func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (re
 	return
 }
 
-// Get the Get application gateway operation retrieves information about the specified application gateway.
+// Get the Get applicationgateway operation retreives information about the specified applicationgateway.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// applicationGatewayName - the name of the application gateway.
+// applicationGatewayName - the name of the applicationgateway.
 func (client ApplicationGatewaysClient) Get(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result ApplicationGateway, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.Get")
@@ -273,7 +273,7 @@ func (client ApplicationGatewaysClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
-// List the List ApplicationGateway operation retrieves all the application gateways in a resource group.
+// List the List ApplicationGateway opertion retrieves all the applicationgateways in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client ApplicationGatewaysClient) List(ctx context.Context, resourceGroupName string) (result ApplicationGatewayListResultPage, err error) {
@@ -386,7 +386,7 @@ func (client ApplicationGatewaysClient) ListComplete(ctx context.Context, resour
 	return
 }
 
-// ListAll the List application gateway operation retrieves all the application gateways in a subscription.
+// ListAll the List applicationgateway opertion retrieves all the applicationgateways in a subscription.
 func (client ApplicationGatewaysClient) ListAll(ctx context.Context) (result ApplicationGatewayListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.ListAll")
@@ -496,7 +496,7 @@ func (client ApplicationGatewaysClient) ListAllComplete(ctx context.Context) (re
 	return
 }
 
-// Start the Start ApplicationGateway operation starts application gateway in the specified resource group through
+// Start the Start ApplicationGateway operation starts application gatewayin the specified resource group through
 // Network resource provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -573,7 +573,7 @@ func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (res
 	return
 }
 
-// Stop the STOP ApplicationGateway operation stops application gateway in the specified resource group through Network
+// Stop the STOP ApplicationGateway operation stops application gatewayin the specified resource group through Network
 // resource provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.

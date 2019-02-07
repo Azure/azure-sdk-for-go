@@ -42,8 +42,7 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 	return ExpressRouteCircuitAuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the Put Authorization operation creates/updates an authorization in the specified
-// ExpressRouteCircuits
+// CreateOrUpdate the Put Authorization operation creates/updates an authorization in thespecified ExpressRouteCircuits
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // circuitName - the name of the express route circuit.
@@ -287,7 +286,7 @@ func (client ExpressRouteCircuitAuthorizationsClient) GetResponder(resp *http.Re
 // List the List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// circuitName - the name of the circuit.
+// circuitName - the name of the curcuit.
 func (client ExpressRouteCircuitAuthorizationsClient) List(ctx context.Context, resourceGroupName string, circuitName string) (result AuthorizationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitAuthorizationsClient.List")

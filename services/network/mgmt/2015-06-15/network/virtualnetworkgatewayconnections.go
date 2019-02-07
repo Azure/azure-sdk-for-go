@@ -278,8 +278,8 @@ func (client VirtualNetworkGatewayConnectionsClient) GetResponder(resp *http.Res
 // virtual network gateway connection shared key through Network resource provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// virtualNetworkGatewayConnectionName - the virtual network gateway connection shared key name.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string) (result ConnectionSharedKeyResult, err error) {
+// connectionSharedKeyName - the virtual network gateway connection shared key name.
+func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Context, resourceGroupName string, connectionSharedKeyName string) (result ConnectionSharedKeyResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualNetworkGatewayConnectionsClient.GetSharedKey")
 		defer func() {
@@ -290,7 +290,7 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetSharedKeyPreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName)
+	req, err := client.GetSharedKeyPreparer(ctx, resourceGroupName, connectionSharedKeyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "GetSharedKey", nil, "Failure preparing request")
 		return
@@ -312,11 +312,11 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Co
 }
 
 // GetSharedKeyPreparer prepares the GetSharedKey request.
-func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyPreparer(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string) (*http.Request, error) {
+func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyPreparer(ctx context.Context, resourceGroupName string, connectionSharedKeyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"virtualNetworkGatewayConnectionName": autorest.Encode("path", virtualNetworkGatewayConnectionName),
+		"connectionSharedKeyName": autorest.Encode("path", connectionSharedKeyName),
+		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-06-15"
@@ -327,7 +327,7 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyPreparer(ctx co
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{connectionSharedKeyName}/sharedkey", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -555,7 +555,7 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKeyResponder(res
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkGatewayConnectionName - the virtual network gateway connection name.
-// parameters - parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+// parameters - parameters supplied to the Begin Set Virtual Network Gateway conection Shared key operation
 // throughNetwork resource provider.
 func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters ConnectionSharedKey) (result VirtualNetworkGatewayConnectionsSetSharedKeyFuture, err error) {
 	if tracing.IsEnabled() {

@@ -122,7 +122,7 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Resp
 	return
 }
 
-// Delete the Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource
+// Delete the Delete LocalNetworkGateway operation deletes the specifed local network Gateway through Network resource
 // provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -277,7 +277,7 @@ func (client LocalNetworkGatewaysClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List the List LocalNetworkGateways operation retrieves all the local network gateways stored.
+// List the List LocalNetworkGateways opertion retrieves all the local network gateways stored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client LocalNetworkGatewaysClient) List(ctx context.Context, resourceGroupName string) (result LocalNetworkGatewayListResultPage, err error) {

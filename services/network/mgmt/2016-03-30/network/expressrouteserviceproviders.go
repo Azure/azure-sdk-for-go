@@ -41,7 +41,7 @@ func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscripti
 	return ExpressRouteServiceProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List the List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
+// List the List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
 func (client ExpressRouteServiceProvidersClient) List(ctx context.Context) (result ExpressRouteServiceProviderListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteServiceProvidersClient.List")

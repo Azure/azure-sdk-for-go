@@ -120,7 +120,7 @@ func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 	return
 }
 
-// Delete the delete networkInterface operation deletes the specified networkInterface.
+// Delete the delete netwokInterface operation deletes the specified netwokInterface.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkInterfaceName - the name of the network interface.
@@ -277,7 +277,8 @@ func (client InterfacesClient) GetResponder(resp *http.Response) (result Interfa
 	return
 }
 
-// GetEffectiveRouteTable retrieves all the route tables applied on a networkInterface.
+// GetEffectiveRouteTable the get effective routetable operation retrieves all the route tables applied on a
+// networkInterface.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkInterfaceName - the name of the network interface.

@@ -45,7 +45,7 @@ func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesCli
 // resourceGroupName - the name of the resource group.
 // routeTableName - the name of the route table.
 // routeName - the name of the route.
-// routeParameters - parameters supplied to the create/update route operation
+// routeParameters - parameters supplied to the create/update routeoperation
 func (client RoutesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (result RoutesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RoutesClient.CreateOrUpdate")
@@ -200,7 +200,7 @@ func (client RoutesClient) DeleteResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Get the Get route operation retrieves information about the specified route from the route table.
+// Get the Get route operation retreives information about the specified route from the route table.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // routeTableName - the name of the route table.
@@ -279,7 +279,7 @@ func (client RoutesClient) GetResponder(resp *http.Response) (result Route, err 
 	return
 }
 
-// List the List network security rule operation retrieves all the routes in a route table.
+// List the List network security rule opertion retrieves all the routes in a route table.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // routeTableName - the name of the route table.

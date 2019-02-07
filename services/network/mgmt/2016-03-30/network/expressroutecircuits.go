@@ -196,7 +196,7 @@ func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (r
 	return
 }
 
-// Get the Get ExpressRouteCircuit operation retrieves information about the specified ExpressRouteCircuit.
+// Get the Get ExpressRouteCircuit operation retreives information about the specified ExpressRouteCircuit.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // circuitName - the name of the circuit.
@@ -273,8 +273,8 @@ func (client ExpressRouteCircuitsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// GetPeeringStats the GetPeeringStats ExpressRouteCircuit operation retrieves all the stats from a
-// ExpressRouteCircuits in a resource group.
+// GetPeeringStats the Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a
+// resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // circuitName - the name of the circuit.
@@ -353,7 +353,7 @@ func (client ExpressRouteCircuitsClient) GetPeeringStatsResponder(resp *http.Res
 	return
 }
 
-// GetStats the GetStats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a
+// GetStats the Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a
 // resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -431,7 +431,7 @@ func (client ExpressRouteCircuitsClient) GetStatsResponder(resp *http.Response) 
 	return
 }
 
-// List the List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
+// List the List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client ExpressRouteCircuitsClient) List(ctx context.Context, resourceGroupName string) (result ExpressRouteCircuitListResultPage, err error) {
@@ -544,7 +544,7 @@ func (client ExpressRouteCircuitsClient) ListComplete(ctx context.Context, resou
 	return
 }
 
-// ListAll the List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
+// ListAll the List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
 func (client ExpressRouteCircuitsClient) ListAll(ctx context.Context) (result ExpressRouteCircuitListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitsClient.ListAll")
@@ -654,7 +654,7 @@ func (client ExpressRouteCircuitsClient) ListAllComplete(ctx context.Context) (r
 	return
 }
 
-// ListArpTable the ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table
+// ListArpTable the ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table
 // associated with the ExpressRouteCircuits in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -736,7 +736,7 @@ func (client ExpressRouteCircuitsClient) ListArpTableResponder(resp *http.Respon
 	return
 }
 
-// ListRoutesTable the ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes
+// ListRoutesTable the ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes
 // table associated with the ExpressRouteCircuits in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -818,7 +818,7 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableResponder(resp *http.Res
 	return
 }
 
-// ListRoutesTableSummary the ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised
+// ListRoutesTableSummary the ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised
 // routes table associated with the ExpressRouteCircuits in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.

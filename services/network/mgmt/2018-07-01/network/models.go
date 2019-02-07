@@ -4081,7 +4081,7 @@ type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	DisabledRuleGroups *[]ApplicationGatewayFirewallDisabledRuleGroup `json:"disabledRuleGroups,omitempty"`
 	// RequestBodyCheck - Whether allow WAF to check request Body.
 	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
-	// MaxRequestBodySize - Maximum request body size for WAF.
+	// MaxRequestBodySize - Maxium request body size for WAF.
 	MaxRequestBodySize *int32 `json:"maxRequestBodySize,omitempty"`
 }
 
@@ -5875,7 +5875,7 @@ type ConnectionMonitorParameters struct {
 	MonitoringIntervalInSeconds *int32 `json:"monitoringIntervalInSeconds,omitempty"`
 }
 
-// ConnectionMonitorQueryResult list of connection states snapshots.
+// ConnectionMonitorQueryResult list of connection states snaphots.
 type ConnectionMonitorQueryResult struct {
 	autorest.Response `json:"-"`
 	// SourceStatus - Status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'
@@ -6695,17 +6695,17 @@ type EffectiveNetworkSecurityRule struct {
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
 	// DestinationPortRange - The destination port or range.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
-	// SourcePortRanges - The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*)
+	// SourcePortRanges - The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an asterix (*)
 	SourcePortRanges *[]string `json:"sourcePortRanges,omitempty"`
-	// DestinationPortRanges - The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*)
+	// DestinationPortRanges - The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an asterix (*)
 	DestinationPortRanges *[]string `json:"destinationPortRanges,omitempty"`
 	// SourceAddressPrefix - The source address prefix.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 	// DestinationAddressPrefix - The destination address prefix.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
-	// SourceAddressPrefixes - The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
+	// SourceAddressPrefixes - The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags, and the asterix (*).
 	SourceAddressPrefixes *[]string `json:"sourceAddressPrefixes,omitempty"`
-	// DestinationAddressPrefixes - The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
+	// DestinationAddressPrefixes - The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags, and the asterix (*).
 	DestinationAddressPrefixes *[]string `json:"destinationAddressPrefixes,omitempty"`
 	// ExpandedSourceAddressPrefix - The expanded source address prefix.
 	ExpandedSourceAddressPrefix *[]string `json:"expandedSourceAddressPrefix,omitempty"`
@@ -7307,7 +7307,7 @@ type ExpressRouteCircuitConnectionPropertiesFormat struct {
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
 	// CircuitConnectionStatus - Express Route Circuit Connection State. Possible values are: 'Connected' and 'Disconnected'. Possible values include: 'Connected', 'Connecting', 'Disconnected'
 	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
-	// ProvisioningState - Provisioning state of the circuit connection resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+	// ProvisioningState - Provisioning state of the circuit connection resource. Possible values are: 'Succeded', 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -7595,7 +7595,7 @@ func (ercp *ExpressRouteCircuitPeering) UnmarshalJSON(body []byte) error {
 type ExpressRouteCircuitPeeringConfig struct {
 	// AdvertisedPublicPrefixes - The reference of AdvertisedPublicPrefixes.
 	AdvertisedPublicPrefixes *[]string `json:"advertisedPublicPrefixes,omitempty"`
-	// AdvertisedCommunities - The communities of bgp peering. Specified for microsoft peering
+	// AdvertisedCommunities - The communities of bgp peering. Spepcified for microsoft peering
 	AdvertisedCommunities *[]string `json:"advertisedCommunities,omitempty"`
 	// AdvertisedPublicPrefixesState - AdvertisedPublicPrefixState of the Peering resource. Possible values are 'NotConfigured', 'Configuring', 'Configured', and 'ValidationNeeded'. Possible values include: 'NotConfigured', 'Configuring', 'Configured', 'ValidationNeeded'
 	AdvertisedPublicPrefixesState ExpressRouteCircuitPeeringAdvertisedPublicPrefixState `json:"advertisedPublicPrefixesState,omitempty"`
@@ -17306,17 +17306,17 @@ type SecurityRulePropertiesFormat struct {
 	Description *string `json:"description,omitempty"`
 	// Protocol - Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'. Possible values include: 'SecurityRuleProtocolTCP', 'SecurityRuleProtocolUDP', 'SecurityRuleProtocolAsterisk'
 	Protocol SecurityRuleProtocol `json:"protocol,omitempty"`
-	// SourcePortRange - The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
+	// SourcePortRange - The source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
-	// DestinationPortRange - The destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
+	// DestinationPortRange - The destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
-	// SourceAddressPrefix - The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
+	// SourceAddressPrefix - The CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 	// SourceAddressPrefixes - The CIDR or source IP ranges.
 	SourceAddressPrefixes *[]string `json:"sourceAddressPrefixes,omitempty"`
 	// SourceApplicationSecurityGroups - The application security group specified as source.
 	SourceApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"sourceApplicationSecurityGroups,omitempty"`
-	// DestinationAddressPrefix - The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+	// DestinationAddressPrefix - The destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 	// DestinationAddressPrefixes - The destination address prefixes. CIDR or destination IP ranges.
 	DestinationAddressPrefixes *[]string `json:"destinationAddressPrefixes,omitempty"`
@@ -17330,7 +17330,7 @@ type SecurityRulePropertiesFormat struct {
 	Access SecurityRuleAccess `json:"access,omitempty"`
 	// Priority - The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.
 	Priority *int32 `json:"priority,omitempty"`
-	// Direction - The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'SecurityRuleDirectionInbound', 'SecurityRuleDirectionOutbound'
+	// Direction - The direction of the rule. The direction specifies if rule will be evaluated on incoming or outcoming traffic. Possible values are: 'Inbound' and 'Outbound'. Possible values include: 'SecurityRuleDirectionInbound', 'SecurityRuleDirectionOutbound'
 	Direction SecurityRuleDirection `json:"direction,omitempty"`
 	// ProvisioningState - The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -18477,7 +18477,7 @@ type TrafficQuery struct {
 	Source *string `json:"source,omitempty"`
 	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
 	Destination *string `json:"destination,omitempty"`
-	// DestinationPort - Traffic destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+	// DestinationPort - Traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
 	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
@@ -19519,7 +19519,7 @@ type VirtualNetworkGatewayConnectionListEntityPropertiesFormat struct {
 	VirtualNetworkGateway2 *VirtualNetworkConnectionGatewayReference `json:"virtualNetworkGateway2,omitempty"`
 	// LocalNetworkGateway2 - The reference to local network gateway resource.
 	LocalNetworkGateway2 *VirtualNetworkConnectionGatewayReference `json:"localNetworkGateway2,omitempty"`
-	// ConnectionType - Gateway connection type. Possible values are: 'IPsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+	// ConnectionType - Gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
 	// RoutingWeight - The routing weight.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
@@ -19707,7 +19707,7 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	VirtualNetworkGateway2 *VirtualNetworkGateway `json:"virtualNetworkGateway2,omitempty"`
 	// LocalNetworkGateway2 - The reference to local network gateway resource.
 	LocalNetworkGateway2 *LocalNetworkGateway `json:"localNetworkGateway2,omitempty"`
-	// ConnectionType - Gateway connection type. Possible values are: 'IPsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+	// ConnectionType - Gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
 	// RoutingWeight - The routing weight.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`

@@ -41,7 +41,7 @@ func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsC
 	return SubnetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the Put Subnet operation creates/updates a subnet in the specified virtual network
+// CreateOrUpdate the Put Subnet operation creates/updates a subnet in thespecified virtual network
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkName - the name of the virtual network.
@@ -208,7 +208,7 @@ func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
-// Get the Get subnet operation retrieves information about the specified subnet.
+// Get the Get subnet operation retreives information about the specified subnet.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkName - the name of the virtual network.
@@ -287,7 +287,7 @@ func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, er
 	return
 }
 
-// List the List subnets operation retrieves all the subnets in a virtual network.
+// List the List subnets opertion retrieves all the subnets in a virtual network.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkName - the name of the virtual network.

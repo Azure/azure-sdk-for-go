@@ -40,7 +40,7 @@ func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptio
 	return ExpressRouteCircuitPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits
+// CreateOrUpdate the Put Pering operation creates/updates an peering in the specified ExpressRouteCircuits
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // circuitName - the name of the express route circuit.
@@ -282,7 +282,7 @@ func (client ExpressRouteCircuitPeeringsClient) GetResponder(resp *http.Response
 // List the List peering operation retrieves all the peerings in an ExpressRouteCircuit.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// circuitName - the name of the circuit.
+// circuitName - the name of the curcuit.
 func (client ExpressRouteCircuitPeeringsClient) List(ctx context.Context, resourceGroupName string, circuitName string) (result ExpressRouteCircuitPeeringListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitPeeringsClient.List")

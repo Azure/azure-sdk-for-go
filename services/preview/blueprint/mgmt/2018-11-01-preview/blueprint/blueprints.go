@@ -41,12 +41,12 @@ func NewBlueprintsClientWithBaseURI(baseURI string) BlueprintsClient {
 	return BlueprintsClient{NewWithBaseURI(baseURI)}
 }
 
-// CreateOrUpdate create or update Blueprint definition.
+// CreateOrUpdate create or update a blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
+// blueprintName - name of the blueprint definition.
 // blueprint - blueprint definition.
 func (client BlueprintsClient) CreateOrUpdate(ctx context.Context, scope string, blueprintName string, blueprint Model) (result Model, err error) {
 	if tracing.IsEnabled() {
@@ -133,7 +133,7 @@ func (client BlueprintsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
+// blueprintName - name of the blueprint definition.
 func (client BlueprintsClient) Delete(ctx context.Context, scope string, blueprintName string) (result Model, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.Delete")
@@ -211,7 +211,7 @@ func (client BlueprintsClient) DeleteResponder(resp *http.Response) (result Mode
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
+// blueprintName - name of the blueprint definition.
 func (client BlueprintsClient) Get(ctx context.Context, scope string, blueprintName string) (result Model, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.Get")
@@ -284,7 +284,7 @@ func (client BlueprintsClient) GetResponder(resp *http.Response) (result Model, 
 	return
 }
 
-// List create or update blueprint definition.
+// List list blueprint definitions.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:

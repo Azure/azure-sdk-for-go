@@ -40,14 +40,14 @@ func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsCl
 	return PublishedArtifactsClient{NewWithBaseURI(baseURI)}
 }
 
-// Get get an artifact for a published Blueprint.
+// Get get an artifact for a published blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
-// artifactName - name of the artifact.
+// blueprintName - name of the blueprint definition.
+// versionID - version of the published blueprint definition.
+// artifactName - name of the blueprint artifact.
 func (client PublishedArtifactsClient) Get(ctx context.Context, scope string, blueprintName string, versionID string, artifactName string) (result ArtifactModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.Get")
@@ -122,13 +122,13 @@ func (client PublishedArtifactsClient) GetResponder(resp *http.Response) (result
 	return
 }
 
-// List list artifacts for a published Blueprint.
+// List list artifacts for a version of a published blueprint definition.
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}').
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
+// blueprintName - name of the blueprint definition.
+// versionID - version of the published blueprint definition.
 func (client PublishedArtifactsClient) List(ctx context.Context, scope string, blueprintName string, versionID string) (result ArtifactListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.List")

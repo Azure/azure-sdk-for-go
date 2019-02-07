@@ -1383,7 +1383,8 @@ type AddressSpace struct {
 
 // ApplicationGateway application gateway resource
 type ApplicationGateway struct {
-	autorest.Response                   `json:"-"`
+	autorest.Response `json:"-"`
+	// ApplicationGatewayPropertiesFormat - Properties of the application gateway. For property limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	*ApplicationGatewayPropertiesFormat `json:"properties,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`

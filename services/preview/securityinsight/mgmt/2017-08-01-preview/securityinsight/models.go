@@ -242,6 +242,256 @@ func (adc AADDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &adc, true
 }
 
+// Action action for alert rule.
+type Action struct {
+	autorest.Response `json:"-"`
+	// Etag - Etag of the action.
+	Etag *string `json:"etag,omitempty"`
+	// ActionProperties - Action properties
+	*ActionProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Action.
+func (a Action) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.Etag != nil {
+		objectMap["etag"] = a.Etag
+	}
+	if a.ActionProperties != nil {
+		objectMap["properties"] = a.ActionProperties
+	}
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Action struct.
+func (a *Action) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				a.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var actionProperties ActionProperties
+				err = json.Unmarshal(*v, &actionProperties)
+				if err != nil {
+					return err
+				}
+				a.ActionProperties = &actionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// ActionProperties action property bag.
+type ActionProperties struct {
+	// TriggerURI - The uri for the action to trigger.
+	TriggerURI *string `json:"triggerUri,omitempty"`
+	// RuleID - The unique identifier of the rule.
+	RuleID *string `json:"ruleId,omitempty"`
+}
+
+// ActionsList list all the actions.
+type ActionsList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of actions.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of actions.
+	Value *[]Action `json:"value,omitempty"`
+}
+
+// ActionsListIterator provides access to a complete listing of Action values.
+type ActionsListIterator struct {
+	i    int
+	page ActionsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ActionsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActionsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ActionsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ActionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ActionsListIterator) Response() ActionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ActionsListIterator) Value() Action {
+	if !iter.page.NotDone() {
+		return Action{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ActionsListIterator type.
+func NewActionsListIterator(page ActionsListPage) ActionsListIterator {
+	return ActionsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al ActionsList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// actionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al ActionsList) actionsListPreparer(ctx context.Context) (*http.Request, error) {
+	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// ActionsListPage contains a page of Action values.
+type ActionsListPage struct {
+	fn func(context.Context, ActionsList) (ActionsList, error)
+	al ActionsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ActionsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActionsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.al)
+	if err != nil {
+		return err
+	}
+	page.al = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ActionsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ActionsListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ActionsListPage) Response() ActionsList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ActionsListPage) Values() []Action {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the ActionsListPage type.
+func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
+	return ActionsListPage{fn: getNextPage}
+}
+
 // BasicAlertRule alert rule.
 type BasicAlertRule interface {
 	AsScheduledAlertRule() (*ScheduledAlertRule, bool)

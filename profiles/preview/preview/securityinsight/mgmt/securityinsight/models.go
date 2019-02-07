@@ -91,6 +91,12 @@ const (
 
 type AADDataConnector = original.AADDataConnector
 type ASCDataConnector = original.ASCDataConnector
+type Action = original.Action
+type ActionProperties = original.ActionProperties
+type ActionsClient = original.ActionsClient
+type ActionsList = original.ActionsList
+type ActionsListIterator = original.ActionsListIterator
+type ActionsListPage = original.ActionsListPage
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
@@ -139,6 +145,18 @@ type TIDataConnectorProperties = original.TIDataConnectorProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewActionsClient(subscriptionID string) ActionsClient {
+	return original.NewActionsClient(subscriptionID)
+}
+func NewActionsClientWithBaseURI(baseURI string, subscriptionID string) ActionsClient {
+	return original.NewActionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewActionsListIterator(page ActionsListPage) ActionsListIterator {
+	return original.NewActionsListIterator(page)
+}
+func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
+	return original.NewActionsListPage(getNextPage)
 }
 func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClient(subscriptionID)

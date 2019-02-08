@@ -1917,7 +1917,7 @@ type StorageBlobCreatedEventData struct {
 	// ContentType - The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
 	ContentType *string `json:"contentType,omitempty"`
 	// ContentLength - The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the blob.
-	ContentLength *int32 `json:"contentLength,omitempty"`
+	ContentLength *int64 `json:"contentLength,omitempty"`
 	// BlobType - The type of blob.
 	BlobType *string `json:"blobType,omitempty"`
 	// URL - The path to the blob.

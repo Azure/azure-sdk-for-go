@@ -22,7 +22,7 @@ package billing
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-11-01-preview/billing"
 )
 
 const (
@@ -57,7 +57,9 @@ type PeriodsClient = original.PeriodsClient
 type PeriodsListResult = original.PeriodsListResult
 type PeriodsListResultIterator = original.PeriodsListResultIterator
 type PeriodsListResultPage = original.PeriodsListResultPage
+type ProductsClient = original.ProductsClient
 type Resource = original.Resource
+type TransferProductProperties = original.TransferProductProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -109,6 +111,12 @@ func NewPeriodsListResultIterator(page PeriodsListResultPage) PeriodsListResultI
 }
 func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
 	return original.NewPeriodsListResultPage(getNextPage)
+}
+func NewProductsClient(subscriptionID string) ProductsClient {
+	return original.NewProductsClient(subscriptionID)
+}
+func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
+	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -3502,31 +3502,31 @@ type ApplicationGatewayPropertiesFormat struct {
 	SslPolicy *ApplicationGatewaySslPolicy `json:"sslPolicy,omitempty"`
 	// OperationalState - Operational state of the application gateway resource. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping'
 	OperationalState ApplicationGatewayOperationalState `json:"operationalState,omitempty"`
-	// GatewayIPConfigurations - Subnets of application the gateway resource.
+	// GatewayIPConfigurations - Subnets  the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	GatewayIPConfigurations *[]ApplicationGatewayIPConfiguration `json:"gatewayIPConfigurations,omitempty"`
-	// AuthenticationCertificates - Authentication certificates of the application gateway resource.
+	// AuthenticationCertificates - Authentication certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	AuthenticationCertificates *[]ApplicationGatewayAuthenticationCertificate `json:"authenticationCertificates,omitempty"`
-	// TrustedRootCertificates - Trusted Root certificates of the application gateway resource.
+	// TrustedRootCertificates - Trusted Root certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	TrustedRootCertificates *[]ApplicationGatewayTrustedRootCertificate `json:"trustedRootCertificates,omitempty"`
-	// SslCertificates - SSL certificates of the application gateway resource.
+	// SslCertificates - SSL certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	SslCertificates *[]ApplicationGatewaySslCertificate `json:"sslCertificates,omitempty"`
-	// FrontendIPConfigurations - Frontend IP addresses of the application gateway resource.
+	// FrontendIPConfigurations - Frontend IP addresses of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	FrontendIPConfigurations *[]ApplicationGatewayFrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
-	// FrontendPorts - Frontend ports of the application gateway resource.
+	// FrontendPorts - Frontend ports of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	FrontendPorts *[]ApplicationGatewayFrontendPort `json:"frontendPorts,omitempty"`
 	// Probes - Probes of the application gateway resource.
 	Probes *[]ApplicationGatewayProbe `json:"probes,omitempty"`
-	// BackendAddressPools - Backend address pool of the application gateway resource.
+	// BackendAddressPools - Backend address pool of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	BackendAddressPools *[]ApplicationGatewayBackendAddressPool `json:"backendAddressPools,omitempty"`
-	// BackendHTTPSettingsCollection - Backend http settings of the application gateway resource.
+	// BackendHTTPSettingsCollection - Backend http settings of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	BackendHTTPSettingsCollection *[]ApplicationGatewayBackendHTTPSettings `json:"backendHttpSettingsCollection,omitempty"`
-	// HTTPListeners - Http listeners of the application gateway resource.
+	// HTTPListeners - Http listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	HTTPListeners *[]ApplicationGatewayHTTPListener `json:"httpListeners,omitempty"`
-	// URLPathMaps - URL path map of the application gateway resource.
+	// URLPathMaps - URL path map of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	URLPathMaps *[]ApplicationGatewayURLPathMap `json:"urlPathMaps,omitempty"`
 	// RequestRoutingRules - Request routing rules of the application gateway resource.
 	RequestRoutingRules *[]ApplicationGatewayRequestRoutingRule `json:"requestRoutingRules,omitempty"`
-	// RedirectConfigurations - Redirect configurations of the application gateway resource.
+	// RedirectConfigurations - Redirect configurations of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	RedirectConfigurations *[]ApplicationGatewayRedirectConfiguration `json:"redirectConfigurations,omitempty"`
 	// WebApplicationFirewallConfiguration - Web application firewall configuration.
 	WebApplicationFirewallConfiguration *ApplicationGatewayWebApplicationFirewallConfiguration `json:"webApplicationFirewallConfiguration,omitempty"`

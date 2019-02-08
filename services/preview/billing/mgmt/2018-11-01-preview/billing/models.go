@@ -944,7 +944,7 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// TransferProductProperties the properties of the product to initiate itansfer.
+// TransferProductProperties the properties of the product to initiate a transfer.
 type TransferProductProperties struct {
 	// DestinationInvoiceSectionID - Destination invoice section id.
 	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`

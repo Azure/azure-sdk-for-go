@@ -2592,6 +2592,15 @@ type Permissions struct {
 	ExpiryTime *string `json:"expiryTime,omitempty"`
 }
 
+// PermissionsListResult server response for get permissions grants
+type PermissionsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - the list of permissions grants
+	Value *[]Permissions `json:"value,omitempty"`
+	// OdataNextLink - the URL to get the next set of results.
+	OdataNextLink *string `json:"odata.nextLink,omitempty"`
+}
+
 // RequiredResourceAccess specifies the set of OAuth 2.0 permission scopes and app roles under the
 // specified resource that an application requires access to. The specified OAuth 2.0 permission scopes may
 // be requested by client applications (through the requiredResourceAccess collection) when calling a

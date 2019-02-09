@@ -40,10 +40,84 @@ func NewOAuth2ClientWithBaseURI(baseURI string, tenantID string) OAuth2Client {
 	return OAuth2Client{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// Delete delete a OAuth2 permission grant for the relevant resource Ids of an app.
+// Parameters:
+// objectID - the object ID of a permission grant.
+func (client OAuth2Client) Delete(ctx context.Context, objectID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeletePreparer(ctx, objectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client OAuth2Client) DeletePreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/oauth2PermissionGrants/{objectId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client OAuth2Client) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client OAuth2Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get queries OAuth2 permissions for the relevant SP ObjectId of an app.
 // Parameters:
 // filter - this is the Service Principal ObjectId associated with the app
-func (client OAuth2Client) Get(ctx context.Context, filter string) (result Permissions, err error) {
+func (client OAuth2Client) Get(ctx context.Context, filter string) (result PermissionsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Get")
 		defer func() {
@@ -106,7 +180,7 @@ func (client OAuth2Client) GetSender(req *http.Request) (*http.Response, error) 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client OAuth2Client) GetResponder(resp *http.Response) (result Permissions, err error) {
+func (client OAuth2Client) GetResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

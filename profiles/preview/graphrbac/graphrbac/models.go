@@ -90,6 +90,7 @@ type PasswordCredentialListResult = original.PasswordCredentialListResult
 type PasswordCredentialsUpdateParameters = original.PasswordCredentialsUpdateParameters
 type PasswordProfile = original.PasswordProfile
 type Permissions = original.Permissions
+type PermissionsListResult = original.PermissionsListResult
 type RequiredResourceAccess = original.RequiredResourceAccess
 type ResourceAccess = original.ResourceAccess
 type ServicePrincipal = original.ServicePrincipal

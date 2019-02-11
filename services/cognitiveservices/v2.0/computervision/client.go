@@ -69,7 +69,8 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 // or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&white.
 // Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive
 // content is also detected. Objects - detects various objects within an image, including the approximate
-// location. The Objects argument is only available in English.
+// location. The Objects argument is only available in English. Brands - detects various brands within an
+// image, including the approximate location. The Brands argument is only available in English.
 // details - a string indicating which domain-specific details to return. Multiple values should be
 // comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the
 // image, Landmarks - identifies notable landmarks in the image.
@@ -367,7 +368,8 @@ func (client BaseClient) AnalyzeImageByDomainInStreamResponder(resp *http.Respon
 // or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&white.
 // Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive
 // content is also detected. Objects - detects various objects within an image, including the approximate
-// location. The Objects argument is only available in English.
+// location. The Objects argument is only available in English. Brands - detects various brands within an
+// image, including the approximate location. The Brands argument is only available in English.
 // details - a string indicating which domain-specific details to return. Multiple values should be
 // comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the
 // image, Landmarks - identifies notable landmarks in the image.

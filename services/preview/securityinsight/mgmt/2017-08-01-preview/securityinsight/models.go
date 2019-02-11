@@ -21,8 +21,10 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -40,6 +42,63 @@ const (
 // PossibleAlertRuleKindValues returns an array of possible values for the AlertRuleKind const type.
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return []AlertRuleKind{Scheduled}
+}
+
+// AlertSeverity enumerates the values for alert severity.
+type AlertSeverity string
+
+const (
+	// High High severity
+	High AlertSeverity = "High"
+	// Informational Informational severity
+	Informational AlertSeverity = "Informational"
+	// Low Low severity
+	Low AlertSeverity = "Low"
+	// Medium Medium severity
+	Medium AlertSeverity = "Medium"
+)
+
+// PossibleAlertSeverityValues returns an array of possible values for the AlertSeverity const type.
+func PossibleAlertSeverityValues() []AlertSeverity {
+	return []AlertSeverity{High, Informational, Low, Medium}
+}
+
+// CaseSeverity enumerates the values for case severity.
+type CaseSeverity string
+
+const (
+	// CaseSeverityCritical Critical severity
+	CaseSeverityCritical CaseSeverity = "Critical"
+	// CaseSeverityHigh High severity
+	CaseSeverityHigh CaseSeverity = "High"
+	// CaseSeverityInformational Informational severity
+	CaseSeverityInformational CaseSeverity = "Informational"
+	// CaseSeverityLow Low severity
+	CaseSeverityLow CaseSeverity = "Low"
+	// CaseSeverityMedium Medium severity
+	CaseSeverityMedium CaseSeverity = "Medium"
+)
+
+// PossibleCaseSeverityValues returns an array of possible values for the CaseSeverity const type.
+func PossibleCaseSeverityValues() []CaseSeverity {
+	return []CaseSeverity{CaseSeverityCritical, CaseSeverityHigh, CaseSeverityInformational, CaseSeverityLow, CaseSeverityMedium}
+}
+
+// CloseReason enumerates the values for close reason.
+type CloseReason string
+
+const (
+	// Dismissed Case was dismissed
+	Dismissed CloseReason = "Dismissed"
+	// Other Case was closed for another reason
+	Other CloseReason = "Other"
+	// Resolved Case was resolved
+	Resolved CloseReason = "Resolved"
+)
+
+// PossibleCloseReasonValues returns an array of possible values for the CloseReason const type.
+func PossibleCloseReasonValues() []CloseReason {
+	return []CloseReason{Dismissed, Other, Resolved}
 }
 
 // DataConnectorKind enumerates the values for data connector kind.
@@ -76,6 +135,23 @@ const (
 // PossibleDataTypeStateValues returns an array of possible values for the DataTypeState const type.
 func PossibleDataTypeStateValues() []DataTypeState {
 	return []DataTypeState{Disabled, Enabled}
+}
+
+// EntityKind enumerates the values for entity kind.
+type EntityKind string
+
+const (
+	// Account ...
+	Account EntityKind = "Account"
+	// File ...
+	File EntityKind = "File"
+	// Host ...
+	Host EntityKind = "Host"
+)
+
+// PossibleEntityKindValues returns an array of possible values for the EntityKind const type.
+func PossibleEntityKindValues() []EntityKind {
+	return []EntityKind{Account, File, Host}
 }
 
 // Kind enumerates the values for kind.
@@ -118,23 +194,108 @@ func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return []KindBasicDataConnector{KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindDataConnectorWithAlerts, KindMicrosoftCloudAppSecurity, KindOffice365, KindThreatIntelligence}
 }
 
-// Severity enumerates the values for severity.
-type Severity string
+// KindBasicEntity enumerates the values for kind basic entity.
+type KindBasicEntity string
 
 const (
-	// High ...
-	High Severity = "High"
-	// Informational ...
-	Informational Severity = "Informational"
-	// Low ...
-	Low Severity = "Low"
-	// Medium ...
-	Medium Severity = "Medium"
+	// KindAccount ...
+	KindAccount KindBasicEntity = "Account"
+	// KindEntity ...
+	KindEntity KindBasicEntity = "Entity"
+	// KindFile ...
+	KindFile KindBasicEntity = "File"
+	// KindHost ...
+	KindHost KindBasicEntity = "Host"
 )
 
-// PossibleSeverityValues returns an array of possible values for the Severity const type.
-func PossibleSeverityValues() []Severity {
-	return []Severity{High, Informational, Low, Medium}
+// PossibleKindBasicEntityValues returns an array of possible values for the KindBasicEntity const type.
+func PossibleKindBasicEntityValues() []KindBasicEntity {
+	return []KindBasicEntity{KindAccount, KindEntity, KindFile, KindHost}
+}
+
+// KindBasicSettings enumerates the values for kind basic settings.
+type KindBasicSettings string
+
+const (
+	// KindSettings ...
+	KindSettings KindBasicSettings = "Settings"
+	// KindToggleSettings ...
+	KindToggleSettings KindBasicSettings = "ToggleSettings"
+	// KindUebaSettings ...
+	KindUebaSettings KindBasicSettings = "UebaSettings"
+)
+
+// PossibleKindBasicSettingsValues returns an array of possible values for the KindBasicSettings const type.
+func PossibleKindBasicSettingsValues() []KindBasicSettings {
+	return []KindBasicSettings{KindSettings, KindToggleSettings, KindUebaSettings}
+}
+
+// OSFamily enumerates the values for os family.
+type OSFamily string
+
+const (
+	// Android ...
+	Android OSFamily = "Android"
+	// IOS ...
+	IOS OSFamily = "IOS"
+	// Linux ...
+	Linux OSFamily = "Linux"
+	// Windows ...
+	Windows OSFamily = "Windows"
+)
+
+// PossibleOSFamilyValues returns an array of possible values for the OSFamily const type.
+func PossibleOSFamilyValues() []OSFamily {
+	return []OSFamily{Android, IOS, Linux, Windows}
+}
+
+// SettingKind enumerates the values for setting kind.
+type SettingKind string
+
+const (
+	// SettingKindToggleSettings ...
+	SettingKindToggleSettings SettingKind = "ToggleSettings"
+	// SettingKindUebaSettings ...
+	SettingKindUebaSettings SettingKind = "UebaSettings"
+)
+
+// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
+func PossibleSettingKindValues() []SettingKind {
+	return []SettingKind{SettingKindToggleSettings, SettingKindUebaSettings}
+}
+
+// Status enumerates the values for status.
+type Status string
+
+const (
+	// Closed Case is in closed status
+	Closed Status = "Closed"
+	// Draft Case is in draft status
+	Draft Status = "Draft"
+	// InProgress Case is in progress status
+	InProgress Status = "InProgress"
+	// Open Case is in open status
+	Open Status = "Open"
+)
+
+// PossibleStatusValues returns an array of possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{Closed, Draft, InProgress, Open}
+}
+
+// StatusInMcas enumerates the values for status in mcas.
+type StatusInMcas string
+
+const (
+	// StatusInMcasDisabled ...
+	StatusInMcasDisabled StatusInMcas = "Disabled"
+	// StatusInMcasEnabled ...
+	StatusInMcasEnabled StatusInMcas = "Enabled"
+)
+
+// PossibleStatusInMcasValues returns an array of possible values for the StatusInMcas const type.
+func PossibleStatusInMcasValues() []StatusInMcas {
+	return []StatusInMcas{StatusInMcasDisabled, StatusInMcasEnabled}
 }
 
 // TriggerOperator enumerates the values for trigger operator.
@@ -240,6 +401,399 @@ func (adc AADDataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for AADDataConnector.
 func (adc AADDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &adc, true
+}
+
+// AccountEntity represents an account entity.
+type AccountEntity struct {
+	// AccountEntityProperties - Account entity properties
+	*AccountEntityProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
+	Kind KindBasicEntity `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountEntity.
+func (ae AccountEntity) MarshalJSON() ([]byte, error) {
+	ae.Kind = KindAccount
+	objectMap := make(map[string]interface{})
+	if ae.AccountEntityProperties != nil {
+		objectMap["properties"] = ae.AccountEntityProperties
+	}
+	if ae.ID != nil {
+		objectMap["id"] = ae.ID
+	}
+	if ae.Type != nil {
+		objectMap["type"] = ae.Type
+	}
+	if ae.Name != nil {
+		objectMap["name"] = ae.Name
+	}
+	if ae.Kind != "" {
+		objectMap["kind"] = ae.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAccountEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsAccountEntity() (*AccountEntity, bool) {
+	return &ae, true
+}
+
+// AsHostEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsEntity() (*Entity, bool) {
+	return nil, false
+}
+
+// AsBasicEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsBasicEntity() (BasicEntity, bool) {
+	return &ae, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountEntity struct.
+func (ae *AccountEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var accountEntityProperties AccountEntityProperties
+				err = json.Unmarshal(*v, &accountEntityProperties)
+				if err != nil {
+					return err
+				}
+				ae.AccountEntityProperties = &accountEntityProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ae.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ae.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ae.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicEntity
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ae.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// AccountEntityProperties account entity property bag.
+type AccountEntityProperties struct {
+	// Name - The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
+	Name *string `json:"name,omitempty"`
+	// NtDomain - The NETBIOS domain name as it appears in the alert format – domain\username. Examples: NT AUTHORITY.
+	NtDomain *string `json:"ntDomain,omitempty"`
+	// UpnSuffix - The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
+	UpnSuffix *string `json:"upnSuffix,omitempty"`
+	// Sid - The account security identifier, e.g. S-1-5-18.
+	Sid *string `json:"sid,omitempty"`
+	// AadTenantID - The AAD tenant id.
+	AadTenantID *string `json:"aadTenantId,omitempty"`
+	// AadUserID - The AAD user id.
+	AadUserID *string `json:"aadUserId,omitempty"`
+	// Puid - The AAD Passport User ID.
+	Puid *string `json:"puid,omitempty"`
+	// IsDomainJoined - Determines whether this is a domain account.
+	IsDomainJoined *bool `json:"isDomainJoined,omitempty"`
+	// ObjectGUID - The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned by active directory.
+	ObjectGUID *string `json:"objectGuid,omitempty"`
+}
+
+// Action action for alert rule.
+type Action struct {
+	autorest.Response `json:"-"`
+	// Etag - Etag of the action.
+	Etag *string `json:"etag,omitempty"`
+	// ActionProperties - Action properties
+	*ActionProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Action.
+func (a Action) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.Etag != nil {
+		objectMap["etag"] = a.Etag
+	}
+	if a.ActionProperties != nil {
+		objectMap["properties"] = a.ActionProperties
+	}
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Action struct.
+func (a *Action) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				a.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var actionProperties ActionProperties
+				err = json.Unmarshal(*v, &actionProperties)
+				if err != nil {
+					return err
+				}
+				a.ActionProperties = &actionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// ActionProperties action property bag.
+type ActionProperties struct {
+	// TriggerURI - The uri for the action to trigger.
+	TriggerURI *string `json:"triggerUri,omitempty"`
+	// RuleID - The unique identifier of the rule.
+	RuleID *string `json:"ruleId,omitempty"`
+}
+
+// ActionsList list all the actions.
+type ActionsList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of actions.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of actions.
+	Value *[]Action `json:"value,omitempty"`
+}
+
+// ActionsListIterator provides access to a complete listing of Action values.
+type ActionsListIterator struct {
+	i    int
+	page ActionsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ActionsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActionsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ActionsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ActionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ActionsListIterator) Response() ActionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ActionsListIterator) Value() Action {
+	if !iter.page.NotDone() {
+		return Action{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ActionsListIterator type.
+func NewActionsListIterator(page ActionsListPage) ActionsListIterator {
+	return ActionsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al ActionsList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// actionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al ActionsList) actionsListPreparer(ctx context.Context) (*http.Request, error) {
+	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// ActionsListPage contains a page of Action values.
+type ActionsListPage struct {
+	fn func(context.Context, ActionsList) (ActionsList, error)
+	al ActionsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ActionsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActionsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.al)
+	if err != nil {
+		return err
+	}
+	page.al = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ActionsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ActionsListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ActionsListPage) Response() ActionsList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ActionsListPage) Values() []Action {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the ActionsListPage type.
+func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
+	return ActionsListPage{fn: getNextPage}
 }
 
 // BasicAlertRule alert rule.
@@ -634,6 +1188,546 @@ func (adc ASCDataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for ASCDataConnector.
 func (adc ASCDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &adc, true
+}
+
+// Bookmark represents a bookmark in Azure Security Insights.
+type Bookmark struct {
+	autorest.Response `json:"-"`
+	// Etag - Etag of the bookmark.
+	Etag *string `json:"etag,omitempty"`
+	// BookmarkProperties - Bookmark data
+	*BookmarkProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Bookmark.
+func (b Bookmark) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if b.Etag != nil {
+		objectMap["etag"] = b.Etag
+	}
+	if b.BookmarkProperties != nil {
+		objectMap["properties"] = b.BookmarkProperties
+	}
+	if b.ID != nil {
+		objectMap["id"] = b.ID
+	}
+	if b.Type != nil {
+		objectMap["type"] = b.Type
+	}
+	if b.Name != nil {
+		objectMap["name"] = b.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Bookmark struct.
+func (b *Bookmark) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				b.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var bookmarkProperties BookmarkProperties
+				err = json.Unmarshal(*v, &bookmarkProperties)
+				if err != nil {
+					return err
+				}
+				b.BookmarkProperties = &bookmarkProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				b.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				b.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				b.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// BookmarkList list all the bookmarks.
+type BookmarkList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of cases.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of bookmarks.
+	Value *[]Bookmark `json:"value,omitempty"`
+}
+
+// BookmarkListIterator provides access to a complete listing of Bookmark values.
+type BookmarkListIterator struct {
+	i    int
+	page BookmarkListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *BookmarkListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarkListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *BookmarkListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter BookmarkListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter BookmarkListIterator) Response() BookmarkList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter BookmarkListIterator) Value() Bookmark {
+	if !iter.page.NotDone() {
+		return Bookmark{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the BookmarkListIterator type.
+func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
+	return BookmarkListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (bl BookmarkList) IsEmpty() bool {
+	return bl.Value == nil || len(*bl.Value) == 0
+}
+
+// bookmarkListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (bl BookmarkList) bookmarkListPreparer(ctx context.Context) (*http.Request, error) {
+	if bl.NextLink == nil || len(to.String(bl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(bl.NextLink)))
+}
+
+// BookmarkListPage contains a page of Bookmark values.
+type BookmarkListPage struct {
+	fn func(context.Context, BookmarkList) (BookmarkList, error)
+	bl BookmarkList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *BookmarkListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarkListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.bl)
+	if err != nil {
+		return err
+	}
+	page.bl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *BookmarkListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page BookmarkListPage) NotDone() bool {
+	return !page.bl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page BookmarkListPage) Response() BookmarkList {
+	return page.bl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page BookmarkListPage) Values() []Bookmark {
+	if page.bl.IsEmpty() {
+		return nil
+	}
+	return *page.bl.Value
+}
+
+// Creates a new instance of the BookmarkListPage type.
+func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
+	return BookmarkListPage{fn: getNextPage}
+}
+
+// BookmarkProperties describes bookmark properties
+type BookmarkProperties struct {
+	// DisplayName - The display name of the bookmark
+	DisplayName *string `json:"displayName,omitempty"`
+	// LastUpdatedTimeUtc - The last time the bookmark was updated
+	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+	// CreatedTimeUtc - The time the bookmark was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// CreatedBy - Describes a user that created the bookmark
+	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	// UpdatedBy - Describes a user that updated the bookmark
+	UpdatedBy *BookmarkPropertiesUpdatedBy `json:"updatedBy,omitempty"`
+	// Notes - The notes of the bookmark
+	Notes *string `json:"notes,omitempty"`
+	// Tags - List of tags
+	Tags *[]string `json:"tags,omitempty"`
+	// Query - The query of the bookmark.
+	Query *string `json:"query,omitempty"`
+}
+
+// BookmarkPropertiesUpdatedBy describes a user that updated the bookmark
+type BookmarkPropertiesUpdatedBy struct {
+	// ObjectID - The object id of the user.
+	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	// Email - The email of the user.
+	Email *string `json:"email,omitempty"`
+	// Name - The name of the user.
+	Name *string `json:"name,omitempty"`
+}
+
+// Case represents a case in Azure Security Insights.
+type Case struct {
+	autorest.Response `json:"-"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// CaseProperties - Case data
+	*CaseProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Case.
+func (c Case) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.Etag != nil {
+		objectMap["etag"] = c.Etag
+	}
+	if c.CaseProperties != nil {
+		objectMap["properties"] = c.CaseProperties
+	}
+	if c.ID != nil {
+		objectMap["id"] = c.ID
+	}
+	if c.Type != nil {
+		objectMap["type"] = c.Type
+	}
+	if c.Name != nil {
+		objectMap["name"] = c.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Case struct.
+func (c *Case) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				c.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var caseProperties CaseProperties
+				err = json.Unmarshal(*v, &caseProperties)
+				if err != nil {
+					return err
+				}
+				c.CaseProperties = &caseProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				c.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				c.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				c.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// CaseList list all the cases.
+type CaseList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of cases.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of cases.
+	Value *[]Case `json:"value,omitempty"`
+}
+
+// CaseListIterator provides access to a complete listing of Case values.
+type CaseListIterator struct {
+	i    int
+	page CaseListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CaseListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CaseListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CaseListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CaseListIterator) Response() CaseList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CaseListIterator) Value() Case {
+	if !iter.page.NotDone() {
+		return Case{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CaseListIterator type.
+func NewCaseListIterator(page CaseListPage) CaseListIterator {
+	return CaseListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cl CaseList) IsEmpty() bool {
+	return cl.Value == nil || len(*cl.Value) == 0
+}
+
+// caseListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cl CaseList) caseListPreparer(ctx context.Context) (*http.Request, error) {
+	if cl.NextLink == nil || len(to.String(cl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cl.NextLink)))
+}
+
+// CaseListPage contains a page of Case values.
+type CaseListPage struct {
+	fn func(context.Context, CaseList) (CaseList, error)
+	cl CaseList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CaseListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.cl)
+	if err != nil {
+		return err
+	}
+	page.cl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CaseListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CaseListPage) NotDone() bool {
+	return !page.cl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CaseListPage) Response() CaseList {
+	return page.cl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CaseListPage) Values() []Case {
+	if page.cl.IsEmpty() {
+		return nil
+	}
+	return *page.cl.Value
+}
+
+// Creates a new instance of the CaseListPage type.
+func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
+	return CaseListPage{fn: getNextPage}
+}
+
+// CaseProperties describes case properties
+type CaseProperties struct {
+	// LastUpdatedTimeUtc - The last time the case was updated
+	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+	// CreatedTimeUtc - The time the case was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// EndTimeUtc - The end time of the case
+	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
+	// StartTimeUtc - The start time of the case
+	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
+	// Tags - List of tags
+	Tags *[]string `json:"tags,omitempty"`
+	// Description - The description of the case
+	Description *string `json:"description,omitempty"`
+	// Title - The title of the case
+	Title *string `json:"title,omitempty"`
+	// AssignedTo - Describes a user that the case is assigned to
+	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
+	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
+	Severity CaseSeverity `json:"severity,omitempty"`
+	// Status - The status of the case. Possible values include: 'Draft', 'Open', 'InProgress', 'Closed'
+	Status Status `json:"status,omitempty"`
+	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
+	CloseReason CloseReason `json:"closeReason,omitempty"`
 }
 
 // CloudError error response structure.
@@ -1263,6 +2357,589 @@ type DataConnectorWithAlertsProperties struct {
 	ContextID *string `json:"contextId,omitempty"`
 }
 
+// BasicEntity specific entity.
+type BasicEntity interface {
+	AsAccountEntity() (*AccountEntity, bool)
+	AsHostEntity() (*HostEntity, bool)
+	AsFileEntity() (*FileEntity, bool)
+	AsEntity() (*Entity, bool)
+}
+
+// Entity specific entity.
+type Entity struct {
+	autorest.Response `json:"-"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
+	Kind KindBasicEntity `json:"kind,omitempty"`
+}
+
+func unmarshalBasicEntity(body []byte) (BasicEntity, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindAccount):
+		var ae AccountEntity
+		err := json.Unmarshal(body, &ae)
+		return ae, err
+	case string(KindHost):
+		var he HostEntity
+		err := json.Unmarshal(body, &he)
+		return he, err
+	case string(KindFile):
+		var fe FileEntity
+		err := json.Unmarshal(body, &fe)
+		return fe, err
+	default:
+		var e Entity
+		err := json.Unmarshal(body, &e)
+		return e, err
+	}
+}
+func unmarshalBasicEntityArray(body []byte) ([]BasicEntity, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	eArray := make([]BasicEntity, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		e, err := unmarshalBasicEntity(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		eArray[index] = e
+	}
+	return eArray, nil
+}
+
+// MarshalJSON is the custom marshaler for Entity.
+func (e Entity) MarshalJSON() ([]byte, error) {
+	e.Kind = KindEntity
+	objectMap := make(map[string]interface{})
+	if e.ID != nil {
+		objectMap["id"] = e.ID
+	}
+	if e.Type != nil {
+		objectMap["type"] = e.Type
+	}
+	if e.Name != nil {
+		objectMap["name"] = e.Name
+	}
+	if e.Kind != "" {
+		objectMap["kind"] = e.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAccountEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsAccountEntity() (*AccountEntity, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsEntity() (*Entity, bool) {
+	return &e, true
+}
+
+// AsBasicEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsBasicEntity() (BasicEntity, bool) {
+	return &e, true
+}
+
+// EntityKind1 describes an Azure resource with kind.
+type EntityKind1 struct {
+	// Kind - The kind of the entity. Possible values include: 'Account', 'Host', 'File'
+	Kind EntityKind `json:"kind,omitempty"`
+}
+
+// EntityList list of all the entities.
+type EntityList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of entities.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of etnties.
+	Value *[]BasicEntity `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EntityList struct.
+func (el *EntityList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				el.NextLink = &nextLink
+			}
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicEntityArray(*v)
+				if err != nil {
+					return err
+				}
+				el.Value = &value
+			}
+		}
+	}
+
+	return nil
+}
+
+// EntityListIterator provides access to a complete listing of Entity values.
+type EntityListIterator struct {
+	i    int
+	page EntityListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EntityListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntityListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EntityListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EntityListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EntityListIterator) Response() EntityList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EntityListIterator) Value() BasicEntity {
+	if !iter.page.NotDone() {
+		return Entity{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EntityListIterator type.
+func NewEntityListIterator(page EntityListPage) EntityListIterator {
+	return EntityListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (el EntityList) IsEmpty() bool {
+	return el.Value == nil || len(*el.Value) == 0
+}
+
+// entityListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (el EntityList) entityListPreparer(ctx context.Context) (*http.Request, error) {
+	if el.NextLink == nil || len(to.String(el.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(el.NextLink)))
+}
+
+// EntityListPage contains a page of BasicEntity values.
+type EntityListPage struct {
+	fn func(context.Context, EntityList) (EntityList, error)
+	el EntityList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EntityListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntityListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.el)
+	if err != nil {
+		return err
+	}
+	page.el = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EntityListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EntityListPage) NotDone() bool {
+	return !page.el.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EntityListPage) Response() EntityList {
+	return page.el
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EntityListPage) Values() []BasicEntity {
+	if page.el.IsEmpty() {
+		return nil
+	}
+	return *page.el.Value
+}
+
+// Creates a new instance of the EntityListPage type.
+func NewEntityListPage(getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
+	return EntityListPage{fn: getNextPage}
+}
+
+// EntityModel ...
+type EntityModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicEntity `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EntityModel struct.
+func (em *EntityModel) UnmarshalJSON(body []byte) error {
+	e, err := unmarshalBasicEntity(body)
+	if err != nil {
+		return err
+	}
+	em.Value = e
+
+	return nil
+}
+
+// FileEntity represents a file entity.
+type FileEntity struct {
+	// FileEntityProperties - File entity properties
+	*FileEntityProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
+	Kind KindBasicEntity `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileEntity.
+func (fe FileEntity) MarshalJSON() ([]byte, error) {
+	fe.Kind = KindFile
+	objectMap := make(map[string]interface{})
+	if fe.FileEntityProperties != nil {
+		objectMap["properties"] = fe.FileEntityProperties
+	}
+	if fe.ID != nil {
+		objectMap["id"] = fe.ID
+	}
+	if fe.Type != nil {
+		objectMap["type"] = fe.Type
+	}
+	if fe.Name != nil {
+		objectMap["name"] = fe.Name
+	}
+	if fe.Kind != "" {
+		objectMap["kind"] = fe.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAccountEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsAccountEntity() (*AccountEntity, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsHostEntity() (*HostEntity, bool) {
+	return nil, false
+}
+
+// AsFileEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsFileEntity() (*FileEntity, bool) {
+	return &fe, true
+}
+
+// AsEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsEntity() (*Entity, bool) {
+	return nil, false
+}
+
+// AsBasicEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsBasicEntity() (BasicEntity, bool) {
+	return &fe, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for FileEntity struct.
+func (fe *FileEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fileEntityProperties FileEntityProperties
+				err = json.Unmarshal(*v, &fileEntityProperties)
+				if err != nil {
+					return err
+				}
+				fe.FileEntityProperties = &fileEntityProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fe.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fe.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fe.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicEntity
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				fe.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// FileEntityProperties file entity property bag.
+type FileEntityProperties struct {
+	// Directory - The full path to the file.
+	Directory *string `json:"directory,omitempty"`
+	// Name - The file name without path (some alerts might not include path).
+	Name *string `json:"name,omitempty"`
+}
+
+// HostEntity represents a host entity.
+type HostEntity struct {
+	// HostEntityProperties - Host entity properties
+	*HostEntityProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
+	Kind KindBasicEntity `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostEntity.
+func (he HostEntity) MarshalJSON() ([]byte, error) {
+	he.Kind = KindHost
+	objectMap := make(map[string]interface{})
+	if he.HostEntityProperties != nil {
+		objectMap["properties"] = he.HostEntityProperties
+	}
+	if he.ID != nil {
+		objectMap["id"] = he.ID
+	}
+	if he.Type != nil {
+		objectMap["type"] = he.Type
+	}
+	if he.Name != nil {
+		objectMap["name"] = he.Name
+	}
+	if he.Kind != "" {
+		objectMap["kind"] = he.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAccountEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsAccountEntity() (*AccountEntity, bool) {
+	return nil, false
+}
+
+// AsHostEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsHostEntity() (*HostEntity, bool) {
+	return &he, true
+}
+
+// AsFileEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsFileEntity() (*FileEntity, bool) {
+	return nil, false
+}
+
+// AsEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsEntity() (*Entity, bool) {
+	return nil, false
+}
+
+// AsBasicEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsBasicEntity() (BasicEntity, bool) {
+	return &he, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HostEntity struct.
+func (he *HostEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var hostEntityProperties HostEntityProperties
+				err = json.Unmarshal(*v, &hostEntityProperties)
+				if err != nil {
+					return err
+				}
+				he.HostEntityProperties = &hostEntityProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				he.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				he.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				he.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicEntity
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				he.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// HostEntityProperties host entity property bag.
+type HostEntityProperties struct {
+	// DNSDomain - The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
+	DNSDomain *string `json:"dnsDomain,omitempty"`
+	// NtDomain - The NT domain that this host belongs to.
+	NtDomain *string `json:"ntDomain,omitempty"`
+	// HostName - The hostname without the domain suffix.
+	HostName *string `json:"hostName,omitempty"`
+	// NetBiosName - The host name (pre-windows2000).
+	NetBiosName *string `json:"netBiosName,omitempty"`
+	// AzureID - The azure resource id of the VM.
+	AzureID *string `json:"azureID,omitempty"`
+	// OmsAgentID - The OMS agent id, if the host has OMS agent installed.
+	OmsAgentID *string `json:"omsAgentID,omitempty"`
+	// OsFamily - The operartion system type. Possible values include: 'Linux', 'Windows', 'Android', 'IOS'
+	OsFamily OSFamily `json:"osFamily,omitempty"`
+	// OsVersion - A free text representation of the operating system. This field is meant to hold specific versions the are more fine grained than OSFamily or future values not supported by OSFamily enumeration
+	OsVersion *string `json:"osVersion,omitempty"`
+	// IsDomainJoined - Determines whether this host belongs to a domain.
+	IsDomainJoined *bool `json:"isDomainJoined,omitempty"`
+}
+
 // MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
 	// DataConnectorWithAlertsProperties - Data connector properties.
@@ -1347,6 +3024,242 @@ func (mdc MCASDataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for MCASDataConnector.
 func (mdc MCASDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &mdc, true
+}
+
+// OfficeConsent consent for Office365 tenant that already made.
+type OfficeConsent struct {
+	autorest.Response `json:"-"`
+	// OfficeConsentProperties - Office consent properties
+	*OfficeConsentProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OfficeConsent.
+func (oc OfficeConsent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oc.OfficeConsentProperties != nil {
+		objectMap["properties"] = oc.OfficeConsentProperties
+	}
+	if oc.ID != nil {
+		objectMap["id"] = oc.ID
+	}
+	if oc.Type != nil {
+		objectMap["type"] = oc.Type
+	}
+	if oc.Name != nil {
+		objectMap["name"] = oc.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OfficeConsent struct.
+func (oc *OfficeConsent) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var officeConsentProperties OfficeConsentProperties
+				err = json.Unmarshal(*v, &officeConsentProperties)
+				if err != nil {
+					return err
+				}
+				oc.OfficeConsentProperties = &officeConsentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				oc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				oc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				oc.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// OfficeConsentList list of all the office365 consents.
+type OfficeConsentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of office consents.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of the consents.
+	Value *[]OfficeConsent `json:"value,omitempty"`
+}
+
+// OfficeConsentListIterator provides access to a complete listing of OfficeConsent values.
+type OfficeConsentListIterator struct {
+	i    int
+	page OfficeConsentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OfficeConsentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OfficeConsentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OfficeConsentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OfficeConsentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OfficeConsentListIterator) Response() OfficeConsentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OfficeConsentListIterator) Value() OfficeConsent {
+	if !iter.page.NotDone() {
+		return OfficeConsent{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OfficeConsentListIterator type.
+func NewOfficeConsentListIterator(page OfficeConsentListPage) OfficeConsentListIterator {
+	return OfficeConsentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ocl OfficeConsentList) IsEmpty() bool {
+	return ocl.Value == nil || len(*ocl.Value) == 0
+}
+
+// officeConsentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ocl OfficeConsentList) officeConsentListPreparer(ctx context.Context) (*http.Request, error) {
+	if ocl.NextLink == nil || len(to.String(ocl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ocl.NextLink)))
+}
+
+// OfficeConsentListPage contains a page of OfficeConsent values.
+type OfficeConsentListPage struct {
+	fn  func(context.Context, OfficeConsentList) (OfficeConsentList, error)
+	ocl OfficeConsentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OfficeConsentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OfficeConsentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ocl)
+	if err != nil {
+		return err
+	}
+	page.ocl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OfficeConsentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OfficeConsentListPage) NotDone() bool {
+	return !page.ocl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OfficeConsentListPage) Response() OfficeConsentList {
+	return page.ocl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OfficeConsentListPage) Values() []OfficeConsent {
+	if page.ocl.IsEmpty() {
+		return nil
+	}
+	return *page.ocl.Value
+}
+
+// Creates a new instance of the OfficeConsentListPage type.
+func NewOfficeConsentListPage(getNextPage func(context.Context, OfficeConsentList) (OfficeConsentList, error)) OfficeConsentListPage {
+	return OfficeConsentListPage{fn: getNextPage}
+}
+
+// OfficeConsentProperties consent property bag.
+type OfficeConsentProperties struct {
+	// TenantID - The tenantId of the Office365 with the concesnt.
+	TenantID *string `json:"tenantId,omitempty"`
+	// TenantName - The tenant name of the Office365 with the concesnt.
+	TenantName *string `json:"tenantName,omitempty"`
 }
 
 // OfficeDataConnector represents office data connector.
@@ -1839,8 +3752,8 @@ type ScheduledAlertRuleProperties struct {
 	RuleName *string `json:"ruleName,omitempty"`
 	// Description - The description of the alert rule.
 	Description *string `json:"description,omitempty"`
-	// Severity - The severity for alerts created by this alert rule. Possible values include: 'Low', 'Medium', 'High', 'Informational'
-	Severity Severity `json:"severity,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
 	// Enabled - Determines whether this alert rule is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// Query - The query that creates alerts for this rule.
@@ -1859,6 +3772,129 @@ type ScheduledAlertRuleProperties struct {
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
 	// LastModifiedUtc - The last time that this alert has been modified.
 	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
+}
+
+// BasicSettings the Setting.
+type BasicSettings interface {
+	AsUebaSettings() (*UebaSettings, bool)
+	AsToggleSettings() (*ToggleSettings, bool)
+	AsSettings() (*Settings, bool)
+}
+
+// Settings the Setting.
+type Settings struct {
+	autorest.Response `json:"-"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
+	Kind KindBasicSettings `json:"kind,omitempty"`
+}
+
+func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindUebaSettings):
+		var us UebaSettings
+		err := json.Unmarshal(body, &us)
+		return us, err
+	case string(KindToggleSettings):
+		var ts ToggleSettings
+		err := json.Unmarshal(body, &ts)
+		return ts, err
+	default:
+		var s Settings
+		err := json.Unmarshal(body, &s)
+		return s, err
+	}
+}
+func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sArray := make([]BasicSettings, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		s, err := unmarshalBasicSettings(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sArray[index] = s
+	}
+	return sArray, nil
+}
+
+// MarshalJSON is the custom marshaler for Settings.
+func (s Settings) MarshalJSON() ([]byte, error) {
+	s.Kind = KindSettings
+	objectMap := make(map[string]interface{})
+	if s.ID != nil {
+		objectMap["id"] = s.ID
+	}
+	if s.Type != nil {
+		objectMap["type"] = s.Type
+	}
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	if s.Kind != "" {
+		objectMap["kind"] = s.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsUebaSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsUebaSettings() (*UebaSettings, bool) {
+	return nil, false
+}
+
+// AsToggleSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsToggleSettings() (*ToggleSettings, bool) {
+	return nil, false
+}
+
+// AsSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsSettings() (*Settings, bool) {
+	return &s, true
+}
+
+// AsBasicSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsBasicSettings() (BasicSettings, bool) {
+	return &s, true
+}
+
+// SettingsKind describes an Azure resource with kind.
+type SettingsKind struct {
+	// Kind - The kind of the setting. Possible values include: 'SettingKindUebaSettings', 'SettingKindToggleSettings'
+	Kind SettingKind `json:"kind,omitempty"`
+}
+
+// SettingsModel ...
+type SettingsModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicSettings `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingsModel struct.
+func (sm *SettingsModel) UnmarshalJSON(body []byte) error {
+	s, err := unmarshalBasicSettings(body)
+	if err != nil {
+		return err
+	}
+	sm.Value = s
+
+	return nil
 }
 
 // TIDataConnector represents threat intelligence data connector.
@@ -2034,4 +4070,262 @@ type TIDataConnectorProperties struct {
 	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
 	ContextID *string `json:"contextId,omitempty"`
+}
+
+// ToggleSettings settings with single toggle.
+type ToggleSettings struct {
+	// ToggleSettingsProperties - toggle properties
+	*ToggleSettingsProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
+	Kind KindBasicSettings `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ToggleSettings.
+func (ts ToggleSettings) MarshalJSON() ([]byte, error) {
+	ts.Kind = KindToggleSettings
+	objectMap := make(map[string]interface{})
+	if ts.ToggleSettingsProperties != nil {
+		objectMap["properties"] = ts.ToggleSettingsProperties
+	}
+	if ts.ID != nil {
+		objectMap["id"] = ts.ID
+	}
+	if ts.Type != nil {
+		objectMap["type"] = ts.Type
+	}
+	if ts.Name != nil {
+		objectMap["name"] = ts.Name
+	}
+	if ts.Kind != "" {
+		objectMap["kind"] = ts.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsUebaSettings is the BasicSettings implementation for ToggleSettings.
+func (ts ToggleSettings) AsUebaSettings() (*UebaSettings, bool) {
+	return nil, false
+}
+
+// AsToggleSettings is the BasicSettings implementation for ToggleSettings.
+func (ts ToggleSettings) AsToggleSettings() (*ToggleSettings, bool) {
+	return &ts, true
+}
+
+// AsSettings is the BasicSettings implementation for ToggleSettings.
+func (ts ToggleSettings) AsSettings() (*Settings, bool) {
+	return nil, false
+}
+
+// AsBasicSettings is the BasicSettings implementation for ToggleSettings.
+func (ts ToggleSettings) AsBasicSettings() (BasicSettings, bool) {
+	return &ts, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ToggleSettings struct.
+func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var toggleSettingsProperties ToggleSettingsProperties
+				err = json.Unmarshal(*v, &toggleSettingsProperties)
+				if err != nil {
+					return err
+				}
+				ts.ToggleSettingsProperties = &toggleSettingsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ts.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ts.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ts.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ts.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// ToggleSettingsProperties toggle property bag.
+type ToggleSettingsProperties struct {
+	// IsEnabled - Determines whether the setting is enable or disabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
+// UebaSettings represents settings for UEBA enablement.
+type UebaSettings struct {
+	// UebaSettingsProperties - UEBA settings properties
+	*UebaSettingsProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
+	Kind KindBasicSettings `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UebaSettings.
+func (us UebaSettings) MarshalJSON() ([]byte, error) {
+	us.Kind = KindUebaSettings
+	objectMap := make(map[string]interface{})
+	if us.UebaSettingsProperties != nil {
+		objectMap["properties"] = us.UebaSettingsProperties
+	}
+	if us.ID != nil {
+		objectMap["id"] = us.ID
+	}
+	if us.Type != nil {
+		objectMap["type"] = us.Type
+	}
+	if us.Name != nil {
+		objectMap["name"] = us.Name
+	}
+	if us.Kind != "" {
+		objectMap["kind"] = us.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsUebaSettings is the BasicSettings implementation for UebaSettings.
+func (us UebaSettings) AsUebaSettings() (*UebaSettings, bool) {
+	return &us, true
+}
+
+// AsToggleSettings is the BasicSettings implementation for UebaSettings.
+func (us UebaSettings) AsToggleSettings() (*ToggleSettings, bool) {
+	return nil, false
+}
+
+// AsSettings is the BasicSettings implementation for UebaSettings.
+func (us UebaSettings) AsSettings() (*Settings, bool) {
+	return nil, false
+}
+
+// AsBasicSettings is the BasicSettings implementation for UebaSettings.
+func (us UebaSettings) AsBasicSettings() (BasicSettings, bool) {
+	return &us, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for UebaSettings struct.
+func (us *UebaSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var uebaSettingsProperties UebaSettingsProperties
+				err = json.Unmarshal(*v, &uebaSettingsProperties)
+				if err != nil {
+					return err
+				}
+				us.UebaSettingsProperties = &uebaSettingsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				us.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				us.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				us.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				us.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// UebaSettingsProperties UEBA settings property bag.
+type UebaSettingsProperties struct {
+	// IsEnabled - Determines whether UEBA is enabled for this workspace.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// StatusInMcas - Determines whether UEBA is enabled from MCAS. Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
+	StatusInMcas StatusInMcas `json:"statusInMcas,omitempty"`
+	// AtpLicenseStatus - Determines whether the tenant .
+	AtpLicenseStatus *bool `json:"atpLicenseStatus,omitempty"`
+}
+
+// UserInfo user information that made some action
+type UserInfo struct {
+	// ObjectID - The object id of the user.
+	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	// Email - The email of the user.
+	Email *string `json:"email,omitempty"`
+	// Name - The name of the user.
+	Name *string `json:"name,omitempty"`
 }

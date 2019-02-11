@@ -220,8 +220,17 @@ const (
 type AzureFirewallRCActionType = original.AzureFirewallRCActionType
 
 const (
+	AzureFirewallRCActionTypeAlert AzureFirewallRCActionType = original.AzureFirewallRCActionTypeAlert
 	AzureFirewallRCActionTypeAllow AzureFirewallRCActionType = original.AzureFirewallRCActionTypeAllow
 	AzureFirewallRCActionTypeDeny  AzureFirewallRCActionType = original.AzureFirewallRCActionTypeDeny
+)
+
+type AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelMode
+
+const (
+	AzureFirewallThreatIntelModeAlert AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelModeAlert
+	AzureFirewallThreatIntelModeDeny  AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelModeDeny
+	AzureFirewallThreatIntelModeOff   AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelModeOff
 )
 
 type BgpPeerState = original.BgpPeerState
@@ -245,9 +254,9 @@ const (
 type ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatus
 
 const (
-	Active   ConnectionMonitorSourceStatus = original.Active
-	Inactive ConnectionMonitorSourceStatus = original.Inactive
-	Uknown   ConnectionMonitorSourceStatus = original.Uknown
+	ConnectionMonitorSourceStatusActive   ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusActive
+	ConnectionMonitorSourceStatusInactive ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusInactive
+	ConnectionMonitorSourceStatusUnknown  ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusUnknown
 )
 
 type ConnectionState = original.ConnectionState
@@ -316,8 +325,8 @@ const (
 type EffectiveRouteState = original.EffectiveRouteState
 
 const (
-	EffectiveRouteStateActive  EffectiveRouteState = original.EffectiveRouteStateActive
-	EffectiveRouteStateInvalid EffectiveRouteState = original.EffectiveRouteStateInvalid
+	Active  EffectiveRouteState = original.Active
+	Invalid EffectiveRouteState = original.Invalid
 )
 
 type EffectiveSecurityRuleProtocol = original.EffectiveSecurityRuleProtocol
@@ -2506,6 +2515,9 @@ func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRule
 }
 func PossibleAzureFirewallRCActionTypeValues() []AzureFirewallRCActionType {
 	return original.PossibleAzureFirewallRCActionTypeValues()
+}
+func PossibleAzureFirewallThreatIntelModeValues() []AzureFirewallThreatIntelMode {
+	return original.PossibleAzureFirewallThreatIntelModeValues()
 }
 func PossibleBgpPeerStateValues() []BgpPeerState {
 	return original.PossibleBgpPeerStateValues()

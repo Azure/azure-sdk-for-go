@@ -41,6 +41,92 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, purge
 	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
+// DeleteGateways delete a Log Analytics gateway.
+// Parameters:
+// resourceGroupName - the Resource Group name.
+// workspaceName - the Log Analytics Workspace name.
+// gatewayID - the Log Analytics gateway Id.
+func (client WorkspacesClient) DeleteGateways(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.DeleteGateways")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.WorkspacesClient", "DeleteGateways", err.Error())
+	}
+
+	req, err := client.DeleteGatewaysPreparer(ctx, resourceGroupName, workspaceName, gatewayID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DeleteGateways", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteGatewaysSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DeleteGateways", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteGatewaysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DeleteGateways", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteGatewaysPreparer prepares the DeleteGateways request.
+func (client WorkspacesClient) DeleteGatewaysPreparer(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"gatewayId":         autorest.Encode("path", gatewayID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2015-03-20"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteGatewaysSender sends the DeleteGateways request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkspacesClient) DeleteGatewaysSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteGatewaysResponder handles the response to the DeleteGateways request. The method always
+// closes the http.Response Body.
+func (client WorkspacesClient) DeleteGatewaysResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // GetPurgeStatus gets status of an ongoing purge operation.
 // Parameters:
 // resourceGroupName - the Resource Group name.

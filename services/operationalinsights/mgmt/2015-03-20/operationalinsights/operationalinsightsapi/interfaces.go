@@ -35,6 +35,7 @@ var _ StorageInsightsClientAPI = (*operationalinsights.StorageInsightsClient)(ni
 
 // WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
 type WorkspacesClientAPI interface {
+	DeleteGateways(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string) (result autorest.Response, err error)
 	GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.WorkspacePurgeStatusResponse, err error)
 	GetSchema(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.SearchGetSchemaResponse, err error)
 	GetSearchResults(ctx context.Context, resourceGroupName string, workspaceName string, parameters operationalinsights.SearchParameters) (result operationalinsights.WorkspacesGetSearchResultsFuture, err error)

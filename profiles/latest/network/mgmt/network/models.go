@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-10-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-12-01/network"
 )
 
 const (
@@ -245,9 +245,9 @@ const (
 type ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatus
 
 const (
-	Active   ConnectionMonitorSourceStatus = original.Active
-	Inactive ConnectionMonitorSourceStatus = original.Inactive
-	Uknown   ConnectionMonitorSourceStatus = original.Uknown
+	ConnectionMonitorSourceStatusActive   ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusActive
+	ConnectionMonitorSourceStatusInactive ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusInactive
+	ConnectionMonitorSourceStatusUnknown  ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusUnknown
 )
 
 type ConnectionState = original.ConnectionState
@@ -265,6 +265,23 @@ const (
 	ConnectionStatusDegraded     ConnectionStatus = original.ConnectionStatusDegraded
 	ConnectionStatusDisconnected ConnectionStatus = original.ConnectionStatusDisconnected
 	ConnectionStatusUnknown      ConnectionStatus = original.ConnectionStatusUnknown
+)
+
+type DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocol
+
+const (
+	DdosCustomPolicyProtocolSyn DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolSyn
+	DdosCustomPolicyProtocolTCP DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolTCP
+	DdosCustomPolicyProtocolUDP DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolUDP
+)
+
+type DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverride
+
+const (
+	Default DdosCustomPolicyTriggerSensitivityOverride = original.Default
+	High    DdosCustomPolicyTriggerSensitivityOverride = original.High
+	Low     DdosCustomPolicyTriggerSensitivityOverride = original.Low
+	Relaxed DdosCustomPolicyTriggerSensitivityOverride = original.Relaxed
 )
 
 type DhGroup = original.DhGroup
@@ -299,8 +316,8 @@ const (
 type EffectiveRouteState = original.EffectiveRouteState
 
 const (
-	EffectiveRouteStateActive  EffectiveRouteState = original.EffectiveRouteStateActive
-	EffectiveRouteStateInvalid EffectiveRouteState = original.EffectiveRouteStateInvalid
+	Active  EffectiveRouteState = original.Active
+	Invalid EffectiveRouteState = original.Invalid
 )
 
 type EffectiveSecurityRuleProtocol = original.EffectiveSecurityRuleProtocol
@@ -500,9 +517,9 @@ const (
 type LoadDistribution = original.LoadDistribution
 
 const (
-	Default          LoadDistribution = original.Default
-	SourceIP         LoadDistribution = original.SourceIP
-	SourceIPProtocol LoadDistribution = original.SourceIPProtocol
+	LoadDistributionDefault          LoadDistribution = original.LoadDistributionDefault
+	LoadDistributionSourceIP         LoadDistribution = original.LoadDistributionSourceIP
+	LoadDistributionSourceIPProtocol LoadDistribution = original.LoadDistributionSourceIPProtocol
 )
 
 type NextHopType = original.NextHopType
@@ -596,6 +613,13 @@ type ProcessorArchitecture = original.ProcessorArchitecture
 const (
 	Amd64 ProcessorArchitecture = original.Amd64
 	X86   ProcessorArchitecture = original.X86
+)
+
+type ProtectionCoverage = original.ProtectionCoverage
+
+const (
+	ProtectionCoverageBasic    ProtectionCoverage = original.ProtectionCoverageBasic
+	ProtectionCoverageStandard ProtectionCoverage = original.ProtectionCoverageStandard
 )
 
 type Protocol = original.Protocol
@@ -885,6 +909,7 @@ type ApplicationGatewayRequestRoutingRule = original.ApplicationGatewayRequestRo
 type ApplicationGatewayRequestRoutingRulePropertiesFormat = original.ApplicationGatewayRequestRoutingRulePropertiesFormat
 type ApplicationGatewayRewriteRule = original.ApplicationGatewayRewriteRule
 type ApplicationGatewayRewriteRuleActionSet = original.ApplicationGatewayRewriteRuleActionSet
+type ApplicationGatewayRewriteRuleCondition = original.ApplicationGatewayRewriteRuleCondition
 type ApplicationGatewayRewriteRuleSet = original.ApplicationGatewayRewriteRuleSet
 type ApplicationGatewayRewriteRuleSetPropertiesFormat = original.ApplicationGatewayRewriteRuleSetPropertiesFormat
 type ApplicationGatewaySku = original.ApplicationGatewaySku
@@ -913,6 +938,7 @@ type ApplicationSecurityGroupPropertiesFormat = original.ApplicationSecurityGrou
 type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
 type ApplicationSecurityGroupsCreateOrUpdateFuture = original.ApplicationSecurityGroupsCreateOrUpdateFuture
 type ApplicationSecurityGroupsDeleteFuture = original.ApplicationSecurityGroupsDeleteFuture
+type ApplicationSecurityGroupsUpdateTagsFuture = original.ApplicationSecurityGroupsUpdateTagsFuture
 type AuthorizationListResult = original.AuthorizationListResult
 type AuthorizationListResultIterator = original.AuthorizationListResultIterator
 type AuthorizationListResultPage = original.AuthorizationListResultPage
@@ -977,6 +1003,8 @@ type BgpServiceCommunityListResultIterator = original.BgpServiceCommunityListRes
 type BgpServiceCommunityListResultPage = original.BgpServiceCommunityListResultPage
 type BgpServiceCommunityPropertiesFormat = original.BgpServiceCommunityPropertiesFormat
 type BgpSettings = original.BgpSettings
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type ConfigurationDiagnosticParameters = original.ConfigurationDiagnosticParameters
 type ConfigurationDiagnosticProfile = original.ConfigurationDiagnosticProfile
 type ConfigurationDiagnosticResponse = original.ConfigurationDiagnosticResponse
@@ -1012,6 +1040,12 @@ type ContainerNetworkInterfaceIPConfiguration = original.ContainerNetworkInterfa
 type ContainerNetworkInterfaceIPConfigurationPropertiesFormat = original.ContainerNetworkInterfaceIPConfigurationPropertiesFormat
 type ContainerNetworkInterfacePropertiesFormat = original.ContainerNetworkInterfacePropertiesFormat
 type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
+type DdosCustomPoliciesClient = original.DdosCustomPoliciesClient
+type DdosCustomPoliciesCreateOrUpdateFuture = original.DdosCustomPoliciesCreateOrUpdateFuture
+type DdosCustomPoliciesDeleteFuture = original.DdosCustomPoliciesDeleteFuture
+type DdosCustomPoliciesUpdateTagsFuture = original.DdosCustomPoliciesUpdateTagsFuture
+type DdosCustomPolicy = original.DdosCustomPolicy
+type DdosCustomPolicyPropertiesFormat = original.DdosCustomPolicyPropertiesFormat
 type DdosProtectionPlan = original.DdosProtectionPlan
 type DdosProtectionPlanListResult = original.DdosProtectionPlanListResult
 type DdosProtectionPlanListResultIterator = original.DdosProtectionPlanListResultIterator
@@ -1020,6 +1054,7 @@ type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesF
 type DdosProtectionPlansClient = original.DdosProtectionPlansClient
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
+type DdosSettings = original.DdosSettings
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation
 type DeviceProperties = original.DeviceProperties
@@ -1179,6 +1214,8 @@ type InboundNatRulePropertiesFormat = original.InboundNatRulePropertiesFormat
 type InboundNatRulesClient = original.InboundNatRulesClient
 type InboundNatRulesCreateOrUpdateFuture = original.InboundNatRulesCreateOrUpdateFuture
 type InboundNatRulesDeleteFuture = original.InboundNatRulesDeleteFuture
+type IntentPolicy = original.IntentPolicy
+type IntentPolicyConfiguration = original.IntentPolicyConfiguration
 type Interface = original.Interface
 type InterfaceAssociation = original.InterfaceAssociation
 type InterfaceDNSSettings = original.InterfaceDNSSettings
@@ -1229,6 +1266,7 @@ type ListP2SVpnGatewaysResultPage = original.ListP2SVpnGatewaysResultPage
 type ListP2SVpnServerConfigurationsResult = original.ListP2SVpnServerConfigurationsResult
 type ListP2SVpnServerConfigurationsResultIterator = original.ListP2SVpnServerConfigurationsResultIterator
 type ListP2SVpnServerConfigurationsResultPage = original.ListP2SVpnServerConfigurationsResultPage
+type ListString = original.ListString
 type ListVirtualHubsResult = original.ListVirtualHubsResult
 type ListVirtualHubsResultIterator = original.ListVirtualHubsResultIterator
 type ListVirtualHubsResultPage = original.ListVirtualHubsResultPage
@@ -1339,6 +1377,7 @@ type PacketCapturesGetStatusFuture = original.PacketCapturesGetStatusFuture
 type PacketCapturesStopFuture = original.PacketCapturesStopFuture
 type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
+type PrepareNetworkPoliciesRequest = original.PrepareNetworkPoliciesRequest
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
 type Profile = original.Profile
@@ -1348,6 +1387,7 @@ type ProfileListResultPage = original.ProfileListResultPage
 type ProfilePropertiesFormat = original.ProfilePropertiesFormat
 type ProfilesClient = original.ProfilesClient
 type ProtocolConfiguration = original.ProtocolConfiguration
+type ProtocolCustomSettingsFormat = original.ProtocolCustomSettingsFormat
 type PublicIPAddress = original.PublicIPAddress
 type PublicIPAddressDNSSettings = original.PublicIPAddressDNSSettings
 type PublicIPAddressListResult = original.PublicIPAddressListResult
@@ -1465,6 +1505,7 @@ type SubnetPropertiesFormat = original.SubnetPropertiesFormat
 type SubnetsClient = original.SubnetsClient
 type SubnetsCreateOrUpdateFuture = original.SubnetsCreateOrUpdateFuture
 type SubnetsDeleteFuture = original.SubnetsDeleteFuture
+type SubnetsPrepareNetworkPoliciesFuture = original.SubnetsPrepareNetworkPoliciesFuture
 type TagsObject = original.TagsObject
 type Topology = original.Topology
 type TopologyAssociation = original.TopologyAssociation
@@ -1724,6 +1765,12 @@ func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient
 }
 func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionMonitorsClient {
 	return original.NewConnectionMonitorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDdosCustomPoliciesClient(subscriptionID string) DdosCustomPoliciesClient {
+	return original.NewDdosCustomPoliciesClient(subscriptionID)
+}
+func NewDdosCustomPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DdosCustomPoliciesClient {
+	return original.NewDdosCustomPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDdosProtectionPlanListResultIterator(page DdosProtectionPlanListResultPage) DdosProtectionPlanListResultIterator {
 	return original.NewDdosProtectionPlanListResultIterator(page)
@@ -2475,6 +2522,12 @@ func PossibleConnectionStateValues() []ConnectionState {
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
 }
+func PossibleDdosCustomPolicyProtocolValues() []DdosCustomPolicyProtocol {
+	return original.PossibleDdosCustomPolicyProtocolValues()
+}
+func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPolicyTriggerSensitivityOverride {
+	return original.PossibleDdosCustomPolicyTriggerSensitivityOverrideValues()
+}
 func PossibleDhGroupValues() []DhGroup {
 	return original.PossibleDhGroupValues()
 }
@@ -2588,6 +2641,9 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 }
 func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return original.PossibleProcessorArchitectureValues()
+}
+func PossibleProtectionCoverageValues() []ProtectionCoverage {
+	return original.PossibleProtectionCoverageValues()
 }
 func PossibleProtocol1Values() []Protocol1 {
 	return original.PossibleProtocol1Values()

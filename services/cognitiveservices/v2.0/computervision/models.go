@@ -161,6 +161,8 @@ type VisualFeatureTypes string
 const (
 	// VisualFeatureTypesAdult ...
 	VisualFeatureTypesAdult VisualFeatureTypes = "Adult"
+	// VisualFeatureTypesBrands ...
+	VisualFeatureTypesBrands VisualFeatureTypes = "Brands"
 	// VisualFeatureTypesCategories ...
 	VisualFeatureTypesCategories VisualFeatureTypes = "Categories"
 	// VisualFeatureTypesColor ...
@@ -179,7 +181,7 @@ const (
 
 // PossibleVisualFeatureTypesValues returns an array of possible values for the VisualFeatureTypes const type.
 func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
-	return []VisualFeatureTypes{VisualFeatureTypesAdult, VisualFeatureTypesCategories, VisualFeatureTypesColor, VisualFeatureTypesDescription, VisualFeatureTypesFaces, VisualFeatureTypesImageType, VisualFeatureTypesObjects, VisualFeatureTypesTags}
+	return []VisualFeatureTypes{VisualFeatureTypesAdult, VisualFeatureTypesBrands, VisualFeatureTypesCategories, VisualFeatureTypesColor, VisualFeatureTypesDescription, VisualFeatureTypesFaces, VisualFeatureTypesImageType, VisualFeatureTypesObjects, VisualFeatureTypesTags}
 }
 
 // AdultInfo an object describing whether the image contains adult-oriented content and/or is racy.
@@ -267,6 +269,16 @@ type ColorInfo struct {
 	IsBWImg *bool `json:"isBWImg,omitempty"`
 }
 
+// DetectedBrand a brand detected in an image.
+type DetectedBrand struct {
+	// Name - Label for the brand.
+	Name *string `json:"name,omitempty"`
+	// Confidence - Confidence score of having observed the brand in the image, as a value ranging from 0 to 1.
+	Confidence *float64 `json:"confidence,omitempty"`
+	// Rectangle - Approximate location of the detected brand.
+	Rectangle *BoundingRect `json:"rectangle,omitempty"`
+}
+
 // DetectedObject an object detected in an image.
 type DetectedObject struct {
 	// Rectangle - Approximate location of the detected object.
@@ -351,6 +363,8 @@ type ImageAnalysis struct {
 	Faces *[]FaceDescription `json:"faces,omitempty"`
 	// Objects - Array of objects describing what was detected in the image.
 	Objects *[]DetectedObject `json:"objects,omitempty"`
+	// Brands - Array of brands detected in the image.
+	Brands *[]DetectedBrand `json:"brands,omitempty"`
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`

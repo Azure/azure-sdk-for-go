@@ -478,6 +478,74 @@ type IotHubDeviceDisconnectedEventData struct {
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
 }
 
+// MapsGeofenceEnteredEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Maps.GeofenceEntered event.
+type MapsGeofenceEnteredEventData struct {
+	// ExpiredGeofenceGeometryID - Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID *[]string `json:"expiredGeofenceGeometryId,omitempty"`
+	// Geometries - Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around the fence.
+	Geometries *[]MapsGeofenceGeometry `json:"geometries,omitempty"`
+	// InvalidPeriodGeofenceGeometryID - Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID *[]string `json:"invalidPeriodGeofenceGeometryId,omitempty"`
+	// IsEventPublished - True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure Maps event subscriber.
+	IsEventPublished *bool `json:"isEventPublished,omitempty"`
+}
+
+// MapsGeofenceEventProperties schema of the Data property of an EventGridEvent for a Geofence event
+// (GeofenceEntered, GeofenceExited, GeofenceResult).
+type MapsGeofenceEventProperties struct {
+	// ExpiredGeofenceGeometryID - Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID *[]string `json:"expiredGeofenceGeometryId,omitempty"`
+	// Geometries - Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around the fence.
+	Geometries *[]MapsGeofenceGeometry `json:"geometries,omitempty"`
+	// InvalidPeriodGeofenceGeometryID - Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID *[]string `json:"invalidPeriodGeofenceGeometryId,omitempty"`
+	// IsEventPublished - True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure Maps event subscriber.
+	IsEventPublished *bool `json:"isEventPublished,omitempty"`
+}
+
+// MapsGeofenceExitedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Maps.GeofenceExited event.
+type MapsGeofenceExitedEventData struct {
+	// ExpiredGeofenceGeometryID - Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID *[]string `json:"expiredGeofenceGeometryId,omitempty"`
+	// Geometries - Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around the fence.
+	Geometries *[]MapsGeofenceGeometry `json:"geometries,omitempty"`
+	// InvalidPeriodGeofenceGeometryID - Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID *[]string `json:"invalidPeriodGeofenceGeometryId,omitempty"`
+	// IsEventPublished - True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure Maps event subscriber.
+	IsEventPublished *bool `json:"isEventPublished,omitempty"`
+}
+
+// MapsGeofenceGeometry the geofence geometry.
+type MapsGeofenceGeometry struct {
+	// DeviceID - ID of the device.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// Distance - Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of the geofence. If the coordinate is outside of the geofence, but more than the value of searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If the coordinate is inside the polygon, but more than the value of searchBuffer away from the closest geofencing border,then the value is -999. A value of 999 means that there is great confidence the coordinate is well outside the geofence. A value of -999 means that there is great confidence the coordinate is well within the geofence.
+	Distance *float64 `json:"distance,omitempty"`
+	// GeometryID - The unique ID for the geofence geometry.
+	GeometryID *string `json:"geometryId,omitempty"`
+	// NearestLat - Latitude of the nearest point of the geometry.
+	NearestLat *float64 `json:"nearestLat,omitempty"`
+	// NearestLon - Longitude of the nearest point of the geometry.
+	NearestLon *float64 `json:"nearestLon,omitempty"`
+	// UdID - The unique id returned from user upload service when uploading a geofence. Will not be included in geofencing post API.
+	UdID *string `json:"udId,omitempty"`
+}
+
+// MapsGeofenceResultEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Maps.GeofenceResult event.
+type MapsGeofenceResultEventData struct {
+	// ExpiredGeofenceGeometryID - Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID *[]string `json:"expiredGeofenceGeometryId,omitempty"`
+	// Geometries - Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around the fence.
+	Geometries *[]MapsGeofenceGeometry `json:"geometries,omitempty"`
+	// InvalidPeriodGeofenceGeometryID - Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID *[]string `json:"invalidPeriodGeofenceGeometryId,omitempty"`
+	// IsEventPublished - True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure Maps event subscriber.
+	IsEventPublished *bool `json:"isEventPublished,omitempty"`
+}
+
 // MediaJobCanceledEventData job canceled event data
 type MediaJobCanceledEventData struct {
 	// Outputs - Gets the Job outputs.

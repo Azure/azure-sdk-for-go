@@ -54,9 +54,10 @@ type (
 	// Namespace provides a simplified facade over the AMQP implementation of Azure Service Bus and is the entry point
 	// for using Queues, Topics and Subscriptions
 	Namespace struct {
-		Name          string
-		TokenProvider auth.TokenProvider
-		Environment   azure.Environment
+		Name           string
+		TokenProvider  auth.TokenProvider
+		Environment    azure.Environment
+		telemetryValue string
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
@@ -78,6 +79,14 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 			return err
 		}
 		ns.TokenProvider = provider
+		return nil
+	}
+}
+
+// NamespaceWithTelemetryValue appends value to the root user-agent value.
+func NamespaceWithTelemetryValue(value string) NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.telemetryValue = value
 		return nil
 	}
 }
@@ -107,7 +116,7 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 		amqp.ConnProperty("version", Version),
 		amqp.ConnProperty("platform", runtime.GOOS),
 		amqp.ConnProperty("framework", runtime.Version()),
-		amqp.ConnProperty("user-agent", rootUserAgent),
+		amqp.ConnProperty("user-agent", ns.getUserAgent()),
 	)
 }
 
@@ -129,4 +138,12 @@ func (ns *Namespace) getHTTPSHostURI() string {
 
 func (ns *Namespace) getEntityAudience(entityPath string) string {
 	return ns.getAMQPHostURI() + entityPath
+}
+
+func (ns *Namespace) getUserAgent() string {
+	userAgent := rootUserAgent
+	if ns.telemetryValue != "" {
+		userAgent = fmt.Sprintf("%s/%s", userAgent, ns.telemetryValue)
+	}
+	return userAgent
 }

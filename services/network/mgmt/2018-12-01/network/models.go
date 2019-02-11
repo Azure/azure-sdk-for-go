@@ -436,6 +436,8 @@ func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRule
 type AzureFirewallRCActionType string
 
 const (
+	// AzureFirewallRCActionTypeAlert ...
+	AzureFirewallRCActionTypeAlert AzureFirewallRCActionType = "Alert"
 	// AzureFirewallRCActionTypeAllow ...
 	AzureFirewallRCActionTypeAllow AzureFirewallRCActionType = "Allow"
 	// AzureFirewallRCActionTypeDeny ...
@@ -444,7 +446,24 @@ const (
 
 // PossibleAzureFirewallRCActionTypeValues returns an array of possible values for the AzureFirewallRCActionType const type.
 func PossibleAzureFirewallRCActionTypeValues() []AzureFirewallRCActionType {
-	return []AzureFirewallRCActionType{AzureFirewallRCActionTypeAllow, AzureFirewallRCActionTypeDeny}
+	return []AzureFirewallRCActionType{AzureFirewallRCActionTypeAlert, AzureFirewallRCActionTypeAllow, AzureFirewallRCActionTypeDeny}
+}
+
+// AzureFirewallThreatIntelMode enumerates the values for azure firewall threat intel mode.
+type AzureFirewallThreatIntelMode string
+
+const (
+	// AzureFirewallThreatIntelModeAlert ...
+	AzureFirewallThreatIntelModeAlert AzureFirewallThreatIntelMode = "Alert"
+	// AzureFirewallThreatIntelModeDeny ...
+	AzureFirewallThreatIntelModeDeny AzureFirewallThreatIntelMode = "Deny"
+	// AzureFirewallThreatIntelModeOff ...
+	AzureFirewallThreatIntelModeOff AzureFirewallThreatIntelMode = "Off"
+)
+
+// PossibleAzureFirewallThreatIntelModeValues returns an array of possible values for the AzureFirewallThreatIntelMode const type.
+func PossibleAzureFirewallThreatIntelModeValues() []AzureFirewallThreatIntelMode {
+	return []AzureFirewallThreatIntelMode{AzureFirewallThreatIntelModeAlert, AzureFirewallThreatIntelModeDeny, AzureFirewallThreatIntelModeOff}
 }
 
 // BgpPeerState enumerates the values for bgp peer state.
@@ -489,17 +508,17 @@ func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
 type ConnectionMonitorSourceStatus string
 
 const (
-	// Active ...
-	Active ConnectionMonitorSourceStatus = "Active"
-	// Inactive ...
-	Inactive ConnectionMonitorSourceStatus = "Inactive"
-	// Uknown ...
-	Uknown ConnectionMonitorSourceStatus = "Uknown"
+	// ConnectionMonitorSourceStatusActive ...
+	ConnectionMonitorSourceStatusActive ConnectionMonitorSourceStatus = "Active"
+	// ConnectionMonitorSourceStatusInactive ...
+	ConnectionMonitorSourceStatusInactive ConnectionMonitorSourceStatus = "Inactive"
+	// ConnectionMonitorSourceStatusUnknown ...
+	ConnectionMonitorSourceStatusUnknown ConnectionMonitorSourceStatus = "Unknown"
 )
 
 // PossibleConnectionMonitorSourceStatusValues returns an array of possible values for the ConnectionMonitorSourceStatus const type.
 func PossibleConnectionMonitorSourceStatusValues() []ConnectionMonitorSourceStatus {
-	return []ConnectionMonitorSourceStatus{Active, Inactive, Uknown}
+	return []ConnectionMonitorSourceStatus{ConnectionMonitorSourceStatusActive, ConnectionMonitorSourceStatusInactive, ConnectionMonitorSourceStatusUnknown}
 }
 
 // ConnectionState enumerates the values for connection state.
@@ -640,15 +659,15 @@ func PossibleEffectiveRouteSourceValues() []EffectiveRouteSource {
 type EffectiveRouteState string
 
 const (
-	// EffectiveRouteStateActive ...
-	EffectiveRouteStateActive EffectiveRouteState = "Active"
-	// EffectiveRouteStateInvalid ...
-	EffectiveRouteStateInvalid EffectiveRouteState = "Invalid"
+	// Active ...
+	Active EffectiveRouteState = "Active"
+	// Invalid ...
+	Invalid EffectiveRouteState = "Invalid"
 )
 
 // PossibleEffectiveRouteStateValues returns an array of possible values for the EffectiveRouteState const type.
 func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
-	return []EffectiveRouteState{EffectiveRouteStateActive, EffectiveRouteStateInvalid}
+	return []EffectiveRouteState{Active, Invalid}
 }
 
 // EffectiveSecurityRuleProtocol enumerates the values for effective security rule protocol.
@@ -6354,11 +6373,13 @@ type AzureFirewallPropertiesFormat struct {
 	IPConfigurations *[]AzureFirewallIPConfiguration `json:"ipConfigurations,omitempty"`
 	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ThreatIntelMode - The operation mode for Threat Intelligence. Possible values include: 'AzureFirewallThreatIntelModeAlert', 'AzureFirewallThreatIntelModeDeny', 'AzureFirewallThreatIntelModeOff'
+	ThreatIntelMode AzureFirewallThreatIntelMode `json:"threatIntelMode,omitempty"`
 }
 
 // AzureFirewallRCAction properties of the AzureFirewallRCAction.
 type AzureFirewallRCAction struct {
-	// Type - The type of action. Possible values include: 'AzureFirewallRCActionTypeAllow', 'AzureFirewallRCActionTypeDeny'
+	// Type - The type of action. Possible values include: 'AzureFirewallRCActionTypeAllow', 'AzureFirewallRCActionTypeDeny', 'AzureFirewallRCActionTypeAlert'
 	Type AzureFirewallRCActionType `json:"type,omitempty"`
 }
 
@@ -7027,7 +7048,7 @@ type ConnectionMonitorParameters struct {
 // ConnectionMonitorQueryResult list of connection states snaphots.
 type ConnectionMonitorQueryResult struct {
 	autorest.Response `json:"-"`
-	// SourceStatus - Status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'
+	// SourceStatus - Status of connection monitor source. Possible values include: 'ConnectionMonitorSourceStatusUnknown', 'ConnectionMonitorSourceStatusActive', 'ConnectionMonitorSourceStatusInactive'
 	SourceStatus ConnectionMonitorSourceStatus `json:"sourceStatus,omitempty"`
 	// States - Information about connection states.
 	States *[]ConnectionStateSnapshot `json:"states,omitempty"`
@@ -8487,7 +8508,7 @@ type EffectiveRoute struct {
 	Name *string `json:"name,omitempty"`
 	// Source - Who created the route. Possible values are: 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'. Possible values include: 'EffectiveRouteSourceUnknown', 'EffectiveRouteSourceUser', 'EffectiveRouteSourceVirtualNetworkGateway', 'EffectiveRouteSourceDefault'
 	Source EffectiveRouteSource `json:"source,omitempty"`
-	// State - The value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'EffectiveRouteStateActive', 'EffectiveRouteStateInvalid'
+	// State - The value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'Active', 'Invalid'
 	State EffectiveRouteState `json:"state,omitempty"`
 	// AddressPrefix - The address prefixes of the effective routes in CIDR notation.
 	AddressPrefix *[]string `json:"addressPrefix,omitempty"`

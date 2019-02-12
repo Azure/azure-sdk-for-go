@@ -608,7 +608,7 @@ type AccountEntityProperties struct {
 	// IsDomainJoined - Determines whether this is a domain account.
 	IsDomainJoined *bool `json:"isDomainJoined,omitempty"`
 	// ObjectGUID - The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned by active directory.
-	ObjectGUID *string `json:"objectGuid,omitempty"`
+	ObjectGUID *uuid.UUID `json:"objectGuid,omitempty"`
 }
 
 // Action action for alert rule.
@@ -711,8 +711,6 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 type ActionProperties struct {
 	// TriggerURI - The uri for the action to trigger.
 	TriggerURI *string `json:"triggerUri,omitempty"`
-	// RuleID - The unique identifier of the rule.
-	RuleID *string `json:"ruleId,omitempty"`
 }
 
 // ActionsList list all the actions.
@@ -3701,8 +3699,8 @@ func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
 
 // ScheduledAlertRuleProperties alert rule property bag.
 type ScheduledAlertRuleProperties struct {
-	// RuleName - The name for alerts created by this alert rule.
-	RuleName *string `json:"ruleName,omitempty"`
+	// DisplayName - The display name for alerts created by this alert rule.
+	DisplayName *string `json:"displayName,omitempty"`
 	// Description - The description of the alert rule.
 	Description *string `json:"description,omitempty"`
 	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'

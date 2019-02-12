@@ -45,7 +45,6 @@ var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)
 
 // ActionsClientAPI contains the set of methods on the ActionsClient type.
 type ActionsClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.ActionsListPage, err error)
 	ListByAlertRule(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ActionsListPage, err error)
 }
 

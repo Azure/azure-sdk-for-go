@@ -71,8 +71,6 @@ func (client CasesClient) Create(ctx context.Context, resourceGroupName string, 
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: caseID,
-			Constraints: []validation.Constraint{{Target: "caseID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
 		{TargetValue: caseParameter,
 			Constraints: []validation.Constraint{{Target: "caseParameter.CaseProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.Title", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
@@ -173,9 +171,7 @@ func (client CasesClient) Delete(ctx context.Context, resourceGroupName string, 
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: caseID,
-			Constraints: []validation.Constraint{{Target: "caseID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CasesClient", "Delete", err.Error())
 	}
 
@@ -270,9 +266,7 @@ func (client CasesClient) Get(ctx context.Context, resourceGroupName string, ope
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: caseID,
-			Constraints: []validation.Constraint{{Target: "caseID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CasesClient", "Get", err.Error())
 	}
 

@@ -71,8 +71,6 @@ func (client BookmarksClient) Create(ctx context.Context, resourceGroupName stri
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: bookmarkID,
-			Constraints: []validation.Constraint{{Target: "bookmarkID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
 		{TargetValue: bookmark,
 			Constraints: []validation.Constraint{{Target: "bookmark.BookmarkProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
@@ -175,9 +173,7 @@ func (client BookmarksClient) Delete(ctx context.Context, resourceGroupName stri
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: bookmarkID,
-			Constraints: []validation.Constraint{{Target: "bookmarkID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.BookmarksClient", "Delete", err.Error())
 	}
 
@@ -272,9 +268,7 @@ func (client BookmarksClient) Get(ctx context.Context, resourceGroupName string,
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: bookmarkID,
-			Constraints: []validation.Constraint{{Target: "bookmarkID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.BookmarksClient", "Get", err.Error())
 	}
 

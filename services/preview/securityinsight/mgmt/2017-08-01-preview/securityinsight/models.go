@@ -179,8 +179,6 @@ const (
 	KindAzureSecurityCenter KindBasicDataConnector = "AzureSecurityCenter"
 	// KindDataConnector ...
 	KindDataConnector KindBasicDataConnector = "DataConnector"
-	// KindDataConnectorWithAlerts ...
-	KindDataConnectorWithAlerts KindBasicDataConnector = "DataConnectorWithAlerts"
 	// KindMicrosoftCloudAppSecurity ...
 	KindMicrosoftCloudAppSecurity KindBasicDataConnector = "MicrosoftCloudAppSecurity"
 	// KindOffice365 ...
@@ -191,7 +189,7 @@ const (
 
 // PossibleKindBasicDataConnectorValues returns an array of possible values for the KindBasicDataConnector const type.
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
-	return []KindBasicDataConnector{KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindDataConnectorWithAlerts, KindMicrosoftCloudAppSecurity, KindOffice365, KindThreatIntelligence}
+	return []KindBasicDataConnector{KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindMicrosoftCloudAppSecurity, KindOffice365, KindThreatIntelligence}
 }
 
 // KindBasicEntity enumerates the values for kind basic entity.
@@ -319,8 +317,8 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 
 // AADDataConnector represents AAD (Azure Active Directory) data connector.
 type AADDataConnector struct {
-	// DataConnectorWithAlertsProperties - Data connector properties.
-	*DataConnectorWithAlertsProperties `json:"properties,omitempty"`
+	// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
+	*AADDataConnectorProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
@@ -329,7 +327,7 @@ type AADDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -337,8 +335,8 @@ type AADDataConnector struct {
 func (adc AADDataConnector) MarshalJSON() ([]byte, error) {
 	adc.Kind = KindAzureActiveDirectory
 	objectMap := make(map[string]interface{})
-	if adc.DataConnectorWithAlertsProperties != nil {
-		objectMap["properties"] = adc.DataConnectorWithAlertsProperties
+	if adc.AADDataConnectorProperties != nil {
+		objectMap["properties"] = adc.AADDataConnectorProperties
 	}
 	if adc.ID != nil {
 		objectMap["id"] = adc.ID
@@ -383,16 +381,6 @@ func (adc AADDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
-	return &adc, true
-}
-
 // AsDataConnector is the BasicDataConnector implementation for AADDataConnector.
 func (adc AADDataConnector) AsDataConnector() (*DataConnector, bool) {
 	return nil, false
@@ -401,6 +389,83 @@ func (adc AADDataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for AADDataConnector.
 func (adc AADDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &adc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AADDataConnector struct.
+func (adc *AADDataConnector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var aADDataConnectorProperties AADDataConnectorProperties
+				err = json.Unmarshal(*v, &aADDataConnectorProperties)
+				if err != nil {
+					return err
+				}
+				adc.AADDataConnectorProperties = &aADDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				adc.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				adc.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// AADDataConnectorProperties AAD (Azure Active Directory) data connector properties.
+type AADDataConnectorProperties struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // AccountEntity represents an account entity.
@@ -1106,8 +1171,8 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 
 // ASCDataConnector represents ASC (Azure Security Center) data connector.
 type ASCDataConnector struct {
-	// DataConnectorWithAlertsProperties - Data connector properties.
-	*DataConnectorWithAlertsProperties `json:"properties,omitempty"`
+	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
+	*ASCDataConnectorProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
@@ -1116,7 +1181,7 @@ type ASCDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -1124,8 +1189,8 @@ type ASCDataConnector struct {
 func (adc ASCDataConnector) MarshalJSON() ([]byte, error) {
 	adc.Kind = KindAzureSecurityCenter
 	objectMap := make(map[string]interface{})
-	if adc.DataConnectorWithAlertsProperties != nil {
-		objectMap["properties"] = adc.DataConnectorWithAlertsProperties
+	if adc.ASCDataConnectorProperties != nil {
+		objectMap["properties"] = adc.ASCDataConnectorProperties
 	}
 	if adc.ID != nil {
 		objectMap["id"] = adc.ID
@@ -1170,16 +1235,6 @@ func (adc ASCDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
-	return &adc, true
-}
-
 // AsDataConnector is the BasicDataConnector implementation for ASCDataConnector.
 func (adc ASCDataConnector) AsDataConnector() (*DataConnector, bool) {
 	return nil, false
@@ -1188,6 +1243,83 @@ func (adc ASCDataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for ASCDataConnector.
 func (adc ASCDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &adc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ASCDataConnector struct.
+func (adc *ASCDataConnector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var aSCDataConnectorProperties ASCDataConnectorProperties
+				err = json.Unmarshal(*v, &aSCDataConnectorProperties)
+				if err != nil {
+					return err
+				}
+				adc.ASCDataConnectorProperties = &aSCDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				adc.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				adc.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// ASCDataConnectorProperties MCAS (Microsoft Cloud App Security) data connector properties.
+type ASCDataConnectorProperties struct {
+	// SubscriptionID - The subscription id to connect to, and get the data from.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // Bookmark represents a bookmark in Azure Security Insights.
@@ -1774,8 +1906,6 @@ type BasicDataConnector interface {
 	AsAADDataConnector() (*AADDataConnector, bool)
 	AsASCDataConnector() (*ASCDataConnector, bool)
 	AsMCASDataConnector() (*MCASDataConnector, bool)
-	AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool)
-	AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool)
 	AsDataConnector() (*DataConnector, bool)
 }
 
@@ -1790,7 +1920,7 @@ type DataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -1822,10 +1952,6 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		var mdc MCASDataConnector
 		err := json.Unmarshal(body, &mdc)
 		return mdc, err
-	case string(KindDataConnectorWithAlerts):
-		var dcwa DataConnectorWithAlerts
-		err := json.Unmarshal(body, &dcwa)
-		return dcwa, err
 	default:
 		var dc DataConnector
 		err := json.Unmarshal(body, &dc)
@@ -1898,16 +2024,6 @@ func (dc DataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
 // AsDataConnector is the BasicDataConnector implementation for DataConnector.
 func (dc DataConnector) AsDataConnector() (*DataConnector, bool) {
 	return &dc, true
@@ -1916,12 +2032,6 @@ func (dc DataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for DataConnector.
 func (dc DataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &dc, true
-}
-
-// DataConnectorContextID describes an Azure resource with kind.
-type DataConnectorContextID struct {
-	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
-	ContextID *string `json:"contextId,omitempty"`
 }
 
 // DataConnectorDataTypeCommon common field for data type in data connectors.
@@ -2131,220 +2241,16 @@ func (dcm *DataConnectorModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BasicDataConnectorWithAlerts data connector with alerts data type.
-type BasicDataConnectorWithAlerts interface {
-	AsAADDataConnector() (*AADDataConnector, bool)
-	AsASCDataConnector() (*ASCDataConnector, bool)
-	AsMCASDataConnector() (*MCASDataConnector, bool)
-	AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool)
-}
-
-// DataConnectorWithAlerts data connector with alerts data type.
-type DataConnectorWithAlerts struct {
-	// DataConnectorWithAlertsProperties - Data connector properties.
-	*DataConnectorWithAlertsProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Etag - Etag of the data connector.
-	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
-}
-
-func unmarshalBasicDataConnectorWithAlerts(body []byte) (BasicDataConnectorWithAlerts, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["kind"] {
-	case string(KindAzureActiveDirectory):
-		var adc AADDataConnector
-		err := json.Unmarshal(body, &adc)
-		return adc, err
-	case string(KindAzureSecurityCenter):
-		var adc ASCDataConnector
-		err := json.Unmarshal(body, &adc)
-		return adc, err
-	case string(KindMicrosoftCloudAppSecurity):
-		var mdc MCASDataConnector
-		err := json.Unmarshal(body, &mdc)
-		return mdc, err
-	default:
-		var dcwa DataConnectorWithAlerts
-		err := json.Unmarshal(body, &dcwa)
-		return dcwa, err
-	}
-}
-func unmarshalBasicDataConnectorWithAlertsArray(body []byte) ([]BasicDataConnectorWithAlerts, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	dcwaArray := make([]BasicDataConnectorWithAlerts, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		dcwa, err := unmarshalBasicDataConnectorWithAlerts(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		dcwaArray[index] = dcwa
-	}
-	return dcwaArray, nil
-}
-
-// MarshalJSON is the custom marshaler for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) MarshalJSON() ([]byte, error) {
-	dcwa.Kind = KindDataConnectorWithAlerts
-	objectMap := make(map[string]interface{})
-	if dcwa.DataConnectorWithAlertsProperties != nil {
-		objectMap["properties"] = dcwa.DataConnectorWithAlertsProperties
-	}
-	if dcwa.ID != nil {
-		objectMap["id"] = dcwa.ID
-	}
-	if dcwa.Type != nil {
-		objectMap["type"] = dcwa.Type
-	}
-	if dcwa.Name != nil {
-		objectMap["name"] = dcwa.Name
-	}
-	if dcwa.Etag != nil {
-		objectMap["etag"] = dcwa.Etag
-	}
-	if dcwa.Kind != "" {
-		objectMap["kind"] = dcwa.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
-	return nil, false
-}
-
-// AsTIDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsTIDataConnector() (*TIDataConnector, bool) {
-	return nil, false
-}
-
-// AsAADDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return &dcwa, true
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
-	return &dcwa, true
-}
-
-// AsDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsDataConnector() (*DataConnector, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnector is the BasicDataConnector implementation for DataConnectorWithAlerts.
-func (dcwa DataConnectorWithAlerts) AsBasicDataConnector() (BasicDataConnector, bool) {
-	return &dcwa, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for DataConnectorWithAlerts struct.
-func (dcwa *DataConnectorWithAlerts) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var dataConnectorWithAlertsProperties DataConnectorWithAlertsProperties
-				err = json.Unmarshal(*v, &dataConnectorWithAlertsProperties)
-				if err != nil {
-					return err
-				}
-				dcwa.DataConnectorWithAlertsProperties = &dataConnectorWithAlertsProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				dcwa.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				dcwa.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				dcwa.Name = &name
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				dcwa.Etag = &etag
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				dcwa.Kind = kind
-			}
-		}
-	}
-
-	return nil
+// DataConnectorTenantID properties data connector on tenant level.
+type DataConnectorTenantID struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // DataConnectorWithAlertsProperties data connector properties.
 type DataConnectorWithAlertsProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
-	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
-	ContextID *string `json:"contextId,omitempty"`
 }
 
 // BasicEntity specific entity.
@@ -2932,8 +2838,8 @@ type HostEntityProperties struct {
 
 // MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
-	// DataConnectorWithAlertsProperties - Data connector properties.
-	*DataConnectorWithAlertsProperties `json:"properties,omitempty"`
+	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
+	*MCASDataConnectorProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
@@ -2942,7 +2848,7 @@ type MCASDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -2950,8 +2856,8 @@ type MCASDataConnector struct {
 func (mdc MCASDataConnector) MarshalJSON() ([]byte, error) {
 	mdc.Kind = KindMicrosoftCloudAppSecurity
 	objectMap := make(map[string]interface{})
-	if mdc.DataConnectorWithAlertsProperties != nil {
-		objectMap["properties"] = mdc.DataConnectorWithAlertsProperties
+	if mdc.MCASDataConnectorProperties != nil {
+		objectMap["properties"] = mdc.MCASDataConnectorProperties
 	}
 	if mdc.ID != nil {
 		objectMap["id"] = mdc.ID
@@ -2996,16 +2902,6 @@ func (mdc MCASDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return &mdc, true
 }
 
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
-	return &mdc, true
-}
-
 // AsDataConnector is the BasicDataConnector implementation for MCASDataConnector.
 func (mdc MCASDataConnector) AsDataConnector() (*DataConnector, bool) {
 	return nil, false
@@ -3014,6 +2910,83 @@ func (mdc MCASDataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for MCASDataConnector.
 func (mdc MCASDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &mdc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MCASDataConnector struct.
+func (mdc *MCASDataConnector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var mCASDataConnectorProperties MCASDataConnectorProperties
+				err = json.Unmarshal(*v, &mCASDataConnectorProperties)
+				if err != nil {
+					return err
+				}
+				mdc.MCASDataConnectorProperties = &mCASDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mdc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mdc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mdc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				mdc.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				mdc.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// MCASDataConnectorProperties MCAS (Microsoft Cloud App Security) data connector properties.
+type MCASDataConnectorProperties struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // OfficeConsent consent for Office365 tenant that already made.
@@ -3264,7 +3237,7 @@ type OfficeDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -3315,16 +3288,6 @@ func (odc OfficeDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
 
 // AsMCASDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
 func (odc OfficeDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
 	return nil, false
 }
 
@@ -3431,8 +3394,8 @@ type OfficeDataConnectorDataTypesSharePoint struct {
 type OfficeDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
-	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
-	ContextID *string `json:"contextId,omitempty"`
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // Operation operation provided by provider
@@ -3899,7 +3862,7 @@ type TIDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindDataConnectorWithAlerts'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -3950,16 +3913,6 @@ func (tdc TIDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
 
 // AsMCASDataConnector is the BasicDataConnector implementation for TIDataConnector.
 func (tdc TIDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsDataConnectorWithAlerts is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsDataConnectorWithAlerts() (*DataConnectorWithAlerts, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnectorWithAlerts is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsBasicDataConnectorWithAlerts() (BasicDataConnectorWithAlerts, bool) {
 	return nil, false
 }
 
@@ -4058,8 +4011,8 @@ type TIDataConnectorDataTypesIndicators struct {
 type TIDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
-	// ContextID - The context id of the origin data source (Like tenantID, SubscriptionID etc.).
-	ContextID *string `json:"contextId,omitempty"`
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // ToggleSettings settings with single toggle.

@@ -51,187 +51,14 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour the API returns a list of known entities and
-// general named entities (\"Person\", \"Location\", \"Organization\" etc) in a given document. Known entities are
-// returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General
-// named entities are returned with entity types. If a general named entity is also a known entity, then all
-// information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the <a
-// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition">Supported
-// Entity Types in Text Analytics API</a> for the list of supported Entity Types. See the <a
-// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages">Supported
-// languages in Text Analytics API</a> for the list of enabled languages.
-// Parameters:
-// showStats - (optional) if set to true, response will contain input and document level statistics.
-// multiLanguageBatchInput - collection of documents to analyze.
-func (client BaseClient) FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result EntitiesBatchResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourPreparer(ctx, showStats, multiLanguageBatchInput)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourPreparer prepares the FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour request.
-func (client BaseClient) FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	queryParameters := map[string]interface{}{}
-	if showStats != nil {
-		queryParameters["showStats"] = autorest.Encode("query", *showStats)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/text/analytics/v2.1", urlParameters),
-		autorest.WithPath("/entities"),
-		autorest.WithQueryParameters(queryParameters))
-	if multiLanguageBatchInput != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(multiLanguageBatchInput))
-	}
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourSender sends the FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourResponder handles the response to the FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour request. The method always
-// closes the http.Response Body.
-func (client BaseClient) FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFourResponder(resp *http.Response) (result EntitiesBatchResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine the API returns a numeric score between 0 and 1.
-// Scores close to 1 indicate positive sentiment, while scores close to 0 indicate negative sentiment. A score of 0.5
-// indicates the lack of sentiment (e.g. a factoid statement). See the <a
-// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages">Supported
-// languages in Text Analytics API</a> for the list of enabled languages.
-// Parameters:
-// showStats - (optional) if set to true, response will contain input and document level statistics.
-// multiLanguageBatchInput - collection of documents to analyze.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result SetObject, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNinePreparer(ctx, showStats, multiLanguageBatchInput)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNineSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNineResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNinePreparer prepares the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine request.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNinePreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	queryParameters := map[string]interface{}{}
-	if showStats != nil {
-		queryParameters["showStats"] = autorest.Encode("query", *showStats)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/text/analytics/v2.1", urlParameters),
-		autorest.WithPath("/sentiment"),
-		autorest.WithQueryParameters(queryParameters))
-	if multiLanguageBatchInput != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(multiLanguageBatchInput))
-	}
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNineSender sends the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNineSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNineResponder handles the response to the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine request. The method always
-// closes the http.Response Body.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNineResponder(resp *http.Response) (result SetObject, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusInternalServerError),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven the API returns the detected language and a numeric
-// score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. A total of
-// 120 languages are supported.
+// DetectLanguage scores close to 1 indicate 100% certainty that the identified language is true. A total of 120
+// languages are supported.
 // Parameters:
 // showStats - (optional) if set to true, response will contain input and document level statistics.
 // languageBatchInput - collection of documents to analyze.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven(ctx context.Context, showStats *bool, languageBatchInput *LanguageBatchInput) (result LanguageBatchResult, err error) {
+func (client BaseClient) DetectLanguage(ctx context.Context, showStats *bool, languageBatchInput *LanguageBatchInput) (result LanguageBatchResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DetectLanguage")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -240,29 +67,29 @@ func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaTh
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenPreparer(ctx, showStats, languageBatchInput)
+	req, err := client.DetectLanguagePreparer(ctx, showStats, languageBatchInput)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "DetectLanguage", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenSender(req)
+	resp, err := client.DetectLanguageSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "DetectLanguage", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenResponder(resp)
+	result, err = client.DetectLanguageResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "DetectLanguage", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenPreparer prepares the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven request.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenPreparer(ctx context.Context, showStats *bool, languageBatchInput *LanguageBatchInput) (*http.Request, error) {
+// DetectLanguagePreparer prepares the DetectLanguage request.
+func (client BaseClient) DetectLanguagePreparer(ctx context.Context, showStats *bool, languageBatchInput *LanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -285,16 +112,16 @@ func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaTh
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenSender sends the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven request. The method will close the
+// DetectLanguageSender sends the DetectLanguage request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) DetectLanguageSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenResponder handles the response to the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven request. The method always
+// DetectLanguageResponder handles the response to the DetectLanguage request. The method always
 // closes the http.Response Body.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSevenResponder(resp *http.Response) (result LanguageBatchResult, err error) {
+func (client BaseClient) DetectLanguageResponder(resp *http.Response) (result LanguageBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -305,17 +132,16 @@ func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaTh
 	return
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix the API returns a list of strings denoting the key
-// talking points in the input text. See the <a
+// Entities to get even more information on each recognized entity we recommend using the Bing Entity Search API by
+// querying for the recognized entities names. See the <a
 // href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages">Supported
 // languages in Text Analytics API</a> for the list of enabled languages.
 // Parameters:
 // showStats - (optional) if set to true, response will contain input and document level statistics.
-// multiLanguageBatchInput - collection of documents to analyze. Documents can now contain a language field to
-// indicate the text language
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result KeyPhraseBatchResult, err error) {
+// multiLanguageBatchInput - collection of documents to analyze.
+func (client BaseClient) Entities(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result EntitiesBatchResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.Entities")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -324,29 +150,112 @@ func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaTh
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixPreparer(ctx, showStats, multiLanguageBatchInput)
+	req, err := client.EntitiesPreparer(ctx, showStats, multiLanguageBatchInput)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixSender(req)
+	resp, err := client.EntitiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixResponder(resp)
+	result, err = client.EntitiesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixPreparer prepares the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix request.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
+// EntitiesPreparer prepares the Entities request.
+func (client BaseClient) EntitiesPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if showStats != nil {
+		queryParameters["showStats"] = autorest.Encode("query", *showStats)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/text/analytics/v2.1", urlParameters),
+		autorest.WithPath("/entities"),
+		autorest.WithQueryParameters(queryParameters))
+	if multiLanguageBatchInput != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(multiLanguageBatchInput))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EntitiesSender sends the Entities request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) EntitiesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// EntitiesResponder handles the response to the Entities request. The method always
+// closes the http.Response Body.
+func (client BaseClient) EntitiesResponder(resp *http.Response) (result EntitiesBatchResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// KeyPhrases see the <a
+// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
+// Analytics Documentation</a> for details about the languages that are supported by key phrase extraction.
+// Parameters:
+// showStats - (optional) if set to true, response will contain input and document level statistics.
+// multiLanguageBatchInput - collection of documents to analyze. Documents can now contain a language field to
+// indicate the text language
+func (client BaseClient) KeyPhrases(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result KeyPhraseBatchResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.KeyPhrases")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.KeyPhrasesPreparer(ctx, showStats, multiLanguageBatchInput)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "KeyPhrases", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.KeyPhrasesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "KeyPhrases", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.KeyPhrasesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "KeyPhrases", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// KeyPhrasesPreparer prepares the KeyPhrases request.
+func (client BaseClient) KeyPhrasesPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -369,21 +278,104 @@ func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaTh
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixSender sends the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix request. The method will close the
+// KeyPhrasesSender sends the KeyPhrases request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) KeyPhrasesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixResponder handles the response to the FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix request. The method always
+// KeyPhrasesResponder handles the response to the KeyPhrases request. The method always
 // closes the http.Response Body.
-func (client BaseClient) FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSixResponder(resp *http.Response) (result KeyPhraseBatchResult, err error) {
+func (client BaseClient) KeyPhrasesResponder(resp *http.Response) (result KeyPhraseBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Sentiment scores close to 1 indicate positive sentiment, while scores close to 0 indicate negative sentiment. A
+// score of 0.5 indicates the lack of sentiment (e.g. a factoid statement). See the <a
+// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
+// Analytics Documentation</a> for details about the languages that are supported by sentiment analysis.
+// Parameters:
+// showStats - (optional) if set to true, response will contain input and document level statistics.
+// multiLanguageBatchInput - collection of documents to analyze.
+func (client BaseClient) Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.Sentiment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.SentimentPreparer(ctx, showStats, multiLanguageBatchInput)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Sentiment", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SentimentSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Sentiment", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SentimentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Sentiment", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// SentimentPreparer prepares the Sentiment request.
+func (client BaseClient) SentimentPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if showStats != nil {
+		queryParameters["showStats"] = autorest.Encode("query", *showStats)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/text/analytics/v2.1", urlParameters),
+		autorest.WithPath("/sentiment"),
+		autorest.WithQueryParameters(queryParameters))
+	if multiLanguageBatchInput != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(multiLanguageBatchInput))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SentimentSender sends the Sentiment request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) SentimentSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// SentimentResponder handles the response to the Sentiment request. The method always
+// closes the http.Response Body.
+func (client BaseClient) SentimentResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusInternalServerError),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

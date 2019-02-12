@@ -24,10 +24,10 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	FiveacFourTwoFiveOnedFivebFourccdOneFiveFiveFourdaSevenSixThreeFour(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.EntitiesBatchResult, err error)
-	FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecNine(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.SetObject, err error)
-	FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSeven(ctx context.Context, showStats *bool, languageBatchInput *textanalytics.LanguageBatchInput) (result textanalytics.LanguageBatchResult, err error)
-	FiveSixfThreeZeroceeedaFiveSixFiveZerodbZeroFiveFiveaThreecSix(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.KeyPhraseBatchResult, err error)
+	DetectLanguage(ctx context.Context, showStats *bool, languageBatchInput *textanalytics.LanguageBatchInput) (result textanalytics.LanguageBatchResult, err error)
+	Entities(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.EntitiesBatchResult, err error)
+	KeyPhrases(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.KeyPhraseBatchResult, err error)
+	Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.SetObject, err error)
 }
 
 var _ BaseClientAPI = (*textanalytics.BaseClient)(nil)

@@ -28,19 +28,18 @@ import (
 
 	"github.com/stretchr/testify/assert"
 )
-
-func TestNamespaceWithTelemetryOption(t *testing.T) {
-	telemetryValue := "customer-telemetry-value"
-	nsTelemetryOption := NamespaceWithTelemetryValue(telemetryValue)
-	ns, err := NewNamespace(nsTelemetryOption)
+func TestNamespaceWithUserAgentOption(t *testing.T) {
+	userAgent := "custom-user-agent"
+	nsUserAgentOption := NamespaceWithUserAgent(userAgent)
+	ns, err := NewNamespace(nsUserAgentOption)
 	assert.Nil(t, err)
-	assert.Equal(t, fmt.Sprintf("%s/%s", rootUserAgent, telemetryValue), ns.getUserAgent())
+	assert.Equal(t, fmt.Sprintf("%s/%s", rootUserAgent, userAgent), ns.getUserAgent())
 }
 
-func TestNamespaceWithoutTelemetryOption(t *testing.T) {
-	telemetryValue := ""
-	nsTelemetryOption := NamespaceWithTelemetryValue(telemetryValue)
-	ns, err := NewNamespace(nsTelemetryOption)
+func TestNamespaceWithoutUserAgentOption(t *testing.T) {
+	userAgent := ""
+	nsUserAgentOption := NamespaceWithUserAgent(userAgent)
+	ns, err := NewNamespace(nsUserAgentOption)
 	assert.Nil(t, err)
 	assert.Equal(t, rootUserAgent, ns.getUserAgent())
 }

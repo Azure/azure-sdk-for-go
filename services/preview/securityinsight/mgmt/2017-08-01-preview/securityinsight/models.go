@@ -141,11 +141,11 @@ func PossibleDataTypeStateValues() []DataTypeState {
 type EntityKind string
 
 const (
-	// Account ...
+	// Account Entity represents account in the system.
 	Account EntityKind = "Account"
-	// File ...
+	// File Entity represents file in the system.
 	File EntityKind = "File"
-	// Host ...
+	// Host Entity represents host in the system.
 	Host EntityKind = "Host"
 )
 
@@ -234,13 +234,13 @@ func PossibleKindBasicSettingsValues() []KindBasicSettings {
 type OSFamily string
 
 const (
-	// Android ...
+	// Android Host with Android operartion system.
 	Android OSFamily = "Android"
-	// IOS ...
+	// IOS Host with IOS operartion system.
 	IOS OSFamily = "IOS"
-	// Linux ...
+	// Linux Host with Linux operartion system.
 	Linux OSFamily = "Linux"
-	// Windows ...
+	// Windows Host with Windows operartion system.
 	Windows OSFamily = "Windows"
 )
 
@@ -268,13 +268,13 @@ func PossibleSettingKindValues() []SettingKind {
 type Status string
 
 const (
-	// Closed Case is in closed status
+	// Closed A non active case
 	Closed Status = "Closed"
-	// Draft Case is in draft status
+	// Draft Case that wasn't promoted yet to active
 	Draft Status = "Draft"
-	// InProgress Case is in progress status
+	// InProgress An active case which is handled
 	InProgress Status = "InProgress"
-	// Open Case is in open status
+	// Open An active case which isn't handled currently
 	Open Status = "Open"
 )
 
@@ -526,19 +526,19 @@ func (ae *AccountEntity) UnmarshalJSON(body []byte) error {
 
 // AccountEntityProperties account entity property bag.
 type AccountEntityProperties struct {
-	// Name - The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
-	Name *string `json:"name,omitempty"`
+	// AccountName - The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
+	AccountName *string `json:"accountName,omitempty"`
 	// NtDomain - The NETBIOS domain name as it appears in the alert format – domain\username. Examples: NT AUTHORITY.
 	NtDomain *string `json:"ntDomain,omitempty"`
 	// UpnSuffix - The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
 	UpnSuffix *string `json:"upnSuffix,omitempty"`
 	// Sid - The account security identifier, e.g. S-1-5-18.
 	Sid *string `json:"sid,omitempty"`
-	// AadTenantID - The AAD tenant id.
+	// AadTenantID - The Azure Active Directory tenant id.
 	AadTenantID *string `json:"aadTenantId,omitempty"`
-	// AadUserID - The AAD user id.
+	// AadUserID - The Azure Active Directory user id.
 	AadUserID *string `json:"aadUserId,omitempty"`
-	// Puid - The AAD Passport User ID.
+	// Puid - The Azure Active Directory Passport User ID.
 	Puid *string `json:"puid,omitempty"`
 	// IsDomainJoined - Determines whether this is a domain account.
 	IsDomainJoined *bool `json:"isDomainJoined,omitempty"`
@@ -1195,7 +1195,7 @@ type Bookmark struct {
 	autorest.Response `json:"-"`
 	// Etag - Etag of the bookmark.
 	Etag *string `json:"etag,omitempty"`
-	// BookmarkProperties - Bookmark data
+	// BookmarkProperties - Bookmark properties
 	*BookmarkProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -1443,23 +1443,13 @@ type BookmarkProperties struct {
 	// CreatedBy - Describes a user that created the bookmark
 	CreatedBy *UserInfo `json:"createdBy,omitempty"`
 	// UpdatedBy - Describes a user that updated the bookmark
-	UpdatedBy *BookmarkPropertiesUpdatedBy `json:"updatedBy,omitempty"`
+	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
 	// Notes - The notes of the bookmark
 	Notes *string `json:"notes,omitempty"`
-	// Tags - List of tags
-	Tags *[]string `json:"tags,omitempty"`
+	// Labels - List of labels relevant to this bookmark
+	Labels *[]string `json:"labels,omitempty"`
 	// Query - The query of the bookmark.
 	Query *string `json:"query,omitempty"`
-}
-
-// BookmarkPropertiesUpdatedBy describes a user that updated the bookmark
-type BookmarkPropertiesUpdatedBy struct {
-	// ObjectID - The object id of the user.
-	ObjectID *uuid.UUID `json:"objectId,omitempty"`
-	// Email - The email of the user.
-	Email *string `json:"email,omitempty"`
-	// Name - The name of the user.
-	Name *string `json:"name,omitempty"`
 }
 
 // Case represents a case in Azure Security Insights.
@@ -1467,7 +1457,7 @@ type Case struct {
 	autorest.Response `json:"-"`
 	// Etag - Etag of the alert rule.
 	Etag *string `json:"etag,omitempty"`
-	// CaseProperties - Case data
+	// CaseProperties - Case properties
 	*CaseProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -1714,8 +1704,8 @@ type CaseProperties struct {
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
 	// StartTimeUtc - The start time of the case
 	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
-	// Tags - List of tags
-	Tags *[]string `json:"tags,omitempty"`
+	// Labels - List of labels relevant to this case
+	Labels *[]string `json:"labels,omitempty"`
 	// Description - The description of the case
 	Description *string `json:"description,omitempty"`
 	// Title - The title of the case
@@ -2793,8 +2783,8 @@ func (fe *FileEntity) UnmarshalJSON(body []byte) error {
 type FileEntityProperties struct {
 	// Directory - The full path to the file.
 	Directory *string `json:"directory,omitempty"`
-	// Name - The file name without path (some alerts might not include path).
-	Name *string `json:"name,omitempty"`
+	// FileName - The file name without path (some alerts might not include path).
+	FileName *string `json:"fileName,omitempty"`
 }
 
 // HostEntity represents a host entity.
@@ -3899,7 +3889,7 @@ func (sm *SettingsModel) UnmarshalJSON(body []byte) error {
 
 // TIDataConnector represents threat intelligence data connector.
 type TIDataConnector struct {
-	// TIDataConnectorProperties - TI data connector properties.
+	// TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -4052,7 +4042,7 @@ func (tdc *TIDataConnector) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TIDataConnectorDataTypes the available data types for TI data connector.
+// TIDataConnectorDataTypes the available data types for TI (Threat Intelligence) data connector.
 type TIDataConnectorDataTypes struct {
 	// Indicators - Data type for indicators connection.
 	Indicators *TIDataConnectorDataTypesIndicators `json:"indicators,omitempty"`
@@ -4064,7 +4054,7 @@ type TIDataConnectorDataTypesIndicators struct {
 	State DataTypeState `json:"state,omitempty"`
 }
 
-// TIDataConnectorProperties TI data connector properties.
+// TIDataConnectorProperties TI (Threat Intelligence) data connector properties.
 type TIDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
@@ -4194,9 +4184,9 @@ type ToggleSettingsProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
-// UebaSettings represents settings for UEBA enablement.
+// UebaSettings represents settings for User and Entity Behavior Analytics enablement.
 type UebaSettings struct {
-	// UebaSettingsProperties - UEBA settings properties
+	// UebaSettingsProperties - User and Entity Behavior Analytics settings properties
 	*UebaSettingsProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -4310,13 +4300,13 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// UebaSettingsProperties UEBA settings property bag.
+// UebaSettingsProperties user and Entity Behavior Analytics settings property bag.
 type UebaSettingsProperties struct {
-	// IsEnabled - Determines whether UEBA is enabled for this workspace.
+	// IsEnabled - Determines whether User and Entity Behavior Analytics is enabled for this workspace.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// StatusInMcas - Determines whether UEBA is enabled from MCAS. Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
+	// StatusInMcas - Determines whether User and Entity Behavior Analytics is enabled from MCAS (Microsoft Cloud App Security). Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
 	StatusInMcas StatusInMcas `json:"statusInMcas,omitempty"`
-	// AtpLicenseStatus - Determines whether the tenant .
+	// AtpLicenseStatus - Determines whether the tenant has ATP (Advanced Threat Protection) license.
 	AtpLicenseStatus *bool `json:"atpLicenseStatus,omitempty"`
 }
 

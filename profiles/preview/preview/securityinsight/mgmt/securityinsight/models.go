@@ -194,7 +194,6 @@ type BookmarkList = original.BookmarkList
 type BookmarkListIterator = original.BookmarkListIterator
 type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
-type BookmarkPropertiesUpdatedBy = original.BookmarkPropertiesUpdatedBy
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
 type CaseList = original.CaseList

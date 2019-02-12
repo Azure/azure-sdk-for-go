@@ -75,7 +75,9 @@ func (client BookmarksClient) Create(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "bookmarkID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
 		{TargetValue: bookmark,
 			Constraints: []validation.Constraint{{Target: "bookmark.BookmarkProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "bookmark.BookmarkProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.BookmarksClient", "Create", err.Error())
 	}
 

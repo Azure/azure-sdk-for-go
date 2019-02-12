@@ -49,10 +49,7 @@ type EntitiesBatchResult struct {
 	Documents *[]EntitiesBatchResultItem `json:"documents,omitempty"`
 	// Errors - Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - /// <summary>
-	//             (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             request payload.
-	//             </summary>
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -62,8 +59,7 @@ type EntitiesBatchResultItem struct {
 	ID *string `json:"id,omitempty"`
 	// Entities - Recognized entities in the document.
 	Entities *[]EntityRecord `json:"entities,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             document payload.
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
 }
 
@@ -79,8 +75,7 @@ type EntityRecord struct {
 	WikipediaID *string `json:"wikipediaId,omitempty"`
 	// WikipediaURL - URL for the entity's Wikipedia page.
 	WikipediaURL *string `json:"wikipediaUrl,omitempty"`
-	// BingID - Bing unique identifier of the recognized entity.
-	//             Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
+	// BingID - Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
 	BingID *string `json:"bingId,omitempty"`
 	// Type - Entity type from Named Entity Recognition model
 	Type *string `json:"type,omitempty"`
@@ -118,10 +113,7 @@ type KeyPhraseBatchResult struct {
 	Documents *[]KeyPhraseBatchResultItem `json:"documents,omitempty"`
 	// Errors - Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - /// <summary>
-	//             (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             request payload.
-	//             </summary>
+	// Statistics - =(Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -131,8 +123,7 @@ type KeyPhraseBatchResultItem struct {
 	ID *string `json:"id,omitempty"`
 	// KeyPhrases - A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
 	KeyPhrases *[]string `json:"keyPhrases,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             document payload.
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
 }
 
@@ -148,10 +139,7 @@ type LanguageBatchResult struct {
 	Documents *[]LanguageBatchResultItem `json:"documents,omitempty"`
 	// Errors - Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - /// <summary>
-	//             (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             request payload.
-	//             </summary>
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -161,8 +149,7 @@ type LanguageBatchResultItem struct {
 	ID *string `json:"id,omitempty"`
 	// DetectedLanguages - A list of extracted languages.
 	DetectedLanguages *[]DetectedLanguage `json:"detectedLanguages,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             document payload.
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
 }
 
@@ -176,11 +163,9 @@ type LanguageInput struct {
 
 // MatchRecord ...
 type MatchRecord struct {
-	// WikipediaScore - (optional) If a well-known item with Wikipedia link is recognized,
-	//             a decimal number denoting the confidence level of the Wikipedia info will be returned.
+	// WikipediaScore - (optional) If a well-known item with Wikipedia link is recognized, a decimal number denoting the confidence level of the Wikipedia info will be returned.
 	WikipediaScore *float64 `json:"wikipediaScore,omitempty"`
-	// EntityTypeScore - (optional) If an entity type is recognized,
-	//             a decimal number denoting the confidence level of the entity type will be returned.
+	// EntityTypeScore - (optional) If an entity type is recognized, a decimal number denoting the confidence level of the entity type will be returned.
 	EntityTypeScore *float64 `json:"entityTypeScore,omitempty"`
 	// Text - Entity text as appears in the request.
 	Text *string `json:"text,omitempty"`
@@ -197,8 +182,7 @@ type MultiLanguageBatchInput struct {
 
 // MultiLanguageInput ...
 type MultiLanguageInput struct {
-	// Language - This is the 2 letter ISO 639-1 representation of a language.
-	//             For example, use "en" for English; "es" for Spanish etc.,
+	// Language - This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es" for Spanish etc.,
 	Language *string `json:"language,omitempty"`
 	// ID - Unique, non-empty document identifier.
 	ID   *string `json:"id,omitempty"`
@@ -223,10 +207,7 @@ type SentimentBatchResult struct {
 	Documents *[]SentimentBatchResultItem `json:"documents,omitempty"`
 	// Errors - Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - /// <summary>
-	//             (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             request payload.
-	//             </summary>
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -234,12 +215,9 @@ type SentimentBatchResult struct {
 type SentimentBatchResultItem struct {
 	// ID - Unique, non-empty document identifier.
 	ID *string `json:"id,omitempty"`
-	// Score - A decimal number between 0 and 1 denoting the sentiment of the document.
-	//             A score above 0.7 usually refers to a positive document while a score below 0.3 normally has a negative connotation.
-	//             Mid values refer to neutral text.
+	// Score - A decimal number between 0 and 1 denoting the sentiment of the document. A score above 0.7 usually refers to a positive document while a score below 0.3 normally has a negative connotation. Mid values refer to neutral text.
 	Score *float64 `json:"score,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the
-	//             document payload.
+	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
 }
 

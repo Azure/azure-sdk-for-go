@@ -32,13 +32,13 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates an instance of the LocationsClient client.
-func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClient {
-	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewLocationsClient(ascLocation string, subscriptionID string) LocationsClient {
+	return NewLocationsClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
 }
 
 // NewLocationsClientWithBaseURI creates an instance of the LocationsClient client.
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) LocationsClient {
-	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewLocationsClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) LocationsClient {
+	return LocationsClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
 }
 
 // Get details of a specific location

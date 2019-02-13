@@ -32,13 +32,13 @@ type ExternalSecuritySolutionsClient struct {
 }
 
 // NewExternalSecuritySolutionsClient creates an instance of the ExternalSecuritySolutionsClient client.
-func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
-	return NewExternalSecuritySolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewExternalSecuritySolutionsClient(ascLocation string, subscriptionID string) ExternalSecuritySolutionsClient {
+	return NewExternalSecuritySolutionsClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
 }
 
 // NewExternalSecuritySolutionsClientWithBaseURI creates an instance of the ExternalSecuritySolutionsClient client.
-func NewExternalSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
-	return ExternalSecuritySolutionsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewExternalSecuritySolutionsClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) ExternalSecuritySolutionsClient {
+	return ExternalSecuritySolutionsClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
 }
 
 // Get gets a specific external Security Solution.

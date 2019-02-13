@@ -21,20 +21,12 @@ package securityapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security/securityapi"
 
-type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
-type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
-type CompliancesClientAPI = original.CompliancesClientAPI
-type ContactsClientAPI = original.ContactsClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
-type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type PricingsClientAPI = original.PricingsClientAPI
-type SettingsClientAPI = original.SettingsClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type TopologyClientAPI = original.TopologyClientAPI
-type WorkspaceSettingsClientAPI = original.WorkspaceSettingsClientAPI

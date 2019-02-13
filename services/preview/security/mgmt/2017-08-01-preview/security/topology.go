@@ -32,13 +32,13 @@ type TopologyClient struct {
 }
 
 // NewTopologyClient creates an instance of the TopologyClient client.
-func NewTopologyClient(subscriptionID string, ascLocation string) TopologyClient {
-	return NewTopologyClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewTopologyClient(ascLocation string, subscriptionID string) TopologyClient {
+	return NewTopologyClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
 }
 
 // NewTopologyClientWithBaseURI creates an instance of the TopologyClient client.
-func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TopologyClient {
-	return TopologyClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewTopologyClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) TopologyClient {
+	return TopologyClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
 }
 
 // Get gets a specific topology component.

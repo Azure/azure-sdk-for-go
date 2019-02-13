@@ -47,7 +47,7 @@ func NewVirtualNetworkLinksClientWithBaseURI(baseURI string, subscriptionID stri
 // virtualNetworkLinkName - the name of the virtual network link.
 // parameters - parameters supplied to the CreateOrUpdate operation.
 // ifMatch - the ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-// the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwritting any
+// the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
 // concurrent changes.
 // ifNoneMatch - set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
 // prevent updating an existing link. Other values will be ignored.
@@ -427,7 +427,7 @@ func (client VirtualNetworkLinksClient) ListComplete(ctx context.Context, resour
 // virtualNetworkLinkName - the name of the virtual network link.
 // parameters - parameters supplied to the Update operation.
 // ifMatch - the ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-// the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwritting any
+// the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
 // concurrent changes.
 func (client VirtualNetworkLinksClient) Update(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, ifMatch string) (result VirtualNetworkLinksUpdateFuture, err error) {
 	if tracing.IsEnabled() {

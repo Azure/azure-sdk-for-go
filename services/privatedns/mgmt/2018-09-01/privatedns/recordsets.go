@@ -49,7 +49,7 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 // relativeRecordSetName - the name of the record set, relative to the name of the zone.
 // parameters - parameters supplied to the CreateOrUpdate operation.
 // ifMatch - the ETag of the record set. Omit this value to always overwrite the current record set. Specify
-// the last-seen ETag value to prevent accidentally overwritting any concurrent changes.
+// the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
 // ifNoneMatch - set to '*' to allow a new record set to be created, but to prevent updating an existing record
 // set. Other values will be ignored.
 func (client RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
@@ -565,7 +565,7 @@ func (client RecordSetsClient) ListByTypeComplete(ctx context.Context, resourceG
 // relativeRecordSetName - the name of the record set, relative to the name of the zone.
 // parameters - parameters supplied to the Update operation.
 // ifMatch - the ETag of the record set. Omit this value to always overwrite the current record set. Specify
-// the last-seen ETag value to prevent accidentally overwritting concurrent changes.
+// the last-seen ETag value to prevent accidentally overwriting concurrent changes.
 func (client RecordSetsClient) Update(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, ifMatch string) (result RecordSet, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecordSetsClient.Update")

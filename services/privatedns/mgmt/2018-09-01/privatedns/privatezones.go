@@ -47,7 +47,7 @@ func NewPrivateZonesClientWithBaseURI(baseURI string, subscriptionID string) Pri
 // privateZoneName - the name of the Private DNS zone (without a terminating dot).
 // parameters - parameters supplied to the CreateOrUpdate operation.
 // ifMatch - the ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-// the last-seen ETag value to prevent accidentally overwritting any concurrent changes.
+// the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
 // ifNoneMatch - set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
 // zone. Other values will be ignored.
 func (client PrivateZonesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, ifMatch string, ifNoneMatch string) (result PrivateZonesCreateOrUpdateFuture, err error) {
@@ -532,7 +532,7 @@ func (client PrivateZonesClient) ListByResourceGroupComplete(ctx context.Context
 // privateZoneName - the name of the Private DNS zone (without a terminating dot).
 // parameters - parameters supplied to the Update operation.
 // ifMatch - the ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-// the last-seen ETag value to prevent accidentally overwritting any concurrent changes.
+// the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
 func (client PrivateZonesClient) Update(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, ifMatch string) (result PrivateZonesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateZonesClient.Update")

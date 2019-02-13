@@ -54,6 +54,15 @@ const (
 	CaseSeverityMedium        CaseSeverity = original.CaseSeverityMedium
 )
 
+type CaseStatus = original.CaseStatus
+
+const (
+	Closed     CaseStatus = original.Closed
+	Draft      CaseStatus = original.Draft
+	InProgress CaseStatus = original.InProgress
+	Open       CaseStatus = original.Open
+)
+
 type CloseReason = original.CloseReason
 
 const (
@@ -136,15 +145,6 @@ type SettingKind = original.SettingKind
 const (
 	SettingKindToggleSettings SettingKind = original.SettingKindToggleSettings
 	SettingKindUebaSettings   SettingKind = original.SettingKindUebaSettings
-)
-
-type Status = original.Status
-
-const (
-	Closed     Status = original.Closed
-	Draft      Status = original.Draft
-	InProgress Status = original.InProgress
-	Open       Status = original.Open
 )
 
 type StatusInMcas = original.StatusInMcas
@@ -377,6 +377,9 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 func PossibleCaseSeverityValues() []CaseSeverity {
 	return original.PossibleCaseSeverityValues()
 }
+func PossibleCaseStatusValues() []CaseStatus {
+	return original.PossibleCaseStatusValues()
+}
 func PossibleCloseReasonValues() []CloseReason {
 	return original.PossibleCloseReasonValues()
 }
@@ -409,9 +412,6 @@ func PossibleSettingKindValues() []SettingKind {
 }
 func PossibleStatusInMcasValues() []StatusInMcas {
 	return original.PossibleStatusInMcasValues()
-}
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
 }
 func PossibleTriggerOperatorValues() []TriggerOperator {
 	return original.PossibleTriggerOperatorValues()

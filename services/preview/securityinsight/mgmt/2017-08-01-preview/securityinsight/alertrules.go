@@ -41,7 +41,7 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 	return AlertRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates or updates the alert rule.
+// CreateOrUpdate creates or updates the alert rule.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -50,9 +50,9 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
 // alertRule - the alert rule
-func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (result AlertRuleModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -71,32 +71,32 @@ func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName str
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.AlertRulesClient", "Create", err.Error())
+		return result, validation.NewError("securityinsight.AlertRulesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, alertRule)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, alertRule)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client AlertRulesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -120,16 +120,16 @@ func (client AlertRulesClient) CreatePreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertRulesClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client AlertRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) CreateResponder(resp *http.Response) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (result AlertRuleModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -140,7 +140,7 @@ func (client AlertRulesClient) CreateResponder(resp *http.Response) (result Aler
 	return
 }
 
-// CreateAction creates or updates the action of alert rule.
+// CreateOrUpdateAction creates or updates the action of alert rule.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -150,9 +150,9 @@ func (client AlertRulesClient) CreateResponder(resp *http.Response) (result Aler
 // ruleID - alert rule ID
 // actionID - action ID
 // action - the action
-func (client AlertRulesClient) CreateAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action Action) (result Action, err error) {
+func (client AlertRulesClient) CreateOrUpdateAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action Action) (result Action, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.CreateAction")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.CreateOrUpdateAction")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -171,32 +171,32 @@ func (client AlertRulesClient) CreateAction(ctx context.Context, resourceGroupNa
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.AlertRulesClient", "CreateAction", err.Error())
+		return result, validation.NewError("securityinsight.AlertRulesClient", "CreateOrUpdateAction", err.Error())
 	}
 
-	req, err := client.CreateActionPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, actionID, action)
+	req, err := client.CreateOrUpdateActionPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, actionID, action)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateAction", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateActionSender(req)
+	resp, err := client.CreateOrUpdateActionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateAction", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateActionResponder(resp)
+	result, err = client.CreateOrUpdateActionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateAction", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreateActionPreparer prepares the CreateAction request.
-func (client AlertRulesClient) CreateActionPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action Action) (*http.Request, error) {
+// CreateOrUpdateActionPreparer prepares the CreateOrUpdateAction request.
+func (client AlertRulesClient) CreateOrUpdateActionPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action Action) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionId":                            autorest.Encode("path", actionID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
@@ -221,16 +221,16 @@ func (client AlertRulesClient) CreateActionPreparer(ctx context.Context, resourc
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateActionSender sends the CreateAction request. The method will close the
+// CreateOrUpdateActionSender sends the CreateOrUpdateAction request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertRulesClient) CreateActionSender(req *http.Request) (*http.Response, error) {
+func (client AlertRulesClient) CreateOrUpdateActionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateActionResponder handles the response to the CreateAction request. The method always
+// CreateOrUpdateActionResponder handles the response to the CreateOrUpdateAction request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) CreateActionResponder(resp *http.Response) (result Action, err error) {
+func (client AlertRulesClient) CreateOrUpdateActionResponder(resp *http.Response) (result Action, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

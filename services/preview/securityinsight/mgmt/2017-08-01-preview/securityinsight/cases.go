@@ -41,7 +41,7 @@ func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClien
 	return CasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates or updates the case.
+// CreateOrUpdate creates or updates the case.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -50,9 +50,9 @@ func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClien
 // workspaceName - the name of the workspace.
 // caseID - case ID
 // caseParameter - the case
-func (client CasesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter Case) (result Case, err error) {
+func (client CasesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter Case) (result Case, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CasesClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CasesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -74,32 +74,32 @@ func (client CasesClient) Create(ctx context.Context, resourceGroupName string, 
 		{TargetValue: caseParameter,
 			Constraints: []validation.Constraint{{Target: "caseParameter.CaseProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.Title", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("securityinsight.CasesClient", "Create", err.Error())
+		return result, validation.NewError("securityinsight.CasesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, caseParameter)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, caseParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client CasesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter Case) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client CasesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter Case) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"caseId":                              autorest.Encode("path", caseID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
@@ -123,16 +123,16 @@ func (client CasesClient) CreatePreparer(ctx context.Context, resourceGroupName 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client CasesClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client CasesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client CasesClient) CreateResponder(resp *http.Response) (result Case, err error) {
+func (client CasesClient) CreateOrUpdateResponder(resp *http.Response) (result Case, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -41,7 +41,7 @@ func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) Bookma
 	return BookmarksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates or updates the bookmark.
+// CreateOrUpdate creates or updates the bookmark.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -50,9 +50,9 @@ func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) Bookma
 // workspaceName - the name of the workspace.
 // bookmarkID - bookmark ID
 // bookmark - the bookmark
-func (client BookmarksClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark Bookmark) (result Bookmark, err error) {
+func (client BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark Bookmark) (result Bookmark, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -76,32 +76,32 @@ func (client BookmarksClient) Create(ctx context.Context, resourceGroupName stri
 				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "bookmark.BookmarkProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("securityinsight.BookmarksClient", "Create", err.Error())
+		return result, validation.NewError("securityinsight.BookmarksClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, bookmarkID, bookmark)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, bookmarkID, bookmark)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client BookmarksClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark Bookmark) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client BookmarksClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark Bookmark) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"bookmarkId":                          autorest.Encode("path", bookmarkID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
@@ -125,16 +125,16 @@ func (client BookmarksClient) CreatePreparer(ctx context.Context, resourceGroupN
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client BookmarksClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client BookmarksClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client BookmarksClient) CreateResponder(resp *http.Response) (result Bookmark, err error) {
+func (client BookmarksClient) CreateOrUpdateResponder(resp *http.Response) (result Bookmark, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

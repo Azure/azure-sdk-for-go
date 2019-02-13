@@ -84,6 +84,25 @@ func PossibleCaseSeverityValues() []CaseSeverity {
 	return []CaseSeverity{CaseSeverityCritical, CaseSeverityHigh, CaseSeverityInformational, CaseSeverityLow, CaseSeverityMedium}
 }
 
+// CaseStatus enumerates the values for case status.
+type CaseStatus string
+
+const (
+	// Closed A non active case
+	Closed CaseStatus = "Closed"
+	// Draft Case that wasn't promoted yet to active
+	Draft CaseStatus = "Draft"
+	// InProgress An active case which is handled
+	InProgress CaseStatus = "InProgress"
+	// Open An active case which isn't handled currently
+	Open CaseStatus = "Open"
+)
+
+// PossibleCaseStatusValues returns an array of possible values for the CaseStatus const type.
+func PossibleCaseStatusValues() []CaseStatus {
+	return []CaseStatus{Closed, Draft, InProgress, Open}
+}
+
 // CloseReason enumerates the values for close reason.
 type CloseReason string
 
@@ -260,25 +279,6 @@ const (
 // PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
 func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindToggleSettings, SettingKindUebaSettings}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Closed A non active case
-	Closed Status = "Closed"
-	// Draft Case that wasn't promoted yet to active
-	Draft Status = "Draft"
-	// InProgress An active case which is handled
-	InProgress Status = "InProgress"
-	// Open An active case which isn't handled currently
-	Open Status = "Open"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Closed, Draft, InProgress, Open}
 }
 
 // StatusInMcas enumerates the values for status in mcas.
@@ -1845,7 +1845,7 @@ type CaseProperties struct {
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
 	Severity CaseSeverity `json:"severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'Draft', 'Open', 'InProgress', 'Closed'
-	Status Status `json:"status,omitempty"`
+	Status CaseStatus `json:"status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
 }

@@ -41,7 +41,7 @@ func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) D
 	return DataConnectorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates or updates the data connector.
+// CreateOrUpdate creates or updates the data connector.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -50,9 +50,9 @@ func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) D
 // workspaceName - the name of the workspace.
 // dataConnectorID - connector ID
 // dataConnector - the data connector
-func (client DataConnectorsClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (result DataConnectorModel, err error) {
+func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (result DataConnectorModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -71,32 +71,32 @@ func (client DataConnectorsClient) Create(ctx context.Context, resourceGroupName
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.DataConnectorsClient", "Create", err.Error())
+		return result, validation.NewError("securityinsight.DataConnectorsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID, dataConnector)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID, dataConnector)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client DataConnectorsClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
@@ -120,16 +120,16 @@ func (client DataConnectorsClient) CreatePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataConnectorsClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client DataConnectorsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DataConnectorsClient) CreateResponder(resp *http.Response) (result DataConnectorModel, err error) {
+func (client DataConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (result DataConnectorModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

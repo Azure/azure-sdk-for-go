@@ -32,13 +32,13 @@ type DiscoveredSecuritySolutionsClient struct {
 }
 
 // NewDiscoveredSecuritySolutionsClient creates an instance of the DiscoveredSecuritySolutionsClient client.
-func NewDiscoveredSecuritySolutionsClient(ascLocation string, subscriptionID string) DiscoveredSecuritySolutionsClient {
-	return NewDiscoveredSecuritySolutionsClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
+func NewDiscoveredSecuritySolutionsClient(subscriptionID string, ascLocation string) DiscoveredSecuritySolutionsClient {
+	return NewDiscoveredSecuritySolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewDiscoveredSecuritySolutionsClientWithBaseURI creates an instance of the DiscoveredSecuritySolutionsClient client.
-func NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) DiscoveredSecuritySolutionsClient {
-	return DiscoveredSecuritySolutionsClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
+func NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DiscoveredSecuritySolutionsClient {
+	return DiscoveredSecuritySolutionsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Get gets a specific discovered Security Solution.

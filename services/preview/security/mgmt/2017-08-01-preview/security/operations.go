@@ -31,13 +31,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(ascLocation string, subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
+func NewOperationsClient(subscriptionID string, ascLocation string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // List exposes all available operations for discovery purposes.

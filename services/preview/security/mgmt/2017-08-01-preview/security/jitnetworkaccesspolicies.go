@@ -32,13 +32,13 @@ type JitNetworkAccessPoliciesClient struct {
 }
 
 // NewJitNetworkAccessPoliciesClient creates an instance of the JitNetworkAccessPoliciesClient client.
-func NewJitNetworkAccessPoliciesClient(ascLocation string, subscriptionID string) JitNetworkAccessPoliciesClient {
-	return NewJitNetworkAccessPoliciesClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
+func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
+	return NewJitNetworkAccessPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewJitNetworkAccessPoliciesClientWithBaseURI creates an instance of the JitNetworkAccessPoliciesClient client.
-func NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) JitNetworkAccessPoliciesClient {
-	return JitNetworkAccessPoliciesClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
+func NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
+	return JitNetworkAccessPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // CreateOrUpdate create a policy for protecting resources using Just-in-Time access control

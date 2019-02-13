@@ -1,4 +1,4 @@
-// Package security implements the Azure ARM Security service API version 2015-06-01-preview.
+// Package security implements the Azure ARM Security service API version .
 //
 // API spec for Microsoft.Security (Azure Security Center) resource provider
 package security
@@ -33,21 +33,21 @@ const (
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string
-	AscLocation    string
 	SubscriptionID string
+	AscLocation    string
 }
 
 // New creates an instance of the BaseClient client.
-func New(ascLocation string, subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
+func New(subscriptionID string, ascLocation string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, ascLocation string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, ascLocation string) BaseClient {
 	return BaseClient{
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
-		AscLocation:    ascLocation,
 		SubscriptionID: subscriptionID,
+		AscLocation:    ascLocation,
 	}
 }

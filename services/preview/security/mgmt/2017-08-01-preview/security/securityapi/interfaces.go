@@ -23,6 +23,83 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// PricingsClientAPI contains the set of methods on the PricingsClient type.
+type PricingsClientAPI interface {
+	CreateOrUpdateResourceGroupPricing(ctx context.Context, resourceGroupName string, pricingName string, pricing security.Pricing) (result security.Pricing, err error)
+	GetResourceGroupPricing(ctx context.Context, resourceGroupName string, pricingName string) (result security.Pricing, err error)
+	GetSubscriptionPricing(ctx context.Context, pricingName string) (result security.Pricing, err error)
+	List(ctx context.Context) (result security.PricingListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.PricingListPage, err error)
+	UpdateSubscriptionPricing(ctx context.Context, pricingName string, pricing security.Pricing) (result security.Pricing, err error)
+}
+
+var _ PricingsClientAPI = (*security.PricingsClient)(nil)
+
+// ContactsClientAPI contains the set of methods on the ContactsClient type.
+type ContactsClientAPI interface {
+	Create(ctx context.Context, securityContactName string, securityContact security.Contact) (result security.Contact, err error)
+	Delete(ctx context.Context, securityContactName string) (result autorest.Response, err error)
+	Get(ctx context.Context, securityContactName string) (result security.Contact, err error)
+	List(ctx context.Context) (result security.ContactListPage, err error)
+	Update(ctx context.Context, securityContactName string, securityContact security.Contact) (result security.Contact, err error)
+}
+
+var _ ContactsClientAPI = (*security.ContactsClient)(nil)
+
+// WorkspaceSettingsClientAPI contains the set of methods on the WorkspaceSettingsClient type.
+type WorkspaceSettingsClientAPI interface {
+	Create(ctx context.Context, workspaceSettingName string, workspaceSetting security.WorkspaceSetting) (result security.WorkspaceSetting, err error)
+	Delete(ctx context.Context, workspaceSettingName string) (result autorest.Response, err error)
+	Get(ctx context.Context, workspaceSettingName string) (result security.WorkspaceSetting, err error)
+	List(ctx context.Context) (result security.WorkspaceSettingListPage, err error)
+	Update(ctx context.Context, workspaceSettingName string, workspaceSetting security.WorkspaceSetting) (result security.WorkspaceSetting, err error)
+}
+
+var _ WorkspaceSettingsClientAPI = (*security.WorkspaceSettingsClient)(nil)
+
+// AutoProvisioningSettingsClientAPI contains the set of methods on the AutoProvisioningSettingsClient type.
+type AutoProvisioningSettingsClientAPI interface {
+	Create(ctx context.Context, settingName string, setting security.AutoProvisioningSetting) (result security.AutoProvisioningSetting, err error)
+	Get(ctx context.Context, settingName string) (result security.AutoProvisioningSetting, err error)
+	List(ctx context.Context) (result security.AutoProvisioningSettingListPage, err error)
+}
+
+var _ AutoProvisioningSettingsClientAPI = (*security.AutoProvisioningSettingsClient)(nil)
+
+// CompliancesClientAPI contains the set of methods on the CompliancesClient type.
+type CompliancesClientAPI interface {
+	Get(ctx context.Context, scope string, complianceName string) (result security.Compliance, err error)
+	List(ctx context.Context, scope string) (result security.ComplianceListPage, err error)
+}
+
+var _ CompliancesClientAPI = (*security.CompliancesClient)(nil)
+
+// AdvancedThreatProtectionClientAPI contains the set of methods on the AdvancedThreatProtectionClient type.
+type AdvancedThreatProtectionClientAPI interface {
+	Create(ctx context.Context, resourceID string, advancedThreatProtectionSetting security.AdvancedThreatProtectionSetting) (result security.AdvancedThreatProtectionSetting, err error)
+	Get(ctx context.Context, resourceID string) (result security.AdvancedThreatProtectionSetting, err error)
+}
+
+var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
+
+// SettingsClientAPI contains the set of methods on the SettingsClient type.
+type SettingsClientAPI interface {
+	Get(ctx context.Context, settingName string) (result security.Setting, err error)
+	List(ctx context.Context) (result security.SettingsListPage, err error)
+	Update(ctx context.Context, settingName string, setting security.Setting) (result security.Setting, err error)
+}
+
+var _ SettingsClientAPI = (*security.SettingsClient)(nil)
+
+// InformationProtectionPoliciesClientAPI contains the set of methods on the InformationProtectionPoliciesClient type.
+type InformationProtectionPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
+	Get(ctx context.Context, scope string, informationProtectionPolicyName string) (result security.InformationProtectionPolicy, err error)
+	List(ctx context.Context, scope string) (result security.InformationProtectionPolicyListPage, err error)
+}
+
+var _ InformationProtectionPoliciesClientAPI = (*security.InformationProtectionPoliciesClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result security.OperationListPage, err error)

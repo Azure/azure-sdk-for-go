@@ -32,13 +32,13 @@ type AlertsClient struct {
 }
 
 // NewAlertsClient creates an instance of the AlertsClient client.
-func NewAlertsClient(ascLocation string, subscriptionID string) AlertsClient {
-	return NewAlertsClientWithBaseURI(DefaultBaseURI, ascLocation, subscriptionID)
+func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
+	return NewAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewAlertsClientWithBaseURI creates an instance of the AlertsClient client.
-func NewAlertsClientWithBaseURI(baseURI string, ascLocation string, subscriptionID string) AlertsClient {
-	return AlertsClient{NewWithBaseURI(baseURI, ascLocation, subscriptionID)}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
+	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // GetResourceGroupLevelAlerts get an alert that is associated a resource group or a resource in a resource group

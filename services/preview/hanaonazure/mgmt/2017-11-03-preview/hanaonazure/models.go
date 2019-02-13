@@ -273,6 +273,8 @@ type HanaInstanceProperties struct {
 	PowerState HanaInstancePowerStateEnum `json:"powerState,omitempty"`
 	// ProximityPlacementGroup - Resource proximity placement group
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
+	// HwRevision - Hardware revision of a HANA instance
+	HwRevision *string `json:"hwRevision,omitempty"`
 }
 
 // HanaInstancesListResult the response from the List HANA Instances operation.

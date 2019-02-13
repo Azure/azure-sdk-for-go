@@ -57,6 +57,7 @@ type (
 		Name          string
 		TokenProvider auth.TokenProvider
 		Environment   azure.Environment
+		userAgent     string
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
@@ -78,6 +79,14 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 			return err
 		}
 		ns.TokenProvider = provider
+		return nil
+	}
+}
+
+// NamespaceWithUserAgent appends to the root user-agent value.
+func NamespaceWithUserAgent(userAgent string) NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.userAgent = userAgent
 		return nil
 	}
 }
@@ -107,7 +116,7 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 		amqp.ConnProperty("version", Version),
 		amqp.ConnProperty("platform", runtime.GOOS),
 		amqp.ConnProperty("framework", runtime.Version()),
-		amqp.ConnProperty("user-agent", rootUserAgent),
+		amqp.ConnProperty("user-agent", ns.getUserAgent()),
 	)
 }
 
@@ -129,4 +138,12 @@ func (ns *Namespace) getHTTPSHostURI() string {
 
 func (ns *Namespace) getEntityAudience(entityPath string) string {
 	return ns.getAMQPHostURI() + entityPath
+}
+
+func (ns *Namespace) getUserAgent() string {
+	userAgent := rootUserAgent
+	if ns.userAgent != "" {
+		userAgent = fmt.Sprintf("%s/%s", userAgent, ns.userAgent)
+	}
+	return userAgent
 }

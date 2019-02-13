@@ -41,7 +41,7 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 	return AlertRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates or updates the alert rule.
+// CreateOrUpdate creates or updates the alert rule.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -50,9 +50,9 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
 // alertRule - the alert rule
-func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (result AlertRuleModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -70,35 +70,33 @@ func (client AlertRulesClient) Create(ctx context.Context, resourceGroupName str
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: ruleID,
-			Constraints: []validation.Constraint{{Target: "ruleID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.AlertRulesClient", "Create", err.Error())
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("securityinsight.AlertRulesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, alertRule)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, alertRule)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client AlertRulesClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -122,16 +120,117 @@ func (client AlertRulesClient) CreatePreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertRulesClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client AlertRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) CreateResponder(resp *http.Response) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (result AlertRuleModel, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateOrUpdateAction creates or updates the action of alert rule.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
+// Microsoft.OperationalInsights.
+// workspaceName - the name of the workspace.
+// ruleID - alert rule ID
+// actionID - action ID
+// action - the action
+func (client AlertRulesClient) CreateOrUpdateAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action Action) (result Action, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.CreateOrUpdateAction")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("securityinsight.AlertRulesClient", "CreateOrUpdateAction", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateActionPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, actionID, action)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateActionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateActionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdateAction", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateActionPreparer prepares the CreateOrUpdateAction request.
+func (client AlertRulesClient) CreateOrUpdateActionPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action Action) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"actionId":                            autorest.Encode("path", actionID),
+		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"ruleId":                              autorest.Encode("path", ruleID),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":                       autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}", pathParameters),
+		autorest.WithJSON(action),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateActionSender sends the CreateOrUpdateAction request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertRulesClient) CreateOrUpdateActionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateActionResponder handles the response to the CreateOrUpdateAction request. The method always
+// closes the http.Response Body.
+func (client AlertRulesClient) CreateOrUpdateActionResponder(resp *http.Response) (result Action, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -170,9 +269,7 @@ func (client AlertRulesClient) Delete(ctx context.Context, resourceGroupName str
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: ruleID,
-			Constraints: []validation.Constraint{{Target: "ruleID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.AlertRulesClient", "Delete", err.Error())
 	}
 
@@ -239,7 +336,104 @@ func (client AlertRulesClient) DeleteResponder(resp *http.Response) (result auto
 	return
 }
 
-// Get gets a alert rule.
+// DeleteAction delete the action of alert rule.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
+// Microsoft.OperationalInsights.
+// workspaceName - the name of the workspace.
+// ruleID - alert rule ID
+// actionID - action ID
+func (client AlertRulesClient) DeleteAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.DeleteAction")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("securityinsight.AlertRulesClient", "DeleteAction", err.Error())
+	}
+
+	req, err := client.DeleteActionPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, actionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "DeleteAction", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteActionSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "DeleteAction", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteActionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "DeleteAction", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteActionPreparer prepares the DeleteAction request.
+func (client AlertRulesClient) DeleteActionPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"actionId":                            autorest.Encode("path", actionID),
+		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"ruleId":                              autorest.Encode("path", ruleID),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":                       autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteActionSender sends the DeleteAction request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertRulesClient) DeleteActionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteActionResponder handles the response to the DeleteAction request. The method always
+// closes the http.Response Body.
+func (client AlertRulesClient) DeleteActionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get gets the alert rule.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -267,9 +461,7 @@ func (client AlertRulesClient) Get(ctx context.Context, resourceGroupName string
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: ruleID,
-			Constraints: []validation.Constraint{{Target: "ruleID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.AlertRulesClient", "Get", err.Error())
 	}
 
@@ -327,6 +519,104 @@ func (client AlertRulesClient) GetSender(req *http.Request) (*http.Response, err
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRuleModel, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetAction gets the action of alert rule.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
+// Microsoft.OperationalInsights.
+// workspaceName - the name of the workspace.
+// ruleID - alert rule ID
+// actionID - action ID
+func (client AlertRulesClient) GetAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result Action, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.GetAction")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("securityinsight.AlertRulesClient", "GetAction", err.Error())
+	}
+
+	req, err := client.GetActionPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, actionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "GetAction", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetActionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "GetAction", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetActionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "GetAction", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetActionPreparer prepares the GetAction request.
+func (client AlertRulesClient) GetActionPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"actionId":                            autorest.Encode("path", actionID),
+		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"ruleId":                              autorest.Encode("path", ruleID),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":                       autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetActionSender sends the GetAction request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertRulesClient) GetActionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetActionResponder handles the response to the GetAction request. The method always
+// closes the http.Response Body.
+func (client AlertRulesClient) GetActionResponder(resp *http.Response) (result Action, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

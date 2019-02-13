@@ -26,33 +26,33 @@ import (
 	"net/http"
 )
 
-// DataConnectorsClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
-type DataConnectorsClient struct {
+// BookmarksClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
+type BookmarksClient struct {
 	BaseClient
 }
 
-// NewDataConnectorsClient creates an instance of the DataConnectorsClient client.
-func NewDataConnectorsClient(subscriptionID string) DataConnectorsClient {
-	return NewDataConnectorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewBookmarksClient creates an instance of the BookmarksClient client.
+func NewBookmarksClient(subscriptionID string) BookmarksClient {
+	return NewBookmarksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataConnectorsClientWithBaseURI creates an instance of the DataConnectorsClient client.
-func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectorsClient {
-	return DataConnectorsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewBookmarksClientWithBaseURI creates an instance of the BookmarksClient client.
+func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) BookmarksClient {
+	return BookmarksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates the data connector.
+// CreateOrUpdate creates or updates the bookmark.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// dataConnectorID - connector ID
-// dataConnector - the data connector
-func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (result DataConnectorModel, err error) {
+// bookmarkID - bookmark ID
+// bookmark - the bookmark
+func (client BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark Bookmark) (result Bookmark, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -70,35 +70,40 @@ func (client DataConnectorsClient) CreateOrUpdate(ctx context.Context, resourceG
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.DataConnectorsClient", "CreateOrUpdate", err.Error())
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: bookmark,
+			Constraints: []validation.Constraint{{Target: "bookmark.BookmarkProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "bookmark.BookmarkProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("securityinsight.BookmarksClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID, dataConnector)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, bookmarkID, bookmark)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector BasicDataConnector) (*http.Request, error) {
+func (client BookmarksClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark Bookmark) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
+		"bookmarkId":                          autorest.Encode("path", bookmarkID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
@@ -114,22 +119,22 @@ func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
-		autorest.WithJSON(dataConnector),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}", pathParameters),
+		autorest.WithJSON(bookmark),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataConnectorsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client BookmarksClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DataConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (result DataConnectorModel, err error) {
+func (client BookmarksClient) CreateOrUpdateResponder(resp *http.Response) (result Bookmark, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -140,17 +145,17 @@ func (client DataConnectorsClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Delete delete the data connector.
+// Delete delete the bookmark.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// dataConnectorID - connector ID
-func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result autorest.Response, err error) {
+// bookmarkID - bookmark ID
+func (client BookmarksClient) Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -169,34 +174,34 @@ func (client DataConnectorsClient) Delete(ctx context.Context, resourceGroupName
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.DataConnectorsClient", "Delete", err.Error())
+		return result, validation.NewError("securityinsight.BookmarksClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, bookmarkID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataConnectorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (*http.Request, error) {
+func (client BookmarksClient) DeletePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
+		"bookmarkId":                          autorest.Encode("path", bookmarkID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
@@ -211,21 +216,21 @@ func (client DataConnectorsClient) DeletePreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataConnectorsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client BookmarksClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DataConnectorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BookmarksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -235,17 +240,17 @@ func (client DataConnectorsClient) DeleteResponder(resp *http.Response) (result 
 	return
 }
 
-// Get gets a data connector.
+// Get gets a bookmark.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// dataConnectorID - connector ID
-func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result DataConnectorModel, err error) {
+// bookmarkID - bookmark ID
+func (client BookmarksClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (result Bookmark, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -264,34 +269,34 @@ func (client DataConnectorsClient) Get(ctx context.Context, resourceGroupName st
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.DataConnectorsClient", "Get", err.Error())
+		return result, validation.NewError("securityinsight.BookmarksClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, dataConnectorID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, bookmarkID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DataConnectorsClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (*http.Request, error) {
+func (client BookmarksClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"dataConnectorId":                     autorest.Encode("path", dataConnectorID),
+		"bookmarkId":                          autorest.Encode("path", bookmarkID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
@@ -306,21 +311,21 @@ func (client DataConnectorsClient) GetPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataConnectorsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client BookmarksClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DataConnectorsClient) GetResponder(resp *http.Response) (result DataConnectorModel, err error) {
+func (client BookmarksClient) GetResponder(resp *http.Response) (result Bookmark, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -331,20 +336,20 @@ func (client DataConnectorsClient) GetResponder(resp *http.Response) (result Dat
 	return
 }
 
-// List gets all data connectors.
+// List gets all bookmarks.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result DataConnectorListPage, err error) {
+func (client BookmarksClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result BookmarkListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.List")
 		defer func() {
 			sc := -1
-			if result.dcl.Response.Response != nil {
-				sc = result.dcl.Response.Response.StatusCode
+			if result.bl.Response.Response != nil {
+				sc = result.bl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -359,33 +364,33 @@ func (client DataConnectorsClient) List(ctx context.Context, resourceGroupName s
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.DataConnectorsClient", "List", err.Error())
+		return result, validation.NewError("securityinsight.BookmarksClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.dcl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "List", resp, "Failure sending request")
+		result.bl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.dcl, err = client.ListResponder(resp)
+	result.bl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client DataConnectorsClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (*http.Request, error) {
+func (client BookmarksClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -401,21 +406,21 @@ func (client DataConnectorsClient) ListPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataConnectorsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client BookmarksClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client DataConnectorsClient) ListResponder(resp *http.Response) (result DataConnectorList, err error) {
+func (client BookmarksClient) ListResponder(resp *http.Response) (result BookmarkList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -427,10 +432,10 @@ func (client DataConnectorsClient) ListResponder(resp *http.Response) (result Da
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client DataConnectorsClient) listNextResults(ctx context.Context, lastResults DataConnectorList) (result DataConnectorList, err error) {
-	req, err := lastResults.dataConnectorListPreparer(ctx)
+func (client BookmarksClient) listNextResults(ctx context.Context, lastResults BookmarkList) (result BookmarkList, err error) {
+	req, err := lastResults.bookmarkListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -438,19 +443,19 @@ func (client DataConnectorsClient) listNextResults(ctx context.Context, lastResu
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.DataConnectorsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "securityinsight.BookmarksClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DataConnectorsClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result DataConnectorListIterator, err error) {
+func (client BookmarksClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result BookmarkListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarksClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

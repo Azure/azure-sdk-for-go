@@ -32,20 +32,75 @@ var _ OperationsClientAPI = (*securityinsight.OperationsClient)(nil)
 
 // AlertRulesClientAPI contains the set of methods on the AlertRulesClient type.
 type AlertRulesClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule securityinsight.BasicAlertRule) (result securityinsight.AlertRuleModel, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule securityinsight.BasicAlertRule) (result securityinsight.AlertRuleModel, err error)
+	CreateOrUpdateAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string, action securityinsight.Action) (result securityinsight.Action, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result autorest.Response, err error)
+	DeleteAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.AlertRuleModel, err error)
+	GetAction(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, actionID string) (result securityinsight.Action, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRulesListPage, err error)
 }
 
 var _ AlertRulesClientAPI = (*securityinsight.AlertRulesClient)(nil)
 
+// ActionsClientAPI contains the set of methods on the ActionsClient type.
+type ActionsClientAPI interface {
+	ListByAlertRule(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result securityinsight.ActionsListPage, err error)
+}
+
+var _ ActionsClientAPI = (*securityinsight.ActionsClient)(nil)
+
+// CasesClientAPI contains the set of methods on the CasesClient type.
+type CasesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter securityinsight.Case) (result securityinsight.Case, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result securityinsight.Case, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.CaseListPage, err error)
+}
+
+var _ CasesClientAPI = (*securityinsight.CasesClient)(nil)
+
+// BookmarksClientAPI contains the set of methods on the BookmarksClient type.
+type BookmarksClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, bookmark securityinsight.Bookmark) (result securityinsight.Bookmark, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string) (result securityinsight.Bookmark, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.BookmarkListPage, err error)
+}
+
+var _ BookmarksClientAPI = (*securityinsight.BookmarksClient)(nil)
+
 // DataConnectorsClientAPI contains the set of methods on the DataConnectorsClient type.
 type DataConnectorsClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector securityinsight.BasicDataConnector) (result securityinsight.DataConnectorModel, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector securityinsight.BasicDataConnector) (result securityinsight.DataConnectorModel, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string) (result securityinsight.DataConnectorModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.DataConnectorListPage, err error)
 }
 
 var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
+
+// EntitiesClientAPI contains the set of methods on the EntitiesClient type.
+type EntitiesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
+}
+
+var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)
+
+// OfficeConsentsClientAPI contains the set of methods on the OfficeConsentsClient type.
+type OfficeConsentsClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, consentID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, consentID string) (result securityinsight.OfficeConsent, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.OfficeConsentListPage, err error)
+}
+
+var _ OfficeConsentsClientAPI = (*securityinsight.OfficeConsentsClient)(nil)
+
+// ProductSettingsClientAPI contains the set of methods on the ProductSettingsClient type.
+type ProductSettingsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string) (result securityinsight.SettingsModel, err error)
+	Update(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string, settings securityinsight.BasicSettings) (result securityinsight.SettingsModel, err error)
+}
+
+var _ ProductSettingsClientAPI = (*securityinsight.ProductSettingsClient)(nil)

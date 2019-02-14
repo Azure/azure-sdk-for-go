@@ -41,7 +41,7 @@ func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ProductSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets a stting.
+// Get gets a setting.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

@@ -251,13 +251,13 @@ func PossibleKindBasicSettingsValues() []KindBasicSettings {
 type OSFamily string
 
 const (
-	// Android Host with Android operartion system.
+	// Android Host with Android operating system.
 	Android OSFamily = "Android"
-	// IOS Host with IOS operartion system.
+	// IOS Host with IOS operating system.
 	IOS OSFamily = "IOS"
-	// Linux Host with Linux operartion system.
+	// Linux Host with Linux operating system.
 	Linux OSFamily = "Linux"
-	// Windows Host with Windows operartion system.
+	// Windows Host with Windows operating system.
 	Windows OSFamily = "Windows"
 )
 
@@ -593,7 +593,7 @@ func (ae *AccountEntity) UnmarshalJSON(body []byte) error {
 type AccountEntityProperties struct {
 	// AccountName - The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
 	AccountName *string `json:"accountName,omitempty"`
-	// NtDomain - The NETBIOS domain name as it appears in the alert format – domain\username. Examples: NT AUTHORITY.
+	// NtDomain - The NetBIOS domain name as it appears in the alert format – domain\username. Examples: NT AUTHORITY.
 	NtDomain *string `json:"ntDomain,omitempty"`
 	// UpnSuffix - The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
 	UpnSuffix *string `json:"upnSuffix,omitempty"`
@@ -2372,7 +2372,7 @@ type EntityList struct {
 	autorest.Response `json:"-"`
 	// NextLink - URL to fetch the next set of entities.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Array of etnties.
+	// Value - Array of entities.
 	Value *[]BasicEntity `json:"value,omitempty"`
 }
 
@@ -2826,7 +2826,7 @@ type HostEntityProperties struct {
 	AzureID *string `json:"azureID,omitempty"`
 	// OmsAgentID - The OMS agent id, if the host has OMS agent installed.
 	OmsAgentID *string `json:"omsAgentID,omitempty"`
-	// OsFamily - The operartion system type. Possible values include: 'Linux', 'Windows', 'Android', 'IOS'
+	// OsFamily - The operating system type. Possible values include: 'Linux', 'Windows', 'Android', 'IOS'
 	OsFamily OSFamily `json:"osFamily,omitempty"`
 	// OsVersion - A free text representation of the operating system. This field is meant to hold specific versions the are more fine grained than OSFamily or future values not supported by OSFamily enumeration
 	OsVersion *string `json:"osVersion,omitempty"`
@@ -3217,9 +3217,9 @@ func NewOfficeConsentListPage(getNextPage func(context.Context, OfficeConsentLis
 
 // OfficeConsentProperties consent property bag.
 type OfficeConsentProperties struct {
-	// TenantID - The tenantId of the Office365 with the concesnt.
+	// TenantID - The tenantId of the Office365 with the consent.
 	TenantID *string `json:"tenantId,omitempty"`
-	// TenantName - The tenant name of the Office365 with the concesnt.
+	// TenantName - The tenant name of the Office365 with the consent.
 	TenantName *string `json:"tenantName,omitempty"`
 }
 

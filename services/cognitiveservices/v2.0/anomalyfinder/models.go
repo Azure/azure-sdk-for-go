@@ -98,7 +98,7 @@ type LastDetectResponse struct {
 
 // Point ...
 type Point struct {
-	// Timestamp - Timestamp of a data point. Please make sure it aligns with the midnight, and use a UTC date time string, e.g., 2017-08-01T00:00:00Z.
+	// Timestamp - Timestamp of a data point (ISO8601 format).
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Value - The measurement of that point, should be float.
 	Value *float64 `json:"value,omitempty"`
@@ -117,5 +117,5 @@ type Request struct {
 	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
 	MaxAnomalyRatio *float64 `json:"maxAnomalyRatio,omitempty"`
 	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
-	Sensitivity *float64 `json:"sensitivity,omitempty"`
+	Sensitivity *int32 `json:"sensitivity,omitempty"`
 }

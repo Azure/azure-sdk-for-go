@@ -406,8 +406,8 @@ type BasicImageTemplateDistributor interface {
 type ImageTemplateDistributor struct {
 	// RunOutputName - The name to be used for the associated RunOutput.
 	RunOutputName *string `json:"runOutputName,omitempty"`
-	// Tags - Tags for the images
-	Tags map[string]*string `json:"tags"`
+	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
+	ArtifactTags map[string]*string `json:"artifactTags"`
 	// Type - Possible values include: 'TypeImageTemplateDistributor', 'TypeManagedImage', 'TypeSharedImage'
 	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
 }
@@ -460,8 +460,8 @@ func (itd ImageTemplateDistributor) MarshalJSON() ([]byte, error) {
 	if itd.RunOutputName != nil {
 		objectMap["runOutputName"] = itd.RunOutputName
 	}
-	if itd.Tags != nil {
-		objectMap["tags"] = itd.Tags
+	if itd.ArtifactTags != nil {
+		objectMap["artifactTags"] = itd.ArtifactTags
 	}
 	if itd.Type != "" {
 		objectMap["type"] = itd.Type
@@ -703,8 +703,8 @@ type ImageTemplateManagedImageDistributor struct {
 	Location *string `json:"location,omitempty"`
 	// RunOutputName - The name to be used for the associated RunOutput.
 	RunOutputName *string `json:"runOutputName,omitempty"`
-	// Tags - Tags for the images
-	Tags map[string]*string `json:"tags"`
+	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
+	ArtifactTags map[string]*string `json:"artifactTags"`
 	// Type - Possible values include: 'TypeImageTemplateDistributor', 'TypeManagedImage', 'TypeSharedImage'
 	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
 }
@@ -722,8 +722,8 @@ func (itmid ImageTemplateManagedImageDistributor) MarshalJSON() ([]byte, error) 
 	if itmid.RunOutputName != nil {
 		objectMap["runOutputName"] = itmid.RunOutputName
 	}
-	if itmid.Tags != nil {
-		objectMap["tags"] = itmid.Tags
+	if itmid.ArtifactTags != nil {
+		objectMap["artifactTags"] = itmid.ArtifactTags
 	}
 	if itmid.Type != "" {
 		objectMap["type"] = itmid.Type
@@ -897,8 +897,8 @@ type ImageTemplateSharedImageDistributor struct {
 	ReplicationRegions *[]string `json:"replicationRegions,omitempty"`
 	// RunOutputName - The name to be used for the associated RunOutput.
 	RunOutputName *string `json:"runOutputName,omitempty"`
-	// Tags - Tags for the images
-	Tags map[string]*string `json:"tags"`
+	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
+	ArtifactTags map[string]*string `json:"artifactTags"`
 	// Type - Possible values include: 'TypeImageTemplateDistributor', 'TypeManagedImage', 'TypeSharedImage'
 	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
 }
@@ -916,8 +916,8 @@ func (itsid ImageTemplateSharedImageDistributor) MarshalJSON() ([]byte, error) {
 	if itsid.RunOutputName != nil {
 		objectMap["runOutputName"] = itsid.RunOutputName
 	}
-	if itsid.Tags != nil {
-		objectMap["tags"] = itsid.Tags
+	if itsid.ArtifactTags != nil {
+		objectMap["artifactTags"] = itsid.ArtifactTags
 	}
 	if itsid.Type != "" {
 		objectMap["type"] = itsid.Type

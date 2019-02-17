@@ -19,11 +19,12 @@
 
 package edgegatewayapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2018-07-01/edgegateway/edgegatewayapi"
+import original "github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2019-03-01/edgegateway/edgegatewayapi"
 
 type AlertsClientAPI = original.AlertsClientAPI
 type BandwidthSchedulesClientAPI = original.BandwidthSchedulesClientAPI
 type DevicesClientAPI = original.DevicesClientAPI
+type JobsClientAPI = original.JobsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type OperationsStatusClientAPI = original.OperationsStatusClientAPI
 type OrdersClientAPI = original.OrdersClientAPI

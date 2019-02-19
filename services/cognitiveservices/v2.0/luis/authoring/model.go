@@ -504,11 +504,11 @@ func (client ModelClient) AddCustomPrebuiltIntentResponder(resp *http.Response) 
 	return
 }
 
-// AddEntity adds an entity extractor to the application.
+// AddEntity adds a simple entity extractor to the application.
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-// modelCreateObject - a model object containing the name for the new entity extractor.
+// modelCreateObject - a model object containing the name for the new simple entity extractor.
 func (client ModelClient) AddEntity(ctx context.Context, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddEntity")

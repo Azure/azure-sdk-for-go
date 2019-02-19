@@ -65,6 +65,10 @@ type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type MoveCommitmentAssociationRequest = original.MoveCommitmentAssociationRequest
+type OperationDisplayInfo = original.OperationDisplayInfo
+type OperationEntity = original.OperationEntity
+type OperationEntityListResult = original.OperationEntityListResult
+type OperationsClient = original.OperationsClient
 type PatchPayload = original.PatchPayload
 type PlanQuantity = original.PlanQuantity
 type PlanUsageHistory = original.PlanUsageHistory
@@ -108,6 +112,12 @@ func NewListResultIterator(page ListResultPage) ListResultIterator {
 }
 func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
 	return original.NewListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPlanUsageHistoryListResultIterator(page PlanUsageHistoryListResultPage) PlanUsageHistoryListResultIterator {
 	return original.NewPlanUsageHistoryListResultIterator(page)

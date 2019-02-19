@@ -723,8 +723,10 @@ var _ VirtualHubsClientAPI = (*network.VirtualHubsClient)(nil)
 
 // HubVirtualNetworkConnectionsClientAPI contains the set of methods on the HubVirtualNetworkConnectionsClient type.
 type HubVirtualNetworkConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters network.HubVirtualNetworkConnection) (result network.HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string) (result network.HubVirtualNetworkConnection, err error)
 	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters network.TagsObject) (result network.HubVirtualNetworkConnectionsUpdateTagsFuture, err error)
 }
 
 var _ HubVirtualNetworkConnectionsClientAPI = (*network.HubVirtualNetworkConnectionsClient)(nil)

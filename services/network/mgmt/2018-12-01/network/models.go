@@ -12753,6 +12753,64 @@ type HubVirtualNetworkConnectionProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// HubVirtualNetworkConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type HubVirtualNetworkConnectionsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HubVirtualNetworkConnectionsCreateOrUpdateFuture) Result(client HubVirtualNetworkConnectionsClient) (hvnc HubVirtualNetworkConnection, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.HubVirtualNetworkConnectionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if hvnc.Response.Response, err = future.GetResult(sender); err == nil && hvnc.Response.Response.StatusCode != http.StatusNoContent {
+		hvnc, err = client.CreateOrUpdateResponder(hvnc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsCreateOrUpdateFuture", "Result", hvnc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// HubVirtualNetworkConnectionsUpdateTagsFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type HubVirtualNetworkConnectionsUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HubVirtualNetworkConnectionsUpdateTagsFuture) Result(client HubVirtualNetworkConnectionsClient) (hvnc HubVirtualNetworkConnection, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.HubVirtualNetworkConnectionsUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if hvnc.Response.Response, err = future.GetResult(sender); err == nil && hvnc.Response.Response.StatusCode != http.StatusNoContent {
+		hvnc, err = client.UpdateTagsResponder(hvnc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsUpdateTagsFuture", "Result", hvnc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // InboundNatPool inbound NAT pool of the load balancer.
 type InboundNatPool struct {
 	// InboundNatPoolPropertiesFormat - Properties of load balancer inbound nat pool.

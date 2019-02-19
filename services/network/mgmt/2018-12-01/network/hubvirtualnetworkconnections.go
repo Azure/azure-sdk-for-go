@@ -41,6 +41,89 @@ func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscripti
 	return HubVirtualNetworkConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CreateOrUpdate creates a HubVirtualNetworkConnection resource if it doesn't exist. Updates the
+// HubVirtualNetworkConnection if one exists.
+// Parameters:
+// resourceGroupName - the resource group name of the HubVirtualNetworkConnection.
+// virtualHubName - the name of the parent Virtual Hub.
+// connectionName - the name of the HubVirtualNetworkConnection.
+// hubVirtualNetworkConnectionParameters - parameters supplied to create or update HubVirtualNetworkConnection.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection) (result HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"connectionName":    autorest.Encode("path", connectionName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"virtualHubName":    autorest.Encode("path", virtualHubName),
+	}
+
+	const APIVersion = "2018-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}", pathParameters),
+		autorest.WithJSON(hubVirtualNetworkConnectionParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdateSender(req *http.Request) (future HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result HubVirtualNetworkConnection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Get retrieves the details of a HubVirtualNetworkConnection.
 // Parameters:
 // resourceGroupName - the resource group name of the VirtualHub.
@@ -232,5 +315,87 @@ func (client HubVirtualNetworkConnectionsClient) ListComplete(ctx context.Contex
 		}()
 	}
 	result.page, err = client.List(ctx, resourceGroupName, virtualHubName)
+	return
+}
+
+// UpdateTags updates HubVirtualNetworkConnection tags.
+// Parameters:
+// resourceGroupName - the resource group name of the HubVirtualNetworkConnection.
+// virtualHubName - the name of the parent Virtual Hub.
+// connectionName - the name of the HubVirtualNetworkConnection.
+// hubVirtualNetworkConnectionParameters - parameters supplied to update HubVirtualNetworkConnection tags.
+func (client HubVirtualNetworkConnectionsClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters TagsObject) (result HubVirtualNetworkConnectionsUpdateTagsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.UpdateTags")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "UpdateTags", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateTagsSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "UpdateTags", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client HubVirtualNetworkConnectionsClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters TagsObject) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"connectionName":    autorest.Encode("path", connectionName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"virtualHubName":    autorest.Encode("path", virtualHubName),
+	}
+
+	const APIVersion = "2018-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}", pathParameters),
+		autorest.WithJSON(hubVirtualNetworkConnectionParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client HubVirtualNetworkConnectionsClient) UpdateTagsSender(req *http.Request) (future HubVirtualNetworkConnectionsUpdateTagsFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client HubVirtualNetworkConnectionsClient) UpdateTagsResponder(resp *http.Response) (result HubVirtualNetworkConnection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

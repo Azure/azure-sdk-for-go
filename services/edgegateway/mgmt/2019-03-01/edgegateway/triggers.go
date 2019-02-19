@@ -21,35 +21,34 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
-// UsersClient is the client for the Users methods of the Edgegateway service.
-type UsersClient struct {
+// TriggersClient is the client for the Triggers methods of the Edgegateway service.
+type TriggersClient struct {
 	BaseClient
 }
 
-// NewUsersClient creates an instance of the UsersClient client.
-func NewUsersClient(subscriptionID string) UsersClient {
-	return NewUsersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewTriggersClient creates an instance of the TriggersClient client.
+func NewTriggersClient(subscriptionID string) TriggersClient {
+	return NewTriggersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsersClientWithBaseURI creates an instance of the UsersClient client.
-func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClient {
-	return UsersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewTriggersClientWithBaseURI creates an instance of the TriggersClient client.
+func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) TriggersClient {
+	return TriggersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create a new user or update an existing user's information on a data box edge/gateway device.
+// CreateOrUpdate creates or updates a trigger.
 // Parameters:
-// deviceName - the device name.
-// name - the name of the user who needs to be added/updated.
-// userParameter - the user object containing the user details and encrypted password.
+// deviceName - creates or updates a trigger
+// name - the trigger name.
+// trigger - the trigger.
 // resourceGroupName - the resource group name.
-func (client UsersClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, userParameter User, resourceGroupName string) (result UsersCreateOrUpdateFuture, err error) {
+func (client TriggersClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, trigger BasicTrigger, resourceGroupName string) (result TriggersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -58,24 +57,15 @@ func (client UsersClient) CreateOrUpdate(ctx context.Context, deviceName string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: userParameter,
-			Constraints: []validation.Constraint{{Target: "userParameter.UserProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "userParameter.UserProperties.EncryptedPassword", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "userParameter.UserProperties.EncryptedPassword.Value", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
-		return result, validation.NewError("edgegateway.UsersClient", "CreateOrUpdate", err.Error())
-	}
-
-	req, err := client.CreateOrUpdatePreparer(ctx, deviceName, name, userParameter, resourceGroupName)
+	req, err := client.CreateOrUpdatePreparer(ctx, deviceName, name, trigger, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -83,7 +73,7 @@ func (client UsersClient) CreateOrUpdate(ctx context.Context, deviceName string,
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client UsersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName string, name string, userParameter User, resourceGroupName string) (*http.Request, error) {
+func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName string, name string, trigger BasicTrigger, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"name":              autorest.Encode("path", name),
@@ -91,7 +81,7 @@ func (client UsersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -100,15 +90,15 @@ func (client UsersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}", pathParameters),
-		autorest.WithJSON(userParameter),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}", pathParameters),
+		autorest.WithJSON(trigger),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsersClient) CreateOrUpdateSender(req *http.Request) (future UsersCreateOrUpdateFuture, err error) {
+func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (future TriggersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -121,7 +111,7 @@ func (client UsersClient) CreateOrUpdateSender(req *http.Request) (future UsersC
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client UsersClient) CreateOrUpdateResponder(resp *http.Response) (result User, err error) {
+func (client TriggersClient) CreateOrUpdateResponder(resp *http.Response) (result TriggerModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -132,14 +122,14 @@ func (client UsersClient) CreateOrUpdateResponder(resp *http.Response) (result U
 	return
 }
 
-// Delete deletes the user on a databox edge/gateway device.
+// Delete deletes the trigger on the gateway device.
 // Parameters:
 // deviceName - the device name.
-// name - the name of the user who needs to be deleted.
+// name - the trigger name.
 // resourceGroupName - the resource group name.
-func (client UsersClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result UsersDeleteFuture, err error) {
+func (client TriggersClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result TriggersDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -150,13 +140,13 @@ func (client UsersClient) Delete(ctx context.Context, deviceName string, name st
 	}
 	req, err := client.DeletePreparer(ctx, deviceName, name, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -164,7 +154,7 @@ func (client UsersClient) Delete(ctx context.Context, deviceName string, name st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client UsersClient) DeletePreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
+func (client TriggersClient) DeletePreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"name":              autorest.Encode("path", name),
@@ -172,7 +162,7 @@ func (client UsersClient) DeletePreparer(ctx context.Context, deviceName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -180,14 +170,14 @@ func (client UsersClient) DeletePreparer(ctx context.Context, deviceName string,
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsersClient) DeleteSender(req *http.Request) (future UsersDeleteFuture, err error) {
+func (client TriggersClient) DeleteSender(req *http.Request) (future TriggersDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -200,7 +190,7 @@ func (client UsersClient) DeleteSender(req *http.Request) (future UsersDeleteFut
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TriggersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -210,14 +200,14 @@ func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// Get returns the properties of the specified user.
+// Get get a specific trigger by name.
 // Parameters:
 // deviceName - the device name.
-// name - the name of the user who needs to be retrieved.
+// name - the trigger name.
 // resourceGroupName - the resource group name.
-func (client UsersClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result User, err error) {
+func (client TriggersClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result TriggerModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -228,27 +218,27 @@ func (client UsersClient) Get(ctx context.Context, deviceName string, name strin
 	}
 	req, err := client.GetPreparer(ctx, deviceName, name, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client UsersClient) GetPreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
+func (client TriggersClient) GetPreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"name":              autorest.Encode("path", name),
@@ -256,7 +246,7 @@ func (client UsersClient) GetPreparer(ctx context.Context, deviceName string, na
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -264,21 +254,21 @@ func (client UsersClient) GetPreparer(ctx context.Context, deviceName string, na
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsersClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client TriggersClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client UsersClient) GetResponder(resp *http.Response) (result User, err error) {
+func (client TriggersClient) GetResponder(resp *http.Response) (result TriggerModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -289,17 +279,17 @@ func (client UsersClient) GetResponder(resp *http.Response) (result User, err er
 	return
 }
 
-// ListByDataBoxEdgeDevice returns all the users registered in a data box edge/gateway device.
+// ListByDataBoxEdgeDevice lists all the triggers configured in the device.
 // Parameters:
 // deviceName - the device name.
 // resourceGroupName - the resource group name.
-func (client UsersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result UserListPage, err error) {
+func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result TriggerListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.ListByDataBoxEdgeDevice")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListByDataBoxEdgeDevice")
 		defer func() {
 			sc := -1
-			if result.ul.Response.Response != nil {
-				sc = result.ul.Response.Response.StatusCode
+			if result.tl.Response.Response != nil {
+				sc = result.tl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -307,34 +297,34 @@ func (client UsersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNam
 	result.fn = client.listByDataBoxEdgeDeviceNextResults
 	req, err := client.ListByDataBoxEdgeDevicePreparer(ctx, deviceName, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByDataBoxEdgeDeviceSender(req)
 	if err != nil {
-		result.ul.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "ListByDataBoxEdgeDevice", resp, "Failure sending request")
+		result.tl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", resp, "Failure sending request")
 		return
 	}
 
-	result.ul, err = client.ListByDataBoxEdgeDeviceResponder(resp)
+	result.tl, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByDataBoxEdgeDevicePreparer prepares the ListByDataBoxEdgeDevice request.
-func (client UsersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
+func (client TriggersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -342,21 +332,21 @@ func (client UsersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, d
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsersClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
+func (client TriggersClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always
 // closes the http.Response Body.
-func (client UsersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result UserList, err error) {
+func (client TriggersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result TriggerList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -368,10 +358,10 @@ func (client UsersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) 
 }
 
 // listByDataBoxEdgeDeviceNextResults retrieves the next set of results, if any.
-func (client UsersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context, lastResults UserList) (result UserList, err error) {
-	req, err := lastResults.userListPreparer(ctx)
+func (client TriggersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context, lastResults TriggerList) (result TriggerList, err error) {
+	req, err := lastResults.triggerListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "edgegateway.UsersClient", "listByDataBoxEdgeDeviceNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "listByDataBoxEdgeDeviceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -379,19 +369,19 @@ func (client UsersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context
 	resp, err := client.ListByDataBoxEdgeDeviceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "edgegateway.UsersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByDataBoxEdgeDeviceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result UserListIterator, err error) {
+func (client TriggersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result TriggerListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.ListByDataBoxEdgeDevice")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListByDataBoxEdgeDevice")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

@@ -21,34 +21,35 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
-// TriggersClient is the client for the Triggers methods of the Edgegateway service.
-type TriggersClient struct {
+// BandwidthSchedulesClient is the client for the BandwidthSchedules methods of the Edgegateway service.
+type BandwidthSchedulesClient struct {
 	BaseClient
 }
 
-// NewTriggersClient creates an instance of the TriggersClient client.
-func NewTriggersClient(subscriptionID string) TriggersClient {
-	return NewTriggersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewBandwidthSchedulesClient creates an instance of the BandwidthSchedulesClient client.
+func NewBandwidthSchedulesClient(subscriptionID string) BandwidthSchedulesClient {
+	return NewBandwidthSchedulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTriggersClientWithBaseURI creates an instance of the TriggersClient client.
-func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) TriggersClient {
-	return TriggersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewBandwidthSchedulesClientWithBaseURI creates an instance of the BandwidthSchedulesClient client.
+func NewBandwidthSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSchedulesClient {
+	return BandwidthSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a trigger.
+// CreateOrUpdate creates or updates a bandwidth schedule.
 // Parameters:
-// deviceName - name of the edge device in which trigger needs to be added or updated.
-// name - name of trigger to be added or updated.
-// trigger - trigger to be added.
+// deviceName - the device name.
+// name - the bandwidth schedule name which needs to be added/updated.
+// parameters - the bandwidth schedule to be added or updated.
 // resourceGroupName - the resource group name.
-func (client TriggersClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, trigger BasicTrigger, resourceGroupName string) (result TriggersCreateOrUpdateFuture, err error) {
+func (client BandwidthSchedulesClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, parameters BandwidthSchedule, resourceGroupName string) (result BandwidthSchedulesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSchedulesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -57,15 +58,26 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, deviceName stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, deviceName, name, trigger, resourceGroupName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.BandwidthScheduleProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.BandwidthScheduleProperties.Start", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.BandwidthScheduleProperties.Stop", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.BandwidthScheduleProperties.RateInMbps", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.BandwidthScheduleProperties.Days", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("edgegateway.BandwidthSchedulesClient", "CreateOrUpdate", err.Error())
+	}
+
+	req, err := client.CreateOrUpdatePreparer(ctx, deviceName, name, parameters, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -73,7 +85,7 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, deviceName stri
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName string, name string, trigger BasicTrigger, resourceGroupName string) (*http.Request, error) {
+func (client BandwidthSchedulesClient) CreateOrUpdatePreparer(ctx context.Context, deviceName string, name string, parameters BandwidthSchedule, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"name":              autorest.Encode("path", name),
@@ -81,7 +93,7 @@ func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, deviceN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -90,15 +102,15 @@ func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, deviceN
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}", pathParameters),
-		autorest.WithJSON(trigger),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}", pathParameters),
+		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (future TriggersCreateOrUpdateFuture, err error) {
+func (client BandwidthSchedulesClient) CreateOrUpdateSender(req *http.Request) (future BandwidthSchedulesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -111,7 +123,7 @@ func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (future Tri
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client TriggersClient) CreateOrUpdateResponder(resp *http.Response) (result TriggerModel, err error) {
+func (client BandwidthSchedulesClient) CreateOrUpdateResponder(resp *http.Response) (result BandwidthSchedule, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -122,14 +134,14 @@ func (client TriggersClient) CreateOrUpdateResponder(resp *http.Response) (resul
 	return
 }
 
-// Delete deletes the trigger on the gateway device.
+// Delete deletes the specified bandwidth schedule.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the trigger which needs to be deleted.
+// deviceName - the device name.
+// name - the bandwidth schedule name.
 // resourceGroupName - the resource group name.
-func (client TriggersClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result TriggersDeleteFuture, err error) {
+func (client BandwidthSchedulesClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result BandwidthSchedulesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSchedulesClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -140,13 +152,13 @@ func (client TriggersClient) Delete(ctx context.Context, deviceName string, name
 	}
 	req, err := client.DeletePreparer(ctx, deviceName, name, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -154,7 +166,7 @@ func (client TriggersClient) Delete(ctx context.Context, deviceName string, name
 }
 
 // DeletePreparer prepares the Delete request.
-func (client TriggersClient) DeletePreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
+func (client BandwidthSchedulesClient) DeletePreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"name":              autorest.Encode("path", name),
@@ -162,7 +174,7 @@ func (client TriggersClient) DeletePreparer(ctx context.Context, deviceName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -170,14 +182,14 @@ func (client TriggersClient) DeletePreparer(ctx context.Context, deviceName stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client TriggersClient) DeleteSender(req *http.Request) (future TriggersDeleteFuture, err error) {
+func (client BandwidthSchedulesClient) DeleteSender(req *http.Request) (future BandwidthSchedulesDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -190,7 +202,7 @@ func (client TriggersClient) DeleteSender(req *http.Request) (future TriggersDel
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client TriggersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BandwidthSchedulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -200,14 +212,14 @@ func (client TriggersClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// Get get a specific trigger by name.
+// Get gets the properties of the specified bandwidth schedule.
 // Parameters:
-// deviceName - name of the device.
-// name - name of trigger to be fetched.
+// deviceName - the device name.
+// name - the bandwidth schedule name.
 // resourceGroupName - the resource group name.
-func (client TriggersClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result TriggerModel, err error) {
+func (client BandwidthSchedulesClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result BandwidthSchedule, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSchedulesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -218,27 +230,27 @@ func (client TriggersClient) Get(ctx context.Context, deviceName string, name st
 	}
 	req, err := client.GetPreparer(ctx, deviceName, name, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client TriggersClient) GetPreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
+func (client BandwidthSchedulesClient) GetPreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"name":              autorest.Encode("path", name),
@@ -246,7 +258,7 @@ func (client TriggersClient) GetPreparer(ctx context.Context, deviceName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -254,21 +266,21 @@ func (client TriggersClient) GetPreparer(ctx context.Context, deviceName string,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client TriggersClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client BandwidthSchedulesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TriggersClient) GetResponder(resp *http.Response) (result TriggerModel, err error) {
+func (client BandwidthSchedulesClient) GetResponder(resp *http.Response) (result BandwidthSchedule, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -279,17 +291,17 @@ func (client TriggersClient) GetResponder(resp *http.Response) (result TriggerMo
 	return
 }
 
-// ListByDataBoxEdgeDevice list all the triggers configured in the device.
+// ListByDataBoxEdgeDevice gets all the bandwidth schedules for a data box edge/gateway device.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
 // resourceGroupName - the resource group name.
-func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result TriggerListPage, err error) {
+func (client BandwidthSchedulesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result BandwidthSchedulesListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListByDataBoxEdgeDevice")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSchedulesClient.ListByDataBoxEdgeDevice")
 		defer func() {
 			sc := -1
-			if result.tl.Response.Response != nil {
-				sc = result.tl.Response.Response.StatusCode
+			if result.bsl.Response.Response != nil {
+				sc = result.bsl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -297,34 +309,34 @@ func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, device
 	result.fn = client.listByDataBoxEdgeDeviceNextResults
 	req, err := client.ListByDataBoxEdgeDevicePreparer(ctx, deviceName, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByDataBoxEdgeDeviceSender(req)
 	if err != nil {
-		result.tl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", resp, "Failure sending request")
+		result.bsl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "ListByDataBoxEdgeDevice", resp, "Failure sending request")
 		return
 	}
 
-	result.tl, err = client.ListByDataBoxEdgeDeviceResponder(resp)
+	result.bsl, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByDataBoxEdgeDevicePreparer prepares the ListByDataBoxEdgeDevice request.
-func (client TriggersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
+func (client BandwidthSchedulesClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -332,21 +344,21 @@ func (client TriggersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
-func (client TriggersClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
+func (client BandwidthSchedulesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always
 // closes the http.Response Body.
-func (client TriggersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result TriggerList, err error) {
+func (client BandwidthSchedulesClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result BandwidthSchedulesList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -358,10 +370,10 @@ func (client TriggersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Respons
 }
 
 // listByDataBoxEdgeDeviceNextResults retrieves the next set of results, if any.
-func (client TriggersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context, lastResults TriggerList) (result TriggerList, err error) {
-	req, err := lastResults.triggerListPreparer(ctx)
+func (client BandwidthSchedulesClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context, lastResults BandwidthSchedulesList) (result BandwidthSchedulesList, err error) {
+	req, err := lastResults.bandwidthSchedulesListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "listByDataBoxEdgeDeviceNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "listByDataBoxEdgeDeviceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -369,19 +381,19 @@ func (client TriggersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Cont
 	resp, err := client.ListByDataBoxEdgeDeviceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByDataBoxEdgeDeviceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client TriggersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result TriggerListIterator, err error) {
+func (client BandwidthSchedulesClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result BandwidthSchedulesListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListByDataBoxEdgeDevice")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSchedulesClient.ListByDataBoxEdgeDevice")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

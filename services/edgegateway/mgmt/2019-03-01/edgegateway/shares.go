@@ -43,9 +43,9 @@ func NewSharesClientWithBaseURI(baseURI string, subscriptionID string) SharesCli
 
 // CreateOrUpdate sends the create or update request.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the share which needs to be added/updated.
-// share - the share object containing the share details.
+// deviceName - the device name.
+// name - the share name.
+// share - the share properties.
 // resourceGroupName - the resource group name.
 func (client SharesClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, share Share, resourceGroupName string) (result SharesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -93,7 +93,7 @@ func (client SharesClient) CreateOrUpdatePreparer(ctx context.Context, deviceNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -136,8 +136,8 @@ func (client SharesClient) CreateOrUpdateResponder(resp *http.Response) (result 
 
 // Delete deletes the share on the data box edge/gateway device.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the share which needs to be deleted.
+// deviceName - the device name.
+// name - the share name.
 // resourceGroupName - the resource group name.
 func (client SharesClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result SharesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -174,7 +174,7 @@ func (client SharesClient) DeletePreparer(ctx context.Context, deviceName string
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -214,8 +214,8 @@ func (client SharesClient) DeleteResponder(resp *http.Response) (result autorest
 
 // Get sends the get request.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the share.
+// deviceName - the device name.
+// name - the share name.
 // resourceGroupName - the resource group name.
 func (client SharesClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result Share, err error) {
 	if tracing.IsEnabled() {
@@ -258,7 +258,7 @@ func (client SharesClient) GetPreparer(ctx context.Context, deviceName string, n
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -293,7 +293,7 @@ func (client SharesClient) GetResponder(resp *http.Response) (result Share, err 
 
 // ListByDataBoxEdgeDevice sends the list by data box edge device request.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
 // resourceGroupName - the resource group name.
 func (client SharesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result ShareListPage, err error) {
 	if tracing.IsEnabled() {
@@ -336,7 +336,7 @@ func (client SharesClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -408,8 +408,8 @@ func (client SharesClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, 
 
 // Refresh sends the refresh request.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the share.
+// deviceName - the device name.
+// name - the share name.
 // resourceGroupName - the resource group name.
 func (client SharesClient) Refresh(ctx context.Context, deviceName string, name string, resourceGroupName string) (result SharesRefreshFuture, err error) {
 	if tracing.IsEnabled() {
@@ -446,7 +446,7 @@ func (client SharesClient) RefreshPreparer(ctx context.Context, deviceName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

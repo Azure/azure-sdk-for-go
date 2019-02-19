@@ -86,7 +86,7 @@ func (client OperationsStatusClient) GetPreparer(ctx context.Context, deviceName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -42,9 +42,9 @@ func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClien
 
 // CreateOrUpdate create or update a role.
 // Parameters:
-// deviceName - name of the device in which the role needs to be added or updated.
-// name - name of the role to be updated.
-// role - role to be added.
+// deviceName - the device name.
+// name - the role name.
+// role - the role properties.
 // resourceGroupName - the resource group name.
 func (client RolesClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, role BasicRole, resourceGroupName string) (result RolesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -81,7 +81,7 @@ func (client RolesClient) CreateOrUpdatePreparer(ctx context.Context, deviceName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -122,10 +122,10 @@ func (client RolesClient) CreateOrUpdateResponder(resp *http.Response) (result R
 	return
 }
 
-// Delete deletes the role on the gateway device.
+// Delete deletes the role on the data box edge device.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the role which needs to be deleted.
+// deviceName - the device name.
+// name - the role name.
 // resourceGroupName - the resource group name.
 func (client RolesClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result RolesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -162,7 +162,7 @@ func (client RolesClient) DeletePreparer(ctx context.Context, deviceName string,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -200,10 +200,10 @@ func (client RolesClient) DeleteResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// Get get a specific role by name.
+// Get gets a specific role by name.
 // Parameters:
-// deviceName - name of the device.
-// name - name of role to be fetched.
+// deviceName - the device name.
+// name - the role name.
 // resourceGroupName - the resource group name.
 func (client RolesClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result RoleModel, err error) {
 	if tracing.IsEnabled() {
@@ -246,7 +246,7 @@ func (client RolesClient) GetPreparer(ctx context.Context, deviceName string, na
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -281,7 +281,7 @@ func (client RolesClient) GetResponder(resp *http.Response) (result RoleModel, e
 
 // ListByDataBoxEdgeDevice lists all the roles configured in a data box edge/gateway device.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
 // resourceGroupName - the resource group name.
 func (client RolesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result RoleListPage, err error) {
 	if tracing.IsEnabled() {
@@ -324,7 +324,7 @@ func (client RolesClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, d
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

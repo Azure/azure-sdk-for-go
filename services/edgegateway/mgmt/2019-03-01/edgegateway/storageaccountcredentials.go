@@ -43,9 +43,9 @@ func NewStorageAccountCredentialsClientWithBaseURI(baseURI string, subscriptionI
 
 // CreateOrUpdate creates or updates the storage account credential.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
 // name - the storage account credential name.
-// storageAccountCredential - the storage account credential to be added or updated.
+// storageAccountCredential - the storage account credential.
 // resourceGroupName - the resource group name.
 func (client StorageAccountCredentialsClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, storageAccountCredential StorageAccountCredential, resourceGroupName string) (result StorageAccountCredentialsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -92,7 +92,7 @@ func (client StorageAccountCredentialsClient) CreateOrUpdatePreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -135,8 +135,8 @@ func (client StorageAccountCredentialsClient) CreateOrUpdateResponder(resp *http
 
 // Delete deletes the storage account credential.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the storage account credential.
+// deviceName - the device name.
+// name - the storage account credential name.
 // resourceGroupName - the resource group name.
 func (client StorageAccountCredentialsClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result StorageAccountCredentialsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -173,7 +173,7 @@ func (client StorageAccountCredentialsClient) DeletePreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -213,8 +213,8 @@ func (client StorageAccountCredentialsClient) DeleteResponder(resp *http.Respons
 
 // Get gets the properties of the specified storage account credential.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the storage account credential to be fetched.
+// deviceName - the device name.
+// name - the storage account credential name.
 // resourceGroupName - the resource group name.
 func (client StorageAccountCredentialsClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result StorageAccountCredential, err error) {
 	if tracing.IsEnabled() {
@@ -257,7 +257,7 @@ func (client StorageAccountCredentialsClient) GetPreparer(ctx context.Context, d
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -292,7 +292,7 @@ func (client StorageAccountCredentialsClient) GetResponder(resp *http.Response) 
 
 // ListByDataBoxEdgeDevice sends the list by data box edge device request.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
 // resourceGroupName - the resource group name.
 func (client StorageAccountCredentialsClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result StorageAccountCredentialListPage, err error) {
 	if tracing.IsEnabled() {
@@ -335,7 +335,7 @@ func (client StorageAccountCredentialsClient) ListByDataBoxEdgeDevicePreparer(ct
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

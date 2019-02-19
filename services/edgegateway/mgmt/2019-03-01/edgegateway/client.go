@@ -1,4 +1,4 @@
-// Package edgegateway implements the Azure ARM Edgegateway service API version 2018-07-01.
+// Package edgegateway implements the Azure ARM Edgegateway service API version 2019-03-01.
 //
 //
 package edgegateway

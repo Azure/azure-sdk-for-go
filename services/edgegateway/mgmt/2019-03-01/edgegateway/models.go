@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2018-07-01/edgegateway"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2019-03-01/edgegateway"
 
 // AccountType enumerates the values for account type.
 type AccountType string
@@ -463,6 +463,45 @@ func PossibleNetworkGroupValues() []NetworkGroup {
 	return []NetworkGroup{NetworkGroupNone, NetworkGroupNonRDMA, NetworkGroupRDMA}
 }
 
+// OrderState enumerates the values for order state.
+type OrderState string
+
+const (
+	// Arriving ...
+	Arriving OrderState = "Arriving"
+	// AwaitingFulfilment ...
+	AwaitingFulfilment OrderState = "AwaitingFulfilment"
+	// AwaitingPreparation ...
+	AwaitingPreparation OrderState = "AwaitingPreparation"
+	// AwaitingReturnShipment ...
+	AwaitingReturnShipment OrderState = "AwaitingReturnShipment"
+	// AwaitingShipment ...
+	AwaitingShipment OrderState = "AwaitingShipment"
+	// CollectedAtMicrosoft ...
+	CollectedAtMicrosoft OrderState = "CollectedAtMicrosoft"
+	// Declined ...
+	Declined OrderState = "Declined"
+	// Delivered ...
+	Delivered OrderState = "Delivered"
+	// LostDevice ...
+	LostDevice OrderState = "LostDevice"
+	// ReplacementRequested ...
+	ReplacementRequested OrderState = "ReplacementRequested"
+	// ReturnInitiated ...
+	ReturnInitiated OrderState = "ReturnInitiated"
+	// Shipped ...
+	Shipped OrderState = "Shipped"
+	// ShippedBack ...
+	ShippedBack OrderState = "ShippedBack"
+	// Untracked ...
+	Untracked OrderState = "Untracked"
+)
+
+// PossibleOrderStateValues returns an array of possible values for the OrderState const type.
+func PossibleOrderStateValues() []OrderState {
+	return []OrderState{Arriving, AwaitingFulfilment, AwaitingPreparation, AwaitingReturnShipment, AwaitingShipment, CollectedAtMicrosoft, Declined, Delivered, LostDevice, ReplacementRequested, ReturnInitiated, Shipped, ShippedBack, Untracked}
+}
+
 // PlatformType enumerates the values for platform type.
 type PlatformType string
 
@@ -602,45 +641,6 @@ func PossibleSSLStatusValues() []SSLStatus {
 	return []SSLStatus{SSLStatusDisabled, SSLStatusEnabled}
 }
 
-// StatusTypes enumerates the values for status types.
-type StatusTypes string
-
-const (
-	// Arriving ...
-	Arriving StatusTypes = "Arriving"
-	// AwaitingFulfilment ...
-	AwaitingFulfilment StatusTypes = "AwaitingFulfilment"
-	// AwaitingPreparation ...
-	AwaitingPreparation StatusTypes = "AwaitingPreparation"
-	// AwaitingReturnShipment ...
-	AwaitingReturnShipment StatusTypes = "AwaitingReturnShipment"
-	// AwaitingShipment ...
-	AwaitingShipment StatusTypes = "AwaitingShipment"
-	// CollectedAtMicrosoft ...
-	CollectedAtMicrosoft StatusTypes = "CollectedAtMicrosoft"
-	// Declined ...
-	Declined StatusTypes = "Declined"
-	// Delivered ...
-	Delivered StatusTypes = "Delivered"
-	// LostDevice ...
-	LostDevice StatusTypes = "LostDevice"
-	// ReplacementRequested ...
-	ReplacementRequested StatusTypes = "ReplacementRequested"
-	// ReturnInitiated ...
-	ReturnInitiated StatusTypes = "ReturnInitiated"
-	// Shipped ...
-	Shipped StatusTypes = "Shipped"
-	// ShippedBack ...
-	ShippedBack StatusTypes = "ShippedBack"
-	// Untracked ...
-	Untracked StatusTypes = "Untracked"
-)
-
-// PossibleStatusTypesValues returns an array of possible values for the StatusTypes const type.
-func PossibleStatusTypesValues() []StatusTypes {
-	return []StatusTypes{Arriving, AwaitingFulfilment, AwaitingPreparation, AwaitingReturnShipment, AwaitingShipment, CollectedAtMicrosoft, Declined, Delivered, LostDevice, ReplacementRequested, ReturnInitiated, Shipped, ShippedBack, Untracked}
-}
-
 // TimeGrain enumerates the values for time grain.
 type TimeGrain string
 
@@ -757,7 +757,7 @@ type Alert struct {
 	*AlertProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -842,7 +842,7 @@ type AlertErrorDetails struct {
 	Occurrences *int32 `json:"occurrences,omitempty"`
 }
 
-// AlertList collection of Alerts.
+// AlertList collection of alerts.
 type AlertList struct {
 	autorest.Response `json:"-"`
 	// Value - The value.
@@ -990,19 +990,19 @@ func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, e
 
 // AlertProperties properties of alert.
 type AlertProperties struct {
-	// Title - Title of the alert.
+	// Title - Alert title.
 	Title *string `json:"title,omitempty"`
-	// AlertType - Type of the alert.
+	// AlertType - Alert type.
 	AlertType *string `json:"alertType,omitempty"`
-	// AppearedAtDateTime - UTC time at which the alert appeared.
+	// AppearedAtDateTime - UTC time when the alert appeared.
 	AppearedAtDateTime *date.Time `json:"appearedAtDateTime,omitempty"`
-	// Recommendation - Recommendation for acting on the alert.
+	// Recommendation - Alert recommendation.
 	Recommendation *string `json:"recommendation,omitempty"`
 	// Severity - Severity of the alert. Possible values include: 'Informational', 'Warning', 'Critical'
 	Severity AlertSeverity `json:"severity,omitempty"`
 	// ErrorDetails - Error details of the alert.
 	ErrorDetails *AlertErrorDetails `json:"errorDetails,omitempty"`
-	// DetailedInformation - Detailed information about the alert.
+	// DetailedInformation - Alert details.
 	DetailedInformation map[string]*string `json:"detailedInformation"`
 }
 
@@ -1037,7 +1037,7 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 type ARMBaseModel struct {
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -1047,7 +1047,7 @@ type ARMBaseModel struct {
 type AsymmetricEncryptedSecret struct {
 	// Value - The value of the secret.
 	Value *string `json:"value,omitempty"`
-	// EncryptionCertThumbprint - Thumbprint certificate that was used to encrypt "Value". If the value in unencrypted, it will be null.
+	// EncryptionCertThumbprint - Thumbprint certificate used to encrypt \"Value\". If the value is unencrypted, it will be null.
 	EncryptionCertThumbprint *string `json:"encryptionCertThumbprint,omitempty"`
 	// EncryptionAlgorithm - The algorithm used to encrypt "Value". Possible values include: 'None', 'AES256', 'RSAESPKCS1V15'
 	EncryptionAlgorithm EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
@@ -1061,9 +1061,9 @@ type Authentication struct {
 
 // AzureContainerInfo azure container mapping of the endpoint.
 type AzureContainerInfo struct {
-	// StorageAccountCredentialID - ID of the Storage account credential to be used for accessing storage.
+	// StorageAccountCredentialID - ID of the storage account credential used to access storage.
 	StorageAccountCredentialID *string `json:"storageAccountCredentialId,omitempty"`
-	// ContainerName - Container name (Based on the data format specified, represents the name of Azure file/ Page blob / Block blob).
+	// ContainerName - Container name (Based on the data format specified, this represents the name of Azure Files/Page blob/Block blob).
 	ContainerName *string `json:"containerName,omitempty"`
 	// DataFormat - Storage format used for the file represented by the share. Possible values include: 'BlockBlob', 'PageBlob', 'AzureFile'
 	DataFormat AzureContainerDataFormat `json:"dataFormat,omitempty"`
@@ -1076,7 +1076,7 @@ type BandwidthSchedule struct {
 	*BandwidthScheduleProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -1361,10 +1361,10 @@ func NewBandwidthSchedulesListPage(getNextPage func(context.Context, BandwidthSc
 	return BandwidthSchedulesListPage{fn: getNextPage}
 }
 
-// ClientAccessRight the mapping between a particular client ip and the type of access client has on the
+// ClientAccessRight the mapping between a particular client IP and the type of access client has on the
 // NFS share.
 type ClientAccessRight struct {
-	// Client - Ip of the client.
+	// Client - IP of the client.
 	Client *string `json:"client,omitempty"`
 	// AccessPermission - Type of access to be allowed for the client. Possible values include: 'NoAccess', 'ReadOnly', 'ReadWrite'
 	AccessPermission ClientPermissionType `json:"accessPermission,omitempty"`
@@ -1388,32 +1388,32 @@ type CloudErrorBody struct {
 
 // ContactDetails contains all the contact details of the customer.
 type ContactDetails struct {
-	// ContactPerson - Gets or sets the contact person.
+	// ContactPerson - The contact person name.
 	ContactPerson *string `json:"contactPerson,omitempty"`
-	// CompanyName - Gets or sets the name of the company.
+	// CompanyName - The name of the company.
 	CompanyName *string `json:"companyName,omitempty"`
-	// Phone - Gets or sets the phone number.
+	// Phone - The phone number.
 	Phone *string `json:"phone,omitempty"`
-	// EmailList - Gets or sets the email list.
+	// EmailList - The email list.
 	EmailList *[]string `json:"emailList,omitempty"`
 }
 
 // DataBoxEdgeDevice the Data Box Edge/Gateway device.
 type DataBoxEdgeDevice struct {
 	autorest.Response `json:"-"`
-	// Location - The location of the device. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a device cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
+	// Location - The location of the device. This is a supported and registered Azure geographical region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed once it is created, but if an identical geographical region is specified on update, the request will succeed.
 	Location *string `json:"location,omitempty"`
-	// Tags - The list of tags that describe the device. These tags can be used in viewing and grouping this device (across resource groups).
+	// Tags - The list of tags that describe the device. These tags can be used to view and group this device (across resource groups).
 	Tags map[string]*string `json:"tags"`
-	// Sku - The sku type.
+	// Sku - The SKU type.
 	Sku *Sku `json:"sku,omitempty"`
-	// Etag - The etag of the devices.
+	// Etag - The etag for the devices.
 	Etag *string `json:"etag,omitempty"`
 	// DataBoxEdgeDeviceProperties - The properties of the Data Box Edge/Gateway device.
 	*DataBoxEdgeDeviceProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -1543,7 +1543,7 @@ type DataBoxEdgeDeviceExtendedInfo struct {
 	*DataBoxEdgeDeviceExtendedInfoProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -1627,7 +1627,7 @@ type DataBoxEdgeDeviceExtendedInfoProperties struct {
 	EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
 	// EncryptionKey - The Channel Integrity Key (CIK) of the device.
 	EncryptionKey *string `json:"encryptionKey,omitempty"`
-	// ResourceKey - The Resource Id of the Resource.
+	// ResourceKey - The Resource ID of the Resource.
 	ResourceKey *string `json:"resourceKey,omitempty"`
 }
 
@@ -1972,7 +1972,7 @@ type FileEventTrigger struct {
 	*FileTriggerProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -2088,21 +2088,21 @@ type FileSourceInfo struct {
 	ShareID *string `json:"shareId,omitempty"`
 }
 
-// FileTriggerProperties file Trigger properties.
+// FileTriggerProperties file trigger properties.
 type FileTriggerProperties struct {
 	// SourceInfo - File event source details.
 	SourceInfo *FileSourceInfo `json:"sourceInfo,omitempty"`
-	// SinkInfo - Role Sink info.
+	// SinkInfo - Role sink info.
 	SinkInfo *RoleSinkInfo `json:"sinkInfo,omitempty"`
-	// CustomContextTag - Custom context tag, typically used to co-relate the trigger against its usage. Eg. If a PeriodicTimer trigger may be intended for certain specific IOT modules in device, the tag can be the name/image url of the module.
+	// CustomContextTag - A custom context tag typically used to correlate the trigger against its usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the tag can be the name or the image URL of the module.
 	CustomContextTag *string `json:"customContextTag,omitempty"`
 }
 
-// IoTDeviceInfo metadata of IoT device/IoT edge device to be configured.
+// IoTDeviceInfo metadata of IoT device/IoT Edge device to be configured.
 type IoTDeviceInfo struct {
-	// DeviceID - Id of the IoT device/edge device.
+	// DeviceID - ID of the IoT device/edge device.
 	DeviceID *string `json:"deviceId,omitempty"`
-	// IoTHostHub - Host name for IoT hub which is associated to the device.
+	// IoTHostHub - Host name for the IoT hub associated to the device.
 	IoTHostHub *string `json:"ioTHostHub,omitempty"`
 	// Authentication - IoT device authentication info.
 	Authentication *Authentication `json:"authentication,omitempty"`
@@ -2110,11 +2110,11 @@ type IoTDeviceInfo struct {
 
 // IoTRole compute role.
 type IoTRole struct {
-	// IoTRoleProperties - Properties specific to IoT Role.
+	// IoTRoleProperties - Properties specific to IoT role.
 	*IoTRoleProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -2221,7 +2221,7 @@ func (itr *IoTRole) UnmarshalJSON(body []byte) error {
 
 // IoTRoleProperties ioT role properties.
 type IoTRoleProperties struct {
-	// HostPlatform - Host OS which IoT role support. Possible values include: 'Windows', 'Linux'
+	// HostPlatform - Host OS supported by the IoT role. Possible values include: 'Windows', 'Linux'
 	HostPlatform PlatformType `json:"hostPlatform,omitempty"`
 	// IoTDeviceDetails - IoT device metadata to which data box edge device needs to be connected.
 	IoTDeviceDetails *IoTDeviceInfo `json:"ioTDeviceDetails,omitempty"`
@@ -2264,13 +2264,13 @@ type Job struct {
 	Type *string `json:"type,omitempty"`
 	// Status - The current status of the job. Possible values include: 'JobStatusInvalid', 'JobStatusRunning', 'JobStatusSucceeded', 'JobStatusFailed', 'JobStatusCanceled', 'JobStatusPaused', 'JobStatusScheduled'
 	Status JobStatus `json:"status,omitempty"`
-	// StartTime - The UTC datetime at which the job was started.
+	// StartTime - The UTC date and time at which the job started.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The UTC datetime at which the job completed.
+	// EndTime - The UTC date and time at which the job completed.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// PercentComplete - The percentage of the job that is already complete.
+	// PercentComplete - The percentage of the job that is complete.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// Error - The Error details.
+	// Error - The error details.
 	Error *JobErrorDetails `json:"error,omitempty"`
 	// JobProperties - The properties of the job.
 	*JobProperties `json:"properties,omitempty"`
@@ -2405,13 +2405,13 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JobErrorDetails the job error information containing List of JobErrorItem.
+// JobErrorDetails the job error information containing the list of job errors.
 type JobErrorDetails struct {
 	// ErrorDetails - The error details.
 	ErrorDetails *[]JobErrorItem `json:"errorDetails,omitempty"`
 	// Code - The code intended for programmatic access.
 	Code *string `json:"code,omitempty"`
-	// Message - The message intended to describe the error in detail.
+	// Message - The message that describes the error in detail.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -2421,7 +2421,7 @@ type JobErrorItem struct {
 	Recommendations *[]string `json:"recommendations,omitempty"`
 	// Code - The code intended for programmatic access.
 	Code *string `json:"code,omitempty"`
-	// Message - The message intended to describe the error in detail.
+	// Message - The message that describes the error in detail.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -2437,11 +2437,11 @@ type JobProperties struct {
 	InstallProgress *UpdateInstallProgress `json:"installProgress,omitempty"`
 	// TotalRefreshErrors - Total number of errors encountered during the refresh process.
 	TotalRefreshErrors *int32 `json:"totalRefreshErrors,omitempty"`
-	// ErrorManifestFile - Local Share/Remote Container relative path to the error manifest file of the refresh.
+	// ErrorManifestFile - Local share/remote container relative path to the error manifest file of the refresh.
 	ErrorManifestFile *string `json:"errorManifestFile,omitempty"`
-	// ShareID - ARM id of the Share on which the Refresh operation was done.
+	// ShareID - ARM ID of the share that was refreshed.
 	ShareID *string `json:"shareId,omitempty"`
-	// Folder - If only subfolders need to be refreshed, then the sub folder path inside the share. Empty otherwise.
+	// Folder - If only subfolders need to be refreshed, then the subfolder path inside the share. (The path is empty if there are no subfolders.)
 	Folder *string `json:"folder,omitempty"`
 }
 
@@ -2469,7 +2469,7 @@ type MetricSpecificationV1 struct {
 	AggregationType MetricAggregationType `json:"aggregationType,omitempty"`
 	// Dimensions - Metric dimensions, other than default dimension which is resource.
 	Dimensions *[]MetricDimensionV1 `json:"dimensions,omitempty"`
-	// FillGapWithZero - set true to fill the gaps with zero.
+	// FillGapWithZero - Set true to fill the gaps with zero.
 	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
 	// Category - Metric category. Possible values include: 'Capacity', 'Transaction'
 	Category MetricCategory `json:"category,omitempty"`
@@ -2483,7 +2483,7 @@ type MetricSpecificationV1 struct {
 
 // MountPointMap the share mount point.
 type MountPointMap struct {
-	// ShareID - ID of the share which is mounted to role VM.
+	// ShareID - ID of the share mounted to the role VM.
 	ShareID *string `json:"shareId,omitempty"`
 	// RoleID - ID of the role to which share is mounted.
 	RoleID *string `json:"roleId,omitempty"`
@@ -2503,19 +2503,19 @@ type NetworkAdapter struct {
 	Index *int32 `json:"index,omitempty"`
 	// NodeID - Node ID of the network adapter.
 	NodeID *string `json:"nodeId,omitempty"`
-	// NetworkAdapterName - Network Adapter Name.
+	// NetworkAdapterName - Network adapter name.
 	NetworkAdapterName *string `json:"networkAdapterName,omitempty"`
 	// Label - Hardware label for the adapter.
 	Label *string `json:"label,omitempty"`
-	// MacAddress - MAC Address.
+	// MacAddress - MAC address.
 	MacAddress *string `json:"macAddress,omitempty"`
-	// LinkSpeed - Link Speed.
+	// LinkSpeed - Link speed.
 	LinkSpeed *int64 `json:"linkSpeed,omitempty"`
 	// Status - Value indicating whether this adapter is valid. Possible values include: 'Inactive', 'Active'
 	Status NetworkAdapterStatus `json:"status,omitempty"`
-	// RdmaStatus - Value indicating whether this adapter is RDMA Capable. Possible values include: 'Incapable', 'Capable'
+	// RdmaStatus - Value indicating whether this adapter is RDMA capable. Possible values include: 'Incapable', 'Capable'
 	RdmaStatus NetworkAdapterRDMAStatus `json:"rdmaStatus,omitempty"`
-	// DhcpStatus - Value indicating whether this adapter has DHCP Enabled. Possible values include: 'NetworkAdapterDHCPStatusDisabled', 'NetworkAdapterDHCPStatusEnabled'
+	// DhcpStatus - Value indicating whether this adapter has DHCP enabled. Possible values include: 'NetworkAdapterDHCPStatusDisabled', 'NetworkAdapterDHCPStatusEnabled'
 	DhcpStatus NetworkAdapterDHCPStatus `json:"dhcpStatus,omitempty"`
 	// Ipv4Configuration - The IPv4 configuration of the network adapter.
 	Ipv4Configuration *Ipv4Config `json:"ipv4Configuration,omitempty"`
@@ -2523,7 +2523,7 @@ type NetworkAdapter struct {
 	Ipv6Configuration *Ipv6Config `json:"ipv6Configuration,omitempty"`
 	// Ipv6LinkLocalAddress - The IPv6 local address.
 	Ipv6LinkLocalAddress *string `json:"ipv6LinkLocalAddress,omitempty"`
-	// DNSServers - The list DNS Servers of the device.
+	// DNSServers - The list of DNS Servers of the device.
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 }
 
@@ -2535,14 +2535,14 @@ type NetworkAdapterPosition struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
-// NetworkSettings the NetworkSettings of a device.
+// NetworkSettings the network settings of a device.
 type NetworkSettings struct {
 	autorest.Response `json:"-"`
 	// NetworkSettingsProperties - The properties of network settings of a device.
 	*NetworkSettingsProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -2617,7 +2617,7 @@ func (ns *NetworkSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NetworkSettingsProperties the properties of NetworkSettings.
+// NetworkSettingsProperties the properties of network settings.
 type NetworkSettingsProperties struct {
 	// NetworkAdapters - The network adapter list on the device.
 	NetworkAdapters *[]NetworkAdapter `json:"networkAdapters,omitempty"`
@@ -2627,7 +2627,7 @@ type NetworkSettingsProperties struct {
 type Operation struct {
 	// Name - Name of the operation.
 	Name *string `json:"name,omitempty"`
-	// Display - Properties to displayed for the operation.
+	// Display - Properties displayed for the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - Origin of the operation.
 	Origin *string `json:"origin,omitempty"`
@@ -2716,13 +2716,13 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationProperties operations Properties.
+// OperationProperties operation properties.
 type OperationProperties struct {
 	// ServiceSpecification - Service specification.
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsList class for set of operations used for discovery of available provider operations.
+// OperationsList the list of operations used for the discovery of available provider operations.
 type OperationsList struct {
 	autorest.Response `json:"-"`
 	// Value - The value.
@@ -2875,7 +2875,7 @@ type Order struct {
 	*OrderProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -3096,21 +3096,21 @@ func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, e
 	return OrderListPage{fn: getNextPage}
 }
 
-// OrderProperties order Properties.
+// OrderProperties order properties.
 type OrderProperties struct {
 	// ContactInformation - The contact details.
 	ContactInformation *ContactDetails `json:"contactInformation,omitempty"`
 	// ShippingAddress - The shipping address.
 	ShippingAddress *Address `json:"shippingAddress,omitempty"`
-	// ChangeStatusTo - Current status of the Order.
-	ChangeStatusTo *OrderStatus `json:"changeStatusTo,omitempty"`
+	// CurrentStatus - Current status of the order.
+	CurrentStatus *OrderStatus `json:"currentStatus,omitempty"`
 	// OrderHistory - List of status changes in the order.
 	OrderHistory *[]OrderStatus `json:"orderHistory,omitempty"`
 	// SerialNumber - Serial number of the device.
 	SerialNumber *string `json:"serialNumber,omitempty"`
-	// DeliveryTrackingInfo - Tracking information related to the packages being delivered to the customer whether original or replacement devices.
+	// DeliveryTrackingInfo - Tracking information for the package delivered to the customer whether it has an original or a replacement device.
 	DeliveryTrackingInfo *[]TrackingInfo `json:"deliveryTrackingInfo,omitempty"`
-	// ReturnTrackingInfo - Tracking information related to the package being returned from the customer whether original or replacement devices.
+	// ReturnTrackingInfo - Tracking information for the package returned from the customer whether it has an original or a replacement device.
 	ReturnTrackingInfo *[]TrackingInfo `json:"returnTrackingInfo,omitempty"`
 }
 
@@ -3167,8 +3167,8 @@ func (future *OrdersDeleteFuture) Result(client OrdersClient) (ar autorest.Respo
 
 // OrderStatus represents a single status change.
 type OrderStatus struct {
-	// Status - Status of the order pertaining to the allowed StatusTypes. Possible values include: 'Untracked', 'AwaitingFulfilment', 'AwaitingPreparation', 'AwaitingShipment', 'Shipped', 'Arriving', 'Delivered', 'ReplacementRequested', 'LostDevice', 'Declined', 'ReturnInitiated', 'AwaitingReturnShipment', 'ShippedBack', 'CollectedAtMicrosoft'
-	Status StatusTypes `json:"status,omitempty"`
+	// Status - Status of the order as per the allowed status types. Possible values include: 'Untracked', 'AwaitingFulfilment', 'AwaitingPreparation', 'AwaitingShipment', 'Shipped', 'Arriving', 'Delivered', 'ReplacementRequested', 'LostDevice', 'Declined', 'ReturnInitiated', 'AwaitingReturnShipment', 'ShippedBack', 'CollectedAtMicrosoft'
+	Status OrderState `json:"status,omitempty"`
 	// UpdateDateTime - Time of status update.
 	UpdateDateTime *date.Time `json:"updateDateTime,omitempty"`
 	// Comments - Comments related to this status change.
@@ -3183,7 +3183,7 @@ type PeriodicTimerEventTrigger struct {
 	Kind KindBasicTrigger `json:"kind,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -3291,23 +3291,23 @@ func (ptet *PeriodicTimerEventTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PeriodicTimerProperties periodic Timer Trigger properties.
+// PeriodicTimerProperties periodic timer trigger properties.
 type PeriodicTimerProperties struct {
 	// SourceInfo - Periodic timer details.
 	SourceInfo *PeriodicTimerSourceInfo `json:"sourceInfo,omitempty"`
-	// SinkInfo - Role Sink info.
+	// SinkInfo - Role Sink information.
 	SinkInfo *RoleSinkInfo `json:"sinkInfo,omitempty"`
-	// CustomContextTag - Custom context tag, typically used to co-relate the trigger against its usage. Eg. If a PeriodicTimer trigger may be intended for certain specific IOT modules in device, the tag can be the name/image url of the module.
+	// CustomContextTag - A custom context tag typically used to correlate the trigger against its usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the tag can be the name or the image URL of the module.
 	CustomContextTag *string `json:"customContextTag,omitempty"`
 }
 
 // PeriodicTimerSourceInfo periodic timer event source.
 type PeriodicTimerSourceInfo struct {
-	// StartTime - Time time [UTC] of the day, from which the trigger will be valid. Schedule will be computed with reference to the time specified.
+	// StartTime - The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// Schedule - Periodic frequency at which timer event needs to be raised. Supports Daily, Hourly, Minutes and seconds.
+	// Schedule - Periodic frequency at which timer event needs to be raised. Supports daily, hourly, minutes, and seconds.
 	Schedule *string `json:"schedule,omitempty"`
-	// Topic - Topic with which periodic events needs to be published to IOT device.
+	// Topic - Topic where periodic events are published to IoT device.
 	Topic *string `json:"topic,omitempty"`
 }
 
@@ -3321,16 +3321,13 @@ type RawCertificateData struct {
 
 // RefreshDetails fields for tracking refresh job on the share.
 type RefreshDetails struct {
-	// InProgressRefreshJobID - If a RefreshShare job is currently inprogress on this share - this field indicates the ArmId of that job. Empty otherwise.
+	// InProgressRefreshJobID - If a refresh share job is currently in progress on this share, this field indicates the ARM resource ID of that job. The field is empty if no job is in progress.
 	InProgressRefreshJobID *string `json:"inProgressRefreshJobId,omitempty"`
-	// LastCompletedRefreshJobTimeInUTC - Indicates the job completed time of the last refresh job on this particular share, if any.
-	// This could be a failed job or a successful job.
+	// LastCompletedRefreshJobTimeInUTC - Indicates the completed time for the last refresh job on this particular share, if any.This could be a failed job or a successful job.
 	LastCompletedRefreshJobTimeInUTC *date.Time `json:"lastCompletedRefreshJobTimeInUTC,omitempty"`
-	// ErrorManifestFile - Indicates the relative path of the error xml for the last refresh job on this particular share, if any.
-	// This could be a failed job or a successful job.
+	// ErrorManifestFile - Indicates the relative path of the error xml for the last refresh job on this particular share, if any. This could be a failed job or a successful job.
 	ErrorManifestFile *string `json:"errorManifestFile,omitempty"`
-	// LastJob - Indicates the id of the last refresh job on this particular share,if any.
-	// This could be a failed job or a successful job.
+	// LastJob - Indicates the id of the last refresh job on this particular share,if any. This could be a failed job or a successful job.
 	LastJob *string `json:"lastJob,omitempty"`
 }
 
@@ -3347,7 +3344,7 @@ type Role struct {
 	Kind Kind `json:"kind,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -3424,7 +3421,7 @@ func (r Role) AsBasicRole() (BasicRole, bool) {
 	return &r, true
 }
 
-// RoleList collection of all role on the data box edge device.
+// RoleList collection of all the roles on the Data Box Edge device.
 type RoleList struct {
 	autorest.Response `json:"-"`
 	// Value - The Value.
@@ -3682,7 +3679,7 @@ type SecuritySettings struct {
 	*SecuritySettingsProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -3759,7 +3756,7 @@ func (ss *SecuritySettings) UnmarshalJSON(body []byte) error {
 
 // SecuritySettingsProperties the properties of security settings.
 type SecuritySettingsProperties struct {
-	// DeviceAdminPassword - Device administrator password as an encrypted string (encrypted using RSA PKCS #1) is used to log into the  local web UI of the device. Actual password could have at least 8 characters that are a combination of  uppercase, lowercase, numeric, and special characters.
+	// DeviceAdminPassword - Device administrator password as an encrypted string (encrypted using RSA PKCS #1) is used to sign into the  local web UI of the device. The Actual password should have at least 8 characters that are a combination of  uppercase, lowercase, numeric, and special characters.
 	DeviceAdminPassword *AsymmetricEncryptedSecret `json:"deviceAdminPassword,omitempty"`
 }
 
@@ -3776,7 +3773,7 @@ type Share struct {
 	*ShareProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -3854,13 +3851,13 @@ func (s *Share) UnmarshalJSON(body []byte) error {
 // ShareAccessRight specifies the mapping between this particular user and the type of access he has on
 // shares on this device.
 type ShareAccessRight struct {
-	// ShareID - Id of the share.
+	// ShareID - The share ID.
 	ShareID *string `json:"shareId,omitempty"`
 	// AccessType - Type of access to be allowed on the share for this user. Possible values include: 'Change', 'Read', 'Custom'
 	AccessType ShareAccessType `json:"accessType,omitempty"`
 }
 
-// ShareList collection of all shares on the Data Box Edge/Gateway device.
+// ShareList collection of all the shares on the Data Box Edge/Gateway device.
 type ShareList struct {
 	autorest.Response `json:"-"`
 	// Value - The list of shares.
@@ -4018,9 +4015,9 @@ type ShareProperties struct {
 	AzureContainerInfo *AzureContainerInfo `json:"azureContainerInfo,omitempty"`
 	// AccessProtocol - Access protocol to be used by the share. Possible values include: 'SMB', 'NFS'
 	AccessProtocol ShareAccessProtocol `json:"accessProtocol,omitempty"`
-	// UserAccessRights - Mapping of Users and corresponding access rights on the share (mandatory for SMB protocol).
+	// UserAccessRights - Mapping of users and corresponding access rights on the share (required for SMB protocol).
 	UserAccessRights *[]UserAccessRight `json:"userAccessRights,omitempty"`
-	// ClientAccessRights - List of IP addresses and corresponding access rights on the share(mandatory for NFS protocol).
+	// ClientAccessRights - List of IP addresses and corresponding access rights on the share(required for NFS protocol).
 	ClientAccessRights *[]ClientAccessRight `json:"clientAccessRights,omitempty"`
 	// RefreshDetails - Details of the refresh job on this share.
 	RefreshDetails *RefreshDetails `json:"refreshDetails,omitempty"`
@@ -4106,7 +4103,7 @@ func (future *SharesRefreshFuture) Result(client SharesClient) (ar autorest.Resp
 
 // Sku the SKU type.
 type Sku struct {
-	// Name - Sku name. Possible values include: 'Gateway', 'Edge'
+	// Name - SKU name. Possible values include: 'Gateway', 'Edge'
 	Name SkuName `json:"name,omitempty"`
 	// Tier - The SKU tier. This is based on the SKU name. Possible values include: 'Standard'
 	Tier SkuTier `json:"tier,omitempty"`
@@ -4119,7 +4116,7 @@ type StorageAccountCredential struct {
 	*StorageAccountCredentialProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -4194,7 +4191,7 @@ func (sac *StorageAccountCredential) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// StorageAccountCredentialList the collection of storage account credential entities.
+// StorageAccountCredentialList the collection of storage account credentials.
 type StorageAccountCredentialList struct {
 	autorest.Response `json:"-"`
 	// Value - The value.
@@ -4345,11 +4342,11 @@ func NewStorageAccountCredentialListPage(getNextPage func(context.Context, Stora
 type StorageAccountCredentialProperties struct {
 	// Alias - Alias for the storage account.
 	Alias *string `json:"alias,omitempty"`
-	// UserName - UserName for the storage account.
+	// UserName - Username for the storage account.
 	UserName *string `json:"userName,omitempty"`
 	// AccountKey - Encrypted storage key.
 	AccountKey *AsymmetricEncryptedSecret `json:"accountKey,omitempty"`
-	// ConnectionString - ConnectionString for the storage account. This needs to be specified if UserName/AccountKey are not specified.
+	// ConnectionString - Connection string for the storage account. Use this string if username and account key are not specified.
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// SslStatus - Signifies whether SSL needs to be enabled or not. Possible values include: 'SSLStatusEnabled', 'SSLStatusDisabled'
 	SslStatus SSLStatus `json:"sslStatus,omitempty"`
@@ -4411,9 +4408,9 @@ func (future *StorageAccountCredentialsDeleteFuture) Result(client StorageAccoun
 	return
 }
 
-// SymmetricKey symmetric Key for authentication.
+// SymmetricKey symmetric key for authentication.
 type SymmetricKey struct {
-	// ConnectionString - Connection string based on symmetric key.
+	// ConnectionString - Connection string based on the symmetric key.
 	ConnectionString *AsymmetricEncryptedSecret `json:"connectionString,omitempty"`
 }
 
@@ -4443,7 +4440,7 @@ type Trigger struct {
 	Kind KindBasicTrigger `json:"kind,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -4792,9 +4789,9 @@ type UpdateDownloadProgress struct {
 	NumberOfUpdatesDownloaded *int32 `json:"numberOfUpdatesDownloaded,omitempty"`
 }
 
-// UpdateInstallProgress details about the progress during installation of updates.
+// UpdateInstallProgress progress details during installation of updates.
 type UpdateInstallProgress struct {
-	// PercentComplete - Percentage of completion.
+	// PercentComplete - Percentage completed.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
 	// NumberOfUpdatesToInstall - Number of updates to install.
 	NumberOfUpdatesToInstall *int32 `json:"numberOfUpdatesToInstall,omitempty"`
@@ -4809,7 +4806,7 @@ type UpdateSummary struct {
 	*UpdateSummaryProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -4886,9 +4883,9 @@ func (us *UpdateSummary) UnmarshalJSON(body []byte) error {
 
 // UpdateSummaryProperties the device update information summary.
 type UpdateSummaryProperties struct {
-	// DeviceVersionNumber - The current version of the device, of format: 1.2.17312.13.
+	// DeviceVersionNumber - The current version of the device in format: 1.2.17312.13.",
 	DeviceVersionNumber *string `json:"deviceVersionNumber,omitempty"`
-	// FriendlyDeviceVersionName - The current version of the device represented in text format.
+	// FriendlyDeviceVersionName - The current version of the device in text format.
 	FriendlyDeviceVersionName *string `json:"friendlyDeviceVersionName,omitempty"`
 	// DeviceLastScannedDateTime - The last time when a scan was done on the device.
 	DeviceLastScannedDateTime *date.Time `json:"deviceLastScannedDateTime,omitempty"`
@@ -4898,31 +4895,31 @@ type UpdateSummaryProperties struct {
 	LastCompletedDownloadJobDateTime *date.Time `json:"lastCompletedDownloadJobDateTime,omitempty"`
 	// LastCompletedInstallJobDateTime - The time when the last Install job was completed (success/cancelled/failed) on the appliance.
 	LastCompletedInstallJobDateTime *date.Time `json:"lastCompletedInstallJobDateTime,omitempty"`
-	// TotalNumberOfUpdatesAvailable - Count of updates that are available for the current device version as per the last scan on the device.
+	// TotalNumberOfUpdatesAvailable - The number of updates available for the current device version as per the last device scan.
 	TotalNumberOfUpdatesAvailable *int32 `json:"totalNumberOfUpdatesAvailable,omitempty"`
 	// TotalNumberOfUpdatesPendingDownload - The total number of items pending download.
 	TotalNumberOfUpdatesPendingDownload *int32 `json:"totalNumberOfUpdatesPendingDownload,omitempty"`
 	// TotalNumberOfUpdatesPendingInstall - The total number of items pending install.
 	TotalNumberOfUpdatesPendingInstall *int32 `json:"totalNumberOfUpdatesPendingInstall,omitempty"`
-	// RebootBehavior - Indicates if updates are available and at least one of the update items detected needs a reboot. Possible values include: 'NeverReboots', 'RequiresReboot', 'RequestReboot'
+	// RebootBehavior - Indicates if updates are available and at least one of the updates needs a reboot. Possible values include: 'NeverReboots', 'RequiresReboot', 'RequestReboot'
 	RebootBehavior InstallRebootBehavior `json:"rebootBehavior,omitempty"`
 	// OngoingUpdateOperation - The current update operation. Possible values include: 'UpdateOperationNone', 'UpdateOperationScan', 'UpdateOperationDownload', 'UpdateOperationInstall'
 	OngoingUpdateOperation UpdateOperation `json:"ongoingUpdateOperation,omitempty"`
-	// InProgressDownloadJobID - The Job ID of the download job if a download is in progress.
+	// InProgressDownloadJobID - The job ID of the download job in progress.
 	InProgressDownloadJobID *string `json:"inProgressDownloadJobId,omitempty"`
-	// InProgressInstallJobID - The Job ID of the install job if an install is in progress.
+	// InProgressInstallJobID - The job ID of the install job in progress.
 	InProgressInstallJobID *string `json:"inProgressInstallJobId,omitempty"`
 	// InProgressDownloadJobStartedDateTime - The time when the currently running download (if any) started.
 	InProgressDownloadJobStartedDateTime *date.Time `json:"inProgressDownloadJobStartedDateTime,omitempty"`
 	// InProgressInstallJobStartedDateTime - The time when the currently running install (if any) started.
 	InProgressInstallJobStartedDateTime *date.Time `json:"inProgressInstallJobStartedDateTime,omitempty"`
-	// UpdateTitles - The list of update titles which are available for install.
+	// UpdateTitles - The list of updates available for install.
 	UpdateTitles *[]string `json:"updateTitles,omitempty"`
 	// TotalUpdateSizeInBytes - The total size of updates available for download in bytes.
 	TotalUpdateSizeInBytes *float64 `json:"totalUpdateSizeInBytes,omitempty"`
 }
 
-// UploadCertificateRequest the Upload certificate request.
+// UploadCertificateRequest the upload certificate request.
 type UploadCertificateRequest struct {
 	// RawCertificateData - The Base 64 encoded certificate raw data.
 	*RawCertificateData `json:"properties,omitempty"`
@@ -4964,9 +4961,9 @@ func (ucr *UploadCertificateRequest) UnmarshalJSON(body []byte) error {
 // UploadCertificateResponse the upload registration certificate response.
 type UploadCertificateResponse struct {
 	autorest.Response `json:"-"`
-	// AuthType - Specifies the Authentication type. Possible values include: 'Invalid', 'AzureActiveDirectory'
+	// AuthType - Specifies authentication type. Possible values include: 'Invalid', 'AzureActiveDirectory'
 	AuthType AuthenticationType `json:"authType,omitempty"`
-	// ResourceID - The resource ID of the edge device.
+	// ResourceID - The resource ID of the Data Box Edge/Gateway device.
 	ResourceID *string `json:"resourceId,omitempty"`
 	// AadAuthority - Azure Active Directory tenant authority.
 	AadAuthority *string `json:"aadAuthority,omitempty"`
@@ -4974,20 +4971,20 @@ type UploadCertificateResponse struct {
 	AadTenantID *string `json:"aadTenantId,omitempty"`
 	// ServicePrincipalClientID - Azure Active Directory service principal client ID.
 	ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
-	// ServicePrincipalObjectID - Azure Active Directory service principal Object ID.
+	// ServicePrincipalObjectID - Azure Active Directory service principal object ID.
 	ServicePrincipalObjectID *string `json:"servicePrincipalObjectId,omitempty"`
-	// AzureManagementEndpointAudience - The Azure Management Endpoint Audience.
+	// AzureManagementEndpointAudience - The azure management endpoint audience.
 	AzureManagementEndpointAudience *string `json:"azureManagementEndpointAudience,omitempty"`
 }
 
-// User represents a user who has access to one or more shares on the Edge storage device.
+// User represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
 type User struct {
 	autorest.Response `json:"-"`
 	// UserProperties - The storage account credential properties.
 	*UserProperties `json:"properties,omitempty"`
 	// ID - The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - The object name.
 	Name *string `json:"name,omitempty"`
 	// Type - The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
@@ -5062,9 +5059,9 @@ func (u *User) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// UserAccessRight the mapping between a particular user and the type of access they have on the SMB share.
+// UserAccessRight the mapping between a particular user and the access type on the SMB share.
 type UserAccessRight struct {
-	// UserID - Id of the user (already existing in the device).
+	// UserID - User ID (already existing in the device).
 	UserID *string `json:"userId,omitempty"`
 	// AccessType - Type of access to be allowed for the user. Possible values include: 'Change', 'Read', 'Custom'
 	AccessType ShareAccessType `json:"accessType,omitempty"`
@@ -5216,9 +5213,9 @@ func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, erro
 	return UserListPage{fn: getNextPage}
 }
 
-// UserProperties the User properties.
+// UserProperties the user properties.
 type UserProperties struct {
-	// EncryptedPassword - The details of the password specified for the user.
+	// EncryptedPassword - The password details.
 	EncryptedPassword *AsymmetricEncryptedSecret `json:"encryptedPassword,omitempty"`
 	// ShareAccessRights - List of shares that the user has rights on. This field should not be specified during user creation.
 	ShareAccessRights *[]ShareAccessRight `json:"shareAccessRights,omitempty"`

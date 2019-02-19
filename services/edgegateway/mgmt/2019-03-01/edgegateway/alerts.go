@@ -42,8 +42,8 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 
 // Get sends the get request.
 // Parameters:
-// deviceName - name of the device.
-// name - name of the alert which needs to be retrieved.
+// deviceName - the device name.
+// name - the alert name.
 // resourceGroupName - the resource group name.
 func (client AlertsClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result Alert, err error) {
 	if tracing.IsEnabled() {
@@ -86,7 +86,7 @@ func (client AlertsClient) GetPreparer(ctx context.Context, deviceName string, n
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -119,7 +119,7 @@ func (client AlertsClient) GetResponder(resp *http.Response) (result Alert, err 
 	return
 }
 
-// ListByDataBoxEdgeDevice retrieves all the alerts for a data box edge/gateway device.
+// ListByDataBoxEdgeDevice gets all the alerts for a data box edge/gateway device.
 // Parameters:
 // deviceName - the device name.
 // resourceGroupName - the resource group name.
@@ -164,7 +164,7 @@ func (client AlertsClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

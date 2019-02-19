@@ -19,7 +19,7 @@ package edgegatewayapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2018-07-01/edgegateway"
+	"github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2019-03-01/edgegateway"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
@@ -67,6 +67,13 @@ type BandwidthSchedulesClientAPI interface {
 }
 
 var _ BandwidthSchedulesClientAPI = (*edgegateway.BandwidthSchedulesClient)(nil)
+
+// JobsClientAPI contains the set of methods on the JobsClient type.
+type JobsClientAPI interface {
+	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result edgegateway.Job, err error)
+}
+
+var _ JobsClientAPI = (*edgegateway.JobsClient)(nil)
 
 // OperationsStatusClientAPI contains the set of methods on the OperationsStatusClient type.
 type OperationsStatusClientAPI interface {

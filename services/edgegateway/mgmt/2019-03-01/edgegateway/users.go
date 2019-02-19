@@ -26,29 +26,30 @@ import (
 	"net/http"
 )
 
-// OrdersClient is the client for the Orders methods of the Edgegateway service.
-type OrdersClient struct {
+// UsersClient is the client for the Users methods of the Edgegateway service.
+type UsersClient struct {
 	BaseClient
 }
 
-// NewOrdersClient creates an instance of the OrdersClient client.
-func NewOrdersClient(subscriptionID string) OrdersClient {
-	return NewOrdersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewUsersClient creates an instance of the UsersClient client.
+func NewUsersClient(subscriptionID string) UsersClient {
+	return NewUsersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOrdersClientWithBaseURI creates an instance of the OrdersClient client.
-func NewOrdersClientWithBaseURI(baseURI string, subscriptionID string) OrdersClient {
-	return OrdersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewUsersClientWithBaseURI creates an instance of the UsersClient client.
+func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClient {
+	return UsersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate sends the create or update request.
+// CreateOrUpdate creates a new user or updates an existing user's information on a data box edge/gateway device.
 // Parameters:
-// deviceName - name of the edge device for which order needs to be added or updated.
-// order - order to be added.
+// deviceName - the device name.
+// name - the user name.
+// userParameter - the user details.
 // resourceGroupName - the resource group name.
-func (client OrdersClient) CreateOrUpdate(ctx context.Context, deviceName string, order Order, resourceGroupName string) (result OrdersCreateOrUpdateFuture, err error) {
+func (client UsersClient) CreateOrUpdate(ctx context.Context, deviceName string, name string, userParameter User, resourceGroupName string) (result UsersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OrdersClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -58,36 +59,23 @@ func (client OrdersClient) CreateOrUpdate(ctx context.Context, deviceName string
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: order,
-			Constraints: []validation.Constraint{{Target: "order.OrderProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "order.OrderProperties.ContactInformation", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "order.OrderProperties.ContactInformation.ContactPerson", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "order.OrderProperties.ContactInformation.CompanyName", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "order.OrderProperties.ContactInformation.Phone", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "order.OrderProperties.ContactInformation.EmailList", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-					{Target: "order.OrderProperties.ShippingAddress", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "order.OrderProperties.ShippingAddress.AddressLine1", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "order.OrderProperties.ShippingAddress.AddressLine2", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "order.OrderProperties.ShippingAddress.AddressLine3", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "order.OrderProperties.ShippingAddress.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "order.OrderProperties.ShippingAddress.City", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "order.OrderProperties.ShippingAddress.State", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "order.OrderProperties.ShippingAddress.Country", Name: validation.Null, Rule: true, Chain: nil},
-						}},
+		{TargetValue: userParameter,
+			Constraints: []validation.Constraint{{Target: "userParameter.UserProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "userParameter.UserProperties.EncryptedPassword", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "userParameter.UserProperties.EncryptedPassword.Value", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewError("edgegateway.OrdersClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("edgegateway.UsersClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, deviceName, order, resourceGroupName)
+	req, err := client.CreateOrUpdatePreparer(ctx, deviceName, name, userParameter, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -95,14 +83,15 @@ func (client OrdersClient) CreateOrUpdate(ctx context.Context, deviceName string
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client OrdersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName string, order Order, resourceGroupName string) (*http.Request, error) {
+func (client UsersClient) CreateOrUpdatePreparer(ctx context.Context, deviceName string, name string, userParameter User, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
+		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -111,15 +100,15 @@ func (client OrdersClient) CreateOrUpdatePreparer(ctx context.Context, deviceNam
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default", pathParameters),
-		autorest.WithJSON(order),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}", pathParameters),
+		autorest.WithJSON(userParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client OrdersClient) CreateOrUpdateSender(req *http.Request) (future OrdersCreateOrUpdateFuture, err error) {
+func (client UsersClient) CreateOrUpdateSender(req *http.Request) (future UsersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -132,7 +121,7 @@ func (client OrdersClient) CreateOrUpdateSender(req *http.Request) (future Order
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client OrdersClient) CreateOrUpdateResponder(resp *http.Response) (result Order, err error) {
+func (client UsersClient) CreateOrUpdateResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -143,13 +132,14 @@ func (client OrdersClient) CreateOrUpdateResponder(resp *http.Response) (result 
 	return
 }
 
-// Delete sends the delete request.
+// Delete deletes the user on a databox edge/gateway device.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
+// name - the user name.
 // resourceGroupName - the resource group name.
-func (client OrdersClient) Delete(ctx context.Context, deviceName string, resourceGroupName string) (result OrdersDeleteFuture, err error) {
+func (client UsersClient) Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result UsersDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OrdersClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -158,15 +148,15 @@ func (client OrdersClient) Delete(ctx context.Context, deviceName string, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, deviceName, resourceGroupName)
+	req, err := client.DeletePreparer(ctx, deviceName, name, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -174,14 +164,15 @@ func (client OrdersClient) Delete(ctx context.Context, deviceName string, resour
 }
 
 // DeletePreparer prepares the Delete request.
-func (client OrdersClient) DeletePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
+func (client UsersClient) DeletePreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
+		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -189,14 +180,14 @@ func (client OrdersClient) DeletePreparer(ctx context.Context, deviceName string
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client OrdersClient) DeleteSender(req *http.Request) (future OrdersDeleteFuture, err error) {
+func (client UsersClient) DeleteSender(req *http.Request) (future UsersDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -209,7 +200,7 @@ func (client OrdersClient) DeleteSender(req *http.Request) (future OrdersDeleteF
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client OrdersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -219,13 +210,14 @@ func (client OrdersClient) DeleteResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Get sends the get request.
+// Get gets the properties of the specified user.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
+// name - the user name.
 // resourceGroupName - the resource group name.
-func (client OrdersClient) Get(ctx context.Context, deviceName string, resourceGroupName string) (result Order, err error) {
+func (client UsersClient) Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result User, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OrdersClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -234,36 +226,37 @@ func (client OrdersClient) Get(ctx context.Context, deviceName string, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, deviceName, resourceGroupName)
+	req, err := client.GetPreparer(ctx, deviceName, name, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client OrdersClient) GetPreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
+func (client UsersClient) GetPreparer(ctx context.Context, deviceName string, name string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
+		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -271,21 +264,21 @@ func (client OrdersClient) GetPreparer(ctx context.Context, deviceName string, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client OrdersClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client UsersClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client OrdersClient) GetResponder(resp *http.Response) (result Order, err error) {
+func (client UsersClient) GetResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -296,17 +289,17 @@ func (client OrdersClient) GetResponder(resp *http.Response) (result Order, err 
 	return
 }
 
-// ListByDataBoxEdgeDevice sends the list by data box edge device request.
+// ListByDataBoxEdgeDevice gets all the users registered on a data box edge/gateway device.
 // Parameters:
-// deviceName - name of the device.
+// deviceName - the device name.
 // resourceGroupName - the resource group name.
-func (client OrdersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result OrderListPage, err error) {
+func (client UsersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result UserListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OrdersClient.ListByDataBoxEdgeDevice")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.ListByDataBoxEdgeDevice")
 		defer func() {
 			sc := -1
-			if result.ol.Response.Response != nil {
-				sc = result.ol.Response.Response.StatusCode
+			if result.ul.Response.Response != nil {
+				sc = result.ul.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -314,34 +307,34 @@ func (client OrdersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNa
 	result.fn = client.listByDataBoxEdgeDeviceNextResults
 	req, err := client.ListByDataBoxEdgeDevicePreparer(ctx, deviceName, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByDataBoxEdgeDeviceSender(req)
 	if err != nil {
-		result.ol.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "ListByDataBoxEdgeDevice", resp, "Failure sending request")
+		result.ul.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "ListByDataBoxEdgeDevice", resp, "Failure sending request")
 		return
 	}
 
-	result.ol, err = client.ListByDataBoxEdgeDeviceResponder(resp)
+	result.ul, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByDataBoxEdgeDevicePreparer prepares the ListByDataBoxEdgeDevice request.
-func (client OrdersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
+func (client UsersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -349,21 +342,21 @@ func (client OrdersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/users", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
-func (client OrdersClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
+func (client UsersClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always
 // closes the http.Response Body.
-func (client OrdersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result OrderList, err error) {
+func (client UsersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result UserList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -375,10 +368,10 @@ func (client OrdersClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response)
 }
 
 // listByDataBoxEdgeDeviceNextResults retrieves the next set of results, if any.
-func (client OrdersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context, lastResults OrderList) (result OrderList, err error) {
-	req, err := lastResults.orderListPreparer(ctx)
+func (client UsersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Context, lastResults UserList) (result UserList, err error) {
+	req, err := lastResults.userListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "listByDataBoxEdgeDeviceNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "edgegateway.UsersClient", "listByDataBoxEdgeDeviceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -386,19 +379,19 @@ func (client OrdersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Contex
 	resp, err := client.ListByDataBoxEdgeDeviceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "edgegateway.UsersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByDataBoxEdgeDeviceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgegateway.OrdersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "edgegateway.UsersClient", "listByDataBoxEdgeDeviceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByDataBoxEdgeDeviceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OrdersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result OrderListIterator, err error) {
+func (client UsersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result UserListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OrdersClient.ListByDataBoxEdgeDevice")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsersClient.ListByDataBoxEdgeDevice")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

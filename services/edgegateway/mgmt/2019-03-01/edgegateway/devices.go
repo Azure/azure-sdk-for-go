@@ -86,7 +86,7 @@ func (client DevicesClient) CreateOrUpdatePreparer(ctx context.Context, deviceNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -127,10 +127,10 @@ func (client DevicesClient) CreateOrUpdateResponder(resp *http.Response) (result
 	return
 }
 
-// CreateOrUpdateExtendedInfo creates or updates the extended info of the data box edge/gateway device.
+// CreateOrUpdateExtendedInfo creates or updates the additional information of a the data box edge/gateway device.
 // Parameters:
 // deviceName - the device name.
-// parameters - the device extended information.
+// parameters - the additional information.
 // resourceGroupName - the resource group name.
 func (client DevicesClient) CreateOrUpdateExtendedInfo(ctx context.Context, deviceName string, parameters DataBoxEdgeDeviceExtendedInfo, resourceGroupName string) (result DataBoxEdgeDeviceExtendedInfo, err error) {
 	if tracing.IsEnabled() {
@@ -179,7 +179,7 @@ func (client DevicesClient) CreateOrUpdateExtendedInfoPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -262,7 +262,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettingsPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -340,7 +340,7 @@ func (client DevicesClient) DeletePreparer(ctx context.Context, deviceName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -416,7 +416,7 @@ func (client DevicesClient) DownloadUpdatesPreparer(ctx context.Context, deviceN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -454,7 +454,7 @@ func (client DevicesClient) DownloadUpdatesResponder(resp *http.Response) (resul
 	return
 }
 
-// Get returns the properties of the data box edge/gateway device.
+// Get gets the properties of the data box edge/gateway device.
 // Parameters:
 // deviceName - the device name.
 // resourceGroupName - the resource group name.
@@ -498,7 +498,7 @@ func (client DevicesClient) GetPreparer(ctx context.Context, deviceName string, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -531,7 +531,7 @@ func (client DevicesClient) GetResponder(resp *http.Response) (result DataBoxEdg
 	return
 }
 
-// GetExtendedInformation returns the extended information of the specified data box edge/gateway device.
+// GetExtendedInformation gets additional information for the specified data box edge/gateway device.
 // Parameters:
 // deviceName - the device name.
 // resourceGroupName - the resource group name.
@@ -575,7 +575,7 @@ func (client DevicesClient) GetExtendedInformationPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -608,7 +608,7 @@ func (client DevicesClient) GetExtendedInformationResponder(resp *http.Response)
 	return
 }
 
-// GetNetworkSettings returns the network settings of the specified data box edge/gateway device.
+// GetNetworkSettings gets the network settings of the specified data box edge/gateway device.
 // Parameters:
 // deviceName - the device name.
 // resourceGroupName - the resource group name.
@@ -652,7 +652,7 @@ func (client DevicesClient) GetNetworkSettingsPreparer(ctx context.Context, devi
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -729,7 +729,7 @@ func (client DevicesClient) GetUpdateSummaryPreparer(ctx context.Context, device
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -800,7 +800,7 @@ func (client DevicesClient) InstallUpdatesPreparer(ctx context.Context, deviceNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -838,7 +838,7 @@ func (client DevicesClient) InstallUpdatesResponder(resp *http.Response) (result
 	return
 }
 
-// ListByResourceGroup retrieves all data box edge/gateway devices in a resource group.
+// ListByResourceGroup gets all the data box edge/gateway devices in a resource group.
 // Parameters:
 // resourceGroupName - the resource group name.
 // expand - specify $expand=details to populate additional fields related to the resource or Specify
@@ -883,7 +883,7 @@ func (client DevicesClient) ListByResourceGroupPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -956,7 +956,7 @@ func (client DevicesClient) ListByResourceGroupComplete(ctx context.Context, res
 	return
 }
 
-// ListBySubscription retrieves all data box edge/gateway devices in a subscription.
+// ListBySubscription gets all the data box edge/gateway devices in a subscription.
 // Parameters:
 // expand - specify $expand=details to populate additional fields related to the resource or Specify
 // $skipToken=<token> to populate the next page in the list.
@@ -999,7 +999,7 @@ func (client DevicesClient) ListBySubscriptionPreparer(ctx context.Context, expa
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1110,7 +1110,7 @@ func (client DevicesClient) ScanForUpdatesPreparer(ctx context.Context, deviceNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1148,10 +1148,10 @@ func (client DevicesClient) ScanForUpdatesResponder(resp *http.Response) (result
 	return
 }
 
-// Update updates data box edge/gateway device.
+// Update modifies a Data Box Edge/Gateway resource.
 // Parameters:
 // deviceName - the device name.
-// parameters - the device update parameters.
+// parameters - the resource parameters.
 // resourceGroupName - the resource group name.
 func (client DevicesClient) Update(ctx context.Context, deviceName string, parameters DataBoxEdgeDevicePatch, resourceGroupName string) (result DataBoxEdgeDevice, err error) {
 	if tracing.IsEnabled() {
@@ -1193,7 +1193,7 @@ func (client DevicesClient) UpdatePreparer(ctx context.Context, deviceName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1280,7 +1280,7 @@ func (client DevicesClient) UploadCertificatePreparer(ctx context.Context, devic
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

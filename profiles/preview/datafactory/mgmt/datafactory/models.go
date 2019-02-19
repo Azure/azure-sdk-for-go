@@ -364,6 +364,15 @@ const (
 	Year         RecurrenceFrequency = original.Year
 )
 
+type RestServiceAuthenticationType = original.RestServiceAuthenticationType
+
+const (
+	RestServiceAuthenticationTypeAadServicePrincipal    RestServiceAuthenticationType = original.RestServiceAuthenticationTypeAadServicePrincipal
+	RestServiceAuthenticationTypeAnonymous              RestServiceAuthenticationType = original.RestServiceAuthenticationTypeAnonymous
+	RestServiceAuthenticationTypeBasic                  RestServiceAuthenticationType = original.RestServiceAuthenticationTypeBasic
+	RestServiceAuthenticationTypeManagedServiceIdentity RestServiceAuthenticationType = original.RestServiceAuthenticationTypeManagedServiceIdentity
+)
+
 type RunQueryFilterOperand = original.RunQueryFilterOperand
 
 const (
@@ -649,10 +658,12 @@ const (
 	TypeQuickBooksSource               TypeBasicCopySource = original.TypeQuickBooksSource
 	TypeRelationalSource               TypeBasicCopySource = original.TypeRelationalSource
 	TypeResponsysSource                TypeBasicCopySource = original.TypeResponsysSource
+	TypeRestSource                     TypeBasicCopySource = original.TypeRestSource
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
+	TypeSapOpenHubSource               TypeBasicCopySource = original.TypeSapOpenHubSource
 	TypeServiceNowSource               TypeBasicCopySource = original.TypeServiceNowSource
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
 	TypeSparkSource                    TypeBasicCopySource = original.TypeSparkSource
@@ -716,10 +727,12 @@ const (
 	TypeQuickBooksObject               TypeBasicDataset = original.TypeQuickBooksObject
 	TypeRelationalTable                TypeBasicDataset = original.TypeRelationalTable
 	TypeResponsysObject                TypeBasicDataset = original.TypeResponsysObject
+	TypeRestResource                   TypeBasicDataset = original.TypeRestResource
 	TypeSalesforceMarketingCloudObject TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
 	TypeSapEccResource                 TypeBasicDataset = original.TypeSapEccResource
+	TypeSapOpenHubTable                TypeBasicDataset = original.TypeSapOpenHubTable
 	TypeServiceNowObject               TypeBasicDataset = original.TypeServiceNowObject
 	TypeShopifyObject                  TypeBasicDataset = original.TypeShopifyObject
 	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
@@ -844,12 +857,14 @@ const (
 	TypePresto                   TypeBasicLinkedService = original.TypePresto
 	TypeQuickBooks               TypeBasicLinkedService = original.TypeQuickBooks
 	TypeResponsys                TypeBasicLinkedService = original.TypeResponsys
+	TypeRestService              TypeBasicLinkedService = original.TypeRestService
 	TypeSalesforce               TypeBasicLinkedService = original.TypeSalesforce
 	TypeSalesforceMarketingCloud TypeBasicLinkedService = original.TypeSalesforceMarketingCloud
 	TypeSapBW                    TypeBasicLinkedService = original.TypeSapBW
 	TypeSapCloudForCustomer      TypeBasicLinkedService = original.TypeSapCloudForCustomer
 	TypeSapEcc                   TypeBasicLinkedService = original.TypeSapEcc
 	TypeSapHana                  TypeBasicLinkedService = original.TypeSapHana
+	TypeSapOpenHub               TypeBasicLinkedService = original.TypeSapOpenHub
 	TypeServiceNow               TypeBasicLinkedService = original.TypeServiceNow
 	TypeSftp                     TypeBasicLinkedService = original.TypeSftp
 	TypeShopify                  TypeBasicLinkedService = original.TypeShopify
@@ -1330,6 +1345,11 @@ type ResponsysLinkedService = original.ResponsysLinkedService
 type ResponsysLinkedServiceTypeProperties = original.ResponsysLinkedServiceTypeProperties
 type ResponsysObjectDataset = original.ResponsysObjectDataset
 type ResponsysSource = original.ResponsysSource
+type RestResourceDataset = original.RestResourceDataset
+type RestResourceDatasetTypeProperties = original.RestResourceDatasetTypeProperties
+type RestServiceLinkedService = original.RestServiceLinkedService
+type RestServiceLinkedServiceTypeProperties = original.RestServiceLinkedServiceTypeProperties
+type RestSource = original.RestSource
 type RetryPolicy = original.RetryPolicy
 type RunFilterParameters = original.RunFilterParameters
 type RunQueryFilter = original.RunQueryFilter
@@ -1373,6 +1393,11 @@ type SapEccResourceDatasetTypeProperties = original.SapEccResourceDatasetTypePro
 type SapEccSource = original.SapEccSource
 type SapHanaLinkedService = original.SapHanaLinkedService
 type SapHanaLinkedServiceProperties = original.SapHanaLinkedServiceProperties
+type SapOpenHubLinkedService = original.SapOpenHubLinkedService
+type SapOpenHubLinkedServiceTypeProperties = original.SapOpenHubLinkedServiceTypeProperties
+type SapOpenHubSource = original.SapOpenHubSource
+type SapOpenHubTableDataset = original.SapOpenHubTableDataset
+type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
 type ScheduleTrigger = original.ScheduleTrigger
 type ScheduleTriggerRecurrence = original.ScheduleTriggerRecurrence
 type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties
@@ -1721,6 +1746,9 @@ func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
 }
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
+}
+func PossibleRestServiceAuthenticationTypeValues() []RestServiceAuthenticationType {
+	return original.PossibleRestServiceAuthenticationTypeValues()
 }
 func PossibleRunQueryFilterOperandValues() []RunQueryFilterOperand {
 	return original.PossibleRunQueryFilterOperandValues()

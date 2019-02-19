@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-11-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-12-01/network"
 )
 
 const (
@@ -220,8 +220,17 @@ const (
 type AzureFirewallRCActionType = original.AzureFirewallRCActionType
 
 const (
+	AzureFirewallRCActionTypeAlert AzureFirewallRCActionType = original.AzureFirewallRCActionTypeAlert
 	AzureFirewallRCActionTypeAllow AzureFirewallRCActionType = original.AzureFirewallRCActionTypeAllow
 	AzureFirewallRCActionTypeDeny  AzureFirewallRCActionType = original.AzureFirewallRCActionTypeDeny
+)
+
+type AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelMode
+
+const (
+	AzureFirewallThreatIntelModeAlert AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelModeAlert
+	AzureFirewallThreatIntelModeDeny  AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelModeDeny
+	AzureFirewallThreatIntelModeOff   AzureFirewallThreatIntelMode = original.AzureFirewallThreatIntelModeOff
 )
 
 type BgpPeerState = original.BgpPeerState
@@ -245,9 +254,9 @@ const (
 type ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatus
 
 const (
-	Active   ConnectionMonitorSourceStatus = original.Active
-	Inactive ConnectionMonitorSourceStatus = original.Inactive
-	Uknown   ConnectionMonitorSourceStatus = original.Uknown
+	ConnectionMonitorSourceStatusActive   ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusActive
+	ConnectionMonitorSourceStatusInactive ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusInactive
+	ConnectionMonitorSourceStatusUnknown  ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatusUnknown
 )
 
 type ConnectionState = original.ConnectionState
@@ -316,8 +325,8 @@ const (
 type EffectiveRouteState = original.EffectiveRouteState
 
 const (
-	EffectiveRouteStateActive  EffectiveRouteState = original.EffectiveRouteStateActive
-	EffectiveRouteStateInvalid EffectiveRouteState = original.EffectiveRouteStateInvalid
+	Active  EffectiveRouteState = original.Active
+	Invalid EffectiveRouteState = original.Invalid
 )
 
 type EffectiveSecurityRuleProtocol = original.EffectiveSecurityRuleProtocol
@@ -862,9 +871,6 @@ type ApplicationGateway = original.ApplicationGateway
 type ApplicationGatewayAuthenticationCertificate = original.ApplicationGatewayAuthenticationCertificate
 type ApplicationGatewayAuthenticationCertificatePropertiesFormat = original.ApplicationGatewayAuthenticationCertificatePropertiesFormat
 type ApplicationGatewayAutoscaleConfiguration = original.ApplicationGatewayAutoscaleConfiguration
-type ApplicationGatewayAvailableRequestHeadersResult = original.ApplicationGatewayAvailableRequestHeadersResult
-type ApplicationGatewayAvailableResponseHeadersResult = original.ApplicationGatewayAvailableResponseHeadersResult
-type ApplicationGatewayAvailableServerVariablesResult = original.ApplicationGatewayAvailableServerVariablesResult
 type ApplicationGatewayAvailableSslOptions = original.ApplicationGatewayAvailableSslOptions
 type ApplicationGatewayAvailableSslOptionsPropertiesFormat = original.ApplicationGatewayAvailableSslOptionsPropertiesFormat
 type ApplicationGatewayAvailableSslPredefinedPolicies = original.ApplicationGatewayAvailableSslPredefinedPolicies
@@ -912,6 +918,7 @@ type ApplicationGatewayRequestRoutingRule = original.ApplicationGatewayRequestRo
 type ApplicationGatewayRequestRoutingRulePropertiesFormat = original.ApplicationGatewayRequestRoutingRulePropertiesFormat
 type ApplicationGatewayRewriteRule = original.ApplicationGatewayRewriteRule
 type ApplicationGatewayRewriteRuleActionSet = original.ApplicationGatewayRewriteRuleActionSet
+type ApplicationGatewayRewriteRuleCondition = original.ApplicationGatewayRewriteRuleCondition
 type ApplicationGatewayRewriteRuleSet = original.ApplicationGatewayRewriteRuleSet
 type ApplicationGatewayRewriteRuleSetPropertiesFormat = original.ApplicationGatewayRewriteRuleSetPropertiesFormat
 type ApplicationGatewaySku = original.ApplicationGatewaySku
@@ -1216,6 +1223,8 @@ type InboundNatRulePropertiesFormat = original.InboundNatRulePropertiesFormat
 type InboundNatRulesClient = original.InboundNatRulesClient
 type InboundNatRulesCreateOrUpdateFuture = original.InboundNatRulesCreateOrUpdateFuture
 type InboundNatRulesDeleteFuture = original.InboundNatRulesDeleteFuture
+type IntentPolicy = original.IntentPolicy
+type IntentPolicyConfiguration = original.IntentPolicyConfiguration
 type Interface = original.Interface
 type InterfaceAssociation = original.InterfaceAssociation
 type InterfaceDNSSettings = original.InterfaceDNSSettings
@@ -1266,6 +1275,7 @@ type ListP2SVpnGatewaysResultPage = original.ListP2SVpnGatewaysResultPage
 type ListP2SVpnServerConfigurationsResult = original.ListP2SVpnServerConfigurationsResult
 type ListP2SVpnServerConfigurationsResultIterator = original.ListP2SVpnServerConfigurationsResultIterator
 type ListP2SVpnServerConfigurationsResultPage = original.ListP2SVpnServerConfigurationsResultPage
+type ListString = original.ListString
 type ListVirtualHubsResult = original.ListVirtualHubsResult
 type ListVirtualHubsResultIterator = original.ListVirtualHubsResultIterator
 type ListVirtualHubsResultPage = original.ListVirtualHubsResultPage
@@ -1376,6 +1386,7 @@ type PacketCapturesGetStatusFuture = original.PacketCapturesGetStatusFuture
 type PacketCapturesStopFuture = original.PacketCapturesStopFuture
 type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
+type PrepareNetworkPoliciesRequest = original.PrepareNetworkPoliciesRequest
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
 type Profile = original.Profile
@@ -1503,6 +1514,7 @@ type SubnetPropertiesFormat = original.SubnetPropertiesFormat
 type SubnetsClient = original.SubnetsClient
 type SubnetsCreateOrUpdateFuture = original.SubnetsCreateOrUpdateFuture
 type SubnetsDeleteFuture = original.SubnetsDeleteFuture
+type SubnetsPrepareNetworkPoliciesFuture = original.SubnetsPrepareNetworkPoliciesFuture
 type TagsObject = original.TagsObject
 type Topology = original.Topology
 type TopologyAssociation = original.TopologyAssociation
@@ -2503,6 +2515,9 @@ func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRule
 }
 func PossibleAzureFirewallRCActionTypeValues() []AzureFirewallRCActionType {
 	return original.PossibleAzureFirewallRCActionTypeValues()
+}
+func PossibleAzureFirewallThreatIntelModeValues() []AzureFirewallThreatIntelMode {
+	return original.PossibleAzureFirewallThreatIntelModeValues()
 }
 func PossibleBgpPeerStateValues() []BgpPeerState {
 	return original.PossibleBgpPeerStateValues()

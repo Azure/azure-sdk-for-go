@@ -2240,7 +2240,7 @@ type SecretValueReference struct {
 	KeyVault *KeyVaultReference `json:"keyVault,omitempty"`
 	// SecretName - Name of the secret.
 	SecretName *string `json:"secretName,omitempty"`
-	// SecretVersion - If multiple versions, the version of the secret.
+	// SecretVersion - The version of the secret to use. If left blank, the latest version of the secret is used.
 	SecretVersion *string `json:"secretVersion,omitempty"`
 }
 

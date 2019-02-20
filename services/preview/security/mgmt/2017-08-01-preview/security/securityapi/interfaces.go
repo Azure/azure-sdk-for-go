@@ -82,7 +82,7 @@ var _ IoTSecuritySolutionsResourceGroupClientAPI = (*security.IoTSecuritySolutio
 
 // IotSecuritySolutionClientAPI contains the set of methods on the IotSecuritySolutionClient type.
 type IotSecuritySolutionClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
+	Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData security.IoTSecuritySolutionModel) (result security.IoTSecuritySolutionModel, err error)
 	Delete(ctx context.Context, resourceGroupName string, solutionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
 	Update(ctx context.Context, resourceGroupName string, solutionName string, securitySolutionTags security.TagsResource) (result security.IoTSecuritySolutionModel, err error)

@@ -46,7 +46,8 @@ func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // solutionName - the solution manager name
-func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionModel, err error) {
+// iotSecuritySolutionData - the security solution data
+func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (result IoTSecuritySolutionModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.Create")
 		defer func() {
@@ -63,11 +64,16 @@ func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGrou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: iotSecuritySolutionData,
+			Constraints: []validation.Constraint{{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.IotHubs", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("security.IotSecuritySolutionClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, solutionName)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, solutionName, iotSecuritySolutionData)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Create", nil, "Failure preparing request")
 		return
@@ -89,7 +95,7 @@ func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGrou
 }
 
 // CreatePreparer prepares the Create request.
-func (client IotSecuritySolutionClient) CreatePreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+func (client IotSecuritySolutionClient) CreatePreparer(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
@@ -102,9 +108,11 @@ func (client IotSecuritySolutionClient) CreatePreparer(ctx context.Context, reso
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/IoTSecuritySolutions/{solutionName}", pathParameters),
+		autorest.WithJSON(iotSecuritySolutionData),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

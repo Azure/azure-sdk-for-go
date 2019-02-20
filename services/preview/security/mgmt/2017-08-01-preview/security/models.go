@@ -129,9 +129,9 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 type ExtraData string
 
 const (
-	// RawEvents ...
+	// RawEvents Export the raw events into the security solution workspace
 	RawEvents ExtraData = "RawEvents"
-	// TwinData ...
+	// TwinData Export the twin data into the analysis process
 	TwinData ExtraData = "TwinData"
 )
 
@@ -3555,7 +3555,7 @@ type IoTSecuritySolutionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Enabled - Is the solution Enabled for the customer.
 	Enabled *bool `json:"enabled,omitempty"`
-	// Export - Wether to save the raw events to the given workspace.
+	// Export - list of additional data to export by the system
 	Export *[]ExtraData `json:"export,omitempty"`
 	// IotHubs - Related iot hub resources ID
 	IotHubs *[]string `json:"iotHubs,omitempty"`

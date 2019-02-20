@@ -91,6 +91,8 @@ type PasswordCredentialsUpdateParameters = original.PasswordCredentialsUpdatePar
 type PasswordProfile = original.PasswordProfile
 type Permissions = original.Permissions
 type PermissionsListResult = original.PermissionsListResult
+type PermissionsListResultIterator = original.PermissionsListResultIterator
+type PermissionsListResultPage = original.PermissionsListResultPage
 type RequiredResourceAccess = original.RequiredResourceAccess
 type ResourceAccess = original.ResourceAccess
 type ServicePrincipal = original.ServicePrincipal
@@ -169,6 +171,12 @@ func NewObjectsClient(tenantID string) ObjectsClient {
 }
 func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
 	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
+}
+func NewPermissionsListResultIterator(page PermissionsListResultPage) PermissionsListResultIterator {
+	return original.NewPermissionsListResultIterator(page)
+}
+func NewPermissionsListResultPage(getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
+	return original.NewPermissionsListResultPage(getNextPage)
 }
 func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
 	return original.NewServicePrincipalListResultIterator(page)

@@ -117,17 +117,18 @@ func (client OAuth2Client) DeleteResponder(resp *http.Response) (result autorest
 // Get queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
 // Parameters:
 // filter - this is the Service Principal ObjectId associated with the app
-func (client OAuth2Client) Get(ctx context.Context, filter string) (result PermissionsListResult, err error) {
+func (client OAuth2Client) Get(ctx context.Context, filter string) (result PermissionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Get")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.plr.Response.Response != nil {
+				sc = result.plr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.getNextResults
 	req, err := client.GetPreparer(ctx, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", nil, "Failure preparing request")
@@ -136,12 +137,12 @@ func (client OAuth2Client) Get(ctx context.Context, filter string) (result Permi
 
 	resp, err := client.GetSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.plr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetResponder(resp)
+	result.plr, err = client.GetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", resp, "Failure responding to request")
 	}
@@ -188,6 +189,43 @@ func (client OAuth2Client) GetResponder(resp *http.Response) (result Permissions
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// getNextResults retrieves the next set of results, if any.
+func (client OAuth2Client) getNextResults(ctx context.Context, lastResults PermissionsListResult) (result PermissionsListResult, err error) {
+	req, err := lastResults.permissionsListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "getNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "getNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "getNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// GetComplete enumerates all values, automatically crossing page boundaries as required.
+func (client OAuth2Client) GetComplete(ctx context.Context, filter string) (result PermissionsListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Get")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.Get(ctx, filter)
 	return
 }
 

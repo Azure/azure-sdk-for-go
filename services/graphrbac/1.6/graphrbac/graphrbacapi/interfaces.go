@@ -130,7 +130,7 @@ var _ DomainsClientAPI = (*graphrbac.DomainsClient)(nil)
 // OAuth2ClientAPI contains the set of methods on the OAuth2Client type.
 type OAuth2ClientAPI interface {
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
-	Get(ctx context.Context, filter string) (result graphrbac.PermissionsListResult, err error)
+	Get(ctx context.Context, filter string) (result graphrbac.PermissionsListResultPage, err error)
 	Grant(ctx context.Context, body *graphrbac.Permissions) (result graphrbac.Permissions, err error)
 }
 

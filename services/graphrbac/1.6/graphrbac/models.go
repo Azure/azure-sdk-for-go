@@ -2603,6 +2603,143 @@ type PermissionsListResult struct {
 	OdataNextLink *string `json:"odata.nextLink,omitempty"`
 }
 
+// PermissionsListResultIterator provides access to a complete listing of Permissions values.
+type PermissionsListResultIterator struct {
+	i    int
+	page PermissionsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PermissionsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PermissionsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PermissionsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PermissionsListResultIterator) Response() PermissionsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PermissionsListResultIterator) Value() Permissions {
+	if !iter.page.NotDone() {
+		return Permissions{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PermissionsListResultIterator type.
+func NewPermissionsListResultIterator(page PermissionsListResultPage) PermissionsListResultIterator {
+	return PermissionsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (plr PermissionsListResult) IsEmpty() bool {
+	return plr.Value == nil || len(*plr.Value) == 0
+}
+
+// permissionsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (plr PermissionsListResult) permissionsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if plr.OdataNextLink == nil || len(to.String(plr.OdataNextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(plr.OdataNextLink)))
+}
+
+// PermissionsListResultPage contains a page of Permissions values.
+type PermissionsListResultPage struct {
+	fn  func(context.Context, PermissionsListResult) (PermissionsListResult, error)
+	plr PermissionsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PermissionsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.plr)
+	if err != nil {
+		return err
+	}
+	page.plr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PermissionsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PermissionsListResultPage) NotDone() bool {
+	return !page.plr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PermissionsListResultPage) Response() PermissionsListResult {
+	return page.plr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PermissionsListResultPage) Values() []Permissions {
+	if page.plr.IsEmpty() {
+		return nil
+	}
+	return *page.plr.Value
+}
+
+// Creates a new instance of the PermissionsListResultPage type.
+func NewPermissionsListResultPage(getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
+	return PermissionsListResultPage{fn: getNextPage}
+}
+
 // RequiredResourceAccess specifies the set of OAuth 2.0 permission scopes and app roles under the
 // specified resource that an application requires access to. The specified OAuth 2.0 permission scopes may
 // be requested by client applications (through the requiredResourceAccess collection) when calling a

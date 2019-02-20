@@ -31,13 +31,13 @@ type InterfacesClient struct {
 }
 
 // NewInterfacesClient creates an instance of the InterfacesClient client.
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return NewInterfacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInterfacesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfacesClient {
+	return NewInterfacesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewInterfacesClientWithBaseURI creates an instance of the InterfacesClient client.
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return InterfacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfacesClient {
+	return InterfacesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a network interface.

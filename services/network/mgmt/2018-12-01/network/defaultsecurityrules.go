@@ -31,13 +31,13 @@ type DefaultSecurityRulesClient struct {
 }
 
 // NewDefaultSecurityRulesClient creates an instance of the DefaultSecurityRulesClient client.
-func NewDefaultSecurityRulesClient(subscriptionID string) DefaultSecurityRulesClient {
-	return NewDefaultSecurityRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDefaultSecurityRulesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) DefaultSecurityRulesClient {
+	return NewDefaultSecurityRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewDefaultSecurityRulesClientWithBaseURI creates an instance of the DefaultSecurityRulesClient client.
-func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) DefaultSecurityRulesClient {
-	return DefaultSecurityRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) DefaultSecurityRulesClient {
+	return DefaultSecurityRulesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get get the specified default network security rule.

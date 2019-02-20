@@ -32,13 +32,13 @@ type InterfaceTapConfigurationsClient struct {
 }
 
 // NewInterfaceTapConfigurationsClient creates an instance of the InterfaceTapConfigurationsClient client.
-func NewInterfaceTapConfigurationsClient(subscriptionID string) InterfaceTapConfigurationsClient {
-	return NewInterfaceTapConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInterfaceTapConfigurationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceTapConfigurationsClient {
+	return NewInterfaceTapConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewInterfaceTapConfigurationsClientWithBaseURI creates an instance of the InterfaceTapConfigurationsClient client.
-func NewInterfaceTapConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceTapConfigurationsClient {
-	return InterfaceTapConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInterfaceTapConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceTapConfigurationsClient {
+	return InterfaceTapConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a Tap configuration in the specified NetworkInterface.

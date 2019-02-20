@@ -31,13 +31,13 @@ type SecurityRulesClient struct {
 }
 
 // NewSecurityRulesClient creates an instance of the SecurityRulesClient client.
-func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
-	return NewSecurityRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSecurityRulesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) SecurityRulesClient {
+	return NewSecurityRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewSecurityRulesClientWithBaseURI creates an instance of the SecurityRulesClient client.
-func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
-	return SecurityRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) SecurityRulesClient {
+	return SecurityRulesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a security rule in the specified network security group.

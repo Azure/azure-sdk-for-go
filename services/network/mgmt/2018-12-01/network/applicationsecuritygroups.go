@@ -31,13 +31,13 @@ type ApplicationSecurityGroupsClient struct {
 }
 
 // NewApplicationSecurityGroupsClient creates an instance of the ApplicationSecurityGroupsClient client.
-func NewApplicationSecurityGroupsClient(subscriptionID string) ApplicationSecurityGroupsClient {
-	return NewApplicationSecurityGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewApplicationSecurityGroupsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ApplicationSecurityGroupsClient {
+	return NewApplicationSecurityGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewApplicationSecurityGroupsClientWithBaseURI creates an instance of the ApplicationSecurityGroupsClient client.
-func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationSecurityGroupsClient {
-	return ApplicationSecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ApplicationSecurityGroupsClient {
+	return ApplicationSecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates an application security group.

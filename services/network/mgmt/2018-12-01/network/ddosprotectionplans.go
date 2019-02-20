@@ -31,13 +31,13 @@ type DdosProtectionPlansClient struct {
 }
 
 // NewDdosProtectionPlansClient creates an instance of the DdosProtectionPlansClient client.
-func NewDdosProtectionPlansClient(subscriptionID string) DdosProtectionPlansClient {
-	return NewDdosProtectionPlansClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDdosProtectionPlansClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) DdosProtectionPlansClient {
+	return NewDdosProtectionPlansClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewDdosProtectionPlansClientWithBaseURI creates an instance of the DdosProtectionPlansClient client.
-func NewDdosProtectionPlansClientWithBaseURI(baseURI string, subscriptionID string) DdosProtectionPlansClient {
-	return DdosProtectionPlansClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDdosProtectionPlansClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) DdosProtectionPlansClient {
+	return DdosProtectionPlansClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a DDoS protection plan.

@@ -32,13 +32,13 @@ type VirtualNetworkGatewaysClient struct {
 }
 
 // NewVirtualNetworkGatewaysClient creates an instance of the VirtualNetworkGatewaysClient client.
-func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
-	return NewVirtualNetworkGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualNetworkGatewaysClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworkGatewaysClient {
+	return NewVirtualNetworkGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVirtualNetworkGatewaysClientWithBaseURI creates an instance of the VirtualNetworkGatewaysClient client.
-func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
-	return VirtualNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworkGatewaysClient {
+	return VirtualNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a virtual network gateway in the specified resource group.

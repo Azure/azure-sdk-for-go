@@ -32,14 +32,14 @@ type LoadBalancerFrontendIPConfigurationsClient struct {
 
 // NewLoadBalancerFrontendIPConfigurationsClient creates an instance of the LoadBalancerFrontendIPConfigurationsClient
 // client.
-func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
-	return NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerFrontendIPConfigurationsClient {
+	return NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI creates an instance of the
 // LoadBalancerFrontendIPConfigurationsClient client.
-func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
-	return LoadBalancerFrontendIPConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerFrontendIPConfigurationsClient {
+	return LoadBalancerFrontendIPConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get gets load balancer frontend IP configuration.

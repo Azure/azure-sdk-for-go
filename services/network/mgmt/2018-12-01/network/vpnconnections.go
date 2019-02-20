@@ -31,23 +31,21 @@ type VpnConnectionsClient struct {
 }
 
 // NewVpnConnectionsClient creates an instance of the VpnConnectionsClient client.
-func NewVpnConnectionsClient(subscriptionID string) VpnConnectionsClient {
-	return NewVpnConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVpnConnectionsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VpnConnectionsClient {
+	return NewVpnConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVpnConnectionsClientWithBaseURI creates an instance of the VpnConnectionsClient client.
-func NewVpnConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VpnConnectionsClient {
-	return VpnConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVpnConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VpnConnectionsClient {
+	return VpnConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing
 // connection.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnGateway.
 // gatewayName - the name of the gateway.
-// connectionName - the name of the connection.
 // vpnConnectionParameters - parameters supplied to create or Update a VPN Connection.
-func (client VpnConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection) (result VpnConnectionsCreateOrUpdateFuture, err error) {
+func (client VpnConnectionsClient) CreateOrUpdate(ctx context.Context, gatewayName string, vpnConnectionParameters VpnConnection) (result VpnConnectionsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.CreateOrUpdate")
 		defer func() {
@@ -58,7 +56,7 @@ func (client VpnConnectionsClient) CreateOrUpdate(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, gatewayName, connectionName, vpnConnectionParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, gatewayName, vpnConnectionParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -74,11 +72,11 @@ func (client VpnConnectionsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VpnConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VpnConnection) (*http.Request, error) {
+func (client VpnConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, gatewayName string, vpnConnectionParameters VpnConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectionName":    autorest.Encode("path", connectionName),
+		"connectionName":    autorest.Encode("path", client.ConnectionName),
 		"gatewayName":       autorest.Encode("path", gatewayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -125,10 +123,8 @@ func (client VpnConnectionsClient) CreateOrUpdateResponder(resp *http.Response) 
 
 // Delete deletes a vpn connection.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnGateway.
 // gatewayName - the name of the gateway.
-// connectionName - the name of the connection.
-func (client VpnConnectionsClient) Delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result VpnConnectionsDeleteFuture, err error) {
+func (client VpnConnectionsClient) Delete(ctx context.Context, gatewayName string) (result VpnConnectionsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.Delete")
 		defer func() {
@@ -139,7 +135,7 @@ func (client VpnConnectionsClient) Delete(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, gatewayName, connectionName)
+	req, err := client.DeletePreparer(ctx, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnConnectionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -155,11 +151,11 @@ func (client VpnConnectionsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VpnConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (*http.Request, error) {
+func (client VpnConnectionsClient) DeletePreparer(ctx context.Context, gatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectionName":    autorest.Encode("path", connectionName),
+		"connectionName":    autorest.Encode("path", client.ConnectionName),
 		"gatewayName":       autorest.Encode("path", gatewayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -203,10 +199,8 @@ func (client VpnConnectionsClient) DeleteResponder(resp *http.Response) (result 
 
 // Get retrieves the details of a vpn connection.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnGateway.
 // gatewayName - the name of the gateway.
-// connectionName - the name of the vpn connection.
-func (client VpnConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result VpnConnection, err error) {
+func (client VpnConnectionsClient) Get(ctx context.Context, gatewayName string) (result VpnConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.Get")
 		defer func() {
@@ -217,7 +211,7 @@ func (client VpnConnectionsClient) Get(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, gatewayName, connectionName)
+	req, err := client.GetPreparer(ctx, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnConnectionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -239,11 +233,11 @@ func (client VpnConnectionsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetPreparer prepares the Get request.
-func (client VpnConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (*http.Request, error) {
+func (client VpnConnectionsClient) GetPreparer(ctx context.Context, gatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectionName":    autorest.Encode("path", connectionName),
+		"connectionName":    autorest.Encode("path", client.ConnectionName),
 		"gatewayName":       autorest.Encode("path", gatewayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -282,9 +276,8 @@ func (client VpnConnectionsClient) GetResponder(resp *http.Response) (result Vpn
 
 // ListByVpnGateway retrieves all vpn connections for a particular virtual wan vpn gateway.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnGateway.
 // gatewayName - the name of the gateway.
-func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, resourceGroupName string, gatewayName string) (result ListVpnConnectionsResultPage, err error) {
+func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, gatewayName string) (result ListVpnConnectionsResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.ListByVpnGateway")
 		defer func() {
@@ -296,7 +289,7 @@ func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, resourc
 		}()
 	}
 	result.fn = client.listByVpnGatewayNextResults
-	req, err := client.ListByVpnGatewayPreparer(ctx, resourceGroupName, gatewayName)
+	req, err := client.ListByVpnGatewayPreparer(ctx, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnConnectionsClient", "ListByVpnGateway", nil, "Failure preparing request")
 		return
@@ -318,10 +311,10 @@ func (client VpnConnectionsClient) ListByVpnGateway(ctx context.Context, resourc
 }
 
 // ListByVpnGatewayPreparer prepares the ListByVpnGateway request.
-func (client VpnConnectionsClient) ListByVpnGatewayPreparer(ctx context.Context, resourceGroupName string, gatewayName string) (*http.Request, error) {
+func (client VpnConnectionsClient) ListByVpnGatewayPreparer(ctx context.Context, gatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"gatewayName":       autorest.Encode("path", gatewayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -380,7 +373,7 @@ func (client VpnConnectionsClient) listByVpnGatewayNextResults(ctx context.Conte
 }
 
 // ListByVpnGatewayComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VpnConnectionsClient) ListByVpnGatewayComplete(ctx context.Context, resourceGroupName string, gatewayName string) (result ListVpnConnectionsResultIterator, err error) {
+func (client VpnConnectionsClient) ListByVpnGatewayComplete(ctx context.Context, gatewayName string) (result ListVpnConnectionsResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnConnectionsClient.ListByVpnGateway")
 		defer func() {
@@ -391,6 +384,6 @@ func (client VpnConnectionsClient) ListByVpnGatewayComplete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByVpnGateway(ctx, resourceGroupName, gatewayName)
+	result.page, err = client.ListByVpnGateway(ctx, gatewayName)
 	return
 }

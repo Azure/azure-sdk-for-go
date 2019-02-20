@@ -32,13 +32,13 @@ type RouteFilterRulesClient struct {
 }
 
 // NewRouteFilterRulesClient creates an instance of the RouteFilterRulesClient client.
-func NewRouteFilterRulesClient(subscriptionID string) RouteFilterRulesClient {
-	return NewRouteFilterRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRouteFilterRulesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RouteFilterRulesClient {
+	return NewRouteFilterRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewRouteFilterRulesClientWithBaseURI creates an instance of the RouteFilterRulesClient client.
-func NewRouteFilterRulesClientWithBaseURI(baseURI string, subscriptionID string) RouteFilterRulesClient {
-	return RouteFilterRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRouteFilterRulesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RouteFilterRulesClient {
+	return RouteFilterRulesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a route in the specified route filter.

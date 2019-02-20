@@ -32,13 +32,13 @@ type VirtualNetworkTapsClient struct {
 }
 
 // NewVirtualNetworkTapsClient creates an instance of the VirtualNetworkTapsClient client.
-func NewVirtualNetworkTapsClient(subscriptionID string) VirtualNetworkTapsClient {
-	return NewVirtualNetworkTapsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualNetworkTapsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworkTapsClient {
+	return NewVirtualNetworkTapsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVirtualNetworkTapsClientWithBaseURI creates an instance of the VirtualNetworkTapsClient client.
-func NewVirtualNetworkTapsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkTapsClient {
-	return VirtualNetworkTapsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualNetworkTapsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworkTapsClient {
+	return VirtualNetworkTapsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a Virtual Network Tap.

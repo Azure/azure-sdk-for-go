@@ -31,22 +31,98 @@ type HubVirtualNetworkConnectionsClient struct {
 }
 
 // NewHubVirtualNetworkConnectionsClient creates an instance of the HubVirtualNetworkConnectionsClient client.
-func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetworkConnectionsClient {
-	return NewHubVirtualNetworkConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewHubVirtualNetworkConnectionsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) HubVirtualNetworkConnectionsClient {
+	return NewHubVirtualNetworkConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewHubVirtualNetworkConnectionsClientWithBaseURI creates an instance of the HubVirtualNetworkConnectionsClient
 // client.
-func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HubVirtualNetworkConnectionsClient {
-	return HubVirtualNetworkConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) HubVirtualNetworkConnectionsClient {
+	return HubVirtualNetworkConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
+}
+
+// CreateOrUpdate creates a HubVirtualNetworkConnection resource if it doesn't exist. Updates the
+// HubVirtualNetworkConnection if one exists.
+// Parameters:
+// hubVirtualNetworkConnectionParameters - parameters supplied to create or update HubVirtualNetworkConnection.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdate(ctx context.Context, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection) (result HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CreateOrUpdatePreparer(ctx, hubVirtualNetworkConnectionParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"connectionName":    autorest.Encode("path", client.ConnectionName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
+	}
+
+	const APIVersion = "2018-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}", pathParameters),
+		autorest.WithJSON(hubVirtualNetworkConnectionParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdateSender(req *http.Request) (future HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result HubVirtualNetworkConnection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Get retrieves the details of a HubVirtualNetworkConnection.
-// Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-// virtualHubName - the name of the VirtualHub.
-// connectionName - the name of the vpn connection.
-func (client HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string) (result HubVirtualNetworkConnection, err error) {
+func (client HubVirtualNetworkConnectionsClient) Get(ctx context.Context) (result HubVirtualNetworkConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.Get")
 		defer func() {
@@ -57,7 +133,7 @@ func (client HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, virtualHubName, connectionName)
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -79,12 +155,12 @@ func (client HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resour
 }
 
 // GetPreparer prepares the Get request.
-func (client HubVirtualNetworkConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string) (*http.Request, error) {
+func (client HubVirtualNetworkConnectionsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"connectionName":    autorest.Encode("path", connectionName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"connectionName":    autorest.Encode("path", client.ConnectionName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"virtualHubName":    autorest.Encode("path", virtualHubName),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
 	}
 
 	const APIVersion = "2018-12-01"
@@ -121,10 +197,7 @@ func (client HubVirtualNetworkConnectionsClient) GetResponder(resp *http.Respons
 }
 
 // List retrieves the details of all HubVirtualNetworkConnections.
-// Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-// virtualHubName - the name of the VirtualHub.
-func (client HubVirtualNetworkConnectionsClient) List(ctx context.Context, resourceGroupName string, virtualHubName string) (result ListHubVirtualNetworkConnectionsResultPage, err error) {
+func (client HubVirtualNetworkConnectionsClient) List(ctx context.Context) (result ListHubVirtualNetworkConnectionsResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.List")
 		defer func() {
@@ -136,7 +209,7 @@ func (client HubVirtualNetworkConnectionsClient) List(ctx context.Context, resou
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, virtualHubName)
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "List", nil, "Failure preparing request")
 		return
@@ -158,11 +231,11 @@ func (client HubVirtualNetworkConnectionsClient) List(ctx context.Context, resou
 }
 
 // ListPreparer prepares the List request.
-func (client HubVirtualNetworkConnectionsClient) ListPreparer(ctx context.Context, resourceGroupName string, virtualHubName string) (*http.Request, error) {
+func (client HubVirtualNetworkConnectionsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"virtualHubName":    autorest.Encode("path", virtualHubName),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
 	}
 
 	const APIVersion = "2018-12-01"
@@ -220,7 +293,7 @@ func (client HubVirtualNetworkConnectionsClient) listNextResults(ctx context.Con
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client HubVirtualNetworkConnectionsClient) ListComplete(ctx context.Context, resourceGroupName string, virtualHubName string) (result ListHubVirtualNetworkConnectionsResultIterator, err error) {
+func (client HubVirtualNetworkConnectionsClient) ListComplete(ctx context.Context) (result ListHubVirtualNetworkConnectionsResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.List")
 		defer func() {
@@ -231,6 +304,85 @@ func (client HubVirtualNetworkConnectionsClient) ListComplete(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, virtualHubName)
+	result.page, err = client.List(ctx)
+	return
+}
+
+// UpdateTags updates HubVirtualNetworkConnection tags.
+// Parameters:
+// hubVirtualNetworkConnectionParameters - parameters supplied to update HubVirtualNetworkConnection tags.
+func (client HubVirtualNetworkConnectionsClient) UpdateTags(ctx context.Context, hubVirtualNetworkConnectionParameters TagsObject) (result HubVirtualNetworkConnectionsUpdateTagsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HubVirtualNetworkConnectionsClient.UpdateTags")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateTagsPreparer(ctx, hubVirtualNetworkConnectionParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "UpdateTags", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateTagsSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.HubVirtualNetworkConnectionsClient", "UpdateTags", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client HubVirtualNetworkConnectionsClient) UpdateTagsPreparer(ctx context.Context, hubVirtualNetworkConnectionParameters TagsObject) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"connectionName":    autorest.Encode("path", client.ConnectionName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
+	}
+
+	const APIVersion = "2018-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}", pathParameters),
+		autorest.WithJSON(hubVirtualNetworkConnectionParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client HubVirtualNetworkConnectionsClient) UpdateTagsSender(req *http.Request) (future HubVirtualNetworkConnectionsUpdateTagsFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client HubVirtualNetworkConnectionsClient) UpdateTagsResponder(resp *http.Response) (result HubVirtualNetworkConnection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

@@ -31,14 +31,14 @@ type ExpressRouteCircuitConnectionsClient struct {
 }
 
 // NewExpressRouteCircuitConnectionsClient creates an instance of the ExpressRouteCircuitConnectionsClient client.
-func NewExpressRouteCircuitConnectionsClient(subscriptionID string) ExpressRouteCircuitConnectionsClient {
-	return NewExpressRouteCircuitConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteCircuitConnectionsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCircuitConnectionsClient {
+	return NewExpressRouteCircuitConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteCircuitConnectionsClientWithBaseURI creates an instance of the ExpressRouteCircuitConnectionsClient
 // client.
-func NewExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitConnectionsClient {
-	return ExpressRouteCircuitConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCircuitConnectionsClient {
+	return ExpressRouteCircuitConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a Express Route Circuit Connection in the specified express route circuits.
@@ -48,7 +48,7 @@ func NewExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscrip
 // peeringName - the name of the peering.
 // connectionName - the name of the express route circuit connection.
 // expressRouteCircuitConnectionParameters - parameters supplied to the create or update express route circuit
-// circuit connection operation.
+// connection operation.
 func (client ExpressRouteCircuitConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection) (result ExpressRouteCircuitConnectionsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitConnectionsClient.CreateOrUpdate")

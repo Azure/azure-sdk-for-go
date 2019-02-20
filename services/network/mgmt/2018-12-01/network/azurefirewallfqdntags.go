@@ -31,13 +31,13 @@ type AzureFirewallFqdnTagsClient struct {
 }
 
 // NewAzureFirewallFqdnTagsClient creates an instance of the AzureFirewallFqdnTagsClient client.
-func NewAzureFirewallFqdnTagsClient(subscriptionID string) AzureFirewallFqdnTagsClient {
-	return NewAzureFirewallFqdnTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAzureFirewallFqdnTagsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AzureFirewallFqdnTagsClient {
+	return NewAzureFirewallFqdnTagsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewAzureFirewallFqdnTagsClientWithBaseURI creates an instance of the AzureFirewallFqdnTagsClient client.
-func NewAzureFirewallFqdnTagsClientWithBaseURI(baseURI string, subscriptionID string) AzureFirewallFqdnTagsClient {
-	return AzureFirewallFqdnTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAzureFirewallFqdnTagsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AzureFirewallFqdnTagsClient {
+	return AzureFirewallFqdnTagsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // ListAll gets all the Azure Firewall FQDN Tags in a subscription.

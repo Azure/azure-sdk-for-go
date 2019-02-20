@@ -31,13 +31,13 @@ type InterfaceEndpointsClient struct {
 }
 
 // NewInterfaceEndpointsClient creates an instance of the InterfaceEndpointsClient client.
-func NewInterfaceEndpointsClient(subscriptionID string) InterfaceEndpointsClient {
-	return NewInterfaceEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInterfaceEndpointsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceEndpointsClient {
+	return NewInterfaceEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewInterfaceEndpointsClientWithBaseURI creates an instance of the InterfaceEndpointsClient client.
-func NewInterfaceEndpointsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceEndpointsClient {
-	return InterfaceEndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInterfaceEndpointsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceEndpointsClient {
+	return InterfaceEndpointsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates an interface endpoint in the specified resource group.

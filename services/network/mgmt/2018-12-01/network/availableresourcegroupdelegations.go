@@ -32,14 +32,14 @@ type AvailableResourceGroupDelegationsClient struct {
 
 // NewAvailableResourceGroupDelegationsClient creates an instance of the AvailableResourceGroupDelegationsClient
 // client.
-func NewAvailableResourceGroupDelegationsClient(subscriptionID string) AvailableResourceGroupDelegationsClient {
-	return NewAvailableResourceGroupDelegationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAvailableResourceGroupDelegationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AvailableResourceGroupDelegationsClient {
+	return NewAvailableResourceGroupDelegationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewAvailableResourceGroupDelegationsClientWithBaseURI creates an instance of the
 // AvailableResourceGroupDelegationsClient client.
-func NewAvailableResourceGroupDelegationsClientWithBaseURI(baseURI string, subscriptionID string) AvailableResourceGroupDelegationsClient {
-	return AvailableResourceGroupDelegationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAvailableResourceGroupDelegationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AvailableResourceGroupDelegationsClient {
+	return AvailableResourceGroupDelegationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // List gets all of the available subnet delegations for this resource group in this region.

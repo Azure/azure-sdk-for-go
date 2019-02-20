@@ -26,7 +26,7 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string) (result network.DNSNameAvailabilityResult, err error)
-	SupportedSecurityProviders(ctx context.Context, resourceGroupName string, virtualWANName string) (result network.VirtualWanSecurityProviders, err error)
+	SupportedSecurityProviders(ctx context.Context, virtualWANName string) (result network.VirtualWanSecurityProviders, err error)
 }
 
 var _ BaseClientAPI = (*network.BaseClient)(nil)
@@ -680,96 +680,98 @@ var _ VirtualNetworkTapsClientAPI = (*network.VirtualNetworkTapsClient)(nil)
 
 // VirtualWansClientAPI contains the set of methods on the VirtualWansClient type.
 type VirtualWansClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters network.VirtualWAN) (result network.VirtualWansCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, virtualWANName string) (result network.VirtualWansDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, virtualWANName string) (result network.VirtualWAN, err error)
+	CreateOrUpdate(ctx context.Context, virtualWANName string, wANParameters network.VirtualWAN) (result network.VirtualWansCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, virtualWANName string) (result network.VirtualWansDeleteFuture, err error)
+	Get(ctx context.Context, virtualWANName string) (result network.VirtualWAN, err error)
 	List(ctx context.Context) (result network.ListVirtualWANsResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVirtualWANsResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters network.TagsObject) (result network.VirtualWansUpdateTagsFuture, err error)
+	ListByResourceGroup(ctx context.Context) (result network.ListVirtualWANsResultPage, err error)
+	UpdateTags(ctx context.Context, virtualWANName string, wANParameters network.TagsObject) (result network.VirtualWansUpdateTagsFuture, err error)
 }
 
 var _ VirtualWansClientAPI = (*network.VirtualWansClient)(nil)
 
 // VpnSitesClientAPI contains the set of methods on the VpnSitesClient type.
 type VpnSitesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters network.VpnSite) (result network.VpnSitesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, vpnSiteName string) (result network.VpnSitesDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, vpnSiteName string) (result network.VpnSite, err error)
+	CreateOrUpdate(ctx context.Context, vpnSiteName string, vpnSiteParameters network.VpnSite) (result network.VpnSitesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, vpnSiteName string) (result network.VpnSitesDeleteFuture, err error)
+	Get(ctx context.Context, vpnSiteName string) (result network.VpnSite, err error)
 	List(ctx context.Context) (result network.ListVpnSitesResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVpnSitesResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters network.TagsObject) (result network.VpnSitesUpdateTagsFuture, err error)
+	ListByResourceGroup(ctx context.Context) (result network.ListVpnSitesResultPage, err error)
+	UpdateTags(ctx context.Context, vpnSiteName string, vpnSiteParameters network.TagsObject) (result network.VpnSitesUpdateTagsFuture, err error)
 }
 
 var _ VpnSitesClientAPI = (*network.VpnSitesClient)(nil)
 
 // VpnSitesConfigurationClientAPI contains the set of methods on the VpnSitesConfigurationClient type.
 type VpnSitesConfigurationClientAPI interface {
-	Download(ctx context.Context, resourceGroupName string, virtualWANName string, request network.GetVpnSitesConfigurationRequest) (result network.VpnSitesConfigurationDownloadFuture, err error)
+	Download(ctx context.Context, virtualWANName string, request network.GetVpnSitesConfigurationRequest) (result network.VpnSitesConfigurationDownloadFuture, err error)
 }
 
 var _ VpnSitesConfigurationClientAPI = (*network.VpnSitesConfigurationClient)(nil)
 
 // VirtualHubsClientAPI contains the set of methods on the VirtualHubsClient type.
 type VirtualHubsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters network.VirtualHub) (result network.VirtualHubsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.VirtualHubsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.VirtualHub, err error)
+	CreateOrUpdate(ctx context.Context, virtualHubParameters network.VirtualHub) (result network.VirtualHubsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context) (result network.VirtualHubsDeleteFuture, err error)
+	Get(ctx context.Context) (result network.VirtualHub, err error)
 	List(ctx context.Context) (result network.ListVirtualHubsResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVirtualHubsResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters network.TagsObject) (result network.VirtualHubsUpdateTagsFuture, err error)
+	ListByResourceGroup(ctx context.Context) (result network.ListVirtualHubsResultPage, err error)
+	UpdateTags(ctx context.Context, virtualHubParameters network.TagsObject) (result network.VirtualHubsUpdateTagsFuture, err error)
 }
 
 var _ VirtualHubsClientAPI = (*network.VirtualHubsClient)(nil)
 
 // HubVirtualNetworkConnectionsClientAPI contains the set of methods on the HubVirtualNetworkConnectionsClient type.
 type HubVirtualNetworkConnectionsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string) (result network.HubVirtualNetworkConnection, err error)
-	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+	CreateOrUpdate(ctx context.Context, hubVirtualNetworkConnectionParameters network.HubVirtualNetworkConnection) (result network.HubVirtualNetworkConnectionsCreateOrUpdateFuture, err error)
+	Get(ctx context.Context) (result network.HubVirtualNetworkConnection, err error)
+	List(ctx context.Context) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+	UpdateTags(ctx context.Context, hubVirtualNetworkConnectionParameters network.TagsObject) (result network.HubVirtualNetworkConnectionsUpdateTagsFuture, err error)
 }
 
 var _ HubVirtualNetworkConnectionsClientAPI = (*network.HubVirtualNetworkConnectionsClient)(nil)
 
 // VpnGatewaysClientAPI contains the set of methods on the VpnGatewaysClient type.
 type VpnGatewaysClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters network.VpnGateway) (result network.VpnGatewaysCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, gatewayName string) (result network.VpnGatewaysDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, gatewayName string) (result network.VpnGateway, err error)
+	CreateOrUpdate(ctx context.Context, gatewayName string, vpnGatewayParameters network.VpnGateway) (result network.VpnGatewaysCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, gatewayName string) (result network.VpnGatewaysDeleteFuture, err error)
+	Get(ctx context.Context, gatewayName string) (result network.VpnGateway, err error)
 	List(ctx context.Context) (result network.ListVpnGatewaysResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListVpnGatewaysResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, gatewayName string, vpnGatewayParameters network.TagsObject) (result network.VpnGatewaysUpdateTagsFuture, err error)
+	ListByResourceGroup(ctx context.Context) (result network.ListVpnGatewaysResultPage, err error)
+	UpdateTags(ctx context.Context, gatewayName string, vpnGatewayParameters network.TagsObject) (result network.VpnGatewaysUpdateTagsFuture, err error)
 }
 
 var _ VpnGatewaysClientAPI = (*network.VpnGatewaysClient)(nil)
 
 // VpnConnectionsClientAPI contains the set of methods on the VpnConnectionsClient type.
 type VpnConnectionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters network.VpnConnection) (result network.VpnConnectionsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.VpnConnectionsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string) (result network.VpnConnection, err error)
-	ListByVpnGateway(ctx context.Context, resourceGroupName string, gatewayName string) (result network.ListVpnConnectionsResultPage, err error)
+	CreateOrUpdate(ctx context.Context, gatewayName string, vpnConnectionParameters network.VpnConnection) (result network.VpnConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, gatewayName string) (result network.VpnConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, gatewayName string) (result network.VpnConnection, err error)
+	ListByVpnGateway(ctx context.Context, gatewayName string) (result network.ListVpnConnectionsResultPage, err error)
 }
 
 var _ VpnConnectionsClientAPI = (*network.VpnConnectionsClient)(nil)
 
 // P2sVpnServerConfigurationsClientAPI contains the set of methods on the P2sVpnServerConfigurationsClient type.
 type P2sVpnServerConfigurationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string, p2SVpnServerConfigurationParameters network.P2SVpnServerConfiguration) (result network.P2sVpnServerConfigurationsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (result network.P2sVpnServerConfigurationsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (result network.P2SVpnServerConfiguration, err error)
-	ListByVirtualWan(ctx context.Context, resourceGroupName string, virtualWanName string) (result network.ListP2SVpnServerConfigurationsResultPage, err error)
+	CreateOrUpdate(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string, p2SVpnServerConfigurationParameters network.P2SVpnServerConfiguration) (result network.P2sVpnServerConfigurationsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string) (result network.P2sVpnServerConfigurationsDeleteFuture, err error)
+	Get(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string) (result network.P2SVpnServerConfiguration, err error)
+	ListByVirtualWan(ctx context.Context, virtualWanName string) (result network.ListP2SVpnServerConfigurationsResultPage, err error)
 }
 
 var _ P2sVpnServerConfigurationsClientAPI = (*network.P2sVpnServerConfigurationsClient)(nil)
 
 // P2sVpnGatewaysClientAPI contains the set of methods on the P2sVpnGatewaysClient type.
 type P2sVpnGatewaysClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, p2SVpnGatewayParameters network.P2SVpnGateway) (result network.P2sVpnGatewaysCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, gatewayName string) (result network.P2sVpnGatewaysDeleteFuture, err error)
-	GenerateVpnProfile(ctx context.Context, resourceGroupName string, gatewayName string, parameters network.P2SVpnProfileParameters) (result network.P2sVpnGatewaysGenerateVpnProfileFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, gatewayName string) (result network.P2SVpnGateway, err error)
+	CreateOrUpdate(ctx context.Context, gatewayName string, p2SVpnGatewayParameters network.P2SVpnGateway) (result network.P2sVpnGatewaysCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, gatewayName string) (result network.P2sVpnGatewaysDeleteFuture, err error)
+	GenerateVpnProfile(ctx context.Context, gatewayName string, parameters network.P2SVpnProfileParameters) (result network.P2sVpnGatewaysGenerateVpnProfileFuture, err error)
+	Get(ctx context.Context, gatewayName string) (result network.P2SVpnGateway, err error)
 	List(ctx context.Context) (result network.ListP2SVpnGatewaysResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.ListP2SVpnGatewaysResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, gatewayName string, p2SVpnGatewayParameters network.TagsObject) (result network.P2sVpnGatewaysUpdateTagsFuture, err error)
+	ListByResourceGroup(ctx context.Context) (result network.ListP2SVpnGatewaysResultPage, err error)
+	UpdateTags(ctx context.Context, gatewayName string, p2SVpnGatewayParameters network.TagsObject) (result network.P2sVpnGatewaysUpdateTagsFuture, err error)
 }
 
 var _ P2sVpnGatewaysClientAPI = (*network.P2sVpnGatewaysClient)(nil)

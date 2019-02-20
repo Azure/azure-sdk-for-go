@@ -31,13 +31,13 @@ type AvailableEndpointServicesClient struct {
 }
 
 // NewAvailableEndpointServicesClient creates an instance of the AvailableEndpointServicesClient client.
-func NewAvailableEndpointServicesClient(subscriptionID string) AvailableEndpointServicesClient {
-	return NewAvailableEndpointServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAvailableEndpointServicesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AvailableEndpointServicesClient {
+	return NewAvailableEndpointServicesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewAvailableEndpointServicesClientWithBaseURI creates an instance of the AvailableEndpointServicesClient client.
-func NewAvailableEndpointServicesClientWithBaseURI(baseURI string, subscriptionID string) AvailableEndpointServicesClient {
-	return AvailableEndpointServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAvailableEndpointServicesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AvailableEndpointServicesClient {
+	return AvailableEndpointServicesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // List list what values of endpoint services are available for use.

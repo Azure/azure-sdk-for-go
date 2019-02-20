@@ -31,13 +31,13 @@ type VirtualNetworkPeeringsClient struct {
 }
 
 // NewVirtualNetworkPeeringsClient creates an instance of the VirtualNetworkPeeringsClient client.
-func NewVirtualNetworkPeeringsClient(subscriptionID string) VirtualNetworkPeeringsClient {
-	return NewVirtualNetworkPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualNetworkPeeringsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworkPeeringsClient {
+	return NewVirtualNetworkPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVirtualNetworkPeeringsClientWithBaseURI creates an instance of the VirtualNetworkPeeringsClient client.
-func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkPeeringsClient {
-	return VirtualNetworkPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworkPeeringsClient {
+	return VirtualNetworkPeeringsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a peering in the specified virtual network.

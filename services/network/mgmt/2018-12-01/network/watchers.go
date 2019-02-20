@@ -32,13 +32,13 @@ type WatchersClient struct {
 }
 
 // NewWatchersClient creates an instance of the WatchersClient client.
-func NewWatchersClient(subscriptionID string) WatchersClient {
-	return NewWatchersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewWatchersClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) WatchersClient {
+	return NewWatchersClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewWatchersClientWithBaseURI creates an instance of the WatchersClient client.
-func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) WatchersClient {
-	return WatchersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) WatchersClient {
+	return WatchersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CheckConnectivity verifies the possibility of establishing a direct TCP connection from a virtual machine to a given

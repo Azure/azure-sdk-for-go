@@ -31,13 +31,13 @@ type BgpServiceCommunitiesClient struct {
 }
 
 // NewBgpServiceCommunitiesClient creates an instance of the BgpServiceCommunitiesClient client.
-func NewBgpServiceCommunitiesClient(subscriptionID string) BgpServiceCommunitiesClient {
-	return NewBgpServiceCommunitiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewBgpServiceCommunitiesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) BgpServiceCommunitiesClient {
+	return NewBgpServiceCommunitiesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewBgpServiceCommunitiesClientWithBaseURI creates an instance of the BgpServiceCommunitiesClient client.
-func NewBgpServiceCommunitiesClientWithBaseURI(baseURI string, subscriptionID string) BgpServiceCommunitiesClient {
-	return BgpServiceCommunitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewBgpServiceCommunitiesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) BgpServiceCommunitiesClient {
+	return BgpServiceCommunitiesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // List gets all the available bgp service communities.

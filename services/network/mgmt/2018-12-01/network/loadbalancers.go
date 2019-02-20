@@ -31,13 +31,13 @@ type LoadBalancersClient struct {
 }
 
 // NewLoadBalancersClient creates an instance of the LoadBalancersClient client.
-func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
-	return NewLoadBalancersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLoadBalancersClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancersClient {
+	return NewLoadBalancersClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLoadBalancersClientWithBaseURI creates an instance of the LoadBalancersClient client.
-func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
-	return LoadBalancersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancersClient {
+	return LoadBalancersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a load balancer.

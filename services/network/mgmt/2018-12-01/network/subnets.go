@@ -31,13 +31,13 @@ type SubnetsClient struct {
 }
 
 // NewSubnetsClient creates an instance of the SubnetsClient client.
-func NewSubnetsClient(subscriptionID string) SubnetsClient {
-	return NewSubnetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSubnetsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) SubnetsClient {
+	return NewSubnetsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewSubnetsClientWithBaseURI creates an instance of the SubnetsClient client.
-func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
-	return SubnetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) SubnetsClient {
+	return SubnetsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a subnet in the specified virtual network.

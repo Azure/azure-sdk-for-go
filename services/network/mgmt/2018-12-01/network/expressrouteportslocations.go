@@ -31,13 +31,13 @@ type ExpressRoutePortsLocationsClient struct {
 }
 
 // NewExpressRoutePortsLocationsClient creates an instance of the ExpressRoutePortsLocationsClient client.
-func NewExpressRoutePortsLocationsClient(subscriptionID string) ExpressRoutePortsLocationsClient {
-	return NewExpressRoutePortsLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRoutePortsLocationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRoutePortsLocationsClient {
+	return NewExpressRoutePortsLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRoutePortsLocationsClientWithBaseURI creates an instance of the ExpressRoutePortsLocationsClient client.
-func NewExpressRoutePortsLocationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRoutePortsLocationsClient {
-	return ExpressRoutePortsLocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRoutePortsLocationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRoutePortsLocationsClient {
+	return ExpressRoutePortsLocationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at

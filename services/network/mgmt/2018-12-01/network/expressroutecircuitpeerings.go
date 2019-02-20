@@ -32,13 +32,13 @@ type ExpressRouteCircuitPeeringsClient struct {
 }
 
 // NewExpressRouteCircuitPeeringsClient creates an instance of the ExpressRouteCircuitPeeringsClient client.
-func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return NewExpressRouteCircuitPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteCircuitPeeringsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCircuitPeeringsClient {
+	return NewExpressRouteCircuitPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteCircuitPeeringsClientWithBaseURI creates an instance of the ExpressRouteCircuitPeeringsClient client.
-func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return ExpressRouteCircuitPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCircuitPeeringsClient {
+	return ExpressRouteCircuitPeeringsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a peering in the specified express route circuits.

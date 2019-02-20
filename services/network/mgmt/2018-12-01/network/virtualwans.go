@@ -31,21 +31,20 @@ type VirtualWansClient struct {
 }
 
 // NewVirtualWansClient creates an instance of the VirtualWansClient client.
-func NewVirtualWansClient(subscriptionID string) VirtualWansClient {
-	return NewVirtualWansClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualWansClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualWansClient {
+	return NewVirtualWansClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVirtualWansClientWithBaseURI creates an instance of the VirtualWansClient client.
-func NewVirtualWansClientWithBaseURI(baseURI string, subscriptionID string) VirtualWansClient {
-	return VirtualWansClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualWansClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualWansClient {
+	return VirtualWansClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
 // virtualWANName - the name of the VirtualWAN being created or updated.
 // wANParameters - parameters supplied to create or update VirtualWAN.
-func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters VirtualWAN) (result VirtualWansCreateOrUpdateFuture, err error) {
+func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, virtualWANName string, wANParameters VirtualWAN) (result VirtualWansCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualWansClient.CreateOrUpdate")
 		defer func() {
@@ -56,7 +55,7 @@ func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualWANName, wANParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, virtualWANName, wANParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -72,9 +71,9 @@ func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualWansClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters VirtualWAN) (*http.Request, error) {
+func (client VirtualWansClient) CreateOrUpdatePreparer(ctx context.Context, virtualWANName string, wANParameters VirtualWAN) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"VirtualWANName":    autorest.Encode("path", virtualWANName),
 	}
@@ -122,9 +121,8 @@ func (client VirtualWansClient) CreateOrUpdateResponder(resp *http.Response) (re
 
 // Delete deletes a VirtualWAN.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
 // virtualWANName - the name of the VirtualWAN being deleted.
-func (client VirtualWansClient) Delete(ctx context.Context, resourceGroupName string, virtualWANName string) (result VirtualWansDeleteFuture, err error) {
+func (client VirtualWansClient) Delete(ctx context.Context, virtualWANName string) (result VirtualWansDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualWansClient.Delete")
 		defer func() {
@@ -135,7 +133,7 @@ func (client VirtualWansClient) Delete(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualWANName)
+	req, err := client.DeletePreparer(ctx, virtualWANName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "Delete", nil, "Failure preparing request")
 		return
@@ -151,9 +149,9 @@ func (client VirtualWansClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualWansClient) DeletePreparer(ctx context.Context, resourceGroupName string, virtualWANName string) (*http.Request, error) {
+func (client VirtualWansClient) DeletePreparer(ctx context.Context, virtualWANName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"VirtualWANName":    autorest.Encode("path", virtualWANName),
 	}
@@ -198,9 +196,8 @@ func (client VirtualWansClient) DeleteResponder(resp *http.Response) (result aut
 
 // Get retrieves the details of a VirtualWAN.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
 // virtualWANName - the name of the VirtualWAN being retrieved.
-func (client VirtualWansClient) Get(ctx context.Context, resourceGroupName string, virtualWANName string) (result VirtualWAN, err error) {
+func (client VirtualWansClient) Get(ctx context.Context, virtualWANName string) (result VirtualWAN, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualWansClient.Get")
 		defer func() {
@@ -211,7 +208,7 @@ func (client VirtualWansClient) Get(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, virtualWANName)
+	req, err := client.GetPreparer(ctx, virtualWANName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "Get", nil, "Failure preparing request")
 		return
@@ -233,9 +230,9 @@ func (client VirtualWansClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client VirtualWansClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualWANName string) (*http.Request, error) {
+func (client VirtualWansClient) GetPreparer(ctx context.Context, virtualWANName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"VirtualWANName":    autorest.Encode("path", virtualWANName),
 	}
@@ -384,9 +381,7 @@ func (client VirtualWansClient) ListComplete(ctx context.Context) (result ListVi
 }
 
 // ListByResourceGroup lists all the VirtualWANs in a resource group.
-// Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
-func (client VirtualWansClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListVirtualWANsResultPage, err error) {
+func (client VirtualWansClient) ListByResourceGroup(ctx context.Context) (result ListVirtualWANsResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualWansClient.ListByResourceGroup")
 		defer func() {
@@ -398,7 +393,7 @@ func (client VirtualWansClient) ListByResourceGroup(ctx context.Context, resourc
 		}()
 	}
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -420,9 +415,9 @@ func (client VirtualWansClient) ListByResourceGroup(ctx context.Context, resourc
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client VirtualWansClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client VirtualWansClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -481,7 +476,7 @@ func (client VirtualWansClient) listByResourceGroupNextResults(ctx context.Conte
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualWansClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ListVirtualWANsResultIterator, err error) {
+func (client VirtualWansClient) ListByResourceGroupComplete(ctx context.Context) (result ListVirtualWANsResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualWansClient.ListByResourceGroup")
 		defer func() {
@@ -492,16 +487,15 @@ func (client VirtualWansClient) ListByResourceGroupComplete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	result.page, err = client.ListByResourceGroup(ctx)
 	return
 }
 
 // UpdateTags updates a VirtualWAN tags.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
 // virtualWANName - the name of the VirtualWAN being updated.
 // wANParameters - parameters supplied to Update VirtualWAN tags.
-func (client VirtualWansClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters TagsObject) (result VirtualWansUpdateTagsFuture, err error) {
+func (client VirtualWansClient) UpdateTags(ctx context.Context, virtualWANName string, wANParameters TagsObject) (result VirtualWansUpdateTagsFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualWansClient.UpdateTags")
 		defer func() {
@@ -512,7 +506,7 @@ func (client VirtualWansClient) UpdateTags(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualWANName, wANParameters)
+	req, err := client.UpdateTagsPreparer(ctx, virtualWANName, wANParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "UpdateTags", nil, "Failure preparing request")
 		return
@@ -528,9 +522,9 @@ func (client VirtualWansClient) UpdateTags(ctx context.Context, resourceGroupNam
 }
 
 // UpdateTagsPreparer prepares the UpdateTags request.
-func (client VirtualWansClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, virtualWANName string, wANParameters TagsObject) (*http.Request, error) {
+func (client VirtualWansClient) UpdateTagsPreparer(ctx context.Context, virtualWANName string, wANParameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"VirtualWANName":    autorest.Encode("path", virtualWANName),
 	}

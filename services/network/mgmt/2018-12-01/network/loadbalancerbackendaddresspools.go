@@ -31,14 +31,14 @@ type LoadBalancerBackendAddressPoolsClient struct {
 }
 
 // NewLoadBalancerBackendAddressPoolsClient creates an instance of the LoadBalancerBackendAddressPoolsClient client.
-func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string) LoadBalancerBackendAddressPoolsClient {
-	return NewLoadBalancerBackendAddressPoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerBackendAddressPoolsClient {
+	return NewLoadBalancerBackendAddressPoolsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLoadBalancerBackendAddressPoolsClientWithBaseURI creates an instance of the LoadBalancerBackendAddressPoolsClient
 // client.
-func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerBackendAddressPoolsClient {
-	return LoadBalancerBackendAddressPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerBackendAddressPoolsClient {
+	return LoadBalancerBackendAddressPoolsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get gets load balancer backend address pool.

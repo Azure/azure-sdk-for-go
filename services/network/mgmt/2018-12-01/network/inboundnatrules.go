@@ -32,13 +32,13 @@ type InboundNatRulesClient struct {
 }
 
 // NewInboundNatRulesClient creates an instance of the InboundNatRulesClient client.
-func NewInboundNatRulesClient(subscriptionID string) InboundNatRulesClient {
-	return NewInboundNatRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInboundNatRulesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InboundNatRulesClient {
+	return NewInboundNatRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewInboundNatRulesClientWithBaseURI creates an instance of the InboundNatRulesClient client.
-func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) InboundNatRulesClient {
-	return InboundNatRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InboundNatRulesClient {
+	return InboundNatRulesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a load balancer inbound nat rule.

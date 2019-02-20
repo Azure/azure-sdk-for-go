@@ -31,13 +31,13 @@ type AvailableDelegationsClient struct {
 }
 
 // NewAvailableDelegationsClient creates an instance of the AvailableDelegationsClient client.
-func NewAvailableDelegationsClient(subscriptionID string) AvailableDelegationsClient {
-	return NewAvailableDelegationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAvailableDelegationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AvailableDelegationsClient {
+	return NewAvailableDelegationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewAvailableDelegationsClientWithBaseURI creates an instance of the AvailableDelegationsClient client.
-func NewAvailableDelegationsClientWithBaseURI(baseURI string, subscriptionID string) AvailableDelegationsClient {
-	return AvailableDelegationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAvailableDelegationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AvailableDelegationsClient {
+	return AvailableDelegationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // List gets all of the available subnet delegations for this subscription in this region.

@@ -31,13 +31,13 @@ type RouteFiltersClient struct {
 }
 
 // NewRouteFiltersClient creates an instance of the RouteFiltersClient client.
-func NewRouteFiltersClient(subscriptionID string) RouteFiltersClient {
-	return NewRouteFiltersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRouteFiltersClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RouteFiltersClient {
+	return NewRouteFiltersClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewRouteFiltersClientWithBaseURI creates an instance of the RouteFiltersClient client.
-func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string) RouteFiltersClient {
-	return RouteFiltersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RouteFiltersClient {
+	return RouteFiltersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a route filter in a specified resource group.

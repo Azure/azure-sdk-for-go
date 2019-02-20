@@ -31,14 +31,14 @@ type ExpressRouteCrossConnectionsClient struct {
 }
 
 // NewExpressRouteCrossConnectionsClient creates an instance of the ExpressRouteCrossConnectionsClient client.
-func NewExpressRouteCrossConnectionsClient(subscriptionID string) ExpressRouteCrossConnectionsClient {
-	return NewExpressRouteCrossConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteCrossConnectionsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCrossConnectionsClient {
+	return NewExpressRouteCrossConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteCrossConnectionsClientWithBaseURI creates an instance of the ExpressRouteCrossConnectionsClient
 // client.
-func NewExpressRouteCrossConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCrossConnectionsClient {
-	return ExpressRouteCrossConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteCrossConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCrossConnectionsClient {
+	return ExpressRouteCrossConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate update the specified ExpressRouteCrossConnection.

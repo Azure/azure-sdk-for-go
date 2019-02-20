@@ -31,13 +31,13 @@ type RouteTablesClient struct {
 }
 
 // NewRouteTablesClient creates an instance of the RouteTablesClient client.
-func NewRouteTablesClient(subscriptionID string) RouteTablesClient {
-	return NewRouteTablesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRouteTablesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RouteTablesClient {
+	return NewRouteTablesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewRouteTablesClientWithBaseURI creates an instance of the RouteTablesClient client.
-func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) RouteTablesClient {
-	return RouteTablesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RouteTablesClient {
+	return RouteTablesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate create or updates a route table in a specified resource group.

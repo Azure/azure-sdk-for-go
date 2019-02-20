@@ -31,13 +31,13 @@ type ProfilesClient struct {
 }
 
 // NewProfilesClient creates an instance of the ProfilesClient client.
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewProfilesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ProfilesClient {
+	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client.
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ProfilesClient {
+	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a network profile.

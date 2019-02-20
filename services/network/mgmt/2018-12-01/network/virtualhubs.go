@@ -31,21 +31,19 @@ type VirtualHubsClient struct {
 }
 
 // NewVirtualHubsClient creates an instance of the VirtualHubsClient client.
-func NewVirtualHubsClient(subscriptionID string) VirtualHubsClient {
-	return NewVirtualHubsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualHubsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualHubsClient {
+	return NewVirtualHubsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVirtualHubsClientWithBaseURI creates an instance of the VirtualHubsClient client.
-func NewVirtualHubsClientWithBaseURI(baseURI string, subscriptionID string) VirtualHubsClient {
-	return VirtualHubsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualHubsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualHubsClient {
+	return VirtualHubsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-// virtualHubName - the name of the VirtualHub.
 // virtualHubParameters - parameters supplied to create or update VirtualHub.
-func (client VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (result VirtualHubsCreateOrUpdateFuture, err error) {
+func (client VirtualHubsClient) CreateOrUpdate(ctx context.Context, virtualHubParameters VirtualHub) (result VirtualHubsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubsClient.CreateOrUpdate")
 		defer func() {
@@ -56,7 +54,7 @@ func (client VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, virtualHubParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -72,11 +70,11 @@ func (client VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualHubsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*http.Request, error) {
+func (client VirtualHubsClient) CreateOrUpdatePreparer(ctx context.Context, virtualHubParameters VirtualHub) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"virtualHubName":    autorest.Encode("path", virtualHubName),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
 	}
 
 	const APIVersion = "2018-12-01"
@@ -121,10 +119,7 @@ func (client VirtualHubsClient) CreateOrUpdateResponder(resp *http.Response) (re
 }
 
 // Delete deletes a VirtualHub.
-// Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-// virtualHubName - the name of the VirtualHub.
-func (client VirtualHubsClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string) (result VirtualHubsDeleteFuture, err error) {
+func (client VirtualHubsClient) Delete(ctx context.Context) (result VirtualHubsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubsClient.Delete")
 		defer func() {
@@ -135,7 +130,7 @@ func (client VirtualHubsClient) Delete(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualHubName)
+	req, err := client.DeletePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -151,11 +146,11 @@ func (client VirtualHubsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualHubsClient) DeletePreparer(ctx context.Context, resourceGroupName string, virtualHubName string) (*http.Request, error) {
+func (client VirtualHubsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"virtualHubName":    autorest.Encode("path", virtualHubName),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
 	}
 
 	const APIVersion = "2018-12-01"
@@ -197,10 +192,7 @@ func (client VirtualHubsClient) DeleteResponder(resp *http.Response) (result aut
 }
 
 // Get retrieves the details of a VirtualHub.
-// Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-// virtualHubName - the name of the VirtualHub.
-func (client VirtualHubsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string) (result VirtualHub, err error) {
+func (client VirtualHubsClient) Get(ctx context.Context) (result VirtualHub, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubsClient.Get")
 		defer func() {
@@ -211,7 +203,7 @@ func (client VirtualHubsClient) Get(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, virtualHubName)
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubsClient", "Get", nil, "Failure preparing request")
 		return
@@ -233,11 +225,11 @@ func (client VirtualHubsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client VirtualHubsClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualHubName string) (*http.Request, error) {
+func (client VirtualHubsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"virtualHubName":    autorest.Encode("path", virtualHubName),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
 	}
 
 	const APIVersion = "2018-12-01"
@@ -384,9 +376,7 @@ func (client VirtualHubsClient) ListComplete(ctx context.Context) (result ListVi
 }
 
 // ListByResourceGroup lists all the VirtualHubs in a resource group.
-// Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-func (client VirtualHubsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListVirtualHubsResultPage, err error) {
+func (client VirtualHubsClient) ListByResourceGroup(ctx context.Context) (result ListVirtualHubsResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubsClient.ListByResourceGroup")
 		defer func() {
@@ -398,7 +388,7 @@ func (client VirtualHubsClient) ListByResourceGroup(ctx context.Context, resourc
 		}()
 	}
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubsClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -420,9 +410,9 @@ func (client VirtualHubsClient) ListByResourceGroup(ctx context.Context, resourc
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client VirtualHubsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client VirtualHubsClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -481,7 +471,7 @@ func (client VirtualHubsClient) listByResourceGroupNextResults(ctx context.Conte
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualHubsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ListVirtualHubsResultIterator, err error) {
+func (client VirtualHubsClient) ListByResourceGroupComplete(ctx context.Context) (result ListVirtualHubsResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubsClient.ListByResourceGroup")
 		defer func() {
@@ -492,16 +482,14 @@ func (client VirtualHubsClient) ListByResourceGroupComplete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	result.page, err = client.ListByResourceGroup(ctx)
 	return
 }
 
 // UpdateTags updates VirtualHub tags.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualHub.
-// virtualHubName - the name of the VirtualHub.
 // virtualHubParameters - parameters supplied to update VirtualHub tags.
-func (client VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject) (result VirtualHubsUpdateTagsFuture, err error) {
+func (client VirtualHubsClient) UpdateTags(ctx context.Context, virtualHubParameters TagsObject) (result VirtualHubsUpdateTagsFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubsClient.UpdateTags")
 		defer func() {
@@ -512,7 +500,7 @@ func (client VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+	req, err := client.UpdateTagsPreparer(ctx, virtualHubParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubsClient", "UpdateTags", nil, "Failure preparing request")
 		return
@@ -528,11 +516,11 @@ func (client VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupNam
 }
 
 // UpdateTagsPreparer prepares the UpdateTags request.
-func (client VirtualHubsClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject) (*http.Request, error) {
+func (client VirtualHubsClient) UpdateTagsPreparer(ctx context.Context, virtualHubParameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"virtualHubName":    autorest.Encode("path", virtualHubName),
+		"virtualHubName":    autorest.Encode("path", client.VirtualHubName),
 	}
 
 	const APIVersion = "2018-12-01"

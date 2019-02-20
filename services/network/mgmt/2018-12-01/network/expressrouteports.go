@@ -31,13 +31,13 @@ type ExpressRoutePortsClient struct {
 }
 
 // NewExpressRoutePortsClient creates an instance of the ExpressRoutePortsClient client.
-func NewExpressRoutePortsClient(subscriptionID string) ExpressRoutePortsClient {
-	return NewExpressRoutePortsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRoutePortsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRoutePortsClient {
+	return NewExpressRoutePortsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRoutePortsClientWithBaseURI creates an instance of the ExpressRoutePortsClient client.
-func NewExpressRoutePortsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRoutePortsClient {
-	return ExpressRoutePortsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRoutePortsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRoutePortsClient {
+	return ExpressRoutePortsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates the specified ExpressRoutePort resource.

@@ -32,13 +32,13 @@ type ExpressRouteConnectionsClient struct {
 }
 
 // NewExpressRouteConnectionsClient creates an instance of the ExpressRouteConnectionsClient client.
-func NewExpressRouteConnectionsClient(subscriptionID string) ExpressRouteConnectionsClient {
-	return NewExpressRouteConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteConnectionsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteConnectionsClient {
+	return NewExpressRouteConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteConnectionsClientWithBaseURI creates an instance of the ExpressRouteConnectionsClient client.
-func NewExpressRouteConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteConnectionsClient {
-	return ExpressRouteConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteConnectionsClient {
+	return ExpressRouteConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.

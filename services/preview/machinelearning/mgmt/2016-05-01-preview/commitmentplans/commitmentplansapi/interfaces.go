@@ -23,6 +23,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result commitmentplans.OperationEntityListResult, err error)
+}
+
+var _ OperationsClientAPI = (*commitmentplans.OperationsClient)(nil)
+
 // SkusClientAPI contains the set of methods on the SkusClient type.
 type SkusClientAPI interface {
 	List(ctx context.Context) (result commitmentplans.SkuListResult, err error)

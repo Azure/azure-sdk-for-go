@@ -23,5 +23,6 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearn
 
 type ClientAPI = original.ClientAPI
 type CommitmentAssociationsClientAPI = original.CommitmentAssociationsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type SkusClientAPI = original.SkusClientAPI
 type UsageHistoryClientAPI = original.UsageHistoryClientAPI

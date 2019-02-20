@@ -114,7 +114,7 @@ func (client OAuth2Client) DeleteResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Get queries OAuth2 permissions for the relevant SP ObjectId of an app.
+// Get queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
 // Parameters:
 // filter - this is the Service Principal ObjectId associated with the app
 func (client OAuth2Client) Get(ctx context.Context, filter string) (result PermissionsListResult, err error) {

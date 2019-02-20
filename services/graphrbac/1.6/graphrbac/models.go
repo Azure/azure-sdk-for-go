@@ -2578,6 +2578,8 @@ type Permissions struct {
 	OdataType *string `json:"odata.type,omitempty"`
 	// ClientID - The objectId of the Service Principal associated with the app
 	ClientID *string `json:"clientId,omitempty"`
+	// ObjectID - The objectId of the permission grant
+	ObjectID *string `json:"objectId,omitempty"`
 	// ConsentType - Typically set to AllPrincipals
 	ConsentType *string `json:"consentType,omitempty"`
 	// PrincipalID - Set to null if AllPrincipals is set

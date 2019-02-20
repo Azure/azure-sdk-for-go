@@ -160,8 +160,8 @@ func (client PipelinesClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // run will be used to create a new run.
 // isRecovery - recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
 // the new run will be grouped under the same groupId.
-// startActivityName - in recovery mode, the specified startActivityName will be the first activity in the
-// pipeline to be run. If not specified, all activities will run
+// startActivityName - in recovery mode, the rerun will start from this activity. If not specified, all
+// activities will run.
 // parameters - parameters of the pipeline run. These parameters will be used only if the runId is not
 // specified.
 func (client PipelinesClient) CreateRun(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, referencePipelineRunID string, isRecovery *bool, startActivityName string, parameters map[string]interface{}) (result CreateRunResponse, err error) {

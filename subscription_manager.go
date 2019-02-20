@@ -116,6 +116,7 @@ type (
 		AutoDeleteOnIdle                          *string       `xml:"AutoDeleteOnIdle,omitempty"`
 		ForwardTo                                 *string       `xml:"ForwardTo,omitempty"`                     // ForwardTo - absolute URI of the entity to forward messages
 		ForwardDeadLetteredMessagesTo             *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
+		CountDetails                              *CountDetails `xml:"CountDetails,omitempty"`
 	}
 
 	// SubscriptionEntity is the Azure Service Bus description of a topic Subscription for management activities

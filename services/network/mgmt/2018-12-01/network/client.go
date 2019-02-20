@@ -36,21 +36,27 @@ const (
 // BaseClient is the base client for Network.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI           string
+	SubscriptionID    string
+	ResourceGroupName string
+	VirtualHubName    string
+	ConnectionName    string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:            autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:           baseURI,
+		SubscriptionID:    subscriptionID,
+		ResourceGroupName: resourceGroupName,
+		VirtualHubName:    virtualHubName,
+		ConnectionName:    connectionName,
 	}
 }
 
@@ -134,9 +140,8 @@ func (client BaseClient) CheckDNSNameAvailabilityResponder(resp *http.Response) 
 
 // SupportedSecurityProviders gives the supported security providers for the virtual wan.
 // Parameters:
-// resourceGroupName - the resource group name.
 // virtualWANName - the name of the VirtualWAN for which supported security providers are needed.
-func (client BaseClient) SupportedSecurityProviders(ctx context.Context, resourceGroupName string, virtualWANName string) (result VirtualWanSecurityProviders, err error) {
+func (client BaseClient) SupportedSecurityProviders(ctx context.Context, virtualWANName string) (result VirtualWanSecurityProviders, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.SupportedSecurityProviders")
 		defer func() {
@@ -147,7 +152,7 @@ func (client BaseClient) SupportedSecurityProviders(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.SupportedSecurityProvidersPreparer(ctx, resourceGroupName, virtualWANName)
+	req, err := client.SupportedSecurityProvidersPreparer(ctx, virtualWANName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.BaseClient", "SupportedSecurityProviders", nil, "Failure preparing request")
 		return
@@ -169,9 +174,9 @@ func (client BaseClient) SupportedSecurityProviders(ctx context.Context, resourc
 }
 
 // SupportedSecurityProvidersPreparer prepares the SupportedSecurityProviders request.
-func (client BaseClient) SupportedSecurityProvidersPreparer(ctx context.Context, resourceGroupName string, virtualWANName string) (*http.Request, error) {
+func (client BaseClient) SupportedSecurityProvidersPreparer(ctx context.Context, virtualWANName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"virtualWANName":    autorest.Encode("path", virtualWANName),
 	}

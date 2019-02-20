@@ -32,14 +32,14 @@ type ExpressRouteCircuitAuthorizationsClient struct {
 
 // NewExpressRouteCircuitAuthorizationsClient creates an instance of the ExpressRouteCircuitAuthorizationsClient
 // client.
-func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return NewExpressRouteCircuitAuthorizationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCircuitAuthorizationsClient {
+	return NewExpressRouteCircuitAuthorizationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteCircuitAuthorizationsClientWithBaseURI creates an instance of the
 // ExpressRouteCircuitAuthorizationsClient client.
-func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return ExpressRouteCircuitAuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCircuitAuthorizationsClient {
+	return ExpressRouteCircuitAuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates an authorization in the specified express route circuit.

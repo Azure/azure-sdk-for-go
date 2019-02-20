@@ -31,13 +31,13 @@ type LoadBalancerOutboundRulesClient struct {
 }
 
 // NewLoadBalancerOutboundRulesClient creates an instance of the LoadBalancerOutboundRulesClient client.
-func NewLoadBalancerOutboundRulesClient(subscriptionID string) LoadBalancerOutboundRulesClient {
-	return NewLoadBalancerOutboundRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLoadBalancerOutboundRulesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerOutboundRulesClient {
+	return NewLoadBalancerOutboundRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLoadBalancerOutboundRulesClientWithBaseURI creates an instance of the LoadBalancerOutboundRulesClient client.
-func NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerOutboundRulesClient {
-	return LoadBalancerOutboundRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerOutboundRulesClient {
+	return LoadBalancerOutboundRulesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get gets the specified load balancer outbound rule.

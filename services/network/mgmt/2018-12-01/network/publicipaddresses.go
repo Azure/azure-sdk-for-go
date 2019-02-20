@@ -32,13 +32,13 @@ type PublicIPAddressesClient struct {
 }
 
 // NewPublicIPAddressesClient creates an instance of the PublicIPAddressesClient client.
-func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
-	return NewPublicIPAddressesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPublicIPAddressesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) PublicIPAddressesClient {
+	return NewPublicIPAddressesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewPublicIPAddressesClientWithBaseURI creates an instance of the PublicIPAddressesClient client.
-func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
-	return PublicIPAddressesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) PublicIPAddressesClient {
+	return PublicIPAddressesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a static or dynamic public IP address.

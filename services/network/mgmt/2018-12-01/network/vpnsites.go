@@ -31,21 +31,20 @@ type VpnSitesClient struct {
 }
 
 // NewVpnSitesClient creates an instance of the VpnSitesClient client.
-func NewVpnSitesClient(subscriptionID string) VpnSitesClient {
-	return NewVpnSitesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVpnSitesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VpnSitesClient {
+	return NewVpnSitesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVpnSitesClientWithBaseURI creates an instance of the VpnSitesClient client.
-func NewVpnSitesClientWithBaseURI(baseURI string, subscriptionID string) VpnSitesClient {
-	return VpnSitesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVpnSitesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VpnSitesClient {
+	return VpnSitesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnSite.
 // vpnSiteName - the name of the VpnSite being created or updated.
 // vpnSiteParameters - parameters supplied to create or update VpnSite.
-func (client VpnSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (result VpnSitesCreateOrUpdateFuture, err error) {
+func (client VpnSitesClient) CreateOrUpdate(ctx context.Context, vpnSiteName string, vpnSiteParameters VpnSite) (result VpnSitesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.CreateOrUpdate")
 		defer func() {
@@ -56,7 +55,7 @@ func (client VpnSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, vpnSiteName, vpnSiteParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -72,9 +71,9 @@ func (client VpnSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VpnSitesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*http.Request, error) {
+func (client VpnSitesClient) CreateOrUpdatePreparer(ctx context.Context, vpnSiteName string, vpnSiteParameters VpnSite) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vpnSiteName":       autorest.Encode("path", vpnSiteName),
 	}
@@ -122,9 +121,8 @@ func (client VpnSitesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 
 // Delete deletes a VpnSite.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnSite.
 // vpnSiteName - the name of the VpnSite being deleted.
-func (client VpnSitesClient) Delete(ctx context.Context, resourceGroupName string, vpnSiteName string) (result VpnSitesDeleteFuture, err error) {
+func (client VpnSitesClient) Delete(ctx context.Context, vpnSiteName string) (result VpnSitesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.Delete")
 		defer func() {
@@ -135,7 +133,7 @@ func (client VpnSitesClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, vpnSiteName)
+	req, err := client.DeletePreparer(ctx, vpnSiteName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -151,9 +149,9 @@ func (client VpnSitesClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VpnSitesClient) DeletePreparer(ctx context.Context, resourceGroupName string, vpnSiteName string) (*http.Request, error) {
+func (client VpnSitesClient) DeletePreparer(ctx context.Context, vpnSiteName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vpnSiteName":       autorest.Encode("path", vpnSiteName),
 	}
@@ -198,9 +196,8 @@ func (client VpnSitesClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get retrieves the details of a VPN site.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnSite.
 // vpnSiteName - the name of the VpnSite being retrieved.
-func (client VpnSitesClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string) (result VpnSite, err error) {
+func (client VpnSitesClient) Get(ctx context.Context, vpnSiteName string) (result VpnSite, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.Get")
 		defer func() {
@@ -211,7 +208,7 @@ func (client VpnSitesClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, vpnSiteName)
+	req, err := client.GetPreparer(ctx, vpnSiteName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "Get", nil, "Failure preparing request")
 		return
@@ -233,9 +230,9 @@ func (client VpnSitesClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client VpnSitesClient) GetPreparer(ctx context.Context, resourceGroupName string, vpnSiteName string) (*http.Request, error) {
+func (client VpnSitesClient) GetPreparer(ctx context.Context, vpnSiteName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vpnSiteName":       autorest.Encode("path", vpnSiteName),
 	}
@@ -384,9 +381,7 @@ func (client VpnSitesClient) ListComplete(ctx context.Context) (result ListVpnSi
 }
 
 // ListByResourceGroup lists all the vpnSites in a resource group.
-// Parameters:
-// resourceGroupName - the resource group name of the VpnSite.
-func (client VpnSitesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListVpnSitesResultPage, err error) {
+func (client VpnSitesClient) ListByResourceGroup(ctx context.Context) (result ListVpnSitesResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.ListByResourceGroup")
 		defer func() {
@@ -398,7 +393,7 @@ func (client VpnSitesClient) ListByResourceGroup(ctx context.Context, resourceGr
 		}()
 	}
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -420,9 +415,9 @@ func (client VpnSitesClient) ListByResourceGroup(ctx context.Context, resourceGr
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client VpnSitesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client VpnSitesClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -481,7 +476,7 @@ func (client VpnSitesClient) listByResourceGroupNextResults(ctx context.Context,
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VpnSitesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ListVpnSitesResultIterator, err error) {
+func (client VpnSitesClient) ListByResourceGroupComplete(ctx context.Context) (result ListVpnSitesResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.ListByResourceGroup")
 		defer func() {
@@ -492,16 +487,15 @@ func (client VpnSitesClient) ListByResourceGroupComplete(ctx context.Context, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	result.page, err = client.ListByResourceGroup(ctx)
 	return
 }
 
 // UpdateTags updates VpnSite tags.
 // Parameters:
-// resourceGroupName - the resource group name of the VpnSite.
 // vpnSiteName - the name of the VpnSite being updated.
 // vpnSiteParameters - parameters supplied to update VpnSite tags.
-func (client VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (result VpnSitesUpdateTagsFuture, err error) {
+func (client VpnSitesClient) UpdateTags(ctx context.Context, vpnSiteName string, vpnSiteParameters TagsObject) (result VpnSitesUpdateTagsFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.UpdateTags")
 		defer func() {
@@ -512,7 +506,7 @@ func (client VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters)
+	req, err := client.UpdateTagsPreparer(ctx, vpnSiteName, vpnSiteParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "UpdateTags", nil, "Failure preparing request")
 		return
@@ -528,9 +522,9 @@ func (client VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName s
 }
 
 // UpdateTagsPreparer prepares the UpdateTags request.
-func (client VpnSitesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (*http.Request, error) {
+func (client VpnSitesClient) UpdateTagsPreparer(ctx context.Context, vpnSiteName string, vpnSiteParameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vpnSiteName":       autorest.Encode("path", vpnSiteName),
 	}

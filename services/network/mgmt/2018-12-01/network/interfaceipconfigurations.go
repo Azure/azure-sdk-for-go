@@ -31,13 +31,13 @@ type InterfaceIPConfigurationsClient struct {
 }
 
 // NewInterfaceIPConfigurationsClient creates an instance of the InterfaceIPConfigurationsClient client.
-func NewInterfaceIPConfigurationsClient(subscriptionID string) InterfaceIPConfigurationsClient {
-	return NewInterfaceIPConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInterfaceIPConfigurationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceIPConfigurationsClient {
+	return NewInterfaceIPConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewInterfaceIPConfigurationsClientWithBaseURI creates an instance of the InterfaceIPConfigurationsClient client.
-func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceIPConfigurationsClient {
-	return InterfaceIPConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceIPConfigurationsClient {
+	return InterfaceIPConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get gets the specified network interface ip configuration.

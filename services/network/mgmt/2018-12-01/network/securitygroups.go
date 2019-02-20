@@ -31,13 +31,13 @@ type SecurityGroupsClient struct {
 }
 
 // NewSecurityGroupsClient creates an instance of the SecurityGroupsClient client.
-func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
-	return NewSecurityGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSecurityGroupsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) SecurityGroupsClient {
+	return NewSecurityGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewSecurityGroupsClientWithBaseURI creates an instance of the SecurityGroupsClient client.
-func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsClient {
-	return SecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) SecurityGroupsClient {
+	return SecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a network security group in the specified resource group.

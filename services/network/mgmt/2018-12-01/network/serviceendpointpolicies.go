@@ -31,13 +31,13 @@ type ServiceEndpointPoliciesClient struct {
 }
 
 // NewServiceEndpointPoliciesClient creates an instance of the ServiceEndpointPoliciesClient client.
-func NewServiceEndpointPoliciesClient(subscriptionID string) ServiceEndpointPoliciesClient {
-	return NewServiceEndpointPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewServiceEndpointPoliciesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ServiceEndpointPoliciesClient {
+	return NewServiceEndpointPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewServiceEndpointPoliciesClientWithBaseURI creates an instance of the ServiceEndpointPoliciesClient client.
-func NewServiceEndpointPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ServiceEndpointPoliciesClient {
-	return ServiceEndpointPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewServiceEndpointPoliciesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ServiceEndpointPoliciesClient {
+	return ServiceEndpointPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a service Endpoint Policies.

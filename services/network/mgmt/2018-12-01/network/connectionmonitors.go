@@ -32,13 +32,13 @@ type ConnectionMonitorsClient struct {
 }
 
 // NewConnectionMonitorsClient creates an instance of the ConnectionMonitorsClient client.
-func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient {
-	return NewConnectionMonitorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewConnectionMonitorsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ConnectionMonitorsClient {
+	return NewConnectionMonitorsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewConnectionMonitorsClientWithBaseURI creates an instance of the ConnectionMonitorsClient client.
-func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionMonitorsClient {
-	return ConnectionMonitorsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ConnectionMonitorsClient {
+	return ConnectionMonitorsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate create or update a connection monitor.

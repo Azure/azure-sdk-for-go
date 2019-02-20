@@ -31,13 +31,13 @@ type RoutesClient struct {
 }
 
 // NewRoutesClient creates an instance of the RoutesClient client.
-func NewRoutesClient(subscriptionID string) RoutesClient {
-	return NewRoutesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRoutesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RoutesClient {
+	return NewRoutesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewRoutesClientWithBaseURI creates an instance of the RoutesClient client.
-func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
-	return RoutesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) RoutesClient {
+	return RoutesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a route in the specified route table.

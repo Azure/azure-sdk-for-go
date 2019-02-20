@@ -31,13 +31,13 @@ type PublicIPPrefixesClient struct {
 }
 
 // NewPublicIPPrefixesClient creates an instance of the PublicIPPrefixesClient client.
-func NewPublicIPPrefixesClient(subscriptionID string) PublicIPPrefixesClient {
-	return NewPublicIPPrefixesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPublicIPPrefixesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) PublicIPPrefixesClient {
+	return NewPublicIPPrefixesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewPublicIPPrefixesClientWithBaseURI creates an instance of the PublicIPPrefixesClient client.
-func NewPublicIPPrefixesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPPrefixesClient {
-	return PublicIPPrefixesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPublicIPPrefixesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) PublicIPPrefixesClient {
+	return PublicIPPrefixesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a static or dynamic public IP prefix.

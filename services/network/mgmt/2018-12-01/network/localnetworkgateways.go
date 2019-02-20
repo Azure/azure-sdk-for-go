@@ -32,13 +32,13 @@ type LocalNetworkGatewaysClient struct {
 }
 
 // NewLocalNetworkGatewaysClient creates an instance of the LocalNetworkGatewaysClient client.
-func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
-	return NewLocalNetworkGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLocalNetworkGatewaysClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LocalNetworkGatewaysClient {
+	return NewLocalNetworkGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLocalNetworkGatewaysClientWithBaseURI creates an instance of the LocalNetworkGatewaysClient client.
-func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
-	return LocalNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LocalNetworkGatewaysClient {
+	return LocalNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a local network gateway in the specified resource group.

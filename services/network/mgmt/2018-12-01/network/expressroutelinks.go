@@ -31,13 +31,13 @@ type ExpressRouteLinksClient struct {
 }
 
 // NewExpressRouteLinksClient creates an instance of the ExpressRouteLinksClient client.
-func NewExpressRouteLinksClient(subscriptionID string) ExpressRouteLinksClient {
-	return NewExpressRouteLinksClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteLinksClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteLinksClient {
+	return NewExpressRouteLinksClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteLinksClientWithBaseURI creates an instance of the ExpressRouteLinksClient client.
-func NewExpressRouteLinksClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteLinksClient {
-	return ExpressRouteLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteLinksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteLinksClient {
+	return ExpressRouteLinksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get retrieves the specified ExpressRouteLink resource.

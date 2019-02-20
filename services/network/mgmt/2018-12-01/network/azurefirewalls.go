@@ -31,13 +31,13 @@ type AzureFirewallsClient struct {
 }
 
 // NewAzureFirewallsClient creates an instance of the AzureFirewallsClient client.
-func NewAzureFirewallsClient(subscriptionID string) AzureFirewallsClient {
-	return NewAzureFirewallsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAzureFirewallsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AzureFirewallsClient {
+	return NewAzureFirewallsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewAzureFirewallsClientWithBaseURI creates an instance of the AzureFirewallsClient client.
-func NewAzureFirewallsClientWithBaseURI(baseURI string, subscriptionID string) AzureFirewallsClient {
-	return AzureFirewallsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAzureFirewallsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) AzureFirewallsClient {
+	return AzureFirewallsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates the specified Azure Firewall.

@@ -31,13 +31,13 @@ type InterfaceLoadBalancersClient struct {
 }
 
 // NewInterfaceLoadBalancersClient creates an instance of the InterfaceLoadBalancersClient client.
-func NewInterfaceLoadBalancersClient(subscriptionID string) InterfaceLoadBalancersClient {
-	return NewInterfaceLoadBalancersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInterfaceLoadBalancersClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceLoadBalancersClient {
+	return NewInterfaceLoadBalancersClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewInterfaceLoadBalancersClientWithBaseURI creates an instance of the InterfaceLoadBalancersClient client.
-func NewInterfaceLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) InterfaceLoadBalancersClient {
-	return InterfaceLoadBalancersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewInterfaceLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) InterfaceLoadBalancersClient {
+	return InterfaceLoadBalancersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // List list all load balancers in a network interface.

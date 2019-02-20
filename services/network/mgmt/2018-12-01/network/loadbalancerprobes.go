@@ -31,13 +31,13 @@ type LoadBalancerProbesClient struct {
 }
 
 // NewLoadBalancerProbesClient creates an instance of the LoadBalancerProbesClient client.
-func NewLoadBalancerProbesClient(subscriptionID string) LoadBalancerProbesClient {
-	return NewLoadBalancerProbesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLoadBalancerProbesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerProbesClient {
+	return NewLoadBalancerProbesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLoadBalancerProbesClientWithBaseURI creates an instance of the LoadBalancerProbesClient client.
-func NewLoadBalancerProbesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerProbesClient {
-	return LoadBalancerProbesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLoadBalancerProbesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerProbesClient {
+	return LoadBalancerProbesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get gets load balancer probe.

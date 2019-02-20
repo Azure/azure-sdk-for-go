@@ -31,13 +31,13 @@ type DdosCustomPoliciesClient struct {
 }
 
 // NewDdosCustomPoliciesClient creates an instance of the DdosCustomPoliciesClient client.
-func NewDdosCustomPoliciesClient(subscriptionID string) DdosCustomPoliciesClient {
-	return NewDdosCustomPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDdosCustomPoliciesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) DdosCustomPoliciesClient {
+	return NewDdosCustomPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewDdosCustomPoliciesClientWithBaseURI creates an instance of the DdosCustomPoliciesClient client.
-func NewDdosCustomPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DdosCustomPoliciesClient {
-	return DdosCustomPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDdosCustomPoliciesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) DdosCustomPoliciesClient {
+	return DdosCustomPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a DDoS custom policy.

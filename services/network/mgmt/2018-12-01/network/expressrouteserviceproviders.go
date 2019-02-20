@@ -31,14 +31,14 @@ type ExpressRouteServiceProvidersClient struct {
 }
 
 // NewExpressRouteServiceProvidersClient creates an instance of the ExpressRouteServiceProvidersClient client.
-func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
-	return NewExpressRouteServiceProvidersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteServiceProvidersClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteServiceProvidersClient {
+	return NewExpressRouteServiceProvidersClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteServiceProvidersClientWithBaseURI creates an instance of the ExpressRouteServiceProvidersClient
 // client.
-func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
-	return ExpressRouteServiceProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteServiceProvidersClient {
+	return ExpressRouteServiceProvidersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // List gets all the available express route service providers.

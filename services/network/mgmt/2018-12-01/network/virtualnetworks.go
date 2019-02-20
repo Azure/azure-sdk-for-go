@@ -31,13 +31,13 @@ type VirtualNetworksClient struct {
 }
 
 // NewVirtualNetworksClient creates an instance of the VirtualNetworksClient client.
-func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
-	return NewVirtualNetworksClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualNetworksClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworksClient {
+	return NewVirtualNetworksClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVirtualNetworksClientWithBaseURI creates an instance of the VirtualNetworksClient client.
-func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
-	return VirtualNetworksClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VirtualNetworksClient {
+	return VirtualNetworksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CheckIPAddressAvailability checks whether a private IP address is available for use.

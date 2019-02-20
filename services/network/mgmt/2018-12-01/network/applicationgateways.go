@@ -32,13 +32,13 @@ type ApplicationGatewaysClient struct {
 }
 
 // NewApplicationGatewaysClient creates an instance of the ApplicationGatewaysClient client.
-func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
-	return NewApplicationGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewApplicationGatewaysClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ApplicationGatewaysClient {
+	return NewApplicationGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewApplicationGatewaysClientWithBaseURI creates an instance of the ApplicationGatewaysClient client.
-func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
-	return ApplicationGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ApplicationGatewaysClient {
+	return ApplicationGatewaysClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // BackendHealth gets the backend health of the specified application gateway in a resource group.

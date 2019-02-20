@@ -32,13 +32,13 @@ type PacketCapturesClient struct {
 }
 
 // NewPacketCapturesClient creates an instance of the PacketCapturesClient client.
-func NewPacketCapturesClient(subscriptionID string) PacketCapturesClient {
-	return NewPacketCapturesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewPacketCapturesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) PacketCapturesClient {
+	return NewPacketCapturesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewPacketCapturesClientWithBaseURI creates an instance of the PacketCapturesClient client.
-func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string) PacketCapturesClient {
-	return PacketCapturesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) PacketCapturesClient {
+	return PacketCapturesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Create create and start a packet capture on the specified VM.

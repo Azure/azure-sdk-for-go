@@ -31,14 +31,14 @@ type LoadBalancerLoadBalancingRulesClient struct {
 }
 
 // NewLoadBalancerLoadBalancingRulesClient creates an instance of the LoadBalancerLoadBalancingRulesClient client.
-func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string) LoadBalancerLoadBalancingRulesClient {
-	return NewLoadBalancerLoadBalancingRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerLoadBalancingRulesClient {
+	return NewLoadBalancerLoadBalancingRulesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewLoadBalancerLoadBalancingRulesClientWithBaseURI creates an instance of the LoadBalancerLoadBalancingRulesClient
 // client.
-func NewLoadBalancerLoadBalancingRulesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerLoadBalancingRulesClient {
-	return LoadBalancerLoadBalancingRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLoadBalancerLoadBalancingRulesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) LoadBalancerLoadBalancingRulesClient {
+	return LoadBalancerLoadBalancingRulesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Get gets the specified load balancer load balancing rule.

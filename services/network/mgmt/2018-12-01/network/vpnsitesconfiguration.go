@@ -31,21 +31,20 @@ type VpnSitesConfigurationClient struct {
 }
 
 // NewVpnSitesConfigurationClient creates an instance of the VpnSitesConfigurationClient client.
-func NewVpnSitesConfigurationClient(subscriptionID string) VpnSitesConfigurationClient {
-	return NewVpnSitesConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVpnSitesConfigurationClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VpnSitesConfigurationClient {
+	return NewVpnSitesConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewVpnSitesConfigurationClientWithBaseURI creates an instance of the VpnSitesConfigurationClient client.
-func NewVpnSitesConfigurationClientWithBaseURI(baseURI string, subscriptionID string) VpnSitesConfigurationClient {
-	return VpnSitesConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVpnSitesConfigurationClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) VpnSitesConfigurationClient {
+	return VpnSitesConfigurationClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // Download gives the sas-url to download the configurations for vpn-sites in a resource group.
 // Parameters:
-// resourceGroupName - the resource group name.
 // virtualWANName - the name of the VirtualWAN for which configuration of all vpn-sites is needed.
 // request - parameters supplied to download vpn-sites configuration.
-func (client VpnSitesConfigurationClient) Download(ctx context.Context, resourceGroupName string, virtualWANName string, request GetVpnSitesConfigurationRequest) (result VpnSitesConfigurationDownloadFuture, err error) {
+func (client VpnSitesConfigurationClient) Download(ctx context.Context, virtualWANName string, request GetVpnSitesConfigurationRequest) (result VpnSitesConfigurationDownloadFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesConfigurationClient.Download")
 		defer func() {
@@ -56,7 +55,7 @@ func (client VpnSitesConfigurationClient) Download(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DownloadPreparer(ctx, resourceGroupName, virtualWANName, request)
+	req, err := client.DownloadPreparer(ctx, virtualWANName, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnSitesConfigurationClient", "Download", nil, "Failure preparing request")
 		return
@@ -72,9 +71,9 @@ func (client VpnSitesConfigurationClient) Download(ctx context.Context, resource
 }
 
 // DownloadPreparer prepares the Download request.
-func (client VpnSitesConfigurationClient) DownloadPreparer(ctx context.Context, resourceGroupName string, virtualWANName string, request GetVpnSitesConfigurationRequest) (*http.Request, error) {
+func (client VpnSitesConfigurationClient) DownloadPreparer(ctx context.Context, virtualWANName string, request GetVpnSitesConfigurationRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"virtualWANName":    autorest.Encode("path", virtualWANName),
 	}

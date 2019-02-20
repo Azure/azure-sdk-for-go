@@ -32,13 +32,13 @@ type ExpressRouteGatewaysClient struct {
 }
 
 // NewExpressRouteGatewaysClient creates an instance of the ExpressRouteGatewaysClient client.
-func NewExpressRouteGatewaysClient(subscriptionID string) ExpressRouteGatewaysClient {
-	return NewExpressRouteGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteGatewaysClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteGatewaysClient {
+	return NewExpressRouteGatewaysClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteGatewaysClientWithBaseURI creates an instance of the ExpressRouteGatewaysClient client.
-func NewExpressRouteGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteGatewaysClient {
-	return ExpressRouteGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteGatewaysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteGatewaysClient {
+	return ExpressRouteGatewaysClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a ExpressRoute gateway in a specified resource group.

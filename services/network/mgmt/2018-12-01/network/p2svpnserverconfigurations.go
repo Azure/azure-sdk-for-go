@@ -31,23 +31,22 @@ type P2sVpnServerConfigurationsClient struct {
 }
 
 // NewP2sVpnServerConfigurationsClient creates an instance of the P2sVpnServerConfigurationsClient client.
-func NewP2sVpnServerConfigurationsClient(subscriptionID string) P2sVpnServerConfigurationsClient {
-	return NewP2sVpnServerConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewP2sVpnServerConfigurationsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) P2sVpnServerConfigurationsClient {
+	return NewP2sVpnServerConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewP2sVpnServerConfigurationsClientWithBaseURI creates an instance of the P2sVpnServerConfigurationsClient client.
-func NewP2sVpnServerConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) P2sVpnServerConfigurationsClient {
-	return P2sVpnServerConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewP2sVpnServerConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) P2sVpnServerConfigurationsClient {
+	return P2sVpnServerConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates
 // the existing P2SVpnServerConfiguration.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
 // virtualWanName - the name of the VirtualWan.
 // p2SVpnServerConfigurationName - the name of the P2SVpnServerConfiguration.
 // p2SVpnServerConfigurationParameters - parameters supplied to create or Update a P2SVpnServerConfiguration.
-func (client P2sVpnServerConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string, p2SVpnServerConfigurationParameters P2SVpnServerConfiguration) (result P2sVpnServerConfigurationsCreateOrUpdateFuture, err error) {
+func (client P2sVpnServerConfigurationsClient) CreateOrUpdate(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string, p2SVpnServerConfigurationParameters P2SVpnServerConfiguration) (result P2sVpnServerConfigurationsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/P2sVpnServerConfigurationsClient.CreateOrUpdate")
 		defer func() {
@@ -58,7 +57,7 @@ func (client P2sVpnServerConfigurationsClient) CreateOrUpdate(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnServerConfigurationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -74,10 +73,10 @@ func (client P2sVpnServerConfigurationsClient) CreateOrUpdate(ctx context.Contex
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client P2sVpnServerConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string, p2SVpnServerConfigurationParameters P2SVpnServerConfiguration) (*http.Request, error) {
+func (client P2sVpnServerConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string, p2SVpnServerConfigurationParameters P2SVpnServerConfiguration) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"p2SVpnServerConfigurationName": autorest.Encode("path", p2SVpnServerConfigurationName),
-		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
+		"resourceGroupName":             autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 		"virtualWanName":                autorest.Encode("path", virtualWanName),
 	}
@@ -125,10 +124,9 @@ func (client P2sVpnServerConfigurationsClient) CreateOrUpdateResponder(resp *htt
 
 // Delete deletes a P2SVpnServerConfiguration.
 // Parameters:
-// resourceGroupName - the resource group name of the P2SVpnServerConfiguration.
 // virtualWanName - the name of the VirtualWan.
 // p2SVpnServerConfigurationName - the name of the P2SVpnServerConfiguration.
-func (client P2sVpnServerConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (result P2sVpnServerConfigurationsDeleteFuture, err error) {
+func (client P2sVpnServerConfigurationsClient) Delete(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string) (result P2sVpnServerConfigurationsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/P2sVpnServerConfigurationsClient.Delete")
 		defer func() {
@@ -139,7 +137,7 @@ func (client P2sVpnServerConfigurationsClient) Delete(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
+	req, err := client.DeletePreparer(ctx, virtualWanName, p2SVpnServerConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnServerConfigurationsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -155,10 +153,10 @@ func (client P2sVpnServerConfigurationsClient) Delete(ctx context.Context, resou
 }
 
 // DeletePreparer prepares the Delete request.
-func (client P2sVpnServerConfigurationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (*http.Request, error) {
+func (client P2sVpnServerConfigurationsClient) DeletePreparer(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"p2SVpnServerConfigurationName": autorest.Encode("path", p2SVpnServerConfigurationName),
-		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
+		"resourceGroupName":             autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 		"virtualWanName":                autorest.Encode("path", virtualWanName),
 	}
@@ -203,10 +201,9 @@ func (client P2sVpnServerConfigurationsClient) DeleteResponder(resp *http.Respon
 
 // Get retrieves the details of a P2SVpnServerConfiguration.
 // Parameters:
-// resourceGroupName - the resource group name of the P2SVpnServerConfiguration.
 // virtualWanName - the name of the VirtualWan.
 // p2SVpnServerConfigurationName - the name of the P2SVpnServerConfiguration.
-func (client P2sVpnServerConfigurationsClient) Get(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (result P2SVpnServerConfiguration, err error) {
+func (client P2sVpnServerConfigurationsClient) Get(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string) (result P2SVpnServerConfiguration, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/P2sVpnServerConfigurationsClient.Get")
 		defer func() {
@@ -217,7 +214,7 @@ func (client P2sVpnServerConfigurationsClient) Get(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
+	req, err := client.GetPreparer(ctx, virtualWanName, p2SVpnServerConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnServerConfigurationsClient", "Get", nil, "Failure preparing request")
 		return
@@ -239,10 +236,10 @@ func (client P2sVpnServerConfigurationsClient) Get(ctx context.Context, resource
 }
 
 // GetPreparer prepares the Get request.
-func (client P2sVpnServerConfigurationsClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualWanName string, p2SVpnServerConfigurationName string) (*http.Request, error) {
+func (client P2sVpnServerConfigurationsClient) GetPreparer(ctx context.Context, virtualWanName string, p2SVpnServerConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"p2SVpnServerConfigurationName": autorest.Encode("path", p2SVpnServerConfigurationName),
-		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
+		"resourceGroupName":             autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 		"virtualWanName":                autorest.Encode("path", virtualWanName),
 	}
@@ -282,9 +279,8 @@ func (client P2sVpnServerConfigurationsClient) GetResponder(resp *http.Response)
 
 // ListByVirtualWan retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
 // Parameters:
-// resourceGroupName - the resource group name of the VirtualWan.
 // virtualWanName - the name of the VirtualWan.
-func (client P2sVpnServerConfigurationsClient) ListByVirtualWan(ctx context.Context, resourceGroupName string, virtualWanName string) (result ListP2SVpnServerConfigurationsResultPage, err error) {
+func (client P2sVpnServerConfigurationsClient) ListByVirtualWan(ctx context.Context, virtualWanName string) (result ListP2SVpnServerConfigurationsResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/P2sVpnServerConfigurationsClient.ListByVirtualWan")
 		defer func() {
@@ -296,7 +292,7 @@ func (client P2sVpnServerConfigurationsClient) ListByVirtualWan(ctx context.Cont
 		}()
 	}
 	result.fn = client.listByVirtualWanNextResults
-	req, err := client.ListByVirtualWanPreparer(ctx, resourceGroupName, virtualWanName)
+	req, err := client.ListByVirtualWanPreparer(ctx, virtualWanName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnServerConfigurationsClient", "ListByVirtualWan", nil, "Failure preparing request")
 		return
@@ -318,9 +314,9 @@ func (client P2sVpnServerConfigurationsClient) ListByVirtualWan(ctx context.Cont
 }
 
 // ListByVirtualWanPreparer prepares the ListByVirtualWan request.
-func (client P2sVpnServerConfigurationsClient) ListByVirtualWanPreparer(ctx context.Context, resourceGroupName string, virtualWanName string) (*http.Request, error) {
+func (client P2sVpnServerConfigurationsClient) ListByVirtualWanPreparer(ctx context.Context, virtualWanName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"virtualWanName":    autorest.Encode("path", virtualWanName),
 	}
@@ -380,7 +376,7 @@ func (client P2sVpnServerConfigurationsClient) listByVirtualWanNextResults(ctx c
 }
 
 // ListByVirtualWanComplete enumerates all values, automatically crossing page boundaries as required.
-func (client P2sVpnServerConfigurationsClient) ListByVirtualWanComplete(ctx context.Context, resourceGroupName string, virtualWanName string) (result ListP2SVpnServerConfigurationsResultIterator, err error) {
+func (client P2sVpnServerConfigurationsClient) ListByVirtualWanComplete(ctx context.Context, virtualWanName string) (result ListP2SVpnServerConfigurationsResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/P2sVpnServerConfigurationsClient.ListByVirtualWan")
 		defer func() {
@@ -391,6 +387,6 @@ func (client P2sVpnServerConfigurationsClient) ListByVirtualWanComplete(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByVirtualWan(ctx, resourceGroupName, virtualWanName)
+	result.page, err = client.ListByVirtualWan(ctx, virtualWanName)
 	return
 }

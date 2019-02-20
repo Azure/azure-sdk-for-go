@@ -33,14 +33,14 @@ type ExpressRouteCrossConnectionPeeringsClient struct {
 
 // NewExpressRouteCrossConnectionPeeringsClient creates an instance of the ExpressRouteCrossConnectionPeeringsClient
 // client.
-func NewExpressRouteCrossConnectionPeeringsClient(subscriptionID string) ExpressRouteCrossConnectionPeeringsClient {
-	return NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExpressRouteCrossConnectionPeeringsClient(subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCrossConnectionPeeringsClient {
+	return NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)
 }
 
 // NewExpressRouteCrossConnectionPeeringsClientWithBaseURI creates an instance of the
 // ExpressRouteCrossConnectionPeeringsClient client.
-func NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCrossConnectionPeeringsClient {
-	return ExpressRouteCrossConnectionPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, virtualHubName string, connectionName string) ExpressRouteCrossConnectionPeeringsClient {
+	return ExpressRouteCrossConnectionPeeringsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, virtualHubName, connectionName)}
 }
 
 // CreateOrUpdate creates or updates a peering in the specified ExpressRouteCrossConnection.

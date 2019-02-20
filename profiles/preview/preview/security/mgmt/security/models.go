@@ -73,6 +73,13 @@ const (
 	CEF ExternalSecuritySolutionKind = original.CEF
 )
 
+type ExtraData = original.ExtraData
+
+const (
+	RawEvents ExtraData = original.RawEvents
+	TwinData  ExtraData = original.TwinData
+)
+
 type Family = original.Family
 
 const (
@@ -215,6 +222,14 @@ type InformationProtectionPolicyListIterator = original.InformationProtectionPol
 type InformationProtectionPolicyListPage = original.InformationProtectionPolicyListPage
 type InformationProtectionPolicyProperties = original.InformationProtectionPolicyProperties
 type InformationType = original.InformationType
+type IoTSecuritySolutionModel = original.IoTSecuritySolutionModel
+type IoTSecuritySolutionProperties = original.IoTSecuritySolutionProperties
+type IoTSecuritySolutionsClient = original.IoTSecuritySolutionsClient
+type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
+type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
+type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
+type IoTSecuritySolutionsResourceGroupClient = original.IoTSecuritySolutionsResourceGroupClient
+type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
@@ -252,6 +267,7 @@ type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
+type TagsResource = original.TagsResource
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
@@ -386,6 +402,30 @@ func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicy
 func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
 	return original.NewInformationProtectionPolicyListPage(getNextPage)
 }
+func NewIoTSecuritySolutionsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
+	return original.NewIoTSecuritySolutionsClient(subscriptionID, ascLocation)
+}
+func NewIoTSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
+	return original.NewIoTSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
+	return original.NewIoTSecuritySolutionsListIterator(page)
+}
+func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
+	return original.NewIoTSecuritySolutionsListPage(getNextPage)
+}
+func NewIoTSecuritySolutionsResourceGroupClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
+	return original.NewIoTSecuritySolutionsResourceGroupClient(subscriptionID, ascLocation)
+}
+func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
+	return original.NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIotSecuritySolutionClient(subscriptionID string, ascLocation string) IotSecuritySolutionClient {
+	return original.NewIotSecuritySolutionClient(subscriptionID, ascLocation)
+}
+func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionClient {
+	return original.NewIotSecuritySolutionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
 	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)
 }
@@ -496,6 +536,9 @@ func PossibleConnectionTypeValues() []ConnectionType {
 }
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
+}
+func PossibleExtraDataValues() []ExtraData {
+	return original.PossibleExtraDataValues()
 }
 func PossibleFamilyValues() []Family {
 	return original.PossibleFamilyValues()

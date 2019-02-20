@@ -66,6 +66,30 @@ type AutoProvisioningSettingsClientAPI interface {
 
 var _ AutoProvisioningSettingsClientAPI = (*security.AutoProvisioningSettingsClient)(nil)
 
+// IoTSecuritySolutionsClientAPI contains the set of methods on the IoTSecuritySolutionsClient type.
+type IoTSecuritySolutionsClientAPI interface {
+	List(ctx context.Context, filter string) (result security.IoTSecuritySolutionsListPage, err error)
+}
+
+var _ IoTSecuritySolutionsClientAPI = (*security.IoTSecuritySolutionsClient)(nil)
+
+// IoTSecuritySolutionsResourceGroupClientAPI contains the set of methods on the IoTSecuritySolutionsResourceGroupClient type.
+type IoTSecuritySolutionsResourceGroupClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, filter string) (result security.IoTSecuritySolutionsListPage, err error)
+}
+
+var _ IoTSecuritySolutionsResourceGroupClientAPI = (*security.IoTSecuritySolutionsResourceGroupClient)(nil)
+
+// IotSecuritySolutionClientAPI contains the set of methods on the IotSecuritySolutionClient type.
+type IotSecuritySolutionClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
+	Delete(ctx context.Context, resourceGroupName string, solutionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
+	Update(ctx context.Context, resourceGroupName string, solutionName string, securitySolutionTags security.TagsResource) (result security.IoTSecuritySolutionModel, err error)
+}
+
+var _ IotSecuritySolutionClientAPI = (*security.IotSecuritySolutionClient)(nil)
+
 // CompliancesClientAPI contains the set of methods on the CompliancesClient type.
 type CompliancesClientAPI interface {
 	Get(ctx context.Context, scope string, complianceName string) (result security.Compliance, err error)

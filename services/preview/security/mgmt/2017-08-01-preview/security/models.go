@@ -125,6 +125,21 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 	return []ExternalSecuritySolutionKind{AAD, ATA, CEF}
 }
 
+// ExtraData enumerates the values for extra data.
+type ExtraData string
+
+const (
+	// RawEvents ...
+	RawEvents ExtraData = "RawEvents"
+	// TwinData ...
+	TwinData ExtraData = "TwinData"
+)
+
+// PossibleExtraDataValues returns an array of possible values for the ExtraData const type.
+func PossibleExtraDataValues() []ExtraData {
+	return []ExtraData{RawEvents, TwinData}
+}
+
 // Family enumerates the values for family.
 type Family string
 
@@ -3420,6 +3435,279 @@ type InformationType struct {
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
 }
 
+// IoTSecuritySolutionModel security Solution
+type IoTSecuritySolutionModel struct {
+	autorest.Response `json:"-"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// IoTSecuritySolutionProperties - Security Solution data
+	*IoTSecuritySolutionProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IoTSecuritySolutionModel.
+func (itssm IoTSecuritySolutionModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if itssm.ID != nil {
+		objectMap["id"] = itssm.ID
+	}
+	if itssm.Name != nil {
+		objectMap["name"] = itssm.Name
+	}
+	if itssm.Type != nil {
+		objectMap["type"] = itssm.Type
+	}
+	if itssm.Tags != nil {
+		objectMap["tags"] = itssm.Tags
+	}
+	if itssm.Location != nil {
+		objectMap["location"] = itssm.Location
+	}
+	if itssm.IoTSecuritySolutionProperties != nil {
+		objectMap["properties"] = itssm.IoTSecuritySolutionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IoTSecuritySolutionModel struct.
+func (itssm *IoTSecuritySolutionModel) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				itssm.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				itssm.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				itssm.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				itssm.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				itssm.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var ioTSecuritySolutionProperties IoTSecuritySolutionProperties
+				err = json.Unmarshal(*v, &ioTSecuritySolutionProperties)
+				if err != nil {
+					return err
+				}
+				itssm.IoTSecuritySolutionProperties = &ioTSecuritySolutionProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// IoTSecuritySolutionProperties security Solution setting data
+type IoTSecuritySolutionProperties struct {
+	// WorkspaceResourceID - The full Azure ID of the workspace to save the data in
+	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+	// WorkspaceCustomerID - the customer id associate with the workspace
+	WorkspaceCustomerID *string `json:"workspaceCustomerId,omitempty"`
+	// DisplayName - The display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Enabled - Is the solution Enabled for the customer.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Export - Wether to save the raw events to the given workspace.
+	Export *[]ExtraData `json:"export,omitempty"`
+	// IotHubs - Related iot hub resources ID
+	IotHubs *[]string `json:"iotHubs,omitempty"`
+}
+
+// IoTSecuritySolutionsList list of iot solutions
+type IoTSecuritySolutionsList struct {
+	autorest.Response `json:"-"`
+	// Value - List of security solutions
+	Value *[]IoTSecuritySolutionModel `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IoTSecuritySolutionsListIterator provides access to a complete listing of IoTSecuritySolutionModel
+// values.
+type IoTSecuritySolutionsListIterator struct {
+	i    int
+	page IoTSecuritySolutionsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IoTSecuritySolutionsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IoTSecuritySolutionsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IoTSecuritySolutionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IoTSecuritySolutionsListIterator) Response() IoTSecuritySolutionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IoTSecuritySolutionsListIterator) Value() IoTSecuritySolutionModel {
+	if !iter.page.NotDone() {
+		return IoTSecuritySolutionModel{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IoTSecuritySolutionsListIterator type.
+func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
+	return IoTSecuritySolutionsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (itssl IoTSecuritySolutionsList) IsEmpty() bool {
+	return itssl.Value == nil || len(*itssl.Value) == 0
+}
+
+// ioTSecuritySolutionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (itssl IoTSecuritySolutionsList) ioTSecuritySolutionsListPreparer(ctx context.Context) (*http.Request, error) {
+	if itssl.NextLink == nil || len(to.String(itssl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(itssl.NextLink)))
+}
+
+// IoTSecuritySolutionsListPage contains a page of IoTSecuritySolutionModel values.
+type IoTSecuritySolutionsListPage struct {
+	fn    func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)
+	itssl IoTSecuritySolutionsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IoTSecuritySolutionsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.itssl)
+	if err != nil {
+		return err
+	}
+	page.itssl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IoTSecuritySolutionsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IoTSecuritySolutionsListPage) NotDone() bool {
+	return !page.itssl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IoTSecuritySolutionsListPage) Response() IoTSecuritySolutionsList {
+	return page.itssl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IoTSecuritySolutionsListPage) Values() []IoTSecuritySolutionModel {
+	if page.itssl.IsEmpty() {
+		return nil
+	}
+	return *page.itssl.Value
+}
+
+// Creates a new instance of the IoTSecuritySolutionsListPage type.
+func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
+	return IoTSecuritySolutionsListPage{fn: getNextPage}
+}
+
 // JitNetworkAccessPoliciesList ...
 type JitNetworkAccessPoliciesList struct {
 	autorest.Response `json:"-"`
@@ -4363,6 +4651,21 @@ func (page SettingsListPage) Values() []Setting {
 // Creates a new instance of the SettingsListPage type.
 func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return SettingsListPage{fn: getNextPage}
+}
+
+// TagsResource a container holding only the Tags for a resource, allowing the user to update the tags.
+type TagsResource struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TagsResource.
+func (tr TagsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Task security task that we recommend to do in order to strengthen security

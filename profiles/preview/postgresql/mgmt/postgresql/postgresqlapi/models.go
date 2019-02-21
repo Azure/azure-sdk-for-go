@@ -28,6 +28,7 @@ type FirewallRulesClientAPI = original.FirewallRulesClientAPI
 type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTierClientAPI
 type LogFilesClientAPI = original.LogFilesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ServerClientAPI = original.ServerClientAPI
 type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
 type ServersClientAPI = original.ServersClientAPI
 type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI

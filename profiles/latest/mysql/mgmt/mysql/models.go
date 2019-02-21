@@ -139,6 +139,7 @@ type ProxyResource = original.ProxyResource
 type ReplicasClient = original.ReplicasClient
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
+type ServerClient = original.ServerClient
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
 type ServerProperties = original.ServerProperties
@@ -147,6 +148,7 @@ type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreat
 type ServerPropertiesForGeoRestore = original.ServerPropertiesForGeoRestore
 type ServerPropertiesForReplica = original.ServerPropertiesForReplica
 type ServerPropertiesForRestore = original.ServerPropertiesForRestore
+type ServerRestartFuture = original.ServerRestartFuture
 type ServerSecurityAlertPoliciesClient = original.ServerSecurityAlertPoliciesClient
 type ServerSecurityAlertPoliciesCreateOrUpdateFuture = original.ServerSecurityAlertPoliciesCreateOrUpdateFuture
 type ServerSecurityAlertPolicy = original.ServerSecurityAlertPolicy
@@ -218,6 +220,12 @@ func NewReplicasClient(subscriptionID string) ReplicasClient {
 }
 func NewReplicasClientWithBaseURI(baseURI string, subscriptionID string) ReplicasClient {
 	return original.NewReplicasClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerClient(subscriptionID string) ServerClient {
+	return original.NewServerClient(subscriptionID)
+}
+func NewServerClientWithBaseURI(baseURI string, subscriptionID string) ServerClient {
+	return original.NewServerClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)

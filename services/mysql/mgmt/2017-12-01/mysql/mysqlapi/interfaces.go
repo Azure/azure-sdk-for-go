@@ -34,6 +34,13 @@ type ServersClientAPI interface {
 
 var _ ServersClientAPI = (*mysql.ServersClient)(nil)
 
+// ServerClientAPI contains the set of methods on the ServerClient type.
+type ServerClientAPI interface {
+	Restart(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerRestartFuture, err error)
+}
+
+var _ ServerClientAPI = (*mysql.ServerClient)(nil)
+
 // ReplicasClientAPI contains the set of methods on the ReplicasClient type.
 type ReplicasClientAPI interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerListResult, err error)

@@ -3609,7 +3609,7 @@ type ApplicationGatewayProbePropertiesFormat struct {
 	Path *string `json:"path,omitempty"`
 	// Interval - The probing interval in seconds. This is the time interval between two consecutive probes. Acceptable values are from 1 second to 86400 seconds.
 	Interval *int32 `json:"interval,omitempty"`
-	// Timeout - the probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
+	// Timeout - The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
 	// UnhealthyThreshold - The probe retry count. Backend server is marked down after consecutive probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
 	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
@@ -18733,7 +18733,7 @@ func (pvsc *P2SVpnServerConfiguration) UnmarshalJSON(body []byte) error {
 type P2SVpnServerConfigurationProperties struct {
 	// Name - The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Paren VirtualWan resource name.
 	Name *string `json:"name,omitempty"`
-	// VpnProtocols - vpnProtocols for the P2SVpnServerConfiguration.
+	// VpnProtocols - VPN protocols for the P2SVpnServerConfiguration.
 	VpnProtocols *[]VpnGatewayTunnelingProtocol `json:"vpnProtocols,omitempty"`
 	// P2SVpnServerConfigVpnClientRootCertificates - VPN client root certificate of P2SVpnServerConfiguration.
 	P2SVpnServerConfigVpnClientRootCertificates *[]P2SVpnServerConfigVpnClientRootCertificate `json:"p2SVpnServerConfigVpnClientRootCertificates,omitempty"`
@@ -23482,7 +23482,7 @@ func NewServiceEndpointPolicyDefinitionListResultPage(getNextPage func(context.C
 type ServiceEndpointPolicyDefinitionPropertiesFormat struct {
 	// Description - A description for this rule. Restricted to 140 chars.
 	Description *string `json:"description,omitempty"`
-	// Service - service endpoint name.
+	// Service - Service endpoint name.
 	Service *string `json:"service,omitempty"`
 	// ServiceResources - A list of service resources.
 	ServiceResources *[]string `json:"serviceResources,omitempty"`
@@ -24594,7 +24594,7 @@ type VirtualHubProperties struct {
 	P2SVpnGateway *SubResource `json:"p2SVpnGateway,omitempty"`
 	// ExpressRouteGateway - The expressRouteGateway associated with this VirtualHub
 	ExpressRouteGateway *SubResource `json:"expressRouteGateway,omitempty"`
-	// VirtualNetworkConnections - list of all vnet connections with this VirtualHub.
+	// VirtualNetworkConnections - List of all vnet connections with this VirtualHub.
 	VirtualNetworkConnections *[]HubVirtualNetworkConnection `json:"virtualNetworkConnections,omitempty"`
 	// AddressPrefix - Address-prefix for this VirtualHub.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
@@ -24606,7 +24606,7 @@ type VirtualHubProperties struct {
 
 // VirtualHubRoute virtualHub route
 type VirtualHubRoute struct {
-	// AddressPrefixes - list of all addressPrefixes.
+	// AddressPrefixes - List of all addressPrefixes.
 	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
 	// NextHopIPAddress - NextHop ip address.
 	NextHopIPAddress *string `json:"nextHopIpAddress,omitempty"`
@@ -24614,7 +24614,7 @@ type VirtualHubRoute struct {
 
 // VirtualHubRouteTable virtualHub route table
 type VirtualHubRouteTable struct {
-	// Routes - list of all routes.
+	// Routes - List of all routes.
 	Routes *[]VirtualHubRoute `json:"routes,omitempty"`
 }
 
@@ -27587,7 +27587,7 @@ type VirtualWanProperties struct {
 	AllowVnetToVnetTraffic *bool `json:"allowVnetToVnetTraffic,omitempty"`
 	// Office365LocalBreakoutCategory - The office local breakout category. Possible values include: 'OfficeTrafficCategoryOptimize', 'OfficeTrafficCategoryOptimizeAndAllow', 'OfficeTrafficCategoryAll', 'OfficeTrafficCategoryNone'
 	Office365LocalBreakoutCategory OfficeTrafficCategory `json:"office365LocalBreakoutCategory,omitempty"`
-	// P2SVpnServerConfigurations - list of all P2SVpnServerConfigurations associated with the virtual wan.
+	// P2SVpnServerConfigurations - List of all P2SVpnServerConfigurations associated with the virtual wan.
 	P2SVpnServerConfigurations *[]P2SVpnServerConfiguration `json:"p2SVpnServerConfigurations,omitempty"`
 	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -28017,7 +28017,7 @@ func (vc *VpnConnection) UnmarshalJSON(body []byte) error {
 type VpnConnectionProperties struct {
 	// RemoteVpnSite - Id of the connected vpn site.
 	RemoteVpnSite *SubResource `json:"remoteVpnSite,omitempty"`
-	// RoutingWeight - routing weight for vpn connection.
+	// RoutingWeight - Routing weight for vpn connection.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
 	// ConnectionStatus - The connection status. Possible values include: 'VpnConnectionStatusUnknown', 'VpnConnectionStatusConnecting', 'VpnConnectionStatusConnected', 'VpnConnectionStatusNotConnected'
 	ConnectionStatus VpnConnectionStatus `json:"connectionStatus,omitempty"`
@@ -28232,7 +28232,7 @@ func (vg *VpnGateway) UnmarshalJSON(body []byte) error {
 type VpnGatewayProperties struct {
 	// VirtualHub - The VirtualHub to which the gateway belongs
 	VirtualHub *SubResource `json:"virtualHub,omitempty"`
-	// Connections - list of all vpn connections to the gateway.
+	// Connections - List of all vpn connections to the gateway.
 	Connections *[]VpnConnection `json:"connections,omitempty"`
 	// BgpSettings - Local network gateway's BGP speaker settings.
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`

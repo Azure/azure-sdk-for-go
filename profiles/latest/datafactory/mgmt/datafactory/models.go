@@ -397,8 +397,10 @@ const (
 	ActivityRunEnd      RunQueryFilterOperand = original.ActivityRunEnd
 	ActivityRunStart    RunQueryFilterOperand = original.ActivityRunStart
 	ActivityType        RunQueryFilterOperand = original.ActivityType
+	LatestOnly          RunQueryFilterOperand = original.LatestOnly
 	PipelineName        RunQueryFilterOperand = original.PipelineName
 	RunEnd              RunQueryFilterOperand = original.RunEnd
+	RunGroupID          RunQueryFilterOperand = original.RunGroupID
 	RunStart            RunQueryFilterOperand = original.RunStart
 	Status              RunQueryFilterOperand = original.Status
 	TriggerName         RunQueryFilterOperand = original.TriggerName

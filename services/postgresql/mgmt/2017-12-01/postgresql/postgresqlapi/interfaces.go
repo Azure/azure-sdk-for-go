@@ -34,6 +34,13 @@ type ServersClientAPI interface {
 
 var _ ServersClientAPI = (*postgresql.ServersClient)(nil)
 
+// ServerClientAPI contains the set of methods on the ServerClient type.
+type ServerClientAPI interface {
+	Restart(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerRestartFuture, err error)
+}
+
+var _ ServerClientAPI = (*postgresql.ServerClient)(nil)
+
 // FirewallRulesClientAPI contains the set of methods on the FirewallRulesClient type.
 type FirewallRulesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters postgresql.FirewallRule) (result postgresql.FirewallRulesCreateOrUpdateFuture, err error)

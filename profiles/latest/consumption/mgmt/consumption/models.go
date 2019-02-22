@@ -22,7 +22,7 @@ package consumption
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
+	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-01-01/consumption"
 )
 
 const (
@@ -161,10 +161,6 @@ type Tag = original.Tag
 type TagProperties = original.TagProperties
 type TagsClient = original.TagsClient
 type TagsResult = original.TagsResult
-type Tenant = original.Tenant
-type TenantListResult = original.TenantListResult
-type TenantProperties = original.TenantProperties
-type TenantsClient = original.TenantsClient
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsClient = original.UsageDetailsClient
@@ -282,12 +278,6 @@ func NewTagsClient(subscriptionID string) TagsClient {
 }
 func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
 	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTenantsClient(subscriptionID string) TenantsClient {
-	return original.NewTenantsClient(subscriptionID)
-}
-func NewTenantsClientWithBaseURI(baseURI string, subscriptionID string) TenantsClient {
-	return original.NewTenantsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)

@@ -1383,29 +1383,6 @@ func (spfr ServerPropertiesForRestore) AsBasicServerPropertiesForCreate() (Basic
 	return &spfr, true
 }
 
-// ServerRestartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ServerRestartFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerRestartFuture) Result(client ServerClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServerRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("postgresql.ServerRestartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServersCreateFuture struct {
@@ -1567,6 +1544,29 @@ func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ServersRestartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServersRestartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServersRestartFuture) Result(client ServersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.ServersRestartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("postgresql.ServersRestartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

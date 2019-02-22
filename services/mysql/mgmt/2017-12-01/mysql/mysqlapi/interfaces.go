@@ -29,17 +29,11 @@ type ServersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.Server, err error)
 	List(ctx context.Context) (result mysql.ServerListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result mysql.ServerListResult, err error)
+	Restart(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServersRestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerUpdateParameters) (result mysql.ServersUpdateFuture, err error)
 }
 
 var _ ServersClientAPI = (*mysql.ServersClient)(nil)
-
-// ServerClientAPI contains the set of methods on the ServerClient type.
-type ServerClientAPI interface {
-	Restart(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerRestartFuture, err error)
-}
-
-var _ ServerClientAPI = (*mysql.ServerClient)(nil)
 
 // ReplicasClientAPI contains the set of methods on the ReplicasClient type.
 type ReplicasClientAPI interface {

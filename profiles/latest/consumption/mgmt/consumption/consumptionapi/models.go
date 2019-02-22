@@ -33,5 +33,4 @@ type ReservationRecommendationsClientAPI = original.ReservationRecommendationsCl
 type ReservationsDetailsClientAPI = original.ReservationsDetailsClientAPI
 type ReservationsSummariesClientAPI = original.ReservationsSummariesClientAPI
 type TagsClientAPI = original.TagsClientAPI
-type TenantsClientAPI = original.TenantsClientAPI
 type UsageDetailsClientAPI = original.UsageDetailsClientAPI

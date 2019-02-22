@@ -24,10 +24,10 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	DetectLanguage(ctx context.Context, input textanalytics.BatchInput) (result textanalytics.LanguageBatchResult, err error)
-	Entities(ctx context.Context, input textanalytics.MultiLanguageBatchInput) (result textanalytics.EntitiesBatchResultV2dot1, err error)
-	KeyPhrases(ctx context.Context, input textanalytics.MultiLanguageBatchInput) (result textanalytics.KeyPhraseBatchResult, err error)
-	Sentiment(ctx context.Context, input textanalytics.MultiLanguageBatchInput) (result textanalytics.SentimentBatchResult, err error)
+	DetectLanguage(ctx context.Context, showStats *bool, languageBatchInput *textanalytics.LanguageBatchInput) (result textanalytics.LanguageBatchResult, err error)
+	Entities(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.EntitiesBatchResult, err error)
+	KeyPhrases(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.KeyPhraseBatchResult, err error)
+	Sentiment(ctx context.Context, showStats *bool, multiLanguageBatchInput *textanalytics.MultiLanguageBatchInput) (result textanalytics.SetObject, err error)
 }
 
 var _ BaseClientAPI = (*textanalytics.BaseClient)(nil)

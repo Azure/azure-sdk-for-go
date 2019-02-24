@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -45,7 +44,7 @@ func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) Serv
 // Create creates a service principal in the directory.
 // Parameters:
 // parameters - parameters to create a service principal.
-func (client ServicePrincipalsClient) Create(ctx context.Context, parameters map[string]interface{}) (result ServicePrincipal, err error) {
+func (client ServicePrincipalsClient) Create(ctx context.Context, parameters ServicePrincipal) (result ServicePrincipal, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.Create")
 		defer func() {
@@ -56,12 +55,6 @@ func (client ServicePrincipalsClient) Create(ctx context.Context, parameters map
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("graphrbac.ServicePrincipalsClient", "Create", err.Error())
-	}
-
 	req, err := client.CreatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Create", nil, "Failure preparing request")
@@ -84,7 +77,7 @@ func (client ServicePrincipalsClient) Create(ctx context.Context, parameters map
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServicePrincipalsClient) CreatePreparer(ctx context.Context, parameters map[string]interface{}) (*http.Request, error) {
+func (client ServicePrincipalsClient) CreatePreparer(ctx context.Context, parameters ServicePrincipal) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}

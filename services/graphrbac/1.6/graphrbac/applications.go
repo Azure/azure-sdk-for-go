@@ -129,7 +129,7 @@ func (client ApplicationsClient) AddOwnerResponder(resp *http.Response) (result 
 // Create create a new application.
 // Parameters:
 // parameters - the parameters for creating an application.
-func (client ApplicationsClient) Create(ctx context.Context, parameters map[string]interface{}) (result Application, err error) {
+func (client ApplicationsClient) Create(ctx context.Context, parameters Application) (result Application, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Create")
 		defer func() {
@@ -140,12 +140,6 @@ func (client ApplicationsClient) Create(ctx context.Context, parameters map[stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("graphrbac.ApplicationsClient", "Create", err.Error())
-	}
-
 	req, err := client.CreatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "Create", nil, "Failure preparing request")
@@ -168,7 +162,7 @@ func (client ApplicationsClient) Create(ctx context.Context, parameters map[stri
 }
 
 // CreatePreparer prepares the Create request.
-func (client ApplicationsClient) CreatePreparer(ctx context.Context, parameters map[string]interface{}) (*http.Request, error) {
+func (client ApplicationsClient) CreatePreparer(ctx context.Context, parameters Application) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}

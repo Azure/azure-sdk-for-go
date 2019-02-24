@@ -35,7 +35,7 @@ var _ SignedInUserClientAPI = (*graphrbac.SignedInUserClient)(nil)
 // ApplicationsClientAPI contains the set of methods on the ApplicationsClient type.
 type ApplicationsClientAPI interface {
 	AddOwner(ctx context.Context, applicationObjectID string, parameters graphrbac.AddOwnerParameters) (result autorest.Response, err error)
-	Create(ctx context.Context, parameters map[string]interface{}) (result graphrbac.Application, err error)
+	Create(ctx context.Context, parameters graphrbac.Application) (result graphrbac.Application, err error)
 	Delete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, applicationObjectID string) (result graphrbac.Application, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
@@ -83,7 +83,7 @@ var _ GroupsClientAPI = (*graphrbac.GroupsClient)(nil)
 
 // ServicePrincipalsClientAPI contains the set of methods on the ServicePrincipalsClient type.
 type ServicePrincipalsClientAPI interface {
-	Create(ctx context.Context, parameters map[string]interface{}) (result graphrbac.ServicePrincipal, err error)
+	Create(ctx context.Context, parameters graphrbac.ServicePrincipal) (result graphrbac.ServicePrincipal, err error)
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, objectID string) (result graphrbac.ServicePrincipal, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ServicePrincipalListResultPage, err error)

@@ -67,7 +67,8 @@ func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGrou
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: iotSecuritySolutionData,
 			Constraints: []validation.Constraint{{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.Workspace", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.IotHubs", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("security.IotSecuritySolutionClient", "Create", err.Error())

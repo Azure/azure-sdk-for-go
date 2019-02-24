@@ -108,6 +108,32 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	return []ConnectionType{External, Internal}
 }
 
+// DataSource enumerates the values for data source.
+type DataSource string
+
+const (
+	// TwinData Devices twin data
+	TwinData DataSource = "TwinData"
+)
+
+// PossibleDataSourceValues returns an array of possible values for the DataSource const type.
+func PossibleDataSourceValues() []DataSource {
+	return []DataSource{TwinData}
+}
+
+// ExportData enumerates the values for export data.
+type ExportData string
+
+const (
+	// RawEvents Agent raw events
+	RawEvents ExportData = "RawEvents"
+)
+
+// PossibleExportDataValues returns an array of possible values for the ExportData const type.
+func PossibleExportDataValues() []ExportData {
+	return []ExportData{RawEvents}
+}
+
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
 type ExternalSecuritySolutionKind string
 
@@ -123,21 +149,6 @@ const (
 // PossibleExternalSecuritySolutionKindValues returns an array of possible values for the ExternalSecuritySolutionKind const type.
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return []ExternalSecuritySolutionKind{AAD, ATA, CEF}
-}
-
-// ExtraData enumerates the values for extra data.
-type ExtraData string
-
-const (
-	// RawEvents Export the raw events into the security solution workspace
-	RawEvents ExtraData = "RawEvents"
-	// TwinData Export the twin data into the analysis process
-	TwinData ExtraData = "TwinData"
-)
-
-// PossibleExtraDataValues returns an array of possible values for the ExtraData const type.
-func PossibleExtraDataValues() []ExtraData {
-	return []ExtraData{RawEvents, TwinData}
 }
 
 // Family enumerates the values for family.
@@ -242,6 +253,21 @@ const (
 // PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
 func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
+}
+
+// SolutionStatus enumerates the values for solution status.
+type SolutionStatus string
+
+const (
+	// Disabled ...
+	Disabled SolutionStatus = "Disabled"
+	// Enabled ...
+	Enabled SolutionStatus = "Enabled"
+)
+
+// PossibleSolutionStatusValues returns an array of possible values for the SolutionStatus const type.
+func PossibleSolutionStatusValues() []SolutionStatus {
+	return []SolutionStatus{Disabled, Enabled}
 }
 
 // Status enumerates the values for status.
@@ -3547,17 +3573,17 @@ func (itssm *IoTSecuritySolutionModel) UnmarshalJSON(body []byte) error {
 
 // IoTSecuritySolutionProperties security Solution setting data
 type IoTSecuritySolutionProperties struct {
-	// WorkspaceResourceID - The full Azure ID of the workspace to save the data in
-	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
-	// WorkspaceCustomerID - the customer id associate with the workspace
-	WorkspaceCustomerID *string `json:"workspaceCustomerId,omitempty"`
-	// DisplayName - The display name.
+	// Workspace - Workspace resource ID
+	Workspace *string `json:"workspace,omitempty"`
+	// DisplayName - Resource display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Enabled - Is the solution Enabled for the customer.
-	Enabled *bool `json:"enabled,omitempty"`
-	// Export - list of additional data to export by the system
-	Export *[]ExtraData `json:"export,omitempty"`
-	// IotHubs - Related iot hub resources ID
+	// Status - Security solution status. Possible values include: 'Enabled', 'Disabled'
+	Status SolutionStatus `json:"status,omitempty"`
+	// Export - List of additional export to workspace data options
+	Export *[]ExportData `json:"export,omitempty"`
+	// DisabledDataSources - Disabled data sources. Disabling these data sources compromises the system.
+	DisabledDataSources *[]DataSource `json:"disabledDataSources,omitempty"`
+	// IotHubs - IoT Hub resource IDs
 	IotHubs *[]string `json:"iotHubs,omitempty"`
 }
 

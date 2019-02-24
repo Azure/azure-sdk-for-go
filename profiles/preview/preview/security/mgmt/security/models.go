@@ -65,19 +65,24 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
+type DataSource = original.DataSource
+
+const (
+	TwinData DataSource = original.TwinData
+)
+
+type ExportData = original.ExportData
+
+const (
+	RawEvents ExportData = original.RawEvents
+)
+
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
 
 const (
 	AAD ExternalSecuritySolutionKind = original.AAD
 	ATA ExternalSecuritySolutionKind = original.ATA
 	CEF ExternalSecuritySolutionKind = original.CEF
-)
-
-type ExtraData = original.ExtraData
-
-const (
-	RawEvents ExtraData = original.RawEvents
-	TwinData  ExtraData = original.TwinData
 )
 
 type Family = original.Family
@@ -127,6 +132,13 @@ type SettingKind = original.SettingKind
 const (
 	SettingKindAlertSuppressionSetting SettingKind = original.SettingKindAlertSuppressionSetting
 	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
+)
+
+type SolutionStatus = original.SolutionStatus
+
+const (
+	Disabled SolutionStatus = original.Disabled
+	Enabled  SolutionStatus = original.Enabled
 )
 
 type Status = original.Status
@@ -534,11 +546,14 @@ func PossibleAutoProvisionValues() []AutoProvision {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
+func PossibleDataSourceValues() []DataSource {
+	return original.PossibleDataSourceValues()
+}
+func PossibleExportDataValues() []ExportData {
+	return original.PossibleExportDataValues()
+}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
-}
-func PossibleExtraDataValues() []ExtraData {
-	return original.PossibleExtraDataValues()
 }
 func PossibleFamilyValues() []Family {
 	return original.PossibleFamilyValues()
@@ -557,6 +572,9 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()
+}
+func PossibleSolutionStatusValues() []SolutionStatus {
+	return original.PossibleSolutionStatusValues()
 }
 func PossibleStatusReasonValues() []StatusReason {
 	return original.PossibleStatusReasonValues()

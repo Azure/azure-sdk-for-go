@@ -110,6 +110,15 @@ const (
 	Count RegistryUsageUnit = original.Count
 )
 
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
+)
+
 type RunStatus = original.RunStatus
 
 const (
@@ -166,8 +175,8 @@ const (
 type SourceRegistryLoginMode = original.SourceRegistryLoginMode
 
 const (
-	Default SourceRegistryLoginMode = original.Default
-	None    SourceRegistryLoginMode = original.None
+	SourceRegistryLoginModeDefault SourceRegistryLoginMode = original.SourceRegistryLoginModeDefault
+	SourceRegistryLoginModeNone    SourceRegistryLoginMode = original.SourceRegistryLoginModeNone
 )
 
 type SourceTriggerEvent = original.SourceTriggerEvent
@@ -295,6 +304,7 @@ type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
+type MsiProperties = original.MsiProperties
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
@@ -386,6 +396,7 @@ type TasksUpdateFuture = original.TasksUpdateFuture
 type TriggerProperties = original.TriggerProperties
 type TriggerUpdateParameters = original.TriggerUpdateParameters
 type TrustPolicy = original.TrustPolicy
+type UserIdentityProperties = original.UserIdentityProperties
 type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
@@ -517,6 +528,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 	return original.PossibleRegistryUsageUnitValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRunStatusValues() []RunStatus {
 	return original.PossibleRunStatusValues()

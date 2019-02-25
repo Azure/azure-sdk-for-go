@@ -204,6 +204,25 @@ func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 	return []RegistryUsageUnit{Bytes, Count}
 }
 
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// None ...
+	None ResourceIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ResourceIdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssignedUserAssigned"
+	// UserAssigned ...
+	UserAssigned ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
+}
+
 // RunStatus enumerates the values for run status.
 type RunStatus string
 
@@ -320,15 +339,15 @@ func PossibleSourceControlTypeValues() []SourceControlType {
 type SourceRegistryLoginMode string
 
 const (
-	// Default ...
-	Default SourceRegistryLoginMode = "Default"
-	// None ...
-	None SourceRegistryLoginMode = "None"
+	// SourceRegistryLoginModeDefault ...
+	SourceRegistryLoginModeDefault SourceRegistryLoginMode = "Default"
+	// SourceRegistryLoginModeNone ...
+	SourceRegistryLoginModeNone SourceRegistryLoginMode = "None"
 )
 
 // PossibleSourceRegistryLoginModeValues returns an array of possible values for the SourceRegistryLoginMode const type.
 func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
-	return []SourceRegistryLoginMode{Default, None}
+	return []SourceRegistryLoginMode{SourceRegistryLoginModeDefault, SourceRegistryLoginModeNone}
 }
 
 // SourceTriggerEvent enumerates the values for source trigger event.
@@ -1700,6 +1719,39 @@ type IPRule struct {
 	Action Action `json:"action,omitempty"`
 	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
 	IPAddressOrRange *string `json:"value,omitempty"`
+}
+
+// MsiProperties identity for the resource.
+type MsiProperties struct {
+	// PrincipalID - The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
+	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the resource. The user identity
+	// dictionary key references will be ARM resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/
+	//     providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for MsiProperties.
+func (mp MsiProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.PrincipalID != nil {
+		objectMap["principalId"] = mp.PrincipalID
+	}
+	if mp.TenantID != nil {
+		objectMap["tenantId"] = mp.TenantID
+	}
+	if mp.Type != "" {
+		objectMap["type"] = mp.Type
+	}
+	if mp.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = mp.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
 }
 
 // NetworkRuleSet the network rule set for a container registry.
@@ -3536,7 +3588,7 @@ type SourceProperties struct {
 type SourceRegistryCredentials struct {
 	// LoginMode - The authentication mode which determines the source registry login scope. The credentials for the source registry
 	// will be generated using the given scope. These credentials will be used to login to
-	// the source registry during the run. Possible values include: 'None', 'Default'
+	// the source registry during the run. Possible values include: 'SourceRegistryLoginModeNone', 'SourceRegistryLoginModeDefault'
 	LoginMode SourceRegistryLoginMode `json:"loginMode,omitempty"`
 }
 
@@ -3643,6 +3695,8 @@ type Target struct {
 // The task will have all information to schedule a run against it.
 type Task struct {
 	autorest.Response `json:"-"`
+	// Identity - Identity for the resource.
+	Identity *MsiProperties `json:"identity,omitempty"`
 	// TaskProperties - The properties of a task.
 	*TaskProperties `json:"properties,omitempty"`
 	// ID - The resource ID.
@@ -3660,6 +3714,9 @@ type Task struct {
 // MarshalJSON is the custom marshaler for Task.
 func (t Task) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if t.Identity != nil {
+		objectMap["identity"] = t.Identity
+	}
 	if t.TaskProperties != nil {
 		objectMap["properties"] = t.TaskProperties
 	}
@@ -3690,6 +3747,15 @@ func (t *Task) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "identity":
+			if v != nil {
+				var identity MsiProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				t.Identity = &identity
+			}
 		case "properties":
 			if v != nil {
 				var taskProperties TaskProperties
@@ -4462,6 +4528,8 @@ func (future *TasksUpdateFuture) Result(client TasksClient) (t Task, err error) 
 
 // TaskUpdateParameters the parameters for updating a task.
 type TaskUpdateParameters struct {
+	// Identity - Identity for the resource.
+	Identity *MsiProperties `json:"identity,omitempty"`
 	// TaskPropertiesUpdateParameters - The properties for updating a task.
 	*TaskPropertiesUpdateParameters `json:"properties,omitempty"`
 	// Tags - The ARM resource tags.
@@ -4471,6 +4539,9 @@ type TaskUpdateParameters struct {
 // MarshalJSON is the custom marshaler for TaskUpdateParameters.
 func (tup TaskUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if tup.Identity != nil {
+		objectMap["identity"] = tup.Identity
+	}
 	if tup.TaskPropertiesUpdateParameters != nil {
 		objectMap["properties"] = tup.TaskPropertiesUpdateParameters
 	}
@@ -4489,6 +4560,15 @@ func (tup *TaskUpdateParameters) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "identity":
+			if v != nil {
+				var identity MsiProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				tup.Identity = &identity
+			}
 		case "properties":
 			if v != nil {
 				var taskPropertiesUpdateParameters TaskPropertiesUpdateParameters
@@ -4535,6 +4615,14 @@ type TrustPolicy struct {
 	Type TrustPolicyType `json:"type,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	Status PolicyStatus `json:"status,omitempty"`
+}
+
+// UserIdentityProperties ...
+type UserIdentityProperties struct {
+	// PrincipalID - The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // VirtualNetworkRule virtual network rule.

@@ -10,7 +10,7 @@
   version = "v0.2.0"
 
 [[projects]]
-  digest = "1:f7b7b2c96bc64c56ecb2666cf42b0c46d894ca7cce775431c9bb23aafe9d0a77"
+  digest = "1:f24d900a7aeff07f60d783a3e1c394e494ab119ab66278c69da9848b40626734"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -25,8 +25,8 @@
     "tracing",
   ]
   pruneopts = ""
-  revision = "71d02b67e17a3d80abf8db171f1ca80c39eb2e90"
-  version = "v11.4.0"
+  revision = "f4369d4c79bf40df5e86def1e0f54c7ef261a51c"
+  version = "v11.5.0"
 
 [[projects]]
   digest = "1:0b2d5839372f6dc106fcaa70b6bd5832789a633c4e470540f76c2ec6c560e1c1"
@@ -211,18 +211,18 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:237f78dc98975fe36424378555dd59d7b974759b5396ea315502d1837f1c1eda"
+  digest = "1:10f068b4b7d1a60a6d8a877c8f1d72b7e745cf1c32aaf9eaf11e2259938f0dfb"
   name = "golang.org/x/crypto"
   packages = [
     "pkcs12",
     "pkcs12/internal/rc2",
   ]
   pruneopts = ""
-  revision = "c7b33c32a30bae9ba07d37eb4d86f1f8b0f644fb"
+  revision = "7f87c0fbb88b590338857bcb720678c2583d4dea"
 
 [[projects]]
   branch = "master"
-  digest = "1:1e9704e5379e68ac473c28aeb3f7e7cd4036ae8a246bf0285b5ebdbb8e0cfacf"
+  digest = "1:6e31aa1a9642e3f2538b29fab83ff31395d6ae07a6778ebb86626dbf27ed33cf"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -234,7 +234,7 @@
     "trace",
   ]
   pruneopts = ""
-  revision = "d26f9f9a57f3fab6a695bec0d84433c2c50f8bbf"
+  revision = "fe579d43d83210096a79b46dcca0e3721058393a"
 
 [[projects]]
   branch = "master"
@@ -246,11 +246,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7e3b61f51ebcb58b3894928ed7c63aae68820dec1dd57166e5d6e65ef2868f40"
+  digest = "1:d8c7c5e28d31494f02b25867de6827adaa90005f0ff3407f3336751fc0bc7432"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "b90733256f2e882e81d52f9126de08df5615afd9"
+  revision = "cc5685c2db1239775905f3911f0067c0fa74762f"
 
 [[projects]]
   digest = "1:5acd3512b047305d49e8763eef7ba423901e85d5dd2fd1e71778a0ea8de10bd4"
@@ -277,7 +277,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0f10ddd231c192f49c4fe6435047ad097ce75a902a681e11195442c33e07e277"
+  digest = "1:6c11ba8cbd9436ba543e78dfbb8982d586c28af45af8b17b8c714465f3eff376"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -294,7 +294,7 @@
     "internal/semver",
   ]
   pruneopts = ""
-  revision = "d66bd3c5d5a61998d3e35797d266491d11b5e487"
+  revision = "83362c3779f5f48611068d488a03ea7bbaddc81e"
 
 [[projects]]
   digest = "1:1ef3746d0b0a2ab4147e9fe251202756ff89d181c3c3cc67abdf40e375243cbc"
@@ -306,11 +306,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:96ad251f71dd69e0f15071720f9970f599f075b28fa96ebd8a547dcd04435856"
+  digest = "1:58cab6380ee63ac4d983ff73b8f6aab7ab6d0cf8dc82550641017fb8e6a0940e"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = ""
-  revision = "8ac453e89fca495c0d17f98932642f392e2a11f3"
+  revision = "082222b4a5c572e33e82ee9162d1352c7cf38682"
 
 [[projects]]
   digest = "1:39d4d828b87d58d114fdc211f0638f32dcae84019fe17d6b48f9b697f4b60213"

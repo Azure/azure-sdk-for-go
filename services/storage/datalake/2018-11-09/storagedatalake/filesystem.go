@@ -43,7 +43,8 @@ func NewFilesystemClient(xMsVersion string, accountName string) FilesystemClient
 // contain only letters, numbers, and the dash (-) character.  Consecutive dashes are not permitted.  All
 // letters must be lowercase.  The value must have between 3 and 63 characters.
 // xMsProperties - user-defined properties to be stored with the filesystem, in the format of a comma-separated
-// list of name and value pairs "n1=v1, n2=v2, ...", where each value is base64 encoded.
+// list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the
+// string may only contain ASCII characters in the ISO-8859-1 character set.
 // xMsClientRequestID - a UUID recorded in the analytics logs for troubleshooting and correlation.
 // timeout - an optional operation timeout value in seconds. The period begins when the request is received by
 // the service. If the timeout value elapses before the operation completes, the operation fails.
@@ -524,9 +525,10 @@ func (client FilesystemClient) ListResponder(resp *http.Response) (result Filesy
 // contain only letters, numbers, and the dash (-) character.  Consecutive dashes are not permitted.  All
 // letters must be lowercase.  The value must have between 3 and 63 characters.
 // xMsProperties - optional. User-defined properties to be stored with the filesystem, in the format of a
-// comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is base64 encoded.  If
-// the filesystem exists, any properties not included in the list will be removed.  All properties are removed
-// if the header is omitted.  To merge new and existing properties, first get all existing properties and the
+// comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+// string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the
+// filesystem exists, any properties not included in the list will be removed.  All properties are removed if
+// the header is omitted.  To merge new and existing properties, first get all existing properties and the
 // current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
 // ifModifiedSince - optional. A date and time value. Specify this header to perform the operation only if the
 // resource has been modified since the specified date and time.

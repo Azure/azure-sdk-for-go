@@ -74,9 +74,8 @@ const (
 type Gender = original.Gender
 
 const (
-	Female     Gender = original.Female
-	Genderless Gender = original.Genderless
-	Male       Gender = original.Male
+	Female Gender = original.Female
+	Male   Gender = original.Male
 )
 
 type GlassesType = original.GlassesType

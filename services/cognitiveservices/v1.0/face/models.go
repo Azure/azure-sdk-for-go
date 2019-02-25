@@ -137,15 +137,13 @@ type Gender string
 const (
 	// Female ...
 	Female Gender = "female"
-	// Genderless ...
-	Genderless Gender = "genderless"
 	// Male ...
 	Male Gender = "male"
 )
 
 // PossibleGenderValues returns an array of possible values for the Gender const type.
 func PossibleGenderValues() []Gender {
-	return []Gender{Female, Genderless, Male}
+	return []Gender{Female, Male}
 }
 
 // GlassesType enumerates the values for glasses type.
@@ -306,7 +304,7 @@ type ApplySnapshotRequest struct {
 type Attributes struct {
 	// Age - Age in years
 	Age *float64 `json:"age,omitempty"`
-	// Gender - Possible gender of the face. Possible values include: 'Male', 'Female', 'Genderless'
+	// Gender - Possible gender of the face. Possible values include: 'Male', 'Female'
 	Gender Gender `json:"gender,omitempty"`
 	// Smile - Smile intensity, a number between [0,1]
 	Smile *float64 `json:"smile,omitempty"`

@@ -505,6 +505,33 @@ type MoveCommitmentAssociationRequest struct {
 	DestinationPlanID *string `json:"destinationPlanId,omitempty"`
 }
 
+// OperationDisplayInfo the API operation info.
+type OperationDisplayInfo struct {
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Operation - The action that users can perform, based on their permission level.
+	Operation *string `json:"operation,omitempty"`
+	// Provider - The service provider.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - The resource on which the operation is performed.
+	Resource *string `json:"resource,omitempty"`
+}
+
+// OperationEntity an API operation.
+type OperationEntity struct {
+	// Name - Operation name: {provider}/{resource}/{operation}.
+	Name *string `json:"name,omitempty"`
+	// Display - The API operation info.
+	Display *OperationDisplayInfo `json:"display,omitempty"`
+}
+
+// OperationEntityListResult the list of REST API operations.
+type OperationEntityListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of operations.
+	Value *[]OperationEntity `json:"value,omitempty"`
+}
+
 // PatchPayload the properties of a commitment plan which may be updated via PATCH.
 type PatchPayload struct {
 	// Tags - User-defined tags for the commitment plan.

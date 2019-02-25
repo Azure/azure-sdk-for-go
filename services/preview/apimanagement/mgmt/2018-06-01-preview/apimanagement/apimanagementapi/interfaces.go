@@ -80,12 +80,12 @@ var _ APIOperationPolicyClientAPI = (*apimanagement.APIOperationPolicyClient)(ni
 
 // TagClientAPI contains the set of methods on the TagClient type.
 type TagClientAPI interface {
-	AssignToAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string, ifMatch string) (result apimanagement.TagContract, err error)
+	AssignToAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string) (result apimanagement.TagContract, err error)
 	AssignToOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string, ifMatch string) (result apimanagement.TagContract, err error)
 	AssignToProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string) (result apimanagement.TagContract, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters apimanagement.TagCreateUpdateParameters, ifMatch string) (result apimanagement.TagContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string) (result autorest.Response, err error)
-	DetachFromAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string, ifMatch string) (result autorest.Response, err error)
+	DetachFromAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string) (result autorest.Response, err error)
 	DetachFromOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string, ifMatch string) (result autorest.Response, err error)
 	DetachFromProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, tagID string) (result apimanagement.TagContract, err error)

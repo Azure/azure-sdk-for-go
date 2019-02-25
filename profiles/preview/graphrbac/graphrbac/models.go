@@ -32,11 +32,13 @@ const (
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeApplication      ObjectType = original.ObjectTypeApplication
-	ObjectTypeDirectoryObject  ObjectType = original.ObjectTypeDirectoryObject
-	ObjectTypeGroup            ObjectType = original.ObjectTypeGroup
-	ObjectTypeServicePrincipal ObjectType = original.ObjectTypeServicePrincipal
-	ObjectTypeUser             ObjectType = original.ObjectTypeUser
+	ObjectTypeApplication                      ObjectType = original.ObjectTypeApplication
+	ObjectTypeApplicationCreateParameters      ObjectType = original.ObjectTypeApplicationCreateParameters
+	ObjectTypeDirectoryObject                  ObjectType = original.ObjectTypeDirectoryObject
+	ObjectTypeGroup                            ObjectType = original.ObjectTypeGroup
+	ObjectTypeServicePrincipal                 ObjectType = original.ObjectTypeServicePrincipal
+	ObjectTypeServicePrincipalCreateParameters ObjectType = original.ObjectTypeServicePrincipalCreateParameters
+	ObjectTypeUser                             ObjectType = original.ObjectTypeUser
 )
 
 type UserType = original.UserType
@@ -50,12 +52,15 @@ type ADGroup = original.ADGroup
 type AddOwnerParameters = original.AddOwnerParameters
 type AppRole = original.AppRole
 type Application = original.Application
+type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationsClient = original.ApplicationsClient
 type BaseClient = original.BaseClient
+type BasicApplication = original.BasicApplication
 type BasicDirectoryObject = original.BasicDirectoryObject
+type BasicServicePrincipal = original.BasicServicePrincipal
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters
 type CheckGroupMembershipResult = original.CheckGroupMembershipResult
 type DeletedApplicationsClient = original.DeletedApplicationsClient
@@ -101,6 +106,7 @@ type PreAuthorizedApplicationPermission = original.PreAuthorizedApplicationPermi
 type RequiredResourceAccess = original.RequiredResourceAccess
 type ResourceAccess = original.ResourceAccess
 type ServicePrincipal = original.ServicePrincipal
+type ServicePrincipalCreateParameters = original.ServicePrincipalCreateParameters
 type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage

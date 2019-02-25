@@ -44,7 +44,7 @@ func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) Serv
 // Create creates a service principal in the directory.
 // Parameters:
 // parameters - parameters to create a service principal.
-func (client ServicePrincipalsClient) Create(ctx context.Context, parameters ServicePrincipal) (result ServicePrincipal, err error) {
+func (client ServicePrincipalsClient) Create(ctx context.Context, parameters ServicePrincipalCreateParameters) (result ServicePrincipal, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.Create")
 		defer func() {
@@ -77,7 +77,7 @@ func (client ServicePrincipalsClient) Create(ctx context.Context, parameters Ser
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServicePrincipalsClient) CreatePreparer(ctx context.Context, parameters ServicePrincipal) (*http.Request, error) {
+func (client ServicePrincipalsClient) CreatePreparer(ctx context.Context, parameters ServicePrincipalCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
@@ -707,7 +707,7 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 // Parameters:
 // objectID - the object ID of the service principal to delete.
 // parameters - parameters to update a service principal.
-func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters ServicePrincipal) (result autorest.Response, err error) {
+func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters BasicServicePrincipal) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.Update")
 		defer func() {
@@ -740,7 +740,7 @@ func (client ServicePrincipalsClient) Update(ctx context.Context, objectID strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, objectID string, parameters ServicePrincipal) (*http.Request, error) {
+func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, objectID string, parameters BasicServicePrincipal) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"objectId": autorest.Encode("path", objectID),
 		"tenantID": autorest.Encode("path", client.TenantID),

@@ -129,7 +129,7 @@ func (client ApplicationsClient) AddOwnerResponder(resp *http.Response) (result 
 // Create create a new application.
 // Parameters:
 // parameters - the parameters for creating an application.
-func (client ApplicationsClient) Create(ctx context.Context, parameters Application) (result Application, err error) {
+func (client ApplicationsClient) Create(ctx context.Context, parameters ApplicationCreateParameters) (result Application, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Create")
 		defer func() {
@@ -162,7 +162,7 @@ func (client ApplicationsClient) Create(ctx context.Context, parameters Applicat
 }
 
 // CreatePreparer prepares the Create request.
-func (client ApplicationsClient) CreatePreparer(ctx context.Context, parameters Application) (*http.Request, error) {
+func (client ApplicationsClient) CreatePreparer(ctx context.Context, parameters ApplicationCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
@@ -792,7 +792,7 @@ func (client ApplicationsClient) ListPasswordCredentialsResponder(resp *http.Res
 // Parameters:
 // applicationObjectID - application object ID.
 // parameters - parameters to update an existing application.
-func (client ApplicationsClient) Patch(ctx context.Context, applicationObjectID string, parameters Application) (result autorest.Response, err error) {
+func (client ApplicationsClient) Patch(ctx context.Context, applicationObjectID string, parameters BasicApplication) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Patch")
 		defer func() {
@@ -825,7 +825,7 @@ func (client ApplicationsClient) Patch(ctx context.Context, applicationObjectID 
 }
 
 // PatchPreparer prepares the Patch request.
-func (client ApplicationsClient) PatchPreparer(ctx context.Context, applicationObjectID string, parameters Application) (*http.Request, error) {
+func (client ApplicationsClient) PatchPreparer(ctx context.Context, applicationObjectID string, parameters BasicApplication) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationObjectId": autorest.Encode("path", applicationObjectID),
 		"tenantID":            autorest.Encode("path", client.TenantID),

@@ -35,7 +35,7 @@ var _ SignedInUserClientAPI = (*graphrbac.SignedInUserClient)(nil)
 // ApplicationsClientAPI contains the set of methods on the ApplicationsClient type.
 type ApplicationsClientAPI interface {
 	AddOwner(ctx context.Context, applicationObjectID string, parameters graphrbac.AddOwnerParameters) (result autorest.Response, err error)
-	Create(ctx context.Context, parameters graphrbac.Application) (result graphrbac.Application, err error)
+	Create(ctx context.Context, parameters graphrbac.ApplicationCreateParameters) (result graphrbac.Application, err error)
 	Delete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, applicationObjectID string) (result graphrbac.Application, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
@@ -43,7 +43,7 @@ type ApplicationsClientAPI interface {
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ApplicationListResult, err error)
 	ListOwners(ctx context.Context, applicationObjectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
 	ListPasswordCredentials(ctx context.Context, applicationObjectID string) (result graphrbac.PasswordCredentialListResult, err error)
-	Patch(ctx context.Context, applicationObjectID string, parameters graphrbac.Application) (result autorest.Response, err error)
+	Patch(ctx context.Context, applicationObjectID string, parameters graphrbac.BasicApplication) (result autorest.Response, err error)
 	RemoveOwner(ctx context.Context, applicationObjectID string, ownerObjectID string) (result autorest.Response, err error)
 	UpdateKeyCredentials(ctx context.Context, applicationObjectID string, parameters graphrbac.KeyCredentialsUpdateParameters) (result autorest.Response, err error)
 	UpdatePasswordCredentials(ctx context.Context, applicationObjectID string, parameters graphrbac.PasswordCredentialsUpdateParameters) (result autorest.Response, err error)
@@ -83,7 +83,7 @@ var _ GroupsClientAPI = (*graphrbac.GroupsClient)(nil)
 
 // ServicePrincipalsClientAPI contains the set of methods on the ServicePrincipalsClient type.
 type ServicePrincipalsClientAPI interface {
-	Create(ctx context.Context, parameters graphrbac.ServicePrincipal) (result graphrbac.ServicePrincipal, err error)
+	Create(ctx context.Context, parameters graphrbac.ServicePrincipalCreateParameters) (result graphrbac.ServicePrincipal, err error)
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, objectID string) (result graphrbac.ServicePrincipal, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ServicePrincipalListResultPage, err error)
@@ -91,7 +91,7 @@ type ServicePrincipalsClientAPI interface {
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ServicePrincipalListResult, err error)
 	ListOwners(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
 	ListPasswordCredentials(ctx context.Context, objectID string) (result graphrbac.PasswordCredentialListResult, err error)
-	Update(ctx context.Context, objectID string, parameters graphrbac.ServicePrincipal) (result autorest.Response, err error)
+	Update(ctx context.Context, objectID string, parameters graphrbac.BasicServicePrincipal) (result autorest.Response, err error)
 	UpdateKeyCredentials(ctx context.Context, objectID string, parameters graphrbac.KeyCredentialsUpdateParameters) (result autorest.Response, err error)
 	UpdatePasswordCredentials(ctx context.Context, objectID string, parameters graphrbac.PasswordCredentialsUpdateParameters) (result autorest.Response, err error)
 }

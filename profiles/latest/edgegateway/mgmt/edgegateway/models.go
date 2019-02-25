@@ -22,7 +22,7 @@ package edgegateway
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2018-07-01/edgegateway"
+	original "github.com/Azure/azure-sdk-for-go/services/edgegateway/mgmt/2019-03-01/edgegateway"
 )
 
 const (
@@ -233,6 +233,25 @@ const (
 	NetworkGroupRDMA    NetworkGroup = original.NetworkGroupRDMA
 )
 
+type OrderState = original.OrderState
+
+const (
+	Arriving               OrderState = original.Arriving
+	AwaitingFulfilment     OrderState = original.AwaitingFulfilment
+	AwaitingPreparation    OrderState = original.AwaitingPreparation
+	AwaitingReturnShipment OrderState = original.AwaitingReturnShipment
+	AwaitingShipment       OrderState = original.AwaitingShipment
+	CollectedAtMicrosoft   OrderState = original.CollectedAtMicrosoft
+	Declined               OrderState = original.Declined
+	Delivered              OrderState = original.Delivered
+	LostDevice             OrderState = original.LostDevice
+	ReplacementRequested   OrderState = original.ReplacementRequested
+	ReturnInitiated        OrderState = original.ReturnInitiated
+	Shipped                OrderState = original.Shipped
+	ShippedBack            OrderState = original.ShippedBack
+	Untracked              OrderState = original.Untracked
+)
+
 type PlatformType = original.PlatformType
 
 const (
@@ -296,25 +315,6 @@ type SkuTier = original.SkuTier
 
 const (
 	Standard SkuTier = original.Standard
-)
-
-type StatusTypes = original.StatusTypes
-
-const (
-	Arriving               StatusTypes = original.Arriving
-	AwaitingFulfilment     StatusTypes = original.AwaitingFulfilment
-	AwaitingPreparation    StatusTypes = original.AwaitingPreparation
-	AwaitingReturnShipment StatusTypes = original.AwaitingReturnShipment
-	AwaitingShipment       StatusTypes = original.AwaitingShipment
-	CollectedAtMicrosoft   StatusTypes = original.CollectedAtMicrosoft
-	Declined               StatusTypes = original.Declined
-	Delivered              StatusTypes = original.Delivered
-	LostDevice             StatusTypes = original.LostDevice
-	ReplacementRequested   StatusTypes = original.ReplacementRequested
-	ReturnInitiated        StatusTypes = original.ReturnInitiated
-	Shipped                StatusTypes = original.Shipped
-	ShippedBack            StatusTypes = original.ShippedBack
-	Untracked              StatusTypes = original.Untracked
 )
 
 type TimeGrain = original.TimeGrain
@@ -415,6 +415,7 @@ type Job = original.Job
 type JobErrorDetails = original.JobErrorDetails
 type JobErrorItem = original.JobErrorItem
 type JobProperties = original.JobProperties
+type JobsClient = original.JobsClient
 type MetricDimensionV1 = original.MetricDimensionV1
 type MetricSpecificationV1 = original.MetricSpecificationV1
 type MountPointMap = original.MountPointMap
@@ -539,6 +540,12 @@ func NewDevicesClient(subscriptionID string) DevicesClient {
 }
 func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
 	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -705,6 +712,9 @@ func PossibleNetworkAdapterStatusValues() []NetworkAdapterStatus {
 func PossibleNetworkGroupValues() []NetworkGroup {
 	return original.PossibleNetworkGroupValues()
 }
+func PossibleOrderStateValues() []OrderState {
+	return original.PossibleOrderStateValues()
+}
 func PossiblePlatformTypeValues() []PlatformType {
 	return original.PossiblePlatformTypeValues()
 }
@@ -731,9 +741,6 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
-}
-func PossibleStatusTypesValues() []StatusTypes {
-	return original.PossibleStatusTypesValues()
 }
 func PossibleTimeGrainValues() []TimeGrain {
 	return original.PossibleTimeGrainValues()

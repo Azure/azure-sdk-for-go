@@ -301,6 +301,23 @@ func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{SystemAssigned}
 }
 
+// ManagedInstanceProxyOverride enumerates the values for managed instance proxy override.
+type ManagedInstanceProxyOverride string
+
+const (
+	// ManagedInstanceProxyOverrideDefault ...
+	ManagedInstanceProxyOverrideDefault ManagedInstanceProxyOverride = "Default"
+	// ManagedInstanceProxyOverrideProxy ...
+	ManagedInstanceProxyOverrideProxy ManagedInstanceProxyOverride = "Proxy"
+	// ManagedInstanceProxyOverrideRedirect ...
+	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = "Redirect"
+)
+
+// PossibleManagedInstanceProxyOverrideValues returns an array of possible values for the ManagedInstanceProxyOverride const type.
+func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
+	return []ManagedInstanceProxyOverride{ManagedInstanceProxyOverrideDefault, ManagedInstanceProxyOverrideProxy, ManagedInstanceProxyOverrideRedirect}
+}
+
 // MaxSizeUnits enumerates the values for max size units.
 type MaxSizeUnits string
 
@@ -4666,8 +4683,15 @@ type ManagedInstanceProperties struct {
 	DNSZonePartner *string `json:"dnsZonePartner,omitempty"`
 	// PublicDataEndpointEnabled - Whether or not the public data endpoint is enabled.
 	PublicDataEndpointEnabled *bool `json:"publicDataEndpointEnabled,omitempty"`
-	// ProxyOverride - Proxy override of the managed instance.
-	ProxyOverride *string `json:"proxyOverride,omitempty"`
+	// ProxyOverride - Connection type used for connecting to the instance. Possible values include: 'ManagedInstanceProxyOverrideProxy', 'ManagedInstanceProxyOverrideRedirect', 'ManagedInstanceProxyOverrideDefault'
+	ProxyOverride ManagedInstanceProxyOverride `json:"proxyOverride,omitempty"`
+	// TimezoneID - Id of the timezone. Allowed values are timezones supported by Windows.
+	// Winodws keeps details on supported timezones, including the id, in registry under
+	// KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+	// You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+	// List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+	// An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+	TimezoneID *string `json:"timezoneId,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

@@ -65,6 +65,30 @@ type ErrorResponse struct {
 	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
+// ExpressionEvaluationDetails evaluation details of policy language expressions.
+type ExpressionEvaluationDetails struct {
+	// Result - Evaluation result.
+	Result *string `json:"result,omitempty"`
+	// Expression - Expression evaluated.
+	Expression *string `json:"expression,omitempty"`
+	// Path - Property path if the expression is a field or an alias.
+	Path *string `json:"path,omitempty"`
+	// ExpressionValue - Value of the expression.
+	ExpressionValue *string `json:"expressionValue,omitempty"`
+	// TargetValue - Target value to be compared with the expression value.
+	TargetValue *string `json:"targetValue,omitempty"`
+	// Operator - Operator to compare the expression value and the target value.
+	Operator *string `json:"operator,omitempty"`
+}
+
+// IfNotExistsEvaluationDetails evaluation details of IfNotExists effect.
+type IfNotExistsEvaluationDetails struct {
+	// ResourceID - ID of the last evaluated resource for IfNotExists effect.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// TotalResources - Total number of resources to which the existence condition is applicable.
+	TotalResources *int32 `json:"totalResources,omitempty"`
+}
+
 // Operation operation definition.
 type Operation struct {
 	// Name - Operation name.
@@ -132,6 +156,14 @@ type PolicyDetails struct {
 	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty"`
 	// PolicyDefinitionReferenceID - The policy definition reference ID within the policy set definition.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+}
+
+// PolicyEvaluationDetails policy evaluation details.
+type PolicyEvaluationDetails struct {
+	// EvaluatedExpressions - Details of the evaluated expressions.
+	EvaluatedExpressions *[]ExpressionEvaluationDetails `json:"evaluatedExpressions,omitempty"`
+	// IfNotExistsDetails - Evaluation details of IfNotExists effect.
+	IfNotExistsDetails *IfNotExistsEvaluationDetails `json:"ifNotExistsDetails,omitempty"`
 }
 
 // PolicyEvent policy event record.
@@ -651,6 +683,10 @@ type PolicyState struct {
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	// ComplianceState - Compliance state of the resource.
+	ComplianceState *string `json:"complianceState,omitempty"`
+	// PolicyEvaluationDetails - Policy evaluation details.
+	PolicyEvaluationDetails *PolicyEvaluationDetails `json:"policyEvaluationDetails,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyState.
@@ -736,6 +772,12 @@ func (ps PolicyState) MarshalJSON() ([]byte, error) {
 	}
 	if ps.PolicyDefinitionReferenceID != nil {
 		objectMap["policyDefinitionReferenceId"] = ps.PolicyDefinitionReferenceID
+	}
+	if ps.ComplianceState != nil {
+		objectMap["complianceState"] = ps.ComplianceState
+	}
+	if ps.PolicyEvaluationDetails != nil {
+		objectMap["policyEvaluationDetails"] = ps.PolicyEvaluationDetails
 	}
 	for k, v := range ps.AdditionalProperties {
 		objectMap[k] = v
@@ -1006,6 +1048,24 @@ func (ps *PolicyState) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ps.PolicyDefinitionReferenceID = &policyDefinitionReferenceID
+			}
+		case "complianceState":
+			if v != nil {
+				var complianceState string
+				err = json.Unmarshal(*v, &complianceState)
+				if err != nil {
+					return err
+				}
+				ps.ComplianceState = &complianceState
+			}
+		case "policyEvaluationDetails":
+			if v != nil {
+				var policyEvaluationDetails PolicyEvaluationDetails
+				err = json.Unmarshal(*v, &policyEvaluationDetails)
+				if err != nil {
+					return err
+				}
+				ps.PolicyEvaluationDetails = &policyEvaluationDetails
 			}
 		}
 	}

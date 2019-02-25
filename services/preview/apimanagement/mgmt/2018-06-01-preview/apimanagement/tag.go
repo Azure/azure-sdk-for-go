@@ -148,8 +148,7 @@ func (client TagClient) AssignToAPIResponder(resp *http.Response) (result TagCon
 // operationID - operation identifier within an API. Must be unique in the current API Management service
 // instance.
 // tagID - tag identifier. Must be unique in the current API Management service instance.
-// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client TagClient) AssignToOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string, ifMatch string) (result TagContract, err error) {
+func (client TagClient) AssignToOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string) (result TagContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TagClient.AssignToOperation")
 		defer func() {
@@ -180,7 +179,7 @@ func (client TagClient) AssignToOperation(ctx context.Context, resourceGroupName
 		return result, validation.NewError("apimanagement.TagClient", "AssignToOperation", err.Error())
 	}
 
-	req, err := client.AssignToOperationPreparer(ctx, resourceGroupName, serviceName, apiid, operationID, tagID, ifMatch)
+	req, err := client.AssignToOperationPreparer(ctx, resourceGroupName, serviceName, apiid, operationID, tagID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "AssignToOperation", nil, "Failure preparing request")
 		return
@@ -202,7 +201,7 @@ func (client TagClient) AssignToOperation(ctx context.Context, resourceGroupName
 }
 
 // AssignToOperationPreparer prepares the AssignToOperation request.
-func (client TagClient) AssignToOperationPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string, ifMatch string) (*http.Request, error) {
+func (client TagClient) AssignToOperationPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"operationId":       autorest.Encode("path", operationID),
@@ -222,10 +221,6 @@ func (client TagClient) AssignToOperationPreparer(ctx context.Context, resourceG
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	if len(ifMatch) > 0 {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -651,9 +646,7 @@ func (client TagClient) DetachFromAPIResponder(resp *http.Response) (result auto
 // operationID - operation identifier within an API. Must be unique in the current API Management service
 // instance.
 // tagID - tag identifier. Must be unique in the current API Management service instance.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
-func (client TagClient) DetachFromOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string, ifMatch string) (result autorest.Response, err error) {
+func (client TagClient) DetachFromOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TagClient.DetachFromOperation")
 		defer func() {
@@ -684,7 +677,7 @@ func (client TagClient) DetachFromOperation(ctx context.Context, resourceGroupNa
 		return result, validation.NewError("apimanagement.TagClient", "DetachFromOperation", err.Error())
 	}
 
-	req, err := client.DetachFromOperationPreparer(ctx, resourceGroupName, serviceName, apiid, operationID, tagID, ifMatch)
+	req, err := client.DetachFromOperationPreparer(ctx, resourceGroupName, serviceName, apiid, operationID, tagID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "DetachFromOperation", nil, "Failure preparing request")
 		return
@@ -706,7 +699,7 @@ func (client TagClient) DetachFromOperation(ctx context.Context, resourceGroupNa
 }
 
 // DetachFromOperationPreparer prepares the DetachFromOperation request.
-func (client TagClient) DetachFromOperationPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string, ifMatch string) (*http.Request, error) {
+func (client TagClient) DetachFromOperationPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, tagID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"operationId":       autorest.Encode("path", operationID),
@@ -725,8 +718,7 @@ func (client TagClient) DetachFromOperationPreparer(ctx context.Context, resourc
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

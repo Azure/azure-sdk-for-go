@@ -1,5 +1,54 @@
 # CHANGELOG
 
+## `v26.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| anomalyfinder | v2.0 |
+| blueprint | 2018-11-01-preview |
+| costmanagement | 2019-01-01 |
+| devspaces | 2019-01-01-preview |
+| edgegateway | 2019-03-01 |
+| network | 2018-12-01 |
+| privatedns | 2018-09-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| commitmentplans | 2016-05-01-preview |
+| computervision | v2.0 |
+| consumption | 2018-10-01 |
+| hanaonazure | 2017-11-03-preview |
+| operationalinsights | 2015-03-20 |
+| webapi | web |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2018-03-31<br/>2018-08-01-preview<br/>2018-09-30-preview |
+| costmanagement | 2018-08-01-preview |
+| datafactory | 2018-06-01 |
+| eventgrid | 2018-01-01 |
+| face | v1.0 |
+| kusto | 2019-01-21 |
+| policyinsights | 2018-07-01-preview |
+| security | 2017-08-01-preview |
+| securityinsight | 2017-08-01-preview |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview |
+| storagedatalake | 2018-11-09 |
+| textanalytics | v2.1 |
+| web | 2018-02-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| blueprint | 2017-11-11-preview |
+| edgegateway | 2018-07-01 |
+
 ## `v25.1.0`
 
 ### New Packages

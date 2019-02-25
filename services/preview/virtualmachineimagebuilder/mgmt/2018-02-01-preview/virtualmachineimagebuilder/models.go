@@ -1298,7 +1298,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RunOutput ...
+// RunOutput represents an output that was created by running an image template.
 type RunOutput struct {
 	autorest.Response    `json:"-"`
 	*RunOutputProperties `json:"properties,omitempty"`
@@ -1308,10 +1308,6 @@ type RunOutput struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for RunOutput.
@@ -1328,12 +1324,6 @@ func (ro RunOutput) MarshalJSON() ([]byte, error) {
 	}
 	if ro.Type != nil {
 		objectMap["type"] = ro.Type
-	}
-	if ro.Location != nil {
-		objectMap["location"] = ro.Location
-	}
-	if ro.Tags != nil {
-		objectMap["tags"] = ro.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1382,24 +1372,6 @@ func (ro *RunOutput) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ro.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				ro.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				ro.Tags = tags
 			}
 		}
 	}
@@ -1558,6 +1530,16 @@ type RunOutputProperties struct {
 	ArtifactID *string `json:"artifactId,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
 	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+}
+
+// SubResource the Sub Resource model definition.
+type SubResource struct {
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results

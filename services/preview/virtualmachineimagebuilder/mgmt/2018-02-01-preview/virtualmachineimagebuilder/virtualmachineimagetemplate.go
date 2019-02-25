@@ -347,7 +347,7 @@ func (client VirtualMachineImageTemplateClient) GetRunOutputPreparer(ctx context
 	pathParameters := map[string]interface{}{
 		"imageTemplateName": autorest.Encode("path", imageTemplateName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"RunOutputName":     autorest.Encode("path", runOutputName),
+		"runOutputName":     autorest.Encode("path", runOutputName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -359,7 +359,7 @@ func (client VirtualMachineImageTemplateClient) GetRunOutputPreparer(ctx context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{RunOutputName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -381,127 +381,6 @@ func (client VirtualMachineImageTemplateClient) GetRunOutputResponder(resp *http
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetRunOutputs get run outputs for the specified Template resource
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// imageTemplateName - the name of the image Template
-func (client VirtualMachineImageTemplateClient) GetRunOutputs(ctx context.Context, resourceGroupName string, imageTemplateName string) (result RunOutputCollectionPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplateClient.GetRunOutputs")
-		defer func() {
-			sc := -1
-			if result.roc.Response.Response != nil {
-				sc = result.roc.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: imageTemplateName,
-			Constraints: []validation.Constraint{{Target: "imageTemplateName", Name: validation.Pattern, Rule: `^[A-Za-z0-9-_]{1,64}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "GetRunOutputs", err.Error())
-	}
-
-	result.fn = client.getRunOutputsNextResults
-	req, err := client.GetRunOutputsPreparer(ctx, resourceGroupName, imageTemplateName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "GetRunOutputs", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetRunOutputsSender(req)
-	if err != nil {
-		result.roc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "GetRunOutputs", resp, "Failure sending request")
-		return
-	}
-
-	result.roc, err = client.GetRunOutputsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "GetRunOutputs", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetRunOutputsPreparer prepares the GetRunOutputs request.
-func (client VirtualMachineImageTemplateClient) GetRunOutputsPreparer(ctx context.Context, resourceGroupName string, imageTemplateName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"imageTemplateName": autorest.Encode("path", imageTemplateName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetRunOutputsSender sends the GetRunOutputs request. The method will close the
-// http.Response Body if it receives an error.
-func (client VirtualMachineImageTemplateClient) GetRunOutputsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetRunOutputsResponder handles the response to the GetRunOutputs request. The method always
-// closes the http.Response Body.
-func (client VirtualMachineImageTemplateClient) GetRunOutputsResponder(resp *http.Response) (result RunOutputCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// getRunOutputsNextResults retrieves the next set of results, if any.
-func (client VirtualMachineImageTemplateClient) getRunOutputsNextResults(ctx context.Context, lastResults RunOutputCollection) (result RunOutputCollection, err error) {
-	req, err := lastResults.runOutputCollectionPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "getRunOutputsNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.GetRunOutputsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "getRunOutputsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.GetRunOutputsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "getRunOutputsNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// GetRunOutputsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualMachineImageTemplateClient) GetRunOutputsComplete(ctx context.Context, resourceGroupName string, imageTemplateName string) (result RunOutputCollectionIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplateClient.GetRunOutputs")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.GetRunOutputs(ctx, resourceGroupName, imageTemplateName)
 	return
 }
 
@@ -728,18 +607,17 @@ func (client VirtualMachineImageTemplateClient) ListByResourceGroupComplete(ctx 
 	return
 }
 
-// Patch update the tags for this Virtual Machine Image Template
+// ListRunOutputs list all run outputs for the specified Image Template resource
 // Parameters:
-// parameters - additional parameters for Image Template update.
 // resourceGroupName - the name of the resource group.
 // imageTemplateName - the name of the image Template
-func (client VirtualMachineImageTemplateClient) Patch(ctx context.Context, parameters ImageTemplateUpdateParameters, resourceGroupName string, imageTemplateName string) (result ImageTemplate, err error) {
+func (client VirtualMachineImageTemplateClient) ListRunOutputs(ctx context.Context, resourceGroupName string, imageTemplateName string) (result RunOutputCollectionPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplateClient.Patch")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplateClient.ListRunOutputs")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.roc.Response.Response != nil {
+				sc = result.roc.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -747,32 +625,33 @@ func (client VirtualMachineImageTemplateClient) Patch(ctx context.Context, param
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageTemplateName,
 			Constraints: []validation.Constraint{{Target: "imageTemplateName", Name: validation.Pattern, Rule: `^[A-Za-z0-9-_]{1,64}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Patch", err.Error())
+		return result, validation.NewError("virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "ListRunOutputs", err.Error())
 	}
 
-	req, err := client.PatchPreparer(ctx, parameters, resourceGroupName, imageTemplateName)
+	result.fn = client.listRunOutputsNextResults
+	req, err := client.ListRunOutputsPreparer(ctx, resourceGroupName, imageTemplateName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Patch", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "ListRunOutputs", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.PatchSender(req)
+	resp, err := client.ListRunOutputsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Patch", resp, "Failure sending request")
+		result.roc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "ListRunOutputs", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.PatchResponder(resp)
+	result.roc, err = client.ListRunOutputsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "ListRunOutputs", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PatchPreparer prepares the Patch request.
-func (client VirtualMachineImageTemplateClient) PatchPreparer(ctx context.Context, parameters ImageTemplateUpdateParameters, resourceGroupName string, imageTemplateName string) (*http.Request, error) {
+// ListRunOutputsPreparer prepares the ListRunOutputs request.
+func (client VirtualMachineImageTemplateClient) ListRunOutputsPreparer(ctx context.Context, resourceGroupName string, imageTemplateName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"imageTemplateName": autorest.Encode("path", imageTemplateName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -785,25 +664,23 @@ func (client VirtualMachineImageTemplateClient) PatchPreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PatchSender sends the Patch request. The method will close the
+// ListRunOutputsSender sends the ListRunOutputs request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineImageTemplateClient) PatchSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachineImageTemplateClient) ListRunOutputsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// PatchResponder handles the response to the Patch request. The method always
+// ListRunOutputsResponder handles the response to the ListRunOutputs request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineImageTemplateClient) PatchResponder(resp *http.Response) (result ImageTemplate, err error) {
+func (client VirtualMachineImageTemplateClient) ListRunOutputsResponder(resp *http.Response) (result RunOutputCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -814,7 +691,44 @@ func (client VirtualMachineImageTemplateClient) PatchResponder(resp *http.Respon
 	return
 }
 
-// Run create artifacts from a Existing Template
+// listRunOutputsNextResults retrieves the next set of results, if any.
+func (client VirtualMachineImageTemplateClient) listRunOutputsNextResults(ctx context.Context, lastResults RunOutputCollection) (result RunOutputCollection, err error) {
+	req, err := lastResults.runOutputCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "listRunOutputsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListRunOutputsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "listRunOutputsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListRunOutputsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "listRunOutputsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListRunOutputsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client VirtualMachineImageTemplateClient) ListRunOutputsComplete(ctx context.Context, resourceGroupName string, imageTemplateName string) (result RunOutputCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplateClient.ListRunOutputs")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListRunOutputs(ctx, resourceGroupName, imageTemplateName)
+	return
+}
+
+// Run create artifacts from a existing Image Template
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // imageTemplateName - the name of the image Template
@@ -893,5 +807,91 @@ func (client VirtualMachineImageTemplateClient) RunResponder(resp *http.Response
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// Update update the tags for this Virtual Machine Image Template
+// Parameters:
+// parameters - additional parameters for Image Template update.
+// resourceGroupName - the name of the resource group.
+// imageTemplateName - the name of the image Template
+func (client VirtualMachineImageTemplateClient) Update(ctx context.Context, parameters ImageTemplateUpdateParameters, resourceGroupName string, imageTemplateName string) (result ImageTemplate, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplateClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: imageTemplateName,
+			Constraints: []validation.Constraint{{Target: "imageTemplateName", Name: validation.Pattern, Rule: `^[A-Za-z0-9-_]{1,64}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, parameters, resourceGroupName, imageTemplateName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client VirtualMachineImageTemplateClient) UpdatePreparer(ctx context.Context, parameters ImageTemplateUpdateParameters, resourceGroupName string, imageTemplateName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"imageTemplateName": autorest.Encode("path", imageTemplateName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineImageTemplateClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineImageTemplateClient) UpdateResponder(resp *http.Response) (result ImageTemplate, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

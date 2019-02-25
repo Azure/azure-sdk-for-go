@@ -136,6 +136,7 @@ type RunOutputCollection = original.RunOutputCollection
 type RunOutputCollectionIterator = original.RunOutputCollectionIterator
 type RunOutputCollectionPage = original.RunOutputCollectionPage
 type RunOutputProperties = original.RunOutputProperties
+type SubResource = original.SubResource
 type VirtualMachineImageTemplateClient = original.VirtualMachineImageTemplateClient
 type VirtualMachineImageTemplateCreateOrUpdateFuture = original.VirtualMachineImageTemplateCreateOrUpdateFuture
 type VirtualMachineImageTemplateDeleteFuture = original.VirtualMachineImageTemplateDeleteFuture

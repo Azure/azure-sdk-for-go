@@ -2071,7 +2071,7 @@ type ApplicationGatewayAuthenticationCertificatePropertiesFormat struct {
 
 // ApplicationGatewayAutoscaleConfiguration application Gateway autoscale configuration.
 type ApplicationGatewayAutoscaleConfiguration struct {
-	// MinCapacity - Lower bound on number of Application Gateway instances
+	// MinCapacity - Lower bound on number of Application Gateway capacity
 	MinCapacity *int32 `json:"minCapacity,omitempty"`
 	// MaxCapacity - Upper bound on number of Application Gateway capacity
 	MaxCapacity *int32 `json:"maxCapacity,omitempty"`
@@ -4622,11 +4622,11 @@ type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	DisabledRuleGroups *[]ApplicationGatewayFirewallDisabledRuleGroup `json:"disabledRuleGroups,omitempty"`
 	// RequestBodyCheck - Whether allow WAF to check request Body.
 	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
-	// MaxRequestBodySize - Maxium request body size for WAF.
+	// MaxRequestBodySize - Maximum request body size for WAF.
 	MaxRequestBodySize *int32 `json:"maxRequestBodySize,omitempty"`
-	// MaxRequestBodySizeInKb - Maxium request body size in Kb for WAF.
+	// MaxRequestBodySizeInKb - Maximum request body size in Kb for WAF.
 	MaxRequestBodySizeInKb *int32 `json:"maxRequestBodySizeInKb,omitempty"`
-	// FileUploadLimitInMb - Maxium file upload size in Mb for WAF.
+	// FileUploadLimitInMb - Maximum file upload size in Mb for WAF.
 	FileUploadLimitInMb *int32 `json:"fileUploadLimitInMb,omitempty"`
 	// Exclusions - The exclusion list.
 	Exclusions *[]ApplicationGatewayFirewallExclusion `json:"exclusions,omitempty"`
@@ -8478,17 +8478,17 @@ type EffectiveNetworkSecurityRule struct {
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
 	// DestinationPortRange - The destination port or range.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
-	// SourcePortRanges - The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterix (*)
+	// SourcePortRanges - The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*)
 	SourcePortRanges *[]string `json:"sourcePortRanges,omitempty"`
-	// DestinationPortRanges - The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterix (*)
+	// DestinationPortRanges - The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*)
 	DestinationPortRanges *[]string `json:"destinationPortRanges,omitempty"`
 	// SourceAddressPrefix - The source address prefix.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 	// DestinationAddressPrefix - The destination address prefix.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
-	// SourceAddressPrefixes - The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the asterix (*).
+	// SourceAddressPrefixes - The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
 	SourceAddressPrefixes *[]string `json:"sourceAddressPrefixes,omitempty"`
-	// DestinationAddressPrefixes - The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the asterix (*).
+	// DestinationAddressPrefixes - The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
 	DestinationAddressPrefixes *[]string `json:"destinationAddressPrefixes,omitempty"`
 	// ExpandedSourceAddressPrefix - The expanded source address prefix.
 	ExpandedSourceAddressPrefix *[]string `json:"expandedSourceAddressPrefix,omitempty"`
@@ -11749,7 +11749,7 @@ type ExpressRoutePortPropertiesFormat struct {
 	Mtu *string `json:"mtu,omitempty"`
 	// Encapsulation - Encapsulation method on physical ports. Possible values include: 'Dot1Q', 'QinQ'
 	Encapsulation ExpressRoutePortsEncapsulation `json:"encapsulation,omitempty"`
-	// EtherType - Ethertype of the physical port.
+	// EtherType - Ether type of the physical port.
 	EtherType *string `json:"etherType,omitempty"`
 	// AllocationDate - Date of the physical port allocation to be used in Letter of Authorization.
 	AllocationDate *string `json:"allocationDate,omitempty"`
@@ -22844,17 +22844,17 @@ type SecurityRulePropertiesFormat struct {
 	Description *string `json:"description,omitempty"`
 	// Protocol - Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'. Possible values include: 'SecurityRuleProtocolTCP', 'SecurityRuleProtocolUDP', 'SecurityRuleProtocolAsterisk'
 	Protocol SecurityRuleProtocol `json:"protocol,omitempty"`
-	// SourcePortRange - The source port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+	// SourcePortRange - The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
-	// DestinationPortRange - The destination port or range. Integer or range between 0 and 65535. Asterix '*' can also be used to match all ports.
+	// DestinationPortRange - The destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
-	// SourceAddressPrefix - The CIDR or source IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
+	// SourceAddressPrefix - The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 	// SourceAddressPrefixes - The CIDR or source IP ranges.
 	SourceAddressPrefixes *[]string `json:"sourceAddressPrefixes,omitempty"`
 	// SourceApplicationSecurityGroups - The application security group specified as source.
 	SourceApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"sourceApplicationSecurityGroups,omitempty"`
-	// DestinationAddressPrefix - The destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+	// DestinationAddressPrefix - The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 	// DestinationAddressPrefixes - The destination address prefixes. CIDR or destination IP ranges.
 	DestinationAddressPrefixes *[]string `json:"destinationAddressPrefixes,omitempty"`

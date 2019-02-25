@@ -46,7 +46,8 @@ func NewSignUpSettingsClientWithBaseURI(baseURI string, subscriptionID string) S
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // parameters - create or update parameters.
-func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings) (result PortalSignupSettings, err error) {
+// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings, ifMatch string) (result PortalSignupSettings, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SignUpSettingsClient.CreateOrUpdate")
 		defer func() {
@@ -65,7 +66,7 @@ func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceG
 		return result, validation.NewError("apimanagement.SignUpSettingsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SignUpSettingsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -87,7 +88,7 @@ func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SignUpSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings) (*http.Request, error) {
+func (client SignUpSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -106,6 +107,10 @@ func (client SignUpSettingsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signup", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -129,7 +134,7 @@ func (client SignUpSettingsClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Get get Sign-Up settings.
+// Get get Sign Up Settings for the Portal
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

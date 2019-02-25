@@ -74,7 +74,7 @@ func (client APIOperationClient) CreateOrUpdate(ctx context.Context, resourceGro
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.OperationContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.OperationContractProperties.DisplayName", Name: validation.Null, Rule: true,
@@ -193,7 +193,7 @@ func (client APIOperationClient) Delete(ctx context.Context, resourceGroupName s
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "Delete", err.Error())
 	}
 
@@ -292,7 +292,7 @@ func (client APIOperationClient) Get(ctx context.Context, resourceGroupName stri
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "Get", err.Error())
 	}
 
@@ -391,7 +391,7 @@ func (client APIOperationClient) GetEntityTag(ctx context.Context, resourceGroup
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "GetEntityTag", err.Error())
 	}
 
@@ -466,13 +466,15 @@ func (client APIOperationClient) GetEntityTagResponder(resp *http.Response) (res
 // revision has ;rev=n as a suffix where n is the revision number.
 // filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
-// | name        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | method      | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | description | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | urlTemplate | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |method | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |urlTemplate | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
-func (client APIOperationClient) ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result OperationCollectionPage, err error) {
+func (client APIOperationClient) ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32, tags string) (result OperationCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIOperationClient.ListByAPI")
 		defer func() {
@@ -502,7 +504,7 @@ func (client APIOperationClient) ListByAPI(ctx context.Context, resourceGroupNam
 	}
 
 	result.fn = client.listByAPINextResults
-	req, err := client.ListByAPIPreparer(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	req, err := client.ListByAPIPreparer(ctx, resourceGroupName, serviceName, apiid, filter, top, skip, tags)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "ListByAPI", nil, "Failure preparing request")
 		return
@@ -524,7 +526,7 @@ func (client APIOperationClient) ListByAPI(ctx context.Context, resourceGroupNam
 }
 
 // ListByAPIPreparer prepares the ListByAPI request.
-func (client APIOperationClient) ListByAPIPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client APIOperationClient) ListByAPIPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32, tags string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -544,6 +546,9 @@ func (client APIOperationClient) ListByAPIPreparer(ctx context.Context, resource
 	}
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(tags) > 0 {
+		queryParameters["tags"] = autorest.Encode("query", tags)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -596,7 +601,7 @@ func (client APIOperationClient) listByAPINextResults(ctx context.Context, lastR
 }
 
 // ListByAPIComplete enumerates all values, automatically crossing page boundaries as required.
-func (client APIOperationClient) ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result OperationCollectionIterator, err error) {
+func (client APIOperationClient) ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32, tags string) (result OperationCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIOperationClient.ListByAPI")
 		defer func() {
@@ -607,7 +612,7 @@ func (client APIOperationClient) ListByAPIComplete(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByAPI(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	result.page, err = client.ListByAPI(ctx, resourceGroupName, serviceName, apiid, filter, top, skip, tags)
 	return
 }
 
@@ -645,7 +650,7 @@ func (client APIOperationClient) Update(ctx context.Context, resourceGroupName s
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "Update", err.Error())
 	}
 

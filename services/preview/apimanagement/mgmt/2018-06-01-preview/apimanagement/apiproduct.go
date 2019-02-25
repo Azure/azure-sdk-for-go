@@ -46,9 +46,10 @@ func NewAPIProductClientWithBaseURI(baseURI string, subscriptionID string) APIPr
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // apiid - API identifier. Must be unique in the current API Management service instance.
-// filter - | Field | Supported operators    | Supported functions                         |
-// |-------|------------------------|---------------------------------------------|
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client APIProductClient) ListByApis(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result ProductCollectionPage, err error) {
@@ -70,7 +71,7 @@ func (client APIProductClient) ListByApis(ctx context.Context, resourceGroupName
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},

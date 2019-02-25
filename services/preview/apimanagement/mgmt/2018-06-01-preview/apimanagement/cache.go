@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// GroupClient is the apiManagement Client
-type GroupClient struct {
+// CacheClient is the apiManagement Client
+type CacheClient struct {
 	BaseClient
 }
 
-// NewGroupClient creates an instance of the GroupClient client.
-func NewGroupClient(subscriptionID string) GroupClient {
-	return NewGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewCacheClient creates an instance of the CacheClient client.
+func NewCacheClient(subscriptionID string) CacheClient {
+	return NewCacheClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewGroupClientWithBaseURI creates an instance of the GroupClient client.
-func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
-	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewCacheClientWithBaseURI creates an instance of the CacheClient client.
+func NewCacheClientWithBaseURI(baseURI string, subscriptionID string) CacheClient {
+	return CacheClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or Updates a group.
+// CreateOrUpdate creates or updates an External Cache to be used in Api Management instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-// parameters - create parameters.
+// cacheID - identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
+// identifier).
+// parameters - create or Update parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client GroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupCreateParameters, ifMatch string) (result GroupContract, err error) {
+func (client CacheClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, ifMatch string) (result CacheContract, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -64,45 +65,47 @@ func (client GroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: groupID,
-			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: cacheID,
+			Constraints: []validation.Constraint{{Target: "cacheID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "cacheID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "cacheID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.GroupCreateParametersProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.GroupCreateParametersProperties.DisplayName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.GroupCreateParametersProperties.DisplayName", Name: validation.MaxLength, Rule: 300, Chain: nil},
-						{Target: "parameters.GroupCreateParametersProperties.DisplayName", Name: validation.MinLength, Rule: 1, Chain: nil},
-					}},
+			Constraints: []validation.Constraint{{Target: "parameters.CacheContractProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.CacheContractProperties.Description", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.CacheContractProperties.Description", Name: validation.MaxLength, Rule: 2000, Chain: nil}}},
+					{Target: "parameters.CacheContractProperties.ConnectionString", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.CacheContractProperties.ConnectionString", Name: validation.MaxLength, Rule: 300, Chain: nil}}},
+					{Target: "parameters.CacheContractProperties.ResourceID", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.CacheContractProperties.ResourceID", Name: validation.MaxLength, Rule: 2000, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewError("apimanagement.GroupClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("apimanagement.CacheClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, groupID, parameters, ifMatch)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, cacheID, parameters, ifMatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client GroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupCreateParameters, ifMatch string) (*http.Request, error) {
+func (client CacheClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":           autorest.Encode("path", groupID),
+		"cacheId":           autorest.Encode("path", cacheID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -117,7 +120,7 @@ func (client GroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGr
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
@@ -129,14 +132,14 @@ func (client GroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGr
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client CacheClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result GroupContract, err error) {
+func (client CacheClient) CreateOrUpdateResponder(resp *http.Response) (result CacheContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -147,16 +150,17 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result G
 	return
 }
 
-// Delete deletes specific group of the API Management service instance.
+// Delete deletes specific Cache.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
+// cacheID - identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
+// identifier).
 // ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
 // request or it should be * for unconditional update.
-func (client GroupClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, ifMatch string) (result autorest.Response, err error) {
+func (client CacheClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -170,38 +174,38 @@ func (client GroupClient) Delete(ctx context.Context, resourceGroupName string, 
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: groupID,
-			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.GroupClient", "Delete", err.Error())
+		{TargetValue: cacheID,
+			Constraints: []validation.Constraint{{Target: "cacheID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "cacheID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "cacheID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.CacheClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, groupID, ifMatch)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, cacheID, ifMatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, groupID string, ifMatch string) (*http.Request, error) {
+func (client CacheClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":           autorest.Encode("path", groupID),
+		"cacheId":           autorest.Encode("path", cacheID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -215,7 +219,7 @@ func (client GroupClient) DeletePreparer(ctx context.Context, resourceGroupName 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -223,14 +227,14 @@ func (client GroupClient) DeletePreparer(ctx context.Context, resourceGroupName 
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client CacheClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CacheClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -240,14 +244,15 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// Get gets the details of the group specified by its identifier.
+// Get gets the details of the Cache specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-func (client GroupClient) Get(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (result GroupContract, err error) {
+// cacheID - identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
+// identifier).
+func (client CacheClient) Get(ctx context.Context, resourceGroupName string, serviceName string, cacheID string) (result CacheContract, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -261,38 +266,38 @@ func (client GroupClient) Get(ctx context.Context, resourceGroupName string, ser
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: groupID,
-			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.GroupClient", "Get", err.Error())
+		{TargetValue: cacheID,
+			Constraints: []validation.Constraint{{Target: "cacheID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "cacheID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "cacheID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.CacheClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, groupID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, cacheID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client GroupClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (*http.Request, error) {
+func (client CacheClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, cacheID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":           autorest.Encode("path", groupID),
+		"cacheId":           autorest.Encode("path", cacheID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -306,21 +311,21 @@ func (client GroupClient) GetPreparer(ctx context.Context, resourceGroupName str
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client CacheClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client GroupClient) GetResponder(resp *http.Response) (result GroupContract, err error) {
+func (client CacheClient) GetResponder(resp *http.Response) (result CacheContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -331,14 +336,15 @@ func (client GroupClient) GetResponder(resp *http.Response) (result GroupContrac
 	return
 }
 
-// GetEntityTag gets the entity state (Etag) version of the group specified by its identifier.
+// GetEntityTag gets the entity state (Etag) version of the Cache specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-func (client GroupClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (result autorest.Response, err error) {
+// cacheID - identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
+// identifier).
+func (client CacheClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, cacheID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.GetEntityTag")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.GetEntityTag")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -352,38 +358,38 @@ func (client GroupClient) GetEntityTag(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: groupID,
-			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.GroupClient", "GetEntityTag", err.Error())
+		{TargetValue: cacheID,
+			Constraints: []validation.Constraint{{Target: "cacheID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "cacheID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "cacheID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.CacheClient", "GetEntityTag", err.Error())
 	}
 
-	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, groupID)
+	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, cacheID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "GetEntityTag", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "GetEntityTag", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetEntityTagSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "GetEntityTag", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "GetEntityTag", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "GetEntityTag", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "GetEntityTag", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetEntityTagPreparer prepares the GetEntityTag request.
-func (client GroupClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (*http.Request, error) {
+func (client CacheClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, cacheID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":           autorest.Encode("path", groupID),
+		"cacheId":           autorest.Encode("path", cacheID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -397,21 +403,21 @@ func (client GroupClient) GetEntityTagPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
+func (client CacheClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
-func (client GroupClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CacheClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -421,26 +427,19 @@ func (client GroupClient) GetEntityTagResponder(resp *http.Response) (result aut
 	return
 }
 
-// ListByService lists a collection of groups defined within a service instance.
+// ListByService lists a collection of all external Caches in the specified service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field       | Supported operators    | Supported functions               |
-// |-------------|------------------------|-----------------------------------|
-//
-// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
-// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
-// |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
-// |aadObjectId | eq |    |
 // top - number of records to return.
 // skip - number of records to skip.
-func (client GroupClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result GroupCollectionPage, err error) {
+func (client CacheClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result CacheCollectionPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.ListByService")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.ListByService")
 		defer func() {
 			sc := -1
-			if result.gc.Response.Response != nil {
-				sc = result.gc.Response.Response.StatusCode
+			if result.cc.Response.Response != nil {
+				sc = result.cc.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -456,33 +455,33 @@ func (client GroupClient) ListByService(ctx context.Context, resourceGroupName s
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("apimanagement.GroupClient", "ListByService", err.Error())
+		return result, validation.NewError("apimanagement.CacheClient", "ListByService", err.Error())
 	}
 
 	result.fn = client.listByServiceNextResults
-	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, filter, top, skip)
+	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, top, skip)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "ListByService", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
-		result.gc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "ListByService", resp, "Failure sending request")
+		result.cc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "ListByService", resp, "Failure sending request")
 		return
 	}
 
-	result.gc, err = client.ListByServiceResponder(resp)
+	result.cc, err = client.ListByServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "ListByService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "ListByService", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByServicePreparer prepares the ListByService request.
-func (client GroupClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client CacheClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -492,9 +491,6 @@ func (client GroupClient) ListByServicePreparer(ctx context.Context, resourceGro
 	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -506,21 +502,21 @@ func (client GroupClient) ListByServicePreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
+func (client CacheClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
-func (client GroupClient) ListByServiceResponder(resp *http.Response) (result GroupCollection, err error) {
+func (client CacheClient) ListByServiceResponder(resp *http.Response) (result CacheCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -532,10 +528,10 @@ func (client GroupClient) ListByServiceResponder(resp *http.Response) (result Gr
 }
 
 // listByServiceNextResults retrieves the next set of results, if any.
-func (client GroupClient) listByServiceNextResults(ctx context.Context, lastResults GroupCollection) (result GroupCollection, err error) {
-	req, err := lastResults.groupCollectionPreparer(ctx)
+func (client CacheClient) listByServiceNextResults(ctx context.Context, lastResults CacheCollection) (result CacheCollection, err error) {
+	req, err := lastResults.cacheCollectionPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupClient", "listByServiceNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.CacheClient", "listByServiceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -543,19 +539,19 @@ func (client GroupClient) listByServiceNextResults(ctx context.Context, lastResu
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.GroupClient", "listByServiceNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.CacheClient", "listByServiceNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "listByServiceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result GroupCollectionIterator, err error) {
+func (client CacheClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result CacheCollectionIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.ListByService")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.ListByService")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -564,21 +560,22 @@ func (client GroupClient) ListByServiceComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, filter, top, skip)
+	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, top, skip)
 	return
 }
 
-// Update updates the details of the group specified by its identifier.
+// Update updates the details of the cache specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
+// cacheID - identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
+// identifier).
 // parameters - update parameters.
 // ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
 // request or it should be * for unconditional update.
-func (client GroupClient) Update(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupUpdateParameters, ifMatch string) (result autorest.Response, err error) {
+func (client CacheClient) Update(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GroupClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -592,38 +589,38 @@ func (client GroupClient) Update(ctx context.Context, resourceGroupName string, 
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: groupID,
-			Constraints: []validation.Constraint{{Target: "groupID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "groupID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "groupID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.GroupClient", "Update", err.Error())
+		{TargetValue: cacheID,
+			Constraints: []validation.Constraint{{Target: "cacheID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "cacheID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "cacheID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.CacheClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, groupID, parameters, ifMatch)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, cacheID, parameters, ifMatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.CacheClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client GroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupUpdateParameters, ifMatch string) (*http.Request, error) {
+func (client CacheClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":           autorest.Encode("path", groupID),
+		"cacheId":           autorest.Encode("path", cacheID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -638,7 +635,7 @@ func (client GroupClient) UpdatePreparer(ctx context.Context, resourceGroupName 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
@@ -647,14 +644,14 @@ func (client GroupClient) UpdatePreparer(ctx context.Context, resourceGroupName 
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client CacheClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client GroupClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CacheClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

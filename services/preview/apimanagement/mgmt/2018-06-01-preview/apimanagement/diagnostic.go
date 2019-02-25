@@ -67,7 +67,7 @@ func (client DiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGroup
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diagnosticID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "diagnosticID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.DiagnosticContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.DiagnosticContractProperties.LoggerID", Name: validation.Null, Rule: true, Chain: nil},
@@ -204,7 +204,7 @@ func (client DiagnosticClient) Delete(ctx context.Context, resourceGroupName str
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diagnosticID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "diagnosticID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.DiagnosticClient", "Delete", err.Error())
 	}
 
@@ -295,7 +295,7 @@ func (client DiagnosticClient) Get(ctx context.Context, resourceGroupName string
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diagnosticID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "diagnosticID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.DiagnosticClient", "Get", err.Error())
 	}
 
@@ -386,7 +386,7 @@ func (client DiagnosticClient) GetEntityTag(ctx context.Context, resourceGroupNa
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diagnosticID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "diagnosticID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.DiagnosticClient", "GetEntityTag", err.Error())
 	}
 
@@ -458,7 +458,8 @@ func (client DiagnosticClient) GetEntityTagResponder(resp *http.Response) (resul
 // serviceName - the name of the API Management service.
 // filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
-// | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client DiagnosticClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result DiagnosticCollectionPage, err error) {
@@ -622,7 +623,7 @@ func (client DiagnosticClient) Update(ctx context.Context, resourceGroupName str
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "diagnosticID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "diagnosticID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.DiagnosticClient", "Update", err.Error())
 	}
 

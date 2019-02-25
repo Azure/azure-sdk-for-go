@@ -415,13 +415,13 @@ func (client ServiceClient) CreateOrUpdateResponder(resp *http.Response) (result
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-func (client ServiceClient) Delete(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error) {
+func (client ServiceClient) Delete(ctx context.Context, resourceGroupName string, serviceName string) (result ServiceDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -440,16 +440,10 @@ func (client ServiceClient) Delete(ctx context.Context, resourceGroupName string
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -478,20 +472,27 @@ func (client ServiceClient) DeletePreparer(ctx context.Context, resourceGroupNam
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServiceClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client ServiceClient) DeleteSender(req *http.Request) (future ServiceDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServiceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServiceClient) DeleteResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -1064,188 +1065,6 @@ func (client ServiceClient) UpdateResponder(resp *http.Response) (result Service
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// UpdateHostname creates, updates, or deletes the custom hostnames for an API Management service. The custom hostname
-// can be applied to the Proxy and Portal endpoint. This is a long running operation and could take several minutes to
-// complete. This operation will be deprecated in the next version update.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the UpdateHostname operation.
-func (client ServiceClient) UpdateHostname(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateHostnameParameters) (result ServiceUpdateHostnameFuture, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceClient.UpdateHostname")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: serviceName,
-			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.ServiceClient", "UpdateHostname", err.Error())
-	}
-
-	req, err := client.UpdateHostnamePreparer(ctx, resourceGroupName, serviceName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "UpdateHostname", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.UpdateHostnameSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "UpdateHostname", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// UpdateHostnamePreparer prepares the UpdateHostname request.
-func (client ServiceClient) UpdateHostnamePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateHostnameParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/updatehostname", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateHostnameSender sends the UpdateHostname request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServiceClient) UpdateHostnameSender(req *http.Request) (future ServiceUpdateHostnameFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// UpdateHostnameResponder handles the response to the UpdateHostname request. The method always
-// closes the http.Response Body.
-func (client ServiceClient) UpdateHostnameResponder(resp *http.Response) (result ServiceResource, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// UploadCertificate upload Custom Domain SSL certificate for an API Management service. This operation will be
-// deprecated in future releases.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the Upload SSL certificate for an API Management service operation.
-func (client ServiceClient) UploadCertificate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUploadCertificateParameters) (result CertificateInformation, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceClient.UploadCertificate")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: serviceName,
-			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Certificate", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.CertificatePassword", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.ServiceClient", "UploadCertificate", err.Error())
-	}
-
-	req, err := client.UploadCertificatePreparer(ctx, resourceGroupName, serviceName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "UploadCertificate", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UploadCertificateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "UploadCertificate", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UploadCertificateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServiceClient", "UploadCertificate", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UploadCertificatePreparer prepares the UploadCertificate request.
-func (client ServiceClient) UploadCertificatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUploadCertificateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/updatecertificate", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UploadCertificateSender sends the UploadCertificate request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServiceClient) UploadCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UploadCertificateResponder handles the response to the UploadCertificate request. The method always
-// closes the http.Response Body.
-func (client ServiceClient) UploadCertificateResponder(resp *http.Response) (result CertificateInformation, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

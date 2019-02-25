@@ -65,9 +65,9 @@ func (client ProductPolicyClient) CreateOrUpdate(ctx context.Context, resourceGr
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
-			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.PolicyContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.PolicyContractProperties.PolicyContent", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
@@ -168,9 +168,9 @@ func (client ProductPolicyClient) Delete(ctx context.Context, resourceGroupName 
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
-			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.ProductPolicyClient", "Delete", err.Error())
 	}
 
@@ -260,9 +260,9 @@ func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName str
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
-			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.ProductPolicyClient", "Get", err.Error())
 	}
 
@@ -352,9 +352,9 @@ func (client ProductPolicyClient) GetEntityTag(ctx context.Context, resourceGrou
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
-			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.ProductPolicyClient", "GetEntityTag", err.Error())
 	}
 
@@ -443,9 +443,9 @@ func (client ProductPolicyClient) ListByProduct(ctx context.Context, resourceGro
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
-			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.ProductPolicyClient", "ListByProduct", err.Error())
 	}
 

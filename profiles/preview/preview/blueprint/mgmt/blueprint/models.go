@@ -32,8 +32,9 @@ const (
 type AssignmentLockMode = original.AssignmentLockMode
 
 const (
-	AllResources AssignmentLockMode = original.AllResources
-	None         AssignmentLockMode = original.None
+	AllResourcesDoNotDelete AssignmentLockMode = original.AllResourcesDoNotDelete
+	AllResourcesReadOnly    AssignmentLockMode = original.AllResourcesReadOnly
+	None                    AssignmentLockMode = original.None
 )
 
 type AssignmentProvisioningState = original.AssignmentProvisioningState

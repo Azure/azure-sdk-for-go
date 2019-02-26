@@ -187,7 +187,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, resourceGroupNa
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if parameters != nil {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -269,7 +269,7 @@ func (client Client) DeletePreparer(ctx context.Context, resourceGroupName strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -352,7 +352,7 @@ func (client Client) GetPreparer(ctx context.Context, resourceGroupName string, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -601,84 +601,6 @@ func (client Client) ListBySubscriptionComplete(ctx context.Context) (result Res
 	return
 }
 
-// ListFeatures list SignalR resource features.
-// Parameters:
-// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
-// from the Azure Resource Manager API or the portal.
-// resourceName - the name of the SignalR resource.
-func (client Client) ListFeatures(ctx context.Context, resourceGroupName string, resourceName string) (result FeatureList, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListFeatures")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.ListFeaturesPreparer(ctx, resourceGroupName, resourceName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "ListFeatures", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListFeaturesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "signalr.Client", "ListFeatures", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListFeaturesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "ListFeatures", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListFeaturesPreparer prepares the ListFeatures request.
-func (client Client) ListFeaturesPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"resourceName":      autorest.Encode("path", resourceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-10-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/listFeatures", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListFeaturesSender sends the ListFeatures request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListFeaturesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListFeaturesResponder handles the response to the ListFeatures request. The method always
-// closes the http.Response Body.
-func (client Client) ListFeaturesResponder(resp *http.Response) (result FeatureList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // ListKeys get the access keys of the SignalR resource.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
@@ -889,7 +811,7 @@ func (client Client) RestartPreparer(ctx context.Context, resourceGroupName stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/restart", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/restart", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -913,100 +835,9 @@ func (client Client) RestartResponder(resp *http.Response) (result autorest.Resp
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
-	return
-}
-
-// SwitchFeatures switch on/off SignalR resource features.
-// Parameters:
-// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
-// from the Azure Resource Manager API or the portal.
-// resourceName - the name of the SignalR resource.
-// parameters - parameters that describes the SignalR resource features opreation.
-func (client Client) SwitchFeatures(ctx context.Context, resourceGroupName string, resourceName string, parameters *FeaturesParameters) (result SwitchFeaturesFuture, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SwitchFeatures")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Features", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("signalr.Client", "SwitchFeatures", err.Error())
-	}
-
-	req, err := client.SwitchFeaturesPreparer(ctx, resourceGroupName, resourceName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "SwitchFeatures", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.SwitchFeaturesSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "SwitchFeatures", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// SwitchFeaturesPreparer prepares the SwitchFeatures request.
-func (client Client) SwitchFeaturesPreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters *FeaturesParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"resourceName":      autorest.Encode("path", resourceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-10-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/switchFeatures", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	if parameters != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(parameters))
-	}
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// SwitchFeaturesSender sends the SwitchFeatures request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) SwitchFeaturesSender(req *http.Request) (future SwitchFeaturesFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// SwitchFeaturesResponder handles the response to the SwitchFeatures request. The method always
-// closes the http.Response Body.
-func (client Client) SwitchFeaturesResponder(resp *http.Response) (result FeatureList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -1059,7 +890,7 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if parameters != nil {
 		preparer = autorest.DecoratePreparer(preparer,

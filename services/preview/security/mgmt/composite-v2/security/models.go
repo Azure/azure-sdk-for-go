@@ -4034,7 +4034,7 @@ type PricingProperties struct {
 	// PricingTier - The pricing tier value. Possible values include: 'Free', 'Standard'
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
-	FreeTrialRemainingTime *string `json:"FreeTrialRemainingTime,omitempty"`
+	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
 }
 
 // Resource describes an Azure resource.

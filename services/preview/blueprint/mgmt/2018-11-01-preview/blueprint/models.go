@@ -33,15 +33,17 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/
 type AssignmentLockMode string
 
 const (
-	// AllResources ...
-	AllResources AssignmentLockMode = "AllResources"
+	// AllResourcesDoNotDelete ...
+	AllResourcesDoNotDelete AssignmentLockMode = "AllResourcesDoNotDelete"
+	// AllResourcesReadOnly ...
+	AllResourcesReadOnly AssignmentLockMode = "AllResourcesReadOnly"
 	// None ...
 	None AssignmentLockMode = "None"
 )
 
 // PossibleAssignmentLockModeValues returns an array of possible values for the AssignmentLockMode const type.
 func PossibleAssignmentLockModeValues() []AssignmentLockMode {
-	return []AssignmentLockMode{AllResources, None}
+	return []AssignmentLockMode{AllResourcesDoNotDelete, AllResourcesReadOnly, None}
 }
 
 // AssignmentProvisioningState enumerates the values for assignment provisioning state.
@@ -776,7 +778,7 @@ func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (As
 
 // AssignmentLockSettings defines how resources deployed by a blueprint assignment are locked.
 type AssignmentLockSettings struct {
-	// Mode - Lock mode. Possible values include: 'None', 'AllResources'
+	// Mode - Lock mode. Possible values include: 'None', 'AllResourcesReadOnly', 'AllResourcesDoNotDelete'
 	Mode AssignmentLockMode `json:"mode,omitempty"`
 }
 

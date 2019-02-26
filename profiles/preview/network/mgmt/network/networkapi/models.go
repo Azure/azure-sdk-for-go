@@ -65,6 +65,7 @@ type OperationsClientAPI = original.OperationsClientAPI
 type P2sVpnGatewaysClientAPI = original.P2sVpnGatewaysClientAPI
 type P2sVpnServerConfigurationsClientAPI = original.P2sVpnServerConfigurationsClientAPI
 type PacketCapturesClientAPI = original.PacketCapturesClientAPI
+type PeerExpressRouteCircuitConnectionsClientAPI = original.PeerExpressRouteCircuitConnectionsClientAPI
 type ProfilesClientAPI = original.ProfilesClientAPI
 type PublicIPAddressesClientAPI = original.PublicIPAddressesClientAPI
 type PublicIPPrefixesClientAPI = original.PublicIPPrefixesClientAPI

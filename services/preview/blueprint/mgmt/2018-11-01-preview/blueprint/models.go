@@ -1970,6 +1970,8 @@ type ResourceGroupDefinition struct {
 	*ParameterDefinitionMetadata `json:"metadata,omitempty"`
 	// DependsOn - Artifacts which need to be deployed before this resource group.
 	DependsOn *[]string `json:"dependsOn,omitempty"`
+	// Tags - Tags to be assigned to this resource group.
+	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for ResourceGroupDefinition.
@@ -1986,6 +1988,9 @@ func (rgd ResourceGroupDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if rgd.DependsOn != nil {
 		objectMap["dependsOn"] = rgd.DependsOn
+	}
+	if rgd.Tags != nil {
+		objectMap["tags"] = rgd.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -2034,6 +2039,15 @@ func (rgd *ResourceGroupDefinition) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				rgd.DependsOn = &dependsOn
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rgd.Tags = tags
 			}
 		}
 	}

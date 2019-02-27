@@ -147,6 +147,12 @@ type ErrorResponseError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ListAgreementTerms ...
+type ListAgreementTerms struct {
+	autorest.Response `json:"-"`
+	Value             *[]AgreementTerms `json:"value,omitempty"`
+}
+
 // Operation microsoft.MarketplaceOrdering REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}

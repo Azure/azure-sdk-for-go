@@ -705,7 +705,8 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemResponder(resp *htt
 	return
 }
 
-// GetInboundNetworkDependenciesEndpoints get the network endpoints of all inbound dependencies of an ase.
+// GetInboundNetworkDependenciesEndpoints get the network endpoints of all inbound dependencies of an App Service
+// Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -875,7 +876,8 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.
 	return
 }
 
-// GetOutboundNetworkDependenciesEndpoints get the network endpoints of all outbound dependencies of an ase.
+// GetOutboundNetworkDependenciesEndpoints get the network endpoints of all outbound dependencies of an App Service
+// Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.

@@ -965,6 +965,27 @@ func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return []PublishingProfileFormat{FileZilla3, Ftp, WebDeploy}
 }
 
+// RedundancyMode enumerates the values for redundancy mode.
+type RedundancyMode string
+
+const (
+	// RedundancyModeActiveActive ...
+	RedundancyModeActiveActive RedundancyMode = "ActiveActive"
+	// RedundancyModeFailover ...
+	RedundancyModeFailover RedundancyMode = "Failover"
+	// RedundancyModeGeoRedundant ...
+	RedundancyModeGeoRedundant RedundancyMode = "GeoRedundant"
+	// RedundancyModeManual ...
+	RedundancyModeManual RedundancyMode = "Manual"
+	// RedundancyModeNone ...
+	RedundancyModeNone RedundancyMode = "None"
+)
+
+// PossibleRedundancyModeValues returns an array of possible values for the RedundancyMode const type.
+func PossibleRedundancyModeValues() []RedundancyMode {
+	return []RedundancyMode{RedundancyModeActiveActive, RedundancyModeFailover, RedundancyModeGeoRedundant, RedundancyModeManual, RedundancyModeNone}
+}
+
 // RenderingType enumerates the values for rendering type.
 type RenderingType string
 
@@ -3453,7 +3474,7 @@ func NewAppServiceEnvironmentCollectionPage(getNextPage func(context.Context, Ap
 	return AppServiceEnvironmentCollectionPage{fn: getNextPage}
 }
 
-// AppServiceEnvironmentPatchResource ARM resource for a app service enviroment.
+// AppServiceEnvironmentPatchResource ARM resource for a app service environment.
 type AppServiceEnvironmentPatchResource struct {
 	// AppServiceEnvironment - Core resource properties
 	*AppServiceEnvironment `json:"properties,omitempty"`
@@ -4342,8 +4363,6 @@ type AppServicePlanPatchResourceProperties struct {
 	Status StatusOptions `json:"status,omitempty"`
 	// Subscription - App Service plan subscription.
 	Subscription *string `json:"subscription,omitempty"`
-	// AdminSiteName - App Service plan administration site.
-	AdminSiteName *string `json:"adminSiteName,omitempty"`
 	// HostingEnvironmentProfile - Specification for the App Service Environment to use for the App Service plan.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 	// MaximumNumberOfWorkers - Maximum number of instances that can be assigned to this App Service plan.
@@ -4387,8 +4406,6 @@ type AppServicePlanProperties struct {
 	Status StatusOptions `json:"status,omitempty"`
 	// Subscription - App Service plan subscription.
 	Subscription *string `json:"subscription,omitempty"`
-	// AdminSiteName - App Service plan administration site.
-	AdminSiteName *string `json:"adminSiteName,omitempty"`
 	// HostingEnvironmentProfile - Specification for the App Service Environment to use for the App Service plan.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 	// MaximumNumberOfWorkers - Maximum number of instances that can be assigned to this App Service plan.
@@ -10073,7 +10090,8 @@ type EnabledConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// EndpointDependency ...
+// EndpointDependency a domain name that a service is reached at, including details of the current
+// connection status.
 type EndpointDependency struct {
 	// DomainName - The Domain Name of the dependency.
 	DomainName *string `json:"domainName,omitempty"`
@@ -10081,15 +10099,16 @@ type EndpointDependency struct {
 	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
 }
 
-// EndpointDetail ...
+// EndpointDetail current TCP connectivity information from the App Service Environment to a single
+// endpoint.
 type EndpointDetail struct {
 	// IPAddress - An IP Address that Domain Name currently resolves to.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// Port - The port an endpoint is connected to.
 	Port *int32 `json:"port,omitempty"`
-	// Latency - The time in milliseconds it takes to connect to this IpAddress at this Port.
+	// Latency - The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
 	Latency *float64 `json:"latency,omitempty"`
-	// IsAccessable - Whether it is possible to connect to IpAddress.
+	// IsAccessable - Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
 	IsAccessable *bool `json:"isAccessable,omitempty"`
 }
 
@@ -10534,6 +10553,14 @@ type FunctionSecretsProperties struct {
 	Key *string `json:"key,omitempty"`
 	// TriggerURL - Trigger URL.
 	TriggerURL *string `json:"trigger_url,omitempty"`
+}
+
+// GeoDistribution a global distribution definition.
+type GeoDistribution struct {
+	// Location - Location.
+	Location *string `json:"location,omitempty"`
+	// NumberOfWorkers - NumberOfWorkers.
+	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
 }
 
 // GeoRegion geographical region.
@@ -11868,13 +11895,14 @@ type IdentifierProperties struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// InboundEnvironmentEndpoint endpoints for a particular type
+// InboundEnvironmentEndpoint the IP Addresses and Ports that require inbound network access to and within
+// the subnet of the App Service Environment.
 type InboundEnvironmentEndpoint struct {
-	// Description - Text describing the endpoints.
+	// Description - Short text describing the purpose of the network traffic.
 	Description *string `json:"description,omitempty"`
-	// Endpoints - The endpoint ip addresses in cidr notation.
+	// Endpoints - The IP addresses that network traffic will originate from in cidr notation.
 	Endpoints *[]string `json:"endpoints,omitempty"`
-	// Ports - The ports
+	// Ports - The ports that network traffic will arrive to the App Service Environment at.
 	Ports *[]string `json:"ports,omitempty"`
 }
 
@@ -11887,6 +11915,12 @@ type IPSecurityRestriction struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// SubnetMask - Subnet mask for the range of IP addresses the restriction is valid for.
 	SubnetMask *string `json:"subnetMask,omitempty"`
+	// VnetSubnetResourceID - Virtual network resource id
+	VnetSubnetResourceID *string `json:"vnetSubnetResourceId,omitempty"`
+	// VnetTrafficTag - (internal) Vnet traffic tag
+	VnetTrafficTag *int32 `json:"vnetTrafficTag,omitempty"`
+	// SubnetTrafficTag - (internal) Subnet traffic tag
+	SubnetTrafficTag *int32 `json:"subnetTrafficTag,omitempty"`
 	// Action - Allow or Deny access for this IP range.
 	Action *string `json:"action,omitempty"`
 	// Tag - Defines what this IP filter will be used for. This is to support IP filtering on proxies. Possible values include: 'Default', 'XffProxy'
@@ -13301,11 +13335,12 @@ type Operation struct {
 	GeoMasterOperationID *uuid.UUID `json:"geoMasterOperationId,omitempty"`
 }
 
-// OutboundEnvironmentEndpoint endpoints of a common type.
+// OutboundEnvironmentEndpoint endpoints accessed for a common purpose that the App Service Environment
+// requires outbound network access to.
 type OutboundEnvironmentEndpoint struct {
-	// Category - Short description of the endpoints.
+	// Category - The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
 	Category *string `json:"category,omitempty"`
-	// Endpoints - The endpoint's domain name and the IP Addresses it currently resolves to.
+	// Endpoints - The endpoints that the App Service Environment reaches the service at.
 	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
 }
 
@@ -19118,6 +19153,8 @@ type SitePatchResourceProperties struct {
 	ClientAffinityEnabled *bool `json:"clientAffinityEnabled,omitempty"`
 	// ClientCertEnabled - <code>true</code> to enable client certificate authentication (TLS mutual authentication); otherwise, <code>false</code>. Default is <code>false</code>.
 	ClientCertEnabled *bool `json:"clientCertEnabled,omitempty"`
+	// ClientCertExclusionPaths - client certificate authentication comma-separated exclusion paths
+	ClientCertExclusionPaths *string `json:"clientCertExclusionPaths,omitempty"`
 	// HostNamesDisabled - <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
 	//  If <code>true</code>, the app is only accessible via API management process.
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
@@ -19147,6 +19184,12 @@ type SitePatchResourceProperties struct {
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
 	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	// RedundancyMode - Site redundancy mode. Possible values include: 'RedundancyModeNone', 'RedundancyModeManual', 'RedundancyModeFailover', 'RedundancyModeActiveActive', 'RedundancyModeGeoRedundant'
+	RedundancyMode RedundancyMode `json:"redundancyMode,omitempty"`
+	// InProgressOperationID - Specifies an operation id if this site has a pending operation.
+	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
+	// GeoDistributions - GeoDistributions for this site
+	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
 // SitePhpErrorLogFlag used for getting PHP error logging flag.
@@ -19300,6 +19343,8 @@ type SiteProperties struct {
 	ClientAffinityEnabled *bool `json:"clientAffinityEnabled,omitempty"`
 	// ClientCertEnabled - <code>true</code> to enable client certificate authentication (TLS mutual authentication); otherwise, <code>false</code>. Default is <code>false</code>.
 	ClientCertEnabled *bool `json:"clientCertEnabled,omitempty"`
+	// ClientCertExclusionPaths - client certificate authentication comma-separated exclusion paths
+	ClientCertExclusionPaths *string `json:"clientCertExclusionPaths,omitempty"`
 	// HostNamesDisabled - <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
 	//  If <code>true</code>, the app is only accessible via API management process.
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
@@ -19329,6 +19374,12 @@ type SiteProperties struct {
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
 	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	// RedundancyMode - Site redundancy mode. Possible values include: 'RedundancyModeNone', 'RedundancyModeManual', 'RedundancyModeFailover', 'RedundancyModeActiveActive', 'RedundancyModeGeoRedundant'
+	RedundancyMode RedundancyMode `json:"redundancyMode,omitempty"`
+	// InProgressOperationID - Specifies an operation id if this site has a pending operation.
+	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
+	// GeoDistributions - GeoDistributions for this site
+	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
 // SiteSeal site seal
@@ -20705,6 +20756,8 @@ type StackMinorVersion struct {
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 	// IsDefault - <code>true</code> if this is the default minor version; otherwise, <code>false</code>.
 	IsDefault *bool `json:"isDefault,omitempty"`
+	// IsRemoteDebuggingEnabled - <code>true</code> if this supports Remote Debugging, otherwise <code>false</code>.
+	IsRemoteDebuggingEnabled *bool `json:"isRemoteDebuggingEnabled,omitempty"`
 }
 
 // StampCapacity stamp capacity information.
@@ -22708,6 +22761,22 @@ type UserProperties struct {
 	PublishingPasswordHashSalt *string `json:"publishingPasswordHashSalt,omitempty"`
 	// ScmURI - Url of SCM site.
 	ScmURI *string `json:"scmUri,omitempty"`
+}
+
+// ValidateContainerSettingsRequest container settings validation request context
+type ValidateContainerSettingsRequest struct {
+	// BaseURL - Base URL of the container registry
+	BaseURL *string `json:"baseUrl,omitempty"`
+	// Username - Username for to access the container registry
+	Username *string `json:"username,omitempty"`
+	// Password - Password for to access the container registry
+	Password *string `json:"password,omitempty"`
+	// Repository - Repository name (image name)
+	Repository *string `json:"repository,omitempty"`
+	// Tag - Image tag
+	Tag *string `json:"tag,omitempty"`
+	// Platform - Platform (windows or linux)
+	Platform *string `json:"platform,omitempty"`
 }
 
 // ValidateProperties app properties used for validation.

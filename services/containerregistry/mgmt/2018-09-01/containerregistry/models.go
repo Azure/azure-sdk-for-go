@@ -1656,6 +1656,39 @@ func (ftsup FileTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (Bas
 	return &ftsup, true
 }
 
+// IdentityProperties managed identity for the resource.
+type IdentityProperties struct {
+	// PrincipalID - The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
+	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the resource. The user identity
+	// dictionary key references will be ARM resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/
+	//     providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityProperties.
+func (IP IdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if IP.PrincipalID != nil {
+		objectMap["principalId"] = IP.PrincipalID
+	}
+	if IP.TenantID != nil {
+		objectMap["tenantId"] = IP.TenantID
+	}
+	if IP.Type != "" {
+		objectMap["type"] = IP.Type
+	}
+	if IP.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = IP.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
 // ImageDescriptor properties for a registry image.
 type ImageDescriptor struct {
 	// Registry - The registry login server.
@@ -1719,39 +1752,6 @@ type IPRule struct {
 	Action Action `json:"action,omitempty"`
 	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
 	IPAddressOrRange *string `json:"value,omitempty"`
-}
-
-// MsiProperties identity for the resource.
-type MsiProperties struct {
-	// PrincipalID - The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
-	Type ResourceIdentityType `json:"type,omitempty"`
-	// UserAssignedIdentities - The list of user identities associated with the resource. The user identity
-	// dictionary key references will be ARM resource ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/
-	//     providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities"`
-}
-
-// MarshalJSON is the custom marshaler for MsiProperties.
-func (mp MsiProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mp.PrincipalID != nil {
-		objectMap["principalId"] = mp.PrincipalID
-	}
-	if mp.TenantID != nil {
-		objectMap["tenantId"] = mp.TenantID
-	}
-	if mp.Type != "" {
-		objectMap["type"] = mp.Type
-	}
-	if mp.UserAssignedIdentities != nil {
-		objectMap["userAssignedIdentities"] = mp.UserAssignedIdentities
-	}
-	return json.Marshal(objectMap)
 }
 
 // NetworkRuleSet the network rule set for a container registry.
@@ -3696,7 +3696,7 @@ type Target struct {
 type Task struct {
 	autorest.Response `json:"-"`
 	// Identity - Identity for the resource.
-	Identity *MsiProperties `json:"identity,omitempty"`
+	Identity *IdentityProperties `json:"identity,omitempty"`
 	// TaskProperties - The properties of a task.
 	*TaskProperties `json:"properties,omitempty"`
 	// ID - The resource ID.
@@ -3749,7 +3749,7 @@ func (t *Task) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "identity":
 			if v != nil {
-				var identity MsiProperties
+				var identity IdentityProperties
 				err = json.Unmarshal(*v, &identity)
 				if err != nil {
 					return err
@@ -4529,7 +4529,7 @@ func (future *TasksUpdateFuture) Result(client TasksClient) (t Task, err error) 
 // TaskUpdateParameters the parameters for updating a task.
 type TaskUpdateParameters struct {
 	// Identity - Identity for the resource.
-	Identity *MsiProperties `json:"identity,omitempty"`
+	Identity *IdentityProperties `json:"identity,omitempty"`
 	// TaskPropertiesUpdateParameters - The properties for updating a task.
 	*TaskPropertiesUpdateParameters `json:"properties,omitempty"`
 	// Tags - The ARM resource tags.
@@ -4562,7 +4562,7 @@ func (tup *TaskUpdateParameters) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "identity":
 			if v != nil {
-				var identity MsiProperties
+				var identity IdentityProperties
 				err = json.Unmarshal(*v, &identity)
 				if err != nil {
 					return err

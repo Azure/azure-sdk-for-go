@@ -262,13 +262,14 @@ func (client SensitivityLabelsClient) DisableRecommendation(ctx context.Context,
 // DisableRecommendationPreparer prepares the DisableRecommendation request.
 func (client SensitivityLabelsClient) DisableRecommendationPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"columnName":        autorest.Encode("path", columnName),
-		"databaseName":      autorest.Encode("path", databaseName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"schemaName":        autorest.Encode("path", schemaName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"tableName":         autorest.Encode("path", tableName),
+		"columnName":             autorest.Encode("path", columnName),
+		"databaseName":           autorest.Encode("path", databaseName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"schemaName":             autorest.Encode("path", schemaName),
+		"sensitivityLabelSource": autorest.Encode("path", "recommended"),
+		"serverName":             autorest.Encode("path", serverName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"tableName":              autorest.Encode("path", tableName),
 	}
 
 	const APIVersion = "2017-03-01-preview"
@@ -279,7 +280,7 @@ func (client SensitivityLabelsClient) DisableRecommendationPreparer(ctx context.
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/recommended/disable", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/disable", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -348,13 +349,14 @@ func (client SensitivityLabelsClient) EnableRecommendation(ctx context.Context, 
 // EnableRecommendationPreparer prepares the EnableRecommendation request.
 func (client SensitivityLabelsClient) EnableRecommendationPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"columnName":        autorest.Encode("path", columnName),
-		"databaseName":      autorest.Encode("path", databaseName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"schemaName":        autorest.Encode("path", schemaName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"tableName":         autorest.Encode("path", tableName),
+		"columnName":             autorest.Encode("path", columnName),
+		"databaseName":           autorest.Encode("path", databaseName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"schemaName":             autorest.Encode("path", schemaName),
+		"sensitivityLabelSource": autorest.Encode("path", "recommended"),
+		"serverName":             autorest.Encode("path", serverName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"tableName":              autorest.Encode("path", tableName),
 	}
 
 	const APIVersion = "2017-03-01-preview"
@@ -365,7 +367,7 @@ func (client SensitivityLabelsClient) EnableRecommendationPreparer(ctx context.C
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/recommended/enable", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

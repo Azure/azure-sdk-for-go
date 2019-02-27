@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## `v26.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| mixedreality | 2019-02-28 |
+| trafficmanager | 2018-04-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| mysql | 2017-12-01 |
+| postgresql | 2017-12-01 |
+| search | 2015-08-19 |
+
 ## `v26.0.0`
 
 ### New Packages

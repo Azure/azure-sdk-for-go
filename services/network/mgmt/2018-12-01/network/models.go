@@ -19727,7 +19727,7 @@ type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
 	ConnectionName *string `json:"connectionName,omitempty"`
 	// AuthResourceGUID - The resource guid of the authorization used for the express route circuit connection.
 	AuthResourceGUID *string `json:"authResourceGuid,omitempty"`
-	// ProvisioningState - Provisioning state of the peer express route circuit connection resource. Possible values are: 'Succeded', 'Updating', 'Deleting', and 'Failed'.
+	// ProvisioningState - Provisioning state of the peer express route circuit connection resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 

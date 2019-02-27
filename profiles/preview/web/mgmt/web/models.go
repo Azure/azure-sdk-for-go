@@ -472,6 +472,16 @@ const (
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
 )
 
+type RedundancyMode = original.RedundancyMode
+
+const (
+	RedundancyModeActiveActive RedundancyMode = original.RedundancyModeActiveActive
+	RedundancyModeFailover     RedundancyMode = original.RedundancyModeFailover
+	RedundancyModeGeoRedundant RedundancyMode = original.RedundancyModeGeoRedundant
+	RedundancyModeManual       RedundancyMode = original.RedundancyModeManual
+	RedundancyModeNone         RedundancyMode = original.RedundancyModeNone
+)
+
 type RenderingType = original.RenderingType
 
 const (
@@ -864,6 +874,7 @@ type FunctionEnvelopeCollectionPage = original.FunctionEnvelopeCollectionPage
 type FunctionEnvelopeProperties = original.FunctionEnvelopeProperties
 type FunctionSecrets = original.FunctionSecrets
 type FunctionSecretsProperties = original.FunctionSecretsProperties
+type GeoDistribution = original.GeoDistribution
 type GeoRegion = original.GeoRegion
 type GeoRegionCollection = original.GeoRegionCollection
 type GeoRegionCollectionIterator = original.GeoRegionCollectionIterator
@@ -1140,6 +1151,7 @@ type UsageCollectionPage = original.UsageCollectionPage
 type UsageProperties = original.UsageProperties
 type User = original.User
 type UserProperties = original.UserProperties
+type ValidateContainerSettingsRequest = original.ValidateContainerSettingsRequest
 type ValidateProperties = original.ValidateProperties
 type ValidateRequest = original.ValidateRequest
 type ValidateResponse = original.ValidateResponse
@@ -1711,6 +1723,9 @@ func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 }
 func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return original.PossiblePublishingProfileFormatValues()
+}
+func PossibleRedundancyModeValues() []RedundancyMode {
+	return original.PossibleRedundancyModeValues()
 }
 func PossibleRenderingTypeValues() []RenderingType {
 	return original.PossibleRenderingTypeValues()

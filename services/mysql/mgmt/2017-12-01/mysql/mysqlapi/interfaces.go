@@ -29,6 +29,7 @@ type ServersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.Server, err error)
 	List(ctx context.Context) (result mysql.ServerListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result mysql.ServerListResult, err error)
+	Restart(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServersRestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerUpdateParameters) (result mysql.ServersUpdateFuture, err error)
 }
 

@@ -55,6 +55,7 @@ type ServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result search.Service, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, clientRequestID *uuid.UUID) (result search.ServiceListResult, err error)
+	ListBySubscription(ctx context.Context, clientRequestID *uuid.UUID) (result search.ServiceListResult, err error)
 	Update(ctx context.Context, resourceGroupName string, searchServiceName string, service search.Service, clientRequestID *uuid.UUID) (result search.Service, err error)
 }
 

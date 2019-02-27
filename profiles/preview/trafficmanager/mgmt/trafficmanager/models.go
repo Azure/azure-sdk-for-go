@@ -19,7 +19,7 @@
 
 package trafficmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-03-01/trafficmanager"
+import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-04-01/trafficmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -72,8 +72,10 @@ type TrafficRoutingMethod = original.TrafficRoutingMethod
 
 const (
 	Geographic  TrafficRoutingMethod = original.Geographic
+	MultiValue  TrafficRoutingMethod = original.MultiValue
 	Performance TrafficRoutingMethod = original.Performance
 	Priority    TrafficRoutingMethod = original.Priority
+	Subnet      TrafficRoutingMethod = original.Subnet
 	Weighted    TrafficRoutingMethod = original.Weighted
 )
 
@@ -93,6 +95,7 @@ type DeleteOperationResult = original.DeleteOperationResult
 type Endpoint = original.Endpoint
 type EndpointProperties = original.EndpointProperties
 type EndpointPropertiesCustomHeadersItem = original.EndpointPropertiesCustomHeadersItem
+type EndpointPropertiesSubnetsItem = original.EndpointPropertiesSubnetsItem
 type EndpointsClient = original.EndpointsClient
 type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 type GeographicHierarchy = original.GeographicHierarchy
@@ -115,6 +118,9 @@ type Region = original.Region
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type TrafficFlow = original.TrafficFlow
+type UserMetricsKeysClient = original.UserMetricsKeysClient
+type UserMetricsModel = original.UserMetricsModel
+type UserMetricsProperties = original.UserMetricsProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -142,6 +148,12 @@ func NewProfilesClient(subscriptionID string) ProfilesClient {
 }
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
 	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
+	return original.NewUserMetricsKeysClient(subscriptionID)
+}
+func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
+	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

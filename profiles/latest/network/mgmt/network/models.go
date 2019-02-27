@@ -1386,6 +1386,12 @@ type PacketCapturesGetStatusFuture = original.PacketCapturesGetStatusFuture
 type PacketCapturesStopFuture = original.PacketCapturesStopFuture
 type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
+type PeerExpressRouteCircuitConnection = original.PeerExpressRouteCircuitConnection
+type PeerExpressRouteCircuitConnectionListResult = original.PeerExpressRouteCircuitConnectionListResult
+type PeerExpressRouteCircuitConnectionListResultIterator = original.PeerExpressRouteCircuitConnectionListResultIterator
+type PeerExpressRouteCircuitConnectionListResultPage = original.PeerExpressRouteCircuitConnectionListResultPage
+type PeerExpressRouteCircuitConnectionPropertiesFormat = original.PeerExpressRouteCircuitConnectionPropertiesFormat
+type PeerExpressRouteCircuitConnectionsClient = original.PeerExpressRouteCircuitConnectionsClient
 type PrepareNetworkPoliciesRequest = original.PrepareNetworkPoliciesRequest
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
@@ -2176,6 +2182,18 @@ func NewPacketCapturesClient(subscriptionID string) PacketCapturesClient {
 }
 func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string) PacketCapturesClient {
 	return original.NewPacketCapturesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPeerExpressRouteCircuitConnectionListResultIterator(page PeerExpressRouteCircuitConnectionListResultPage) PeerExpressRouteCircuitConnectionListResultIterator {
+	return original.NewPeerExpressRouteCircuitConnectionListResultIterator(page)
+}
+func NewPeerExpressRouteCircuitConnectionListResultPage(getNextPage func(context.Context, PeerExpressRouteCircuitConnectionListResult) (PeerExpressRouteCircuitConnectionListResult, error)) PeerExpressRouteCircuitConnectionListResultPage {
+	return original.NewPeerExpressRouteCircuitConnectionListResultPage(getNextPage)
+}
+func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string) PeerExpressRouteCircuitConnectionsClient {
+	return original.NewPeerExpressRouteCircuitConnectionsClient(subscriptionID)
+}
+func NewPeerExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PeerExpressRouteCircuitConnectionsClient {
+	return original.NewPeerExpressRouteCircuitConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
 	return original.NewProfileListResultIterator(page)

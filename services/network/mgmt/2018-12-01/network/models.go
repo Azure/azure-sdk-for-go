@@ -9740,6 +9740,8 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	ExpressRouteConnection *ExpressRouteConnectionID `json:"expressRouteConnection,omitempty"`
 	// Connections - The list of circuit connections associated with Azure Private Peering for this circuit.
 	Connections *[]ExpressRouteCircuitConnection `json:"connections,omitempty"`
+	// PeeredConnections - The list of peered circuit connections associated with Azure Private Peering for this circuit.
+	PeeredConnections *[]PeerExpressRouteCircuitConnection `json:"peeredConnections,omitempty"`
 }
 
 // ExpressRouteCircuitPeeringsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
@@ -9824,6 +9826,8 @@ type ExpressRouteCircuitPropertiesFormat struct {
 	GatewayManagerEtag *string `json:"gatewayManagerEtag,omitempty"`
 	// AllowGlobalReach - Flag to enable Global Reach on the circuit.
 	AllowGlobalReach *bool `json:"allowGlobalReach,omitempty"`
+	// GlobalReachEnabled - Flag denoting Global reach status.
+	GlobalReachEnabled *bool `json:"globalReachEnabled,omitempty"`
 }
 
 // ExpressRouteCircuitReference ...
@@ -19475,6 +19479,256 @@ func (prfr *PatchRouteFilterRule) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// PeerExpressRouteCircuitConnection peer Express Route Circuit Connection in an ExpressRouteCircuitPeering
+// resource.
+type PeerExpressRouteCircuitConnection struct {
+	autorest.Response                                  `json:"-"`
+	*PeerExpressRouteCircuitConnectionPropertiesFormat `json:"properties,omitempty"`
+	// Name - Gets name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PeerExpressRouteCircuitConnection.
+func (percc PeerExpressRouteCircuitConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if percc.PeerExpressRouteCircuitConnectionPropertiesFormat != nil {
+		objectMap["properties"] = percc.PeerExpressRouteCircuitConnectionPropertiesFormat
+	}
+	if percc.Name != nil {
+		objectMap["name"] = percc.Name
+	}
+	if percc.Etag != nil {
+		objectMap["etag"] = percc.Etag
+	}
+	if percc.ID != nil {
+		objectMap["id"] = percc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PeerExpressRouteCircuitConnection struct.
+func (percc *PeerExpressRouteCircuitConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var peerExpressRouteCircuitConnectionPropertiesFormat PeerExpressRouteCircuitConnectionPropertiesFormat
+				err = json.Unmarshal(*v, &peerExpressRouteCircuitConnectionPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				percc.PeerExpressRouteCircuitConnectionPropertiesFormat = &peerExpressRouteCircuitConnectionPropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				percc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				percc.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				percc.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// PeerExpressRouteCircuitConnectionListResult response for ListPeeredConnections API service call
+// retrieves all global reach peer circuit connections that belongs to a Private Peering for an
+// ExpressRouteCircuit.
+type PeerExpressRouteCircuitConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The global reach peer circuit connection associated with Private Peering in an ExpressRoute Circuit.
+	Value *[]PeerExpressRouteCircuitConnection `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PeerExpressRouteCircuitConnectionListResultIterator provides access to a complete listing of
+// PeerExpressRouteCircuitConnection values.
+type PeerExpressRouteCircuitConnectionListResultIterator struct {
+	i    int
+	page PeerExpressRouteCircuitConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PeerExpressRouteCircuitConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeerExpressRouteCircuitConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PeerExpressRouteCircuitConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PeerExpressRouteCircuitConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PeerExpressRouteCircuitConnectionListResultIterator) Response() PeerExpressRouteCircuitConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PeerExpressRouteCircuitConnectionListResultIterator) Value() PeerExpressRouteCircuitConnection {
+	if !iter.page.NotDone() {
+		return PeerExpressRouteCircuitConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PeerExpressRouteCircuitConnectionListResultIterator type.
+func NewPeerExpressRouteCircuitConnectionListResultIterator(page PeerExpressRouteCircuitConnectionListResultPage) PeerExpressRouteCircuitConnectionListResultIterator {
+	return PeerExpressRouteCircuitConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (percclr PeerExpressRouteCircuitConnectionListResult) IsEmpty() bool {
+	return percclr.Value == nil || len(*percclr.Value) == 0
+}
+
+// peerExpressRouteCircuitConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (percclr PeerExpressRouteCircuitConnectionListResult) peerExpressRouteCircuitConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if percclr.NextLink == nil || len(to.String(percclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(percclr.NextLink)))
+}
+
+// PeerExpressRouteCircuitConnectionListResultPage contains a page of PeerExpressRouteCircuitConnection
+// values.
+type PeerExpressRouteCircuitConnectionListResultPage struct {
+	fn      func(context.Context, PeerExpressRouteCircuitConnectionListResult) (PeerExpressRouteCircuitConnectionListResult, error)
+	percclr PeerExpressRouteCircuitConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PeerExpressRouteCircuitConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeerExpressRouteCircuitConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.percclr)
+	if err != nil {
+		return err
+	}
+	page.percclr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PeerExpressRouteCircuitConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PeerExpressRouteCircuitConnectionListResultPage) NotDone() bool {
+	return !page.percclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PeerExpressRouteCircuitConnectionListResultPage) Response() PeerExpressRouteCircuitConnectionListResult {
+	return page.percclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PeerExpressRouteCircuitConnectionListResultPage) Values() []PeerExpressRouteCircuitConnection {
+	if page.percclr.IsEmpty() {
+		return nil
+	}
+	return *page.percclr.Value
+}
+
+// Creates a new instance of the PeerExpressRouteCircuitConnectionListResultPage type.
+func NewPeerExpressRouteCircuitConnectionListResultPage(getNextPage func(context.Context, PeerExpressRouteCircuitConnectionListResult) (PeerExpressRouteCircuitConnectionListResult, error)) PeerExpressRouteCircuitConnectionListResultPage {
+	return PeerExpressRouteCircuitConnectionListResultPage{fn: getNextPage}
+}
+
+// PeerExpressRouteCircuitConnectionPropertiesFormat ...
+type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
+	// ExpressRouteCircuitPeering - Reference to Express Route Circuit Private Peering Resource of the circuit.
+	ExpressRouteCircuitPeering *SubResource `json:"expressRouteCircuitPeering,omitempty"`
+	// PeerExpressRouteCircuitPeering - Reference to Express Route Circuit Private Peering Resource of the peered circuit.
+	PeerExpressRouteCircuitPeering *SubResource `json:"peerExpressRouteCircuitPeering,omitempty"`
+	// AddressPrefix - /29 IP address space to carve out Customer addresses for tunnels.
+	AddressPrefix *string `json:"addressPrefix,omitempty"`
+	// CircuitConnectionStatus - Express Route Circuit Connection State. Possible values are: 'Connected' and 'Disconnected'. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
+	// ConnectionName - The name of the express route circuit connection resource.
+	ConnectionName *string `json:"connectionName,omitempty"`
+	// AuthResourceGUID - The resource guid of the authorization used for the express route circuit connection.
+	AuthResourceGUID *string `json:"authResourceGuid,omitempty"`
+	// ProvisioningState - Provisioning state of the peer express route circuit connection resource. Possible values are: 'Succeded', 'Updating', 'Deleting', and 'Failed'.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // PrepareNetworkPoliciesRequest ...

@@ -155,6 +155,14 @@ type ExpressRouteCircuitConnectionsClientAPI interface {
 
 var _ ExpressRouteCircuitConnectionsClientAPI = (*network.ExpressRouteCircuitConnectionsClient)(nil)
 
+// PeerExpressRouteCircuitConnectionsClientAPI contains the set of methods on the PeerExpressRouteCircuitConnectionsClient type.
+type PeerExpressRouteCircuitConnectionsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result network.PeerExpressRouteCircuitConnection, err error)
+	List(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.PeerExpressRouteCircuitConnectionListResultPage, err error)
+}
+
+var _ PeerExpressRouteCircuitConnectionsClientAPI = (*network.PeerExpressRouteCircuitConnectionsClient)(nil)
+
 // ExpressRouteCircuitsClientAPI contains the set of methods on the ExpressRouteCircuitsClient type.
 type ExpressRouteCircuitsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, parameters network.ExpressRouteCircuit) (result network.ExpressRouteCircuitsCreateOrUpdateFuture, err error)

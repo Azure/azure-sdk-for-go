@@ -365,6 +365,17 @@ type SubscriptionUsagesClientAPI interface {
 
 var _ SubscriptionUsagesClientAPI = (*sql.SubscriptionUsagesClient)(nil)
 
+// VirtualClustersClientAPI contains the set of methods on the VirtualClustersClient type.
+type VirtualClustersClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, virtualClusterName string) (result sql.VirtualClustersDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, virtualClusterName string) (result sql.VirtualCluster, err error)
+	List(ctx context.Context) (result sql.VirtualClusterListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.VirtualClusterListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters sql.VirtualClusterUpdate) (result sql.VirtualClustersUpdateFuture, err error)
+}
+
+var _ VirtualClustersClientAPI = (*sql.VirtualClustersClient)(nil)
+
 // ExtendedDatabaseBlobAuditingPoliciesClientAPI contains the set of methods on the ExtendedDatabaseBlobAuditingPoliciesClient type.
 type ExtendedDatabaseBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.ExtendedDatabaseBlobAuditingPolicy) (result sql.ExtendedDatabaseBlobAuditingPolicy, err error)

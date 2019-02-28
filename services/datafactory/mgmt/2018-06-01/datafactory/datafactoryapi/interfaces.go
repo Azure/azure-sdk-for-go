@@ -41,6 +41,7 @@ type FactoriesClientAPI interface {
 	List(ctx context.Context) (result datafactory.FactoryListResponsePage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result datafactory.FactoryListResponsePage, err error)
 	Update(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters datafactory.FactoryUpdateParameters) (result datafactory.Factory, err error)
+	Upgrade(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.Factory, err error)
 }
 
 var _ FactoriesClientAPI = (*datafactory.FactoriesClient)(nil)

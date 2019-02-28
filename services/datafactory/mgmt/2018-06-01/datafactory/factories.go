@@ -932,3 +932,92 @@ func (client FactoriesClient) UpdateResponder(resp *http.Response) (result Facto
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// Upgrade upgrade preview version factory to G.A. version.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+func (client FactoriesClient) Upgrade(ctx context.Context, resourceGroupName string, factoryName string) (result Factory, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FactoriesClient.Upgrade")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.FactoriesClient", "Upgrade", err.Error())
+	}
+
+	req, err := client.UpgradePreparer(ctx, resourceGroupName, factoryName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Upgrade", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpgradeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Upgrade", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpgradeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Upgrade", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpgradePreparer prepares the Upgrade request.
+func (client FactoriesClient) UpgradePreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/upgrade", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpgradeSender sends the Upgrade request. The method will close the
+// http.Response Body if it receives an error.
+func (client FactoriesClient) UpgradeSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpgradeResponder handles the response to the Upgrade request. The method always
+// closes the http.Response Body.
+func (client FactoriesClient) UpgradeResponder(resp *http.Response) (result Factory, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

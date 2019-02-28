@@ -53,7 +53,8 @@ const (
 type NetworkPolicy = original.NetworkPolicy
 
 const (
-	Calico NetworkPolicy = original.Calico
+	NetworkPolicyAzure  NetworkPolicy = original.NetworkPolicyAzure
+	NetworkPolicyCalico NetworkPolicy = original.NetworkPolicyCalico
 )
 
 type OSType = original.OSType

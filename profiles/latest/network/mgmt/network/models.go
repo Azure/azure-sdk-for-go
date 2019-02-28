@@ -1075,7 +1075,6 @@ type EffectiveNetworkSecurityGroupListResult = original.EffectiveNetworkSecurity
 type EffectiveNetworkSecurityRule = original.EffectiveNetworkSecurityRule
 type EffectiveRoute = original.EffectiveRoute
 type EffectiveRouteListResult = original.EffectiveRouteListResult
-type EndpointService = original.EndpointService
 type EndpointServiceResult = original.EndpointServiceResult
 type EndpointServicesListResult = original.EndpointServicesListResult
 type EndpointServicesListResultIterator = original.EndpointServicesListResultIterator
@@ -1228,14 +1227,6 @@ type IntentPolicyConfiguration = original.IntentPolicyConfiguration
 type Interface = original.Interface
 type InterfaceAssociation = original.InterfaceAssociation
 type InterfaceDNSSettings = original.InterfaceDNSSettings
-type InterfaceEndpoint = original.InterfaceEndpoint
-type InterfaceEndpointListResult = original.InterfaceEndpointListResult
-type InterfaceEndpointListResultIterator = original.InterfaceEndpointListResultIterator
-type InterfaceEndpointListResultPage = original.InterfaceEndpointListResultPage
-type InterfaceEndpointProperties = original.InterfaceEndpointProperties
-type InterfaceEndpointsClient = original.InterfaceEndpointsClient
-type InterfaceEndpointsCreateOrUpdateFuture = original.InterfaceEndpointsCreateOrUpdateFuture
-type InterfaceEndpointsDeleteFuture = original.InterfaceEndpointsDeleteFuture
 type InterfaceIPConfiguration = original.InterfaceIPConfiguration
 type InterfaceIPConfigurationListResult = original.InterfaceIPConfigurationListResult
 type InterfaceIPConfigurationListResultIterator = original.InterfaceIPConfigurationListResultIterator
@@ -1948,18 +1939,6 @@ func NewInboundNatRulesClient(subscriptionID string) InboundNatRulesClient {
 }
 func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) InboundNatRulesClient {
 	return original.NewInboundNatRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInterfaceEndpointListResultIterator(page InterfaceEndpointListResultPage) InterfaceEndpointListResultIterator {
-	return original.NewInterfaceEndpointListResultIterator(page)
-}
-func NewInterfaceEndpointListResultPage(getNextPage func(context.Context, InterfaceEndpointListResult) (InterfaceEndpointListResult, error)) InterfaceEndpointListResultPage {
-	return original.NewInterfaceEndpointListResultPage(getNextPage)
-}
-func NewInterfaceEndpointsClient(subscriptionID string) InterfaceEndpointsClient {
-	return original.NewInterfaceEndpointsClient(subscriptionID)
-}
-func NewInterfaceEndpointsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceEndpointsClient {
-	return original.NewInterfaceEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInterfaceIPConfigurationListResultIterator(page InterfaceIPConfigurationListResultPage) InterfaceIPConfigurationListResultIterator {
 	return original.NewInterfaceIPConfigurationListResultIterator(page)

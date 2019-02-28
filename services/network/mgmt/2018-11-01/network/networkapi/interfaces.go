@@ -252,17 +252,6 @@ type ExpressRouteLinksClientAPI interface {
 
 var _ ExpressRouteLinksClientAPI = (*network.ExpressRouteLinksClient)(nil)
 
-// InterfaceEndpointsClientAPI contains the set of methods on the InterfaceEndpointsClient type.
-type InterfaceEndpointsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, interfaceEndpointName string, parameters network.InterfaceEndpoint) (result network.InterfaceEndpointsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, interfaceEndpointName string) (result network.InterfaceEndpointsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, interfaceEndpointName string, expand string) (result network.InterfaceEndpoint, err error)
-	List(ctx context.Context, resourceGroupName string) (result network.InterfaceEndpointListResultPage, err error)
-	ListBySubscription(ctx context.Context) (result network.InterfaceEndpointListResultPage, err error)
-}
-
-var _ InterfaceEndpointsClientAPI = (*network.InterfaceEndpointsClient)(nil)
-
 // LoadBalancersClientAPI contains the set of methods on the LoadBalancersClient type.
 type LoadBalancersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters network.LoadBalancer) (result network.LoadBalancersCreateOrUpdateFuture, err error)

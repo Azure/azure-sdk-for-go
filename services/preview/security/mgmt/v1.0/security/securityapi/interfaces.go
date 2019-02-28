@@ -19,7 +19,7 @@ package securityapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
+	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v1.0/security"
 	"github.com/Azure/go-autorest/autorest"
 )
 

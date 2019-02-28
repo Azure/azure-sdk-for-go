@@ -22,7 +22,7 @@ package security
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v2.0/security"
 )
 
 const (
@@ -109,10 +109,10 @@ const (
 type ReportedSeverity = original.ReportedSeverity
 
 const (
-	High        ReportedSeverity = original.High
-	Information ReportedSeverity = original.Information
-	Low         ReportedSeverity = original.Low
-	Silent      ReportedSeverity = original.Silent
+	High          ReportedSeverity = original.High
+	Informational ReportedSeverity = original.Informational
+	Low           ReportedSeverity = original.Low
+	Medium        ReportedSeverity = original.Medium
 )
 
 type SettingKind = original.SettingKind
@@ -240,8 +240,6 @@ type OperationListPage = original.OperationListPage
 type OperationsClient = original.OperationsClient
 type Pricing = original.Pricing
 type PricingList = original.PricingList
-type PricingListIterator = original.PricingListIterator
-type PricingListPage = original.PricingListPage
 type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
 type Resource = original.Resource
@@ -415,12 +413,6 @@ func NewOperationsClient(subscriptionID string, ascLocation string) OperationsCl
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewPricingListIterator(page PricingListPage) PricingListIterator {
-	return original.NewPricingListIterator(page)
-}
-func NewPricingListPage(getNextPage func(context.Context, PricingList) (PricingList, error)) PricingListPage {
-	return original.NewPricingListPage(getNextPage)
 }
 func NewPricingsClient(subscriptionID string, ascLocation string) PricingsClient {
 	return original.NewPricingsClient(subscriptionID, ascLocation)

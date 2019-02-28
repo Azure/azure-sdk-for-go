@@ -3964,7 +3964,7 @@ type ApplicationGatewaySslCertificatePropertiesFormat struct {
 	Data *string `json:"data,omitempty"`
 	// Password - Password for the pfx file specified in data. Only applicable in PUT request.
 	Password *string `json:"password,omitempty"`
-	// PublicCertData - Base-64 encoded Public cert data corresponding to pfx specified in data. Only applicable in GET request.
+	// PublicCertData - Base-64 encoded Public cert data corresponding to pfx specified in data. It is encoded using PKCS7. Only applicable in GET request.
 	PublicCertData *string `json:"publicCertData,omitempty"`
 	// ProvisioningState - Provisioning state of the SSL certificate resource Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`

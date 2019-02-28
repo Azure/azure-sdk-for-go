@@ -79,13 +79,15 @@ func PossibleNetworkPluginValues() []NetworkPlugin {
 type NetworkPolicy string
 
 const (
-	// Calico ...
-	Calico NetworkPolicy = "calico"
+	// NetworkPolicyAzure ...
+	NetworkPolicyAzure NetworkPolicy = "azure"
+	// NetworkPolicyCalico ...
+	NetworkPolicyCalico NetworkPolicy = "calico"
 )
 
 // PossibleNetworkPolicyValues returns an array of possible values for the NetworkPolicy const type.
 func PossibleNetworkPolicyValues() []NetworkPolicy {
-	return []NetworkPolicy{Calico}
+	return []NetworkPolicy{NetworkPolicyAzure, NetworkPolicyCalico}
 }
 
 // OpenShiftAgentPoolProfileRole enumerates the values for open shift agent pool profile role.
@@ -1580,6 +1582,8 @@ type ManagedClusterProperties struct {
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
 	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
+	// APIServerAuthorizedIPRanges - Authorized IP Ranges to kubernetes API server.
+	APIServerAuthorizedIPRanges *[]string `json:"apiServerAuthorizedIPRanges,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedClusterProperties.
@@ -1623,6 +1627,9 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mcp.AadProfile != nil {
 		objectMap["aadProfile"] = mcp.AadProfile
+	}
+	if mcp.APIServerAuthorizedIPRanges != nil {
+		objectMap["apiServerAuthorizedIPRanges"] = mcp.APIServerAuthorizedIPRanges
 	}
 	return json.Marshal(objectMap)
 }
@@ -1885,7 +1892,7 @@ type NetworkProfile struct {
 type NetworkProfileType struct {
 	// NetworkPlugin - Network plugin used for building Kubernetes network. Possible values include: 'Azure', 'Kubenet'
 	NetworkPlugin NetworkPlugin `json:"networkPlugin,omitempty"`
-	// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'Calico'
+	// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'NetworkPolicyCalico', 'NetworkPolicyAzure'
 	NetworkPolicy NetworkPolicy `json:"networkPolicy,omitempty"`
 	// PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
 	PodCidr *string `json:"podCidr,omitempty"`

@@ -273,6 +273,8 @@ type ServiceClientAPI interface {
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result apimanagement.ServiceListResultPage, err error)
 	Restore(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceBackupRestoreParameters) (result apimanagement.ServiceRestoreFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceUpdateParameters) (result apimanagement.ServiceUpdateFuture, err error)
+	UpdateHostname(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceUpdateHostnameParameters) (result apimanagement.ServiceUpdateHostnameFuture, err error)
+	UploadCertificate(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.ServiceUploadCertificateParameters) (result apimanagement.CertificateInformation, err error)
 }
 
 var _ ServiceClientAPI = (*apimanagement.ServiceClient)(nil)

@@ -3560,6 +3560,7 @@ type CertificateCreateOrUpdateProperties struct {
 
 // CertificateInformation SSL certificate information.
 type CertificateInformation struct {
+	autorest.Response `json:"-"`
 	// Expiry - Expiration date of the certificate. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	Expiry *date.Time `json:"expiry,omitempty"`
 	// Thumbprint - Thumbprint of the certificate.
@@ -4573,6 +4574,16 @@ type HostnameConfiguration struct {
 	DefaultSslBinding *bool `json:"defaultSslBinding,omitempty"`
 	// NegotiateClientCertificate - Specify true to always negotiate client certificate on the hostname. Default Value is false.
 	NegotiateClientCertificate *bool `json:"negotiateClientCertificate,omitempty"`
+	// Certificate - Certificate information.
+	Certificate *CertificateInformation `json:"certificate,omitempty"`
+}
+
+// HostnameConfigurationOld custom hostname configuration.
+type HostnameConfigurationOld struct {
+	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm'
+	Type HostnameType `json:"type,omitempty"`
+	// Hostname - Hostname to configure.
+	Hostname *string `json:"hostname,omitempty"`
 	// Certificate - Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
@@ -10157,6 +10168,43 @@ func (future *ServiceUpdateFuture) Result(client ServiceClient) (sr ServiceResou
 	return
 }
 
+// ServiceUpdateHostnameFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServiceUpdateHostnameFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServiceUpdateHostnameFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateHostnameFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceUpdateHostnameFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr, err = client.UpdateHostnameResponder(sr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateHostnameFuture", "Result", sr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ServiceUpdateHostnameParameters parameters supplied to the UpdateHostname operation.
+type ServiceUpdateHostnameParameters struct {
+	// Update - Hostnames to create or update.
+	Update *[]HostnameConfigurationOld `json:"update,omitempty"`
+	// Delete - Hostnames types to delete.
+	Delete *[]HostnameType `json:"delete,omitempty"`
+}
+
 // ServiceUpdateParameters parameter supplied to Update Api Management Service.
 type ServiceUpdateParameters struct {
 	// ServiceUpdateProperties - Properties of the API Management service.
@@ -10397,6 +10445,17 @@ func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 		objectMap["virtualNetworkType"] = sup.VirtualNetworkType
 	}
 	return json.Marshal(objectMap)
+}
+
+// ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API
+// Management service operation.
+type ServiceUploadCertificateParameters struct {
+	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm'
+	Type HostnameType `json:"type,omitempty"`
+	// Certificate - Base64 Encoded certificate.
+	Certificate *string `json:"certificate,omitempty"`
+	// CertificatePassword - Certificate password.
+	CertificatePassword *string `json:"certificate_password,omitempty"`
 }
 
 // SubscriptionCollection paged Subscriptions list representation.

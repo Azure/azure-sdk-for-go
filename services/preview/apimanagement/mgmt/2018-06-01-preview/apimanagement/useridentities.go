@@ -41,7 +41,7 @@ func NewUserIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) U
 	return UserIdentitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all user identities.
+// List list of all user identities.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

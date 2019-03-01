@@ -71,6 +71,8 @@ const (
 	OdataTypeMicrosoftMediaJobOutputAsset OdataType = original.OdataTypeMicrosoftMediaJobOutputAsset
 )
 
+type AppConfigurationKeyValueDeletedEventData = original.AppConfigurationKeyValueDeletedEventData
+type AppConfigurationKeyValueModifiedEventData = original.AppConfigurationKeyValueModifiedEventData
 type BaseClient = original.BaseClient
 type BasicMediaJobOutput = original.BasicMediaJobOutput
 type ContainerRegistryArtifactEventData = original.ContainerRegistryArtifactEventData

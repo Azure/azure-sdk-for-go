@@ -41,7 +41,7 @@ func NewNotificationClientWithBaseURI(baseURI string, subscriptionID string) Not
 	return NotificationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate updates an Notification.
+// CreateOrUpdate create or Update API Management publisher notification.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

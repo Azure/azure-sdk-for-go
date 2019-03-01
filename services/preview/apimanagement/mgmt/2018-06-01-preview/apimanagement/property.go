@@ -65,8 +65,8 @@ func (client PropertyClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: propID,
-			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "propID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "propID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.PropertyContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.PropertyContractProperties.DisplayName", Name: validation.Null, Rule: true,
@@ -175,8 +175,8 @@ func (client PropertyClient) Delete(ctx context.Context, resourceGroupName strin
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: propID,
-			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "propID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "propID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.PropertyClient", "Delete", err.Error())
 	}
 
@@ -265,8 +265,8 @@ func (client PropertyClient) Get(ctx context.Context, resourceGroupName string, 
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: propID,
-			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "propID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "propID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.PropertyClient", "Get", err.Error())
 	}
 
@@ -355,8 +355,8 @@ func (client PropertyClient) GetEntityTag(ctx context.Context, resourceGroupName
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: propID,
-			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "propID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "propID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.PropertyClient", "GetEntityTag", err.Error())
 	}
 
@@ -426,10 +426,11 @@ func (client PropertyClient) GetEntityTagResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                                   |
-// |-------|------------------------|-------------------------------------------------------|
-// | tags  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith           |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |tags | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all|
+// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client PropertyClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result PropertyCollectionPage, err error) {
@@ -591,8 +592,8 @@ func (client PropertyClient) Update(ctx context.Context, resourceGroupName strin
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: propID,
-			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "propID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "propID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "propID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.PropertyClient", "Update", err.Error())
 	}
 

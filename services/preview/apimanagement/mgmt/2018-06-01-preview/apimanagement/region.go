@@ -26,28 +26,28 @@ import (
 	"net/http"
 )
 
-// RegionsClient is the apiManagement Client
-type RegionsClient struct {
+// RegionClient is the apiManagement Client
+type RegionClient struct {
 	BaseClient
 }
 
-// NewRegionsClient creates an instance of the RegionsClient client.
-func NewRegionsClient(subscriptionID string) RegionsClient {
-	return NewRegionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewRegionClient creates an instance of the RegionClient client.
+func NewRegionClient(subscriptionID string) RegionClient {
+	return NewRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRegionsClientWithBaseURI creates an instance of the RegionsClient client.
-func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
-	return RegionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewRegionClientWithBaseURI creates an instance of the RegionClient client.
+func NewRegionClientWithBaseURI(baseURI string, subscriptionID string) RegionClient {
+	return RegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByService lists all azure regions in which the service exists.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-func (client RegionsClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result RegionListResultPage, err error) {
+func (client RegionClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result RegionListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RegionsClient.ListByService")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegionClient.ListByService")
 		defer func() {
 			sc := -1
 			if result.rlr.Response.Response != nil {
@@ -61,33 +61,33 @@ func (client RegionsClient) ListByService(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.RegionsClient", "ListByService", err.Error())
+		return result, validation.NewError("apimanagement.RegionClient", "ListByService", err.Error())
 	}
 
 	result.fn = client.listByServiceNextResults
 	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.RegionClient", "ListByService", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.rlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.RegionClient", "ListByService", resp, "Failure sending request")
 		return
 	}
 
 	result.rlr, err = client.ListByServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "ListByService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.RegionClient", "ListByService", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByServicePreparer prepares the ListByService request.
-func (client RegionsClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client RegionClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -109,14 +109,14 @@ func (client RegionsClient) ListByServicePreparer(ctx context.Context, resourceG
 
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
-func (client RegionsClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
+func (client RegionClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
-func (client RegionsClient) ListByServiceResponder(resp *http.Response) (result RegionListResult, err error) {
+func (client RegionClient) ListByServiceResponder(resp *http.Response) (result RegionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -128,10 +128,10 @@ func (client RegionsClient) ListByServiceResponder(resp *http.Response) (result 
 }
 
 // listByServiceNextResults retrieves the next set of results, if any.
-func (client RegionsClient) listByServiceNextResults(ctx context.Context, lastResults RegionListResult) (result RegionListResult, err error) {
+func (client RegionClient) listByServiceNextResults(ctx context.Context, lastResults RegionListResult) (result RegionListResult, err error) {
 	req, err := lastResults.regionListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "listByServiceNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.RegionClient", "listByServiceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -139,19 +139,19 @@ func (client RegionsClient) listByServiceNextResults(ctx context.Context, lastRe
 	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "listByServiceNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.RegionClient", "listByServiceNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.RegionsClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.RegionClient", "listByServiceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RegionsClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string) (result RegionListResultIterator, err error) {
+func (client RegionClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string) (result RegionListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RegionsClient.ListByService")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegionClient.ListByService")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

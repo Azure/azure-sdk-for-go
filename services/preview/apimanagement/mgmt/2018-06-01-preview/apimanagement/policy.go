@@ -46,7 +46,8 @@ func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyCli
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // parameters - the policy contents to apply.
-func (client PolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PolicyContract) (result PolicyContract, err error) {
+// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+func (client PolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PolicyContract, ifMatch string) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.CreateOrUpdate")
 		defer func() {
@@ -68,7 +69,7 @@ func (client PolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 		return result, validation.NewError("apimanagement.PolicyClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PolicyClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -90,7 +91,7 @@ func (client PolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PolicyClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PolicyContract) (*http.Request, error) {
+func (client PolicyClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PolicyContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyId":          autorest.Encode("path", "policy"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -110,6 +111,10 @@ func (client PolicyClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policies/{policyId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -396,8 +401,7 @@ func (client PolicyClient) GetEntityTagResponder(resp *http.Response) (result au
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// scope - policy scope.
-func (client PolicyClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, scope PolicyScopeContract) (result PolicyCollection, err error) {
+func (client PolicyClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result PolicyCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.ListByService")
 		defer func() {
@@ -416,7 +420,7 @@ func (client PolicyClient) ListByService(ctx context.Context, resourceGroupName 
 		return result, validation.NewError("apimanagement.PolicyClient", "ListByService", err.Error())
 	}
 
-	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, scope)
+	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PolicyClient", "ListByService", nil, "Failure preparing request")
 		return
@@ -438,7 +442,7 @@ func (client PolicyClient) ListByService(ctx context.Context, resourceGroupName 
 }
 
 // ListByServicePreparer prepares the ListByService request.
-func (client PolicyClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, scope PolicyScopeContract) (*http.Request, error) {
+func (client PolicyClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -448,9 +452,6 @@ func (client PolicyClient) ListByServicePreparer(ctx context.Context, resourceGr
 	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(string(scope)) > 0 {
-		queryParameters["scope"] = autorest.Encode("query", scope)
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -46,8 +46,8 @@ func NewNotificationRecipientUserClientWithBaseURI(baseURI string, subscriptionI
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // notificationName - notification Name Identifier.
-// UID - user identifier. Must be unique in the current API Management service instance.
-func (client NotificationRecipientUserClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (result autorest.Response, err error) {
+// userID - user identifier. Must be unique in the current API Management service instance.
+func (client NotificationRecipientUserClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationRecipientUserClient.CheckEntityExists")
 		defer func() {
@@ -63,14 +63,14 @@ func (client NotificationRecipientUserClient) CheckEntityExists(ctx context.Cont
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: UID,
-			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "UID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: userID,
+			Constraints: []validation.Constraint{{Target: "userID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "userID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.NotificationRecipientUserClient", "CheckEntityExists", err.Error())
 	}
 
-	req, err := client.CheckEntityExistsPreparer(ctx, resourceGroupName, serviceName, notificationName, UID)
+	req, err := client.CheckEntityExistsPreparer(ctx, resourceGroupName, serviceName, notificationName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientUserClient", "CheckEntityExists", nil, "Failure preparing request")
 		return
@@ -92,13 +92,13 @@ func (client NotificationRecipientUserClient) CheckEntityExists(ctx context.Cont
 }
 
 // CheckEntityExistsPreparer prepares the CheckEntityExists request.
-func (client NotificationRecipientUserClient) CheckEntityExistsPreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (*http.Request, error) {
+func (client NotificationRecipientUserClient) CheckEntityExistsPreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"notificationName":  autorest.Encode("path", notificationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", UID),
+		"userId":            autorest.Encode("path", userID),
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -109,7 +109,7 @@ func (client NotificationRecipientUserClient) CheckEntityExistsPreparer(ctx cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{uid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -127,7 +127,7 @@ func (client NotificationRecipientUserClient) CheckEntityExistsResponder(resp *h
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -138,8 +138,8 @@ func (client NotificationRecipientUserClient) CheckEntityExistsResponder(resp *h
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // notificationName - notification Name Identifier.
-// UID - user identifier. Must be unique in the current API Management service instance.
-func (client NotificationRecipientUserClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (result RecipientUserContract, err error) {
+// userID - user identifier. Must be unique in the current API Management service instance.
+func (client NotificationRecipientUserClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string) (result RecipientUserContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationRecipientUserClient.CreateOrUpdate")
 		defer func() {
@@ -155,14 +155,14 @@ func (client NotificationRecipientUserClient) CreateOrUpdate(ctx context.Context
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: UID,
-			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "UID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: userID,
+			Constraints: []validation.Constraint{{Target: "userID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "userID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.NotificationRecipientUserClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, notificationName, UID)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, notificationName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientUserClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -184,13 +184,13 @@ func (client NotificationRecipientUserClient) CreateOrUpdate(ctx context.Context
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client NotificationRecipientUserClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (*http.Request, error) {
+func (client NotificationRecipientUserClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"notificationName":  autorest.Encode("path", notificationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", UID),
+		"userId":            autorest.Encode("path", userID),
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -201,7 +201,7 @@ func (client NotificationRecipientUserClient) CreateOrUpdatePreparer(ctx context
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{uid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -231,8 +231,8 @@ func (client NotificationRecipientUserClient) CreateOrUpdateResponder(resp *http
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // notificationName - notification Name Identifier.
-// UID - user identifier. Must be unique in the current API Management service instance.
-func (client NotificationRecipientUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (result autorest.Response, err error) {
+// userID - user identifier. Must be unique in the current API Management service instance.
+func (client NotificationRecipientUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationRecipientUserClient.Delete")
 		defer func() {
@@ -248,14 +248,14 @@ func (client NotificationRecipientUserClient) Delete(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: UID,
-			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "UID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: userID,
+			Constraints: []validation.Constraint{{Target: "userID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "userID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.NotificationRecipientUserClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, notificationName, UID)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, notificationName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.NotificationRecipientUserClient", "Delete", nil, "Failure preparing request")
 		return
@@ -277,13 +277,13 @@ func (client NotificationRecipientUserClient) Delete(ctx context.Context, resour
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NotificationRecipientUserClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (*http.Request, error) {
+func (client NotificationRecipientUserClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"notificationName":  autorest.Encode("path", notificationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", UID),
+		"userId":            autorest.Encode("path", userID),
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -294,7 +294,7 @@ func (client NotificationRecipientUserClient) DeletePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{uid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

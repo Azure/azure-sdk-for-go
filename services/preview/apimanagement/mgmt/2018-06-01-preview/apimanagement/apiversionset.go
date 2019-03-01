@@ -67,7 +67,7 @@ func (client APIVersionSetClient) CreateOrUpdate(ctx context.Context, resourceGr
 		{TargetValue: versionSetID,
 			Constraints: []validation.Constraint{{Target: "versionSetID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "versionSetID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "versionSetID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "versionSetID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.APIVersionSetContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.APIVersionSetContractProperties.DisplayName", Name: validation.Null, Rule: true,
@@ -173,7 +173,7 @@ func (client APIVersionSetClient) Delete(ctx context.Context, resourceGroupName 
 		{TargetValue: versionSetID,
 			Constraints: []validation.Constraint{{Target: "versionSetID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "versionSetID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "versionSetID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "versionSetID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIVersionSetClient", "Delete", err.Error())
 	}
 
@@ -264,7 +264,7 @@ func (client APIVersionSetClient) Get(ctx context.Context, resourceGroupName str
 		{TargetValue: versionSetID,
 			Constraints: []validation.Constraint{{Target: "versionSetID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "versionSetID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "versionSetID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "versionSetID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIVersionSetClient", "Get", err.Error())
 	}
 
@@ -355,7 +355,7 @@ func (client APIVersionSetClient) GetEntityTag(ctx context.Context, resourceGrou
 		{TargetValue: versionSetID,
 			Constraints: []validation.Constraint{{Target: "versionSetID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "versionSetID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "versionSetID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "versionSetID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIVersionSetClient", "GetEntityTag", err.Error())
 	}
 
@@ -425,15 +425,8 @@ func (client APIVersionSetClient) GetEntityTagResponder(resp *http.Response) (re
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field            | Supported operators    | Supported functions               |
-// |------------------|------------------------|-----------------------------------|
-// | id               | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | firstName        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | lastName         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | email            | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | state            | eq                     | N/A                               |
-// | registrationDate | ge, le, eq, ne, gt, lt | N/A                               |
-// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client APIVersionSetClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result APIVersionSetCollectionPage, err error) {
@@ -597,7 +590,7 @@ func (client APIVersionSetClient) Update(ctx context.Context, resourceGroupName 
 		{TargetValue: versionSetID,
 			Constraints: []validation.Constraint{{Target: "versionSetID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "versionSetID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "versionSetID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "versionSetID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIVersionSetClient", "Update", err.Error())
 	}
 

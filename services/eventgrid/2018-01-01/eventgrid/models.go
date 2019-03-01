@@ -141,6 +141,28 @@ func PossibleOdataTypeValues() []OdataType {
 	return []OdataType{OdataTypeMediaJobOutput, OdataTypeMicrosoftMediaJobOutputAsset}
 }
 
+// AppConfigurationKeyValueDeletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.AppConfiguration.KeyValueDeleted event.
+type AppConfigurationKeyValueDeletedEventData struct {
+	// Key - The key used to identify the key-value that was deleted.
+	Key *string `json:"key,omitempty"`
+	// Label - The label, if any, used to identify the key-value that was deleted.
+	Label *string `json:"label,omitempty"`
+	// Etag - The etag representing the key-value that was deleted.
+	Etag *string `json:"etag,omitempty"`
+}
+
+// AppConfigurationKeyValueModifiedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.AppConfiguration.KeyValueModified event.
+type AppConfigurationKeyValueModifiedEventData struct {
+	// Key - The key used to identify the key-value that was modified.
+	Key *string `json:"key,omitempty"`
+	// Label - The label, if any, used to identify the key-value that was modified.
+	Label *string `json:"label,omitempty"`
+	// Etag - The etag representing the new state of the key-value.
+	Etag *string `json:"etag,omitempty"`
+}
+
 // ContainerRegistryArtifactEventData the content of the event request message.
 type ContainerRegistryArtifactEventData struct {
 	// ID - The event ID.

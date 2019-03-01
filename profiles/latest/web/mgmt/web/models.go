@@ -931,6 +931,7 @@ type MSDeployLogProperties = original.MSDeployLogProperties
 type MSDeployStatus = original.MSDeployStatus
 type MSDeployStatusProperties = original.MSDeployStatusProperties
 type ManagedServiceIdentity = original.ManagedServiceIdentity
+type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type MetricAvailabilily = original.MetricAvailabilily
 type MetricAvailability = original.MetricAvailability
 type MetricDefinition = original.MetricDefinition

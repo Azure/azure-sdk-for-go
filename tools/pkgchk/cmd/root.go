@@ -247,6 +247,7 @@ func verifyDirectorySturcture(p pkg) error {
 	// /redis/mgmt/2015-08-01/redis
 	// /resources/mgmt/2017-06-01-preview/policy
 	// /preview/signalr/mgmt/2018-03-01-preview/signalr
+	// /preview/security/mgmt/v2.0/security (version scheme for composite packages)
 	if !p.isARMPkg() {
 		return nil
 	}
@@ -254,7 +255,7 @@ func verifyDirectorySturcture(p pkg) error {
 		`^(?:/preview)?`,
 		`[a-z0-9\-]+`,
 		`mgmt`,
-		`\d{4}-\d{2}-\d{2}(?:-preview)?`,
+		`(?:\d{4}-\d{2}-\d{2}(?:-preview)?)|(?:v\d{1,2}\.\d{1,2})`,
 		`[a-z0-9]+`,
 	}, "/")
 	regex := regexp.MustCompile(regexStr)

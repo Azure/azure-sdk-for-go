@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## `v26.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| mariadb | 2018-06-01 |
+| netapp | 2017-08-15 |
+| security | v2.0 |
+| translatortext | v3.0 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview |
+
+### Moved Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| security | 2017-08-01-preview -> v1.0 |
+
 ## `v26.1.0`
 
 ### New Packages

@@ -145,6 +145,8 @@ type ServicesClientAPI interface {
 	List(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result adhybridhealthservice.ServicesPage, err error)
 	ListAlertFeedback(ctx context.Context, serviceName string, shortName string) (result adhybridhealthservice.AlertFeedbacks, err error)
 	ListAlerts(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result adhybridhealthservice.AlertsPage, err error)
+	ListAllRiskyIPDownloadReport(ctx context.Context, serviceName string) (result adhybridhealthservice.RiskyIPBlobUris, err error)
+	ListCurrentRiskyIPDownloadReport(ctx context.Context, serviceName string) (result adhybridhealthservice.RiskyIPBlobUris, err error)
 	ListExportErrors(ctx context.Context, serviceName string) (result adhybridhealthservice.ErrorCounts, err error)
 	ListExportErrorsV2(ctx context.Context, serviceName string, errorBucket string) (result adhybridhealthservice.MergedExportErrors, err error)
 	ListExportStatus(ctx context.Context, serviceName string) (result adhybridhealthservice.ExportStatusesPage, err error)

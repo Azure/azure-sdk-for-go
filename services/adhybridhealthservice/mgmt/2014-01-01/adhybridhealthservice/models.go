@@ -2524,6 +2524,29 @@ type Result struct {
 	Value *bool `json:"value,omitempty"`
 }
 
+// RiskyIPBlobURI the blob uri pointing to Risky IP Report.
+type RiskyIPBlobURI struct {
+	// TenantID - The tenant id for whom the report belongs to.
+	TenantID *string `json:"tenantId,omitempty"`
+	// ServiceID - The service id for whom the report belongs to.
+	ServiceID *string `json:"serviceId,omitempty"`
+	// ResultSasURI - The blob uri for the report.
+	ResultSasURI *string `json:"resultSasUri,omitempty"`
+	// BlobCreateDateTime - Time at which the the new Risky IP report was requested.
+	BlobCreateDateTime *date.Time `json:"blobCreateDateTime,omitempty"`
+	// JobCompletionTime - Time at which the blob creation job for the new Risky IP report was completed.
+	JobCompletionTime *date.Time `json:"jobCompletionTime,omitempty"`
+	// Status - Status of the Risky IP report generation.
+	Status *string `json:"status,omitempty"`
+}
+
+// RiskyIPBlobUris the list containing blob uris.
+type RiskyIPBlobUris struct {
+	autorest.Response `json:"-"`
+	// Value - The list of blob uris.
+	Value *[]RiskyIPBlobURI `json:"value,omitempty"`
+}
+
 // RuleErrorInfo the error details in legacy rule processing.
 type RuleErrorInfo struct {
 	// AttributeMapping - The attribute mapping details.

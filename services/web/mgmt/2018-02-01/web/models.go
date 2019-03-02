@@ -10093,7 +10093,7 @@ type EnabledConfig struct {
 // EndpointDependency a domain name that a service is reached at, including details of the current
 // connection status.
 type EndpointDependency struct {
-	// DomainName - The Domain Name of the dependency.
+	// DomainName - The domain name of the dependency.
 	DomainName *string `json:"domainName,omitempty"`
 	// EndpointDetails - The IP Addresses and Ports used when connecting to DomainName.
 	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`

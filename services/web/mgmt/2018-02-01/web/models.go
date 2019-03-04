@@ -12258,8 +12258,34 @@ type ManagedServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalID - Principal Id of managed service identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// IdentityIds - Array of UserAssigned managed service identities.
-	IdentityIds *[]string `json:"identityIds,omitempty"`
+	// UserAssignedIdentities - The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
+	UserAssignedIdentities map[string]*ManagedServiceIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
+func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msi.Type != "" {
+		objectMap["type"] = msi.Type
+	}
+	if msi.TenantID != nil {
+		objectMap["tenantId"] = msi.TenantID
+	}
+	if msi.PrincipalID != nil {
+		objectMap["principalId"] = msi.PrincipalID
+	}
+	if msi.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
+// ManagedServiceIdentityUserAssignedIdentitiesValue ...
+type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
+	// PrincipalID - Principal Id of user assigned identity
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - Client Id of user assigned identity
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // MetricAvailabilily metric availability and retention.

@@ -1362,7 +1362,7 @@ type ManagedClusterAgentPoolProfile struct {
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// AvailabilityZones - Availability zones for nodes
+	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
 }
 
@@ -1392,7 +1392,7 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// AvailabilityZones - Availability zones for nodes
+	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
 }
 
@@ -1576,13 +1576,13 @@ type ManagedClusterProperties struct {
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty"`
 	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool `json:"enableRBAC,omitempty"`
-	// EnablePodSecurityPolicy - Whether to enable Kubernetes Pod security policy.
+	// EnablePodSecurityPolicy - (PREVIEW) Whether to enable Kubernetes Pod security policy.
 	EnablePodSecurityPolicy *bool `json:"enablePodSecurityPolicy,omitempty"`
 	// NetworkProfile - Profile of network configuration.
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
 	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
-	// APIServerAuthorizedIPRanges - Authorized IP Ranges to kubernetes API server.
+	// APIServerAuthorizedIPRanges - (PREVIEW) Authorized IP Ranges to kubernetes API server.
 	APIServerAuthorizedIPRanges *[]string `json:"apiServerAuthorizedIPRanges,omitempty"`
 }
 

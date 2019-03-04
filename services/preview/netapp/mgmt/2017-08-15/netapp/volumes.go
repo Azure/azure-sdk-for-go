@@ -44,11 +44,11 @@ func NewVolumesClientWithBaseURI(baseURI string, subscriptionID string) VolumesC
 // CreateOrUpdate create or update a volume
 // Parameters:
 // body - volume object supplied in the body of the operation.
-// resourceGroup - the name of the resource group.
+// resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, resourceGroup string, accountName string, poolName string, volumeName string) (result VolumesCreateOrUpdateFuture, err error) {
+func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, resourceGroupName string, accountName string, poolName string, volumeName string) (result VolumesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumesClient.CreateOrUpdate")
 		defer func() {
@@ -73,11 +73,15 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 							Chain: []validation.Constraint{{Target: "body.VolumeProperties.UsageThreshold", Name: validation.InclusiveMaximum, Rule: int64(109951162777600), Chain: nil},
 								{Target: "body.VolumeProperties.UsageThreshold", Name: validation.InclusiveMinimum, Rule: 107374182400, Chain: nil},
 							}},
-					}}}}}); err != nil {
+					}}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("netapp.VolumesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, body, resourceGroup, accountName, poolName, volumeName)
+	req, err := client.CreateOrUpdatePreparer(ctx, body, resourceGroupName, accountName, poolName, volumeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -93,13 +97,13 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Volume, resourceGroup string, accountName string, poolName string, volumeName string) (*http.Request, error) {
+func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Volume, resourceGroupName string, accountName string, poolName string, volumeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":    autorest.Encode("path", accountName),
-		"poolName":       autorest.Encode("path", poolName),
-		"resourceGroup":  autorest.Encode("path", resourceGroup),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"volumeName":     autorest.Encode("path", volumeName),
+		"accountName":       autorest.Encode("path", accountName),
+		"poolName":          autorest.Encode("path", poolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
 	const APIVersion = "2017-08-15"
@@ -111,7 +115,7 @@ func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Vol
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -145,11 +149,11 @@ func (client VolumesClient) CreateOrUpdateResponder(resp *http.Response) (result
 
 // Delete delete a volume
 // Parameters:
-// resourceGroup - the name of the resource group.
+// resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-func (client VolumesClient) Delete(ctx context.Context, resourceGroup string, accountName string, poolName string, volumeName string) (result VolumesDeleteFuture, err error) {
+func (client VolumesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string) (result VolumesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumesClient.Delete")
 		defer func() {
@@ -160,7 +164,15 @@ func (client VolumesClient) Delete(ctx context.Context, resourceGroup string, ac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroup, accountName, poolName, volumeName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.VolumesClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, poolName, volumeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -176,13 +188,13 @@ func (client VolumesClient) Delete(ctx context.Context, resourceGroup string, ac
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VolumesClient) DeletePreparer(ctx context.Context, resourceGroup string, accountName string, poolName string, volumeName string) (*http.Request, error) {
+func (client VolumesClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":    autorest.Encode("path", accountName),
-		"poolName":       autorest.Encode("path", poolName),
-		"resourceGroup":  autorest.Encode("path", resourceGroup),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"volumeName":     autorest.Encode("path", volumeName),
+		"accountName":       autorest.Encode("path", accountName),
+		"poolName":          autorest.Encode("path", poolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
 	const APIVersion = "2017-08-15"
@@ -193,7 +205,7 @@ func (client VolumesClient) DeletePreparer(ctx context.Context, resourceGroup st
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -225,11 +237,11 @@ func (client VolumesClient) DeleteResponder(resp *http.Response) (result autores
 
 // Get get a volume
 // Parameters:
-// resourceGroup - the name of the resource group.
+// resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-func (client VolumesClient) Get(ctx context.Context, resourceGroup string, accountName string, poolName string, volumeName string) (result Volume, err error) {
+func (client VolumesClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string) (result Volume, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumesClient.Get")
 		defer func() {
@@ -240,7 +252,15 @@ func (client VolumesClient) Get(ctx context.Context, resourceGroup string, accou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroup, accountName, poolName, volumeName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.VolumesClient", "Get", err.Error())
+	}
+
+	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, poolName, volumeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Get", nil, "Failure preparing request")
 		return
@@ -262,13 +282,13 @@ func (client VolumesClient) Get(ctx context.Context, resourceGroup string, accou
 }
 
 // GetPreparer prepares the Get request.
-func (client VolumesClient) GetPreparer(ctx context.Context, resourceGroup string, accountName string, poolName string, volumeName string) (*http.Request, error) {
+func (client VolumesClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":    autorest.Encode("path", accountName),
-		"poolName":       autorest.Encode("path", poolName),
-		"resourceGroup":  autorest.Encode("path", resourceGroup),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"volumeName":     autorest.Encode("path", volumeName),
+		"accountName":       autorest.Encode("path", accountName),
+		"poolName":          autorest.Encode("path", poolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
 	const APIVersion = "2017-08-15"
@@ -279,7 +299,7 @@ func (client VolumesClient) GetPreparer(ctx context.Context, resourceGroup strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -306,10 +326,10 @@ func (client VolumesClient) GetResponder(resp *http.Response) (result Volume, er
 
 // List list volumes
 // Parameters:
-// resourceGroup - the name of the resource group.
+// resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
-func (client VolumesClient) List(ctx context.Context, resourceGroup string, accountName string, poolName string) (result VolumeList, err error) {
+func (client VolumesClient) List(ctx context.Context, resourceGroupName string, accountName string, poolName string) (result VolumeList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumesClient.List")
 		defer func() {
@@ -320,7 +340,15 @@ func (client VolumesClient) List(ctx context.Context, resourceGroup string, acco
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, resourceGroup, accountName, poolName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.VolumesClient", "List", err.Error())
+	}
+
+	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, poolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "List", nil, "Failure preparing request")
 		return
@@ -342,12 +370,12 @@ func (client VolumesClient) List(ctx context.Context, resourceGroup string, acco
 }
 
 // ListPreparer prepares the List request.
-func (client VolumesClient) ListPreparer(ctx context.Context, resourceGroup string, accountName string, poolName string) (*http.Request, error) {
+func (client VolumesClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, poolName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":    autorest.Encode("path", accountName),
-		"poolName":       autorest.Encode("path", poolName),
-		"resourceGroup":  autorest.Encode("path", resourceGroup),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"poolName":          autorest.Encode("path", poolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-08-15"
@@ -358,7 +386,7 @@ func (client VolumesClient) ListPreparer(ctx context.Context, resourceGroup stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -386,11 +414,11 @@ func (client VolumesClient) ListResponder(resp *http.Response) (result VolumeLis
 // Update patch a volume
 // Parameters:
 // body - volume object supplied in the body of the operation.
-// resourceGroup - the name of the resource group.
+// resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-func (client VolumesClient) Update(ctx context.Context, body VolumePatch, resourceGroup string, accountName string, poolName string, volumeName string) (result Volume, err error) {
+func (client VolumesClient) Update(ctx context.Context, body VolumePatch, resourceGroupName string, accountName string, poolName string, volumeName string) (result Volume, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumesClient.Update")
 		defer func() {
@@ -401,7 +429,15 @@ func (client VolumesClient) Update(ctx context.Context, body VolumePatch, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, body, resourceGroup, accountName, poolName, volumeName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.VolumesClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, body, resourceGroupName, accountName, poolName, volumeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Update", nil, "Failure preparing request")
 		return
@@ -423,13 +459,13 @@ func (client VolumesClient) Update(ctx context.Context, body VolumePatch, resour
 }
 
 // UpdatePreparer prepares the Update request.
-func (client VolumesClient) UpdatePreparer(ctx context.Context, body VolumePatch, resourceGroup string, accountName string, poolName string, volumeName string) (*http.Request, error) {
+func (client VolumesClient) UpdatePreparer(ctx context.Context, body VolumePatch, resourceGroupName string, accountName string, poolName string, volumeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":    autorest.Encode("path", accountName),
-		"poolName":       autorest.Encode("path", poolName),
-		"resourceGroup":  autorest.Encode("path", resourceGroup),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"volumeName":     autorest.Encode("path", volumeName),
+		"accountName":       autorest.Encode("path", accountName),
+		"poolName":          autorest.Encode("path", poolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
 	const APIVersion = "2017-08-15"
@@ -441,7 +477,7 @@ func (client VolumesClient) UpdatePreparer(ctx context.Context, body VolumePatch
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -42,11 +43,11 @@ func NewMountTargetsClientWithBaseURI(baseURI string, subscriptionID string) Mou
 
 // List list mount targets
 // Parameters:
-// resourceGroup - the name of the resource group.
+// resourceGroupName - the name of the resource group.
 // accountName - the name of the NetApp account
 // poolName - the name of the capacity pool
 // volumeName - the name of the volume
-func (client MountTargetsClient) List(ctx context.Context, resourceGroup string, accountName string, poolName string, volumeName string) (result MountTargetList, err error) {
+func (client MountTargetsClient) List(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string) (result MountTargetList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MountTargetsClient.List")
 		defer func() {
@@ -57,7 +58,15 @@ func (client MountTargetsClient) List(ctx context.Context, resourceGroup string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, resourceGroup, accountName, poolName, volumeName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.MountTargetsClient", "List", err.Error())
+	}
+
+	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, poolName, volumeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.MountTargetsClient", "List", nil, "Failure preparing request")
 		return
@@ -79,13 +88,13 @@ func (client MountTargetsClient) List(ctx context.Context, resourceGroup string,
 }
 
 // ListPreparer prepares the List request.
-func (client MountTargetsClient) ListPreparer(ctx context.Context, resourceGroup string, accountName string, poolName string, volumeName string) (*http.Request, error) {
+func (client MountTargetsClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":    autorest.Encode("path", accountName),
-		"poolName":       autorest.Encode("path", poolName),
-		"resourceGroup":  autorest.Encode("path", resourceGroup),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"volumeName":     autorest.Encode("path", volumeName),
+		"accountName":       autorest.Encode("path", accountName),
+		"poolName":          autorest.Encode("path", poolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
 	const APIVersion = "2017-08-15"
@@ -96,7 +105,7 @@ func (client MountTargetsClient) ListPreparer(ctx context.Context, resourceGroup
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/mountTargets", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/mountTargets", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

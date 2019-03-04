@@ -372,6 +372,7 @@ type ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTier
 
 const (
 	ExpressRouteCircuitSkuTierBasic    ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierBasic
+	ExpressRouteCircuitSkuTierLocal    ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierLocal
 	ExpressRouteCircuitSkuTierPremium  ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierPremium
 	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
 )

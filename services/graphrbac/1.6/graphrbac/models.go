@@ -36,8 +36,12 @@ type ObjectType string
 const (
 	// ObjectTypeApplication ...
 	ObjectTypeApplication ObjectType = "Application"
+	// ObjectTypeApplicationBase ...
+	ObjectTypeApplicationBase ObjectType = "ApplicationBase"
 	// ObjectTypeApplicationCreateParameters ...
 	ObjectTypeApplicationCreateParameters ObjectType = "ApplicationCreateParameters"
+	// ObjectTypeApplicationUpdateParameters ...
+	ObjectTypeApplicationUpdateParameters ObjectType = "ApplicationUpdateParameters"
 	// ObjectTypeDirectoryObject ...
 	ObjectTypeDirectoryObject ObjectType = "DirectoryObject"
 	// ObjectTypeGroup ...
@@ -52,7 +56,7 @@ const (
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
 func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{ObjectTypeApplication, ObjectTypeApplicationCreateParameters, ObjectTypeDirectoryObject, ObjectTypeGroup, ObjectTypeServicePrincipal, ObjectTypeServicePrincipalCreateParameters, ObjectTypeUser}
+	return []ObjectType{ObjectTypeApplication, ObjectTypeApplicationBase, ObjectTypeApplicationCreateParameters, ObjectTypeApplicationUpdateParameters, ObjectTypeDirectoryObject, ObjectTypeGroup, ObjectTypeServicePrincipal, ObjectTypeServicePrincipalCreateParameters, ObjectTypeUser}
 }
 
 // UserType enumerates the values for user type.
@@ -145,7 +149,7 @@ type ADGroup struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -183,18 +187,28 @@ func (ag ADGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for ADGroup.
+func (ag ADGroup) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for ADGroup.
+func (ag ADGroup) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return nil, false
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for ADGroup.
 func (ag ADGroup) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return nil, false
 }
 
-// AsApplication is the BasicDirectoryObject implementation for ADGroup.
-func (ag ADGroup) AsApplication() (*Application, bool) {
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for ADGroup.
+func (ag ADGroup) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for ADGroup.
-func (ag ADGroup) AsBasicApplication() (BasicApplication, bool) {
+// AsApplication is the BasicDirectoryObject implementation for ADGroup.
+func (ag ADGroup) AsApplication() (*Application, bool) {
 	return nil, false
 }
 
@@ -332,21 +346,15 @@ func (ag *ADGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BasicApplication active Directory application information.
-type BasicApplication interface {
-	AsApplicationCreateParameters() (*ApplicationCreateParameters, bool)
-	AsApplication() (*Application, bool)
-}
-
 // Application active Directory application information.
 type Application struct {
 	autorest.Response `json:"-"`
+	// AppID - The application ID.
+	AppID *string `json:"appId,omitempty"`
 	// AllowGuestsSignIn - A property on the application to indicate if the application accepts other IDPs or not or partially accepts.
 	AllowGuestsSignIn *bool `json:"allowGuestsSignIn,omitempty"`
 	// AllowPassthroughUsers - Indicates that the application supports pass through users who have no presence in the resource tenant.
 	AllowPassthroughUsers *bool `json:"allowPassthroughUsers,omitempty"`
-	// AppID - The application ID.
-	AppID *string `json:"appId,omitempty"`
 	// AppLogoURL - The url for the application logo image stored in a CDN.
 	AppLogoURL *string `json:"appLogoUrl,omitempty"`
 	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
@@ -408,59 +416,22 @@ type Application struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
-}
-
-func unmarshalBasicApplication(body []byte) (BasicApplication, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["objectType"] {
-	case string(ObjectTypeApplicationCreateParameters):
-		var acp ApplicationCreateParameters
-		err := json.Unmarshal(body, &acp)
-		return acp, err
-	default:
-		var a Application
-		err := json.Unmarshal(body, &a)
-		return a, err
-	}
-}
-func unmarshalBasicApplicationArray(body []byte) ([]BasicApplication, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	aArray := make([]BasicApplication, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		a, err := unmarshalBasicApplication(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		aArray[index] = a
-	}
-	return aArray, nil
 }
 
 // MarshalJSON is the custom marshaler for Application.
 func (a Application) MarshalJSON() ([]byte, error) {
 	a.ObjectType = ObjectTypeApplication
 	objectMap := make(map[string]interface{})
+	if a.AppID != nil {
+		objectMap["appId"] = a.AppID
+	}
 	if a.AllowGuestsSignIn != nil {
 		objectMap["allowGuestsSignIn"] = a.AllowGuestsSignIn
 	}
 	if a.AllowPassthroughUsers != nil {
 		objectMap["allowPassthroughUsers"] = a.AllowPassthroughUsers
-	}
-	if a.AppID != nil {
-		objectMap["appId"] = a.AppID
 	}
 	if a.AppLogoURL != nil {
 		objectMap["appLogoUrl"] = a.AppLogoURL
@@ -561,18 +532,28 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for Application.
+func (a Application) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for Application.
+func (a Application) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return &a, true
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for Application.
 func (a Application) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return nil, false
 }
 
-// AsApplication is the BasicDirectoryObject implementation for Application.
-func (a Application) AsApplication() (*Application, bool) {
-	return &a, true
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for Application.
+func (a Application) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
+	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for Application.
-func (a Application) AsBasicApplication() (BasicApplication, bool) {
+// AsApplication is the BasicDirectoryObject implementation for Application.
+func (a Application) AsApplication() (*Application, bool) {
 	return &a, true
 }
 
@@ -620,6 +601,15 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "appId":
+			if v != nil {
+				var appID string
+				err = json.Unmarshal(*v, &appID)
+				if err != nil {
+					return err
+				}
+				a.AppID = &appID
+			}
 		case "allowGuestsSignIn":
 			if v != nil {
 				var allowGuestsSignIn bool
@@ -637,15 +627,6 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.AllowPassthroughUsers = &allowPassthroughUsers
-			}
-		case "appId":
-			if v != nil {
-				var appID string
-				err = json.Unmarshal(*v, &appID)
-				if err != nil {
-					return err
-				}
-				a.AppID = &appID
 			}
 		case "appLogoUrl":
 			if v != nil {
@@ -944,14 +925,20 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ApplicationCreateParameters request parameters for creating a new application.
-type ApplicationCreateParameters struct {
+// BasicApplicationBase common properties used by GET, POST and PATCH
+type BasicApplicationBase interface {
+	AsApplicationCreateParameters() (*ApplicationCreateParameters, bool)
+	AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool)
+	AsApplication() (*Application, bool)
+	AsApplicationBase() (*ApplicationBase, bool)
+}
+
+// ApplicationBase common properties used by GET, POST and PATCH
+type ApplicationBase struct {
 	// AllowGuestsSignIn - A property on the application to indicate if the application accepts other IDPs or not or partially accepts.
 	AllowGuestsSignIn *bool `json:"allowGuestsSignIn,omitempty"`
 	// AllowPassthroughUsers - Indicates that the application supports pass through users who have no presence in the resource tenant.
 	AllowPassthroughUsers *bool `json:"allowPassthroughUsers,omitempty"`
-	// AppID - The application ID.
-	AppID *string `json:"appId,omitempty"`
 	// AppLogoURL - The url for the application logo image stored in a CDN.
 	AppLogoURL *string `json:"appLogoUrl,omitempty"`
 	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
@@ -1013,7 +1000,616 @@ type ApplicationCreateParameters struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	ObjectType ObjectType `json:"objectType,omitempty"`
+}
+
+func unmarshalBasicApplicationBase(body []byte) (BasicApplicationBase, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["objectType"] {
+	case string(ObjectTypeApplicationCreateParameters):
+		var acp ApplicationCreateParameters
+		err := json.Unmarshal(body, &acp)
+		return acp, err
+	case string(ObjectTypeApplicationUpdateParameters):
+		var aup ApplicationUpdateParameters
+		err := json.Unmarshal(body, &aup)
+		return aup, err
+	case string(ObjectTypeApplication):
+		var a Application
+		err := json.Unmarshal(body, &a)
+		return a, err
+	default:
+		var ab ApplicationBase
+		err := json.Unmarshal(body, &ab)
+		return ab, err
+	}
+}
+func unmarshalBasicApplicationBaseArray(body []byte) ([]BasicApplicationBase, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	abArray := make([]BasicApplicationBase, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ab, err := unmarshalBasicApplicationBase(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		abArray[index] = ab
+	}
+	return abArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ApplicationBase.
+func (ab ApplicationBase) MarshalJSON() ([]byte, error) {
+	ab.ObjectType = ObjectTypeApplicationBase
+	objectMap := make(map[string]interface{})
+	if ab.AllowGuestsSignIn != nil {
+		objectMap["allowGuestsSignIn"] = ab.AllowGuestsSignIn
+	}
+	if ab.AllowPassthroughUsers != nil {
+		objectMap["allowPassthroughUsers"] = ab.AllowPassthroughUsers
+	}
+	if ab.AppLogoURL != nil {
+		objectMap["appLogoUrl"] = ab.AppLogoURL
+	}
+	if ab.AppRoles != nil {
+		objectMap["appRoles"] = ab.AppRoles
+	}
+	if ab.AppPermissions != nil {
+		objectMap["appPermissions"] = ab.AppPermissions
+	}
+	if ab.AvailableToOtherTenants != nil {
+		objectMap["availableToOtherTenants"] = ab.AvailableToOtherTenants
+	}
+	if ab.DisplayName != nil {
+		objectMap["displayName"] = ab.DisplayName
+	}
+	if ab.ErrorURL != nil {
+		objectMap["errorUrl"] = ab.ErrorURL
+	}
+	if ab.Homepage != nil {
+		objectMap["homepage"] = ab.Homepage
+	}
+	if ab.IdentifierUris != nil {
+		objectMap["identifierUris"] = ab.IdentifierUris
+	}
+	if ab.InformationalUrls != nil {
+		objectMap["informationalUrls"] = ab.InformationalUrls
+	}
+	if ab.IsDeviceOnlyAuthSupported != nil {
+		objectMap["isDeviceOnlyAuthSupported"] = ab.IsDeviceOnlyAuthSupported
+	}
+	if ab.KeyCredentials != nil {
+		objectMap["keyCredentials"] = ab.KeyCredentials
+	}
+	if ab.KnownClientApplications != nil {
+		objectMap["knownClientApplications"] = ab.KnownClientApplications
+	}
+	if ab.LogoutURL != nil {
+		objectMap["logoutUrl"] = ab.LogoutURL
+	}
+	if ab.Oauth2AllowImplicitFlow != nil {
+		objectMap["oauth2AllowImplicitFlow"] = ab.Oauth2AllowImplicitFlow
+	}
+	if ab.Oauth2AllowURLPathMatching != nil {
+		objectMap["oauth2AllowUrlPathMatching"] = ab.Oauth2AllowURLPathMatching
+	}
+	if ab.Oauth2Permissions != nil {
+		objectMap["oauth2Permissions"] = ab.Oauth2Permissions
+	}
+	if ab.Oauth2RequirePostResponse != nil {
+		objectMap["oauth2RequirePostResponse"] = ab.Oauth2RequirePostResponse
+	}
+	if ab.OrgRestrictions != nil {
+		objectMap["orgRestrictions"] = ab.OrgRestrictions
+	}
+	if ab.OptionalClaims != nil {
+		objectMap["optionalClaims"] = ab.OptionalClaims
+	}
+	if ab.PasswordCredentials != nil {
+		objectMap["passwordCredentials"] = ab.PasswordCredentials
+	}
+	if ab.PreAuthorizedApplications != nil {
+		objectMap["preAuthorizedApplications"] = ab.PreAuthorizedApplications
+	}
+	if ab.PublicClient != nil {
+		objectMap["publicClient"] = ab.PublicClient
+	}
+	if ab.PublisherDomain != nil {
+		objectMap["publisherDomain"] = ab.PublisherDomain
+	}
+	if ab.ReplyUrls != nil {
+		objectMap["replyUrls"] = ab.ReplyUrls
+	}
+	if ab.RequiredResourceAccess != nil {
+		objectMap["requiredResourceAccess"] = ab.RequiredResourceAccess
+	}
+	if ab.SamlMetadataURL != nil {
+		objectMap["samlMetadataUrl"] = ab.SamlMetadataURL
+	}
+	if ab.SignInAudience != nil {
+		objectMap["signInAudience"] = ab.SignInAudience
+	}
+	if ab.WwwHomepage != nil {
+		objectMap["wwwHomepage"] = ab.WwwHomepage
+	}
+	if ab.ObjectID != nil {
+		objectMap["objectId"] = ab.ObjectID
+	}
+	if ab.DeletionTimestamp != nil {
+		objectMap["deletionTimestamp"] = ab.DeletionTimestamp
+	}
+	if ab.ObjectType != "" {
+		objectMap["objectType"] = ab.ObjectType
+	}
+	for k, v := range ab.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsApplicationBase is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsApplicationBase() (*ApplicationBase, bool) {
+	return &ab, true
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return &ab, true
+}
+
+// AsApplicationCreateParameters is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
+	return nil, false
+}
+
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsApplication is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsADGroup is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsADGroup() (*ADGroup, bool) {
+	return nil, false
+}
+
+// AsServicePrincipalCreateParameters is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsServicePrincipalCreateParameters() (*ServicePrincipalCreateParameters, bool) {
+	return nil, false
+}
+
+// AsServicePrincipal is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsServicePrincipal() (*ServicePrincipal, bool) {
+	return nil, false
+}
+
+// AsBasicServicePrincipal is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsBasicServicePrincipal() (BasicServicePrincipal, bool) {
+	return nil, false
+}
+
+// AsUser is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsUser() (*User, bool) {
+	return nil, false
+}
+
+// AsDirectoryObject is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsDirectoryObject() (*DirectoryObject, bool) {
+	return nil, false
+}
+
+// AsBasicDirectoryObject is the BasicDirectoryObject implementation for ApplicationBase.
+func (ab ApplicationBase) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
+	return &ab, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationBase struct.
+func (ab *ApplicationBase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "allowGuestsSignIn":
+			if v != nil {
+				var allowGuestsSignIn bool
+				err = json.Unmarshal(*v, &allowGuestsSignIn)
+				if err != nil {
+					return err
+				}
+				ab.AllowGuestsSignIn = &allowGuestsSignIn
+			}
+		case "allowPassthroughUsers":
+			if v != nil {
+				var allowPassthroughUsers bool
+				err = json.Unmarshal(*v, &allowPassthroughUsers)
+				if err != nil {
+					return err
+				}
+				ab.AllowPassthroughUsers = &allowPassthroughUsers
+			}
+		case "appLogoUrl":
+			if v != nil {
+				var appLogoURL string
+				err = json.Unmarshal(*v, &appLogoURL)
+				if err != nil {
+					return err
+				}
+				ab.AppLogoURL = &appLogoURL
+			}
+		case "appRoles":
+			if v != nil {
+				var appRoles []AppRole
+				err = json.Unmarshal(*v, &appRoles)
+				if err != nil {
+					return err
+				}
+				ab.AppRoles = &appRoles
+			}
+		case "appPermissions":
+			if v != nil {
+				var appPermissions []string
+				err = json.Unmarshal(*v, &appPermissions)
+				if err != nil {
+					return err
+				}
+				ab.AppPermissions = &appPermissions
+			}
+		case "availableToOtherTenants":
+			if v != nil {
+				var availableToOtherTenants bool
+				err = json.Unmarshal(*v, &availableToOtherTenants)
+				if err != nil {
+					return err
+				}
+				ab.AvailableToOtherTenants = &availableToOtherTenants
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				ab.DisplayName = &displayName
+			}
+		case "errorUrl":
+			if v != nil {
+				var errorURL string
+				err = json.Unmarshal(*v, &errorURL)
+				if err != nil {
+					return err
+				}
+				ab.ErrorURL = &errorURL
+			}
+		case "homepage":
+			if v != nil {
+				var homepage string
+				err = json.Unmarshal(*v, &homepage)
+				if err != nil {
+					return err
+				}
+				ab.Homepage = &homepage
+			}
+		case "identifierUris":
+			if v != nil {
+				var identifierUris []string
+				err = json.Unmarshal(*v, &identifierUris)
+				if err != nil {
+					return err
+				}
+				ab.IdentifierUris = &identifierUris
+			}
+		case "informationalUrls":
+			if v != nil {
+				var informationalUrls InformationalURL
+				err = json.Unmarshal(*v, &informationalUrls)
+				if err != nil {
+					return err
+				}
+				ab.InformationalUrls = &informationalUrls
+			}
+		case "isDeviceOnlyAuthSupported":
+			if v != nil {
+				var isDeviceOnlyAuthSupported bool
+				err = json.Unmarshal(*v, &isDeviceOnlyAuthSupported)
+				if err != nil {
+					return err
+				}
+				ab.IsDeviceOnlyAuthSupported = &isDeviceOnlyAuthSupported
+			}
+		case "keyCredentials":
+			if v != nil {
+				var keyCredentials []KeyCredential
+				err = json.Unmarshal(*v, &keyCredentials)
+				if err != nil {
+					return err
+				}
+				ab.KeyCredentials = &keyCredentials
+			}
+		case "knownClientApplications":
+			if v != nil {
+				var knownClientApplications []string
+				err = json.Unmarshal(*v, &knownClientApplications)
+				if err != nil {
+					return err
+				}
+				ab.KnownClientApplications = &knownClientApplications
+			}
+		case "logoutUrl":
+			if v != nil {
+				var logoutURL string
+				err = json.Unmarshal(*v, &logoutURL)
+				if err != nil {
+					return err
+				}
+				ab.LogoutURL = &logoutURL
+			}
+		case "oauth2AllowImplicitFlow":
+			if v != nil {
+				var oauth2AllowImplicitFlow bool
+				err = json.Unmarshal(*v, &oauth2AllowImplicitFlow)
+				if err != nil {
+					return err
+				}
+				ab.Oauth2AllowImplicitFlow = &oauth2AllowImplicitFlow
+			}
+		case "oauth2AllowUrlPathMatching":
+			if v != nil {
+				var oauth2AllowURLPathMatching bool
+				err = json.Unmarshal(*v, &oauth2AllowURLPathMatching)
+				if err != nil {
+					return err
+				}
+				ab.Oauth2AllowURLPathMatching = &oauth2AllowURLPathMatching
+			}
+		case "oauth2Permissions":
+			if v != nil {
+				var oauth2Permissions []OAuth2Permission
+				err = json.Unmarshal(*v, &oauth2Permissions)
+				if err != nil {
+					return err
+				}
+				ab.Oauth2Permissions = &oauth2Permissions
+			}
+		case "oauth2RequirePostResponse":
+			if v != nil {
+				var oauth2RequirePostResponse bool
+				err = json.Unmarshal(*v, &oauth2RequirePostResponse)
+				if err != nil {
+					return err
+				}
+				ab.Oauth2RequirePostResponse = &oauth2RequirePostResponse
+			}
+		case "orgRestrictions":
+			if v != nil {
+				var orgRestrictions []string
+				err = json.Unmarshal(*v, &orgRestrictions)
+				if err != nil {
+					return err
+				}
+				ab.OrgRestrictions = &orgRestrictions
+			}
+		case "optionalClaims":
+			if v != nil {
+				var optionalClaims OptionalClaims
+				err = json.Unmarshal(*v, &optionalClaims)
+				if err != nil {
+					return err
+				}
+				ab.OptionalClaims = &optionalClaims
+			}
+		case "passwordCredentials":
+			if v != nil {
+				var passwordCredentials []PasswordCredential
+				err = json.Unmarshal(*v, &passwordCredentials)
+				if err != nil {
+					return err
+				}
+				ab.PasswordCredentials = &passwordCredentials
+			}
+		case "preAuthorizedApplications":
+			if v != nil {
+				var preAuthorizedApplications []PreAuthorizedApplication
+				err = json.Unmarshal(*v, &preAuthorizedApplications)
+				if err != nil {
+					return err
+				}
+				ab.PreAuthorizedApplications = &preAuthorizedApplications
+			}
+		case "publicClient":
+			if v != nil {
+				var publicClient bool
+				err = json.Unmarshal(*v, &publicClient)
+				if err != nil {
+					return err
+				}
+				ab.PublicClient = &publicClient
+			}
+		case "publisherDomain":
+			if v != nil {
+				var publisherDomain string
+				err = json.Unmarshal(*v, &publisherDomain)
+				if err != nil {
+					return err
+				}
+				ab.PublisherDomain = &publisherDomain
+			}
+		case "replyUrls":
+			if v != nil {
+				var replyUrls []string
+				err = json.Unmarshal(*v, &replyUrls)
+				if err != nil {
+					return err
+				}
+				ab.ReplyUrls = &replyUrls
+			}
+		case "requiredResourceAccess":
+			if v != nil {
+				var requiredResourceAccess []RequiredResourceAccess
+				err = json.Unmarshal(*v, &requiredResourceAccess)
+				if err != nil {
+					return err
+				}
+				ab.RequiredResourceAccess = &requiredResourceAccess
+			}
+		case "samlMetadataUrl":
+			if v != nil {
+				var samlMetadataURL string
+				err = json.Unmarshal(*v, &samlMetadataURL)
+				if err != nil {
+					return err
+				}
+				ab.SamlMetadataURL = &samlMetadataURL
+			}
+		case "signInAudience":
+			if v != nil {
+				var signInAudience string
+				err = json.Unmarshal(*v, &signInAudience)
+				if err != nil {
+					return err
+				}
+				ab.SignInAudience = &signInAudience
+			}
+		case "wwwHomepage":
+			if v != nil {
+				var wwwHomepage string
+				err = json.Unmarshal(*v, &wwwHomepage)
+				if err != nil {
+					return err
+				}
+				ab.WwwHomepage = &wwwHomepage
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ab.AdditionalProperties == nil {
+					ab.AdditionalProperties = make(map[string]interface{})
+				}
+				ab.AdditionalProperties[k] = additionalProperties
+			}
+		case "objectId":
+			if v != nil {
+				var objectID string
+				err = json.Unmarshal(*v, &objectID)
+				if err != nil {
+					return err
+				}
+				ab.ObjectID = &objectID
+			}
+		case "deletionTimestamp":
+			if v != nil {
+				var deletionTimestamp date.Time
+				err = json.Unmarshal(*v, &deletionTimestamp)
+				if err != nil {
+					return err
+				}
+				ab.DeletionTimestamp = &deletionTimestamp
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectType
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				ab.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
+}
+
+// ApplicationCreateParameters request parameters for creating a new application.
+type ApplicationCreateParameters struct {
+	// AllowGuestsSignIn - A property on the application to indicate if the application accepts other IDPs or not or partially accepts.
+	AllowGuestsSignIn *bool `json:"allowGuestsSignIn,omitempty"`
+	// AllowPassthroughUsers - Indicates that the application supports pass through users who have no presence in the resource tenant.
+	AllowPassthroughUsers *bool `json:"allowPassthroughUsers,omitempty"`
+	// AppLogoURL - The url for the application logo image stored in a CDN.
+	AppLogoURL *string `json:"appLogoUrl,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
+	// AppPermissions - The application permissions.
+	AppPermissions *[]string `json:"appPermissions,omitempty"`
+	// AvailableToOtherTenants - Whether the application is available to other tenants.
+	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
+	// DisplayName - The display name of the application.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
+	ErrorURL *string `json:"errorUrl,omitempty"`
+	// Homepage - The home page of the application.
+	Homepage *string `json:"homepage,omitempty"`
+	// IdentifierUris - A collection of URIs for the application.
+	IdentifierUris *[]string `json:"identifierUris,omitempty"`
+	// InformationalUrls - urls with more informations of the application.
+	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
+	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
+	IsDeviceOnlyAuthSupported *bool `json:"isDeviceOnlyAuthSupported,omitempty"`
+	// KeyCredentials - A collection of KeyCredential objects.
+	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
+	// KnownClientApplications - Client applications that are tied to this resource application. Consent to any of the known client applications will result in implicit consent to the resource application through a combined consent dialog (showing the OAuth permission scopes required by the client and the resource).
+	KnownClientApplications *[]string `json:"knownClientApplications,omitempty"`
+	// LogoutURL - the url of the logout page
+	LogoutURL *string `json:"logoutUrl,omitempty"`
+	// Oauth2AllowImplicitFlow - Whether to allow implicit grant flow for OAuth2
+	Oauth2AllowImplicitFlow *bool `json:"oauth2AllowImplicitFlow,omitempty"`
+	// Oauth2AllowURLPathMatching - Specifies whether during a token Request Azure AD will allow path matching of the redirect URI against the applications collection of replyURLs. The default is false.
+	Oauth2AllowURLPathMatching *bool `json:"oauth2AllowUrlPathMatching,omitempty"`
+	// Oauth2Permissions - The collection of OAuth 2.0 permission scopes that the web API (resource) application exposes to client applications. These permission scopes may be granted to client applications during consent.
+	Oauth2Permissions *[]OAuth2Permission `json:"oauth2Permissions,omitempty"`
+	// Oauth2RequirePostResponse - Specifies whether, as part of OAuth 2.0 token requests, Azure AD will allow POST requests, as opposed to GET requests. The default is false, which specifies that only GET requests will be allowed.
+	Oauth2RequirePostResponse *bool `json:"oauth2RequirePostResponse,omitempty"`
+	// OrgRestrictions - A list of tenants allowed to access application.
+	OrgRestrictions *[]string       `json:"orgRestrictions,omitempty"`
+	OptionalClaims  *OptionalClaims `json:"optionalClaims,omitempty"`
+	// PasswordCredentials - A collection of PasswordCredential objects
+	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	// PreAuthorizedApplications - list of pre-authorizaed applications.
+	PreAuthorizedApplications *[]PreAuthorizedApplication `json:"preAuthorizedApplications,omitempty"`
+	// PublicClient - Specifies whether this application is a public client (such as an installed application running on a mobile device). Default is false.
+	PublicClient *bool `json:"publicClient,omitempty"`
+	// PublisherDomain - Reliable domain which can be used to identify an application.
+	PublisherDomain *string `json:"publisherDomain,omitempty"`
+	// ReplyUrls - A collection of reply URLs for the application.
+	ReplyUrls *[]string `json:"replyUrls,omitempty"`
+	// RequiredResourceAccess - Specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
+	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
+	// SamlMetadataURL - The URL to the SAML metadata for the application.
+	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
+	// SignInAudience - Audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+	SignInAudience *string `json:"signInAudience,omitempty"`
+	// WwwHomepage - The primary Web page.
+	WwwHomepage *string `json:"wwwHomepage,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ObjectID - The object ID.
+	ObjectID *string `json:"objectId,omitempty"`
+	// DeletionTimestamp - The time at which the directory object was deleted.
+	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -1026,9 +1622,6 @@ func (acp ApplicationCreateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if acp.AllowPassthroughUsers != nil {
 		objectMap["allowPassthroughUsers"] = acp.AllowPassthroughUsers
-	}
-	if acp.AppID != nil {
-		objectMap["appId"] = acp.AppID
 	}
 	if acp.AppLogoURL != nil {
 		objectMap["appLogoUrl"] = acp.AppLogoURL
@@ -1129,19 +1722,29 @@ func (acp ApplicationCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for ApplicationCreateParameters.
+func (acp ApplicationCreateParameters) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for ApplicationCreateParameters.
+func (acp ApplicationCreateParameters) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return &acp, true
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for ApplicationCreateParameters.
 func (acp ApplicationCreateParameters) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return &acp, true
 }
 
-// AsApplication is the BasicDirectoryObject implementation for ApplicationCreateParameters.
-func (acp ApplicationCreateParameters) AsApplication() (*Application, bool) {
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for ApplicationCreateParameters.
+func (acp ApplicationCreateParameters) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for ApplicationCreateParameters.
-func (acp ApplicationCreateParameters) AsBasicApplication() (BasicApplication, bool) {
-	return &acp, true
+// AsApplication is the BasicDirectoryObject implementation for ApplicationCreateParameters.
+func (acp ApplicationCreateParameters) AsApplication() (*Application, bool) {
+	return nil, false
 }
 
 // AsADGroup is the BasicDirectoryObject implementation for ApplicationCreateParameters.
@@ -1205,15 +1808,6 @@ func (acp *ApplicationCreateParameters) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				acp.AllowPassthroughUsers = &allowPassthroughUsers
-			}
-		case "appId":
-			if v != nil {
-				var appID string
-				err = json.Unmarshal(*v, &appID)
-				if err != nil {
-					return err
-				}
-				acp.AppID = &appID
 			}
 		case "appLogoUrl":
 			if v != nil {
@@ -1516,41 +2110,9 @@ func (acp *ApplicationCreateParameters) UnmarshalJSON(body []byte) error {
 type ApplicationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - A collection of applications.
-	Value *[]BasicApplication `json:"value,omitempty"`
+	Value *[]Application `json:"value,omitempty"`
 	// OdataNextLink - The URL to get the next set of results.
 	OdataNextLink *string `json:"odata.nextLink,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for ApplicationListResult struct.
-func (alr *ApplicationListResult) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "value":
-			if v != nil {
-				value, err := unmarshalBasicApplicationArray(*v)
-				if err != nil {
-					return err
-				}
-				alr.Value = &value
-			}
-		case "odata.nextLink":
-			if v != nil {
-				var odataNextLink string
-				err = json.Unmarshal(*v, &odataNextLink)
-				if err != nil {
-					return err
-				}
-				alr.OdataNextLink = &odataNextLink
-			}
-		}
-	}
-
-	return nil
 }
 
 // ApplicationListResultIterator provides access to a complete listing of Application values.
@@ -1604,7 +2166,7 @@ func (iter ApplicationListResultIterator) Response() ApplicationListResult {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ApplicationListResultIterator) Value() BasicApplication {
+func (iter ApplicationListResultIterator) Value() Application {
 	if !iter.page.NotDone() {
 		return Application{}
 	}
@@ -1621,7 +2183,7 @@ func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
-// ApplicationListResultPage contains a page of BasicApplication values.
+// ApplicationListResultPage contains a page of Application values.
 type ApplicationListResultPage struct {
 	fn  func(context.Context, ApplicationListResult) (ApplicationListResult, error)
 	alr ApplicationListResult
@@ -1666,7 +2228,7 @@ func (page ApplicationListResultPage) Response() ApplicationListResult {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ApplicationListResultPage) Values() []BasicApplication {
+func (page ApplicationListResultPage) Values() []Application {
 	if page.alr.IsEmpty() {
 		return nil
 	}
@@ -1676,6 +2238,570 @@ func (page ApplicationListResultPage) Values() []BasicApplication {
 // Creates a new instance of the ApplicationListResultPage type.
 func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
 	return ApplicationListResultPage{fn: getNextPage}
+}
+
+// ApplicationUpdateParameters request parameters for updating a new application.
+type ApplicationUpdateParameters struct {
+	// AllowGuestsSignIn - A property on the application to indicate if the application accepts other IDPs or not or partially accepts.
+	AllowGuestsSignIn *bool `json:"allowGuestsSignIn,omitempty"`
+	// AllowPassthroughUsers - Indicates that the application supports pass through users who have no presence in the resource tenant.
+	AllowPassthroughUsers *bool `json:"allowPassthroughUsers,omitempty"`
+	// AppLogoURL - The url for the application logo image stored in a CDN.
+	AppLogoURL *string `json:"appLogoUrl,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
+	// AppPermissions - The application permissions.
+	AppPermissions *[]string `json:"appPermissions,omitempty"`
+	// AvailableToOtherTenants - Whether the application is available to other tenants.
+	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
+	// DisplayName - The display name of the application.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
+	ErrorURL *string `json:"errorUrl,omitempty"`
+	// Homepage - The home page of the application.
+	Homepage *string `json:"homepage,omitempty"`
+	// IdentifierUris - A collection of URIs for the application.
+	IdentifierUris *[]string `json:"identifierUris,omitempty"`
+	// InformationalUrls - urls with more informations of the application.
+	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
+	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
+	IsDeviceOnlyAuthSupported *bool `json:"isDeviceOnlyAuthSupported,omitempty"`
+	// KeyCredentials - A collection of KeyCredential objects.
+	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
+	// KnownClientApplications - Client applications that are tied to this resource application. Consent to any of the known client applications will result in implicit consent to the resource application through a combined consent dialog (showing the OAuth permission scopes required by the client and the resource).
+	KnownClientApplications *[]string `json:"knownClientApplications,omitempty"`
+	// LogoutURL - the url of the logout page
+	LogoutURL *string `json:"logoutUrl,omitempty"`
+	// Oauth2AllowImplicitFlow - Whether to allow implicit grant flow for OAuth2
+	Oauth2AllowImplicitFlow *bool `json:"oauth2AllowImplicitFlow,omitempty"`
+	// Oauth2AllowURLPathMatching - Specifies whether during a token Request Azure AD will allow path matching of the redirect URI against the applications collection of replyURLs. The default is false.
+	Oauth2AllowURLPathMatching *bool `json:"oauth2AllowUrlPathMatching,omitempty"`
+	// Oauth2Permissions - The collection of OAuth 2.0 permission scopes that the web API (resource) application exposes to client applications. These permission scopes may be granted to client applications during consent.
+	Oauth2Permissions *[]OAuth2Permission `json:"oauth2Permissions,omitempty"`
+	// Oauth2RequirePostResponse - Specifies whether, as part of OAuth 2.0 token requests, Azure AD will allow POST requests, as opposed to GET requests. The default is false, which specifies that only GET requests will be allowed.
+	Oauth2RequirePostResponse *bool `json:"oauth2RequirePostResponse,omitempty"`
+	// OrgRestrictions - A list of tenants allowed to access application.
+	OrgRestrictions *[]string       `json:"orgRestrictions,omitempty"`
+	OptionalClaims  *OptionalClaims `json:"optionalClaims,omitempty"`
+	// PasswordCredentials - A collection of PasswordCredential objects
+	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	// PreAuthorizedApplications - list of pre-authorizaed applications.
+	PreAuthorizedApplications *[]PreAuthorizedApplication `json:"preAuthorizedApplications,omitempty"`
+	// PublicClient - Specifies whether this application is a public client (such as an installed application running on a mobile device). Default is false.
+	PublicClient *bool `json:"publicClient,omitempty"`
+	// PublisherDomain - Reliable domain which can be used to identify an application.
+	PublisherDomain *string `json:"publisherDomain,omitempty"`
+	// ReplyUrls - A collection of reply URLs for the application.
+	ReplyUrls *[]string `json:"replyUrls,omitempty"`
+	// RequiredResourceAccess - Specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
+	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
+	// SamlMetadataURL - The URL to the SAML metadata for the application.
+	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
+	// SignInAudience - Audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+	SignInAudience *string `json:"signInAudience,omitempty"`
+	// WwwHomepage - The primary Web page.
+	WwwHomepage *string `json:"wwwHomepage,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ObjectID - The object ID.
+	ObjectID *string `json:"objectId,omitempty"`
+	// DeletionTimestamp - The time at which the directory object was deleted.
+	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	ObjectType ObjectType `json:"objectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
+	aup.ObjectType = ObjectTypeApplicationUpdateParameters
+	objectMap := make(map[string]interface{})
+	if aup.AllowGuestsSignIn != nil {
+		objectMap["allowGuestsSignIn"] = aup.AllowGuestsSignIn
+	}
+	if aup.AllowPassthroughUsers != nil {
+		objectMap["allowPassthroughUsers"] = aup.AllowPassthroughUsers
+	}
+	if aup.AppLogoURL != nil {
+		objectMap["appLogoUrl"] = aup.AppLogoURL
+	}
+	if aup.AppRoles != nil {
+		objectMap["appRoles"] = aup.AppRoles
+	}
+	if aup.AppPermissions != nil {
+		objectMap["appPermissions"] = aup.AppPermissions
+	}
+	if aup.AvailableToOtherTenants != nil {
+		objectMap["availableToOtherTenants"] = aup.AvailableToOtherTenants
+	}
+	if aup.DisplayName != nil {
+		objectMap["displayName"] = aup.DisplayName
+	}
+	if aup.ErrorURL != nil {
+		objectMap["errorUrl"] = aup.ErrorURL
+	}
+	if aup.Homepage != nil {
+		objectMap["homepage"] = aup.Homepage
+	}
+	if aup.IdentifierUris != nil {
+		objectMap["identifierUris"] = aup.IdentifierUris
+	}
+	if aup.InformationalUrls != nil {
+		objectMap["informationalUrls"] = aup.InformationalUrls
+	}
+	if aup.IsDeviceOnlyAuthSupported != nil {
+		objectMap["isDeviceOnlyAuthSupported"] = aup.IsDeviceOnlyAuthSupported
+	}
+	if aup.KeyCredentials != nil {
+		objectMap["keyCredentials"] = aup.KeyCredentials
+	}
+	if aup.KnownClientApplications != nil {
+		objectMap["knownClientApplications"] = aup.KnownClientApplications
+	}
+	if aup.LogoutURL != nil {
+		objectMap["logoutUrl"] = aup.LogoutURL
+	}
+	if aup.Oauth2AllowImplicitFlow != nil {
+		objectMap["oauth2AllowImplicitFlow"] = aup.Oauth2AllowImplicitFlow
+	}
+	if aup.Oauth2AllowURLPathMatching != nil {
+		objectMap["oauth2AllowUrlPathMatching"] = aup.Oauth2AllowURLPathMatching
+	}
+	if aup.Oauth2Permissions != nil {
+		objectMap["oauth2Permissions"] = aup.Oauth2Permissions
+	}
+	if aup.Oauth2RequirePostResponse != nil {
+		objectMap["oauth2RequirePostResponse"] = aup.Oauth2RequirePostResponse
+	}
+	if aup.OrgRestrictions != nil {
+		objectMap["orgRestrictions"] = aup.OrgRestrictions
+	}
+	if aup.OptionalClaims != nil {
+		objectMap["optionalClaims"] = aup.OptionalClaims
+	}
+	if aup.PasswordCredentials != nil {
+		objectMap["passwordCredentials"] = aup.PasswordCredentials
+	}
+	if aup.PreAuthorizedApplications != nil {
+		objectMap["preAuthorizedApplications"] = aup.PreAuthorizedApplications
+	}
+	if aup.PublicClient != nil {
+		objectMap["publicClient"] = aup.PublicClient
+	}
+	if aup.PublisherDomain != nil {
+		objectMap["publisherDomain"] = aup.PublisherDomain
+	}
+	if aup.ReplyUrls != nil {
+		objectMap["replyUrls"] = aup.ReplyUrls
+	}
+	if aup.RequiredResourceAccess != nil {
+		objectMap["requiredResourceAccess"] = aup.RequiredResourceAccess
+	}
+	if aup.SamlMetadataURL != nil {
+		objectMap["samlMetadataUrl"] = aup.SamlMetadataURL
+	}
+	if aup.SignInAudience != nil {
+		objectMap["signInAudience"] = aup.SignInAudience
+	}
+	if aup.WwwHomepage != nil {
+		objectMap["wwwHomepage"] = aup.WwwHomepage
+	}
+	if aup.ObjectID != nil {
+		objectMap["objectId"] = aup.ObjectID
+	}
+	if aup.DeletionTimestamp != nil {
+		objectMap["deletionTimestamp"] = aup.DeletionTimestamp
+	}
+	if aup.ObjectType != "" {
+		objectMap["objectType"] = aup.ObjectType
+	}
+	for k, v := range aup.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsApplicationBase is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return &aup, true
+}
+
+// AsApplicationCreateParameters is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
+	return nil, false
+}
+
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
+	return &aup, true
+}
+
+// AsApplication is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsApplication() (*Application, bool) {
+	return nil, false
+}
+
+// AsADGroup is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsADGroup() (*ADGroup, bool) {
+	return nil, false
+}
+
+// AsServicePrincipalCreateParameters is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsServicePrincipalCreateParameters() (*ServicePrincipalCreateParameters, bool) {
+	return nil, false
+}
+
+// AsServicePrincipal is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsServicePrincipal() (*ServicePrincipal, bool) {
+	return nil, false
+}
+
+// AsBasicServicePrincipal is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsBasicServicePrincipal() (BasicServicePrincipal, bool) {
+	return nil, false
+}
+
+// AsUser is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsUser() (*User, bool) {
+	return nil, false
+}
+
+// AsDirectoryObject is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsDirectoryObject() (*DirectoryObject, bool) {
+	return nil, false
+}
+
+// AsBasicDirectoryObject is the BasicDirectoryObject implementation for ApplicationUpdateParameters.
+func (aup ApplicationUpdateParameters) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
+	return &aup, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationUpdateParameters struct.
+func (aup *ApplicationUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "allowGuestsSignIn":
+			if v != nil {
+				var allowGuestsSignIn bool
+				err = json.Unmarshal(*v, &allowGuestsSignIn)
+				if err != nil {
+					return err
+				}
+				aup.AllowGuestsSignIn = &allowGuestsSignIn
+			}
+		case "allowPassthroughUsers":
+			if v != nil {
+				var allowPassthroughUsers bool
+				err = json.Unmarshal(*v, &allowPassthroughUsers)
+				if err != nil {
+					return err
+				}
+				aup.AllowPassthroughUsers = &allowPassthroughUsers
+			}
+		case "appLogoUrl":
+			if v != nil {
+				var appLogoURL string
+				err = json.Unmarshal(*v, &appLogoURL)
+				if err != nil {
+					return err
+				}
+				aup.AppLogoURL = &appLogoURL
+			}
+		case "appRoles":
+			if v != nil {
+				var appRoles []AppRole
+				err = json.Unmarshal(*v, &appRoles)
+				if err != nil {
+					return err
+				}
+				aup.AppRoles = &appRoles
+			}
+		case "appPermissions":
+			if v != nil {
+				var appPermissions []string
+				err = json.Unmarshal(*v, &appPermissions)
+				if err != nil {
+					return err
+				}
+				aup.AppPermissions = &appPermissions
+			}
+		case "availableToOtherTenants":
+			if v != nil {
+				var availableToOtherTenants bool
+				err = json.Unmarshal(*v, &availableToOtherTenants)
+				if err != nil {
+					return err
+				}
+				aup.AvailableToOtherTenants = &availableToOtherTenants
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				aup.DisplayName = &displayName
+			}
+		case "errorUrl":
+			if v != nil {
+				var errorURL string
+				err = json.Unmarshal(*v, &errorURL)
+				if err != nil {
+					return err
+				}
+				aup.ErrorURL = &errorURL
+			}
+		case "homepage":
+			if v != nil {
+				var homepage string
+				err = json.Unmarshal(*v, &homepage)
+				if err != nil {
+					return err
+				}
+				aup.Homepage = &homepage
+			}
+		case "identifierUris":
+			if v != nil {
+				var identifierUris []string
+				err = json.Unmarshal(*v, &identifierUris)
+				if err != nil {
+					return err
+				}
+				aup.IdentifierUris = &identifierUris
+			}
+		case "informationalUrls":
+			if v != nil {
+				var informationalUrls InformationalURL
+				err = json.Unmarshal(*v, &informationalUrls)
+				if err != nil {
+					return err
+				}
+				aup.InformationalUrls = &informationalUrls
+			}
+		case "isDeviceOnlyAuthSupported":
+			if v != nil {
+				var isDeviceOnlyAuthSupported bool
+				err = json.Unmarshal(*v, &isDeviceOnlyAuthSupported)
+				if err != nil {
+					return err
+				}
+				aup.IsDeviceOnlyAuthSupported = &isDeviceOnlyAuthSupported
+			}
+		case "keyCredentials":
+			if v != nil {
+				var keyCredentials []KeyCredential
+				err = json.Unmarshal(*v, &keyCredentials)
+				if err != nil {
+					return err
+				}
+				aup.KeyCredentials = &keyCredentials
+			}
+		case "knownClientApplications":
+			if v != nil {
+				var knownClientApplications []string
+				err = json.Unmarshal(*v, &knownClientApplications)
+				if err != nil {
+					return err
+				}
+				aup.KnownClientApplications = &knownClientApplications
+			}
+		case "logoutUrl":
+			if v != nil {
+				var logoutURL string
+				err = json.Unmarshal(*v, &logoutURL)
+				if err != nil {
+					return err
+				}
+				aup.LogoutURL = &logoutURL
+			}
+		case "oauth2AllowImplicitFlow":
+			if v != nil {
+				var oauth2AllowImplicitFlow bool
+				err = json.Unmarshal(*v, &oauth2AllowImplicitFlow)
+				if err != nil {
+					return err
+				}
+				aup.Oauth2AllowImplicitFlow = &oauth2AllowImplicitFlow
+			}
+		case "oauth2AllowUrlPathMatching":
+			if v != nil {
+				var oauth2AllowURLPathMatching bool
+				err = json.Unmarshal(*v, &oauth2AllowURLPathMatching)
+				if err != nil {
+					return err
+				}
+				aup.Oauth2AllowURLPathMatching = &oauth2AllowURLPathMatching
+			}
+		case "oauth2Permissions":
+			if v != nil {
+				var oauth2Permissions []OAuth2Permission
+				err = json.Unmarshal(*v, &oauth2Permissions)
+				if err != nil {
+					return err
+				}
+				aup.Oauth2Permissions = &oauth2Permissions
+			}
+		case "oauth2RequirePostResponse":
+			if v != nil {
+				var oauth2RequirePostResponse bool
+				err = json.Unmarshal(*v, &oauth2RequirePostResponse)
+				if err != nil {
+					return err
+				}
+				aup.Oauth2RequirePostResponse = &oauth2RequirePostResponse
+			}
+		case "orgRestrictions":
+			if v != nil {
+				var orgRestrictions []string
+				err = json.Unmarshal(*v, &orgRestrictions)
+				if err != nil {
+					return err
+				}
+				aup.OrgRestrictions = &orgRestrictions
+			}
+		case "optionalClaims":
+			if v != nil {
+				var optionalClaims OptionalClaims
+				err = json.Unmarshal(*v, &optionalClaims)
+				if err != nil {
+					return err
+				}
+				aup.OptionalClaims = &optionalClaims
+			}
+		case "passwordCredentials":
+			if v != nil {
+				var passwordCredentials []PasswordCredential
+				err = json.Unmarshal(*v, &passwordCredentials)
+				if err != nil {
+					return err
+				}
+				aup.PasswordCredentials = &passwordCredentials
+			}
+		case "preAuthorizedApplications":
+			if v != nil {
+				var preAuthorizedApplications []PreAuthorizedApplication
+				err = json.Unmarshal(*v, &preAuthorizedApplications)
+				if err != nil {
+					return err
+				}
+				aup.PreAuthorizedApplications = &preAuthorizedApplications
+			}
+		case "publicClient":
+			if v != nil {
+				var publicClient bool
+				err = json.Unmarshal(*v, &publicClient)
+				if err != nil {
+					return err
+				}
+				aup.PublicClient = &publicClient
+			}
+		case "publisherDomain":
+			if v != nil {
+				var publisherDomain string
+				err = json.Unmarshal(*v, &publisherDomain)
+				if err != nil {
+					return err
+				}
+				aup.PublisherDomain = &publisherDomain
+			}
+		case "replyUrls":
+			if v != nil {
+				var replyUrls []string
+				err = json.Unmarshal(*v, &replyUrls)
+				if err != nil {
+					return err
+				}
+				aup.ReplyUrls = &replyUrls
+			}
+		case "requiredResourceAccess":
+			if v != nil {
+				var requiredResourceAccess []RequiredResourceAccess
+				err = json.Unmarshal(*v, &requiredResourceAccess)
+				if err != nil {
+					return err
+				}
+				aup.RequiredResourceAccess = &requiredResourceAccess
+			}
+		case "samlMetadataUrl":
+			if v != nil {
+				var samlMetadataURL string
+				err = json.Unmarshal(*v, &samlMetadataURL)
+				if err != nil {
+					return err
+				}
+				aup.SamlMetadataURL = &samlMetadataURL
+			}
+		case "signInAudience":
+			if v != nil {
+				var signInAudience string
+				err = json.Unmarshal(*v, &signInAudience)
+				if err != nil {
+					return err
+				}
+				aup.SignInAudience = &signInAudience
+			}
+		case "wwwHomepage":
+			if v != nil {
+				var wwwHomepage string
+				err = json.Unmarshal(*v, &wwwHomepage)
+				if err != nil {
+					return err
+				}
+				aup.WwwHomepage = &wwwHomepage
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if aup.AdditionalProperties == nil {
+					aup.AdditionalProperties = make(map[string]interface{})
+				}
+				aup.AdditionalProperties[k] = additionalProperties
+			}
+		case "objectId":
+			if v != nil {
+				var objectID string
+				err = json.Unmarshal(*v, &objectID)
+				if err != nil {
+					return err
+				}
+				aup.ObjectID = &objectID
+			}
+		case "deletionTimestamp":
+			if v != nil {
+				var deletionTimestamp date.Time
+				err = json.Unmarshal(*v, &deletionTimestamp)
+				if err != nil {
+					return err
+				}
+				aup.DeletionTimestamp = &deletionTimestamp
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectType
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				aup.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
 }
 
 // AppRole ...
@@ -1823,9 +2949,11 @@ func (cgmr *CheckGroupMembershipResult) UnmarshalJSON(body []byte) error {
 
 // BasicDirectoryObject represents an Azure Active Directory object.
 type BasicDirectoryObject interface {
+	AsApplicationBase() (*ApplicationBase, bool)
+	AsBasicApplicationBase() (BasicApplicationBase, bool)
 	AsApplicationCreateParameters() (*ApplicationCreateParameters, bool)
+	AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool)
 	AsApplication() (*Application, bool)
-	AsBasicApplication() (BasicApplication, bool)
 	AsADGroup() (*ADGroup, bool)
 	AsServicePrincipalCreateParameters() (*ServicePrincipalCreateParameters, bool)
 	AsServicePrincipal() (*ServicePrincipal, bool)
@@ -1842,7 +2970,7 @@ type DirectoryObject struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -1854,10 +2982,18 @@ func unmarshalBasicDirectoryObject(body []byte) (BasicDirectoryObject, error) {
 	}
 
 	switch m["objectType"] {
+	case string(ObjectTypeApplicationBase):
+		var ab ApplicationBase
+		err := json.Unmarshal(body, &ab)
+		return ab, err
 	case string(ObjectTypeApplicationCreateParameters):
 		var acp ApplicationCreateParameters
 		err := json.Unmarshal(body, &acp)
 		return acp, err
+	case string(ObjectTypeApplicationUpdateParameters):
+		var aup ApplicationUpdateParameters
+		err := json.Unmarshal(body, &aup)
+		return aup, err
 	case string(ObjectTypeApplication):
 		var a Application
 		err := json.Unmarshal(body, &a)
@@ -1922,18 +3058,28 @@ func (do DirectoryObject) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for DirectoryObject.
+func (do DirectoryObject) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for DirectoryObject.
+func (do DirectoryObject) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return nil, false
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for DirectoryObject.
 func (do DirectoryObject) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return nil, false
 }
 
-// AsApplication is the BasicDirectoryObject implementation for DirectoryObject.
-func (do DirectoryObject) AsApplication() (*Application, bool) {
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for DirectoryObject.
+func (do DirectoryObject) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for DirectoryObject.
-func (do DirectoryObject) AsBasicApplication() (BasicApplication, bool) {
+// AsApplication is the BasicDirectoryObject implementation for DirectoryObject.
+func (do DirectoryObject) AsApplication() (*Application, bool) {
 	return nil, false
 }
 
@@ -3643,7 +4789,7 @@ type ServicePrincipal struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -3766,18 +4912,28 @@ func (sp ServicePrincipal) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for ServicePrincipal.
+func (sp ServicePrincipal) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for ServicePrincipal.
+func (sp ServicePrincipal) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return nil, false
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for ServicePrincipal.
 func (sp ServicePrincipal) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return nil, false
 }
 
-// AsApplication is the BasicDirectoryObject implementation for ServicePrincipal.
-func (sp ServicePrincipal) AsApplication() (*Application, bool) {
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for ServicePrincipal.
+func (sp ServicePrincipal) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for ServicePrincipal.
-func (sp ServicePrincipal) AsBasicApplication() (BasicApplication, bool) {
+// AsApplication is the BasicDirectoryObject implementation for ServicePrincipal.
+func (sp ServicePrincipal) AsApplication() (*Application, bool) {
 	return nil, false
 }
 
@@ -4108,7 +5264,7 @@ type ServicePrincipalCreateParameters struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -4194,18 +5350,28 @@ func (spcp ServicePrincipalCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
+func (spcp ServicePrincipalCreateParameters) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
+func (spcp ServicePrincipalCreateParameters) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return nil, false
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
 func (spcp ServicePrincipalCreateParameters) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return nil, false
 }
 
-// AsApplication is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
-func (spcp ServicePrincipalCreateParameters) AsApplication() (*Application, bool) {
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
+func (spcp ServicePrincipalCreateParameters) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
-func (spcp ServicePrincipalCreateParameters) AsBasicApplication() (BasicApplication, bool) {
+// AsApplication is the BasicDirectoryObject implementation for ServicePrincipalCreateParameters.
+func (spcp ServicePrincipalCreateParameters) AsApplication() (*Application, bool) {
 	return nil, false
 }
 
@@ -4755,7 +5921,7 @@ type User struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
+	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplicationBase', 'ObjectTypeApplicationCreateParameters', 'ObjectTypeApplicationUpdateParameters', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipalCreateParameters', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
@@ -4811,18 +5977,28 @@ func (u User) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsApplicationBase is the BasicDirectoryObject implementation for User.
+func (u User) AsApplicationBase() (*ApplicationBase, bool) {
+	return nil, false
+}
+
+// AsBasicApplicationBase is the BasicDirectoryObject implementation for User.
+func (u User) AsBasicApplicationBase() (BasicApplicationBase, bool) {
+	return nil, false
+}
+
 // AsApplicationCreateParameters is the BasicDirectoryObject implementation for User.
 func (u User) AsApplicationCreateParameters() (*ApplicationCreateParameters, bool) {
 	return nil, false
 }
 
-// AsApplication is the BasicDirectoryObject implementation for User.
-func (u User) AsApplication() (*Application, bool) {
+// AsApplicationUpdateParameters is the BasicDirectoryObject implementation for User.
+func (u User) AsApplicationUpdateParameters() (*ApplicationUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsBasicApplication is the BasicDirectoryObject implementation for User.
-func (u User) AsBasicApplication() (BasicApplication, bool) {
+// AsApplication is the BasicDirectoryObject implementation for User.
+func (u User) AsApplication() (*Application, bool) {
 	return nil, false
 }
 

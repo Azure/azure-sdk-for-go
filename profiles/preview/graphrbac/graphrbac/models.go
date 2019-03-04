@@ -33,7 +33,9 @@ type ObjectType = original.ObjectType
 
 const (
 	ObjectTypeApplication                      ObjectType = original.ObjectTypeApplication
+	ObjectTypeApplicationBase                  ObjectType = original.ObjectTypeApplicationBase
 	ObjectTypeApplicationCreateParameters      ObjectType = original.ObjectTypeApplicationCreateParameters
+	ObjectTypeApplicationUpdateParameters      ObjectType = original.ObjectTypeApplicationUpdateParameters
 	ObjectTypeDirectoryObject                  ObjectType = original.ObjectTypeDirectoryObject
 	ObjectTypeGroup                            ObjectType = original.ObjectTypeGroup
 	ObjectTypeServicePrincipal                 ObjectType = original.ObjectTypeServicePrincipal
@@ -52,13 +54,15 @@ type ADGroup = original.ADGroup
 type AddOwnerParameters = original.AddOwnerParameters
 type AppRole = original.AppRole
 type Application = original.Application
+type ApplicationBase = original.ApplicationBase
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationUpdateParameters = original.ApplicationUpdateParameters
 type ApplicationsClient = original.ApplicationsClient
 type BaseClient = original.BaseClient
-type BasicApplication = original.BasicApplication
+type BasicApplicationBase = original.BasicApplicationBase
 type BasicDirectoryObject = original.BasicDirectoryObject
 type BasicServicePrincipal = original.BasicServicePrincipal
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters

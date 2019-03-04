@@ -155,6 +155,36 @@ func PossibleTextRecognitionModeValues() []TextRecognitionMode {
 	return []TextRecognitionMode{Handwritten, Printed}
 }
 
+// TextRecognitionResultConfidenceClass enumerates the values for text recognition result confidence class.
+type TextRecognitionResultConfidenceClass string
+
+const (
+	// High ...
+	High TextRecognitionResultConfidenceClass = "High"
+	// Low ...
+	Low TextRecognitionResultConfidenceClass = "Low"
+)
+
+// PossibleTextRecognitionResultConfidenceClassValues returns an array of possible values for the TextRecognitionResultConfidenceClass const type.
+func PossibleTextRecognitionResultConfidenceClassValues() []TextRecognitionResultConfidenceClass {
+	return []TextRecognitionResultConfidenceClass{High, Low}
+}
+
+// TextRecognitionResultDimensionUnit enumerates the values for text recognition result dimension unit.
+type TextRecognitionResultDimensionUnit string
+
+const (
+	// Inch ...
+	Inch TextRecognitionResultDimensionUnit = "inch"
+	// Pixel ...
+	Pixel TextRecognitionResultDimensionUnit = "pixel"
+)
+
+// PossibleTextRecognitionResultDimensionUnitValues returns an array of possible values for the TextRecognitionResultDimensionUnit const type.
+func PossibleTextRecognitionResultDimensionUnitValues() []TextRecognitionResultDimensionUnit {
+	return []TextRecognitionResultDimensionUnit{Inch, Pixel}
+}
+
 // VisualFeatureTypes enumerates the values for visual feature types.
 type VisualFeatureTypes string
 
@@ -582,9 +612,12 @@ type ReadCloser struct {
 	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
-// RecognitionResult ...
-type RecognitionResult struct {
-	Lines *[]Line `json:"lines,omitempty"`
+// ReadOperationResult ...
+type ReadOperationResult struct {
+	autorest.Response `json:"-"`
+	// Status - Status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
+	Status             TextOperationStatusCodes `json:"status,omitempty"`
+	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
 }
 
 // TagResult the results of a image tag operation, including any tags and image metadata.
@@ -602,11 +635,24 @@ type TextOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
 	Status            TextOperationStatusCodes `json:"status,omitempty"`
-	RecognitionResult *RecognitionResult       `json:"recognitionResult,omitempty"`
+	RecognitionResult *TextRecognitionResult   `json:"recognitionResult,omitempty"`
+}
+
+// TextRecognitionResult ...
+type TextRecognitionResult struct {
+	Lines                *[]Line  `json:"lines,omitempty"`
+	Page                 *int32   `json:"page,omitempty"`
+	Width                *float64 `json:"width,omitempty"`
+	Height               *float64 `json:"height,omitempty"`
+	ClockwiseOrientation *float64 `json:"clockwiseOrientation,omitempty"`
+	// Unit - Possible values include: 'Pixel', 'Inch'
+	Unit TextRecognitionResultDimensionUnit `json:"unit,omitempty"`
 }
 
 // Word ...
 type Word struct {
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
 	Text        *string  `json:"text,omitempty"`
+	// Confidence - Possible values include: 'High', 'Low'
+	Confidence TextRecognitionResultConfidenceClass `json:"confidence,omitempty"`
 }

@@ -457,6 +457,168 @@ func (client BaseClient) AnalyzeImageInStreamResponder(resp *http.Response) (res
 	return
 }
 
+// BatchReadFile use this interface to get the result of a Read operation, employing the state-of-the-art Optical
+// Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the
+// response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must
+// use for your "Read Operation Result" operation to access OCR results.​
+// Parameters:
+// imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
+// mode - type of text to recognize.
+func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFile")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: imageURL,
+			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("computervision.BaseClient", "BatchReadFile", err.Error())
+	}
+
+	req, err := client.BatchReadFilePreparer(ctx, imageURL, mode)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.BatchReadFileSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.BatchReadFileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// BatchReadFilePreparer prepares the BatchReadFile request.
+func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{
+		"mode": autorest.Encode("query", mode),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
+		autorest.WithPath("/read/core/asyncBatchAnalyze"),
+		autorest.WithJSON(imageURL),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// BatchReadFileSender sends the BatchReadFile request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) BatchReadFileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// BatchReadFileResponder handles the response to the BatchReadFile request. The method always
+// closes the http.Response Body.
+func (client BaseClient) BatchReadFileResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// BatchReadFileInStream use this interface to get the result of a Read Document operation, employing the
+// state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the
+// Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field
+// contains the URL that you must use for your "Get Read Result operation" to access OCR results.​
+// Parameters:
+// imageParameter - an image stream.
+// mode - type of text to recognize.
+func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFileInStream")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter, mode)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFileInStream", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.BatchReadFileInStreamSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFileInStream", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.BatchReadFileInStreamResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFileInStream", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// BatchReadFileInStreamPreparer prepares the BatchReadFileInStream request.
+func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{
+		"mode": autorest.Encode("query", mode),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/octet-stream"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
+		autorest.WithPath("/read/core/asyncBatchAnalyze"),
+		autorest.WithFile(imageParameter),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// BatchReadFileInStreamSender sends the BatchReadFileInStream request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) BatchReadFileInStreamSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// BatchReadFileInStreamResponder handles the response to the BatchReadFileInStream request. The method always
+// closes the http.Response Body.
+func (client BaseClient) BatchReadFileInStreamResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // DescribeImage this operation generates a description of an image in human readable language with complete sentences.
 // The description is based on a collection of content tags, which are also returned by the operation. More than one
 // description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions
@@ -1148,6 +1310,79 @@ func (client BaseClient) GetAreaOfInterestInStreamSender(req *http.Request) (*ht
 // GetAreaOfInterestInStreamResponder handles the response to the GetAreaOfInterestInStream request. The method always
 // closes the http.Response Body.
 func (client BaseClient) GetAreaOfInterestInStreamResponder(resp *http.Response) (result AreaOfInterestResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetReadOperationResult this interface is used for getting OCR results of Read operation. The URL to this interface
+// should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+// Parameters:
+// operationID - id of read operation returned in the response of the "Batch Read File" interface.
+func (client BaseClient) GetReadOperationResult(ctx context.Context, operationID string) (result ReadOperationResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetReadOperationResult")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetReadOperationResultPreparer(ctx, operationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetReadOperationResult", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetReadOperationResultSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetReadOperationResult", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetReadOperationResultResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetReadOperationResult", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetReadOperationResultPreparer prepares the GetReadOperationResult request.
+func (client BaseClient) GetReadOperationResultPreparer(ctx context.Context, operationID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"operationId": autorest.Encode("path", operationID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
+		autorest.WithPathParameters("/read/operations/{operationId}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetReadOperationResultSender sends the GetReadOperationResult request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetReadOperationResultSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetReadOperationResultResponder handles the response to the GetReadOperationResult request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetReadOperationResultResponder(resp *http.Response) (result ReadOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

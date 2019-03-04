@@ -10090,6 +10090,28 @@ type EnabledConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// EndpointDependency a domain name that a service is reached at, including details of the current
+// connection status.
+type EndpointDependency struct {
+	// DomainName - The domain name of the dependency.
+	DomainName *string `json:"domainName,omitempty"`
+	// EndpointDetails - The IP Addresses and Ports used when connecting to DomainName.
+	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
+}
+
+// EndpointDetail current TCP connectivity information from the App Service Environment to a single
+// endpoint.
+type EndpointDetail struct {
+	// IPAddress - An IP Address that Domain Name currently resolves to.
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// Port - The port an endpoint is connected to.
+	Port *int32 `json:"port,omitempty"`
+	// Latency - The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
+	Latency *float64 `json:"latency,omitempty"`
+	// IsAccessable - Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
+	IsAccessable *bool `json:"isAccessable,omitempty"`
+}
+
 // ErrorEntity body of the error response returned from the API.
 type ErrorEntity struct {
 	// ExtendedCode - Type of error.
@@ -11873,6 +11895,17 @@ type IdentifierProperties struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// InboundEnvironmentEndpoint the IP Addresses and Ports that require inbound network access to and within
+// the subnet of the App Service Environment.
+type InboundEnvironmentEndpoint struct {
+	// Description - Short text describing the purpose of the network traffic.
+	Description *string `json:"description,omitempty"`
+	// Endpoints - The IP addresses that network traffic will originate from in cidr notation.
+	Endpoints *[]string `json:"endpoints,omitempty"`
+	// Ports - The ports that network traffic will arrive to the App Service Environment at.
+	Ports *[]string `json:"ports,omitempty"`
+}
+
 // IPSecurityRestriction IP security restriction on an app.
 type IPSecurityRestriction struct {
 	// IPAddress - IP address the security restriction is valid for.
@@ -12211,6 +12244,12 @@ type ListHostingEnvironmentDiagnostics struct {
 	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
+// ListInboundEnvironmentEndpoint ...
+type ListInboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
+}
+
 // ListNetworkTrace ...
 type ListNetworkTrace struct {
 	autorest.Response `json:"-"`
@@ -12221,6 +12260,12 @@ type ListNetworkTrace struct {
 type ListOperation struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
+}
+
+// ListOutboundEnvironmentEndpoint ...
+type ListOutboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
 }
 
 // ListVnetInfo ...
@@ -13314,6 +13359,15 @@ type Operation struct {
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
 	// GeoMasterOperationID - Applicable only for stamp operation ids.
 	GeoMasterOperationID *uuid.UUID `json:"geoMasterOperationId,omitempty"`
+}
+
+// OutboundEnvironmentEndpoint endpoints accessed for a common purpose that the App Service Environment
+// requires outbound network access to.
+type OutboundEnvironmentEndpoint struct {
+	// Category - The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+	Category *string `json:"category,omitempty"`
+	// Endpoints - The endpoints that the App Service Environment reaches the service at.
+	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
 }
 
 // PerfMonCounterCollection collection of performance monitor counters.

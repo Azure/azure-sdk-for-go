@@ -68,7 +68,7 @@ func (client CertificateClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		{TargetValue: certificateID,
 			Constraints: []validation.Constraint{{Target: "certificateID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "certificateID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "certificateID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "certificateID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.CertificateCreateOrUpdateProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.CertificateCreateOrUpdateProperties.Data", Name: validation.Null, Rule: true, Chain: nil},
@@ -173,7 +173,7 @@ func (client CertificateClient) Delete(ctx context.Context, resourceGroupName st
 		{TargetValue: certificateID,
 			Constraints: []validation.Constraint{{Target: "certificateID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "certificateID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "certificateID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "certificateID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.CertificateClient", "Delete", err.Error())
 	}
 
@@ -265,7 +265,7 @@ func (client CertificateClient) Get(ctx context.Context, resourceGroupName strin
 		{TargetValue: certificateID,
 			Constraints: []validation.Constraint{{Target: "certificateID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "certificateID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "certificateID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "certificateID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.CertificateClient", "Get", err.Error())
 	}
 
@@ -357,7 +357,7 @@ func (client CertificateClient) GetEntityTag(ctx context.Context, resourceGroupN
 		{TargetValue: certificateID,
 			Constraints: []validation.Constraint{{Target: "certificateID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "certificateID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "certificateID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "certificateID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.CertificateClient", "GetEntityTag", err.Error())
 	}
 
@@ -427,12 +427,13 @@ func (client CertificateClient) GetEntityTagResponder(resp *http.Response) (resu
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field          | Supported operators    | Supported functions                         |
-// |----------------|------------------------|---------------------------------------------|
-// | id             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | subject        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | thumbprint     | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | expirationDate | ge, le, eq, ne, gt, lt | N/A                                         |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |subject | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |thumbprint | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |expirationDate | ge, le, eq, ne, gt, lt |    |
 // top - number of records to return.
 // skip - number of records to skip.
 func (client CertificateClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result CertificateCollectionPage, err error) {

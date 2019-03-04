@@ -74,7 +74,7 @@ func (client APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, resou
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.PolicyContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.PolicyContractProperties.PolicyContent", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
@@ -185,7 +185,7 @@ func (client APIOperationPolicyClient) Delete(ctx context.Context, resourceGroup
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationPolicyClient", "Delete", err.Error())
 	}
 
@@ -285,7 +285,7 @@ func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupNam
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationPolicyClient", "Get", err.Error())
 	}
 
@@ -385,7 +385,7 @@ func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourc
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationPolicyClient", "GetEntityTag", err.Error())
 	}
 
@@ -484,7 +484,7 @@ func (client APIOperationPolicyClient) ListByOperation(ctx context.Context, reso
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationPolicyClient", "ListByOperation", err.Error())
 	}
 

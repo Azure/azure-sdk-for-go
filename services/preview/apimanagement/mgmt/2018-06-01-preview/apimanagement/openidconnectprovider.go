@@ -417,14 +417,15 @@ func (client OpenIDConnectProviderClient) GetEntityTagResponder(resp *http.Respo
 	return
 }
 
-// ListByService lists all OpenID Connect Providers.
+// ListByService lists of all the OpenId Connect Providers.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                         |
-// |-------|------------------------|---------------------------------------------|
-// | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client OpenIDConnectProviderClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result OpenIDConnectProviderCollectionPage, err error) {

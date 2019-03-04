@@ -46,7 +46,8 @@ func NewDelegationSettingsClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // parameters - create or update parameters.
-func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings) (result PortalDelegationSettings, err error) {
+// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, ifMatch string) (result PortalDelegationSettings, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DelegationSettingsClient.CreateOrUpdate")
 		defer func() {
@@ -65,7 +66,7 @@ func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resou
 		return result, validation.NewError("apimanagement.DelegationSettingsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.DelegationSettingsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -87,7 +88,7 @@ func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DelegationSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings) (*http.Request, error) {
+func (client DelegationSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalDelegationSettings, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -106,6 +107,10 @@ func (client DelegationSettingsClient) CreateOrUpdatePreparer(ctx context.Contex
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/delegation", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -129,7 +134,7 @@ func (client DelegationSettingsClient) CreateOrUpdateResponder(resp *http.Respon
 	return
 }
 
-// Get get Delegation settings.
+// Get get Delegation Settings for the Portal.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

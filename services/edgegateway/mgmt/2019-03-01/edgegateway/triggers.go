@@ -283,7 +283,8 @@ func (client TriggersClient) GetResponder(resp *http.Response) (result TriggerMo
 // Parameters:
 // deviceName - the device name.
 // resourceGroupName - the resource group name.
-func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result TriggerListPage, err error) {
+// expand - specify $filter='CustomContextTag eq <tag>' to filter on custom context tag property
+func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string, expand string) (result TriggerListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListByDataBoxEdgeDevice")
 		defer func() {
@@ -295,7 +296,7 @@ func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, device
 		}()
 	}
 	result.fn = client.listByDataBoxEdgeDeviceNextResults
-	req, err := client.ListByDataBoxEdgeDevicePreparer(ctx, deviceName, resourceGroupName)
+	req, err := client.ListByDataBoxEdgeDevicePreparer(ctx, deviceName, resourceGroupName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.TriggersClient", "ListByDataBoxEdgeDevice", nil, "Failure preparing request")
 		return
@@ -317,7 +318,7 @@ func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, device
 }
 
 // ListByDataBoxEdgeDevicePreparer prepares the ListByDataBoxEdgeDevice request.
-func (client TriggersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string) (*http.Request, error) {
+func (client TriggersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context, deviceName string, resourceGroupName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"deviceName":        autorest.Encode("path", deviceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -327,6 +328,9 @@ func (client TriggersClient) ListByDataBoxEdgeDevicePreparer(ctx context.Context
 	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -379,7 +383,7 @@ func (client TriggersClient) listByDataBoxEdgeDeviceNextResults(ctx context.Cont
 }
 
 // ListByDataBoxEdgeDeviceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client TriggersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string) (result TriggerListIterator, err error) {
+func (client TriggersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context, deviceName string, resourceGroupName string, expand string) (result TriggerListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListByDataBoxEdgeDevice")
 		defer func() {
@@ -390,6 +394,6 @@ func (client TriggersClient) ListByDataBoxEdgeDeviceComplete(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByDataBoxEdgeDevice(ctx, deviceName, resourceGroupName)
+	result.page, err = client.ListByDataBoxEdgeDevice(ctx, deviceName, resourceGroupName, expand)
 	return
 }

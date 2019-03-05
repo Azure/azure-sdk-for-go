@@ -669,7 +669,7 @@ type TextOperationResult struct {
 
 // TextRecognitionResult json object representing a recognized text region
 type TextRecognitionResult struct {
-	// Page - The page number of the recognition result.
+	// Page - The 1-based page number of the recognition result.
 	Page *int32 `json:"page,omitempty"`
 	// ClockwiseOrientation - The orientation of the image in degrees in the clockwise direction. Range between [0, 360).
 	ClockwiseOrientation *float64 `json:"clockwiseOrientation,omitempty"`

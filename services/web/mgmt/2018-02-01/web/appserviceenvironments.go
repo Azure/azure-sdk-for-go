@@ -710,13 +710,13 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemResponder(resp *htt
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
-func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, name string) (result ListInboundEnvironmentEndpoint, err error) {
+func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, name string) (result InboundEnvironmentEndpointCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceEnvironmentsClient.GetInboundNetworkDependenciesEndpoints")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.ieec.Response.Response != nil {
+				sc = result.ieec.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -729,6 +729,7 @@ func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoint
 		return result, validation.NewError("web.AppServiceEnvironmentsClient", "GetInboundNetworkDependenciesEndpoints", err.Error())
 	}
 
+	result.fn = client.getInboundNetworkDependenciesEndpointsNextResults
 	req, err := client.GetInboundNetworkDependenciesEndpointsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetInboundNetworkDependenciesEndpoints", nil, "Failure preparing request")
@@ -737,12 +738,12 @@ func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoint
 
 	resp, err := client.GetInboundNetworkDependenciesEndpointsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.ieec.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetInboundNetworkDependenciesEndpoints", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetInboundNetworkDependenciesEndpointsResponder(resp)
+	result.ieec, err = client.GetInboundNetworkDependenciesEndpointsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetInboundNetworkDependenciesEndpoints", resp, "Failure responding to request")
 	}
@@ -780,14 +781,51 @@ func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoint
 
 // GetInboundNetworkDependenciesEndpointsResponder handles the response to the GetInboundNetworkDependenciesEndpoints request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpointsResponder(resp *http.Response) (result ListInboundEnvironmentEndpoint, err error) {
+func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpointsResponder(resp *http.Response) (result InboundEnvironmentEndpointCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// getInboundNetworkDependenciesEndpointsNextResults retrieves the next set of results, if any.
+func (client AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsNextResults(ctx context.Context, lastResults InboundEnvironmentEndpointCollection) (result InboundEnvironmentEndpointCollection, err error) {
+	req, err := lastResults.inboundEnvironmentEndpointCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getInboundNetworkDependenciesEndpointsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.GetInboundNetworkDependenciesEndpointsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getInboundNetworkDependenciesEndpointsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.GetInboundNetworkDependenciesEndpointsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getInboundNetworkDependenciesEndpointsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// GetInboundNetworkDependenciesEndpointsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpointsComplete(ctx context.Context, resourceGroupName string, name string) (result InboundEnvironmentEndpointCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceEnvironmentsClient.GetInboundNetworkDependenciesEndpoints")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.GetInboundNetworkDependenciesEndpoints(ctx, resourceGroupName, name)
 	return
 }
 
@@ -881,13 +919,13 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
-func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, name string) (result ListOutboundEnvironmentEndpoint, err error) {
+func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, name string) (result OutboundEnvironmentEndpointCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceEnvironmentsClient.GetOutboundNetworkDependenciesEndpoints")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.oeec.Response.Response != nil {
+				sc = result.oeec.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -900,6 +938,7 @@ func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoin
 		return result, validation.NewError("web.AppServiceEnvironmentsClient", "GetOutboundNetworkDependenciesEndpoints", err.Error())
 	}
 
+	result.fn = client.getOutboundNetworkDependenciesEndpointsNextResults
 	req, err := client.GetOutboundNetworkDependenciesEndpointsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetOutboundNetworkDependenciesEndpoints", nil, "Failure preparing request")
@@ -908,12 +947,12 @@ func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoin
 
 	resp, err := client.GetOutboundNetworkDependenciesEndpointsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.oeec.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetOutboundNetworkDependenciesEndpoints", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetOutboundNetworkDependenciesEndpointsResponder(resp)
+	result.oeec, err = client.GetOutboundNetworkDependenciesEndpointsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetOutboundNetworkDependenciesEndpoints", resp, "Failure responding to request")
 	}
@@ -951,14 +990,51 @@ func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoin
 
 // GetOutboundNetworkDependenciesEndpointsResponder handles the response to the GetOutboundNetworkDependenciesEndpoints request. The method always
 // closes the http.Response Body.
-func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpointsResponder(resp *http.Response) (result ListOutboundEnvironmentEndpoint, err error) {
+func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpointsResponder(resp *http.Response) (result OutboundEnvironmentEndpointCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// getOutboundNetworkDependenciesEndpointsNextResults retrieves the next set of results, if any.
+func (client AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsNextResults(ctx context.Context, lastResults OutboundEnvironmentEndpointCollection) (result OutboundEnvironmentEndpointCollection, err error) {
+	req, err := lastResults.outboundEnvironmentEndpointCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getOutboundNetworkDependenciesEndpointsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.GetOutboundNetworkDependenciesEndpointsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getOutboundNetworkDependenciesEndpointsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.GetOutboundNetworkDependenciesEndpointsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "getOutboundNetworkDependenciesEndpointsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// GetOutboundNetworkDependenciesEndpointsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpointsComplete(ctx context.Context, resourceGroupName string, name string) (result OutboundEnvironmentEndpointCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceEnvironmentsClient.GetOutboundNetworkDependenciesEndpoints")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.GetOutboundNetworkDependenciesEndpoints(ctx, resourceGroupName, name)
 	return
 }
 

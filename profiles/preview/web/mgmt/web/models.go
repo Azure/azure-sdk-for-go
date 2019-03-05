@@ -911,6 +911,9 @@ type IdentifierCollectionIterator = original.IdentifierCollectionIterator
 type IdentifierCollectionPage = original.IdentifierCollectionPage
 type IdentifierProperties = original.IdentifierProperties
 type InboundEnvironmentEndpoint = original.InboundEnvironmentEndpoint
+type InboundEnvironmentEndpointCollection = original.InboundEnvironmentEndpointCollection
+type InboundEnvironmentEndpointCollectionIterator = original.InboundEnvironmentEndpointCollectionIterator
+type InboundEnvironmentEndpointCollectionPage = original.InboundEnvironmentEndpointCollectionPage
 type Job = original.Job
 type JobCollection = original.JobCollection
 type JobCollectionIterator = original.JobCollectionIterator
@@ -920,10 +923,8 @@ type ListCapability = original.ListCapability
 type ListCertificateEmail = original.ListCertificateEmail
 type ListCertificateOrderAction = original.ListCertificateOrderAction
 type ListHostingEnvironmentDiagnostics = original.ListHostingEnvironmentDiagnostics
-type ListInboundEnvironmentEndpoint = original.ListInboundEnvironmentEndpoint
 type ListNetworkTrace = original.ListNetworkTrace
 type ListOperation = original.ListOperation
-type ListOutboundEnvironmentEndpoint = original.ListOutboundEnvironmentEndpoint
 type ListVnetInfo = original.ListVnetInfo
 type ListVnetRoute = original.ListVnetRoute
 type LocalizableString = original.LocalizableString
@@ -957,6 +958,9 @@ type NetworkFeaturesProperties = original.NetworkFeaturesProperties
 type NetworkTrace = original.NetworkTrace
 type Operation = original.Operation
 type OutboundEnvironmentEndpoint = original.OutboundEnvironmentEndpoint
+type OutboundEnvironmentEndpointCollection = original.OutboundEnvironmentEndpointCollection
+type OutboundEnvironmentEndpointCollectionIterator = original.OutboundEnvironmentEndpointCollectionIterator
+type OutboundEnvironmentEndpointCollectionPage = original.OutboundEnvironmentEndpointCollectionPage
 type PerfMonCounterCollection = original.PerfMonCounterCollection
 type PerfMonCounterCollectionIterator = original.PerfMonCounterCollectionIterator
 type PerfMonCounterCollectionPage = original.PerfMonCounterCollectionPage
@@ -1404,6 +1408,12 @@ func NewIdentifierCollectionIterator(page IdentifierCollectionPage) IdentifierCo
 func NewIdentifierCollectionPage(getNextPage func(context.Context, IdentifierCollection) (IdentifierCollection, error)) IdentifierCollectionPage {
 	return original.NewIdentifierCollectionPage(getNextPage)
 }
+func NewInboundEnvironmentEndpointCollectionIterator(page InboundEnvironmentEndpointCollectionPage) InboundEnvironmentEndpointCollectionIterator {
+	return original.NewInboundEnvironmentEndpointCollectionIterator(page)
+}
+func NewInboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
+	return original.NewInboundEnvironmentEndpointCollectionPage(getNextPage)
+}
 func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
 	return original.NewJobCollectionIterator(page)
 }
@@ -1415,6 +1425,12 @@ func NewNameIdentifierCollectionIterator(page NameIdentifierCollectionPage) Name
 }
 func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
 	return original.NewNameIdentifierCollectionPage(getNextPage)
+}
+func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
+	return original.NewOutboundEnvironmentEndpointCollectionIterator(page)
+}
+func NewOutboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return original.NewOutboundEnvironmentEndpointCollectionPage(getNextPage)
 }
 func NewPerfMonCounterCollectionIterator(page PerfMonCounterCollectionPage) PerfMonCounterCollectionIterator {
 	return original.NewPerfMonCounterCollectionIterator(page)

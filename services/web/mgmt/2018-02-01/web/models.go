@@ -11906,6 +11906,153 @@ type InboundEnvironmentEndpoint struct {
 	Ports *[]string `json:"ports,omitempty"`
 }
 
+// InboundEnvironmentEndpointCollection collection of Inbound Environment Endpoints
+type InboundEnvironmentEndpointCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// InboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
+// InboundEnvironmentEndpoint values.
+type InboundEnvironmentEndpointCollectionIterator struct {
+	i    int
+	page InboundEnvironmentEndpointCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *InboundEnvironmentEndpointCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InboundEnvironmentEndpointCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *InboundEnvironmentEndpointCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter InboundEnvironmentEndpointCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter InboundEnvironmentEndpointCollectionIterator) Response() InboundEnvironmentEndpointCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter InboundEnvironmentEndpointCollectionIterator) Value() InboundEnvironmentEndpoint {
+	if !iter.page.NotDone() {
+		return InboundEnvironmentEndpoint{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the InboundEnvironmentEndpointCollectionIterator type.
+func NewInboundEnvironmentEndpointCollectionIterator(page InboundEnvironmentEndpointCollectionPage) InboundEnvironmentEndpointCollectionIterator {
+	return InboundEnvironmentEndpointCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ieec InboundEnvironmentEndpointCollection) IsEmpty() bool {
+	return ieec.Value == nil || len(*ieec.Value) == 0
+}
+
+// inboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ieec InboundEnvironmentEndpointCollection) inboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if ieec.NextLink == nil || len(to.String(ieec.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ieec.NextLink)))
+}
+
+// InboundEnvironmentEndpointCollectionPage contains a page of InboundEnvironmentEndpoint values.
+type InboundEnvironmentEndpointCollectionPage struct {
+	fn   func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)
+	ieec InboundEnvironmentEndpointCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *InboundEnvironmentEndpointCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InboundEnvironmentEndpointCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ieec)
+	if err != nil {
+		return err
+	}
+	page.ieec = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *InboundEnvironmentEndpointCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page InboundEnvironmentEndpointCollectionPage) NotDone() bool {
+	return !page.ieec.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page InboundEnvironmentEndpointCollectionPage) Response() InboundEnvironmentEndpointCollection {
+	return page.ieec
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page InboundEnvironmentEndpointCollectionPage) Values() []InboundEnvironmentEndpoint {
+	if page.ieec.IsEmpty() {
+		return nil
+	}
+	return *page.ieec.Value
+}
+
+// Creates a new instance of the InboundEnvironmentEndpointCollectionPage type.
+func NewInboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
+	return InboundEnvironmentEndpointCollectionPage{fn: getNextPage}
+}
+
 // IPSecurityRestriction IP security restriction on an app.
 type IPSecurityRestriction struct {
 	// IPAddress - IP address the security restriction is valid for.
@@ -12244,12 +12391,6 @@ type ListHostingEnvironmentDiagnostics struct {
 	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
-// ListInboundEnvironmentEndpoint ...
-type ListInboundEnvironmentEndpoint struct {
-	autorest.Response `json:"-"`
-	Value             *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
-}
-
 // ListNetworkTrace ...
 type ListNetworkTrace struct {
 	autorest.Response `json:"-"`
@@ -12260,12 +12401,6 @@ type ListNetworkTrace struct {
 type ListOperation struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
-}
-
-// ListOutboundEnvironmentEndpoint ...
-type ListOutboundEnvironmentEndpoint struct {
-	autorest.Response `json:"-"`
-	Value             *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
 }
 
 // ListVnetInfo ...
@@ -13368,6 +13503,153 @@ type OutboundEnvironmentEndpoint struct {
 	Category *string `json:"category,omitempty"`
 	// Endpoints - The endpoints that the App Service Environment reaches the service at.
 	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
+}
+
+// OutboundEnvironmentEndpointCollection collection of Outbound Environment Endpoints
+type OutboundEnvironmentEndpointCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// OutboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
+// OutboundEnvironmentEndpoint values.
+type OutboundEnvironmentEndpointCollectionIterator struct {
+	i    int
+	page OutboundEnvironmentEndpointCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OutboundEnvironmentEndpointCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OutboundEnvironmentEndpointCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OutboundEnvironmentEndpointCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OutboundEnvironmentEndpointCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OutboundEnvironmentEndpointCollectionIterator) Response() OutboundEnvironmentEndpointCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OutboundEnvironmentEndpointCollectionIterator) Value() OutboundEnvironmentEndpoint {
+	if !iter.page.NotDone() {
+		return OutboundEnvironmentEndpoint{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OutboundEnvironmentEndpointCollectionIterator type.
+func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
+	return OutboundEnvironmentEndpointCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (oeec OutboundEnvironmentEndpointCollection) IsEmpty() bool {
+	return oeec.Value == nil || len(*oeec.Value) == 0
+}
+
+// outboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (oeec OutboundEnvironmentEndpointCollection) outboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if oeec.NextLink == nil || len(to.String(oeec.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(oeec.NextLink)))
+}
+
+// OutboundEnvironmentEndpointCollectionPage contains a page of OutboundEnvironmentEndpoint values.
+type OutboundEnvironmentEndpointCollectionPage struct {
+	fn   func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)
+	oeec OutboundEnvironmentEndpointCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OutboundEnvironmentEndpointCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OutboundEnvironmentEndpointCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.oeec)
+	if err != nil {
+		return err
+	}
+	page.oeec = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OutboundEnvironmentEndpointCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OutboundEnvironmentEndpointCollectionPage) NotDone() bool {
+	return !page.oeec.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OutboundEnvironmentEndpointCollectionPage) Response() OutboundEnvironmentEndpointCollection {
+	return page.oeec
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OutboundEnvironmentEndpointCollectionPage) Values() []OutboundEnvironmentEndpoint {
+	if page.oeec.IsEmpty() {
+		return nil
+	}
+	return *page.oeec.Value
+}
+
+// Creates a new instance of the OutboundEnvironmentEndpointCollectionPage type.
+func NewOutboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return OutboundEnvironmentEndpointCollectionPage{fn: getNextPage}
 }
 
 // PerfMonCounterCollection collection of performance monitor counters.

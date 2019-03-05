@@ -282,7 +282,7 @@ func (client MarketplaceAgreementsClient) GetResponder(resp *http.Response) (res
 	return
 }
 
-// GetAgreement get marketplace agreements.
+// GetAgreement get marketplace agreement.
 // Parameters:
 // publisherID - publisher identifier string of image being deployed.
 // offerID - offer identifier string of image being deployed.
@@ -361,7 +361,7 @@ func (client MarketplaceAgreementsClient) GetAgreementResponder(resp *http.Respo
 	return
 }
 
-// List list marketplace agreements.
+// List list marketplace agreements in the subscription.
 func (client MarketplaceAgreementsClient) List(ctx context.Context) (result ListAgreementTerms, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.List")

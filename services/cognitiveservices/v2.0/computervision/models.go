@@ -155,6 +155,36 @@ func PossibleTextRecognitionModeValues() []TextRecognitionMode {
 	return []TextRecognitionMode{Handwritten, Printed}
 }
 
+// TextRecognitionResultConfidenceClass enumerates the values for text recognition result confidence class.
+type TextRecognitionResultConfidenceClass string
+
+const (
+	// High ...
+	High TextRecognitionResultConfidenceClass = "High"
+	// Low ...
+	Low TextRecognitionResultConfidenceClass = "Low"
+)
+
+// PossibleTextRecognitionResultConfidenceClassValues returns an array of possible values for the TextRecognitionResultConfidenceClass const type.
+func PossibleTextRecognitionResultConfidenceClassValues() []TextRecognitionResultConfidenceClass {
+	return []TextRecognitionResultConfidenceClass{High, Low}
+}
+
+// TextRecognitionResultDimensionUnit enumerates the values for text recognition result dimension unit.
+type TextRecognitionResultDimensionUnit string
+
+const (
+	// Inch ...
+	Inch TextRecognitionResultDimensionUnit = "inch"
+	// Pixel ...
+	Pixel TextRecognitionResultDimensionUnit = "pixel"
+)
+
+// PossibleTextRecognitionResultDimensionUnitValues returns an array of possible values for the TextRecognitionResultDimensionUnit const type.
+func PossibleTextRecognitionResultDimensionUnitValues() []TextRecognitionResultDimensionUnit {
+	return []TextRecognitionResultDimensionUnit{Inch, Pixel}
+}
+
 // VisualFeatureTypes enumerates the values for visual feature types.
 type VisualFeatureTypes string
 
@@ -506,11 +536,14 @@ type LandmarksModel struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// Line ...
+// Line json object representing a recognized text line.
 type Line struct {
+	// BoundingBox - Bounding box of a recognized line.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
-	Text        *string  `json:"text,omitempty"`
-	Words       *[]Word  `json:"words,omitempty"`
+	// Text - The text content of the line.
+	Text *string `json:"text,omitempty"`
+	// Words - List of words in the text line.
+	Words *[]Word `json:"words,omitempty"`
 }
 
 // ListModelsResult result of the List Domain Models operation.
@@ -582,9 +615,13 @@ type ReadCloser struct {
 	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
-// RecognitionResult ...
-type RecognitionResult struct {
-	Lines *[]Line `json:"lines,omitempty"`
+// ReadOperationResult OCR result of the read operation.
+type ReadOperationResult struct {
+	autorest.Response `json:"-"`
+	// Status - Status of the read operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
+	Status TextOperationStatusCodes `json:"status,omitempty"`
+	// RecognitionResults - A array of text recognition result of the read operation.
+	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
 }
 
 // TagResult the results of a image tag operation, including any tags and image metadata.
@@ -597,16 +634,37 @@ type TagResult struct {
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
 }
 
-// TextOperationResult ...
+// TextOperationResult result of recognition text operation.
 type TextOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
-	Status            TextOperationStatusCodes `json:"status,omitempty"`
-	RecognitionResult *RecognitionResult       `json:"recognitionResult,omitempty"`
+	Status TextOperationStatusCodes `json:"status,omitempty"`
+	// RecognitionResult - Text recognition result of the text operation.
+	RecognitionResult *TextRecognitionResult `json:"recognitionResult,omitempty"`
 }
 
-// Word ...
+// TextRecognitionResult json object representing a recognized text region
+type TextRecognitionResult struct {
+	// Page - The 1-based page number of the recognition result.
+	Page *int32 `json:"page,omitempty"`
+	// ClockwiseOrientation - The orientation of the image in degrees in the clockwise direction. Range between [0, 360).
+	ClockwiseOrientation *float64 `json:"clockwiseOrientation,omitempty"`
+	// Width - The width of the image in pixels or the PDF in inches.
+	Width *float64 `json:"width,omitempty"`
+	// Height - The height of the image in pixels or the PDF in inches.
+	Height *float64 `json:"height,omitempty"`
+	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'Pixel', 'Inch'
+	Unit TextRecognitionResultDimensionUnit `json:"unit,omitempty"`
+	// Lines - A list of recognized text lines.
+	Lines *[]Line `json:"lines,omitempty"`
+}
+
+// Word json object representing a recognized word.
 type Word struct {
+	// BoundingBox - Bounding box of a recognized word.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
-	Text        *string  `json:"text,omitempty"`
+	// Text - The text content of the word.
+	Text *string `json:"text,omitempty"`
+	// Confidence - Qualitative confidence measure. Possible values include: 'High', 'Low'
+	Confidence TextRecognitionResultConfidenceClass `json:"confidence,omitempty"`
 }

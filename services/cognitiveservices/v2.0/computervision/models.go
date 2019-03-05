@@ -20,7 +20,6 @@ package computervision
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"io"
 )
 
@@ -235,29 +234,6 @@ type AreaOfInterestResult struct {
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
-}
-
-// BatchReadFileFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type BatchReadFileFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *BatchReadFileFuture) Result(client BaseClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "computervision.BatchReadFileFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("computervision.BatchReadFileFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // BoundingRect a bounding box for an area inside an image.

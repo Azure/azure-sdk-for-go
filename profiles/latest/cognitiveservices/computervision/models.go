@@ -114,7 +114,6 @@ const (
 type AdultInfo = original.AdultInfo
 type AreaOfInterestResult = original.AreaOfInterestResult
 type BaseClient = original.BaseClient
-type BatchReadFileFuture = original.BatchReadFileFuture
 type BoundingRect = original.BoundingRect
 type Category = original.Category
 type CategoryDetail = original.CategoryDetail

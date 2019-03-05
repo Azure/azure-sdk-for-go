@@ -464,13 +464,13 @@ func (client BaseClient) AnalyzeImageInStreamResponder(resp *http.Response) (res
 // Parameters:
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // mode - type of text to recognize.
-func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (result BatchReadFileFuture, err error) {
+func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFile")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -487,10 +487,16 @@ func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, m
 		return
 	}
 
-	result, err = client.BatchReadFileSender(req)
+	resp, err := client.BatchReadFileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", result.Response(), "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.BatchReadFileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", resp, "Failure responding to request")
 	}
 
 	return
@@ -518,15 +524,9 @@ func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL Ima
 
 // BatchReadFileSender sends the BatchReadFile request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) BatchReadFileSender(req *http.Request) (future BatchReadFileFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client BaseClient) BatchReadFileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // BatchReadFileResponder handles the response to the BatchReadFile request. The method always

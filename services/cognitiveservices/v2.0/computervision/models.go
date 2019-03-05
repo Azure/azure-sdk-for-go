@@ -20,6 +20,7 @@ package computervision
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"io"
 )
 
@@ -234,6 +235,29 @@ type AreaOfInterestResult struct {
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
+}
+
+// BatchReadFileFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type BatchReadFileFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *BatchReadFileFuture) Result(client BaseClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "computervision.BatchReadFileFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("computervision.BatchReadFileFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // BoundingRect a bounding box for an area inside an image.
@@ -536,11 +560,14 @@ type LandmarksModel struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// Line ...
+// Line json object representing a recognized text line.
 type Line struct {
+	// BoundingBox - Bounding box of a recognized line.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
-	Text        *string  `json:"text,omitempty"`
-	Words       *[]Word  `json:"words,omitempty"`
+	// Text - The text content of the line.
+	Text *string `json:"text,omitempty"`
+	// Words - List of words in the text line.
+	Words *[]Word `json:"words,omitempty"`
 }
 
 // ListModelsResult result of the List Domain Models operation.
@@ -612,11 +639,12 @@ type ReadCloser struct {
 	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
-// ReadOperationResult ...
+// ReadOperationResult OCR result of the read operation.
 type ReadOperationResult struct {
 	autorest.Response `json:"-"`
-	// Status - Status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
-	Status             TextOperationStatusCodes `json:"status,omitempty"`
+	// Status - Status of the read operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
+	Status TextOperationStatusCodes `json:"status,omitempty"`
+	// RecognitionResults - A array of text recognition result of the read operation.
 	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
 }
 
@@ -630,29 +658,37 @@ type TagResult struct {
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
 }
 
-// TextOperationResult ...
+// TextOperationResult result of recognition text operation.
 type TextOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the text operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
-	Status            TextOperationStatusCodes `json:"status,omitempty"`
-	RecognitionResult *TextRecognitionResult   `json:"recognitionResult,omitempty"`
+	Status TextOperationStatusCodes `json:"status,omitempty"`
+	// RecognitionResult - Text recognition result of the text operation.
+	RecognitionResult *TextRecognitionResult `json:"recognitionResult,omitempty"`
 }
 
-// TextRecognitionResult ...
+// TextRecognitionResult json object representing a recognized text region
 type TextRecognitionResult struct {
-	Lines                *[]Line  `json:"lines,omitempty"`
-	Page                 *int32   `json:"page,omitempty"`
-	Width                *float64 `json:"width,omitempty"`
-	Height               *float64 `json:"height,omitempty"`
+	// Page - The page number of the recognition result.
+	Page *int32 `json:"page,omitempty"`
+	// ClockwiseOrientation - The orientation of the image in degrees in the clockwise direction. Range between [0, 360).
 	ClockwiseOrientation *float64 `json:"clockwiseOrientation,omitempty"`
-	// Unit - Possible values include: 'Pixel', 'Inch'
+	// Width - The width of the image in pixels or the PDF in inches.
+	Width *float64 `json:"width,omitempty"`
+	// Height - The height of the image in pixels or the PDF in inches.
+	Height *float64 `json:"height,omitempty"`
+	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'Pixel', 'Inch'
 	Unit TextRecognitionResultDimensionUnit `json:"unit,omitempty"`
+	// Lines - A list of recognized text lines.
+	Lines *[]Line `json:"lines,omitempty"`
 }
 
-// Word ...
+// Word json object representing a recognized word.
 type Word struct {
+	// BoundingBox - Bounding box of a recognized word.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
-	Text        *string  `json:"text,omitempty"`
-	// Confidence - Possible values include: 'High', 'Low'
+	// Text - The text content of the word.
+	Text *string `json:"text,omitempty"`
+	// Confidence - Qualitative confidence measure. Possible values include: 'High', 'Low'
 	Confidence TextRecognitionResultConfidenceClass `json:"confidence,omitempty"`
 }

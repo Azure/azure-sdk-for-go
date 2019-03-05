@@ -190,13 +190,8 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle 
 func (r *Receiver) handleMessages(ctx context.Context, messages chan *amqp.Message, handler Handler) {
 	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.handleMessages")
 	defer span.Finish()
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case msg := <-messages:
-			r.handleMessage(ctx, msg, handler)
-		}
+	for msg := range messages {
+		r.handleMessage(ctx, msg, handler)
 	}
 }
 
@@ -268,6 +263,7 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 		select {
 		case <-ctx.Done():
 			log.For(ctx).Debug("context done")
+			close(msgChan)
 			return
 		default:
 			_, retryErr := common.Retry(10, 10*time.Second, func() (interface{}, error) {
@@ -295,6 +291,7 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 				if err := r.Close(ctx); err != nil {
 					log.For(ctx).Error(err)
 				}
+				close(msgChan)
 				return
 			}
 		}

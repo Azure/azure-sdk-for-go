@@ -57,7 +57,7 @@ func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsC
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope..
+// invoiceSection scope.
 // budgetName - budget Name.
 // parameters - parameters supplied to the Create Budget operation.
 func (client BudgetsClient) CreateOrUpdate(ctx context.Context, scope string, budgetName string, parameters Budget) (result Budget, err error) {
@@ -171,7 +171,7 @@ func (client BudgetsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope..
+// invoiceSection scope.
 // budgetName - budget Name.
 func (client BudgetsClient) Delete(ctx context.Context, scope string, budgetName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -257,7 +257,7 @@ func (client BudgetsClient) DeleteResponder(resp *http.Response) (result autores
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope..
+// invoiceSection scope.
 // budgetName - budget Name.
 func (client BudgetsClient) Get(ctx context.Context, scope string, budgetName string) (result Budget, err error) {
 	if tracing.IsEnabled() {
@@ -344,7 +344,7 @@ func (client BudgetsClient) GetResponder(resp *http.Response) (result Budget, er
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope..
+// invoiceSection scope.
 func (client BudgetsClient) List(ctx context.Context, scope string) (result BudgetsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BudgetsClient.List")

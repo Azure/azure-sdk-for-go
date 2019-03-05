@@ -43,7 +43,7 @@ type ApplicationsClientAPI interface {
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ApplicationListResult, err error)
 	ListOwners(ctx context.Context, applicationObjectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
 	ListPasswordCredentials(ctx context.Context, applicationObjectID string) (result graphrbac.PasswordCredentialListResult, err error)
-	Patch(ctx context.Context, applicationObjectID string, parameters graphrbac.Application) (result autorest.Response, err error)
+	Patch(ctx context.Context, applicationObjectID string, parameters graphrbac.ApplicationUpdateParameters) (result autorest.Response, err error)
 	RemoveOwner(ctx context.Context, applicationObjectID string, ownerObjectID string) (result autorest.Response, err error)
 	UpdateKeyCredentials(ctx context.Context, applicationObjectID string, parameters graphrbac.KeyCredentialsUpdateParameters) (result autorest.Response, err error)
 	UpdatePasswordCredentials(ctx context.Context, applicationObjectID string, parameters graphrbac.PasswordCredentialsUpdateParameters) (result autorest.Response, err error)
@@ -91,7 +91,7 @@ type ServicePrincipalsClientAPI interface {
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ServicePrincipalListResult, err error)
 	ListOwners(ctx context.Context, objectID string) (result graphrbac.DirectoryObjectListResultPage, err error)
 	ListPasswordCredentials(ctx context.Context, objectID string) (result graphrbac.PasswordCredentialListResult, err error)
-	Update(ctx context.Context, objectID string, parameters graphrbac.BasicServicePrincipal) (result autorest.Response, err error)
+	Update(ctx context.Context, objectID string, parameters graphrbac.ServicePrincipalUpdateParameters) (result autorest.Response, err error)
 	UpdateKeyCredentials(ctx context.Context, objectID string, parameters graphrbac.KeyCredentialsUpdateParameters) (result autorest.Response, err error)
 	UpdatePasswordCredentials(ctx context.Context, objectID string, parameters graphrbac.PasswordCredentialsUpdateParameters) (result autorest.Response, err error)
 }

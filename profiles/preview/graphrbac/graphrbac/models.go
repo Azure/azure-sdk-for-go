@@ -32,15 +32,11 @@ const (
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeApplication                      ObjectType = original.ObjectTypeApplication
-	ObjectTypeApplicationBase                  ObjectType = original.ObjectTypeApplicationBase
-	ObjectTypeApplicationCreateParameters      ObjectType = original.ObjectTypeApplicationCreateParameters
-	ObjectTypeApplicationUpdateParameters      ObjectType = original.ObjectTypeApplicationUpdateParameters
-	ObjectTypeDirectoryObject                  ObjectType = original.ObjectTypeDirectoryObject
-	ObjectTypeGroup                            ObjectType = original.ObjectTypeGroup
-	ObjectTypeServicePrincipal                 ObjectType = original.ObjectTypeServicePrincipal
-	ObjectTypeServicePrincipalCreateParameters ObjectType = original.ObjectTypeServicePrincipalCreateParameters
-	ObjectTypeUser                             ObjectType = original.ObjectTypeUser
+	ObjectTypeApplication      ObjectType = original.ObjectTypeApplication
+	ObjectTypeDirectoryObject  ObjectType = original.ObjectTypeDirectoryObject
+	ObjectTypeGroup            ObjectType = original.ObjectTypeGroup
+	ObjectTypeServicePrincipal ObjectType = original.ObjectTypeServicePrincipal
+	ObjectTypeUser             ObjectType = original.ObjectTypeUser
 )
 
 type UserType = original.UserType
@@ -62,9 +58,7 @@ type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationUpdateParameters = original.ApplicationUpdateParameters
 type ApplicationsClient = original.ApplicationsClient
 type BaseClient = original.BaseClient
-type BasicApplicationBase = original.BasicApplicationBase
 type BasicDirectoryObject = original.BasicDirectoryObject
-type BasicServicePrincipal = original.BasicServicePrincipal
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters
 type CheckGroupMembershipResult = original.CheckGroupMembershipResult
 type DeletedApplicationsClient = original.DeletedApplicationsClient
@@ -110,10 +104,12 @@ type PreAuthorizedApplicationPermission = original.PreAuthorizedApplicationPermi
 type RequiredResourceAccess = original.RequiredResourceAccess
 type ResourceAccess = original.ResourceAccess
 type ServicePrincipal = original.ServicePrincipal
+type ServicePrincipalBase = original.ServicePrincipalBase
 type ServicePrincipalCreateParameters = original.ServicePrincipalCreateParameters
 type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
+type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
 type ServicePrincipalsClient = original.ServicePrincipalsClient
 type SignInName = original.SignInName
 type SignedInUserClient = original.SignedInUserClient

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -55,6 +56,12 @@ func (client ServicePrincipalsClient) Create(ctx context.Context, parameters Ser
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.AppID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("graphrbac.ServicePrincipalsClient", "Create", err.Error())
+	}
+
 	req, err := client.CreatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Create", nil, "Failure preparing request")
@@ -707,7 +714,7 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 // Parameters:
 // objectID - the object ID of the service principal to delete.
 // parameters - parameters to update a service principal.
-func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters BasicServicePrincipal) (result autorest.Response, err error) {
+func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicePrincipalsClient.Update")
 		defer func() {
@@ -740,7 +747,7 @@ func (client ServicePrincipalsClient) Update(ctx context.Context, objectID strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, objectID string, parameters BasicServicePrincipal) (*http.Request, error) {
+func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"objectId": autorest.Encode("path", objectID),
 		"tenantID": autorest.Encode("path", client.TenantID),

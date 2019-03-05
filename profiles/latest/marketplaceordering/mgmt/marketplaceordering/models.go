@@ -34,6 +34,7 @@ type AgreementTerms = original.AgreementTerms
 type BaseClient = original.BaseClient
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseError = original.ErrorResponseError
+type ListAgreementTerms = original.ListAgreementTerms
 type MarketplaceAgreementsClient = original.MarketplaceAgreementsClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

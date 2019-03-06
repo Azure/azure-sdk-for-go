@@ -43,7 +43,7 @@ func NewOrdersClientWithBaseURI(baseURI string, subscriptionID string) OrdersCli
 
 // CreateOrUpdate sends the create or update request.
 // Parameters:
-// deviceName - the order details of a device.
+// deviceName - the device name.
 // order - the order to be created or updated.
 // resourceGroupName - the resource group name.
 func (client OrdersClient) CreateOrUpdate(ctx context.Context, deviceName string, order Order, resourceGroupName string) (result OrdersCreateOrUpdateFuture, err error) {

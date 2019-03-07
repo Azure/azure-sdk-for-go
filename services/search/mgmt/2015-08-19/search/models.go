@@ -57,6 +57,21 @@ func PossibleHostingModeValues() []HostingMode {
 	return []HostingMode{Default, HighDensity}
 }
 
+// IdentityType enumerates the values for identity type.
+type IdentityType string
+
+const (
+	// None ...
+	None IdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned IdentityType = "SystemAssigned"
+)
+
+// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{None, SystemAssigned}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -186,8 +201,8 @@ type Identity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type.
-	Type *string `json:"type,omitempty"`
+	// Type - The identity type. Possible values include: 'None', 'SystemAssigned'
+	Type IdentityType `json:"type,omitempty"`
 }
 
 // ListQueryKeysResult response containing the query API keys for a given Azure Search service.

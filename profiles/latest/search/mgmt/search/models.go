@@ -39,6 +39,13 @@ const (
 	HighDensity HostingMode = original.HighDensity
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	None           IdentityType = original.None
+	SystemAssigned IdentityType = original.SystemAssigned
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -133,6 +140,9 @@ func PossibleAdminKeyKindValues() []AdminKeyKind {
 }
 func PossibleHostingModeValues() []HostingMode {
 	return original.PossibleHostingModeValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

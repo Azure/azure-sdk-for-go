@@ -2613,6 +2613,121 @@ func (tr *TagsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Tenant an tenant detail resource.
+type Tenant struct {
+	*TenantProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Tenant.
+func (t Tenant) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.TenantProperties != nil {
+		objectMap["properties"] = t.TenantProperties
+	}
+	if t.ID != nil {
+		objectMap["id"] = t.ID
+	}
+	if t.Name != nil {
+		objectMap["name"] = t.Name
+	}
+	if t.Type != nil {
+		objectMap["type"] = t.Type
+	}
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Tenant struct.
+func (t *Tenant) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tenantProperties TenantProperties
+				err = json.Unmarshal(*v, &tenantProperties)
+				if err != nil {
+					return err
+				}
+				t.TenantProperties = &tenantProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				t.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				t.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// TenantListResult a Tenant properties Resource
+type TenantListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of tenant details.
+	Value *[]Tenant `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// TenantProperties the properties of the tenants.
+type TenantProperties struct {
+	// BillingProfileName - The Billing Profile name.
+	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// BillingAccountID - The Billing AccountId.
+	BillingAccountID *string `json:"billingAccountId,omitempty"`
+	// TenantID - The TenantId.
+	TenantID *string `json:"tenantId,omitempty"`
+	// BillingAccountName - The Billing Account Name.
+	BillingAccountName *string `json:"billingAccountName,omitempty"`
+}
+
 // UsageDetail an usage detail resource.
 type UsageDetail struct {
 	*UsageDetailProperties `json:"properties,omitempty"`

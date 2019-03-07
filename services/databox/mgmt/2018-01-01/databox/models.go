@@ -732,9 +732,8 @@ type CopyProgress struct {
 	// StorageAccountName - Name of the storage account where the data needs to be uploaded.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
 	// AccountID - Id of the account where the data needs to be uploaded.
-	AccountID *string `json:"accountId,omitempty"`
-	// BytesSentToCloud - Amount of data uploaded by the job as of now.
-	BytesSentToCloud *int64 `json:"bytesSentToCloud,omitempty"`
+	AccountID        *string `json:"accountId,omitempty"`
+	BytesSentToCloud *string `json:"bytesSentToCloud,omitempty"`
 	// TotalBytesToProcess - Total amount of data to be processed by the job.
 	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty"`
 	// FilesProcessed - Number of files processed by the job as of now.

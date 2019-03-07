@@ -93,7 +93,7 @@ func (client ServiceClient) ListAvailableSkusPreparer(ctx context.Context, locat
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -218,7 +218,7 @@ func (client ServiceClient) ValidateAddressMethodPreparer(ctx context.Context, l
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

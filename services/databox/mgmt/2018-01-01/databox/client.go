@@ -1,4 +1,4 @@
-// Package databox implements the Azure ARM Databox service API version 2018-01-01.
+// Package databox implements the Azure ARM Databox service API version 2018-01-01-preview.
 //
 //
 package databox

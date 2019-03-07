@@ -781,3 +781,14 @@ type P2sVpnGatewaysClientAPI interface {
 }
 
 var _ P2sVpnGatewaysClientAPI = (*network.P2sVpnGatewaysClient)(nil)
+
+// WebApplicationFirewallPoliciesClientAPI contains the set of methods on the WebApplicationFirewallPoliciesClient type.
+type WebApplicationFirewallPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters network.WebApplicationFirewallPolicy) (result network.WebApplicationFirewallPolicy, err error)
+	Delete(ctx context.Context, resourceGroupName string, policyName string) (result network.WebApplicationFirewallPoliciesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, policyName string) (result network.WebApplicationFirewallPolicy, err error)
+	List(ctx context.Context, resourceGroupName string) (result network.WebApplicationFirewallPolicyListResultPage, err error)
+	ListAll(ctx context.Context) (result network.WebApplicationFirewallPolicyListResultPage, err error)
+}
+
+var _ WebApplicationFirewallPoliciesClientAPI = (*network.WebApplicationFirewallPoliciesClient)(nil)

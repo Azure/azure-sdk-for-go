@@ -867,6 +867,85 @@ const (
 	RouteBased  VpnType = original.RouteBased
 )
 
+type WebApplicationFirewallAction = original.WebApplicationFirewallAction
+
+const (
+	WebApplicationFirewallActionAllow WebApplicationFirewallAction = original.WebApplicationFirewallActionAllow
+	WebApplicationFirewallActionBlock WebApplicationFirewallAction = original.WebApplicationFirewallActionBlock
+	WebApplicationFirewallActionLog   WebApplicationFirewallAction = original.WebApplicationFirewallActionLog
+)
+
+type WebApplicationFirewallEnabledState = original.WebApplicationFirewallEnabledState
+
+const (
+	WebApplicationFirewallEnabledStateDisabled WebApplicationFirewallEnabledState = original.WebApplicationFirewallEnabledStateDisabled
+	WebApplicationFirewallEnabledStateEnabled  WebApplicationFirewallEnabledState = original.WebApplicationFirewallEnabledStateEnabled
+)
+
+type WebApplicationFirewallMatchVariable = original.WebApplicationFirewallMatchVariable
+
+const (
+	PostArgs       WebApplicationFirewallMatchVariable = original.PostArgs
+	QueryString    WebApplicationFirewallMatchVariable = original.QueryString
+	RemoteAddr     WebApplicationFirewallMatchVariable = original.RemoteAddr
+	RequestBody    WebApplicationFirewallMatchVariable = original.RequestBody
+	RequestCookies WebApplicationFirewallMatchVariable = original.RequestCookies
+	RequestHeaders WebApplicationFirewallMatchVariable = original.RequestHeaders
+	RequestMethod  WebApplicationFirewallMatchVariable = original.RequestMethod
+	RequestURI     WebApplicationFirewallMatchVariable = original.RequestURI
+)
+
+type WebApplicationFirewallMode = original.WebApplicationFirewallMode
+
+const (
+	WebApplicationFirewallModeDetection  WebApplicationFirewallMode = original.WebApplicationFirewallModeDetection
+	WebApplicationFirewallModePrevention WebApplicationFirewallMode = original.WebApplicationFirewallModePrevention
+)
+
+type WebApplicationFirewallOperator = original.WebApplicationFirewallOperator
+
+const (
+	WebApplicationFirewallOperatorBeginsWith         WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorBeginsWith
+	WebApplicationFirewallOperatorContains           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorContains
+	WebApplicationFirewallOperatorEndsWith           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorEndsWith
+	WebApplicationFirewallOperatorEqual              WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorEqual
+	WebApplicationFirewallOperatorGreaterThan        WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGreaterThan
+	WebApplicationFirewallOperatorGreaterThanOrEqual WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGreaterThanOrEqual
+	WebApplicationFirewallOperatorIPMatch            WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorIPMatch
+	WebApplicationFirewallOperatorLessThan           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorLessThan
+	WebApplicationFirewallOperatorLessThanOrEqual    WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorLessThanOrEqual
+	WebApplicationFirewallOperatorRegex              WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorRegex
+)
+
+type WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormat
+
+const (
+	WebApplicationFirewallPolicyPropertiesFormatCreating  WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormatCreating
+	WebApplicationFirewallPolicyPropertiesFormatDeleting  WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormatDeleting
+	WebApplicationFirewallPolicyPropertiesFormatDisabled  WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormatDisabled
+	WebApplicationFirewallPolicyPropertiesFormatDisabling WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormatDisabling
+	WebApplicationFirewallPolicyPropertiesFormatEnabled   WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormatEnabled
+	WebApplicationFirewallPolicyPropertiesFormatEnabling  WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormatEnabling
+)
+
+type WebApplicationFirewallRuleType = original.WebApplicationFirewallRuleType
+
+const (
+	WebApplicationFirewallRuleTypeInvalid   WebApplicationFirewallRuleType = original.WebApplicationFirewallRuleTypeInvalid
+	WebApplicationFirewallRuleTypeMatchRule WebApplicationFirewallRuleType = original.WebApplicationFirewallRuleTypeMatchRule
+)
+
+type WebApplicationFirewallTransform = original.WebApplicationFirewallTransform
+
+const (
+	HTMLEntityDecode WebApplicationFirewallTransform = original.HTMLEntityDecode
+	Lowercase        WebApplicationFirewallTransform = original.Lowercase
+	RemoveNulls      WebApplicationFirewallTransform = original.RemoveNulls
+	Trim             WebApplicationFirewallTransform = original.Trim
+	URLDecode        WebApplicationFirewallTransform = original.URLDecode
+	URLEncode        WebApplicationFirewallTransform = original.URLEncode
+)
+
 type AddressSpace = original.AddressSpace
 type ApplicationGateway = original.ApplicationGateway
 type ApplicationGatewayAuthenticationCertificate = original.ApplicationGatewayAuthenticationCertificate
@@ -1049,6 +1128,7 @@ type ContainerNetworkInterfaceConfigurationPropertiesFormat = original.Container
 type ContainerNetworkInterfaceIPConfiguration = original.ContainerNetworkInterfaceIPConfiguration
 type ContainerNetworkInterfaceIPConfigurationPropertiesFormat = original.ContainerNetworkInterfaceIPConfigurationPropertiesFormat
 type ContainerNetworkInterfacePropertiesFormat = original.ContainerNetworkInterfacePropertiesFormat
+type CustomRule = original.CustomRule
 type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
 type DdosCustomPoliciesClient = original.DdosCustomPoliciesClient
 type DdosCustomPoliciesCreateOrUpdateFuture = original.DdosCustomPoliciesCreateOrUpdateFuture
@@ -1337,6 +1417,8 @@ type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateT
 type LogSpecification = original.LogSpecification
 type ManagedServiceIdentity = original.ManagedServiceIdentity
 type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
+type MatchCondition = original.MatchCondition
+type MatchVariable = original.MatchVariable
 type MatchedRule = original.MatchedRule
 type MetricSpecification = original.MetricSpecification
 type NextHopParameters = original.NextHopParameters
@@ -1393,6 +1475,7 @@ type PeerExpressRouteCircuitConnectionListResultIterator = original.PeerExpressR
 type PeerExpressRouteCircuitConnectionListResultPage = original.PeerExpressRouteCircuitConnectionListResultPage
 type PeerExpressRouteCircuitConnectionPropertiesFormat = original.PeerExpressRouteCircuitConnectionPropertiesFormat
 type PeerExpressRouteCircuitConnectionsClient = original.PeerExpressRouteCircuitConnectionsClient
+type PolicySettings = original.PolicySettings
 type PrepareNetworkPoliciesRequest = original.PrepareNetworkPoliciesRequest
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
@@ -1676,6 +1759,13 @@ type WatchersGetVMSecurityRulesFuture = original.WatchersGetVMSecurityRulesFutur
 type WatchersListAvailableProvidersFuture = original.WatchersListAvailableProvidersFuture
 type WatchersSetFlowLogConfigurationFuture = original.WatchersSetFlowLogConfigurationFuture
 type WatchersVerifyIPFlowFuture = original.WatchersVerifyIPFlowFuture
+type WebApplicationFirewallPoliciesClient = original.WebApplicationFirewallPoliciesClient
+type WebApplicationFirewallPoliciesDeleteFuture = original.WebApplicationFirewallPoliciesDeleteFuture
+type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
+type WebApplicationFirewallPolicyListResult = original.WebApplicationFirewallPolicyListResult
+type WebApplicationFirewallPolicyListResultIterator = original.WebApplicationFirewallPolicyListResultIterator
+type WebApplicationFirewallPolicyListResultPage = original.WebApplicationFirewallPolicyListResultPage
+type WebApplicationFirewallPolicyPropertiesFormat1 = original.WebApplicationFirewallPolicyPropertiesFormat1
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -2466,6 +2556,18 @@ func NewWatchersClient(subscriptionID string) WatchersClient {
 func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) WatchersClient {
 	return original.NewWatchersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewWebApplicationFirewallPoliciesClient(subscriptionID string) WebApplicationFirewallPoliciesClient {
+	return original.NewWebApplicationFirewallPoliciesClient(subscriptionID)
+}
+func NewWebApplicationFirewallPoliciesClientWithBaseURI(baseURI string, subscriptionID string) WebApplicationFirewallPoliciesClient {
+	return original.NewWebApplicationFirewallPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return original.NewWebApplicationFirewallPolicyListResultIterator(page)
+}
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return original.NewWebApplicationFirewallPolicyListResultPage(getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -2756,6 +2858,30 @@ func PossibleVpnGatewayTunnelingProtocolValues() []VpnGatewayTunnelingProtocol {
 }
 func PossibleVpnTypeValues() []VpnType {
 	return original.PossibleVpnTypeValues()
+}
+func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction {
+	return original.PossibleWebApplicationFirewallActionValues()
+}
+func PossibleWebApplicationFirewallEnabledStateValues() []WebApplicationFirewallEnabledState {
+	return original.PossibleWebApplicationFirewallEnabledStateValues()
+}
+func PossibleWebApplicationFirewallMatchVariableValues() []WebApplicationFirewallMatchVariable {
+	return original.PossibleWebApplicationFirewallMatchVariableValues()
+}
+func PossibleWebApplicationFirewallModeValues() []WebApplicationFirewallMode {
+	return original.PossibleWebApplicationFirewallModeValues()
+}
+func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOperator {
+	return original.PossibleWebApplicationFirewallOperatorValues()
+}
+func PossibleWebApplicationFirewallPolicyPropertiesFormatValues() []WebApplicationFirewallPolicyPropertiesFormat {
+	return original.PossibleWebApplicationFirewallPolicyPropertiesFormatValues()
+}
+func PossibleWebApplicationFirewallRuleTypeValues() []WebApplicationFirewallRuleType {
+	return original.PossibleWebApplicationFirewallRuleTypeValues()
+}
+func PossibleWebApplicationFirewallTransformValues() []WebApplicationFirewallTransform {
+	return original.PossibleWebApplicationFirewallTransformValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

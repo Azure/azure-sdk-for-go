@@ -1632,6 +1632,8 @@ type USQLTableFragment struct {
 	RowCount *int64 `json:"rowCount,omitempty"`
 	// CreateDate - the creation time of the table fragment.
 	CreateDate *date.Time `json:"createDate,omitempty"`
+	// StreamPath - the relative path for the table fragment location.
+	StreamPath *string `json:"streamPath,omitempty"`
 }
 
 // USQLTableFragmentList a Data Lake Analytics catalog U-SQL table fragment item list.

@@ -19,7 +19,11 @@
 
 package eventgrid
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2018-09-15-preview/eventgrid"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2019-02-01-preview/eventgrid"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -36,12 +40,24 @@ const (
 	Updating  DomainProvisioningState = original.Updating
 )
 
+type DomainTopicProvisioningState = original.DomainTopicProvisioningState
+
+const (
+	DomainTopicProvisioningStateCanceled  DomainTopicProvisioningState = original.DomainTopicProvisioningStateCanceled
+	DomainTopicProvisioningStateCreating  DomainTopicProvisioningState = original.DomainTopicProvisioningStateCreating
+	DomainTopicProvisioningStateDeleting  DomainTopicProvisioningState = original.DomainTopicProvisioningStateDeleting
+	DomainTopicProvisioningStateFailed    DomainTopicProvisioningState = original.DomainTopicProvisioningStateFailed
+	DomainTopicProvisioningStateSucceeded DomainTopicProvisioningState = original.DomainTopicProvisioningStateSucceeded
+	DomainTopicProvisioningStateUpdating  DomainTopicProvisioningState = original.DomainTopicProvisioningStateUpdating
+)
+
 type EndpointType = original.EndpointType
 
 const (
 	EndpointTypeEventHub                     EndpointType = original.EndpointTypeEventHub
 	EndpointTypeEventSubscriptionDestination EndpointType = original.EndpointTypeEventSubscriptionDestination
 	EndpointTypeHybridConnection             EndpointType = original.EndpointTypeHybridConnection
+	EndpointTypeServiceBusQueue              EndpointType = original.EndpointTypeServiceBusQueue
 	EndpointTypeStorageQueue                 EndpointType = original.EndpointTypeStorageQueue
 	EndpointTypeWebHook                      EndpointType = original.EndpointTypeWebHook
 )
@@ -148,13 +164,20 @@ type DomainProperties = original.DomainProperties
 type DomainRegenerateKeyRequest = original.DomainRegenerateKeyRequest
 type DomainSharedAccessKeys = original.DomainSharedAccessKeys
 type DomainTopic = original.DomainTopic
+type DomainTopicProperties = original.DomainTopicProperties
 type DomainTopicsClient = original.DomainTopicsClient
+type DomainTopicsCreateOrUpdateFuture = original.DomainTopicsCreateOrUpdateFuture
+type DomainTopicsDeleteFuture = original.DomainTopicsDeleteFuture
 type DomainTopicsListResult = original.DomainTopicsListResult
+type DomainTopicsListResultIterator = original.DomainTopicsListResultIterator
+type DomainTopicsListResultPage = original.DomainTopicsListResultPage
 type DomainUpdateParameters = original.DomainUpdateParameters
 type DomainsClient = original.DomainsClient
 type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
 type DomainsDeleteFuture = original.DomainsDeleteFuture
 type DomainsListResult = original.DomainsListResult
+type DomainsListResultIterator = original.DomainsListResultIterator
+type DomainsListResultPage = original.DomainsListResultPage
 type DomainsUpdateFuture = original.DomainsUpdateFuture
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination
 type EventHubEventSubscriptionDestinationProperties = original.EventHubEventSubscriptionDestinationProperties
@@ -168,6 +191,8 @@ type EventSubscriptionsClient = original.EventSubscriptionsClient
 type EventSubscriptionsCreateOrUpdateFuture = original.EventSubscriptionsCreateOrUpdateFuture
 type EventSubscriptionsDeleteFuture = original.EventSubscriptionsDeleteFuture
 type EventSubscriptionsListResult = original.EventSubscriptionsListResult
+type EventSubscriptionsListResultIterator = original.EventSubscriptionsListResultIterator
+type EventSubscriptionsListResultPage = original.EventSubscriptionsListResultPage
 type EventSubscriptionsUpdateFuture = original.EventSubscriptionsUpdateFuture
 type EventType = original.EventType
 type EventTypeProperties = original.EventTypeProperties
@@ -191,6 +216,8 @@ type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
 type Resource = original.Resource
 type RetryPolicy = original.RetryPolicy
+type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEventSubscriptionDestination
+type ServiceBusQueueEventSubscriptionDestinationProperties = original.ServiceBusQueueEventSubscriptionDestinationProperties
 type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
 type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
 type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
@@ -213,6 +240,8 @@ type TopicsClient = original.TopicsClient
 type TopicsCreateOrUpdateFuture = original.TopicsCreateOrUpdateFuture
 type TopicsDeleteFuture = original.TopicsDeleteFuture
 type TopicsListResult = original.TopicsListResult
+type TopicsListResultIterator = original.TopicsListResultIterator
+type TopicsListResultPage = original.TopicsListResultPage
 type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TrackedResource = original.TrackedResource
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
@@ -227,17 +256,35 @@ func NewDomainTopicsClient(subscriptionID string) DomainTopicsClient {
 func NewDomainTopicsClientWithBaseURI(baseURI string, subscriptionID string) DomainTopicsClient {
 	return original.NewDomainTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDomainTopicsListResultIterator(page DomainTopicsListResultPage) DomainTopicsListResultIterator {
+	return original.NewDomainTopicsListResultIterator(page)
+}
+func NewDomainTopicsListResultPage(getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
+	return original.NewDomainTopicsListResultPage(getNextPage)
+}
 func NewDomainsClient(subscriptionID string) DomainsClient {
 	return original.NewDomainsClient(subscriptionID)
 }
 func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
 	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDomainsListResultIterator(page DomainsListResultPage) DomainsListResultIterator {
+	return original.NewDomainsListResultIterator(page)
+}
+func NewDomainsListResultPage(getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
+	return original.NewDomainsListResultPage(getNextPage)
+}
 func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClient(subscriptionID)
 }
 func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEventSubscriptionsListResultIterator(page EventSubscriptionsListResultPage) EventSubscriptionsListResultIterator {
+	return original.NewEventSubscriptionsListResultIterator(page)
+}
+func NewEventSubscriptionsListResultPage(getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
+	return original.NewEventSubscriptionsListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -257,11 +304,20 @@ func NewTopicsClient(subscriptionID string) TopicsClient {
 func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
 	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewTopicsListResultIterator(page TopicsListResultPage) TopicsListResultIterator {
+	return original.NewTopicsListResultIterator(page)
+}
+func NewTopicsListResultPage(getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
+	return original.NewTopicsListResultPage(getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
 	return original.PossibleDomainProvisioningStateValues()
+}
+func PossibleDomainTopicProvisioningStateValues() []DomainTopicProvisioningState {
+	return original.PossibleDomainTopicProvisioningStateValues()
 }
 func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicDeadLetterDestination {
 	return original.PossibleEndpointTypeBasicDeadLetterDestinationValues()

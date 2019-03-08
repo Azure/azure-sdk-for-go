@@ -37,6 +37,13 @@ const (
 	Send   AccessRights = original.Send
 )
 
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
+)
+
 type EncodingCaptureDescription = original.EncodingCaptureDescription
 
 const (
@@ -63,6 +70,12 @@ type KeyType = original.KeyType
 const (
 	PrimaryKey   KeyType = original.PrimaryKey
 	SecondaryKey KeyType = original.SecondaryKey
+)
+
+type NetworkRuleIPAction = original.NetworkRuleIPAction
+
+const (
+	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
 )
 
 type ProvisioningStateDR = original.ProvisioningStateDR
@@ -148,9 +161,13 @@ type MessagingRegionsListResultIterator = original.MessagingRegionsListResultIte
 type MessagingRegionsListResultPage = original.MessagingRegionsListResultPage
 type MessagingRegionsProperties = original.MessagingRegionsProperties
 type Model = original.Model
+type NWRuleSetIPRules = original.NWRuleSetIPRules
+type NWRuleSetVirtualNetworkRules = original.NWRuleSetVirtualNetworkRules
 type NamespacesClient = original.NamespacesClient
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
+type NetworkRuleSet = original.NetworkRuleSet
+type NetworkRuleSetProperties = original.NetworkRuleSetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -162,6 +179,7 @@ type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type RegionsClient = original.RegionsClient
 type Resource = original.Resource
 type Sku = original.Sku
+type Subnet = original.Subnet
 type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
@@ -251,6 +269,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
+}
 func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 	return original.PossibleEncodingCaptureDescriptionValues()
 }
@@ -259,6 +280,9 @@ func PossibleEntityStatusValues() []EntityStatus {
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
+}
+func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
+	return original.PossibleNetworkRuleIPActionValues()
 }
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()

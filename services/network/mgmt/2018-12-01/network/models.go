@@ -2669,6 +2669,8 @@ type ApplicationGatewayBackendHealthServer struct {
 	IPConfiguration *InterfaceIPConfiguration `json:"ipConfiguration,omitempty"`
 	// Health - Health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'
 	Health ApplicationGatewayBackendHealthServerHealth `json:"health,omitempty"`
+	// HealthProbeLog - Health Probe Log.
+	HealthProbeLog *string `json:"healthProbeLog,omitempty"`
 }
 
 // ApplicationGatewayBackendHTTPSettings backend address pool settings of an application gateway.

@@ -1375,7 +1375,8 @@ type CloudJob struct {
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
 	Metadata      *[]MetadataItem          `json:"metadata,omitempty"`
 	ExecutionInfo *JobExecutionInformation `json:"executionInfo,omitempty"`
-	Stats         *JobStatistics           `json:"stats,omitempty"`
+	// Stats - This property is populated only if the CloudJob was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+	Stats *JobStatistics `json:"stats,omitempty"`
 }
 
 // CloudJobListPreparationAndReleaseTaskStatusResult ...
@@ -1893,7 +1894,8 @@ type CloudPool struct {
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	Metadata             *[]MetadataItem       `json:"metadata,omitempty"`
-	Stats                *PoolStatistics       `json:"stats,omitempty"`
+	// Stats - This property is populated only if the CloudPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+	Stats *PoolStatistics `json:"stats,omitempty"`
 }
 
 // CloudPoolListResult ...
@@ -3022,7 +3024,10 @@ type MetadataItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// MultiInstanceSettings multi-instance tasks are commonly used to support MPI tasks.
+// MultiInstanceSettings multi-instance tasks are commonly used to support MPI tasks. In the MPI case, if
+// any of the subtasks fail (for example due to exiting with a non-zero exit code) the entire
+// multi-instance task fails. The multi-instance task is then terminated and retried, up to its retry
+// limit.
 type MultiInstanceSettings struct {
 	// NumberOfInstances - If omitted, the default is 1.
 	NumberOfInstances *int32 `json:"numberOfInstances,omitempty"`

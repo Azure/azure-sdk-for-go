@@ -1915,28 +1915,28 @@ func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOper
 	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
 }
 
-// WebApplicationFirewallPolicyPropertiesFormat enumerates the values for web application firewall policy
-// properties format.
-type WebApplicationFirewallPolicyPropertiesFormat string
+// WebApplicationFirewallPolicyResourceState enumerates the values for web application firewall policy resource
+// state.
+type WebApplicationFirewallPolicyResourceState string
 
 const (
-	// WebApplicationFirewallPolicyPropertiesFormatCreating ...
-	WebApplicationFirewallPolicyPropertiesFormatCreating WebApplicationFirewallPolicyPropertiesFormat = "Creating"
-	// WebApplicationFirewallPolicyPropertiesFormatDeleting ...
-	WebApplicationFirewallPolicyPropertiesFormatDeleting WebApplicationFirewallPolicyPropertiesFormat = "Deleting"
-	// WebApplicationFirewallPolicyPropertiesFormatDisabled ...
-	WebApplicationFirewallPolicyPropertiesFormatDisabled WebApplicationFirewallPolicyPropertiesFormat = "Disabled"
-	// WebApplicationFirewallPolicyPropertiesFormatDisabling ...
-	WebApplicationFirewallPolicyPropertiesFormatDisabling WebApplicationFirewallPolicyPropertiesFormat = "Disabling"
-	// WebApplicationFirewallPolicyPropertiesFormatEnabled ...
-	WebApplicationFirewallPolicyPropertiesFormatEnabled WebApplicationFirewallPolicyPropertiesFormat = "Enabled"
-	// WebApplicationFirewallPolicyPropertiesFormatEnabling ...
-	WebApplicationFirewallPolicyPropertiesFormatEnabling WebApplicationFirewallPolicyPropertiesFormat = "Enabling"
+	// WebApplicationFirewallPolicyResourceStateCreating ...
+	WebApplicationFirewallPolicyResourceStateCreating WebApplicationFirewallPolicyResourceState = "Creating"
+	// WebApplicationFirewallPolicyResourceStateDeleting ...
+	WebApplicationFirewallPolicyResourceStateDeleting WebApplicationFirewallPolicyResourceState = "Deleting"
+	// WebApplicationFirewallPolicyResourceStateDisabled ...
+	WebApplicationFirewallPolicyResourceStateDisabled WebApplicationFirewallPolicyResourceState = "Disabled"
+	// WebApplicationFirewallPolicyResourceStateDisabling ...
+	WebApplicationFirewallPolicyResourceStateDisabling WebApplicationFirewallPolicyResourceState = "Disabling"
+	// WebApplicationFirewallPolicyResourceStateEnabled ...
+	WebApplicationFirewallPolicyResourceStateEnabled WebApplicationFirewallPolicyResourceState = "Enabled"
+	// WebApplicationFirewallPolicyResourceStateEnabling ...
+	WebApplicationFirewallPolicyResourceStateEnabling WebApplicationFirewallPolicyResourceState = "Enabling"
 )
 
-// PossibleWebApplicationFirewallPolicyPropertiesFormatValues returns an array of possible values for the WebApplicationFirewallPolicyPropertiesFormat const type.
-func PossibleWebApplicationFirewallPolicyPropertiesFormatValues() []WebApplicationFirewallPolicyPropertiesFormat {
-	return []WebApplicationFirewallPolicyPropertiesFormat{WebApplicationFirewallPolicyPropertiesFormatCreating, WebApplicationFirewallPolicyPropertiesFormatDeleting, WebApplicationFirewallPolicyPropertiesFormatDisabled, WebApplicationFirewallPolicyPropertiesFormatDisabling, WebApplicationFirewallPolicyPropertiesFormatEnabled, WebApplicationFirewallPolicyPropertiesFormatEnabling}
+// PossibleWebApplicationFirewallPolicyResourceStateValues returns an array of possible values for the WebApplicationFirewallPolicyResourceState const type.
+func PossibleWebApplicationFirewallPolicyResourceStateValues() []WebApplicationFirewallPolicyResourceState {
+	return []WebApplicationFirewallPolicyResourceState{WebApplicationFirewallPolicyResourceStateCreating, WebApplicationFirewallPolicyResourceStateDeleting, WebApplicationFirewallPolicyResourceStateDisabled, WebApplicationFirewallPolicyResourceStateDisabling, WebApplicationFirewallPolicyResourceStateEnabled, WebApplicationFirewallPolicyResourceStateEnabling}
 }
 
 // WebApplicationFirewallRuleType enumerates the values for web application firewall rule type.
@@ -7919,22 +7919,6 @@ type ContainerNetworkInterfacePropertiesFormat struct {
 	IPConfigurations *[]ContainerNetworkInterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// ProvisioningState - The provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-}
-
-// CustomRule defines contents of a web application rule
-type CustomRule struct {
-	// Name - Gets name of the resource that is unique within a policy. This name can be used to access the resource.
-	Name *string `json:"name,omitempty"`
-	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
-	// Priority - Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value
-	Priority *int32 `json:"priority,omitempty"`
-	// RuleType - Describes type of rule. Possible values include: 'WebApplicationFirewallRuleTypeMatchRule', 'WebApplicationFirewallRuleTypeInvalid'
-	RuleType WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
-	// MatchConditions - List of match conditions
-	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
-	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog'
-	Action WebApplicationFirewallAction `json:"action,omitempty"`
 }
 
 // DdosCustomPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -19944,7 +19928,7 @@ type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
 
 // PolicySettings defines contents of a web application firewall global configuration
 type PolicySettings struct {
-	// EnabledState - describes if the policy is in enabled state or disabled state. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
+	// EnabledState - Describes if the policy is in enabled state or disabled state. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
 	EnabledState WebApplicationFirewallEnabledState `json:"enabledState,omitempty"`
 	// Mode - Describes if it is in detection mode  or prevention mode at policy level. Possible values include: 'WebApplicationFirewallModePrevention', 'WebApplicationFirewallModeDetection'
 	Mode WebApplicationFirewallMode `json:"mode,omitempty"`
@@ -29533,6 +29517,22 @@ func (future *WatchersVerifyIPFlowFuture) Result(client WatchersClient) (vifr Ve
 	return
 }
 
+// WebApplicationFirewallCustomRule defines contents of a web application rule
+type WebApplicationFirewallCustomRule struct {
+	// Name - Gets name of the resource that is unique within a policy. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Priority - Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value
+	Priority *int32 `json:"priority,omitempty"`
+	// RuleType - Describes type of rule. Possible values include: 'WebApplicationFirewallRuleTypeMatchRule', 'WebApplicationFirewallRuleTypeInvalid'
+	RuleType WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
+	// MatchConditions - List of match conditions
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog'
+	Action WebApplicationFirewallAction `json:"action,omitempty"`
+}
+
 // WebApplicationFirewallPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type WebApplicationFirewallPoliciesDeleteFuture struct {
@@ -29559,8 +29559,8 @@ func (future *WebApplicationFirewallPoliciesDeleteFuture) Result(client WebAppli
 // WebApplicationFirewallPolicy defines web application firewall policy.
 type WebApplicationFirewallPolicy struct {
 	autorest.Response `json:"-"`
-	// WebApplicationFirewallPolicyPropertiesFormat1 - Properties of the web application firewall policy.
-	*WebApplicationFirewallPolicyPropertiesFormat1 `json:"properties,omitempty"`
+	// WebApplicationFirewallPolicyPropertiesFormat - Properties of the web application firewall policy.
+	*WebApplicationFirewallPolicyPropertiesFormat `json:"properties,omitempty"`
 	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
@@ -29578,8 +29578,8 @@ type WebApplicationFirewallPolicy struct {
 // MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
 func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wafp.WebApplicationFirewallPolicyPropertiesFormat1 != nil {
-		objectMap["properties"] = wafp.WebApplicationFirewallPolicyPropertiesFormat1
+	if wafp.WebApplicationFirewallPolicyPropertiesFormat != nil {
+		objectMap["properties"] = wafp.WebApplicationFirewallPolicyPropertiesFormat
 	}
 	if wafp.Etag != nil {
 		objectMap["etag"] = wafp.Etag
@@ -29613,12 +29613,12 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var webApplicationFirewallPolicyPropertiesFormat1 WebApplicationFirewallPolicyPropertiesFormat1
-				err = json.Unmarshal(*v, &webApplicationFirewallPolicyPropertiesFormat1)
+				var webApplicationFirewallPolicyPropertiesFormat WebApplicationFirewallPolicyPropertiesFormat
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyPropertiesFormat)
 				if err != nil {
 					return err
 				}
-				wafp.WebApplicationFirewallPolicyPropertiesFormat1 = &webApplicationFirewallPolicyPropertiesFormat1
+				wafp.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
 			}
 		case "etag":
 			if v != nil {
@@ -29829,16 +29829,16 @@ func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Cont
 	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
 }
 
-// WebApplicationFirewallPolicyPropertiesFormat1 defines web application firewall policy properties
-type WebApplicationFirewallPolicyPropertiesFormat1 struct {
+// WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties
+type WebApplicationFirewallPolicyPropertiesFormat struct {
 	// PolicySettings - Describes  policySettings for policy
 	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
 	// CustomRules - Describes custom rules inside the policy
-	CustomRules *[]CustomRule `json:"customRules,omitempty"`
+	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
 	// ApplicationGateways - A collection of references to application gateways.
 	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
 	// ProvisioningState - Provisioning state of the WebApplicationFirewallPolicy.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// ResourceState - Possible values include: 'WebApplicationFirewallPolicyPropertiesFormatCreating', 'WebApplicationFirewallPolicyPropertiesFormatEnabling', 'WebApplicationFirewallPolicyPropertiesFormatEnabled', 'WebApplicationFirewallPolicyPropertiesFormatDisabling', 'WebApplicationFirewallPolicyPropertiesFormatDisabled', 'WebApplicationFirewallPolicyPropertiesFormatDeleting'
-	ResourceState WebApplicationFirewallPolicyPropertiesFormat `json:"resourceState,omitempty"`
+	// ResourceState - Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'
+	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`
 }

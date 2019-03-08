@@ -871,14 +871,10 @@ type ApplicationBase struct {
 	AppPermissions *[]string `json:"appPermissions,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
-	// DisplayName - The display name of the application.
-	DisplayName *string `json:"displayName,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
-	// IdentifierUris - A collection of URIs for the application.
-	IdentifierUris *[]string `json:"identifierUris,omitempty"`
 	// InformationalUrls - urls with more informations of the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
@@ -922,6 +918,10 @@ type ApplicationBase struct {
 
 // ApplicationCreateParameters request parameters for creating a new application.
 type ApplicationCreateParameters struct {
+	// DisplayName - The display name of the application.
+	DisplayName *string `json:"displayName,omitempty"`
+	// IdentifierUris - A collection of URIs for the application.
+	IdentifierUris *[]string `json:"identifierUris,omitempty"`
 	// AllowGuestsSignIn - A property on the application to indicate if the application accepts other IDPs or not or partially accepts.
 	AllowGuestsSignIn *bool `json:"allowGuestsSignIn,omitempty"`
 	// AllowPassthroughUsers - Indicates that the application supports pass through users who have no presence in the resource tenant.
@@ -934,14 +934,10 @@ type ApplicationCreateParameters struct {
 	AppPermissions *[]string `json:"appPermissions,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
-	// DisplayName - The display name of the application.
-	DisplayName *string `json:"displayName,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
-	// IdentifierUris - A collection of URIs for the application.
-	IdentifierUris *[]string `json:"identifierUris,omitempty"`
 	// InformationalUrls - urls with more informations of the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
@@ -1119,6 +1115,10 @@ func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationL
 
 // ApplicationUpdateParameters request parameters for updating a new application.
 type ApplicationUpdateParameters struct {
+	// DisplayName - The display name of the application.
+	DisplayName *string `json:"displayName,omitempty"`
+	// IdentifierUris - A collection of URIs for the application.
+	IdentifierUris *[]string `json:"identifierUris,omitempty"`
 	// AllowGuestsSignIn - A property on the application to indicate if the application accepts other IDPs or not or partially accepts.
 	AllowGuestsSignIn *bool `json:"allowGuestsSignIn,omitempty"`
 	// AllowPassthroughUsers - Indicates that the application supports pass through users who have no presence in the resource tenant.
@@ -1131,14 +1131,10 @@ type ApplicationUpdateParameters struct {
 	AppPermissions *[]string `json:"appPermissions,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
-	// DisplayName - The display name of the application.
-	DisplayName *string `json:"displayName,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
-	// IdentifierUris - A collection of URIs for the application.
-	IdentifierUris *[]string `json:"identifierUris,omitempty"`
 	// InformationalUrls - urls with more informations of the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.

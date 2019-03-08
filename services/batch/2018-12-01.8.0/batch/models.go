@@ -3024,9 +3024,10 @@ type MetadataItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// MultiInstanceSettings multi-instance tasks are commonly used to support MPI tasks. In MPI scenario, if
-// any of the subtasks fail, for example, exiting with a non-zero return code, the entire multi-instance
-// task fails. The multi-instance task is then terminated and retried, up to its retry limit.
+// MultiInstanceSettings multi-instance tasks are commonly used to support MPI tasks. In the MPI case, if
+// any of the subtasks fail (for example due to exiting with a non-zero exit code) the entire
+// multi-instance task fails. The multi-instance task is then terminated and retried, up to its retry
+// limit.
 type MultiInstanceSettings struct {
 	// NumberOfInstances - If omitted, the default is 1.
 	NumberOfInstances *int32 `json:"numberOfInstances,omitempty"`

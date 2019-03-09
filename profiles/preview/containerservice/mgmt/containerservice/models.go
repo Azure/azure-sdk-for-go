@@ -308,7 +308,12 @@ const (
 type AccessProfile = original.AccessProfile
 type AgentPool = original.AgentPool
 type AgentPoolListResult = original.AgentPoolListResult
+type AgentPoolListResultIterator = original.AgentPoolListResultIterator
+type AgentPoolListResultPage = original.AgentPoolListResultPage
 type AgentPoolProfile = original.AgentPoolProfile
+type AgentPoolsClient = original.AgentPoolsClient
+type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
+type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture
 type BaseClient = original.BaseClient
 type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
 type CloudError = original.CloudError
@@ -387,6 +392,18 @@ type WindowsProfile = original.WindowsProfile
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return original.NewAgentPoolListResultIterator(page)
+}
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return original.NewAgentPoolListResultPage(getNextPage)
+}
+func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
+	return original.NewAgentPoolsClient(subscriptionID)
+}
+func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) AgentPoolsClient {
+	return original.NewAgentPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClient(subscriptionID)

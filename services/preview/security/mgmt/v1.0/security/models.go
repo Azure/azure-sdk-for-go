@@ -764,6 +764,8 @@ type AlertProperties struct {
 	InstanceID *string `json:"instanceId,omitempty"`
 	// WorkspaceArmID - Azure resource ID of the workspace that the alert was reported to.
 	WorkspaceArmID *string `json:"workspaceArmId,omitempty"`
+	// CorrelationKey - Correlation Key of the alert.
+	CorrelationKey *string `json:"CorrelationKey,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AlertProperties.
@@ -834,6 +836,9 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.WorkspaceArmID != nil {
 		objectMap["workspaceArmId"] = ap.WorkspaceArmID
+	}
+	if ap.CorrelationKey != nil {
+		objectMap["CorrelationKey"] = ap.CorrelationKey
 	}
 	return json.Marshal(objectMap)
 }

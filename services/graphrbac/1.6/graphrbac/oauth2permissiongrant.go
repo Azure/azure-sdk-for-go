@@ -41,6 +41,159 @@ func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string) 
 	return OAuth2PermissionGrantClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// Create grants OAuth2 permissions for the relevant resource Ids of an app.
+// Parameters:
+// body - the relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
+func (client OAuth2PermissionGrantClient) Create(ctx context.Context, body *OAuth2PermissionGrant) (result OAuth2PermissionGrant, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2PermissionGrantClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CreatePreparer(ctx, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2PermissionGrantClient", "Create", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2PermissionGrantClient", "Create", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2PermissionGrantClient", "Create", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreatePreparer prepares the Create request.
+func (client OAuth2PermissionGrantClient) CreatePreparer(ctx context.Context, body *OAuth2PermissionGrant) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/oauth2PermissionGrants", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if body != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(body))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateSender sends the Create request. The method will close the
+// http.Response Body if it receives an error.
+func (client OAuth2PermissionGrantClient) CreateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// CreateResponder handles the response to the Create request. The method always
+// closes the http.Response Body.
+func (client OAuth2PermissionGrantClient) CreateResponder(resp *http.Response) (result OAuth2PermissionGrant, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete delete a OAuth2 permission grant for the relevant resource Ids of an app.
+// Parameters:
+// objectID - the object ID of a permission grant.
+func (client OAuth2PermissionGrantClient) Delete(ctx context.Context, objectID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2PermissionGrantClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeletePreparer(ctx, objectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2PermissionGrantClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2PermissionGrantClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2PermissionGrantClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client OAuth2PermissionGrantClient) DeletePreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/oauth2PermissionGrants/{objectId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client OAuth2PermissionGrantClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client OAuth2PermissionGrantClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // List queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
 // Parameters:
 // filter - this is the Service Principal ObjectId associated with the app

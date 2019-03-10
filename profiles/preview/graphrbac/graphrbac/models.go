@@ -91,7 +91,6 @@ type InformationalURL = original.InformationalURL
 type KeyCredential = original.KeyCredential
 type KeyCredentialListResult = original.KeyCredentialListResult
 type KeyCredentialsUpdateParameters = original.KeyCredentialsUpdateParameters
-type OAuth2Client = original.OAuth2Client
 type OAuth2Permission = original.OAuth2Permission
 type OAuth2PermissionGrant = original.OAuth2PermissionGrant
 type OAuth2PermissionGrantClient = original.OAuth2PermissionGrantClient
@@ -176,12 +175,6 @@ func NewGroupsClient(tenantID string) GroupsClient {
 }
 func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
 	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
-}
-func NewOAuth2Client(tenantID string) OAuth2Client {
-	return original.NewOAuth2Client(tenantID)
-}
-func NewOAuth2ClientWithBaseURI(baseURI string, tenantID string) OAuth2Client {
-	return original.NewOAuth2ClientWithBaseURI(baseURI, tenantID)
 }
 func NewOAuth2PermissionGrantClient(tenantID string) OAuth2PermissionGrantClient {
 	return original.NewOAuth2PermissionGrantClient(tenantID)

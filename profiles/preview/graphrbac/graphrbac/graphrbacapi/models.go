@@ -26,6 +26,7 @@ type DeletedApplicationsClientAPI = original.DeletedApplicationsClientAPI
 type DomainsClientAPI = original.DomainsClientAPI
 type GroupsClientAPI = original.GroupsClientAPI
 type OAuth2ClientAPI = original.OAuth2ClientAPI
+type OAuth2PermissionGrantClientAPI = original.OAuth2PermissionGrantClientAPI
 type ObjectsClientAPI = original.ObjectsClientAPI
 type ServicePrincipalsClientAPI = original.ServicePrincipalsClientAPI
 type SignedInUserClientAPI = original.SignedInUserClientAPI

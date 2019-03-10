@@ -30,6 +30,21 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 
+// ConsentType enumerates the values for consent type.
+type ConsentType string
+
+const (
+	// AllPrincipals ...
+	AllPrincipals ConsentType = "AllPrincipals"
+	// Principal ...
+	Principal ConsentType = "Principal"
+)
+
+// PossibleConsentTypeValues returns an array of possible values for the ConsentType const type.
+func PossibleConsentTypeValues() []ConsentType {
+	return []ConsentType{AllPrincipals, Principal}
+}
+
 // ObjectType enumerates the values for object type.
 type ObjectType string
 
@@ -2445,6 +2460,164 @@ type OAuth2Permission struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// OAuth2PermissionGrant ...
+type OAuth2PermissionGrant struct {
+	autorest.Response `json:"-"`
+	// OdataType - Microsoft.DirectoryServices.OAuth2PermissionGrant
+	OdataType *string `json:"odata.type,omitempty"`
+	// ClientID - The id of the resource's service principal granted consent to impersonate the user when accessing the resource (represented by the resourceId property).
+	ClientID *string `json:"clientId,omitempty"`
+	// ObjectID - The id of the permission grant
+	ObjectID *string `json:"objectId,omitempty"`
+	// ConsentType - Indicates if consent was provided by the administrator (on behalf of the organization) or by an individual. Possible values include: 'AllPrincipals', 'Principal'
+	ConsentType ConsentType `json:"consentType,omitempty"`
+	// PrincipalID - When consent type is Principal, this property specifies the id of the user that granted consent and applies only for that user.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ResourceID - Object Id of the resource you want to grant
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Scope - Specifies the value of the scope claim that the resource application should expect in the OAuth 2.0 access token. For example, User.Read
+	Scope *string `json:"scope,omitempty"`
+	// StartTime - Start time for TTL
+	StartTime *string `json:"startTime,omitempty"`
+	// ExpiryTime - Expiry time for TTL
+	ExpiryTime *string `json:"expiryTime,omitempty"`
+}
+
+// OAuth2PermissionGrantListResult server response for get oauth2 permissions grants
+type OAuth2PermissionGrantListResult struct {
+	autorest.Response `json:"-"`
+	// Value - the list of oauth2 permissions grants
+	Value *[]OAuth2PermissionGrant `json:"value,omitempty"`
+	// OdataNextLink - the URL to get the next set of results.
+	OdataNextLink *string `json:"odata.nextLink,omitempty"`
+}
+
+// OAuth2PermissionGrantListResultIterator provides access to a complete listing of OAuth2PermissionGrant
+// values.
+type OAuth2PermissionGrantListResultIterator struct {
+	i    int
+	page OAuth2PermissionGrantListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OAuth2PermissionGrantListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2PermissionGrantListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OAuth2PermissionGrantListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OAuth2PermissionGrantListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OAuth2PermissionGrantListResultIterator) Response() OAuth2PermissionGrantListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OAuth2PermissionGrantListResultIterator) Value() OAuth2PermissionGrant {
+	if !iter.page.NotDone() {
+		return OAuth2PermissionGrant{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OAuth2PermissionGrantListResultIterator type.
+func NewOAuth2PermissionGrantListResultIterator(page OAuth2PermissionGrantListResultPage) OAuth2PermissionGrantListResultIterator {
+	return OAuth2PermissionGrantListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (oa2pglr OAuth2PermissionGrantListResult) IsEmpty() bool {
+	return oa2pglr.Value == nil || len(*oa2pglr.Value) == 0
+}
+
+// OAuth2PermissionGrantListResultPage contains a page of OAuth2PermissionGrant values.
+type OAuth2PermissionGrantListResultPage struct {
+	fn      func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)
+	oa2pglr OAuth2PermissionGrantListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OAuth2PermissionGrantListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2PermissionGrantListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.oa2pglr)
+	if err != nil {
+		return err
+	}
+	page.oa2pglr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OAuth2PermissionGrantListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OAuth2PermissionGrantListResultPage) NotDone() bool {
+	return !page.oa2pglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OAuth2PermissionGrantListResultPage) Response() OAuth2PermissionGrantListResult {
+	return page.oa2pglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OAuth2PermissionGrantListResultPage) Values() []OAuth2PermissionGrant {
+	if page.oa2pglr.IsEmpty() {
+		return nil
+	}
+	return *page.oa2pglr.Value
+}
+
+// Creates a new instance of the OAuth2PermissionGrantListResultPage type.
+func NewOAuth2PermissionGrantListResultPage(getNextPage func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)) OAuth2PermissionGrantListResultPage {
+	return OAuth2PermissionGrantListResultPage{fn: getNextPage}
+}
+
 // OdataError active Directory OData error information.
 type OdataError struct {
 	// Code - Error code.
@@ -2712,175 +2885,6 @@ func (pp *PasswordProfile) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// Permissions ...
-type Permissions struct {
-	autorest.Response `json:"-"`
-	// OdataType - Microsoft.DirectoryServices.OAuth2PermissionGrant
-	OdataType *string `json:"odata.type,omitempty"`
-	// ClientID - The objectId of the Service Principal associated with the app
-	ClientID *string `json:"clientId,omitempty"`
-	// ObjectID - The objectId of the permission grant
-	ObjectID *string `json:"objectId,omitempty"`
-	// ConsentType - Typically set to AllPrincipals
-	ConsentType *string `json:"consentType,omitempty"`
-	// PrincipalID - Set to null if AllPrincipals is set
-	PrincipalID interface{} `json:"principalId,omitempty"`
-	// ResourceID - Service Principal Id of the resource you want to grant
-	ResourceID *string `json:"resourceId,omitempty"`
-	// Scope - Typically set to user_impersonation
-	Scope *string `json:"scope,omitempty"`
-	// StartTime - Start time for TTL
-	StartTime *string `json:"startTime,omitempty"`
-	// ExpiryTime - Expiry time for TTL
-	ExpiryTime *string `json:"expiryTime,omitempty"`
-}
-
-// PermissionsListResult server response for get permissions grants
-type PermissionsListResult struct {
-	autorest.Response `json:"-"`
-	// Value - the list of permissions grants
-	Value *[]Permissions `json:"value,omitempty"`
-	// OdataNextLink - the URL to get the next set of results.
-	OdataNextLink *string `json:"odata.nextLink,omitempty"`
-}
-
-// PermissionsListResultIterator provides access to a complete listing of Permissions values.
-type PermissionsListResultIterator struct {
-	i    int
-	page PermissionsListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *PermissionsListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *PermissionsListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter PermissionsListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter PermissionsListResultIterator) Response() PermissionsListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter PermissionsListResultIterator) Value() Permissions {
-	if !iter.page.NotDone() {
-		return Permissions{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the PermissionsListResultIterator type.
-func NewPermissionsListResultIterator(page PermissionsListResultPage) PermissionsListResultIterator {
-	return PermissionsListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (plr PermissionsListResult) IsEmpty() bool {
-	return plr.Value == nil || len(*plr.Value) == 0
-}
-
-// permissionsListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (plr PermissionsListResult) permissionsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.OdataNextLink == nil || len(to.String(plr.OdataNextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(plr.OdataNextLink)))
-}
-
-// PermissionsListResultPage contains a page of Permissions values.
-type PermissionsListResultPage struct {
-	fn  func(context.Context, PermissionsListResult) (PermissionsListResult, error)
-	plr PermissionsListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *PermissionsListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
-	}
-	page.plr = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *PermissionsListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page PermissionsListResultPage) NotDone() bool {
-	return !page.plr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page PermissionsListResultPage) Response() PermissionsListResult {
-	return page.plr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page PermissionsListResultPage) Values() []Permissions {
-	if page.plr.IsEmpty() {
-		return nil
-	}
-	return *page.plr.Value
-}
-
-// Creates a new instance of the PermissionsListResultPage type.
-func NewPermissionsListResultPage(getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
-	return PermissionsListResultPage{fn: getNextPage}
 }
 
 // PreAuthorizedApplication contains information about pre authorized client application.

@@ -127,11 +127,18 @@ type DomainsClientAPI interface {
 
 var _ DomainsClientAPI = (*graphrbac.DomainsClient)(nil)
 
+// OAuth2PermissionGrantClientAPI contains the set of methods on the OAuth2PermissionGrantClient type.
+type OAuth2PermissionGrantClientAPI interface {
+	List(ctx context.Context, filter string) (result graphrbac.OAuth2PermissionGrantListResultPage, err error)
+	ListNext(ctx context.Context, nextLink string) (result graphrbac.OAuth2PermissionGrantListResult, err error)
+}
+
+var _ OAuth2PermissionGrantClientAPI = (*graphrbac.OAuth2PermissionGrantClient)(nil)
+
 // OAuth2ClientAPI contains the set of methods on the OAuth2Client type.
 type OAuth2ClientAPI interface {
 	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
-	Get(ctx context.Context, filter string) (result graphrbac.PermissionsListResultPage, err error)
-	Grant(ctx context.Context, body *graphrbac.Permissions) (result graphrbac.Permissions, err error)
+	Grant(ctx context.Context, body *graphrbac.OAuth2PermissionGrant) (result graphrbac.OAuth2PermissionGrant, err error)
 }
 
 var _ OAuth2ClientAPI = (*graphrbac.OAuth2Client)(nil)

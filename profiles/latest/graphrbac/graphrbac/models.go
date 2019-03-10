@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ConsentType = original.ConsentType
+
+const (
+	AllPrincipals ConsentType = original.AllPrincipals
+	Principal     ConsentType = original.Principal
+)
+
 type ObjectType = original.ObjectType
 
 const (
@@ -86,6 +93,11 @@ type KeyCredentialListResult = original.KeyCredentialListResult
 type KeyCredentialsUpdateParameters = original.KeyCredentialsUpdateParameters
 type OAuth2Client = original.OAuth2Client
 type OAuth2Permission = original.OAuth2Permission
+type OAuth2PermissionGrant = original.OAuth2PermissionGrant
+type OAuth2PermissionGrantClient = original.OAuth2PermissionGrantClient
+type OAuth2PermissionGrantListResult = original.OAuth2PermissionGrantListResult
+type OAuth2PermissionGrantListResultIterator = original.OAuth2PermissionGrantListResultIterator
+type OAuth2PermissionGrantListResultPage = original.OAuth2PermissionGrantListResultPage
 type ObjectsClient = original.ObjectsClient
 type OdataError = original.OdataError
 type OptionalClaim = original.OptionalClaim
@@ -94,10 +106,6 @@ type PasswordCredential = original.PasswordCredential
 type PasswordCredentialListResult = original.PasswordCredentialListResult
 type PasswordCredentialsUpdateParameters = original.PasswordCredentialsUpdateParameters
 type PasswordProfile = original.PasswordProfile
-type Permissions = original.Permissions
-type PermissionsListResult = original.PermissionsListResult
-type PermissionsListResultIterator = original.PermissionsListResultIterator
-type PermissionsListResultPage = original.PermissionsListResultPage
 type PreAuthorizedApplication = original.PreAuthorizedApplication
 type PreAuthorizedApplicationExtension = original.PreAuthorizedApplicationExtension
 type PreAuthorizedApplicationPermission = original.PreAuthorizedApplicationPermission
@@ -175,17 +183,23 @@ func NewOAuth2Client(tenantID string) OAuth2Client {
 func NewOAuth2ClientWithBaseURI(baseURI string, tenantID string) OAuth2Client {
 	return original.NewOAuth2ClientWithBaseURI(baseURI, tenantID)
 }
+func NewOAuth2PermissionGrantClient(tenantID string) OAuth2PermissionGrantClient {
+	return original.NewOAuth2PermissionGrantClient(tenantID)
+}
+func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string) OAuth2PermissionGrantClient {
+	return original.NewOAuth2PermissionGrantClientWithBaseURI(baseURI, tenantID)
+}
+func NewOAuth2PermissionGrantListResultIterator(page OAuth2PermissionGrantListResultPage) OAuth2PermissionGrantListResultIterator {
+	return original.NewOAuth2PermissionGrantListResultIterator(page)
+}
+func NewOAuth2PermissionGrantListResultPage(getNextPage func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)) OAuth2PermissionGrantListResultPage {
+	return original.NewOAuth2PermissionGrantListResultPage(getNextPage)
+}
 func NewObjectsClient(tenantID string) ObjectsClient {
 	return original.NewObjectsClient(tenantID)
 }
 func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
 	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
-}
-func NewPermissionsListResultIterator(page PermissionsListResultPage) PermissionsListResultIterator {
-	return original.NewPermissionsListResultIterator(page)
-}
-func NewPermissionsListResultPage(getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
-	return original.NewPermissionsListResultPage(getNextPage)
 }
 func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
 	return original.NewServicePrincipalListResultIterator(page)
@@ -219,6 +233,9 @@ func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
 }
 func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, tenantID)
+}
+func PossibleConsentTypeValues() []ConsentType {
+	return original.PossibleConsentTypeValues()
 }
 func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()

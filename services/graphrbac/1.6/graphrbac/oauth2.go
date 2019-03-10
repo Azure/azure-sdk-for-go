@@ -114,125 +114,10 @@ func (client OAuth2Client) DeleteResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Get queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
-// Parameters:
-// filter - this is the Service Principal ObjectId associated with the app
-func (client OAuth2Client) Get(ctx context.Context, filter string) (result PermissionsListResultPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Get")
-		defer func() {
-			sc := -1
-			if result.plr.Response.Response != nil {
-				sc = result.plr.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.fn = client.getNextResults
-	req, err := client.GetPreparer(ctx, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.plr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", resp, "Failure sending request")
-		return
-	}
-
-	result.plr, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPreparer prepares the Get request.
-func (client OAuth2Client) GetPreparer(ctx context.Context, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
-	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/oauth2PermissionGrants", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client OAuth2Client) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client OAuth2Client) GetResponder(resp *http.Response) (result PermissionsListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// getNextResults retrieves the next set of results, if any.
-func (client OAuth2Client) getNextResults(ctx context.Context, lastResults PermissionsListResult) (result PermissionsListResult, err error) {
-	req, err := lastResults.permissionsListResultPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "getNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "getNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "getNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// GetComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OAuth2Client) GetComplete(ctx context.Context, filter string) (result PermissionsListResultIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Get")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.Get(ctx, filter)
-	return
-}
-
 // Grant grants OAuth2 permissions for the relevant resource Ids of an app.
 // Parameters:
 // body - the relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
-func (client OAuth2Client) Grant(ctx context.Context, body *Permissions) (result Permissions, err error) {
+func (client OAuth2Client) Grant(ctx context.Context, body *OAuth2PermissionGrant) (result OAuth2PermissionGrant, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Grant")
 		defer func() {
@@ -265,7 +150,7 @@ func (client OAuth2Client) Grant(ctx context.Context, body *Permissions) (result
 }
 
 // GrantPreparer prepares the Grant request.
-func (client OAuth2Client) GrantPreparer(ctx context.Context, body *Permissions) (*http.Request, error) {
+func (client OAuth2Client) GrantPreparer(ctx context.Context, body *OAuth2PermissionGrant) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
@@ -297,7 +182,7 @@ func (client OAuth2Client) GrantSender(req *http.Request) (*http.Response, error
 
 // GrantResponder handles the response to the Grant request. The method always
 // closes the http.Response Body.
-func (client OAuth2Client) GrantResponder(resp *http.Response) (result Permissions, err error) {
+func (client OAuth2Client) GrantResponder(resp *http.Response) (result OAuth2PermissionGrant, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

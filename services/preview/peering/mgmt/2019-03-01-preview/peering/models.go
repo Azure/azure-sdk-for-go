@@ -474,7 +474,7 @@ type LocationProperties struct {
 type LocationPropertiesDirect struct {
 	// PeeringFacilities - The list of direct peering facilities at the peering location.
 	PeeringFacilities *[]DirectPeeringFacility `json:"peeringFacilities,omitempty"`
-	// BandwidthOffers - The list of bandwidth offers avaiable at the peering location.
+	// BandwidthOffers - The list of bandwidth offers available at the peering location.
 	BandwidthOffers *[]BandwidthOffer `json:"bandwidthOffers,omitempty"`
 }
 

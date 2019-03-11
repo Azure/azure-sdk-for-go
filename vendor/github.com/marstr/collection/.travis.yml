@@ -1,0 +1,20 @@
+language: go
+
+go:
+  - 1.11
+  - 1.x
+
+env:
+  - GO111MODULE=on
+
+matrix:
+  fast_finish: true
+
+install:
+ - go get -u golang.org/x/lint/golint
+
+script:
+ - go test -v -cover
+ - test -z "$(golint | tee /dev/stderr)"
+ - test -z "$(go vet | tee /dev/stderr | grep error)"
+ - test -z "$(gofmt -l *.go | tee /dev/stderr)"

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v26.3.0`
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2019-02-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| marketplaceordering | 2015-06-01 |
+
 ## `v26.2.0`
 
 ### New Packages

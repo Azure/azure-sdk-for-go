@@ -37,6 +37,13 @@ const (
 	Send   AccessRights = original.Send
 )
 
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
+)
+
 type EncodingCaptureDescription = original.EncodingCaptureDescription
 
 const (
@@ -80,6 +87,12 @@ const (
 	Mixed           NameSpaceType = original.Mixed
 	NotificationHub NameSpaceType = original.NotificationHub
 	Relay           NameSpaceType = original.Relay
+)
+
+type NetworkRuleIPAction = original.NetworkRuleIPAction
+
+const (
+	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
 )
 
 type ProvisioningStateDR = original.ProvisioningStateDR
@@ -156,9 +169,13 @@ type MigrationConfigProperties = original.MigrationConfigProperties
 type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
 type MigrationConfigsClient = original.MigrationConfigsClient
 type MigrationConfigsCreateAndStartMigrationFuture = original.MigrationConfigsCreateAndStartMigrationFuture
+type NWRuleSetIPRules = original.NWRuleSetIPRules
+type NWRuleSetVirtualNetworkRules = original.NWRuleSetVirtualNetworkRules
 type NamespacesClient = original.NamespacesClient
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
+type NetworkRuleSet = original.NetworkRuleSet
+type NetworkRuleSetProperties = original.NetworkRuleSetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -212,6 +229,7 @@ type SBTopicListResultPage = original.SBTopicListResultPage
 type SBTopicProperties = original.SBTopicProperties
 type SQLFilter = original.SQLFilter
 type SQLRuleAction = original.SQLRuleAction
+type Subnet = original.Subnet
 type SubscriptionsClient = original.SubscriptionsClient
 type TopicsClient = original.TopicsClient
 type TrackedResource = original.TrackedResource
@@ -357,6 +375,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
+}
 func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 	return original.PossibleEncodingCaptureDescriptionValues()
 }
@@ -371,6 +392,9 @@ func PossibleKeyTypeValues() []KeyType {
 }
 func PossibleNameSpaceTypeValues() []NameSpaceType {
 	return original.PossibleNameSpaceTypeValues()
+}
+func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
+	return original.PossibleNetworkRuleIPActionValues()
 }
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()

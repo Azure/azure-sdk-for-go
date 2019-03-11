@@ -27,6 +27,3 @@ _testmain.go
 *.swp
 *~
 .DS_Store
-
-# ignore vendor/
-vendor/

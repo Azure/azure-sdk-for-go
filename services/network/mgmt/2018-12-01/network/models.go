@@ -1810,6 +1810,173 @@ func PossibleVpnTypeValues() []VpnType {
 	return []VpnType{PolicyBased, RouteBased}
 }
 
+// WebApplicationFirewallAction enumerates the values for web application firewall action.
+type WebApplicationFirewallAction string
+
+const (
+	// WebApplicationFirewallActionAllow ...
+	WebApplicationFirewallActionAllow WebApplicationFirewallAction = "Allow"
+	// WebApplicationFirewallActionBlock ...
+	WebApplicationFirewallActionBlock WebApplicationFirewallAction = "Block"
+	// WebApplicationFirewallActionLog ...
+	WebApplicationFirewallActionLog WebApplicationFirewallAction = "Log"
+)
+
+// PossibleWebApplicationFirewallActionValues returns an array of possible values for the WebApplicationFirewallAction const type.
+func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction {
+	return []WebApplicationFirewallAction{WebApplicationFirewallActionAllow, WebApplicationFirewallActionBlock, WebApplicationFirewallActionLog}
+}
+
+// WebApplicationFirewallEnabledState enumerates the values for web application firewall enabled state.
+type WebApplicationFirewallEnabledState string
+
+const (
+	// WebApplicationFirewallEnabledStateDisabled ...
+	WebApplicationFirewallEnabledStateDisabled WebApplicationFirewallEnabledState = "Disabled"
+	// WebApplicationFirewallEnabledStateEnabled ...
+	WebApplicationFirewallEnabledStateEnabled WebApplicationFirewallEnabledState = "Enabled"
+)
+
+// PossibleWebApplicationFirewallEnabledStateValues returns an array of possible values for the WebApplicationFirewallEnabledState const type.
+func PossibleWebApplicationFirewallEnabledStateValues() []WebApplicationFirewallEnabledState {
+	return []WebApplicationFirewallEnabledState{WebApplicationFirewallEnabledStateDisabled, WebApplicationFirewallEnabledStateEnabled}
+}
+
+// WebApplicationFirewallMatchVariable enumerates the values for web application firewall match variable.
+type WebApplicationFirewallMatchVariable string
+
+const (
+	// PostArgs ...
+	PostArgs WebApplicationFirewallMatchVariable = "PostArgs"
+	// QueryString ...
+	QueryString WebApplicationFirewallMatchVariable = "QueryString"
+	// RemoteAddr ...
+	RemoteAddr WebApplicationFirewallMatchVariable = "RemoteAddr"
+	// RequestBody ...
+	RequestBody WebApplicationFirewallMatchVariable = "RequestBody"
+	// RequestCookies ...
+	RequestCookies WebApplicationFirewallMatchVariable = "RequestCookies"
+	// RequestHeaders ...
+	RequestHeaders WebApplicationFirewallMatchVariable = "RequestHeaders"
+	// RequestMethod ...
+	RequestMethod WebApplicationFirewallMatchVariable = "RequestMethod"
+	// RequestURI ...
+	RequestURI WebApplicationFirewallMatchVariable = "RequestUri"
+)
+
+// PossibleWebApplicationFirewallMatchVariableValues returns an array of possible values for the WebApplicationFirewallMatchVariable const type.
+func PossibleWebApplicationFirewallMatchVariableValues() []WebApplicationFirewallMatchVariable {
+	return []WebApplicationFirewallMatchVariable{PostArgs, QueryString, RemoteAddr, RequestBody, RequestCookies, RequestHeaders, RequestMethod, RequestURI}
+}
+
+// WebApplicationFirewallMode enumerates the values for web application firewall mode.
+type WebApplicationFirewallMode string
+
+const (
+	// WebApplicationFirewallModeDetection ...
+	WebApplicationFirewallModeDetection WebApplicationFirewallMode = "Detection"
+	// WebApplicationFirewallModePrevention ...
+	WebApplicationFirewallModePrevention WebApplicationFirewallMode = "Prevention"
+)
+
+// PossibleWebApplicationFirewallModeValues returns an array of possible values for the WebApplicationFirewallMode const type.
+func PossibleWebApplicationFirewallModeValues() []WebApplicationFirewallMode {
+	return []WebApplicationFirewallMode{WebApplicationFirewallModeDetection, WebApplicationFirewallModePrevention}
+}
+
+// WebApplicationFirewallOperator enumerates the values for web application firewall operator.
+type WebApplicationFirewallOperator string
+
+const (
+	// WebApplicationFirewallOperatorBeginsWith ...
+	WebApplicationFirewallOperatorBeginsWith WebApplicationFirewallOperator = "BeginsWith"
+	// WebApplicationFirewallOperatorContains ...
+	WebApplicationFirewallOperatorContains WebApplicationFirewallOperator = "Contains"
+	// WebApplicationFirewallOperatorEndsWith ...
+	WebApplicationFirewallOperatorEndsWith WebApplicationFirewallOperator = "EndsWith"
+	// WebApplicationFirewallOperatorEqual ...
+	WebApplicationFirewallOperatorEqual WebApplicationFirewallOperator = "Equal"
+	// WebApplicationFirewallOperatorGreaterThan ...
+	WebApplicationFirewallOperatorGreaterThan WebApplicationFirewallOperator = "GreaterThan"
+	// WebApplicationFirewallOperatorGreaterThanOrEqual ...
+	WebApplicationFirewallOperatorGreaterThanOrEqual WebApplicationFirewallOperator = "GreaterThanOrEqual"
+	// WebApplicationFirewallOperatorIPMatch ...
+	WebApplicationFirewallOperatorIPMatch WebApplicationFirewallOperator = "IPMatch"
+	// WebApplicationFirewallOperatorLessThan ...
+	WebApplicationFirewallOperatorLessThan WebApplicationFirewallOperator = "LessThan"
+	// WebApplicationFirewallOperatorLessThanOrEqual ...
+	WebApplicationFirewallOperatorLessThanOrEqual WebApplicationFirewallOperator = "LessThanOrEqual"
+	// WebApplicationFirewallOperatorRegex ...
+	WebApplicationFirewallOperatorRegex WebApplicationFirewallOperator = "Regex"
+)
+
+// PossibleWebApplicationFirewallOperatorValues returns an array of possible values for the WebApplicationFirewallOperator const type.
+func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOperator {
+	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
+}
+
+// WebApplicationFirewallPolicyResourceState enumerates the values for web application firewall policy resource
+// state.
+type WebApplicationFirewallPolicyResourceState string
+
+const (
+	// WebApplicationFirewallPolicyResourceStateCreating ...
+	WebApplicationFirewallPolicyResourceStateCreating WebApplicationFirewallPolicyResourceState = "Creating"
+	// WebApplicationFirewallPolicyResourceStateDeleting ...
+	WebApplicationFirewallPolicyResourceStateDeleting WebApplicationFirewallPolicyResourceState = "Deleting"
+	// WebApplicationFirewallPolicyResourceStateDisabled ...
+	WebApplicationFirewallPolicyResourceStateDisabled WebApplicationFirewallPolicyResourceState = "Disabled"
+	// WebApplicationFirewallPolicyResourceStateDisabling ...
+	WebApplicationFirewallPolicyResourceStateDisabling WebApplicationFirewallPolicyResourceState = "Disabling"
+	// WebApplicationFirewallPolicyResourceStateEnabled ...
+	WebApplicationFirewallPolicyResourceStateEnabled WebApplicationFirewallPolicyResourceState = "Enabled"
+	// WebApplicationFirewallPolicyResourceStateEnabling ...
+	WebApplicationFirewallPolicyResourceStateEnabling WebApplicationFirewallPolicyResourceState = "Enabling"
+)
+
+// PossibleWebApplicationFirewallPolicyResourceStateValues returns an array of possible values for the WebApplicationFirewallPolicyResourceState const type.
+func PossibleWebApplicationFirewallPolicyResourceStateValues() []WebApplicationFirewallPolicyResourceState {
+	return []WebApplicationFirewallPolicyResourceState{WebApplicationFirewallPolicyResourceStateCreating, WebApplicationFirewallPolicyResourceStateDeleting, WebApplicationFirewallPolicyResourceStateDisabled, WebApplicationFirewallPolicyResourceStateDisabling, WebApplicationFirewallPolicyResourceStateEnabled, WebApplicationFirewallPolicyResourceStateEnabling}
+}
+
+// WebApplicationFirewallRuleType enumerates the values for web application firewall rule type.
+type WebApplicationFirewallRuleType string
+
+const (
+	// WebApplicationFirewallRuleTypeInvalid ...
+	WebApplicationFirewallRuleTypeInvalid WebApplicationFirewallRuleType = "Invalid"
+	// WebApplicationFirewallRuleTypeMatchRule ...
+	WebApplicationFirewallRuleTypeMatchRule WebApplicationFirewallRuleType = "MatchRule"
+)
+
+// PossibleWebApplicationFirewallRuleTypeValues returns an array of possible values for the WebApplicationFirewallRuleType const type.
+func PossibleWebApplicationFirewallRuleTypeValues() []WebApplicationFirewallRuleType {
+	return []WebApplicationFirewallRuleType{WebApplicationFirewallRuleTypeInvalid, WebApplicationFirewallRuleTypeMatchRule}
+}
+
+// WebApplicationFirewallTransform enumerates the values for web application firewall transform.
+type WebApplicationFirewallTransform string
+
+const (
+	// HTMLEntityDecode ...
+	HTMLEntityDecode WebApplicationFirewallTransform = "HtmlEntityDecode"
+	// Lowercase ...
+	Lowercase WebApplicationFirewallTransform = "Lowercase"
+	// RemoveNulls ...
+	RemoveNulls WebApplicationFirewallTransform = "RemoveNulls"
+	// Trim ...
+	Trim WebApplicationFirewallTransform = "Trim"
+	// URLDecode ...
+	URLDecode WebApplicationFirewallTransform = "UrlDecode"
+	// URLEncode ...
+	URLEncode WebApplicationFirewallTransform = "UrlEncode"
+)
+
+// PossibleWebApplicationFirewallTransformValues returns an array of possible values for the WebApplicationFirewallTransform const type.
+func PossibleWebApplicationFirewallTransformValues() []WebApplicationFirewallTransform {
+	return []WebApplicationFirewallTransform{HTMLEntityDecode, Lowercase, RemoveNulls, Trim, URLDecode, URLEncode}
+}
+
 // AddressSpace addressSpace contains an array of IP address ranges that can be used by subnets of the
 // virtual network.
 type AddressSpace struct {
@@ -2502,6 +2669,8 @@ type ApplicationGatewayBackendHealthServer struct {
 	IPConfiguration *InterfaceIPConfiguration `json:"ipConfiguration,omitempty"`
 	// Health - Health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'
 	Health ApplicationGatewayBackendHealthServerHealth `json:"health,omitempty"`
+	// HealthProbeLog - Health Probe Log.
+	HealthProbeLog *string `json:"healthProbeLog,omitempty"`
 }
 
 // ApplicationGatewayBackendHTTPSettings backend address pool settings of an application gateway.
@@ -3663,6 +3832,8 @@ type ApplicationGatewayPropertiesFormat struct {
 	RedirectConfigurations *[]ApplicationGatewayRedirectConfiguration `json:"redirectConfigurations,omitempty"`
 	// WebApplicationFirewallConfiguration - Web application firewall configuration.
 	WebApplicationFirewallConfiguration *ApplicationGatewayWebApplicationFirewallConfiguration `json:"webApplicationFirewallConfiguration,omitempty"`
+	// FirewallPolicy - Reference of the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 	// EnableHTTP2 - Whether HTTP2 is enabled on the application gateway resource.
 	EnableHTTP2 *bool `json:"enableHttp2,omitempty"`
 	// EnableFips - Whether FIPS is enabled on the application gateway resource.
@@ -17800,12 +17971,34 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MatchCondition define match conditions
+type MatchCondition struct {
+	// MatchVariables - List of match variables
+	MatchVariables *[]MatchVariable `json:"matchVariables,omitempty"`
+	// Operator - Describes operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex'
+	Operator WebApplicationFirewallOperator `json:"operator,omitempty"`
+	// NegationConditon - Describes if this is negate condition or not
+	NegationConditon *bool `json:"negationConditon,omitempty"`
+	// MatchValues - Match value
+	MatchValues *[]string `json:"matchValues,omitempty"`
+	// Transforms - List of transforms
+	Transforms *[]WebApplicationFirewallTransform `json:"transforms,omitempty"`
+}
+
 // MatchedRule matched rule.
 type MatchedRule struct {
 	// RuleName - Name of the matched network security rule.
 	RuleName *string `json:"ruleName,omitempty"`
 	// Action - The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
 	Action *string `json:"action,omitempty"`
+}
+
+// MatchVariable define match variables
+type MatchVariable struct {
+	// VariableName - Match Variable. Possible values include: 'RemoteAddr', 'RequestMethod', 'QueryString', 'PostArgs', 'RequestURI', 'RequestHeaders', 'RequestBody', 'RequestCookies'
+	VariableName WebApplicationFirewallMatchVariable `json:"variableName,omitempty"`
+	// Selector - Describes field of the matchVariable collection
+	Selector *string `json:"selector,omitempty"`
 }
 
 // MetricSpecification description of metrics specification.
@@ -19731,6 +19924,14 @@ type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
 	AuthResourceGUID *string `json:"authResourceGuid,omitempty"`
 	// ProvisioningState - Provisioning state of the peer express route circuit connection resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// PolicySettings defines contents of a web application firewall global configuration
+type PolicySettings struct {
+	// EnabledState - Describes if the policy is in enabled state or disabled state. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
+	EnabledState WebApplicationFirewallEnabledState `json:"enabledState,omitempty"`
+	// Mode - Describes if it is in detection mode  or prevention mode at policy level. Possible values include: 'WebApplicationFirewallModePrevention', 'WebApplicationFirewallModeDetection'
+	Mode WebApplicationFirewallMode `json:"mode,omitempty"`
 }
 
 // PrepareNetworkPoliciesRequest ...
@@ -29314,4 +29515,330 @@ func (future *WatchersVerifyIPFlowFuture) Result(client WatchersClient) (vifr Ve
 		}
 	}
 	return
+}
+
+// WebApplicationFirewallCustomRule defines contents of a web application rule
+type WebApplicationFirewallCustomRule struct {
+	// Name - Gets name of the resource that is unique within a policy. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Priority - Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value
+	Priority *int32 `json:"priority,omitempty"`
+	// RuleType - Describes type of rule. Possible values include: 'WebApplicationFirewallRuleTypeMatchRule', 'WebApplicationFirewallRuleTypeInvalid'
+	RuleType WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
+	// MatchConditions - List of match conditions
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog'
+	Action WebApplicationFirewallAction `json:"action,omitempty"`
+}
+
+// WebApplicationFirewallPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WebApplicationFirewallPoliciesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WebApplicationFirewallPoliciesDeleteFuture) Result(client WebApplicationFirewallPoliciesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.WebApplicationFirewallPoliciesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// WebApplicationFirewallPolicy defines web application firewall policy.
+type WebApplicationFirewallPolicy struct {
+	autorest.Response `json:"-"`
+	// WebApplicationFirewallPolicyPropertiesFormat - Properties of the web application firewall policy.
+	*WebApplicationFirewallPolicyPropertiesFormat `json:"properties,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
+func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafp.WebApplicationFirewallPolicyPropertiesFormat != nil {
+		objectMap["properties"] = wafp.WebApplicationFirewallPolicyPropertiesFormat
+	}
+	if wafp.Etag != nil {
+		objectMap["etag"] = wafp.Etag
+	}
+	if wafp.ID != nil {
+		objectMap["id"] = wafp.ID
+	}
+	if wafp.Name != nil {
+		objectMap["name"] = wafp.Name
+	}
+	if wafp.Type != nil {
+		objectMap["type"] = wafp.Type
+	}
+	if wafp.Location != nil {
+		objectMap["location"] = wafp.Location
+	}
+	if wafp.Tags != nil {
+		objectMap["tags"] = wafp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy struct.
+func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var webApplicationFirewallPolicyPropertiesFormat WebApplicationFirewallPolicyPropertiesFormat
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				wafp.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				wafp.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wafp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wafp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wafp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				wafp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				wafp.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// WebApplicationFirewallPolicyListResult result of the request to list WebApplicationFirewallPolicies. It
+// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the the next set of
+// results.
+type WebApplicationFirewallPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of WebApplicationFirewallPolicies within a resource group.
+	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
+	// NextLink - URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// WebApplicationFirewallPolicyListResultIterator provides access to a complete listing of
+// WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListResultIterator struct {
+	i    int
+	page WebApplicationFirewallPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WebApplicationFirewallPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WebApplicationFirewallPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WebApplicationFirewallPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WebApplicationFirewallPolicyListResultIterator) Response() WebApplicationFirewallPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicationFirewallPolicy {
+	if !iter.page.NotDone() {
+		return WebApplicationFirewallPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultIterator type.
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return WebApplicationFirewallPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wafplr WebApplicationFirewallPolicyListResult) IsEmpty() bool {
+	return wafplr.Value == nil || len(*wafplr.Value) == 0
+}
+
+// webApplicationFirewallPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wafplr WebApplicationFirewallPolicyListResult) webApplicationFirewallPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if wafplr.NextLink == nil || len(to.String(wafplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wafplr.NextLink)))
+}
+
+// WebApplicationFirewallPolicyListResultPage contains a page of WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListResultPage struct {
+	fn     func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)
+	wafplr WebApplicationFirewallPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WebApplicationFirewallPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.wafplr)
+	if err != nil {
+		return err
+	}
+	page.wafplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WebApplicationFirewallPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WebApplicationFirewallPolicyListResultPage) NotDone() bool {
+	return !page.wafplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WebApplicationFirewallPolicyListResultPage) Response() WebApplicationFirewallPolicyListResult {
+	return page.wafplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplicationFirewallPolicy {
+	if page.wafplr.IsEmpty() {
+		return nil
+	}
+	return *page.wafplr.Value
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultPage type.
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
+}
+
+// WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties
+type WebApplicationFirewallPolicyPropertiesFormat struct {
+	// PolicySettings - Describes  policySettings for policy
+	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
+	// CustomRules - Describes custom rules inside the policy
+	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
+	// ApplicationGateways - A collection of references to application gateways.
+	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
+	// ProvisioningState - Provisioning state of the WebApplicationFirewallPolicy.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ResourceState - Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'
+	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`
 }

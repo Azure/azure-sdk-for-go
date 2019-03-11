@@ -91,6 +91,7 @@ const (
 )
 
 type Account = original.Account
+type AccountClient = original.AccountClient
 type AccountCreateParameters = original.AccountCreateParameters
 type AccountEnumerateSkusResult = original.AccountEnumerateSkusResult
 type AccountKeys = original.AccountKeys
@@ -101,6 +102,8 @@ type AccountProperties = original.AccountProperties
 type AccountUpdateParameters = original.AccountUpdateParameters
 type AccountsClient = original.AccountsClient
 type BaseClient = original.BaseClient
+type CheckDomainAvailabilityParameter = original.CheckDomainAvailabilityParameter
+type CheckDomainAvailabilityResult = original.CheckDomainAvailabilityResult
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 type CheckSkuAvailabilityParameter = original.CheckSkuAvailabilityParameter
 type CheckSkuAvailabilityResult = original.CheckSkuAvailabilityResult
@@ -129,6 +132,12 @@ type UsagesResult = original.UsagesResult
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAccountClient(subscriptionID string) AccountClient {
+	return original.NewAccountClient(subscriptionID)
+}
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)

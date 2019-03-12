@@ -1,6 +1,13 @@
 # Change Log
 
 ## `head`
+
+## `v0.3.0`
+- Add disposition batching
+- Add NotFound errors for mgmt API
+- Fix go routine leak when listening for messages upon context close
+
+## `v0.2.0`
 - Refactor disposition handler so that errors can be handled in handlers
 - Add dead letter queues for entities
 - Fix connection leaks when using multiple calls to Receive

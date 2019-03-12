@@ -13,10 +13,17 @@ branches:
 
 env:
   global:
+    - DEP_RELEASE_TAG=v0.5.1 # so the script knows which version to use
     - IGNORE_BREAKING_CHANGES=true
   matrix:
     - GOARCH="amd64"
     - GOARCH="386"
+
+before_install:
+  - curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+install:
+  - dep ensure -v
 
 script:
   - bash rungas.sh
@@ -29,3 +36,7 @@ script:
   - go run ./tools/pkgchk/main.go ./services --exceptions ./tools/pkgchk/exceptions.txt
   - git diff --exit-code
   - if [[ "$TRAVIS_EVENT_TYPE" == "push" && "$TRAVIS_BRANCH" == "master" ]]; then go run ./tools/indexer/main.go ./services; fi
+
+cache:
+  directories:
+    - $GOPATH/pkg/dep

@@ -1,8 +1,8 @@
 language: go
 sudo: false
 go:
-  - 1.11.x
   - 1.x
+  - 1.11.x
 
 before_install:
 - cd ${TRAVIS_HOME}

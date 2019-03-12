@@ -29,6 +29,7 @@ import (
 	"sync"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
@@ -104,6 +105,41 @@ func (t *Topic) Send(ctx context.Context, event *Message, opts ...SendOption) er
 		return err
 	}
 	return t.sender.Send(ctx, event, opts...)
+}
+
+// SendBatch sends a batch of messages to the Topic
+func (t *Topic) SendBatch(ctx context.Context, iterator BatchIterator) error {
+	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.SendBatch")
+	defer span.Finish()
+
+	err := t.ensureSender(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	for !iterator.Done() {
+		id, err := uuid.NewV4()
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		batch, err := iterator.Next(id.String(), &BatchOptions{
+			SessionID: t.sender.sessionID,
+		})
+		if err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+
+		if err := t.sender.trySend(ctx, batch); err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+	}
+
+	return nil
 }
 
 // NewSession will create a new session based sender for the topic

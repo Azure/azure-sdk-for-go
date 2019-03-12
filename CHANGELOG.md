@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## `v26.3.1`
+
+Remove committed vendored content.
+
 ## `v26.3.0`
 
 | Package Name | API Version |

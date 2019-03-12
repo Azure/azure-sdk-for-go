@@ -1947,7 +1947,7 @@ func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autore
 	return
 }
 
-// NetworkRuleSet description of topic resource.
+// NetworkRuleSet description of NetworkRuleSet resource.
 type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
 	// NetworkRuleSetProperties - NetworkRuleSet properties
@@ -2051,7 +2051,7 @@ type NWRuleSetIPRules struct {
 type NWRuleSetVirtualNetworkRules struct {
 	// Subnet - Subnet properties
 	Subnet *Subnet `json:"subnet,omitempty"`
-	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing Vnet Service Endpoint
+	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing VNet Service Endpoint
 	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
 }
 

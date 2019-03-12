@@ -1621,11 +1621,9 @@ func (dbedei *DataBoxEdgeDeviceExtendedInfo) UnmarshalJSON(body []byte) error {
 // DataBoxEdgeDeviceExtendedInfoProperties the properties of the Data Box Edge/Gateway device extended
 // info.
 type DataBoxEdgeDeviceExtendedInfoProperties struct {
-	// IntegrityKey - The Channel Integrity Key (CIK) of the device.
-	IntegrityKey *string `json:"integrityKey,omitempty"`
-	// EncryptionKeyThumbprint - The certificate thumbprint that was used to encrypt the Channel Integrity Key (CIK).
+	// EncryptionKeyThumbprint - The digital signature of encrypted certificate.
 	EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
-	// EncryptionKey - The Channel Integrity Key (CIK) of the device.
+	// EncryptionKey - The public part of the encryption certificate. Client uses this to encrypt any secret.
 	EncryptionKey *string `json:"encryptionKey,omitempty"`
 	// ResourceKey - The Resource ID of the Resource.
 	ResourceKey *string `json:"resourceKey,omitempty"`
@@ -3303,7 +3301,7 @@ type PeriodicTimerProperties struct {
 
 // PeriodicTimerSourceInfo periodic timer event source.
 type PeriodicTimerSourceInfo struct {
-	// StartTime - The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified.
+	// StartTime - The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified upto seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// Schedule - Periodic frequency at which timer event needs to be raised. Supports daily, hourly, minutes, and seconds.
 	Schedule *string `json:"schedule,omitempty"`

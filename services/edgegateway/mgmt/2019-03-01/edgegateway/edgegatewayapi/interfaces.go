@@ -32,7 +32,6 @@ var _ OperationsClientAPI = (*edgegateway.OperationsClient)(nil)
 // DevicesClientAPI contains the set of methods on the DevicesClient type.
 type DevicesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, deviceName string, dataBoxEdgeDevice edgegateway.DataBoxEdgeDevice, resourceGroupName string) (result edgegateway.DevicesCreateOrUpdateFuture, err error)
-	CreateOrUpdateExtendedInfo(ctx context.Context, deviceName string, parameters edgegateway.DataBoxEdgeDeviceExtendedInfo, resourceGroupName string) (result edgegateway.DataBoxEdgeDeviceExtendedInfo, err error)
 	CreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, securitySettings edgegateway.SecuritySettings, resourceGroupName string) (result edgegateway.DevicesCreateOrUpdateSecuritySettingsFuture, err error)
 	Delete(ctx context.Context, deviceName string, resourceGroupName string) (result edgegateway.DevicesDeleteFuture, err error)
 	DownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string) (result edgegateway.DevicesDownloadUpdatesFuture, err error)
@@ -128,7 +127,7 @@ type TriggersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, deviceName string, name string, trigger edgegateway.BasicTrigger, resourceGroupName string) (result edgegateway.TriggersCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, deviceName string, name string, resourceGroupName string) (result edgegateway.TriggersDeleteFuture, err error)
 	Get(ctx context.Context, deviceName string, name string, resourceGroupName string) (result edgegateway.TriggerModel, err error)
-	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string) (result edgegateway.TriggerListPage, err error)
+	ListByDataBoxEdgeDevice(ctx context.Context, deviceName string, resourceGroupName string, expand string) (result edgegateway.TriggerListPage, err error)
 }
 
 var _ TriggersClientAPI = (*edgegateway.TriggersClient)(nil)

@@ -22,20 +22,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-02-01-preview/virtualmachineimagebuilder"
 )
 
-// VirtualMachineImageTemplateClientAPI contains the set of methods on the VirtualMachineImageTemplateClient type.
-type VirtualMachineImageTemplateClientAPI interface {
-	CreateOrUpdate(ctx context.Context, parameters virtualmachineimagebuilder.ImageTemplate, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplateDeleteFuture, err error)
+// VirtualMachineImageTemplatesClientAPI contains the set of methods on the VirtualMachineImageTemplatesClient type.
+type VirtualMachineImageTemplatesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, parameters virtualmachineimagebuilder.ImageTemplate, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.ImageTemplate, err error)
 	GetRunOutput(ctx context.Context, resourceGroupName string, imageTemplateName string, runOutputName string) (result virtualmachineimagebuilder.RunOutput, err error)
 	List(ctx context.Context) (result virtualmachineimagebuilder.ImageTemplateListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result virtualmachineimagebuilder.ImageTemplateListResultPage, err error)
 	ListRunOutputs(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.RunOutputCollectionPage, err error)
-	Run(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture, err error)
+	Run(ctx context.Context, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture, err error)
 	Update(ctx context.Context, parameters virtualmachineimagebuilder.ImageTemplateUpdateParameters, resourceGroupName string, imageTemplateName string) (result virtualmachineimagebuilder.ImageTemplate, err error)
 }
 
-var _ VirtualMachineImageTemplateClientAPI = (*virtualmachineimagebuilder.VirtualMachineImageTemplateClient)(nil)
+var _ VirtualMachineImageTemplatesClientAPI = (*virtualmachineimagebuilder.VirtualMachineImageTemplatesClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

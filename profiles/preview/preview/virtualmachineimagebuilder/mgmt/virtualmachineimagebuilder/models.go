@@ -148,10 +148,10 @@ type RunOutputCollectionIterator = original.RunOutputCollectionIterator
 type RunOutputCollectionPage = original.RunOutputCollectionPage
 type RunOutputProperties = original.RunOutputProperties
 type SubResource = original.SubResource
-type VirtualMachineImageTemplateClient = original.VirtualMachineImageTemplateClient
-type VirtualMachineImageTemplateCreateOrUpdateFuture = original.VirtualMachineImageTemplateCreateOrUpdateFuture
-type VirtualMachineImageTemplateDeleteFuture = original.VirtualMachineImageTemplateDeleteFuture
-type VirtualMachineImageTemplateRunFuture = original.VirtualMachineImageTemplateRunFuture
+type VirtualMachineImageTemplatesClient = original.VirtualMachineImageTemplatesClient
+type VirtualMachineImageTemplatesCreateOrUpdateFuture = original.VirtualMachineImageTemplatesCreateOrUpdateFuture
+type VirtualMachineImageTemplatesDeleteFuture = original.VirtualMachineImageTemplatesDeleteFuture
+type VirtualMachineImageTemplatesRunFuture = original.VirtualMachineImageTemplatesRunFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -180,11 +180,11 @@ func NewRunOutputCollectionIterator(page RunOutputCollectionPage) RunOutputColle
 func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
 	return original.NewRunOutputCollectionPage(getNextPage)
 }
-func NewVirtualMachineImageTemplateClient(subscriptionID string) VirtualMachineImageTemplateClient {
-	return original.NewVirtualMachineImageTemplateClient(subscriptionID)
+func NewVirtualMachineImageTemplatesClient(subscriptionID string) VirtualMachineImageTemplatesClient {
+	return original.NewVirtualMachineImageTemplatesClient(subscriptionID)
 }
-func NewVirtualMachineImageTemplateClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImageTemplateClient {
-	return original.NewVirtualMachineImageTemplateClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineImageTemplatesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImageTemplatesClient {
+	return original.NewVirtualMachineImageTemplatesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

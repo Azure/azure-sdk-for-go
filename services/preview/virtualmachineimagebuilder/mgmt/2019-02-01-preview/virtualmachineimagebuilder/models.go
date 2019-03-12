@@ -1844,75 +1844,75 @@ type SubResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualMachineImageTemplateCreateOrUpdateFuture struct {
+// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplateCreateOrUpdateFuture) Result(client VirtualMachineImageTemplateClient) (it ImageTemplate, err error) {
+func (future *VirtualMachineImageTemplatesCreateOrUpdateFuture) Result(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
 		it, err = client.CreateOrUpdateResponder(it.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// VirtualMachineImageTemplateDeleteFuture an abstraction for monitoring and retrieving the results of a
+// VirtualMachineImageTemplatesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type VirtualMachineImageTemplateDeleteFuture struct {
+type VirtualMachineImageTemplatesDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplateDeleteFuture) Result(client VirtualMachineImageTemplateClient) (ar autorest.Response, err error) {
+func (future *VirtualMachineImageTemplatesDeleteFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// VirtualMachineImageTemplateRunFuture an abstraction for monitoring and retrieving the results of a
+// VirtualMachineImageTemplatesRunFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type VirtualMachineImageTemplateRunFuture struct {
+type VirtualMachineImageTemplatesRunFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplateRunFuture) Result(client VirtualMachineImageTemplateClient) (ar autorest.Response, err error) {
+func (future *VirtualMachineImageTemplatesRunFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture")
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture")
 		return
 	}
 	ar.Response = future.Response()

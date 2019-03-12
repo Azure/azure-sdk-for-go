@@ -23,22 +23,16 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// ServiceClientAPI contains the set of methods on the ServiceClient type.
-type ServiceClientAPI interface {
-	CheckNameAvailability(ctx context.Context, checkNameAvailabilityInputs healthcareapis.CheckNameAvailabilityParameters) (result healthcareapis.ServicesNameAvailabilityInfo, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription healthcareapis.ServicesDescription) (result healthcareapis.ServiceCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServiceDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServicesDescription, err error)
-	MoveResources(ctx context.Context, resourceGroupName string, moveResourcesInputs healthcareapis.MoveResourcesParameters) (result autorest.Response, err error)
-	Update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription healthcareapis.ServicesPatchDescription) (result healthcareapis.ServiceUpdateFuture, err error)
-}
-
-var _ ServiceClientAPI = (*healthcareapis.ServiceClient)(nil)
-
 // ServicesClientAPI contains the set of methods on the ServicesClient type.
 type ServicesClientAPI interface {
+	CheckNameAvailability(ctx context.Context, checkNameAvailabilityInputs healthcareapis.CheckNameAvailabilityParameters) (result healthcareapis.ServicesNameAvailabilityInfo, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, serviceDescription healthcareapis.ServicesDescription) (result healthcareapis.ServicesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServicesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServicesDescription, err error)
 	List(ctx context.Context) (result healthcareapis.ServicesDescriptionListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result healthcareapis.ServicesDescriptionListResultPage, err error)
+	MoveResources(ctx context.Context, resourceGroupName string, moveResourcesInputs healthcareapis.MoveResourcesParameters) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription healthcareapis.ServicesPatchDescription) (result healthcareapis.ServicesUpdateFuture, err error)
 }
 
 var _ ServicesClientAPI = (*healthcareapis.ServicesClient)(nil)

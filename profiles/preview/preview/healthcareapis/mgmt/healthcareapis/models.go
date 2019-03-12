@@ -77,12 +77,10 @@ type OperationResultsDescription = original.OperationResultsDescription
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
-type ServiceClient = original.ServiceClient
 type ServiceCosmosDbConfigurationInfo = original.ServiceCosmosDbConfigurationInfo
-type ServiceCreateOrUpdateFuture = original.ServiceCreateOrUpdateFuture
-type ServiceDeleteFuture = original.ServiceDeleteFuture
-type ServiceUpdateFuture = original.ServiceUpdateFuture
 type ServicesClient = original.ServicesClient
+type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
+type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesDescription = original.ServicesDescription
 type ServicesDescriptionListResult = original.ServicesDescriptionListResult
 type ServicesDescriptionListResultIterator = original.ServicesDescriptionListResultIterator
@@ -90,6 +88,7 @@ type ServicesDescriptionListResultPage = original.ServicesDescriptionListResultP
 type ServicesNameAvailabilityInfo = original.ServicesNameAvailabilityInfo
 type ServicesPatchDescription = original.ServicesPatchDescription
 type ServicesProperties = original.ServicesProperties
+type ServicesUpdateFuture = original.ServicesUpdateFuture
 type SetObject = original.SetObject
 
 func New(subscriptionID uuid.UUID) BaseClient {
@@ -118,12 +117,6 @@ func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServiceClient(subscriptionID uuid.UUID) ServiceClient {
-	return original.NewServiceClient(subscriptionID)
-}
-func NewServiceClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) ServiceClient {
-	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServicesClient(subscriptionID uuid.UUID) ServicesClient {
 	return original.NewServicesClient(subscriptionID)

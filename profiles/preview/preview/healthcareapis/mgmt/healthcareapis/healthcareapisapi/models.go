@@ -24,5 +24,4 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/healthcareap
 type MoveResourcesStatusClientAPI = original.MoveResourcesStatusClientAPI
 type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type ServiceClientAPI = original.ServiceClientAPI
 type ServicesClientAPI = original.ServicesClientAPI

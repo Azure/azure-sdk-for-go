@@ -369,52 +369,52 @@ type ServiceCosmosDbConfigurationInfo struct {
 	OfferThroughput *int32 `json:"offerThroughput,omitempty"`
 }
 
-// ServiceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServiceCreateOrUpdateFuture struct {
+type ServicesCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sd ServicesDescription, err error) {
+func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (sd ServicesDescription, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServiceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServiceCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesCreateOrUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
 		sd, err = client.CreateOrUpdateResponder(sd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "healthcareapis.ServiceCreateOrUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "healthcareapis.ServicesCreateOrUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServiceDeleteFuture struct {
+type ServicesDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServiceDeleteFuture) Result(client ServiceClient) (ar autorest.Response, err error) {
+func (future *ServicesDeleteFuture) Result(client ServicesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServiceDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServiceDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -655,30 +655,30 @@ type ServicesProperties struct {
 	CosmosDbConfiguration *ServiceCosmosDbConfigurationInfo `json:"cosmosDbConfiguration,omitempty"`
 }
 
-// ServiceUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServiceUpdateFuture struct {
+type ServicesUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServiceUpdateFuture) Result(client ServiceClient) (sd ServicesDescription, err error) {
+func (future *ServicesUpdateFuture) Result(client ServicesClient) (sd ServicesDescription, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServiceUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServiceUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
 		sd, err = client.UpdateResponder(sd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "healthcareapis.ServiceUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "healthcareapis.ServicesUpdateFuture", "Result", sd.Response.Response, "Failure responding to request")
 		}
 	}
 	return

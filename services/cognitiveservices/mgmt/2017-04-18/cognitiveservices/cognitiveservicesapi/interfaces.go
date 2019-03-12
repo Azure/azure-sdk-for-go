@@ -60,9 +60,9 @@ type CheckSkuAvailabilityClientAPI interface {
 
 var _ CheckSkuAvailabilityClientAPI = (*cognitiveservices.CheckSkuAvailabilityClient)(nil)
 
-// AccountClientAPI contains the set of methods on the AccountClient type.
-type AccountClientAPI interface {
+// LocationsClientAPI contains the set of methods on the LocationsClient type.
+type LocationsClientAPI interface {
 	CheckDomainAvailabilityPost(ctx context.Context, location string, parameters cognitiveservices.CheckDomainAvailabilityParameter) (result cognitiveservices.CheckDomainAvailabilityResult, err error)
 }
 
-var _ AccountClientAPI = (*cognitiveservices.AccountClient)(nil)
+var _ LocationsClientAPI = (*cognitiveservices.LocationsClient)(nil)

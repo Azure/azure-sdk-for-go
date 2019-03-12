@@ -26,28 +26,28 @@ import (
 	"net/http"
 )
 
-// AccountClient is the cognitive Services Management Client
-type AccountClient struct {
+// LocationsClient is the cognitive Services Management Client
+type LocationsClient struct {
 	BaseClient
 }
 
-// NewAccountClient creates an instance of the AccountClient client.
-func NewAccountClient(subscriptionID string) AccountClient {
-	return NewAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLocationsClient creates an instance of the LocationsClient client.
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAccountClientWithBaseURI creates an instance of the AccountClient client.
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
-	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client.
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckDomainAvailabilityPost check available SKUs.
 // Parameters:
 // location - resource location.
 // parameters - check Domain Availability POST body.
-func (client AccountClient) CheckDomainAvailabilityPost(ctx context.Context, location string, parameters CheckDomainAvailabilityParameter) (result CheckDomainAvailabilityResult, err error) {
+func (client LocationsClient) CheckDomainAvailabilityPost(ctx context.Context, location string, parameters CheckDomainAvailabilityParameter) (result CheckDomainAvailabilityResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountClient.CheckDomainAvailabilityPost")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LocationsClient.CheckDomainAvailabilityPost")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -60,32 +60,32 @@ func (client AccountClient) CheckDomainAvailabilityPost(ctx context.Context, loc
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.SubdomainName", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cognitiveservices.AccountClient", "CheckDomainAvailabilityPost", err.Error())
+		return result, validation.NewError("cognitiveservices.LocationsClient", "CheckDomainAvailabilityPost", err.Error())
 	}
 
 	req, err := client.CheckDomainAvailabilityPostPreparer(ctx, location, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountClient", "CheckDomainAvailabilityPost", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.LocationsClient", "CheckDomainAvailabilityPost", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CheckDomainAvailabilityPostSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountClient", "CheckDomainAvailabilityPost", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.LocationsClient", "CheckDomainAvailabilityPost", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CheckDomainAvailabilityPostResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountClient", "CheckDomainAvailabilityPost", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cognitiveservices.LocationsClient", "CheckDomainAvailabilityPost", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CheckDomainAvailabilityPostPreparer prepares the CheckDomainAvailabilityPost request.
-func (client AccountClient) CheckDomainAvailabilityPostPreparer(ctx context.Context, location string, parameters CheckDomainAvailabilityParameter) (*http.Request, error) {
+func (client LocationsClient) CheckDomainAvailabilityPostPreparer(ctx context.Context, location string, parameters CheckDomainAvailabilityParameter) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -108,14 +108,14 @@ func (client AccountClient) CheckDomainAvailabilityPostPreparer(ctx context.Cont
 
 // CheckDomainAvailabilityPostSender sends the CheckDomainAvailabilityPost request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountClient) CheckDomainAvailabilityPostSender(req *http.Request) (*http.Response, error) {
+func (client LocationsClient) CheckDomainAvailabilityPostSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckDomainAvailabilityPostResponder handles the response to the CheckDomainAvailabilityPost request. The method always
 // closes the http.Response Body.
-func (client AccountClient) CheckDomainAvailabilityPostResponder(resp *http.Response) (result CheckDomainAvailabilityResult, err error) {
+func (client LocationsClient) CheckDomainAvailabilityPostResponder(resp *http.Response) (result CheckDomainAvailabilityResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

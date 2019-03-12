@@ -91,7 +91,6 @@ const (
 )
 
 type Account = original.Account
-type AccountClient = original.AccountClient
 type AccountCreateParameters = original.AccountCreateParameters
 type AccountEnumerateSkusResult = original.AccountEnumerateSkusResult
 type AccountKeys = original.AccountKeys
@@ -110,6 +109,7 @@ type CheckSkuAvailabilityResult = original.CheckSkuAvailabilityResult
 type CheckSkuAvailabilityResultList = original.CheckSkuAvailabilityResultList
 type Error = original.Error
 type ErrorBody = original.ErrorBody
+type LocationsClient = original.LocationsClient
 type MetricName = original.MetricName
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
@@ -133,12 +133,6 @@ type UsagesResult = original.UsagesResult
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewAccountClient(subscriptionID string) AccountClient {
-	return original.NewAccountClient(subscriptionID)
-}
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
 }
@@ -156,6 +150,12 @@ func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityCl
 }
 func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
 	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)

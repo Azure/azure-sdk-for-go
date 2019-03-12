@@ -344,6 +344,8 @@ type Application struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
+	// GroupMembershipClaims - Configures the groups claim issued in a user or OAuth 2.0 access token that the app expects.
+	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
 	// IdentifierUris - A collection of URIs for the application.
@@ -427,6 +429,9 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	}
 	if a.ErrorURL != nil {
 		objectMap["errorUrl"] = a.ErrorURL
+	}
+	if a.GroupMembershipClaims != nil {
+		objectMap["groupMembershipClaims"] = a.GroupMembershipClaims
 	}
 	if a.Homepage != nil {
 		objectMap["homepage"] = a.Homepage
@@ -628,6 +633,15 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.ErrorURL = &errorURL
+			}
+		case "groupMembershipClaims":
+			if v != nil {
+				var groupMembershipClaims interface{}
+				err = json.Unmarshal(*v, &groupMembershipClaims)
+				if err != nil {
+					return err
+				}
+				a.GroupMembershipClaims = groupMembershipClaims
 			}
 		case "homepage":
 			if v != nil {
@@ -888,6 +902,8 @@ type ApplicationBase struct {
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
+	// GroupMembershipClaims - Configures the groups claim issued in a user or OAuth 2.0 access token that the app expects.
+	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
 	// InformationalUrls - urls with more informations of the application.
@@ -951,6 +967,8 @@ type ApplicationCreateParameters struct {
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
+	// GroupMembershipClaims - Configures the groups claim issued in a user or OAuth 2.0 access token that the app expects.
+	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
 	// InformationalUrls - urls with more informations of the application.
@@ -1148,6 +1166,8 @@ type ApplicationUpdateParameters struct {
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// ErrorURL - A URL provided by the author of the application to report errors when using the application.
 	ErrorURL *string `json:"errorUrl,omitempty"`
+	// GroupMembershipClaims - Configures the groups claim issued in a user or OAuth 2.0 access token that the app expects.
+	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
 	// InformationalUrls - urls with more informations of the application.
@@ -3469,14 +3489,16 @@ func (sp *ServicePrincipal) UnmarshalJSON(body []byte) error {
 // ServicePrincipalBase active Directory service principal common perperties shared among GET, POST and
 // PATCH
 type ServicePrincipalBase struct {
+	// AccountEnabled - whether or not the service principal account is enabled
+	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
 	// KeyCredentials - The collection of key credentials associated with the service principal.
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
 	// ServicePrincipalType - the type of the servie principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
-	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`
 }
@@ -3485,14 +3507,16 @@ type ServicePrincipalBase struct {
 type ServicePrincipalCreateParameters struct {
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
+	// AccountEnabled - whether or not the service principal account is enabled
+	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
 	// KeyCredentials - The collection of key credentials associated with the service principal.
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
 	// ServicePrincipalType - the type of the servie principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
-	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`
 }
@@ -3633,14 +3657,16 @@ func NewServicePrincipalListResultPage(getNextPage func(context.Context, Service
 
 // ServicePrincipalUpdateParameters request parameters for update an existing service principal.
 type ServicePrincipalUpdateParameters struct {
+	// AccountEnabled - whether or not the service principal account is enabled
+	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
 	// KeyCredentials - The collection of key credentials associated with the service principal.
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
 	// ServicePrincipalType - the type of the servie principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
-	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`
 }

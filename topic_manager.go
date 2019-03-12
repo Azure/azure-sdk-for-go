@@ -167,7 +167,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, nil
+		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -180,7 +180,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
 		if isEmptyFeed(b) {
-			return nil, nil
+			return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 		}
 		return nil, formatManagementError(b)
 	}

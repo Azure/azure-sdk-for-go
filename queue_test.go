@@ -221,7 +221,17 @@ func (suite *serviceBusSuite) TestQueueUnmarshal() {
 	suite.EqualValues(servicebus.EntityStatusActive, *q.Status)
 }
 
-func (suite *serviceBusSuite) TestQueueManagementWrites() {
+func (suite *serviceBusSuite) TestQueueManager_NotFound() {
+	ns := suite.getNewSasInstance()
+	qm := ns.NewQueueManager()
+	entity, err := qm.Get(context.Background(), "somethingNotThere")
+	suite.Nil(entity)
+	suite.Require().NotNil(err)
+	suite.True(IsErrNotFound(err))
+	suite.Equal("entity at /somethingNotThere not found", err.Error())
+}
+
+func (suite *serviceBusSuite) TestQueueManagement_Writes() {
 	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
 		"TestPutDefaultQueue": testPutQueue,
 	}
@@ -771,7 +781,7 @@ func (suite *serviceBusSuite) queueMessageTest(
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {
 	qm := ns.NewQueueManager()
 	entity, err := qm.Get(ctx, name)
-	if !assert.NoError(t, err) {
+	if err != nil && !IsErrNotFound(err) {
 		assert.FailNow(t, "could not GET a queue entity")
 	}
 

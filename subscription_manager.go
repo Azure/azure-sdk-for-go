@@ -281,7 +281,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, nil
+		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -293,7 +293,9 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
 		if isEmptyFeed(b) {
-			return nil, nil
+			// seems the only way to catch 404 is if the feed is empty. If no subscriptions exist, the GET returns 200
+			// and an empty feed.
+			return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 		}
 		return nil, formatManagementError(b)
 	}
@@ -315,7 +317,7 @@ func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName s
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, nil
+		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)

@@ -76,7 +76,7 @@ const (
 		</entry>`
 )
 
-func (suite *serviceBusSuite) TestTopicEntryUnmarshal() {
+func (suite *serviceBusSuite) TestTopicEntry_Unmarshal() {
 	var entry topicEntry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
 	suite.Nil(err)
@@ -88,7 +88,7 @@ func (suite *serviceBusSuite) TestTopicEntryUnmarshal() {
 	suite.NotNil(entry.Content)
 }
 
-func (suite *serviceBusSuite) TestTopicUnmarshal() {
+func (suite *serviceBusSuite) TestTopicEntryAndDescription_Unmarshal() {
 	var entry atom.Entry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
 	suite.Nil(err)
@@ -107,7 +107,17 @@ func (suite *serviceBusSuite) TestTopicUnmarshal() {
 	suite.EqualValues(servicebus.EntityStatusActive, *td.Status)
 }
 
-func (suite *serviceBusSuite) TestTopicManagementWrites() {
+func (suite *serviceBusSuite) TestTopicManager_NotFound() {
+	ns := suite.getNewSasInstance()
+	tm := ns.NewTopicManager()
+	subEntity, err := tm.Get(context.Background(), "bar")
+	suite.Nil(subEntity)
+	suite.Require().NotNil(err)
+	suite.True(IsErrNotFound(err))
+	suite.Equal("entity at /bar not found", err.Error())
+}
+
+func (suite *serviceBusSuite) TestTopicManagement_Writes() {
 	tests := map[string]func(context.Context, *testing.T, *TopicManager, string){
 		"TestPutDefaultTopic": testPutTopic,
 	}
@@ -319,7 +329,7 @@ func testTopicSend(ctx context.Context, t *testing.T, topic *Topic) {
 func makeTopic(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...TopicManagementOption) func() {
 	tm := ns.NewTopicManager()
 	entity, err := tm.Get(ctx, name)
-	if !assert.NoError(t, err) {
+	if err != nil && !IsErrNotFound(err) {
 		assert.FailNow(t, "could not GET a subscription")
 	}
 

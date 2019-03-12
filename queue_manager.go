@@ -345,7 +345,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, nil
+		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -358,7 +358,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
 		if isEmptyFeed(b) {
-			return nil, nil
+			return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
 		}
 		return nil, formatManagementError(b)
 	}

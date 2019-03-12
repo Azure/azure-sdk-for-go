@@ -31,7 +31,7 @@ type (
 	ErrNoMessages struct{}
 
 	// ErrNotFound is returned when an entity is not found (404)
-	ErrNotFound struct{
+	ErrNotFound struct {
 		EntityPath string
 	}
 )

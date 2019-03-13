@@ -743,8 +743,8 @@ type MountTargetProperties struct {
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// IPAddress - The mount target's IPv4 address
 	IPAddress *string `json:"ipAddress,omitempty"`
-	// VlanID - Vlan Id
-	VlanID *int32 `json:"vlanId,omitempty"`
+	// Subnet - The subnet
+	Subnet *string `json:"subnet,omitempty"`
 	// StartIP - The start of IPv4 address range to use when creating a new mount target
 	StartIP *string `json:"startIp,omitempty"`
 	// EndIP - The end of IPv4 address range to use when creating a new mount target
@@ -753,6 +753,8 @@ type MountTargetProperties struct {
 	Gateway *string `json:"gateway,omitempty"`
 	// Netmask - The netmask of the IPv4 address range to use when creating a new mount target
 	Netmask *string `json:"netmask,omitempty"`
+	// SmbServerFqdn - The SMB server's Fully Qualified Doman Name, FQDN
+	SmbServerFqdn *string `json:"smbServerFqdn,omitempty"`
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }

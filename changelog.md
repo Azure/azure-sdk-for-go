@@ -6,6 +6,7 @@
 - Add disposition batching
 - Add NotFound errors for mgmt API
 - Fix go routine leak when listening for messages upon context close
+- Add batch sends for Topics
 
 ## `v0.2.0`
 - Refactor disposition handler so that errors can be handled in handlers

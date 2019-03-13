@@ -28,9 +28,9 @@ const (
 type ServiceLevel = original.ServiceLevel
 
 const (
-	Extreme  ServiceLevel = original.Extreme
 	Premium  ServiceLevel = original.Premium
 	Standard ServiceLevel = original.Standard
+	Ultra    ServiceLevel = original.Ultra
 )
 
 type Account = original.Account
@@ -40,12 +40,14 @@ type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
 type AccountsCreateOrUpdateFuture = original.AccountsCreateOrUpdateFuture
 type AccountsDeleteFuture = original.AccountsDeleteFuture
+type ActiveDirectories = original.ActiveDirectories
 type BaseClient = original.BaseClient
 type CapacityPool = original.CapacityPool
 type CapacityPoolList = original.CapacityPoolList
 type CapacityPoolPatch = original.CapacityPoolPatch
 type Dimension = original.Dimension
 type Error = original.Error
+type ExportPolicyRule = original.ExportPolicyRule
 type MetricSpecification = original.MetricSpecification
 type MountTarget = original.MountTarget
 type MountTargetList = original.MountTargetList
@@ -56,6 +58,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PoolPatchProperties = original.PoolPatchProperties
 type PoolProperties = original.PoolProperties
 type PoolsClient = original.PoolsClient
 type PoolsCreateOrUpdateFuture = original.PoolsCreateOrUpdateFuture

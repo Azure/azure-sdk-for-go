@@ -29,6 +29,11 @@ type (
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
 	// more messages in the future.
 	ErrNoMessages struct{}
+
+	// ErrNotFound is returned when an entity is not found (404)
+	ErrNotFound struct {
+		EntityPath string
+	}
 )
 
 func (e ErrMissingField) Error() string {
@@ -63,4 +68,14 @@ func (e ErrAMQP) Error() string {
 
 func (e ErrNoMessages) Error() string {
 	return "no messages available"
+}
+
+func (e ErrNotFound) Error() string {
+	return fmt.Sprintf("entity at %s not found", e.EntityPath)
+}
+
+// IsErrNotFound returns true if the error argument is an ErrNotFound type
+func IsErrNotFound(err error) bool {
+	_, ok := err.(ErrNotFound)
+	return ok
 }

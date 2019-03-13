@@ -95,7 +95,7 @@ const (
 	</entry>`
 )
 
-func (suite *serviceBusSuite) TestSubscriptionRuleEntryUnmarshal() {
+func (suite *serviceBusSuite) TestSubscriptionRuleEntry_Unmarshal() {
 	var entry ruleEntry
 	err := xml.Unmarshal([]byte(ruleEntryContent), &entry)
 	suite.NoError(err)
@@ -108,7 +108,7 @@ func (suite *serviceBusSuite) TestSubscriptionRuleEntryUnmarshal() {
 	suite.Equal("TrueFilter", entry.Content.RuleDescription.Filter.Type)
 }
 
-func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
+func (suite *serviceBusSuite) TestSubscriptionEntry_Unmarshal() {
 	var entry subscriptionEntry
 	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
 	suite.NoError(err)
@@ -120,7 +120,7 @@ func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
 	suite.Equal("PT1M", *entry.Content.SubscriptionDescription.LockDuration)
 }
 
-func (suite *serviceBusSuite) TestSubscriptionUnmarshal() {
+func (suite *serviceBusSuite) TestSubscriptionEntity_Unmarshal() {
 	var entry subscriptionEntry
 	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
 	suite.NoError(err)
@@ -135,7 +135,18 @@ func (suite *serviceBusSuite) TestSubscriptionUnmarshal() {
 	suite.EqualValues(servicebus.EntityStatusActive, *s.Status)
 }
 
-func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
+func (suite *serviceBusSuite) TestSubscriptionManager_NotFound() {
+	ns := suite.getNewSasInstance()
+	sm, err := ns.NewSubscriptionManager("foo")
+	suite.Require().NoError(err)
+	subEntity, err := sm.Get(context.Background(), "bar")
+	suite.Nil(subEntity)
+	suite.Require().NotNil(err)
+	suite.True(IsErrNotFound(err))
+	suite.Equal("entity at /foo/subscriptions/bar not found", err.Error())
+}
+
+func (suite *serviceBusSuite) TestSubscriptionManagement_Writes() {
 	tests := map[string]func(context.Context, *testing.T, *SubscriptionManager, string){
 		"TestPutDefaultSubscription": testPutSubscription,
 	}
@@ -629,7 +640,7 @@ func (suite *serviceBusSuite) subscriptionMessageTest(tests map[string]func(cont
 func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {
 	sm := topic.NewSubscriptionManager()
 	entity, err := sm.Get(ctx, name)
-	if !assert.NoError(t, err) {
+	if assert.Error(t, err) && !IsErrNotFound(err) {
 		assert.FailNow(t, "could not GET a subscription")
 	}
 

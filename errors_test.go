@@ -1,9 +1,12 @@
 package servicebus
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestErrMissingField_Error(t *testing.T) {
@@ -56,4 +59,13 @@ func TestErrIncorrectType_Error(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestErrNotFound_Error(t *testing.T) {
+	err := ErrNotFound{EntityPath: "/foo/bar"}
+	assert.Equal(t, "entity at /foo/bar not found", err.Error())
+	assert.True(t, IsErrNotFound(err))
+
+	otherErr := errors.New("foo")
+	assert.False(t, IsErrNotFound(otherErr))
 }

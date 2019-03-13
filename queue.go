@@ -640,20 +640,32 @@ func (q *Queue) Close(ctx context.Context) error {
 	if q.receiver != nil {
 		if err := q.receiver.Close(ctx); err != nil {
 			if q.sender != nil {
-				if err := q.sender.Close(ctx); err != nil {
+				if err := q.sender.Close(ctx); err != nil && !isConnectionClosed(err) {
 					log.For(ctx).Error(err)
 				}
 			}
-			log.For(ctx).Error(err)
-			return err
+
+			if !isConnectionClosed(err) {
+				log.For(ctx).Error(err)
+				return err
+			}
+
+			return nil
 		}
 	}
 
 	if q.sender != nil {
-		return q.sender.Close(ctx)
+		err := q.sender.Close(ctx)
+		if err != nil && !isConnectionClosed(err) {
+			return err
+		}
 	}
 
 	return nil
+}
+
+func isConnectionClosed(err error) bool {
+	return err.Error() == "amqp: connection closed"
 }
 
 func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {

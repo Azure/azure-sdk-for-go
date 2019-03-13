@@ -28,6 +28,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 )
+
 func TestNamespaceWithUserAgentOption(t *testing.T) {
 	userAgent := "custom-user-agent"
 	nsUserAgentOption := NamespaceWithUserAgent(userAgent)

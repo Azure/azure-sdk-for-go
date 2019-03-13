@@ -273,7 +273,11 @@ func (s *Subscription) RenewLocks(ctx context.Context, messages ...*Message) err
 // Close the underlying connection to Service Bus
 func (s *Subscription) Close(ctx context.Context) error {
 	if s.receiver != nil {
-		return s.receiver.Close(ctx)
+		err := s.receiver.Close(ctx)
+		if err != nil && !isConnectionClosed(err) {
+			log.For(ctx).Error(err)
+			return err
+		}
 	}
 	return nil
 }

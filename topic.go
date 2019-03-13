@@ -127,7 +127,11 @@ func (t *Topic) Close(ctx context.Context) error {
 	defer span.Finish()
 
 	if t.sender != nil {
-		return t.sender.Close(ctx)
+		err := t.sender.Close(ctx)
+		if err != nil && !isConnectionClosed(err) {
+			log.For(ctx).Error(err)
+			return err
+		}
 	}
 
 	return nil

@@ -39,7 +39,7 @@ func ExampleQueue_getOrBuildQueue() {
 
 	qm := ns.NewQueueManager()
 	qe, err := qm.Get(ctx, queueName)
-	if err != nil {
+	if err != nil && !servicebus.IsErrNotFound(err) {
 		fmt.Println(err)
 		return
 	}

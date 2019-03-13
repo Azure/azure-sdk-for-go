@@ -33,7 +33,7 @@ func TestBatchDispositionIterator(t *testing.T) {
 
 func TestBatchDispositionUnsupportedStatus(t *testing.T) {
 	status := MessageStatus(suspendedDisposition)
-	id := uuid.UUID{}	
+	id := uuid.UUID{}
 	bdi := BatchDispositionIterator{
 		LockTokenIDs: []*uuid.UUID{
 			&id,

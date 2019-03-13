@@ -142,8 +142,7 @@ func (client ApplicationsClient) Create(ctx context.Context, parameters Applicat
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.AvailableToOtherTenants", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.IdentifierUris", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("graphrbac.ApplicationsClient", "Create", err.Error())
 	}

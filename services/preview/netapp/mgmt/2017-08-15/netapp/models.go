@@ -333,7 +333,7 @@ func (future *AccountsDeleteFuture) Result(client AccountsClient) (ar autorest.R
 
 // ActiveDirectories active Directories
 type ActiveDirectories struct {
-	// ActiveDirectoryID - Id of the active drectory
+	// ActiveDirectoryID - Id of the Active Directory
 	ActiveDirectoryID *string `json:"activeDirectoryId,omitempty"`
 	// Username - Username of Active Directory domain administrator
 	Username *string `json:"username,omitempty"`
@@ -343,7 +343,7 @@ type ActiveDirectories struct {
 	Domain *string `json:"domain,omitempty"`
 	// DNS - Comma separated list of DNS server IP addresses for the Active Directory domain
 	DNS *string `json:"dNS,omitempty"`
-	// Status - Status of the active drectory
+	// Status - Status of the Active Directory
 	Status *string `json:"status,omitempty"`
 	// SMBServerName - NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
 	SMBServerName *string `json:"sMBServerName,omitempty"`
@@ -607,7 +607,7 @@ type ExportPolicyRule struct {
 	Nfsv3 *bool `json:"nfsv3,omitempty"`
 	// Nfsv4 - Allows NFSv4 protocol
 	Nfsv4 *bool `json:"nfsv4,omitempty"`
-	// AllowedClients - Client ingress specification as comma seperated string with IPv4 CIDRs, IPv4 host addresses and host names
+	// AllowedClients - Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
 	AllowedClients *string `json:"allowedClients,omitempty"`
 }
 
@@ -753,7 +753,7 @@ type MountTargetProperties struct {
 	Gateway *string `json:"gateway,omitempty"`
 	// Netmask - The netmask of the IPv4 address range to use when creating a new mount target
 	Netmask *string `json:"netmask,omitempty"`
-	// SmbServerFqdn - The SMB server's Fully Qualified Doman Name, FQDN
+	// SmbServerFqdn - The SMB server's Fully Qualified Domain Name, FQDN
 	SmbServerFqdn *string `json:"smbServerFqdn,omitempty"`
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`

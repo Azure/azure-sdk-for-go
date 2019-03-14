@@ -68,11 +68,13 @@ const (
 type SkuName = original.SkuName
 
 const (
-	Basic     SkuName = original.Basic
-	Free      SkuName = original.Free
-	Standard  SkuName = original.Standard
-	Standard2 SkuName = original.Standard2
-	Standard3 SkuName = original.Standard3
+	Basic              SkuName = original.Basic
+	Free               SkuName = original.Free
+	Standard           SkuName = original.Standard
+	Standard2          SkuName = original.Standard2
+	Standard3          SkuName = original.Standard3
+	StorageOptimizedL1 SkuName = original.StorageOptimizedL1
+	StorageOptimizedL2 SkuName = original.StorageOptimizedL2
 )
 
 type UnavailableNameReason = original.UnavailableNameReason

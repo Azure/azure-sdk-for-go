@@ -373,7 +373,7 @@ type Application struct {
 	OptionalClaims  *OptionalClaims `json:"optionalClaims,omitempty"`
 	// PasswordCredentials - A collection of PasswordCredential objects
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// PreAuthorizedApplications - list of pre-authorizaed applications.
+	// PreAuthorizedApplications - list of pre-authorized applications.
 	PreAuthorizedApplications *[]PreAuthorizedApplication `json:"preAuthorizedApplications,omitempty"`
 	// PublicClient - Specifies whether this application is a public client (such as an installed application running on a mobile device). Default is false.
 	PublicClient *bool `json:"publicClient,omitempty"`
@@ -385,7 +385,7 @@ type Application struct {
 	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
 	// SamlMetadataURL - The URL to the SAML metadata for the application.
 	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
-	// SignInAudience - Audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+	// SignInAudience - Audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
 	SignInAudience *string `json:"signInAudience,omitempty"`
 	// WwwHomepage - The primary Web page.
 	WwwHomepage *string `json:"wwwHomepage,omitempty"`
@@ -929,7 +929,7 @@ type ApplicationBase struct {
 	OptionalClaims  *OptionalClaims `json:"optionalClaims,omitempty"`
 	// PasswordCredentials - A collection of PasswordCredential objects
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// PreAuthorizedApplications - list of pre-authorizaed applications.
+	// PreAuthorizedApplications - list of pre-authorized applications.
 	PreAuthorizedApplications *[]PreAuthorizedApplication `json:"preAuthorizedApplications,omitempty"`
 	// PublicClient - Specifies whether this application is a public client (such as an installed application running on a mobile device). Default is false.
 	PublicClient *bool `json:"publicClient,omitempty"`
@@ -941,7 +941,7 @@ type ApplicationBase struct {
 	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
 	// SamlMetadataURL - The URL to the SAML metadata for the application.
 	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
-	// SignInAudience - Audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+	// SignInAudience - Audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
 	SignInAudience *string `json:"signInAudience,omitempty"`
 	// WwwHomepage - The primary Web page.
 	WwwHomepage *string `json:"wwwHomepage,omitempty"`
@@ -994,7 +994,7 @@ type ApplicationCreateParameters struct {
 	OptionalClaims  *OptionalClaims `json:"optionalClaims,omitempty"`
 	// PasswordCredentials - A collection of PasswordCredential objects
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// PreAuthorizedApplications - list of pre-authorizaed applications.
+	// PreAuthorizedApplications - list of pre-authorized applications.
 	PreAuthorizedApplications *[]PreAuthorizedApplication `json:"preAuthorizedApplications,omitempty"`
 	// PublicClient - Specifies whether this application is a public client (such as an installed application running on a mobile device). Default is false.
 	PublicClient *bool `json:"publicClient,omitempty"`
@@ -1006,7 +1006,7 @@ type ApplicationCreateParameters struct {
 	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
 	// SamlMetadataURL - The URL to the SAML metadata for the application.
 	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
-	// SignInAudience - Audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+	// SignInAudience - Audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
 	SignInAudience *string `json:"signInAudience,omitempty"`
 	// WwwHomepage - The primary Web page.
 	WwwHomepage *string `json:"wwwHomepage,omitempty"`
@@ -1193,7 +1193,7 @@ type ApplicationUpdateParameters struct {
 	OptionalClaims  *OptionalClaims `json:"optionalClaims,omitempty"`
 	// PasswordCredentials - A collection of PasswordCredential objects
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// PreAuthorizedApplications - list of pre-authorizaed applications.
+	// PreAuthorizedApplications - list of pre-authorized applications.
 	PreAuthorizedApplications *[]PreAuthorizedApplication `json:"preAuthorizedApplications,omitempty"`
 	// PublicClient - Specifies whether this application is a public client (such as an installed application running on a mobile device). Default is false.
 	PublicClient *bool `json:"publicClient,omitempty"`
@@ -1205,7 +1205,7 @@ type ApplicationUpdateParameters struct {
 	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
 	// SamlMetadataURL - The URL to the SAML metadata for the application.
 	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
-	// SignInAudience - Audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+	// SignInAudience - Audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
 	SignInAudience *string `json:"signInAudience,omitempty"`
 	// WwwHomepage - The primary Web page.
 	WwwHomepage *string `json:"wwwHomepage,omitempty"`
@@ -2697,7 +2697,7 @@ type OptionalClaim struct {
 	Name *string `json:"name,omitempty"`
 	// Source - Claim source.
 	Source *string `json:"source,omitempty"`
-	// Essential - Is this a requied claim.
+	// Essential - Is this a required claim.
 	Essential            *bool       `json:"essential,omitempty"`
 	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
 }
@@ -3082,7 +3082,7 @@ type ServicePrincipal struct {
 	autorest.Response `json:"-"`
 	// AccountEnabled - whether or not the service principal account is enabled
 	AccountEnabled *string `json:"accountEnabled,omitempty"`
-	// AlternativeNames - altenative names
+	// AlternativeNames - alternative names
 	AlternativeNames *[]string `json:"alternativeNames,omitempty"`
 	// AppDisplayName - The display name exposed by the associated application.
 	AppDisplayName *string `json:"appDisplayName,omitempty"`
@@ -3107,7 +3107,7 @@ type ServicePrincipal struct {
 	Oauth2Permissions *[]OAuth2Permission `json:"oauth2Permissions,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// PreferredTokenSigningKeyThumbprint - The thubmbprint of preferred certificate to sign the token
+	// PreferredTokenSigningKeyThumbprint - The thumbprint of preferred certificate to sign the token
 	PreferredTokenSigningKeyThumbprint *string `json:"preferredTokenSigningKeyThumbprint,omitempty"`
 	// PublisherName - The publisher's name of the associated application
 	PublisherName *string `json:"publisherName,omitempty"`
@@ -3117,7 +3117,7 @@ type ServicePrincipal struct {
 	SamlMetadataURL *string `json:"samlMetadataUrl,omitempty"`
 	// ServicePrincipalNames - A collection of service principal names.
 	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
-	// ServicePrincipalType - the type of the servie principal
+	// ServicePrincipalType - the type of the service principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`
@@ -3486,7 +3486,7 @@ func (sp *ServicePrincipal) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePrincipalBase active Directory service principal common perperties shared among GET, POST and
+// ServicePrincipalBase active Directory service principal common properties shared among GET, POST and
 // PATCH
 type ServicePrincipalBase struct {
 	// AccountEnabled - whether or not the service principal account is enabled
@@ -3497,7 +3497,7 @@ type ServicePrincipalBase struct {
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// ServicePrincipalType - the type of the servie principal
+	// ServicePrincipalType - the type of the service principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`
@@ -3515,7 +3515,7 @@ type ServicePrincipalCreateParameters struct {
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// ServicePrincipalType - the type of the servie principal
+	// ServicePrincipalType - the type of the service principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`
@@ -3665,7 +3665,7 @@ type ServicePrincipalUpdateParameters struct {
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - The collection of password credentials associated with the service principal.
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
-	// ServicePrincipalType - the type of the servie principal
+	// ServicePrincipalType - the type of the service principal
 	ServicePrincipalType *string `json:"servicePrincipalType,omitempty"`
 	// Tags - Optional list of tags that you can apply to your service principals. Not nullable.
 	Tags *[]string `json:"tags,omitempty"`

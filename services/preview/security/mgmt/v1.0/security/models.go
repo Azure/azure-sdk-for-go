@@ -764,7 +764,7 @@ type AlertProperties struct {
 	InstanceID *string `json:"instanceId,omitempty"`
 	// WorkspaceArmID - Azure resource ID of the workspace that the alert was reported to.
 	WorkspaceArmID *string `json:"workspaceArmId,omitempty"`
-	// CorrelationKey - Correlation Key of the alert.
+	// CorrelationKey - Alerts with the same CorrelationKey will be grouped together in Ibiza.
 	CorrelationKey *string `json:"correlationKey,omitempty"`
 }
 

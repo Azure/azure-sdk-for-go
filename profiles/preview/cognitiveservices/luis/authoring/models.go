@@ -21,6 +21,31 @@ package authoring
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/authoring"
 
+type AzureClouds = original.AzureClouds
+
+const (
+	Com AzureClouds = original.Com
+	Us  AzureClouds = original.Us
+)
+
+type AzureRegions = original.AzureRegions
+
+const (
+	Australiaeast  AzureRegions = original.Australiaeast
+	Brazilsouth    AzureRegions = original.Brazilsouth
+	Eastasia       AzureRegions = original.Eastasia
+	Eastus         AzureRegions = original.Eastus
+	Eastus2        AzureRegions = original.Eastus2
+	Northeurope    AzureRegions = original.Northeurope
+	Southcentralus AzureRegions = original.Southcentralus
+	Southeastasia  AzureRegions = original.Southeastasia
+	Virginia       AzureRegions = original.Virginia
+	Westcentralus  AzureRegions = original.Westcentralus
+	Westeurope     AzureRegions = original.Westeurope
+	Westus         AzureRegions = original.Westus
+	Westus2        AzureRegions = original.Westus2
+)
+
 type OperationStatusType = original.OperationStatusType
 
 const (
@@ -263,6 +288,7 @@ type HierarchicalEntityExtractor = original.HierarchicalEntityExtractor
 type HierarchicalEntityModel = original.HierarchicalEntityModel
 type HierarchicalModel = original.HierarchicalModel
 type Int32 = original.Int32
+type Int64 = original.Int64
 type IntentClassifier = original.IntentClassifier
 type IntentPrediction = original.IntentPrediction
 type IntentsSuggestionExample = original.IntentsSuggestionExample
@@ -294,6 +320,7 @@ type ListLabeledUtterance = original.ListLabeledUtterance
 type ListModelInfoResponse = original.ListModelInfoResponse
 type ListModelTrainingInfo = original.ListModelTrainingInfo
 type ListPatternAnyEntityExtractor = original.ListPatternAnyEntityExtractor
+type ListPatternFeatureInfo = original.ListPatternFeatureInfo
 type ListPatternRuleInfo = original.ListPatternRuleInfo
 type ListPhraseListFeatureInfo = original.ListPhraseListFeatureInfo
 type ListPrebuiltDomain = original.ListPrebuiltDomain
@@ -360,41 +387,47 @@ type VersionsClient = original.VersionsClient
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
 
-func New(endpoint string) BaseClient {
-	return original.New(endpoint)
+func New() BaseClient {
+	return original.New()
 }
-func NewAppsClient(endpoint string) AppsClient {
-	return original.NewAppsClient(endpoint)
+func NewAppsClient() AppsClient {
+	return original.NewAppsClient()
 }
-func NewAzureAccountsClient(endpoint string) AzureAccountsClient {
-	return original.NewAzureAccountsClient(endpoint)
+func NewAzureAccountsClient() AzureAccountsClient {
+	return original.NewAzureAccountsClient()
 }
-func NewExamplesClient(endpoint string) ExamplesClient {
-	return original.NewExamplesClient(endpoint)
+func NewExamplesClient() ExamplesClient {
+	return original.NewExamplesClient()
 }
-func NewFeaturesClient(endpoint string) FeaturesClient {
-	return original.NewFeaturesClient(endpoint)
+func NewFeaturesClient() FeaturesClient {
+	return original.NewFeaturesClient()
 }
-func NewModelClient(endpoint string) ModelClient {
-	return original.NewModelClient(endpoint)
+func NewModelClient() ModelClient {
+	return original.NewModelClient()
 }
-func NewPatternClient(endpoint string) PatternClient {
-	return original.NewPatternClient(endpoint)
+func NewPatternClient() PatternClient {
+	return original.NewPatternClient()
 }
-func NewPermissionsClient(endpoint string) PermissionsClient {
-	return original.NewPermissionsClient(endpoint)
+func NewPermissionsClient() PermissionsClient {
+	return original.NewPermissionsClient()
 }
-func NewSettingsClient(endpoint string) SettingsClient {
-	return original.NewSettingsClient(endpoint)
+func NewSettingsClient() SettingsClient {
+	return original.NewSettingsClient()
 }
-func NewTrainClient(endpoint string) TrainClient {
-	return original.NewTrainClient(endpoint)
+func NewTrainClient() TrainClient {
+	return original.NewTrainClient()
 }
-func NewVersionsClient(endpoint string) VersionsClient {
-	return original.NewVersionsClient(endpoint)
+func NewVersionsClient() VersionsClient {
+	return original.NewVersionsClient()
 }
-func NewWithoutDefaults(endpoint string) BaseClient {
-	return original.NewWithoutDefaults(endpoint)
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
+}
+func PossibleAzureCloudsValues() []AzureClouds {
+	return original.PossibleAzureCloudsValues()
+}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return original.PossibleAzureRegionsValues()
 }
 func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return original.PossibleOperationStatusTypeValues()

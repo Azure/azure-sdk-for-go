@@ -28,6 +28,58 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/authoring"
 
+// AzureClouds enumerates the values for azure clouds.
+type AzureClouds string
+
+const (
+	// Com ...
+	Com AzureClouds = "com"
+	// Us ...
+	Us AzureClouds = "us"
+)
+
+// PossibleAzureCloudsValues returns an array of possible values for the AzureClouds const type.
+func PossibleAzureCloudsValues() []AzureClouds {
+	return []AzureClouds{Com, Us}
+}
+
+// AzureRegions enumerates the values for azure regions.
+type AzureRegions string
+
+const (
+	// Australiaeast ...
+	Australiaeast AzureRegions = "australiaeast"
+	// Brazilsouth ...
+	Brazilsouth AzureRegions = "brazilsouth"
+	// Eastasia ...
+	Eastasia AzureRegions = "eastasia"
+	// Eastus ...
+	Eastus AzureRegions = "eastus"
+	// Eastus2 ...
+	Eastus2 AzureRegions = "eastus2"
+	// Northeurope ...
+	Northeurope AzureRegions = "northeurope"
+	// Southcentralus ...
+	Southcentralus AzureRegions = "southcentralus"
+	// Southeastasia ...
+	Southeastasia AzureRegions = "southeastasia"
+	// Virginia ...
+	Virginia AzureRegions = "virginia"
+	// Westcentralus ...
+	Westcentralus AzureRegions = "westcentralus"
+	// Westeurope ...
+	Westeurope AzureRegions = "westeurope"
+	// Westus ...
+	Westus AzureRegions = "westus"
+	// Westus2 ...
+	Westus2 AzureRegions = "westus2"
+)
+
+// PossibleAzureRegionsValues returns an array of possible values for the AzureRegions const type.
+func PossibleAzureRegionsValues() []AzureRegions {
+	return []AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Virginia, Westcentralus, Westeurope, Westus, Westus2}
+}
+
 // OperationStatusType enumerates the values for operation status type.
 type OperationStatusType string
 
@@ -485,8 +537,8 @@ type ApplicationSettings struct {
 
 // ApplicationSettingUpdateObject object model for updating an application's settings.
 type ApplicationSettingUpdateObject struct {
-	// Public - Setting your application as public allows other people to use your application's endpoint using their own keys.
-	Public *bool `json:"public,omitempty"`
+	// IsPublic - Setting your application as public allows other people to use your application's endpoint using their own keys.
+	IsPublic *bool `json:"public,omitempty"`
 }
 
 // ApplicationUpdateObject object model for updating the name or description of an application.
@@ -936,6 +988,12 @@ type Int32 struct {
 	Value             *int32 `json:"value,omitempty"`
 }
 
+// Int64 ...
+type Int64 struct {
+	autorest.Response `json:"-"`
+	Value             *int64 `json:"value,omitempty"`
+}
+
 // IntentClassifier intent Classifier.
 type IntentClassifier struct {
 	autorest.Response `json:"-"`
@@ -1174,6 +1232,12 @@ type ListModelTrainingInfo struct {
 type ListPatternAnyEntityExtractor struct {
 	autorest.Response `json:"-"`
 	Value             *[]PatternAnyEntityExtractor `json:"value,omitempty"`
+}
+
+// ListPatternFeatureInfo ...
+type ListPatternFeatureInfo struct {
+	autorest.Response `json:"-"`
+	Value             *[]PatternFeatureInfo `json:"value,omitempty"`
 }
 
 // ListPatternRuleInfo ...

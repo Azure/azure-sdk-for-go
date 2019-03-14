@@ -29,6 +29,7 @@ type ServersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.Server, err error)
 	List(ctx context.Context) (result postgresql.ServerListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result postgresql.ServerListResult, err error)
+	Restart(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServersRestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerUpdateParameters) (result postgresql.ServersUpdateFuture, err error)
 }
 

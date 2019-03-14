@@ -286,17 +286,18 @@ func (client PeeringsClient) GetResponder(resp *http.Response) (result Model, er
 // ListByResourceGroup lists all of the peerings under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-func (client PeeringsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListResult, err error) {
+func (client PeeringsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.lr.Response.Response != nil {
+				sc = result.lr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -305,12 +306,12 @@ func (client PeeringsClient) ListByResourceGroup(ctx context.Context, resourceGr
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.lr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result.lr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -358,18 +359,56 @@ func (client PeeringsClient) ListByResourceGroupResponder(resp *http.Response) (
 	return
 }
 
-// ListBySubscription lists all of the peerings under the given subscription.
-func (client PeeringsClient) ListBySubscription(ctx context.Context) (result ListResult, err error) {
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client PeeringsClient) listByResourceGroupNextResults(ctx context.Context, lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "peering.PeeringsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "peering.PeeringsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PeeringsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.ListBySubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
+// ListBySubscription lists all of the peerings under the given subscription.
+func (client PeeringsClient) ListBySubscription(ctx context.Context) (result ListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.lr.Response.Response != nil {
+				sc = result.lr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -378,12 +417,12 @@ func (client PeeringsClient) ListBySubscription(ctx context.Context) (result Lis
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.lr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListBySubscriptionResponder(resp)
+	result.lr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
@@ -427,6 +466,43 @@ func (client PeeringsClient) ListBySubscriptionResponder(resp *http.Response) (r
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listBySubscriptionNextResults retrieves the next set of results, if any.
+func (client PeeringsClient) listBySubscriptionNextResults(ctx context.Context, lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "peering.PeeringsClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "peering.PeeringsClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PeeringsClient) ListBySubscriptionComplete(ctx context.Context) (result ListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListBySubscription(ctx)
 	return
 }
 

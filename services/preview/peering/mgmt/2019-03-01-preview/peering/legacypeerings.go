@@ -44,17 +44,18 @@ func NewLegacyPeeringsClientWithBaseURI(baseURI string, subscriptionID string) L
 // Parameters:
 // peeringLocation - the location of the peering.
 // kind - the kind of the peering.
-func (client LegacyPeeringsClient) List(ctx context.Context, peeringLocation string, kind string) (result ListResult, err error) {
+func (client LegacyPeeringsClient) List(ctx context.Context, peeringLocation string, kind string) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LegacyPeeringsClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.lr.Response.Response != nil {
+				sc = result.lr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, peeringLocation, kind)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "List", nil, "Failure preparing request")
@@ -63,12 +64,12 @@ func (client LegacyPeeringsClient) List(ctx context.Context, peeringLocation str
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.lr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "List", resp, "Failure responding to request")
 	}
@@ -114,5 +115,42 @@ func (client LegacyPeeringsClient) ListResponder(resp *http.Response) (result Li
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client LegacyPeeringsClient) listNextResults(ctx context.Context, lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client LegacyPeeringsClient) ListComplete(ctx context.Context, peeringLocation string, kind string) (result ListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LegacyPeeringsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx, peeringLocation, kind)
 	return
 }

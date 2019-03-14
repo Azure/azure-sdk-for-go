@@ -19,7 +19,11 @@
 
 package peering
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-03-01-preview/peering"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-03-01-preview/peering"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -136,8 +140,12 @@ type ExchangePeeringFacility = original.ExchangePeeringFacility
 type LegacyPeeringsClient = original.LegacyPeeringsClient
 type ListPeerInfo = original.ListPeerInfo
 type ListResult = original.ListResult
+type ListResultIterator = original.ListResultIterator
+type ListResultPage = original.ListResultPage
 type Location = original.Location
 type LocationListResult = original.LocationListResult
+type LocationListResultIterator = original.LocationListResultIterator
+type LocationListResultPage = original.LocationListResultPage
 type LocationProperties = original.LocationProperties
 type LocationPropertiesDirect = original.LocationPropertiesDirect
 type LocationPropertiesExchange = original.LocationPropertiesExchange
@@ -146,6 +154,8 @@ type Model = original.Model
 type Operation = original.Operation
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type PeerInfo = original.PeerInfo
 type PeeringsClient = original.PeeringsClient
@@ -164,11 +174,29 @@ func NewLegacyPeeringsClient(subscriptionID string) LegacyPeeringsClient {
 func NewLegacyPeeringsClientWithBaseURI(baseURI string, subscriptionID string) LegacyPeeringsClient {
 	return original.NewLegacyPeeringsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewLocationListResultIterator(page LocationListResultPage) LocationListResultIterator {
+	return original.NewLocationListResultIterator(page)
+}
+func NewLocationListResultPage(getNextPage func(context.Context, LocationListResult) (LocationListResult, error)) LocationListResultPage {
+	return original.NewLocationListResultPage(getNextPage)
+}
 func NewLocationsClient(subscriptionID string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID)
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

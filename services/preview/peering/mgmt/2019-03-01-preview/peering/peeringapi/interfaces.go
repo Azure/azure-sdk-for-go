@@ -33,21 +33,21 @@ var _ BaseClientAPI = (*peering.BaseClient)(nil)
 
 // LegacyPeeringsClientAPI contains the set of methods on the LegacyPeeringsClient type.
 type LegacyPeeringsClientAPI interface {
-	List(ctx context.Context, peeringLocation string, kind string) (result peering.ListResult, err error)
+	List(ctx context.Context, peeringLocation string, kind string) (result peering.ListResultPage, err error)
 }
 
 var _ LegacyPeeringsClientAPI = (*peering.LegacyPeeringsClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
-	List(ctx context.Context) (result peering.OperationListResult, err error)
+	List(ctx context.Context) (result peering.OperationListResultPage, err error)
 }
 
 var _ OperationsClientAPI = (*peering.OperationsClient)(nil)
 
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
-	List(ctx context.Context, kind string) (result peering.LocationListResult, err error)
+	List(ctx context.Context, kind string) (result peering.LocationListResultPage, err error)
 }
 
 var _ LocationsClientAPI = (*peering.LocationsClient)(nil)
@@ -57,8 +57,8 @@ type PeeringsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering peering.Model) (result peering.Model, err error)
 	Delete(ctx context.Context, resourceGroupName string, peeringName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, peeringName string) (result peering.Model, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ListResult, err error)
-	ListBySubscription(ctx context.Context) (result peering.ListResult, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ListResultPage, err error)
+	ListBySubscription(ctx context.Context) (result peering.ListResultPage, err error)
 	Update(ctx context.Context, resourceGroupName string, peeringName string, tags peering.ResourceTags) (result peering.Model, err error)
 }
 

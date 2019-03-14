@@ -43,17 +43,18 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 // List lists all of the available peering locations for the specified kind of peering.
 // Parameters:
 // kind - the kind of the peering.
-func (client LocationsClient) List(ctx context.Context, kind string) (result LocationListResult, err error) {
+func (client LocationsClient) List(ctx context.Context, kind string) (result LocationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LocationsClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.llr.Response.Response != nil {
+				sc = result.llr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, kind)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "List", nil, "Failure preparing request")
@@ -62,12 +63,12 @@ func (client LocationsClient) List(ctx context.Context, kind string) (result Loc
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.llr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.llr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "List", resp, "Failure responding to request")
 	}
@@ -112,5 +113,42 @@ func (client LocationsClient) ListResponder(resp *http.Response) (result Locatio
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client LocationsClient) listNextResults(ctx context.Context, lastResults LocationListResult) (result LocationListResult, err error) {
+	req, err := lastResults.locationListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "peering.LocationsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "peering.LocationsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client LocationsClient) ListComplete(ctx context.Context, kind string) (result LocationListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LocationsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx, kind)
 	return
 }

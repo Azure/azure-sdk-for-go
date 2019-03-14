@@ -3082,7 +3082,7 @@ type ServicePrincipal struct {
 	autorest.Response `json:"-"`
 	// AccountEnabled - whether or not the service principal account is enabled
 	AccountEnabled *string `json:"accountEnabled,omitempty"`
-	// AlternativeNames - alterative names
+	// AlternativeNames - alternative names
 	AlternativeNames *[]string `json:"alternativeNames,omitempty"`
 	// AppDisplayName - The display name exposed by the associated application.
 	AppDisplayName *string `json:"appDisplayName,omitempty"`

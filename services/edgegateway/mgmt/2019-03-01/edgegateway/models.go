@@ -3301,7 +3301,7 @@ type PeriodicTimerProperties struct {
 
 // PeriodicTimerSourceInfo periodic timer event source.
 type PeriodicTimerSourceInfo struct {
-	// StartTime - The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified upto seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
+	// StartTime - The time of the day that results in a valid trigger. Schedule is computed with reference to the time specified up to seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// Schedule - Periodic frequency at which timer event needs to be raised. Supports daily, hourly, minutes, and seconds.
 	Schedule *string `json:"schedule,omitempty"`

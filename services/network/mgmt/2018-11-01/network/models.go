@@ -8284,35 +8284,6 @@ func (future *DdosProtectionPlansDeleteFuture) Result(client DdosProtectionPlans
 	return
 }
 
-// DdosProtectionPlansUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DdosProtectionPlansUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DdosProtectionPlansUpdateFuture) Result(client DdosProtectionPlansClient) (dpp DdosProtectionPlan, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.DdosProtectionPlansUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dpp.Response.Response, err = future.GetResult(sender); err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
-		dpp, err = client.UpdateResponder(dpp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateFuture", "Result", dpp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // DdosSettings contains the DDoS protection settings of the public IP.
 type DdosSettings struct {
 	// DdosCustomPolicy - The DDoS custom policy associated with the public IP.

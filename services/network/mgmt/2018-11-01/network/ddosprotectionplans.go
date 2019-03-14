@@ -501,13 +501,13 @@ func (client DdosProtectionPlansClient) ListByResourceGroupComplete(ctx context.
 // resourceGroupName - the name of the resource group.
 // ddosProtectionPlanName - the name of the DDoS protection plan.
 // parameters - parameters supplied to the update DDoS protection plan resource.
-func (client DdosProtectionPlansClient) Update(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (result DdosProtectionPlansUpdateFuture, err error) {
+func (client DdosProtectionPlansClient) Update(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (result DdosProtectionPlan, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DdosProtectionPlansClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -518,10 +518,16 @@ func (client DdosProtectionPlansClient) Update(ctx context.Context, resourceGrou
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -552,15 +558,9 @@ func (client DdosProtectionPlansClient) UpdatePreparer(ctx context.Context, reso
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client DdosProtectionPlansClient) UpdateSender(req *http.Request) (future DdosProtectionPlansUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client DdosProtectionPlansClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always

@@ -228,6 +228,21 @@ func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return []OperationStatusType{Failed, Notstarted, Running, Succeeded}
 }
 
+// RecognitionModel enumerates the values for recognition model.
+type RecognitionModel string
+
+const (
+	// Recognition01 ...
+	Recognition01 RecognitionModel = "recognition_01"
+	// Recognition02 ...
+	Recognition02 RecognitionModel = "recognition_02"
+)
+
+// PossibleRecognitionModelValues returns an array of possible values for the RecognitionModel const type.
+func PossibleRecognitionModelValues() []RecognitionModel {
+	return []RecognitionModel{Recognition01, Recognition02}
+}
+
 // SnapshotApplyMode enumerates the values for snapshot apply mode.
 type SnapshotApplyMode string
 
@@ -350,10 +365,12 @@ type Coordinate struct {
 
 // DetectedFace detected Face object.
 type DetectedFace struct {
-	FaceID         *uuid.UUID  `json:"faceId,omitempty"`
-	FaceRectangle  *Rectangle  `json:"faceRectangle,omitempty"`
-	FaceLandmarks  *Landmarks  `json:"faceLandmarks,omitempty"`
-	FaceAttributes *Attributes `json:"faceAttributes,omitempty"`
+	FaceID *uuid.UUID `json:"faceId,omitempty"`
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
+	FaceRectangle    *Rectangle       `json:"faceRectangle,omitempty"`
+	FaceLandmarks    *Landmarks       `json:"faceLandmarks,omitempty"`
+	FaceAttributes   *Attributes      `json:"faceAttributes,omitempty"`
 }
 
 // Emotion properties describing facial emotion in form of confidence ranging from 0 to 1.
@@ -518,6 +535,8 @@ type LargeFaceList struct {
 	autorest.Response `json:"-"`
 	// LargeFaceListID - LargeFaceListId of the target large face list.
 	LargeFaceListID *string `json:"largeFaceListId,omitempty"`
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
 	// UserData - User specified data. Length should not exceed 16KB.
@@ -529,6 +548,8 @@ type LargePersonGroup struct {
 	autorest.Response `json:"-"`
 	// LargePersonGroupID - LargePersonGroupId of the target large person groups
 	LargePersonGroupID *string `json:"largePersonGroupId,omitempty"`
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
 	// UserData - User specified data. Length should not exceed 16KB.
@@ -542,6 +563,8 @@ type List struct {
 	FaceListID *string `json:"faceListId,omitempty"`
 	// PersistedFaces - Persisted faces within the face list.
 	PersistedFaces *[]PersistedFace `json:"persistedFaces,omitempty"`
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
 	// UserData - User specified data. Length should not exceed 16KB.
@@ -616,6 +639,17 @@ type Makeup struct {
 	LipMakeup *bool `json:"lipMakeup,omitempty"`
 }
 
+// MetaDataContract a combination of user defined name and user specified data and recognition model name
+// for largePersonGroup/personGroup, and largeFaceList/faceList.
+type MetaDataContract struct {
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
+	// Name - User defined name, maximum length is 128.
+	Name *string `json:"name,omitempty"`
+	// UserData - User specified data. Length should not exceed 16KB.
+	UserData *string `json:"userData,omitempty"`
+}
+
 // NameAndUserDataContract a combination of user defined name and user specified data for the person,
 // largePersonGroup/personGroup, and largeFaceList/faceList.
 type NameAndUserDataContract struct {
@@ -686,6 +720,8 @@ type PersonGroup struct {
 	autorest.Response `json:"-"`
 	// PersonGroupID - PersonGroupId of the target person group.
 	PersonGroupID *string `json:"personGroupId,omitempty"`
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
 	// UserData - User specified data. Length should not exceed 16KB.

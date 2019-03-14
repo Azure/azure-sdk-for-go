@@ -36,11 +36,32 @@ func NewPersonGroupClient(endpoint string) PersonGroupClient {
 	return PersonGroupClient{New(endpoint)}
 }
 
-// Create create a new person group with specified personGroupId, name and user-provided userData.
+// Create create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+// <br /> A person group is the container of the uploaded person data, including face images and face recognition
+// features.
+// <br /> After creation, use [PersonGroup Person -
+// Create](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c) to add persons into the group,
+// and then call [PersonGroup - Train](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249) to
+// get this group ready for [Face -
+// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+// <br /> The person's face, image, and userData will be stored on server until [PersonGroup Person -
+// Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523d) or [PersonGroup -
+// Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395245) is called.
+// <br />
+// * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+// * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+// * to handle larger scale face identification problem, please consider using
+// [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d).
+// <br />
+// 'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel'
+// is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New
+// faces that are added to an existing person group will use the recognition model that's already associated with the
+// collection. Existing face features in a person group can't be updated to features extracted by another version of
+// recognition model.
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // body - request body for creating new person group.
-func (client PersonGroupClient) Create(ctx context.Context, personGroupID string, body NameAndUserDataContract) (result autorest.Response, err error) {
+func (client PersonGroupClient) Create(ctx context.Context, personGroupID string, body MetaDataContract) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PersonGroupClient.Create")
 		defer func() {
@@ -54,12 +75,7 @@ func (client PersonGroupClient) Create(ctx context.Context, personGroupID string
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
-				{Target: "body.UserData", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "body.UserData", Name: validation.MaxLength, Rule: 16384, Chain: nil}}}}}}); err != nil {
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("face.PersonGroupClient", "Create", err.Error())
 	}
 
@@ -85,7 +101,7 @@ func (client PersonGroupClient) Create(ctx context.Context, personGroupID string
 }
 
 // CreatePreparer prepares the Create request.
-func (client PersonGroupClient) CreatePreparer(ctx context.Context, personGroupID string, body NameAndUserDataContract) (*http.Request, error) {
+func (client PersonGroupClient) CreatePreparer(ctx context.Context, personGroupID string, body MetaDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -201,7 +217,8 @@ func (client PersonGroupClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Get retrieve the information of a person group, including its name and userData.
+// Get retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use
+// [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
 // Parameters:
 // personGroupID - id referencing a particular person group.
 func (client PersonGroupClient) Get(ctx context.Context, personGroupID string) (result PersonGroup, err error) {
@@ -359,7 +376,17 @@ func (client PersonGroupClient) GetTrainingStatusResponder(resp *http.Response) 
 	return
 }
 
-// List list person groups and their information.
+// List list person groups’s pesonGroupId, name, userData and recognitionModel.<br />
+// * Person groups are stored in alphabetical order of personGroupId.
+// * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids
+// by string comparison. "start" set to empty to indicate return from the first item.
+// * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be
+// returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+// <br />
+// For example, total 5 person groups: "group1", ..., "group5".
+// <br /> "start=&top=" will return all 5 groups.
+// <br /> "start=&top=2" will return "group1", "group2".
+// <br /> "start=group2&top=3" will return "group3", "group4", "group5".
 // Parameters:
 // start - list person groups from the least personGroupId greater than the "start".
 // top - the number of person groups to list.

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v26.4.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| insights | 2019-03-01 |
+
 ## `v26.3.1`
 
 Remove committed vendored content.

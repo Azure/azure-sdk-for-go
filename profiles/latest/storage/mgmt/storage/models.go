@@ -19,7 +19,7 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-07-01/storage"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-11-01/storage"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -259,8 +259,6 @@ type AccountCreateParameters = original.AccountCreateParameters
 type AccountKey = original.AccountKey
 type AccountListKeysResult = original.AccountListKeysResult
 type AccountListResult = original.AccountListResult
-type AccountManagementPolicies = original.AccountManagementPolicies
-type AccountManagementPoliciesRulesProperty = original.AccountManagementPoliciesRulesProperty
 type AccountProperties = original.AccountProperties
 type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParameters
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
@@ -282,6 +280,8 @@ type ContainerProperties = original.ContainerProperties
 type CorsRule = original.CorsRule
 type CorsRules = original.CorsRules
 type CustomDomain = original.CustomDomain
+type DateAfterCreation = original.DateAfterCreation
+type DateAfterModification = original.DateAfterModification
 type DeleteRetentionPolicy = original.DeleteRetentionPolicy
 type Dimension = original.Dimension
 type Encryption = original.Encryption
@@ -302,8 +302,15 @@ type ListContainerItem = original.ListContainerItem
 type ListContainerItems = original.ListContainerItems
 type ListServiceSasResponse = original.ListServiceSasResponse
 type ManagementPoliciesClient = original.ManagementPoliciesClient
-type ManagementPoliciesRules = original.ManagementPoliciesRules
-type ManagementPoliciesRulesSetParameter = original.ManagementPoliciesRulesSetParameter
+type ManagementPolicy = original.ManagementPolicy
+type ManagementPolicyAction = original.ManagementPolicyAction
+type ManagementPolicyBaseBlob = original.ManagementPolicyBaseBlob
+type ManagementPolicyDefinition = original.ManagementPolicyDefinition
+type ManagementPolicyFilter = original.ManagementPolicyFilter
+type ManagementPolicyProperties = original.ManagementPolicyProperties
+type ManagementPolicyRule = original.ManagementPolicyRule
+type ManagementPolicySchema = original.ManagementPolicySchema
+type ManagementPolicySnapShot = original.ManagementPolicySnapShot
 type MetricSpecification = original.MetricSpecification
 type NetworkRuleSet = original.NetworkRuleSet
 type Operation = original.Operation

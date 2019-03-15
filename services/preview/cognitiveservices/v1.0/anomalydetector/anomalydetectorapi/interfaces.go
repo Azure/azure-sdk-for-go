@@ -1,4 +1,4 @@
-package anomalyfinderapi
+package anomalydetectorapi
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,13 +19,13 @@ package anomalyfinderapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/anomalyfinder"
+	"github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	EntireDetect(ctx context.Context, body anomalyfinder.Request) (result anomalyfinder.EntireDetectResponse, err error)
-	LastDetect(ctx context.Context, body anomalyfinder.Request) (result anomalyfinder.LastDetectResponse, err error)
+	EntireDetect(ctx context.Context, body anomalydetector.Request) (result anomalydetector.EntireDetectResponse, err error)
+	LastDetect(ctx context.Context, body anomalydetector.Request) (result anomalydetector.LastDetectResponse, err error)
 }
 
-var _ BaseClientAPI = (*anomalyfinder.BaseClient)(nil)
+var _ BaseClientAPI = (*anomalydetector.BaseClient)(nil)

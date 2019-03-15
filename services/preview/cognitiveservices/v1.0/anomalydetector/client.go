@@ -1,10 +1,10 @@
-// Package anomalyfinder implements the Azure ARM Anomalyfinder service API version 2.0.
+// Package anomalydetector implements the Azure ARM Anomalydetector service API version 1.0.
 //
-// The Anomaly Finder API detects anomalies automatically in time series data. It supports two functionalities, one is
-// for detecting the whole series with model trained by the timeseries, another is detecting last point with model
+// The Anomaly Detector API detects anomalies automatically in time series data. It supports two functionalities, one
+// is for detecting the whole series with model trained by the timeseries, another is detecting last point with model
 // trained by points before. By using this service, business customers can discover incidents and establish a logic
 // flow for root cause analysis.
-package anomalyfinder
+package anomalydetector
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -32,7 +32,7 @@ import (
 	"net/http"
 )
 
-// BaseClient is the base client for Anomalyfinder.
+// BaseClient is the base client for Anomalydetector.
 type BaseClient struct {
 	autorest.Client
 	Endpoint string
@@ -51,9 +51,9 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// EntireDetect the operation will generate a model using the entire series, each point will be detected with the same
-// model. In this method, points before and after a certain point will be used to determine whether it's an anomaly.
-// The entire detection can give user an overall status of the time series.
+// EntireDetect this operation generates a model using an entire series, each point is detected with the same model.
+// With this method, points before and after a certain point are used to determine whether it is an anomaly. The entire
+// detection can give user an overall status of the time series.
 // Parameters:
 // body - time series points and period if needed. Advanced model parameters can also be set in the request.
 func (client BaseClient) EntireDetect(ctx context.Context, body Request) (result EntireDetectResponse, err error) {
@@ -70,25 +70,25 @@ func (client BaseClient) EntireDetect(ctx context.Context, body Request) (result
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Series", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalyfinder.BaseClient", "EntireDetect", err.Error())
+		return result, validation.NewError("anomalydetector.BaseClient", "EntireDetect", err.Error())
 	}
 
 	req, err := client.EntireDetectPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalyfinder.BaseClient", "EntireDetect", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "EntireDetect", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EntireDetectSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalyfinder.BaseClient", "EntireDetect", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "EntireDetect", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EntireDetectResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalyfinder.BaseClient", "EntireDetect", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "EntireDetect", resp, "Failure responding to request")
 	}
 
 	return
@@ -103,7 +103,7 @@ func (client BaseClient) EntireDetectPreparer(ctx context.Context, body Request)
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/anomalyfinder/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPath("/timeseries/entire/detect"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -129,9 +129,9 @@ func (client BaseClient) EntireDetectResponder(resp *http.Response) (result Enti
 	return
 }
 
-// LastDetect the operation will generate a model using points before the latest one, In this method, only history
-// points are used for determine whether the target point is an anomaly. Latest point detecting matches the scenario of
-// real-time monitoring of business metrics.
+// LastDetect this operation generates a model using points before the latest one. With this method, only historical
+// points are used to determine whether the target point is an anomaly. The latest point detecting operation matches
+// the scenario of real-time monitoring of business metrics.
 // Parameters:
 // body - time series points and period if needed. Advanced model parameters can also be set in the request.
 func (client BaseClient) LastDetect(ctx context.Context, body Request) (result LastDetectResponse, err error) {
@@ -148,25 +148,25 @@ func (client BaseClient) LastDetect(ctx context.Context, body Request) (result L
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Series", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalyfinder.BaseClient", "LastDetect", err.Error())
+		return result, validation.NewError("anomalydetector.BaseClient", "LastDetect", err.Error())
 	}
 
 	req, err := client.LastDetectPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalyfinder.BaseClient", "LastDetect", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "LastDetect", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.LastDetectSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalyfinder.BaseClient", "LastDetect", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "LastDetect", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.LastDetectResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalyfinder.BaseClient", "LastDetect", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.BaseClient", "LastDetect", resp, "Failure responding to request")
 	}
 
 	return
@@ -181,7 +181,7 @@ func (client BaseClient) LastDetectPreparer(ctx context.Context, body Request) (
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/anomalyfinder/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPath("/timeseries/last/detect"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

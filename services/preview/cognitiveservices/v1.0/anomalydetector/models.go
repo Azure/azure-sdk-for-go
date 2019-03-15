@@ -1,4 +1,4 @@
-package anomalyfinder
+package anomalydetector
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/anomalyfinder"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 
 // Granularity enumerates the values for granularity.
 type Granularity string
@@ -63,9 +63,9 @@ type EntireDetectResponse struct {
 	Period *int32 `json:"period,omitempty"`
 	// ExpectedValues - ExpectedValues contain expected value for each input point. The index of the array is consistent with the input series.
 	ExpectedValues *[]float64 `json:"expectedValues,omitempty"`
-	// UpperMargins - UpperMargins contain upper margin of each input point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. Anomalies in response can be filtered by upperBoundary and lowerBoundary. By adjusting sensitivity value, less significant anomalies can be filtered in client side. The index of the array is consistent with the input series.
+	// UpperMargins - UpperMargins contain upper margin of each input point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin. Anomalies in response can be filtered by upperBoundary and lowerBoundary. By adjusting marginScale value, less significant anomalies can be filtered in client side. The index of the array is consistent with the input series.
 	UpperMargins *[]float64 `json:"upperMargins,omitempty"`
-	// LowerMargins - LowerMargins contain lower margin of each input point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - sensitivity)*lowerMargin. Points between the boundary can be marked as normal ones in client side. The index of the array is consistent with the input series.
+	// LowerMargins - LowerMargins contain lower margin of each input point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin. Points between the boundary can be marked as normal ones in client side. The index of the array is consistent with the input series.
 	LowerMargins *[]float64 `json:"lowerMargins,omitempty"`
 	// IsAnomaly - IsAnomaly contains anomaly properties for each input point. True means an anomaly either negative or positive has been detected. The index of the array is consistent with the input series.
 	IsAnomaly *[]bool `json:"isAnomaly,omitempty"`
@@ -84,9 +84,9 @@ type LastDetectResponse struct {
 	SuggestedWindow *int32 `json:"suggestedWindow,omitempty"`
 	// ExpectedValue - Expected value of the latest point.
 	ExpectedValue *float64 `json:"expectedValue,omitempty"`
-	// UpperMargin - Upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoundary and lowerBoundary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
+	// UpperMargin - Upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin. If the value of latest point is between upperBoundary and lowerBoundary, it should be treated as normal value. By adjusting marginScale value, anomaly status of latest point can be changed.
 	UpperMargin *float64 `json:"upperMargin,omitempty"`
-	// LowerMargin - Lower margin of the latest point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - sensitivity)*lowerMargin.
+	// LowerMargin - Lower margin of the latest point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin.
 	LowerMargin *float64 `json:"lowerMargin,omitempty"`
 	// IsAnomaly - Anomaly status of the latest point, true means the latest point is an anomaly either in negative direction or positive direction.
 	IsAnomaly *bool `json:"isAnomaly,omitempty"`

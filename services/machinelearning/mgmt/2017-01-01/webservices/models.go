@@ -1373,7 +1373,7 @@ func (ts TableSpecification) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebService instance of an Patched Azure ML web service resource.
+// WebService instance of an Azure ML web service resource.
 type WebService struct {
 	autorest.Response `json:"-"`
 	// Properties - Contains the property payload that describes the web service.

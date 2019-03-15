@@ -600,6 +600,7 @@ type AccessProfile struct {
 
 // AgentPool agent Pool.
 type AgentPool struct {
+	autorest.Response `json:"-"`
 	// ManagedClusterAgentPoolProfileProperties - Properties of an agent pool.
 	*ManagedClusterAgentPoolProfileProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
@@ -681,10 +682,148 @@ func (ap *AgentPool) UnmarshalJSON(body []byte) error {
 
 // AgentPoolListResult the response from the List Agent Pools operation.
 type AgentPoolListResult struct {
+	autorest.Response `json:"-"`
 	// Value - The list of agent pools.
 	Value *[]AgentPool `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of agent pool results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AgentPoolListResultIterator provides access to a complete listing of AgentPool values.
+type AgentPoolListResultIterator struct {
+	i    int
+	page AgentPoolListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AgentPoolListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AgentPoolListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AgentPoolListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AgentPoolListResultIterator) Response() AgentPoolListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AgentPoolListResultIterator) Value() AgentPool {
+	if !iter.page.NotDone() {
+		return AgentPool{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AgentPoolListResultIterator type.
+func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
+	return AgentPoolListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aplr AgentPoolListResult) IsEmpty() bool {
+	return aplr.Value == nil || len(*aplr.Value) == 0
+}
+
+// agentPoolListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aplr AgentPoolListResult) agentPoolListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if aplr.NextLink == nil || len(to.String(aplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aplr.NextLink)))
+}
+
+// AgentPoolListResultPage contains a page of AgentPool values.
+type AgentPoolListResultPage struct {
+	fn   func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)
+	aplr AgentPoolListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AgentPoolListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aplr)
+	if err != nil {
+		return err
+	}
+	page.aplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AgentPoolListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AgentPoolListResultPage) NotDone() bool {
+	return !page.aplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AgentPoolListResultPage) Response() AgentPoolListResult {
+	return page.aplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AgentPoolListResultPage) Values() []AgentPool {
+	if page.aplr.IsEmpty() {
+		return nil
+	}
+	return *page.aplr.Value
+}
+
+// Creates a new instance of the AgentPoolListResultPage type.
+func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{fn: getNextPage}
 }
 
 // AgentPoolProfile profile for the container service agent pool.
@@ -709,6 +848,58 @@ type AgentPoolProfile struct {
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
+}
+
+// AgentPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AgentPoolsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsCreateOrUpdateFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.CreateOrUpdateResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsCreateOrUpdateFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AgentPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AgentPoolsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsDeleteFuture) Result(client AgentPoolsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // CloudError an error response from the Container service.

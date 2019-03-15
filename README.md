@@ -22,7 +22,10 @@ If you run into an issue, please don't hesitate to log a
 
 ## Getting Started
 ### Installing the library
-To more reliably manage dependencies in your application we recommend [golang/dep](https://github.com/golang/dep).
+Use `go get` to acquire and install from source. Versions of the project after v0.1.0 use Go modules exclusively, which 
+means you'll need Go 1.11 or later to ensure all of the dependencies are properly versioned.
+
+For more information on modules, see the [Go modules wiki](https://github.com/golang/go/wiki/Modules).
 
 With go get:
 ```

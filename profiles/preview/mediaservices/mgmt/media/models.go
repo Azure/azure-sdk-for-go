@@ -37,6 +37,13 @@ const (
 	HeAacV2 AacAudioProfile = original.HeAacV2
 )
 
+type AnalysisResolution = original.AnalysisResolution
+
+const (
+	SourceResolution   AnalysisResolution = original.SourceResolution
+	StandardDefinition AnalysisResolution = original.StandardDefinition
+)
+
 type AssetContainerPermission = original.AssetContainerPermission
 
 const (
@@ -380,6 +387,7 @@ type OdataTypeBasicPreset = original.OdataTypeBasicPreset
 const (
 	OdataTypeMicrosoftMediaAudioAnalyzerPreset          OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaAudioAnalyzerPreset
 	OdataTypeMicrosoftMediaBuiltInStandardEncoderPreset OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaBuiltInStandardEncoderPreset
+	OdataTypeMicrosoftMediaFaceDetectorPreset           OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaFaceDetectorPreset
 	OdataTypeMicrosoftMediaStandardEncoderPreset        OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaStandardEncoderPreset
 	OdataTypeMicrosoftMediaVideoAnalyzerPreset          OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaVideoAnalyzerPreset
 	OdataTypePreset                                     OdataTypeBasicPreset = original.OdataTypePreset
@@ -564,6 +572,7 @@ type Deinterlace = original.Deinterlace
 type EnabledProtocols = original.EnabledProtocols
 type EntityNameAvailabilityCheckOutput = original.EntityNameAvailabilityCheckOutput
 type EnvelopeEncryption = original.EnvelopeEncryption
+type FaceDetectorPreset = original.FaceDetectorPreset
 type FilterProperties = original.FilterProperties
 type FilterTrackPropertyCondition = original.FilterTrackPropertyCondition
 type FilterTrackSelection = original.FilterTrackSelection
@@ -893,6 +902,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAacAudioProfileValues() []AacAudioProfile {
 	return original.PossibleAacAudioProfileValues()
+}
+func PossibleAnalysisResolutionValues() []AnalysisResolution {
+	return original.PossibleAnalysisResolutionValues()
 }
 func PossibleAssetContainerPermissionValues() []AssetContainerPermission {
 	return original.PossibleAssetContainerPermissionValues()

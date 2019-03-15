@@ -83,6 +83,14 @@
   revision = "eeefdecb41b842af6dc652aaea4026e8403e62df"
 
 [[projects]]
+  digest = "1:141cc9fc6279592458b304038bd16a05ef477d125c6dad281216345a11746fd7"
+  name = "github.com/gofrs/uuid"
+  packages = ["."]
+  pruneopts = ""
+  revision = "6b08a5c5172ba18946672b49749cde22873dd7c2"
+  version = "v3.2.0"
+
+[[projects]]
   digest = "1:3dd078fda7500c341bc26cfbc6c6a34614f295a2457149fc1045cab767cbcf18"
   name = "github.com/golang/protobuf"
   packages = [
@@ -383,6 +391,7 @@
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",
+    "github.com/gofrs/uuid",
     "github.com/marstr/collection",
     "github.com/marstr/guid",
     "github.com/pkg/errors",

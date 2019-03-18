@@ -23,14 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// BaseClientAPI contains the set of methods on the BaseClient type.
-type BaseClientAPI interface {
-	GetPeerInfo(ctx context.Context) (result peering.ListPeerInfo, err error)
-	UpdatePeerInfo(ctx context.Context, peerInfo []peering.PeerInfo) (result peering.ListPeerInfo, err error)
-}
-
-var _ BaseClientAPI = (*peering.BaseClient)(nil)
-
 // LegacyPeeringsClientAPI contains the set of methods on the LegacyPeeringsClient type.
 type LegacyPeeringsClientAPI interface {
 	List(ctx context.Context, peeringLocation string, kind string) (result peering.ListResultPage, err error)
@@ -44,6 +36,16 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*peering.OperationsClient)(nil)
+
+// PeerAsnsClientAPI contains the set of methods on the PeerAsnsClient type.
+type PeerAsnsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, peerAsnName string, peerInfo peering.PeerAsnProperties) (result peering.PeerAsn, err error)
+	Delete(ctx context.Context, peerAsnName string) (result autorest.Response, err error)
+	Get(ctx context.Context, peerAsnName string) (result peering.PeerAsn, err error)
+	ListBySubscription(ctx context.Context) (result peering.PeerAsnListResultPage, err error)
+}
+
+var _ PeerAsnsClientAPI = (*peering.PeerAsnsClient)(nil)
 
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {

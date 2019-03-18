@@ -138,7 +138,6 @@ type ErrorResponse = original.ErrorResponse
 type ExchangeConnection = original.ExchangeConnection
 type ExchangePeeringFacility = original.ExchangePeeringFacility
 type LegacyPeeringsClient = original.LegacyPeeringsClient
-type ListPeerInfo = original.ListPeerInfo
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -157,7 +156,12 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
-type PeerInfo = original.PeerInfo
+type PeerAsn = original.PeerAsn
+type PeerAsnListResult = original.PeerAsnListResult
+type PeerAsnListResultIterator = original.PeerAsnListResultIterator
+type PeerAsnListResultPage = original.PeerAsnListResultPage
+type PeerAsnProperties = original.PeerAsnProperties
+type PeerAsnsClient = original.PeerAsnsClient
 type PeeringsClient = original.PeeringsClient
 type Properties = original.Properties
 type PropertiesDirect = original.PropertiesDirect
@@ -203,6 +207,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPeerAsnListResultIterator(page PeerAsnListResultPage) PeerAsnListResultIterator {
+	return original.NewPeerAsnListResultIterator(page)
+}
+func NewPeerAsnListResultPage(getNextPage func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)) PeerAsnListResultPage {
+	return original.NewPeerAsnListResultPage(getNextPage)
+}
+func NewPeerAsnsClient(subscriptionID string) PeerAsnsClient {
+	return original.NewPeerAsnsClient(subscriptionID)
+}
+func NewPeerAsnsClientWithBaseURI(baseURI string, subscriptionID string) PeerAsnsClient {
+	return original.NewPeerAsnsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPeeringsClient(subscriptionID string) PeeringsClient {
 	return original.NewPeeringsClient(subscriptionID)

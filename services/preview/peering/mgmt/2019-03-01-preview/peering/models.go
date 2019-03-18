@@ -341,12 +341,6 @@ type ExchangePeeringFacility struct {
 	PeeringDBFacilityLink *string `json:"peeringDBFacilityLink,omitempty"`
 }
 
-// ListPeerInfo ...
-type ListPeerInfo struct {
-	autorest.Response `json:"-"`
-	Value             *[]PeerInfo `json:"value,omitempty"`
-}
-
 // ListResult the paginated list of peerings.
 type ListResult struct {
 	autorest.Response `json:"-"`
@@ -1069,8 +1063,236 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
-// PeerInfo the essential information related to the peer.
-type PeerInfo struct {
+// PeerAsn the essential information related to the pee's ASN.
+type PeerAsn struct {
+	autorest.Response `json:"-"`
+	// PeerAsnProperties - The properties that define a peer's ASN.
+	*PeerAsnProperties `json:"properties,omitempty"`
+	// Name - The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// ID - The ID of the resource.
+	ID *string `json:"id,omitempty"`
+	// Type - The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PeerAsn.
+func (pa PeerAsn) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pa.PeerAsnProperties != nil {
+		objectMap["properties"] = pa.PeerAsnProperties
+	}
+	if pa.Name != nil {
+		objectMap["name"] = pa.Name
+	}
+	if pa.ID != nil {
+		objectMap["id"] = pa.ID
+	}
+	if pa.Type != nil {
+		objectMap["type"] = pa.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PeerAsn struct.
+func (pa *PeerAsn) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var peerAsnProperties PeerAsnProperties
+				err = json.Unmarshal(*v, &peerAsnProperties)
+				if err != nil {
+					return err
+				}
+				pa.PeerAsnProperties = &peerAsnProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pa.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pa.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PeerAsnListResult the paginated list of [T].
+type PeerAsnListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of [T].
+	Value *[]PeerAsn `json:"value,omitempty"`
+	// NextLink - The link to fetch the next page of [T].
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PeerAsnListResultIterator provides access to a complete listing of PeerAsn values.
+type PeerAsnListResultIterator struct {
+	i    int
+	page PeerAsnListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PeerAsnListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeerAsnListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PeerAsnListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PeerAsnListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PeerAsnListResultIterator) Response() PeerAsnListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PeerAsnListResultIterator) Value() PeerAsn {
+	if !iter.page.NotDone() {
+		return PeerAsn{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PeerAsnListResultIterator type.
+func NewPeerAsnListResultIterator(page PeerAsnListResultPage) PeerAsnListResultIterator {
+	return PeerAsnListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (palr PeerAsnListResult) IsEmpty() bool {
+	return palr.Value == nil || len(*palr.Value) == 0
+}
+
+// peerAsnListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (palr PeerAsnListResult) peerAsnListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if palr.NextLink == nil || len(to.String(palr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(palr.NextLink)))
+}
+
+// PeerAsnListResultPage contains a page of PeerAsn values.
+type PeerAsnListResultPage struct {
+	fn   func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)
+	palr PeerAsnListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PeerAsnListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeerAsnListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.palr)
+	if err != nil {
+		return err
+	}
+	page.palr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PeerAsnListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PeerAsnListResultPage) NotDone() bool {
+	return !page.palr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PeerAsnListResultPage) Response() PeerAsnListResult {
+	return page.palr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PeerAsnListResultPage) Values() []PeerAsn {
+	if page.palr.IsEmpty() {
+		return nil
+	}
+	return *page.palr.Value
+}
+
+// Creates a new instance of the PeerAsnListResultPage type.
+func NewPeerAsnListResultPage(getNextPage func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)) PeerAsnListResultPage {
+	return PeerAsnListResultPage{fn: getNextPage}
+}
+
+// PeerAsnProperties the properties that define a peer's ASN.
+type PeerAsnProperties struct {
 	// PeerAsn - The Autonomous System Number (ASN) of the peer.
 	PeerAsn *int32 `json:"peerAsn,omitempty"`
 	// PeerContactInfo - The contact information of the peer.

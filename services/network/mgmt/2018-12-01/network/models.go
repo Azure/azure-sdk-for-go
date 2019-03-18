@@ -760,6 +760,8 @@ type ExpressRouteCircuitSkuTier string
 const (
 	// ExpressRouteCircuitSkuTierBasic ...
 	ExpressRouteCircuitSkuTierBasic ExpressRouteCircuitSkuTier = "Basic"
+	// ExpressRouteCircuitSkuTierLocal ...
+	ExpressRouteCircuitSkuTierLocal ExpressRouteCircuitSkuTier = "Local"
 	// ExpressRouteCircuitSkuTierPremium ...
 	ExpressRouteCircuitSkuTierPremium ExpressRouteCircuitSkuTier = "Premium"
 	// ExpressRouteCircuitSkuTierStandard ...
@@ -768,7 +770,7 @@ const (
 
 // PossibleExpressRouteCircuitSkuTierValues returns an array of possible values for the ExpressRouteCircuitSkuTier const type.
 func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
-	return []ExpressRouteCircuitSkuTier{ExpressRouteCircuitSkuTierBasic, ExpressRouteCircuitSkuTierPremium, ExpressRouteCircuitSkuTierStandard}
+	return []ExpressRouteCircuitSkuTier{ExpressRouteCircuitSkuTierBasic, ExpressRouteCircuitSkuTierLocal, ExpressRouteCircuitSkuTierPremium, ExpressRouteCircuitSkuTierStandard}
 }
 
 // ExpressRouteLinkAdminState enumerates the values for express route link admin state.
@@ -1808,6 +1810,173 @@ func PossibleVpnTypeValues() []VpnType {
 	return []VpnType{PolicyBased, RouteBased}
 }
 
+// WebApplicationFirewallAction enumerates the values for web application firewall action.
+type WebApplicationFirewallAction string
+
+const (
+	// WebApplicationFirewallActionAllow ...
+	WebApplicationFirewallActionAllow WebApplicationFirewallAction = "Allow"
+	// WebApplicationFirewallActionBlock ...
+	WebApplicationFirewallActionBlock WebApplicationFirewallAction = "Block"
+	// WebApplicationFirewallActionLog ...
+	WebApplicationFirewallActionLog WebApplicationFirewallAction = "Log"
+)
+
+// PossibleWebApplicationFirewallActionValues returns an array of possible values for the WebApplicationFirewallAction const type.
+func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction {
+	return []WebApplicationFirewallAction{WebApplicationFirewallActionAllow, WebApplicationFirewallActionBlock, WebApplicationFirewallActionLog}
+}
+
+// WebApplicationFirewallEnabledState enumerates the values for web application firewall enabled state.
+type WebApplicationFirewallEnabledState string
+
+const (
+	// WebApplicationFirewallEnabledStateDisabled ...
+	WebApplicationFirewallEnabledStateDisabled WebApplicationFirewallEnabledState = "Disabled"
+	// WebApplicationFirewallEnabledStateEnabled ...
+	WebApplicationFirewallEnabledStateEnabled WebApplicationFirewallEnabledState = "Enabled"
+)
+
+// PossibleWebApplicationFirewallEnabledStateValues returns an array of possible values for the WebApplicationFirewallEnabledState const type.
+func PossibleWebApplicationFirewallEnabledStateValues() []WebApplicationFirewallEnabledState {
+	return []WebApplicationFirewallEnabledState{WebApplicationFirewallEnabledStateDisabled, WebApplicationFirewallEnabledStateEnabled}
+}
+
+// WebApplicationFirewallMatchVariable enumerates the values for web application firewall match variable.
+type WebApplicationFirewallMatchVariable string
+
+const (
+	// PostArgs ...
+	PostArgs WebApplicationFirewallMatchVariable = "PostArgs"
+	// QueryString ...
+	QueryString WebApplicationFirewallMatchVariable = "QueryString"
+	// RemoteAddr ...
+	RemoteAddr WebApplicationFirewallMatchVariable = "RemoteAddr"
+	// RequestBody ...
+	RequestBody WebApplicationFirewallMatchVariable = "RequestBody"
+	// RequestCookies ...
+	RequestCookies WebApplicationFirewallMatchVariable = "RequestCookies"
+	// RequestHeaders ...
+	RequestHeaders WebApplicationFirewallMatchVariable = "RequestHeaders"
+	// RequestMethod ...
+	RequestMethod WebApplicationFirewallMatchVariable = "RequestMethod"
+	// RequestURI ...
+	RequestURI WebApplicationFirewallMatchVariable = "RequestUri"
+)
+
+// PossibleWebApplicationFirewallMatchVariableValues returns an array of possible values for the WebApplicationFirewallMatchVariable const type.
+func PossibleWebApplicationFirewallMatchVariableValues() []WebApplicationFirewallMatchVariable {
+	return []WebApplicationFirewallMatchVariable{PostArgs, QueryString, RemoteAddr, RequestBody, RequestCookies, RequestHeaders, RequestMethod, RequestURI}
+}
+
+// WebApplicationFirewallMode enumerates the values for web application firewall mode.
+type WebApplicationFirewallMode string
+
+const (
+	// WebApplicationFirewallModeDetection ...
+	WebApplicationFirewallModeDetection WebApplicationFirewallMode = "Detection"
+	// WebApplicationFirewallModePrevention ...
+	WebApplicationFirewallModePrevention WebApplicationFirewallMode = "Prevention"
+)
+
+// PossibleWebApplicationFirewallModeValues returns an array of possible values for the WebApplicationFirewallMode const type.
+func PossibleWebApplicationFirewallModeValues() []WebApplicationFirewallMode {
+	return []WebApplicationFirewallMode{WebApplicationFirewallModeDetection, WebApplicationFirewallModePrevention}
+}
+
+// WebApplicationFirewallOperator enumerates the values for web application firewall operator.
+type WebApplicationFirewallOperator string
+
+const (
+	// WebApplicationFirewallOperatorBeginsWith ...
+	WebApplicationFirewallOperatorBeginsWith WebApplicationFirewallOperator = "BeginsWith"
+	// WebApplicationFirewallOperatorContains ...
+	WebApplicationFirewallOperatorContains WebApplicationFirewallOperator = "Contains"
+	// WebApplicationFirewallOperatorEndsWith ...
+	WebApplicationFirewallOperatorEndsWith WebApplicationFirewallOperator = "EndsWith"
+	// WebApplicationFirewallOperatorEqual ...
+	WebApplicationFirewallOperatorEqual WebApplicationFirewallOperator = "Equal"
+	// WebApplicationFirewallOperatorGreaterThan ...
+	WebApplicationFirewallOperatorGreaterThan WebApplicationFirewallOperator = "GreaterThan"
+	// WebApplicationFirewallOperatorGreaterThanOrEqual ...
+	WebApplicationFirewallOperatorGreaterThanOrEqual WebApplicationFirewallOperator = "GreaterThanOrEqual"
+	// WebApplicationFirewallOperatorIPMatch ...
+	WebApplicationFirewallOperatorIPMatch WebApplicationFirewallOperator = "IPMatch"
+	// WebApplicationFirewallOperatorLessThan ...
+	WebApplicationFirewallOperatorLessThan WebApplicationFirewallOperator = "LessThan"
+	// WebApplicationFirewallOperatorLessThanOrEqual ...
+	WebApplicationFirewallOperatorLessThanOrEqual WebApplicationFirewallOperator = "LessThanOrEqual"
+	// WebApplicationFirewallOperatorRegex ...
+	WebApplicationFirewallOperatorRegex WebApplicationFirewallOperator = "Regex"
+)
+
+// PossibleWebApplicationFirewallOperatorValues returns an array of possible values for the WebApplicationFirewallOperator const type.
+func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOperator {
+	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
+}
+
+// WebApplicationFirewallPolicyResourceState enumerates the values for web application firewall policy resource
+// state.
+type WebApplicationFirewallPolicyResourceState string
+
+const (
+	// WebApplicationFirewallPolicyResourceStateCreating ...
+	WebApplicationFirewallPolicyResourceStateCreating WebApplicationFirewallPolicyResourceState = "Creating"
+	// WebApplicationFirewallPolicyResourceStateDeleting ...
+	WebApplicationFirewallPolicyResourceStateDeleting WebApplicationFirewallPolicyResourceState = "Deleting"
+	// WebApplicationFirewallPolicyResourceStateDisabled ...
+	WebApplicationFirewallPolicyResourceStateDisabled WebApplicationFirewallPolicyResourceState = "Disabled"
+	// WebApplicationFirewallPolicyResourceStateDisabling ...
+	WebApplicationFirewallPolicyResourceStateDisabling WebApplicationFirewallPolicyResourceState = "Disabling"
+	// WebApplicationFirewallPolicyResourceStateEnabled ...
+	WebApplicationFirewallPolicyResourceStateEnabled WebApplicationFirewallPolicyResourceState = "Enabled"
+	// WebApplicationFirewallPolicyResourceStateEnabling ...
+	WebApplicationFirewallPolicyResourceStateEnabling WebApplicationFirewallPolicyResourceState = "Enabling"
+)
+
+// PossibleWebApplicationFirewallPolicyResourceStateValues returns an array of possible values for the WebApplicationFirewallPolicyResourceState const type.
+func PossibleWebApplicationFirewallPolicyResourceStateValues() []WebApplicationFirewallPolicyResourceState {
+	return []WebApplicationFirewallPolicyResourceState{WebApplicationFirewallPolicyResourceStateCreating, WebApplicationFirewallPolicyResourceStateDeleting, WebApplicationFirewallPolicyResourceStateDisabled, WebApplicationFirewallPolicyResourceStateDisabling, WebApplicationFirewallPolicyResourceStateEnabled, WebApplicationFirewallPolicyResourceStateEnabling}
+}
+
+// WebApplicationFirewallRuleType enumerates the values for web application firewall rule type.
+type WebApplicationFirewallRuleType string
+
+const (
+	// WebApplicationFirewallRuleTypeInvalid ...
+	WebApplicationFirewallRuleTypeInvalid WebApplicationFirewallRuleType = "Invalid"
+	// WebApplicationFirewallRuleTypeMatchRule ...
+	WebApplicationFirewallRuleTypeMatchRule WebApplicationFirewallRuleType = "MatchRule"
+)
+
+// PossibleWebApplicationFirewallRuleTypeValues returns an array of possible values for the WebApplicationFirewallRuleType const type.
+func PossibleWebApplicationFirewallRuleTypeValues() []WebApplicationFirewallRuleType {
+	return []WebApplicationFirewallRuleType{WebApplicationFirewallRuleTypeInvalid, WebApplicationFirewallRuleTypeMatchRule}
+}
+
+// WebApplicationFirewallTransform enumerates the values for web application firewall transform.
+type WebApplicationFirewallTransform string
+
+const (
+	// HTMLEntityDecode ...
+	HTMLEntityDecode WebApplicationFirewallTransform = "HtmlEntityDecode"
+	// Lowercase ...
+	Lowercase WebApplicationFirewallTransform = "Lowercase"
+	// RemoveNulls ...
+	RemoveNulls WebApplicationFirewallTransform = "RemoveNulls"
+	// Trim ...
+	Trim WebApplicationFirewallTransform = "Trim"
+	// URLDecode ...
+	URLDecode WebApplicationFirewallTransform = "UrlDecode"
+	// URLEncode ...
+	URLEncode WebApplicationFirewallTransform = "UrlEncode"
+)
+
+// PossibleWebApplicationFirewallTransformValues returns an array of possible values for the WebApplicationFirewallTransform const type.
+func PossibleWebApplicationFirewallTransformValues() []WebApplicationFirewallTransform {
+	return []WebApplicationFirewallTransform{HTMLEntityDecode, Lowercase, RemoveNulls, Trim, URLDecode, URLEncode}
+}
+
 // AddressSpace addressSpace contains an array of IP address ranges that can be used by subnets of the
 // virtual network.
 type AddressSpace struct {
@@ -2500,6 +2669,8 @@ type ApplicationGatewayBackendHealthServer struct {
 	IPConfiguration *InterfaceIPConfiguration `json:"ipConfiguration,omitempty"`
 	// Health - Health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'
 	Health ApplicationGatewayBackendHealthServerHealth `json:"health,omitempty"`
+	// HealthProbeLog - Health Probe Log.
+	HealthProbeLog *string `json:"healthProbeLog,omitempty"`
 }
 
 // ApplicationGatewayBackendHTTPSettings backend address pool settings of an application gateway.
@@ -3609,7 +3780,7 @@ type ApplicationGatewayProbePropertiesFormat struct {
 	Path *string `json:"path,omitempty"`
 	// Interval - The probing interval in seconds. This is the time interval between two consecutive probes. Acceptable values are from 1 second to 86400 seconds.
 	Interval *int32 `json:"interval,omitempty"`
-	// Timeout - the probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
+	// Timeout - The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
 	// UnhealthyThreshold - The probe retry count. Backend server is marked down after consecutive probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
 	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
@@ -3631,36 +3802,38 @@ type ApplicationGatewayPropertiesFormat struct {
 	SslPolicy *ApplicationGatewaySslPolicy `json:"sslPolicy,omitempty"`
 	// OperationalState - Operational state of the application gateway resource. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping'
 	OperationalState ApplicationGatewayOperationalState `json:"operationalState,omitempty"`
-	// GatewayIPConfigurations - Subnets of application the gateway resource.
+	// GatewayIPConfigurations - Subnets of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	GatewayIPConfigurations *[]ApplicationGatewayIPConfiguration `json:"gatewayIPConfigurations,omitempty"`
-	// AuthenticationCertificates - Authentication certificates of the application gateway resource.
+	// AuthenticationCertificates - Authentication certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	AuthenticationCertificates *[]ApplicationGatewayAuthenticationCertificate `json:"authenticationCertificates,omitempty"`
-	// TrustedRootCertificates - Trusted Root certificates of the application gateway resource.
+	// TrustedRootCertificates - Trusted Root certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	TrustedRootCertificates *[]ApplicationGatewayTrustedRootCertificate `json:"trustedRootCertificates,omitempty"`
-	// SslCertificates - SSL certificates of the application gateway resource.
+	// SslCertificates - SSL certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	SslCertificates *[]ApplicationGatewaySslCertificate `json:"sslCertificates,omitempty"`
-	// FrontendIPConfigurations - Frontend IP addresses of the application gateway resource.
+	// FrontendIPConfigurations - Frontend IP addresses of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	FrontendIPConfigurations *[]ApplicationGatewayFrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
-	// FrontendPorts - Frontend ports of the application gateway resource.
+	// FrontendPorts - Frontend ports of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	FrontendPorts *[]ApplicationGatewayFrontendPort `json:"frontendPorts,omitempty"`
 	// Probes - Probes of the application gateway resource.
 	Probes *[]ApplicationGatewayProbe `json:"probes,omitempty"`
-	// BackendAddressPools - Backend address pool of the application gateway resource.
+	// BackendAddressPools - Backend address pool of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	BackendAddressPools *[]ApplicationGatewayBackendAddressPool `json:"backendAddressPools,omitempty"`
-	// BackendHTTPSettingsCollection - Backend http settings of the application gateway resource.
+	// BackendHTTPSettingsCollection - Backend http settings of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	BackendHTTPSettingsCollection *[]ApplicationGatewayBackendHTTPSettings `json:"backendHttpSettingsCollection,omitempty"`
-	// HTTPListeners - Http listeners of the application gateway resource.
+	// HTTPListeners - Http listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	HTTPListeners *[]ApplicationGatewayHTTPListener `json:"httpListeners,omitempty"`
-	// URLPathMaps - URL path map of the application gateway resource.
+	// URLPathMaps - URL path map of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	URLPathMaps *[]ApplicationGatewayURLPathMap `json:"urlPathMaps,omitempty"`
 	// RequestRoutingRules - Request routing rules of the application gateway resource.
 	RequestRoutingRules *[]ApplicationGatewayRequestRoutingRule `json:"requestRoutingRules,omitempty"`
 	// RewriteRuleSets - Rewrite rules for the application gateway resource.
 	RewriteRuleSets *[]ApplicationGatewayRewriteRuleSet `json:"rewriteRuleSets,omitempty"`
-	// RedirectConfigurations - Redirect configurations of the application gateway resource.
+	// RedirectConfigurations - Redirect configurations of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	RedirectConfigurations *[]ApplicationGatewayRedirectConfiguration `json:"redirectConfigurations,omitempty"`
 	// WebApplicationFirewallConfiguration - Web application firewall configuration.
 	WebApplicationFirewallConfiguration *ApplicationGatewayWebApplicationFirewallConfiguration `json:"webApplicationFirewallConfiguration,omitempty"`
+	// FirewallPolicy - Reference of the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 	// EnableHTTP2 - Whether HTTP2 is enabled on the application gateway resource.
 	EnableHTTP2 *bool `json:"enableHttp2,omitempty"`
 	// EnableFips - Whether FIPS is enabled on the application gateway resource.
@@ -9740,6 +9913,8 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	ExpressRouteConnection *ExpressRouteConnectionID `json:"expressRouteConnection,omitempty"`
 	// Connections - The list of circuit connections associated with Azure Private Peering for this circuit.
 	Connections *[]ExpressRouteCircuitConnection `json:"connections,omitempty"`
+	// PeeredConnections - The list of peered circuit connections associated with Azure Private Peering for this circuit.
+	PeeredConnections *[]PeerExpressRouteCircuitConnection `json:"peeredConnections,omitempty"`
 }
 
 // ExpressRouteCircuitPeeringsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
@@ -9824,6 +9999,8 @@ type ExpressRouteCircuitPropertiesFormat struct {
 	GatewayManagerEtag *string `json:"gatewayManagerEtag,omitempty"`
 	// AllowGlobalReach - Flag to enable Global Reach on the circuit.
 	AllowGlobalReach *bool `json:"allowGlobalReach,omitempty"`
+	// GlobalReachEnabled - Flag denoting Global reach status.
+	GlobalReachEnabled *bool `json:"globalReachEnabled,omitempty"`
 }
 
 // ExpressRouteCircuitReference ...
@@ -9937,7 +10114,7 @@ type ExpressRouteCircuitServiceProviderProperties struct {
 type ExpressRouteCircuitSku struct {
 	// Name - The name of the SKU.
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'. Possible values include: 'ExpressRouteCircuitSkuTierStandard', 'ExpressRouteCircuitSkuTierPremium', 'ExpressRouteCircuitSkuTierBasic'
+	// Tier - The tier of the SKU. Possible values are 'Standard', 'Premium' or 'Local'. Possible values include: 'ExpressRouteCircuitSkuTierStandard', 'ExpressRouteCircuitSkuTierPremium', 'ExpressRouteCircuitSkuTierBasic', 'ExpressRouteCircuitSkuTierLocal'
 	Tier ExpressRouteCircuitSkuTier `json:"tier,omitempty"`
 	// Family - The family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'
 	Family ExpressRouteCircuitSkuFamily `json:"family,omitempty"`
@@ -17794,12 +17971,34 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MatchCondition define match conditions
+type MatchCondition struct {
+	// MatchVariables - List of match variables
+	MatchVariables *[]MatchVariable `json:"matchVariables,omitempty"`
+	// Operator - Describes operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex'
+	Operator WebApplicationFirewallOperator `json:"operator,omitempty"`
+	// NegationConditon - Describes if this is negate condition or not
+	NegationConditon *bool `json:"negationConditon,omitempty"`
+	// MatchValues - Match value
+	MatchValues *[]string `json:"matchValues,omitempty"`
+	// Transforms - List of transforms
+	Transforms *[]WebApplicationFirewallTransform `json:"transforms,omitempty"`
+}
+
 // MatchedRule matched rule.
 type MatchedRule struct {
 	// RuleName - Name of the matched network security rule.
 	RuleName *string `json:"ruleName,omitempty"`
 	// Action - The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
 	Action *string `json:"action,omitempty"`
+}
+
+// MatchVariable define match variables
+type MatchVariable struct {
+	// VariableName - Match Variable. Possible values include: 'RemoteAddr', 'RequestMethod', 'QueryString', 'PostArgs', 'RequestURI', 'RequestHeaders', 'RequestBody', 'RequestCookies'
+	VariableName WebApplicationFirewallMatchVariable `json:"variableName,omitempty"`
+	// Selector - Describes field of the matchVariable collection
+	Selector *string `json:"selector,omitempty"`
 }
 
 // MetricSpecification description of metrics specification.
@@ -18733,7 +18932,7 @@ func (pvsc *P2SVpnServerConfiguration) UnmarshalJSON(body []byte) error {
 type P2SVpnServerConfigurationProperties struct {
 	// Name - The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Paren VirtualWan resource name.
 	Name *string `json:"name,omitempty"`
-	// VpnProtocols - vpnProtocols for the P2SVpnServerConfiguration.
+	// VpnProtocols - VPN protocols for the P2SVpnServerConfiguration.
 	VpnProtocols *[]VpnGatewayTunnelingProtocol `json:"vpnProtocols,omitempty"`
 	// P2SVpnServerConfigVpnClientRootCertificates - VPN client root certificate of P2SVpnServerConfiguration.
 	P2SVpnServerConfigVpnClientRootCertificates *[]P2SVpnServerConfigVpnClientRootCertificate `json:"p2SVpnServerConfigVpnClientRootCertificates,omitempty"`
@@ -19475,6 +19674,264 @@ func (prfr *PatchRouteFilterRule) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// PeerExpressRouteCircuitConnection peer Express Route Circuit Connection in an ExpressRouteCircuitPeering
+// resource.
+type PeerExpressRouteCircuitConnection struct {
+	autorest.Response                                  `json:"-"`
+	*PeerExpressRouteCircuitConnectionPropertiesFormat `json:"properties,omitempty"`
+	// Name - Gets name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PeerExpressRouteCircuitConnection.
+func (percc PeerExpressRouteCircuitConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if percc.PeerExpressRouteCircuitConnectionPropertiesFormat != nil {
+		objectMap["properties"] = percc.PeerExpressRouteCircuitConnectionPropertiesFormat
+	}
+	if percc.Name != nil {
+		objectMap["name"] = percc.Name
+	}
+	if percc.Etag != nil {
+		objectMap["etag"] = percc.Etag
+	}
+	if percc.ID != nil {
+		objectMap["id"] = percc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PeerExpressRouteCircuitConnection struct.
+func (percc *PeerExpressRouteCircuitConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var peerExpressRouteCircuitConnectionPropertiesFormat PeerExpressRouteCircuitConnectionPropertiesFormat
+				err = json.Unmarshal(*v, &peerExpressRouteCircuitConnectionPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				percc.PeerExpressRouteCircuitConnectionPropertiesFormat = &peerExpressRouteCircuitConnectionPropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				percc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				percc.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				percc.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// PeerExpressRouteCircuitConnectionListResult response for ListPeeredConnections API service call
+// retrieves all global reach peer circuit connections that belongs to a Private Peering for an
+// ExpressRouteCircuit.
+type PeerExpressRouteCircuitConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The global reach peer circuit connection associated with Private Peering in an ExpressRoute Circuit.
+	Value *[]PeerExpressRouteCircuitConnection `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PeerExpressRouteCircuitConnectionListResultIterator provides access to a complete listing of
+// PeerExpressRouteCircuitConnection values.
+type PeerExpressRouteCircuitConnectionListResultIterator struct {
+	i    int
+	page PeerExpressRouteCircuitConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PeerExpressRouteCircuitConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeerExpressRouteCircuitConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PeerExpressRouteCircuitConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PeerExpressRouteCircuitConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PeerExpressRouteCircuitConnectionListResultIterator) Response() PeerExpressRouteCircuitConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PeerExpressRouteCircuitConnectionListResultIterator) Value() PeerExpressRouteCircuitConnection {
+	if !iter.page.NotDone() {
+		return PeerExpressRouteCircuitConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PeerExpressRouteCircuitConnectionListResultIterator type.
+func NewPeerExpressRouteCircuitConnectionListResultIterator(page PeerExpressRouteCircuitConnectionListResultPage) PeerExpressRouteCircuitConnectionListResultIterator {
+	return PeerExpressRouteCircuitConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (percclr PeerExpressRouteCircuitConnectionListResult) IsEmpty() bool {
+	return percclr.Value == nil || len(*percclr.Value) == 0
+}
+
+// peerExpressRouteCircuitConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (percclr PeerExpressRouteCircuitConnectionListResult) peerExpressRouteCircuitConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if percclr.NextLink == nil || len(to.String(percclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(percclr.NextLink)))
+}
+
+// PeerExpressRouteCircuitConnectionListResultPage contains a page of PeerExpressRouteCircuitConnection
+// values.
+type PeerExpressRouteCircuitConnectionListResultPage struct {
+	fn      func(context.Context, PeerExpressRouteCircuitConnectionListResult) (PeerExpressRouteCircuitConnectionListResult, error)
+	percclr PeerExpressRouteCircuitConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PeerExpressRouteCircuitConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PeerExpressRouteCircuitConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.percclr)
+	if err != nil {
+		return err
+	}
+	page.percclr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PeerExpressRouteCircuitConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PeerExpressRouteCircuitConnectionListResultPage) NotDone() bool {
+	return !page.percclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PeerExpressRouteCircuitConnectionListResultPage) Response() PeerExpressRouteCircuitConnectionListResult {
+	return page.percclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PeerExpressRouteCircuitConnectionListResultPage) Values() []PeerExpressRouteCircuitConnection {
+	if page.percclr.IsEmpty() {
+		return nil
+	}
+	return *page.percclr.Value
+}
+
+// Creates a new instance of the PeerExpressRouteCircuitConnectionListResultPage type.
+func NewPeerExpressRouteCircuitConnectionListResultPage(getNextPage func(context.Context, PeerExpressRouteCircuitConnectionListResult) (PeerExpressRouteCircuitConnectionListResult, error)) PeerExpressRouteCircuitConnectionListResultPage {
+	return PeerExpressRouteCircuitConnectionListResultPage{fn: getNextPage}
+}
+
+// PeerExpressRouteCircuitConnectionPropertiesFormat ...
+type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
+	// ExpressRouteCircuitPeering - Reference to Express Route Circuit Private Peering Resource of the circuit.
+	ExpressRouteCircuitPeering *SubResource `json:"expressRouteCircuitPeering,omitempty"`
+	// PeerExpressRouteCircuitPeering - Reference to Express Route Circuit Private Peering Resource of the peered circuit.
+	PeerExpressRouteCircuitPeering *SubResource `json:"peerExpressRouteCircuitPeering,omitempty"`
+	// AddressPrefix - /29 IP address space to carve out Customer addresses for tunnels.
+	AddressPrefix *string `json:"addressPrefix,omitempty"`
+	// CircuitConnectionStatus - Express Route Circuit Connection State. Possible values are: 'Connected' and 'Disconnected'. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
+	// ConnectionName - The name of the express route circuit connection resource.
+	ConnectionName *string `json:"connectionName,omitempty"`
+	// AuthResourceGUID - The resource guid of the authorization used for the express route circuit connection.
+	AuthResourceGUID *string `json:"authResourceGuid,omitempty"`
+	// ProvisioningState - Provisioning state of the peer express route circuit connection resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// PolicySettings defines contents of a web application firewall global configuration
+type PolicySettings struct {
+	// EnabledState - Describes if the policy is in enabled state or disabled state. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
+	EnabledState WebApplicationFirewallEnabledState `json:"enabledState,omitempty"`
+	// Mode - Describes if it is in detection mode  or prevention mode at policy level. Possible values include: 'WebApplicationFirewallModePrevention', 'WebApplicationFirewallModeDetection'
+	Mode WebApplicationFirewallMode `json:"mode,omitempty"`
 }
 
 // PrepareNetworkPoliciesRequest ...
@@ -23482,7 +23939,7 @@ func NewServiceEndpointPolicyDefinitionListResultPage(getNextPage func(context.C
 type ServiceEndpointPolicyDefinitionPropertiesFormat struct {
 	// Description - A description for this rule. Restricted to 140 chars.
 	Description *string `json:"description,omitempty"`
-	// Service - service endpoint name.
+	// Service - Service endpoint name.
 	Service *string `json:"service,omitempty"`
 	// ServiceResources - A list of service resources.
 	ServiceResources *[]string `json:"serviceResources,omitempty"`
@@ -24594,7 +25051,7 @@ type VirtualHubProperties struct {
 	P2SVpnGateway *SubResource `json:"p2SVpnGateway,omitempty"`
 	// ExpressRouteGateway - The expressRouteGateway associated with this VirtualHub
 	ExpressRouteGateway *SubResource `json:"expressRouteGateway,omitempty"`
-	// VirtualNetworkConnections - list of all vnet connections with this VirtualHub.
+	// VirtualNetworkConnections - List of all vnet connections with this VirtualHub.
 	VirtualNetworkConnections *[]HubVirtualNetworkConnection `json:"virtualNetworkConnections,omitempty"`
 	// AddressPrefix - Address-prefix for this VirtualHub.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
@@ -24606,7 +25063,7 @@ type VirtualHubProperties struct {
 
 // VirtualHubRoute virtualHub route
 type VirtualHubRoute struct {
-	// AddressPrefixes - list of all addressPrefixes.
+	// AddressPrefixes - List of all addressPrefixes.
 	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
 	// NextHopIPAddress - NextHop ip address.
 	NextHopIPAddress *string `json:"nextHopIpAddress,omitempty"`
@@ -24614,7 +25071,7 @@ type VirtualHubRoute struct {
 
 // VirtualHubRouteTable virtualHub route table
 type VirtualHubRouteTable struct {
-	// Routes - list of all routes.
+	// Routes - List of all routes.
 	Routes *[]VirtualHubRoute `json:"routes,omitempty"`
 }
 
@@ -27587,7 +28044,7 @@ type VirtualWanProperties struct {
 	AllowVnetToVnetTraffic *bool `json:"allowVnetToVnetTraffic,omitempty"`
 	// Office365LocalBreakoutCategory - The office local breakout category. Possible values include: 'OfficeTrafficCategoryOptimize', 'OfficeTrafficCategoryOptimizeAndAllow', 'OfficeTrafficCategoryAll', 'OfficeTrafficCategoryNone'
 	Office365LocalBreakoutCategory OfficeTrafficCategory `json:"office365LocalBreakoutCategory,omitempty"`
-	// P2SVpnServerConfigurations - list of all P2SVpnServerConfigurations associated with the virtual wan.
+	// P2SVpnServerConfigurations - List of all P2SVpnServerConfigurations associated with the virtual wan.
 	P2SVpnServerConfigurations *[]P2SVpnServerConfiguration `json:"p2SVpnServerConfigurations,omitempty"`
 	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -28017,7 +28474,7 @@ func (vc *VpnConnection) UnmarshalJSON(body []byte) error {
 type VpnConnectionProperties struct {
 	// RemoteVpnSite - Id of the connected vpn site.
 	RemoteVpnSite *SubResource `json:"remoteVpnSite,omitempty"`
-	// RoutingWeight - routing weight for vpn connection.
+	// RoutingWeight - Routing weight for vpn connection.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
 	// ConnectionStatus - The connection status. Possible values include: 'VpnConnectionStatusUnknown', 'VpnConnectionStatusConnecting', 'VpnConnectionStatusConnected', 'VpnConnectionStatusNotConnected'
 	ConnectionStatus VpnConnectionStatus `json:"connectionStatus,omitempty"`
@@ -28232,7 +28689,7 @@ func (vg *VpnGateway) UnmarshalJSON(body []byte) error {
 type VpnGatewayProperties struct {
 	// VirtualHub - The VirtualHub to which the gateway belongs
 	VirtualHub *SubResource `json:"virtualHub,omitempty"`
-	// Connections - list of all vpn connections to the gateway.
+	// Connections - List of all vpn connections to the gateway.
 	Connections *[]VpnConnection `json:"connections,omitempty"`
 	// BgpSettings - Local network gateway's BGP speaker settings.
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`
@@ -29058,4 +29515,330 @@ func (future *WatchersVerifyIPFlowFuture) Result(client WatchersClient) (vifr Ve
 		}
 	}
 	return
+}
+
+// WebApplicationFirewallCustomRule defines contents of a web application rule
+type WebApplicationFirewallCustomRule struct {
+	// Name - Gets name of the resource that is unique within a policy. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Priority - Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value
+	Priority *int32 `json:"priority,omitempty"`
+	// RuleType - Describes type of rule. Possible values include: 'WebApplicationFirewallRuleTypeMatchRule', 'WebApplicationFirewallRuleTypeInvalid'
+	RuleType WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
+	// MatchConditions - List of match conditions
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog'
+	Action WebApplicationFirewallAction `json:"action,omitempty"`
+}
+
+// WebApplicationFirewallPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WebApplicationFirewallPoliciesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WebApplicationFirewallPoliciesDeleteFuture) Result(client WebApplicationFirewallPoliciesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.WebApplicationFirewallPoliciesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// WebApplicationFirewallPolicy defines web application firewall policy.
+type WebApplicationFirewallPolicy struct {
+	autorest.Response `json:"-"`
+	// WebApplicationFirewallPolicyPropertiesFormat - Properties of the web application firewall policy.
+	*WebApplicationFirewallPolicyPropertiesFormat `json:"properties,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
+func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafp.WebApplicationFirewallPolicyPropertiesFormat != nil {
+		objectMap["properties"] = wafp.WebApplicationFirewallPolicyPropertiesFormat
+	}
+	if wafp.Etag != nil {
+		objectMap["etag"] = wafp.Etag
+	}
+	if wafp.ID != nil {
+		objectMap["id"] = wafp.ID
+	}
+	if wafp.Name != nil {
+		objectMap["name"] = wafp.Name
+	}
+	if wafp.Type != nil {
+		objectMap["type"] = wafp.Type
+	}
+	if wafp.Location != nil {
+		objectMap["location"] = wafp.Location
+	}
+	if wafp.Tags != nil {
+		objectMap["tags"] = wafp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy struct.
+func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var webApplicationFirewallPolicyPropertiesFormat WebApplicationFirewallPolicyPropertiesFormat
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				wafp.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				wafp.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wafp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wafp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wafp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				wafp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				wafp.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// WebApplicationFirewallPolicyListResult result of the request to list WebApplicationFirewallPolicies. It
+// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the the next set of
+// results.
+type WebApplicationFirewallPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of WebApplicationFirewallPolicies within a resource group.
+	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
+	// NextLink - URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// WebApplicationFirewallPolicyListResultIterator provides access to a complete listing of
+// WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListResultIterator struct {
+	i    int
+	page WebApplicationFirewallPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WebApplicationFirewallPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WebApplicationFirewallPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WebApplicationFirewallPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WebApplicationFirewallPolicyListResultIterator) Response() WebApplicationFirewallPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicationFirewallPolicy {
+	if !iter.page.NotDone() {
+		return WebApplicationFirewallPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultIterator type.
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return WebApplicationFirewallPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wafplr WebApplicationFirewallPolicyListResult) IsEmpty() bool {
+	return wafplr.Value == nil || len(*wafplr.Value) == 0
+}
+
+// webApplicationFirewallPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wafplr WebApplicationFirewallPolicyListResult) webApplicationFirewallPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if wafplr.NextLink == nil || len(to.String(wafplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wafplr.NextLink)))
+}
+
+// WebApplicationFirewallPolicyListResultPage contains a page of WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListResultPage struct {
+	fn     func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)
+	wafplr WebApplicationFirewallPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WebApplicationFirewallPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.wafplr)
+	if err != nil {
+		return err
+	}
+	page.wafplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WebApplicationFirewallPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WebApplicationFirewallPolicyListResultPage) NotDone() bool {
+	return !page.wafplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WebApplicationFirewallPolicyListResultPage) Response() WebApplicationFirewallPolicyListResult {
+	return page.wafplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplicationFirewallPolicy {
+	if page.wafplr.IsEmpty() {
+		return nil
+	}
+	return *page.wafplr.Value
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultPage type.
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
+}
+
+// WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties
+type WebApplicationFirewallPolicyPropertiesFormat struct {
+	// PolicySettings - Describes  policySettings for policy
+	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
+	// CustomRules - Describes custom rules inside the policy
+	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
+	// ApplicationGateways - A collection of references to application gateways.
+	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
+	// ProvisioningState - Provisioning state of the WebApplicationFirewallPolicy.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ResourceState - Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'
+	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`
 }

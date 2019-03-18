@@ -44,8 +44,8 @@ func NewPeerAsnsClientWithBaseURI(baseURI string, subscriptionID string) PeerAsn
 // subscription.
 // Parameters:
 // peerAsnName - the peer ASN name.
-// peerInfo - the peer info.
-func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName string, peerInfo PeerAsnProperties) (result PeerAsn, err error) {
+// peerAsn - the peer ASN.
+func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName string, peerAsn PeerAsn) (result PeerAsn, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeerAsnsClient.CreateOrUpdate")
 		defer func() {
@@ -56,7 +56,7 @@ func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, peerAsnName, peerInfo)
+	req, err := client.CreateOrUpdatePreparer(ctx, peerAsnName, peerAsn)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeerAsnsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -78,7 +78,7 @@ func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName str
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PeerAsnsClient) CreateOrUpdatePreparer(ctx context.Context, peerAsnName string, peerInfo PeerAsnProperties) (*http.Request, error) {
+func (client PeerAsnsClient) CreateOrUpdatePreparer(ctx context.Context, peerAsnName string, peerAsn PeerAsn) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"peerAsnName":    autorest.Encode("path", peerAsnName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -94,7 +94,7 @@ func (client PeerAsnsClient) CreateOrUpdatePreparer(ctx context.Context, peerAsn
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}", pathParameters),
-		autorest.WithJSON(peerInfo),
+		autorest.WithJSON(peerAsn),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

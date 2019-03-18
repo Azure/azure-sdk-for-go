@@ -61,7 +61,6 @@ func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: peering,
 			Constraints: []validation.Constraint{{Target: "peering.Sku", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "peering.Properties", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "peering.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("peering.PeeringsClient", "CreateOrUpdate", err.Error())
 	}

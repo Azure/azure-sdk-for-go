@@ -39,7 +39,7 @@ var _ OperationsClientAPI = (*peering.OperationsClient)(nil)
 
 // PeerAsnsClientAPI contains the set of methods on the PeerAsnsClient type.
 type PeerAsnsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, peerAsnName string, peerInfo peering.PeerAsnProperties) (result peering.PeerAsn, err error)
+	CreateOrUpdate(ctx context.Context, peerAsnName string, peerAsn peering.PeerAsn) (result peering.PeerAsn, err error)
 	Delete(ctx context.Context, peerAsnName string) (result autorest.Response, err error)
 	Get(ctx context.Context, peerAsnName string) (result peering.PeerAsn, err error)
 	ListBySubscription(ctx context.Context) (result peering.PeerAsnListResultPage, err error)

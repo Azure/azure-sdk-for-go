@@ -44,7 +44,7 @@ func NewRegistrationDefinitionsClientWithBaseURI(baseURI string) RegistrationDef
 // CreateOrUpdate creates or updates a registration definition.
 // Parameters:
 // registratonDefinitionID - guid of the registration definition.
-// scope - id of the source subscription.
+// scope - scope of the resource.
 // requestBody - the parameters required to create new registration definition.
 func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, registratonDefinitionID string, scope string, requestBody RegistrationDefinition) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
@@ -138,7 +138,7 @@ func (client RegistrationDefinitionsClient) CreateOrUpdateResponder(resp *http.R
 // Delete deletes the registration definition.
 // Parameters:
 // registratonDefinitionID - guid of the registration definition.
-// scope - id of the source subscription.
+// scope - scope of the resource.
 func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registratonDefinitionID string, scope string) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.Delete")
@@ -213,7 +213,7 @@ func (client RegistrationDefinitionsClient) DeleteResponder(resp *http.Response)
 
 // Get gets the registration definition details.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 // registratonDefinitionID - guid of the registration definition.
 func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope string, registratonDefinitionID string) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
@@ -289,7 +289,7 @@ func (client RegistrationDefinitionsClient) GetResponder(resp *http.Response) (r
 
 // List gets a list of the registration definitions.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 func (client RegistrationDefinitionsClient) List(ctx context.Context, scope string) (result RegistrationDefinitionListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.List")

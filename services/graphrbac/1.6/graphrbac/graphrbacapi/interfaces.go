@@ -98,6 +98,13 @@ type ServicePrincipalsClientAPI interface {
 
 var _ ServicePrincipalsClientAPI = (*graphrbac.ServicePrincipalsClient)(nil)
 
+// ServicePrincipalsByAppIDClientAPI contains the set of methods on the ServicePrincipalsByAppIDClient type.
+type ServicePrincipalsByAppIDClientAPI interface {
+	Get(ctx context.Context) (result graphrbac.ServicePrincipalObjectResult, err error)
+}
+
+var _ ServicePrincipalsByAppIDClientAPI = (*graphrbac.ServicePrincipalsByAppIDClient)(nil)
+
 // UsersClientAPI contains the set of methods on the UsersClient type.
 type UsersClientAPI interface {
 	Create(ctx context.Context, parameters graphrbac.UserCreateParameters) (result graphrbac.User, err error)

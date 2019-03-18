@@ -33,13 +33,13 @@ type ApplicationsClient struct {
 }
 
 // NewApplicationsClient creates an instance of the ApplicationsClient client.
-func NewApplicationsClient(tenantID string) ApplicationsClient {
-	return NewApplicationsClientWithBaseURI(DefaultBaseURI, tenantID)
+func NewApplicationsClient(tenantID string, applicationID string) ApplicationsClient {
+	return NewApplicationsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
 }
 
 // NewApplicationsClientWithBaseURI creates an instance of the ApplicationsClient client.
-func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
-	return ApplicationsClient{NewWithBaseURI(baseURI, tenantID)}
+func NewApplicationsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ApplicationsClient {
+	return ApplicationsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
 }
 
 // AddOwner add an owner to an application.

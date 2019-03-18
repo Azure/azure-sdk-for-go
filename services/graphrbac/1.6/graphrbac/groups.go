@@ -33,13 +33,13 @@ type GroupsClient struct {
 }
 
 // NewGroupsClient creates an instance of the GroupsClient client.
-func NewGroupsClient(tenantID string) GroupsClient {
-	return NewGroupsClientWithBaseURI(DefaultBaseURI, tenantID)
+func NewGroupsClient(tenantID string, applicationID string) GroupsClient {
+	return NewGroupsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
 }
 
 // NewGroupsClientWithBaseURI creates an instance of the GroupsClient client.
-func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
-	return GroupsClient{NewWithBaseURI(baseURI, tenantID)}
+func NewGroupsClientWithBaseURI(baseURI string, tenantID string, applicationID string) GroupsClient {
+	return GroupsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
 }
 
 // AddMember add a member to a group.

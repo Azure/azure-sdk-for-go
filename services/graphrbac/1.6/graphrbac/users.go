@@ -33,13 +33,13 @@ type UsersClient struct {
 }
 
 // NewUsersClient creates an instance of the UsersClient client.
-func NewUsersClient(tenantID string) UsersClient {
-	return NewUsersClientWithBaseURI(DefaultBaseURI, tenantID)
+func NewUsersClient(tenantID string, applicationID string) UsersClient {
+	return NewUsersClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
 }
 
 // NewUsersClientWithBaseURI creates an instance of the UsersClient client.
-func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
-	return UsersClient{NewWithBaseURI(baseURI, tenantID)}
+func NewUsersClientWithBaseURI(baseURI string, tenantID string, applicationID string) UsersClient {
+	return UsersClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
 }
 
 // Create create a new user.

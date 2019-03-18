@@ -32,13 +32,13 @@ type SignedInUserClient struct {
 }
 
 // NewSignedInUserClient creates an instance of the SignedInUserClient client.
-func NewSignedInUserClient(tenantID string) SignedInUserClient {
-	return NewSignedInUserClientWithBaseURI(DefaultBaseURI, tenantID)
+func NewSignedInUserClient(tenantID string, applicationID string) SignedInUserClient {
+	return NewSignedInUserClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
 }
 
 // NewSignedInUserClientWithBaseURI creates an instance of the SignedInUserClient client.
-func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string) SignedInUserClient {
-	return SignedInUserClient{NewWithBaseURI(baseURI, tenantID)}
+func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string, applicationID string) SignedInUserClient {
+	return SignedInUserClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
 }
 
 // Get gets the details for the currently logged-in user.

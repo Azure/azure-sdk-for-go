@@ -92,7 +92,7 @@ func (client MarketplaceAgreementsClient) CancelPreparer(ctx context.Context, pu
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}/cancel", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
@@ -485,7 +485,7 @@ func (client MarketplaceAgreementsClient) SignPreparer(ctx context.Context, publ
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}/sign", pathParameters),
 		autorest.WithQueryParameters(queryParameters))

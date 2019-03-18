@@ -120,14 +120,15 @@ const (
 type EncoderNamedPreset = original.EncoderNamedPreset
 
 const (
-	AACGoodQualityAudio      EncoderNamedPreset = original.AACGoodQualityAudio
-	AdaptiveStreaming        EncoderNamedPreset = original.AdaptiveStreaming
-	H264MultipleBitrate1080p EncoderNamedPreset = original.H264MultipleBitrate1080p
-	H264MultipleBitrate720p  EncoderNamedPreset = original.H264MultipleBitrate720p
-	H264MultipleBitrateSD    EncoderNamedPreset = original.H264MultipleBitrateSD
-	H264SingleBitrate1080p   EncoderNamedPreset = original.H264SingleBitrate1080p
-	H264SingleBitrate720p    EncoderNamedPreset = original.H264SingleBitrate720p
-	H264SingleBitrateSD      EncoderNamedPreset = original.H264SingleBitrateSD
+	AACGoodQualityAudio              EncoderNamedPreset = original.AACGoodQualityAudio
+	AdaptiveStreaming                EncoderNamedPreset = original.AdaptiveStreaming
+	ContentAwareEncodingExperimental EncoderNamedPreset = original.ContentAwareEncodingExperimental
+	H264MultipleBitrate1080p         EncoderNamedPreset = original.H264MultipleBitrate1080p
+	H264MultipleBitrate720p          EncoderNamedPreset = original.H264MultipleBitrate720p
+	H264MultipleBitrateSD            EncoderNamedPreset = original.H264MultipleBitrateSD
+	H264SingleBitrate1080p           EncoderNamedPreset = original.H264SingleBitrate1080p
+	H264SingleBitrate720p            EncoderNamedPreset = original.H264SingleBitrate720p
+	H264SingleBitrateSD              EncoderNamedPreset = original.H264SingleBitrateSD
 )
 
 type EncryptionScheme = original.EncryptionScheme

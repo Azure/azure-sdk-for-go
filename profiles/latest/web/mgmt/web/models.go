@@ -639,6 +639,7 @@ const (
 )
 
 type APIDefinitionInfo = original.APIDefinitionInfo
+type APIManagementConfig = original.APIManagementConfig
 type AbnormalTimePeriod = original.AbnormalTimePeriod
 type Address = original.Address
 type AddressResponse = original.AddressResponse
@@ -699,6 +700,8 @@ type ApplicationStackCollection = original.ApplicationStackCollection
 type ApplicationStackCollectionIterator = original.ApplicationStackCollectionIterator
 type ApplicationStackCollectionPage = original.ApplicationStackCollectionPage
 type AppsClient = original.AppsClient
+type AppsCopyProductionSlotFuture = original.AppsCopyProductionSlotFuture
+type AppsCopySlotSlotFuture = original.AppsCopySlotSlotFuture
 type AppsCreateFunctionFuture = original.AppsCreateFunctionFuture
 type AppsCreateInstanceFunctionSlotFuture = original.AppsCreateInstanceFunctionSlotFuture
 type AppsCreateInstanceMSDeployOperationFuture = original.AppsCreateInstanceMSDeployOperationFuture
@@ -778,6 +781,7 @@ type ContinuousWebJobCollectionIterator = original.ContinuousWebJobCollectionIte
 type ContinuousWebJobCollectionPage = original.ContinuousWebJobCollectionPage
 type ContinuousWebJobProperties = original.ContinuousWebJobProperties
 type CorsSettings = original.CorsSettings
+type CsmCopySlotEntity = original.CsmCopySlotEntity
 type CsmMoveResourceEnvelope = original.CsmMoveResourceEnvelope
 type CsmOperationCollection = original.CsmOperationCollection
 type CsmOperationCollectionIterator = original.CsmOperationCollectionIterator
@@ -874,9 +878,10 @@ type FunctionEnvelopeCollection = original.FunctionEnvelopeCollection
 type FunctionEnvelopeCollectionIterator = original.FunctionEnvelopeCollectionIterator
 type FunctionEnvelopeCollectionPage = original.FunctionEnvelopeCollectionPage
 type FunctionEnvelopeProperties = original.FunctionEnvelopeProperties
-type FunctionSecrets = original.FunctionSecrets
-type FunctionSecretsProperties = original.FunctionSecretsProperties
-type GeoDistribution = original.GeoDistribution
+type FunctionKeys = original.FunctionKeys
+type FunctionKeysProperties = original.FunctionKeysProperties
+type FunctionStatus = original.FunctionStatus
+type FunctionStatusProperties = original.FunctionStatusProperties
 type GeoRegion = original.GeoRegion
 type GeoRegionCollection = original.GeoRegionCollection
 type GeoRegionCollectionIterator = original.GeoRegionCollectionIterator
@@ -885,6 +890,8 @@ type GeoRegionProperties = original.GeoRegionProperties
 type GlobalCsmSkuDescription = original.GlobalCsmSkuDescription
 type HTTPLogsConfig = original.HTTPLogsConfig
 type HandlerMapping = original.HandlerMapping
+type HostKeys = original.HostKeys
+type HostKeysProperties = original.HostKeysProperties
 type HostName = original.HostName
 type HostNameBinding = original.HostNameBinding
 type HostNameBindingCollection = original.HostNameBindingCollection
@@ -892,6 +899,8 @@ type HostNameBindingCollectionIterator = original.HostNameBindingCollectionItera
 type HostNameBindingCollectionPage = original.HostNameBindingCollectionPage
 type HostNameBindingProperties = original.HostNameBindingProperties
 type HostNameSslState = original.HostNameSslState
+type HostStatus = original.HostStatus
+type HostStatusProperties = original.HostStatusProperties
 type HostingEnvironmentDeploymentInfo = original.HostingEnvironmentDeploymentInfo
 type HostingEnvironmentDiagnostics = original.HostingEnvironmentDiagnostics
 type HostingEnvironmentProfile = original.HostingEnvironmentProfile
@@ -911,20 +920,21 @@ type IdentifierCollectionIterator = original.IdentifierCollectionIterator
 type IdentifierCollectionPage = original.IdentifierCollectionPage
 type IdentifierProperties = original.IdentifierProperties
 type InboundEnvironmentEndpoint = original.InboundEnvironmentEndpoint
-type InboundEnvironmentEndpointCollection = original.InboundEnvironmentEndpointCollection
-type InboundEnvironmentEndpointCollectionIterator = original.InboundEnvironmentEndpointCollectionIterator
-type InboundEnvironmentEndpointCollectionPage = original.InboundEnvironmentEndpointCollectionPage
 type Job = original.Job
 type JobCollection = original.JobCollection
 type JobCollectionIterator = original.JobCollectionIterator
 type JobCollectionPage = original.JobCollectionPage
 type JobProperties = original.JobProperties
+type KeyInfo = original.KeyInfo
+type KeyInfoProperties = original.KeyInfoProperties
 type ListCapability = original.ListCapability
 type ListCertificateEmail = original.ListCertificateEmail
 type ListCertificateOrderAction = original.ListCertificateOrderAction
 type ListHostingEnvironmentDiagnostics = original.ListHostingEnvironmentDiagnostics
+type ListInboundEnvironmentEndpoint = original.ListInboundEnvironmentEndpoint
 type ListNetworkTrace = original.ListNetworkTrace
 type ListOperation = original.ListOperation
+type ListOutboundEnvironmentEndpoint = original.ListOutboundEnvironmentEndpoint
 type ListVnetInfo = original.ListVnetInfo
 type ListVnetRoute = original.ListVnetRoute
 type LocalizableString = original.LocalizableString
@@ -937,7 +947,6 @@ type MSDeployLogProperties = original.MSDeployLogProperties
 type MSDeployStatus = original.MSDeployStatus
 type MSDeployStatusProperties = original.MSDeployStatusProperties
 type ManagedServiceIdentity = original.ManagedServiceIdentity
-type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type MetricAvailabilily = original.MetricAvailabilily
 type MetricAvailability = original.MetricAvailability
 type MetricDefinition = original.MetricDefinition
@@ -958,9 +967,6 @@ type NetworkFeaturesProperties = original.NetworkFeaturesProperties
 type NetworkTrace = original.NetworkTrace
 type Operation = original.Operation
 type OutboundEnvironmentEndpoint = original.OutboundEnvironmentEndpoint
-type OutboundEnvironmentEndpointCollection = original.OutboundEnvironmentEndpointCollection
-type OutboundEnvironmentEndpointCollectionIterator = original.OutboundEnvironmentEndpointCollectionIterator
-type OutboundEnvironmentEndpointCollectionPage = original.OutboundEnvironmentEndpointCollectionPage
 type PerfMonCounterCollection = original.PerfMonCounterCollection
 type PerfMonCounterCollectionIterator = original.PerfMonCounterCollectionIterator
 type PerfMonCounterCollectionPage = original.PerfMonCounterCollectionPage
@@ -1408,12 +1414,6 @@ func NewIdentifierCollectionIterator(page IdentifierCollectionPage) IdentifierCo
 func NewIdentifierCollectionPage(getNextPage func(context.Context, IdentifierCollection) (IdentifierCollection, error)) IdentifierCollectionPage {
 	return original.NewIdentifierCollectionPage(getNextPage)
 }
-func NewInboundEnvironmentEndpointCollectionIterator(page InboundEnvironmentEndpointCollectionPage) InboundEnvironmentEndpointCollectionIterator {
-	return original.NewInboundEnvironmentEndpointCollectionIterator(page)
-}
-func NewInboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
-	return original.NewInboundEnvironmentEndpointCollectionPage(getNextPage)
-}
 func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
 	return original.NewJobCollectionIterator(page)
 }
@@ -1425,12 +1425,6 @@ func NewNameIdentifierCollectionIterator(page NameIdentifierCollectionPage) Name
 }
 func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
 	return original.NewNameIdentifierCollectionPage(getNextPage)
-}
-func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
-	return original.NewOutboundEnvironmentEndpointCollectionIterator(page)
-}
-func NewOutboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
-	return original.NewOutboundEnvironmentEndpointCollectionPage(getNextPage)
 }
 func NewPerfMonCounterCollectionIterator(page PerfMonCounterCollectionPage) PerfMonCounterCollectionIterator {
 	return original.NewPerfMonCounterCollectionIterator(page)

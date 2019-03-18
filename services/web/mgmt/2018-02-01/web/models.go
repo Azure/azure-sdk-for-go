@@ -1477,6 +1477,12 @@ type APIDefinitionInfo struct {
 	URL *string `json:"url,omitempty"`
 }
 
+// APIManagementConfig azure API management (APIM) configuration linked to the app.
+type APIManagementConfig struct {
+	// ID - APIM-Api Identifier.
+	ID *string `json:"id,omitempty"`
+}
+
 // AppCollection collection of App Service apps.
 type AppCollection struct {
 	autorest.Response `json:"-"`
@@ -1937,6 +1943,52 @@ func (page ApplicationStackCollectionPage) Values() []ApplicationStack {
 // Creates a new instance of the ApplicationStackCollectionPage type.
 func NewApplicationStackCollectionPage(getNextPage func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error)) ApplicationStackCollectionPage {
 	return ApplicationStackCollectionPage{fn: getNextPage}
+}
+
+// AppsCopyProductionSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsCopyProductionSlotFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsCopyProductionSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsCopyProductionSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsCopyProductionSlotFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AppsCopySlotSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsCopySlotSlotFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsCopySlotSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsCopySlotSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsCopySlotSlotFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // AppsCreateFunctionFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -6915,6 +6967,17 @@ type CorsSettings struct {
 	SupportCredentials *bool `json:"supportCredentials,omitempty"`
 }
 
+// CsmCopySlotEntity copy deployment slot parameters.
+type CsmCopySlotEntity struct {
+	// TargetSlot - Destination deployment slot during copy operation.
+	TargetSlot *string `json:"targetSlot,omitempty"`
+	// SiteConfig - The site object which will be merged with the source slot site
+	// to produce new destination slot site object.
+	// <code>null</code> to just copy source slot content. Otherwise a <code>Site</code>
+	// object with properties to override source slot site.
+	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
+}
+
 // CsmMoveResourceEnvelope object with a list of the resources that need to be moved and the resource group
 // they should be moved to.
 type CsmMoveResourceEnvelope struct {
@@ -10090,25 +10153,23 @@ type EnabledConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// EndpointDependency a domain name that a service is reached at, including details of the current
-// connection status.
+// EndpointDependency ...
 type EndpointDependency struct {
-	// DomainName - The domain name of the dependency.
+	// DomainName - The Domain Name of the dependency.
 	DomainName *string `json:"domainName,omitempty"`
 	// EndpointDetails - The IP Addresses and Ports used when connecting to DomainName.
 	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
 }
 
-// EndpointDetail current TCP connectivity information from the App Service Environment to a single
-// endpoint.
+// EndpointDetail ...
 type EndpointDetail struct {
 	// IPAddress - An IP Address that Domain Name currently resolves to.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// Port - The port an endpoint is connected to.
 	Port *int32 `json:"port,omitempty"`
-	// Latency - The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
+	// Latency - The time in milliseconds it takes to connect to this IpAddress at this Port.
 	Latency *float64 `json:"latency,omitempty"`
-	// IsAccessable - Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
+	// IsAccessable - Whether it is possible to connect to IpAddress.
 	IsAccessable *bool `json:"isAccessable,omitempty"`
 }
 
@@ -10154,7 +10215,7 @@ type FileSystemHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// FunctionEnvelope web Job Information.
+// FunctionEnvelope function information.
 type FunctionEnvelope struct {
 	autorest.Response `json:"-"`
 	// FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
@@ -10406,6 +10467,8 @@ type FunctionEnvelopeProperties struct {
 	ScriptHref *string `json:"script_href,omitempty"`
 	// ConfigHref - Config URI.
 	ConfigHref *string `json:"config_href,omitempty"`
+	// TestDataHref - Test data URI.
+	TestDataHref *string `json:"test_data_href,omitempty"`
 	// SecretsFileHref - Secrets file URI.
 	SecretsFileHref *string `json:"secrets_file_href,omitempty"`
 	// Href - Function URI.
@@ -10416,6 +10479,10 @@ type FunctionEnvelopeProperties struct {
 	Files map[string]*string `json:"files"`
 	// TestData - Test data used when testing via the Azure Portal.
 	TestData *string `json:"test_data,omitempty"`
+	// InvokeURLTemplate - The invocation URL
+	InvokeURLTemplate *string `json:"invoke_url_template,omitempty"`
+	// Language - The function language
+	Language *string `json:"language,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FunctionEnvelopeProperties.
@@ -10433,6 +10500,9 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	if fe.ConfigHref != nil {
 		objectMap["config_href"] = fe.ConfigHref
 	}
+	if fe.TestDataHref != nil {
+		objectMap["test_data_href"] = fe.TestDataHref
+	}
 	if fe.SecretsFileHref != nil {
 		objectMap["secrets_file_href"] = fe.SecretsFileHref
 	}
@@ -10448,14 +10518,20 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	if fe.TestData != nil {
 		objectMap["test_data"] = fe.TestData
 	}
+	if fe.InvokeURLTemplate != nil {
+		objectMap["invoke_url_template"] = fe.InvokeURLTemplate
+	}
+	if fe.Language != nil {
+		objectMap["language"] = fe.Language
+	}
 	return json.Marshal(objectMap)
 }
 
-// FunctionSecrets function secrets.
-type FunctionSecrets struct {
+// FunctionKeys function keys.
+type FunctionKeys struct {
 	autorest.Response `json:"-"`
-	// FunctionSecretsProperties - FunctionSecrets resource specific properties
-	*FunctionSecretsProperties `json:"properties,omitempty"`
+	// FunctionKeysProperties - FunctionKeys resource specific properties
+	*FunctionKeysProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource Name.
@@ -10466,11 +10542,115 @@ type FunctionSecrets struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for FunctionSecrets.
-func (fs FunctionSecrets) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for FunctionKeys.
+func (fk FunctionKeys) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fs.FunctionSecretsProperties != nil {
-		objectMap["properties"] = fs.FunctionSecretsProperties
+	if fk.FunctionKeysProperties != nil {
+		objectMap["properties"] = fk.FunctionKeysProperties
+	}
+	if fk.ID != nil {
+		objectMap["id"] = fk.ID
+	}
+	if fk.Name != nil {
+		objectMap["name"] = fk.Name
+	}
+	if fk.Kind != nil {
+		objectMap["kind"] = fk.Kind
+	}
+	if fk.Type != nil {
+		objectMap["type"] = fk.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FunctionKeys struct.
+func (fk *FunctionKeys) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var functionKeysProperties FunctionKeysProperties
+				err = json.Unmarshal(*v, &functionKeysProperties)
+				if err != nil {
+					return err
+				}
+				fk.FunctionKeysProperties = &functionKeysProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fk.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fk.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				fk.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fk.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// FunctionKeysProperties functionKeys resource specific properties
+type FunctionKeysProperties struct {
+	// Key - Secret key.
+	Key *string `json:"key,omitempty"`
+	// TriggerURL - Trigger URL.
+	TriggerURL *string `json:"trigger_url,omitempty"`
+}
+
+// FunctionStatus function status.
+type FunctionStatus struct {
+	autorest.Response `json:"-"`
+	// FunctionStatusProperties - FunctionStatus resource specific properties
+	*FunctionStatusProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FunctionStatus.
+func (fs FunctionStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fs.FunctionStatusProperties != nil {
+		objectMap["properties"] = fs.FunctionStatusProperties
 	}
 	if fs.ID != nil {
 		objectMap["id"] = fs.ID
@@ -10487,8 +10667,8 @@ func (fs FunctionSecrets) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for FunctionSecrets struct.
-func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for FunctionStatus struct.
+func (fs *FunctionStatus) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -10498,12 +10678,12 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var functionSecretsProperties FunctionSecretsProperties
-				err = json.Unmarshal(*v, &functionSecretsProperties)
+				var functionStatusProperties FunctionStatusProperties
+				err = json.Unmarshal(*v, &functionStatusProperties)
 				if err != nil {
 					return err
 				}
-				fs.FunctionSecretsProperties = &functionSecretsProperties
+				fs.FunctionStatusProperties = &functionStatusProperties
 			}
 		case "id":
 			if v != nil {
@@ -10547,20 +10727,10 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FunctionSecretsProperties functionSecrets resource specific properties
-type FunctionSecretsProperties struct {
-	// Key - Secret key.
-	Key *string `json:"key,omitempty"`
-	// TriggerURL - Trigger URL.
-	TriggerURL *string `json:"trigger_url,omitempty"`
-}
-
-// GeoDistribution a global distribution definition.
-type GeoDistribution struct {
-	// Location - Location.
-	Location *string `json:"location,omitempty"`
-	// NumberOfWorkers - NumberOfWorkers.
-	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
+// FunctionStatusProperties functionStatus resource specific properties
+type FunctionStatusProperties struct {
+	// Errors - Collection of initialization errors for the function.
+	Errors *[]string `json:"errors,omitempty"`
 }
 
 // GeoRegion geographical region.
@@ -10870,6 +11040,127 @@ type HostingEnvironmentProfile struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// HostKeys functions host level keys.
+type HostKeys struct {
+	autorest.Response `json:"-"`
+	// HostKeysProperties - HostKeys resource specific properties
+	*HostKeysProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostKeys.
+func (hk HostKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hk.HostKeysProperties != nil {
+		objectMap["properties"] = hk.HostKeysProperties
+	}
+	if hk.ID != nil {
+		objectMap["id"] = hk.ID
+	}
+	if hk.Name != nil {
+		objectMap["name"] = hk.Name
+	}
+	if hk.Kind != nil {
+		objectMap["kind"] = hk.Kind
+	}
+	if hk.Type != nil {
+		objectMap["type"] = hk.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for HostKeys struct.
+func (hk *HostKeys) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var hostKeysProperties HostKeysProperties
+				err = json.Unmarshal(*v, &hostKeysProperties)
+				if err != nil {
+					return err
+				}
+				hk.HostKeysProperties = &hostKeysProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				hk.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				hk.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				hk.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				hk.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// HostKeysProperties hostKeys resource specific properties
+type HostKeysProperties struct {
+	// MasterKey - Secret key.
+	MasterKey *string `json:"masterKey,omitempty"`
+	// FunctionKeys - Host level function keys.
+	FunctionKeys map[string]*string `json:"functionKeys"`
+	// SystemKeys - System keys.
+	SystemKeys map[string]*string `json:"systemKeys"`
+}
+
+// MarshalJSON is the custom marshaler for HostKeysProperties.
+func (hk HostKeysProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hk.MasterKey != nil {
+		objectMap["masterKey"] = hk.MasterKey
+	}
+	if hk.FunctionKeys != nil {
+		objectMap["functionKeys"] = hk.FunctionKeys
+	}
+	if hk.SystemKeys != nil {
+		objectMap["systemKeys"] = hk.SystemKeys
+	}
+	return json.Marshal(objectMap)
+}
+
 // HostName details of a hostname derived from a domain.
 type HostName struct {
 	// Name - Name of the hostname.
@@ -11164,6 +11455,114 @@ type HostNameSslState struct {
 	ToUpdate *bool `json:"toUpdate,omitempty"`
 	// HostType - Indicates whether the hostname is a standard or repository hostname. Possible values include: 'HostTypeStandard', 'HostTypeRepository'
 	HostType HostType `json:"hostType,omitempty"`
+}
+
+// HostStatus function host status.
+type HostStatus struct {
+	autorest.Response `json:"-"`
+	// HostStatusProperties - HostStatus resource specific properties
+	*HostStatusProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostStatus.
+func (hs HostStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hs.HostStatusProperties != nil {
+		objectMap["properties"] = hs.HostStatusProperties
+	}
+	if hs.ID != nil {
+		objectMap["id"] = hs.ID
+	}
+	if hs.Name != nil {
+		objectMap["name"] = hs.Name
+	}
+	if hs.Kind != nil {
+		objectMap["kind"] = hs.Kind
+	}
+	if hs.Type != nil {
+		objectMap["type"] = hs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for HostStatus struct.
+func (hs *HostStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var hostStatusProperties HostStatusProperties
+				err = json.Unmarshal(*v, &hostStatusProperties)
+				if err != nil {
+					return err
+				}
+				hs.HostStatusProperties = &hostStatusProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				hs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				hs.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				hs.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				hs.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// HostStatusProperties hostStatus resource specific properties
+type HostStatusProperties struct {
+	// ID - The host id.
+	ID *string `json:"id,omitempty"`
+	// State - The current host state.
+	State *string `json:"state,omitempty"`
+	// Version - The Function runtime version.
+	Version *string `json:"version,omitempty"`
+	// VersionDetails - The Function runtime version details.
+	VersionDetails *string `json:"versionDetails,omitempty"`
 }
 
 // HTTPLogsConfig http logs configuration.
@@ -11895,162 +12294,14 @@ type IdentifierProperties struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// InboundEnvironmentEndpoint the IP Addresses and Ports that require inbound network access to and within
-// the subnet of the App Service Environment.
+// InboundEnvironmentEndpoint endpoints for a particular type
 type InboundEnvironmentEndpoint struct {
-	// Description - Short text describing the purpose of the network traffic.
+	// Description - Text describing the endpoints.
 	Description *string `json:"description,omitempty"`
-	// Endpoints - The IP addresses that network traffic will originate from in cidr notation.
+	// Endpoints - The endpoint ip addresses in cidr notation.
 	Endpoints *[]string `json:"endpoints,omitempty"`
-	// Ports - The ports that network traffic will arrive to the App Service Environment at.
+	// Ports - The ports
 	Ports *[]string `json:"ports,omitempty"`
-}
-
-// InboundEnvironmentEndpointCollection collection of Inbound Environment Endpoints
-type InboundEnvironmentEndpointCollection struct {
-	autorest.Response `json:"-"`
-	// Value - Collection of resources.
-	Value *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// InboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
-// InboundEnvironmentEndpoint values.
-type InboundEnvironmentEndpointCollectionIterator struct {
-	i    int
-	page InboundEnvironmentEndpointCollectionPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *InboundEnvironmentEndpointCollectionIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InboundEnvironmentEndpointCollectionIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *InboundEnvironmentEndpointCollectionIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter InboundEnvironmentEndpointCollectionIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter InboundEnvironmentEndpointCollectionIterator) Response() InboundEnvironmentEndpointCollection {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter InboundEnvironmentEndpointCollectionIterator) Value() InboundEnvironmentEndpoint {
-	if !iter.page.NotDone() {
-		return InboundEnvironmentEndpoint{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the InboundEnvironmentEndpointCollectionIterator type.
-func NewInboundEnvironmentEndpointCollectionIterator(page InboundEnvironmentEndpointCollectionPage) InboundEnvironmentEndpointCollectionIterator {
-	return InboundEnvironmentEndpointCollectionIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ieec InboundEnvironmentEndpointCollection) IsEmpty() bool {
-	return ieec.Value == nil || len(*ieec.Value) == 0
-}
-
-// inboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ieec InboundEnvironmentEndpointCollection) inboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ieec.NextLink == nil || len(to.String(ieec.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ieec.NextLink)))
-}
-
-// InboundEnvironmentEndpointCollectionPage contains a page of InboundEnvironmentEndpoint values.
-type InboundEnvironmentEndpointCollectionPage struct {
-	fn   func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)
-	ieec InboundEnvironmentEndpointCollection
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *InboundEnvironmentEndpointCollectionPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InboundEnvironmentEndpointCollectionPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.ieec)
-	if err != nil {
-		return err
-	}
-	page.ieec = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *InboundEnvironmentEndpointCollectionPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page InboundEnvironmentEndpointCollectionPage) NotDone() bool {
-	return !page.ieec.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page InboundEnvironmentEndpointCollectionPage) Response() InboundEnvironmentEndpointCollection {
-	return page.ieec
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page InboundEnvironmentEndpointCollectionPage) Values() []InboundEnvironmentEndpoint {
-	if page.ieec.IsEmpty() {
-		return nil
-	}
-	return *page.ieec.Value
-}
-
-// Creates a new instance of the InboundEnvironmentEndpointCollectionPage type.
-func NewInboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
-	return InboundEnvironmentEndpointCollectionPage{fn: getNextPage}
 }
 
 // IPSecurityRestriction IP security restriction on an app.
@@ -12367,6 +12618,110 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// KeyInfo function key info.
+type KeyInfo struct {
+	autorest.Response `json:"-"`
+	// KeyInfoProperties - KeyInfo resource specific properties
+	*KeyInfoProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyInfo.
+func (ki KeyInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ki.KeyInfoProperties != nil {
+		objectMap["properties"] = ki.KeyInfoProperties
+	}
+	if ki.ID != nil {
+		objectMap["id"] = ki.ID
+	}
+	if ki.Name != nil {
+		objectMap["name"] = ki.Name
+	}
+	if ki.Kind != nil {
+		objectMap["kind"] = ki.Kind
+	}
+	if ki.Type != nil {
+		objectMap["type"] = ki.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for KeyInfo struct.
+func (ki *KeyInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var keyInfoProperties KeyInfoProperties
+				err = json.Unmarshal(*v, &keyInfoProperties)
+				if err != nil {
+					return err
+				}
+				ki.KeyInfoProperties = &keyInfoProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ki.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ki.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ki.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ki.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// KeyInfoProperties keyInfo resource specific properties
+type KeyInfoProperties struct {
+	// Name - Key name
+	Name *string `json:"name,omitempty"`
+	// Value - Key value
+	Value *string `json:"value,omitempty"`
+}
+
 // ListCapability ...
 type ListCapability struct {
 	autorest.Response `json:"-"`
@@ -12391,6 +12746,12 @@ type ListHostingEnvironmentDiagnostics struct {
 	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
+// ListInboundEnvironmentEndpoint ...
+type ListInboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
+}
+
 // ListNetworkTrace ...
 type ListNetworkTrace struct {
 	autorest.Response `json:"-"`
@@ -12401,6 +12762,12 @@ type ListNetworkTrace struct {
 type ListOperation struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
+}
+
+// ListOutboundEnvironmentEndpoint ...
+type ListOutboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
 }
 
 // ListVnetInfo ...
@@ -12438,34 +12805,8 @@ type ManagedServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalID - Principal Id of managed service identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// UserAssignedIdentities - The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
-	UserAssignedIdentities map[string]*ManagedServiceIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
-}
-
-// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
-func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if msi.Type != "" {
-		objectMap["type"] = msi.Type
-	}
-	if msi.TenantID != nil {
-		objectMap["tenantId"] = msi.TenantID
-	}
-	if msi.PrincipalID != nil {
-		objectMap["principalId"] = msi.PrincipalID
-	}
-	if msi.UserAssignedIdentities != nil {
-		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
-	}
-	return json.Marshal(objectMap)
-}
-
-// ManagedServiceIdentityUserAssignedIdentitiesValue ...
-type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
-	// PrincipalID - Principal Id of user assigned identity
-	PrincipalID *string `json:"principalId,omitempty"`
-	// ClientID - Client Id of user assigned identity
-	ClientID *string `json:"clientId,omitempty"`
+	// IdentityIds - Array of UserAssigned managed service identities.
+	IdentityIds *[]string `json:"identityIds,omitempty"`
 }
 
 // MetricAvailabilily metric availability and retention.
@@ -13496,160 +13837,12 @@ type Operation struct {
 	GeoMasterOperationID *uuid.UUID `json:"geoMasterOperationId,omitempty"`
 }
 
-// OutboundEnvironmentEndpoint endpoints accessed for a common purpose that the App Service Environment
-// requires outbound network access to.
+// OutboundEnvironmentEndpoint endpoints of a common type.
 type OutboundEnvironmentEndpoint struct {
-	// Category - The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+	// Category - Short description of the endpoints.
 	Category *string `json:"category,omitempty"`
-	// Endpoints - The endpoints that the App Service Environment reaches the service at.
+	// Endpoints - The endpoint's domain name and the IP Addresses it currently resolves to.
 	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
-}
-
-// OutboundEnvironmentEndpointCollection collection of Outbound Environment Endpoints
-type OutboundEnvironmentEndpointCollection struct {
-	autorest.Response `json:"-"`
-	// Value - Collection of resources.
-	Value *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// OutboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
-// OutboundEnvironmentEndpoint values.
-type OutboundEnvironmentEndpointCollectionIterator struct {
-	i    int
-	page OutboundEnvironmentEndpointCollectionPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *OutboundEnvironmentEndpointCollectionIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OutboundEnvironmentEndpointCollectionIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *OutboundEnvironmentEndpointCollectionIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter OutboundEnvironmentEndpointCollectionIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter OutboundEnvironmentEndpointCollectionIterator) Response() OutboundEnvironmentEndpointCollection {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter OutboundEnvironmentEndpointCollectionIterator) Value() OutboundEnvironmentEndpoint {
-	if !iter.page.NotDone() {
-		return OutboundEnvironmentEndpoint{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the OutboundEnvironmentEndpointCollectionIterator type.
-func NewOutboundEnvironmentEndpointCollectionIterator(page OutboundEnvironmentEndpointCollectionPage) OutboundEnvironmentEndpointCollectionIterator {
-	return OutboundEnvironmentEndpointCollectionIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (oeec OutboundEnvironmentEndpointCollection) IsEmpty() bool {
-	return oeec.Value == nil || len(*oeec.Value) == 0
-}
-
-// outboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (oeec OutboundEnvironmentEndpointCollection) outboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if oeec.NextLink == nil || len(to.String(oeec.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(oeec.NextLink)))
-}
-
-// OutboundEnvironmentEndpointCollectionPage contains a page of OutboundEnvironmentEndpoint values.
-type OutboundEnvironmentEndpointCollectionPage struct {
-	fn   func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)
-	oeec OutboundEnvironmentEndpointCollection
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *OutboundEnvironmentEndpointCollectionPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OutboundEnvironmentEndpointCollectionPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.oeec)
-	if err != nil {
-		return err
-	}
-	page.oeec = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *OutboundEnvironmentEndpointCollectionPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page OutboundEnvironmentEndpointCollectionPage) NotDone() bool {
-	return !page.oeec.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page OutboundEnvironmentEndpointCollectionPage) Response() OutboundEnvironmentEndpointCollection {
-	return page.oeec
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page OutboundEnvironmentEndpointCollectionPage) Values() []OutboundEnvironmentEndpoint {
-	if page.oeec.IsEmpty() {
-		return nil
-	}
-	return *page.oeec.Value
-}
-
-// Creates a new instance of the OutboundEnvironmentEndpointCollectionPage type.
-func NewOutboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
-	return OutboundEnvironmentEndpointCollectionPage{fn: getNextPage}
 }
 
 // PerfMonCounterCollection collection of performance monitor counters.
@@ -15823,7 +16016,7 @@ type RampUpRule struct {
 	// ReroutePercentage - Percentage of the traffic which will be redirected to <code>ActionHostName</code>.
 	ReroutePercentage *float64 `json:"reroutePercentage,omitempty"`
 	// ChangeStep - In auto ramp up scenario this is the step to add/remove from <code>ReroutePercentage</code> until it reaches
-	// <code>MinReroutePercentage</code> or <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specified in <code>ChangeIntervalInMinutes</code>.
+	// <code>MinReroutePercentage</code> or <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specificed in <code>ChangeIntervalInMinutes</code>.
 	// Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in <code>ChangeDecisionCallbackUrl</code>.
 	ChangeStep *float64 `json:"changeStep,omitempty"`
 	// ChangeIntervalInMinutes - Specifies interval in minutes to reevaluate ReroutePercentage.
@@ -18074,8 +18267,6 @@ type SiteConfig struct {
 	PublishingUsername *string `json:"publishingUsername,omitempty"`
 	// AppSettings - Application settings.
 	AppSettings *[]NameValuePair `json:"appSettings,omitempty"`
-	// AzureStorageAccounts - User-provided Azure storage accounts.
-	AzureStorageAccounts map[string]*AzureStorageInfoValue `json:"azureStorageAccounts"`
 	// ConnectionStrings - Connection strings.
 	ConnectionStrings *[]ConnStringInfo `json:"connectionStrings,omitempty"`
 	// MachineKey - Site MachineKey.
@@ -18124,6 +18315,8 @@ type SiteConfig struct {
 	Push *PushSettings `json:"push,omitempty"`
 	// APIDefinition - Information about the formal API definition for the app.
 	APIDefinition *APIDefinitionInfo `json:"apiDefinition,omitempty"`
+	// APIManagementConfig - Azure API management settings linked to the app.
+	APIManagementConfig *APIManagementConfig `json:"apiManagementConfig,omitempty"`
 	// AutoSwapSlotName - Auto-swap slot name.
 	AutoSwapSlotName *string `json:"autoSwapSlotName,omitempty"`
 	// LocalMySQLEnabled - <code>true</code> to enable local MySQL; otherwise, <code>false</code>.
@@ -18144,174 +18337,11 @@ type SiteConfig struct {
 	MinTLSVersion SupportedTLSVersions `json:"minTlsVersion,omitempty"`
 	// FtpsState - State of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'
 	FtpsState FtpsState `json:"ftpsState,omitempty"`
-	// ReservedInstanceCount - Number of reserved instances.
-	// This setting only applies to the Consumption Plan
-	ReservedInstanceCount *int32 `json:"reservedInstanceCount,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SiteConfig.
-func (sc SiteConfig) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sc.NumberOfWorkers != nil {
-		objectMap["numberOfWorkers"] = sc.NumberOfWorkers
-	}
-	if sc.DefaultDocuments != nil {
-		objectMap["defaultDocuments"] = sc.DefaultDocuments
-	}
-	if sc.NetFrameworkVersion != nil {
-		objectMap["netFrameworkVersion"] = sc.NetFrameworkVersion
-	}
-	if sc.PhpVersion != nil {
-		objectMap["phpVersion"] = sc.PhpVersion
-	}
-	if sc.PythonVersion != nil {
-		objectMap["pythonVersion"] = sc.PythonVersion
-	}
-	if sc.NodeVersion != nil {
-		objectMap["nodeVersion"] = sc.NodeVersion
-	}
-	if sc.LinuxFxVersion != nil {
-		objectMap["linuxFxVersion"] = sc.LinuxFxVersion
-	}
-	if sc.WindowsFxVersion != nil {
-		objectMap["windowsFxVersion"] = sc.WindowsFxVersion
-	}
-	if sc.RequestTracingEnabled != nil {
-		objectMap["requestTracingEnabled"] = sc.RequestTracingEnabled
-	}
-	if sc.RequestTracingExpirationTime != nil {
-		objectMap["requestTracingExpirationTime"] = sc.RequestTracingExpirationTime
-	}
-	if sc.RemoteDebuggingEnabled != nil {
-		objectMap["remoteDebuggingEnabled"] = sc.RemoteDebuggingEnabled
-	}
-	if sc.RemoteDebuggingVersion != nil {
-		objectMap["remoteDebuggingVersion"] = sc.RemoteDebuggingVersion
-	}
-	if sc.HTTPLoggingEnabled != nil {
-		objectMap["httpLoggingEnabled"] = sc.HTTPLoggingEnabled
-	}
-	if sc.LogsDirectorySizeLimit != nil {
-		objectMap["logsDirectorySizeLimit"] = sc.LogsDirectorySizeLimit
-	}
-	if sc.DetailedErrorLoggingEnabled != nil {
-		objectMap["detailedErrorLoggingEnabled"] = sc.DetailedErrorLoggingEnabled
-	}
-	if sc.PublishingUsername != nil {
-		objectMap["publishingUsername"] = sc.PublishingUsername
-	}
-	if sc.AppSettings != nil {
-		objectMap["appSettings"] = sc.AppSettings
-	}
-	if sc.AzureStorageAccounts != nil {
-		objectMap["azureStorageAccounts"] = sc.AzureStorageAccounts
-	}
-	if sc.ConnectionStrings != nil {
-		objectMap["connectionStrings"] = sc.ConnectionStrings
-	}
-	if sc.MachineKey != nil {
-		objectMap["machineKey"] = sc.MachineKey
-	}
-	if sc.HandlerMappings != nil {
-		objectMap["handlerMappings"] = sc.HandlerMappings
-	}
-	if sc.DocumentRoot != nil {
-		objectMap["documentRoot"] = sc.DocumentRoot
-	}
-	if sc.ScmType != "" {
-		objectMap["scmType"] = sc.ScmType
-	}
-	if sc.Use32BitWorkerProcess != nil {
-		objectMap["use32BitWorkerProcess"] = sc.Use32BitWorkerProcess
-	}
-	if sc.WebSocketsEnabled != nil {
-		objectMap["webSocketsEnabled"] = sc.WebSocketsEnabled
-	}
-	if sc.AlwaysOn != nil {
-		objectMap["alwaysOn"] = sc.AlwaysOn
-	}
-	if sc.JavaVersion != nil {
-		objectMap["javaVersion"] = sc.JavaVersion
-	}
-	if sc.JavaContainer != nil {
-		objectMap["javaContainer"] = sc.JavaContainer
-	}
-	if sc.JavaContainerVersion != nil {
-		objectMap["javaContainerVersion"] = sc.JavaContainerVersion
-	}
-	if sc.AppCommandLine != nil {
-		objectMap["appCommandLine"] = sc.AppCommandLine
-	}
-	if sc.ManagedPipelineMode != "" {
-		objectMap["managedPipelineMode"] = sc.ManagedPipelineMode
-	}
-	if sc.VirtualApplications != nil {
-		objectMap["virtualApplications"] = sc.VirtualApplications
-	}
-	if sc.LoadBalancing != "" {
-		objectMap["loadBalancing"] = sc.LoadBalancing
-	}
-	if sc.Experiments != nil {
-		objectMap["experiments"] = sc.Experiments
-	}
-	if sc.Limits != nil {
-		objectMap["limits"] = sc.Limits
-	}
-	if sc.AutoHealEnabled != nil {
-		objectMap["autoHealEnabled"] = sc.AutoHealEnabled
-	}
-	if sc.AutoHealRules != nil {
-		objectMap["autoHealRules"] = sc.AutoHealRules
-	}
-	if sc.TracingOptions != nil {
-		objectMap["tracingOptions"] = sc.TracingOptions
-	}
-	if sc.VnetName != nil {
-		objectMap["vnetName"] = sc.VnetName
-	}
-	if sc.Cors != nil {
-		objectMap["cors"] = sc.Cors
-	}
-	if sc.Push != nil {
-		objectMap["push"] = sc.Push
-	}
-	if sc.APIDefinition != nil {
-		objectMap["apiDefinition"] = sc.APIDefinition
-	}
-	if sc.AutoSwapSlotName != nil {
-		objectMap["autoSwapSlotName"] = sc.AutoSwapSlotName
-	}
-	if sc.LocalMySQLEnabled != nil {
-		objectMap["localMySqlEnabled"] = sc.LocalMySQLEnabled
-	}
-	if sc.ManagedServiceIdentityID != nil {
-		objectMap["managedServiceIdentityId"] = sc.ManagedServiceIdentityID
-	}
-	if sc.XManagedServiceIdentityID != nil {
-		objectMap["xManagedServiceIdentityId"] = sc.XManagedServiceIdentityID
-	}
-	if sc.IPSecurityRestrictions != nil {
-		objectMap["ipSecurityRestrictions"] = sc.IPSecurityRestrictions
-	}
-	if sc.ScmIPSecurityRestrictions != nil {
-		objectMap["scmIpSecurityRestrictions"] = sc.ScmIPSecurityRestrictions
-	}
-	if sc.ScmIPSecurityRestrictionsUseMain != nil {
-		objectMap["scmIpSecurityRestrictionsUseMain"] = sc.ScmIPSecurityRestrictionsUseMain
-	}
-	if sc.HTTP20Enabled != nil {
-		objectMap["http20Enabled"] = sc.HTTP20Enabled
-	}
-	if sc.MinTLSVersion != "" {
-		objectMap["minTlsVersion"] = sc.MinTLSVersion
-	}
-	if sc.FtpsState != "" {
-		objectMap["ftpsState"] = sc.FtpsState
-	}
-	if sc.ReservedInstanceCount != nil {
-		objectMap["reservedInstanceCount"] = sc.ReservedInstanceCount
-	}
-	return json.Marshal(objectMap)
+	// PreWarmedInstanceCount - Number of preWarmed instances.
+	// This setting only applies to the Consumption and Elastic Plans
+	PreWarmedInstanceCount *int32 `json:"preWarmedInstanceCount,omitempty"`
+	// HealthCheckPath - Health check path
+	HealthCheckPath *string `json:"healthCheckPath,omitempty"`
 }
 
 // SiteConfigResource web app configuration ARM resource.
@@ -19496,8 +19526,6 @@ type SitePatchResourceProperties struct {
 	RedundancyMode RedundancyMode `json:"redundancyMode,omitempty"`
 	// InProgressOperationID - Specifies an operation id if this site has a pending operation.
 	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
-	// GeoDistributions - GeoDistributions for this site
-	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
 // SitePhpErrorLogFlag used for getting PHP error logging flag.
@@ -19686,8 +19714,6 @@ type SiteProperties struct {
 	RedundancyMode RedundancyMode `json:"redundancyMode,omitempty"`
 	// InProgressOperationID - Specifies an operation id if this site has a pending operation.
 	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
-	// GeoDistributions - GeoDistributions for this site
-	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
 // SiteSeal site seal

@@ -27,6 +27,7 @@ type DomainsClientAPI = original.DomainsClientAPI
 type GroupsClientAPI = original.GroupsClientAPI
 type OAuth2PermissionGrantClientAPI = original.OAuth2PermissionGrantClientAPI
 type ObjectsClientAPI = original.ObjectsClientAPI
+type ServicePrincipalsByAppIDClientAPI = original.ServicePrincipalsByAppIDClientAPI
 type ServicePrincipalsClientAPI = original.ServicePrincipalsClientAPI
 type SignedInUserClientAPI = original.SignedInUserClientAPI
 type UsersClientAPI = original.UsersClientAPI

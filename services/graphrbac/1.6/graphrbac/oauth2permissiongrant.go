@@ -32,13 +32,13 @@ type OAuth2PermissionGrantClient struct {
 }
 
 // NewOAuth2PermissionGrantClient creates an instance of the OAuth2PermissionGrantClient client.
-func NewOAuth2PermissionGrantClient(tenantID string) OAuth2PermissionGrantClient {
-	return NewOAuth2PermissionGrantClientWithBaseURI(DefaultBaseURI, tenantID)
+func NewOAuth2PermissionGrantClient(tenantID string, applicationID string) OAuth2PermissionGrantClient {
+	return NewOAuth2PermissionGrantClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
 }
 
 // NewOAuth2PermissionGrantClientWithBaseURI creates an instance of the OAuth2PermissionGrantClient client.
-func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string) OAuth2PermissionGrantClient {
-	return OAuth2PermissionGrantClient{NewWithBaseURI(baseURI, tenantID)}
+func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string, applicationID string) OAuth2PermissionGrantClient {
+	return OAuth2PermissionGrantClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
 }
 
 // Create grants OAuth2 permissions for the relevant resource Ids of an app.

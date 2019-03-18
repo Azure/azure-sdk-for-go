@@ -32,20 +32,22 @@ const (
 // BaseClient is the base client for Graphrbac.
 type BaseClient struct {
 	autorest.Client
-	BaseURI  string
-	TenantID string
+	BaseURI       string
+	TenantID      string
+	ApplicationID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(tenantID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, tenantID)
+func New(tenantID string, applicationID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, tenantID, applicationID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
+func NewWithBaseURI(baseURI string, tenantID string, applicationID string) BaseClient {
 	return BaseClient{
-		Client:   autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:  baseURI,
-		TenantID: tenantID,
+		Client:        autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:       baseURI,
+		TenantID:      tenantID,
+		ApplicationID: applicationID,
 	}
 }

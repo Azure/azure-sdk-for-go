@@ -377,7 +377,7 @@ func (client LargePersonGroupClient) GetTrainingStatusResponder(resp *http.Respo
 	return
 }
 
-// List list all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.<br />
+// List list all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.<br />
 // * Large person groups are stored in alphabetical order of largePersonGroupId.
 // * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger
 // ids by string comparison. "start" set to empty to indicate return from the first item.

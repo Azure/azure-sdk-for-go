@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -32,22 +33,24 @@ type PredictionClient struct {
 }
 
 // NewPredictionClient creates an instance of the PredictionClient client.
-func NewPredictionClient(endpoint string) PredictionClient {
-	return PredictionClient{New(endpoint)}
+func NewPredictionClient() PredictionClient {
+	return PredictionClient{New()}
 }
 
 // Resolve gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
 // is 500 characters.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the LUIS application ID (Guid).
 // query - the utterance to predict.
 // timezoneOffset - the timezone offset for the location of the request.
 // verbose - if true, return all intents instead of just the top scoring intent.
 // staging - use the staging endpoint slot.
 // spellCheck - enable spell checking.
-// bingSpellCheckSubscriptionKey - the subscription key to use when enabling bing spell check
+// bingSpellCheckSubscriptionKey - the subscription key to use when enabling Bing spell check
 // logParameter - log query (default is true)
-func (client PredictionClient) Resolve(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result LuisResult, err error) {
+func (client PredictionClient) Resolve(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result LuisResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PredictionClient.Resolve")
 		defer func() {
@@ -64,7 +67,7 @@ func (client PredictionClient) Resolve(ctx context.Context, appID string, query 
 		return result, validation.NewError("runtime.PredictionClient", "Resolve", err.Error())
 	}
 
-	req, err := client.ResolvePreparer(ctx, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
+	req, err := client.ResolvePreparer(ctx, azureRegion, azureCloud, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "Resolve", nil, "Failure preparing request")
 		return
@@ -86,9 +89,10 @@ func (client PredictionClient) Resolve(ctx context.Context, appID string, query 
 }
 
 // ResolvePreparer prepares the Resolve request.
-func (client PredictionClient) ResolvePreparer(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
+func (client PredictionClient) ResolvePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -118,7 +122,7 @@ func (client PredictionClient) ResolvePreparer(ctx context.Context, appID string
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(query),
 		autorest.WithQueryParameters(queryParameters))

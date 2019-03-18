@@ -33,16 +33,18 @@ type VersionsClient struct {
 }
 
 // NewVersionsClient creates an instance of the VersionsClient client.
-func NewVersionsClient(endpoint string) VersionsClient {
-	return VersionsClient{New(endpoint)}
+func NewVersionsClient() VersionsClient {
+	return VersionsClient{New()}
 }
 
-// Clone creates a new version using the current snapshot of the selected application version.
+// Clone creates a new version from the selected version.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // versionCloneObject - a model containing the new version ID.
-func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, versionID string, versionCloneObject *TaskUpdateObject) (result String, err error) {
+func (client VersionsClient) Clone(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, versionCloneObject TaskUpdateObject) (result String, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Clone")
 		defer func() {
@@ -53,7 +55,7 @@ func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, version
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ClonePreparer(ctx, appID, versionID, versionCloneObject)
+	req, err := client.ClonePreparer(ctx, azureRegion, azureCloud, appID, versionID, versionCloneObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Clone", nil, "Failure preparing request")
 		return
@@ -75,9 +77,10 @@ func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, version
 }
 
 // ClonePreparer prepares the Clone request.
-func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID, versionID string, versionCloneObject *TaskUpdateObject) (*http.Request, error) {
+func (client VersionsClient) ClonePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, versionCloneObject TaskUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -88,12 +91,9 @@ func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters))
-	if versionCloneObject != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(versionCloneObject))
-	}
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters),
+		autorest.WithJSON(versionCloneObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -119,9 +119,11 @@ func (client VersionsClient) CloneResponder(resp *http.Response) (result String,
 
 // Delete deletes an application version.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versionID string) (result OperationStatus, err error) {
+func (client VersionsClient) Delete(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Delete")
 		defer func() {
@@ -132,7 +134,7 @@ func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, appID, versionID)
+	req, err := client.DeletePreparer(ctx, azureRegion, azureCloud, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -154,9 +156,10 @@ func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versio
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client VersionsClient) DeletePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -166,7 +169,7 @@ func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -191,12 +194,14 @@ func (client VersionsClient) DeleteResponder(resp *http.Response) (result Operat
 	return
 }
 
-// DeleteUnlabelledUtterance deleted an unlabelled utterance.
+// DeleteUnlabelledUtterance deleted an unlabelled utterance in a version of the application.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // utterance - the utterance text to delete.
-func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (result OperationStatus, err error) {
+func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, utterance string) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.DeleteUnlabelledUtterance")
 		defer func() {
@@ -207,7 +212,7 @@ func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appI
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteUnlabelledUtterancePreparer(ctx, appID, versionID, utterance)
+	req, err := client.DeleteUnlabelledUtterancePreparer(ctx, azureRegion, azureCloud, appID, versionID, utterance)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "DeleteUnlabelledUtterance", nil, "Failure preparing request")
 		return
@@ -229,9 +234,10 @@ func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appI
 }
 
 // DeleteUnlabelledUtterancePreparer prepares the DeleteUnlabelledUtterance request.
-func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (*http.Request, error) {
+func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, utterance string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -242,7 +248,7 @@ func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/suggest", pathParameters),
 		autorest.WithJSON(utterance))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -270,9 +276,11 @@ func (client VersionsClient) DeleteUnlabelledUtteranceResponder(resp *http.Respo
 
 // Export exports a LUIS application to JSON format.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versionID string) (result LuisApp, err error) {
+func (client VersionsClient) Export(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result LuisApp, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Export")
 		defer func() {
@@ -283,7 +291,7 @@ func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ExportPreparer(ctx, appID, versionID)
+	req, err := client.ExportPreparer(ctx, azureRegion, azureCloud, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Export", nil, "Failure preparing request")
 		return
@@ -305,9 +313,10 @@ func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versio
 }
 
 // ExportPreparer prepares the Export request.
-func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client VersionsClient) ExportPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -317,7 +326,7 @@ func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -342,11 +351,14 @@ func (client VersionsClient) ExportResponder(resp *http.Response) (result LuisAp
 	return
 }
 
-// Get gets the version info.
+// Get gets the version information such as date created, last modified date, endpoint URL, count of intents and
+// entities, training and publishing status.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID string) (result VersionInfo, err error) {
+func (client VersionsClient) Get(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result VersionInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Get")
 		defer func() {
@@ -357,7 +369,7 @@ func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, appID, versionID)
+	req, err := client.GetPreparer(ctx, azureRegion, azureCloud, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -379,9 +391,10 @@ func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID
 }
 
 // GetPreparer prepares the Get request.
-func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client VersionsClient) GetPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -391,7 +404,7 @@ func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, v
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -418,11 +431,13 @@ func (client VersionsClient) GetResponder(resp *http.Response) (result VersionIn
 
 // Import imports a new version into a LUIS application.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // luisApp - a LUIS application structure.
 // versionID - the new versionId to import. If not specified, the versionId will be read from the imported
 // object.
-func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisApp LuisApp, versionID string) (result String, err error) {
+func (client VersionsClient) Import(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, luisApp LuisApp, versionID string) (result String, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Import")
 		defer func() {
@@ -433,7 +448,7 @@ func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisAp
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ImportPreparer(ctx, appID, luisApp, versionID)
+	req, err := client.ImportPreparer(ctx, azureRegion, azureCloud, appID, luisApp, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Import", nil, "Failure preparing request")
 		return
@@ -455,9 +470,10 @@ func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisAp
 }
 
 // ImportPreparer prepares the Import request.
-func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID, luisApp LuisApp, versionID string) (*http.Request, error) {
+func (client VersionsClient) ImportPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, luisApp LuisApp, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -472,7 +488,7 @@ func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/import", pathParameters),
 		autorest.WithJSON(luisApp),
 		autorest.WithQueryParameters(queryParameters))
@@ -499,12 +515,14 @@ func (client VersionsClient) ImportResponder(resp *http.Response) (result String
 	return
 }
 
-// List gets the application versions info.
+// List gets a list of versions for this application ID.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (result ListVersionInfo, err error) {
+func (client VersionsClient) List(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, skip *int32, take *int32) (result ListVersionInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.List")
 		defer func() {
@@ -527,7 +545,7 @@ func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *in
 		return result, validation.NewError("authoring.VersionsClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, appID, skip, take)
+	req, err := client.ListPreparer(ctx, azureRegion, azureCloud, appID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "List", nil, "Failure preparing request")
 		return
@@ -549,9 +567,10 @@ func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *in
 }
 
 // ListPreparer prepares the List request.
-func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (*http.Request, error) {
+func (client VersionsClient) ListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -572,7 +591,7 @@ func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -600,10 +619,12 @@ func (client VersionsClient) ListResponder(resp *http.Response) (result ListVers
 
 // Update updates the name or description of the application version.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // versionUpdateObject - a model containing Name and Description of the application.
-func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (result OperationStatus, err error) {
+func (client VersionsClient) Update(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Update")
 		defer func() {
@@ -614,7 +635,7 @@ func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, appID, versionID, versionUpdateObject)
+	req, err := client.UpdatePreparer(ctx, azureRegion, azureCloud, appID, versionID, versionUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.VersionsClient", "Update", nil, "Failure preparing request")
 		return
@@ -636,9 +657,10 @@ func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versio
 }
 
 // UpdatePreparer prepares the Update request.
-func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (*http.Request, error) {
+func (client VersionsClient) UpdatePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -649,7 +671,7 @@ func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
 		autorest.WithJSON(versionUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

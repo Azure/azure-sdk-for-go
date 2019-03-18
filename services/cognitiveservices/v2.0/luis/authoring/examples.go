@@ -33,16 +33,18 @@ type ExamplesClient struct {
 }
 
 // NewExamplesClient creates an instance of the ExamplesClient client.
-func NewExamplesClient(endpoint string) ExamplesClient {
-	return ExamplesClient{New(endpoint)}
+func NewExamplesClient() ExamplesClient {
+	return ExamplesClient{New()}
 }
 
-// Add adds a labeled example to the application.
+// Add adds a labeled example utterance in a version of the application.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-// exampleLabelObject - an example label with the expected intent and entities.
-func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (result LabelExampleResponse, err error) {
+// exampleLabelObject - a labeled example utterance with the expected intent and entities.
+func (client ExamplesClient) Add(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (result LabelExampleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Add")
 		defer func() {
@@ -53,7 +55,7 @@ func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPreparer(ctx, appID, versionID, exampleLabelObject)
+	req, err := client.AddPreparer(ctx, azureRegion, azureCloud, appID, versionID, exampleLabelObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Add", nil, "Failure preparing request")
 		return
@@ -75,9 +77,10 @@ func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID
 }
 
 // AddPreparer prepares the Add request.
-func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (*http.Request, error) {
+func (client ExamplesClient) AddPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -88,7 +91,7 @@ func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, v
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/example", pathParameters),
 		autorest.WithJSON(exampleLabelObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -114,12 +117,14 @@ func (client ExamplesClient) AddResponder(resp *http.Response) (result LabelExam
 	return
 }
 
-// Batch adds a batch of labeled examples to the application.
+// Batch adds a batch of labeled example utterances to a version of the application.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-// exampleLabelObjectArray - array of examples.
-func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (result ListBatchLabelExample, err error) {
+// exampleLabelObjectArray - array of example utterances.
+func (client ExamplesClient) Batch(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (result ListBatchLabelExample, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Batch")
 		defer func() {
@@ -136,7 +141,7 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 		return result, validation.NewError("authoring.ExamplesClient", "Batch", err.Error())
 	}
 
-	req, err := client.BatchPreparer(ctx, appID, versionID, exampleLabelObjectArray)
+	req, err := client.BatchPreparer(ctx, azureRegion, azureCloud, appID, versionID, exampleLabelObjectArray)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Batch", nil, "Failure preparing request")
 		return
@@ -158,9 +163,10 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 }
 
 // BatchPreparer prepares the Batch request.
-func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (*http.Request, error) {
+func (client ExamplesClient) BatchPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -171,7 +177,7 @@ func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
 		autorest.WithJSON(exampleLabelObjectArray))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -197,12 +203,14 @@ func (client ExamplesClient) BatchResponder(resp *http.Response) (result ListBat
 	return
 }
 
-// Delete deletes the labeled example with the specified ID.
+// Delete deletes the labeled example utterances with the specified ID from a version of the application.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // exampleID - the example ID.
-func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (result OperationStatus, err error) {
+func (client ExamplesClient) Delete(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, exampleID int32) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Delete")
 		defer func() {
@@ -213,7 +221,7 @@ func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, appID, versionID, exampleID)
+	req, err := client.DeletePreparer(ctx, azureRegion, azureCloud, appID, versionID, exampleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -235,9 +243,10 @@ func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versio
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ExamplesClient) DeletePreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (*http.Request, error) {
+func (client ExamplesClient) DeletePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, exampleID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -248,7 +257,7 @@ func (client ExamplesClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples/{exampleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -273,13 +282,15 @@ func (client ExamplesClient) DeleteResponder(resp *http.Response) (result Operat
 	return
 }
 
-// List returns examples to be reviewed.
+// List returns example utterances to be reviewed from a version of the application.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListLabeledUtterance, err error) {
+func (client ExamplesClient) List(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListLabeledUtterance, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.List")
 		defer func() {
@@ -302,7 +313,7 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 		return result, validation.NewError("authoring.ExamplesClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, appID, versionID, skip, take)
+	req, err := client.ListPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ExamplesClient", "List", nil, "Failure preparing request")
 		return
@@ -324,9 +335,10 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 }
 
 // ListPreparer prepares the List request.
-func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ExamplesClient) ListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -348,7 +360,7 @@ func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

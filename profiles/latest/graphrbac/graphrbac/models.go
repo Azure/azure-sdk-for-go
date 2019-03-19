@@ -118,7 +118,6 @@ type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIte
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
 type ServicePrincipalObjectResult = original.ServicePrincipalObjectResult
 type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
-type ServicePrincipalsByAppIDClient = original.ServicePrincipalsByAppIDClient
 type ServicePrincipalsClient = original.ServicePrincipalsClient
 type SignInName = original.SignInName
 type SignedInUserClient = original.SignedInUserClient
@@ -201,12 +200,6 @@ func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) 
 }
 func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
 	return original.NewServicePrincipalListResultPage(getNextPage)
-}
-func NewServicePrincipalsByAppIDClient(tenantID string, applicationID string) ServicePrincipalsByAppIDClient {
-	return original.NewServicePrincipalsByAppIDClient(tenantID, applicationID)
-}
-func NewServicePrincipalsByAppIDClientWithBaseURI(baseURI string, tenantID string, applicationID string) ServicePrincipalsByAppIDClient {
-	return original.NewServicePrincipalsByAppIDClientWithBaseURI(baseURI, tenantID, applicationID)
 }
 func NewServicePrincipalsClient(tenantID string, applicationID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClient(tenantID, applicationID)

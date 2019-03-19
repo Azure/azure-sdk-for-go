@@ -38,6 +38,7 @@ type ApplicationsClientAPI interface {
 	Create(ctx context.Context, parameters graphrbac.ApplicationCreateParameters) (result graphrbac.Application, err error)
 	Delete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, applicationObjectID string) (result graphrbac.Application, err error)
+	GetServicePrincipalsIDByAppID(ctx context.Context) (result graphrbac.ServicePrincipalObjectResult, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
 	ListKeyCredentials(ctx context.Context, applicationObjectID string) (result graphrbac.KeyCredentialListResult, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ApplicationListResult, err error)
@@ -97,13 +98,6 @@ type ServicePrincipalsClientAPI interface {
 }
 
 var _ ServicePrincipalsClientAPI = (*graphrbac.ServicePrincipalsClient)(nil)
-
-// ServicePrincipalsByAppIDClientAPI contains the set of methods on the ServicePrincipalsByAppIDClient type.
-type ServicePrincipalsByAppIDClientAPI interface {
-	Get(ctx context.Context) (result graphrbac.ServicePrincipalObjectResult, err error)
-}
-
-var _ ServicePrincipalsByAppIDClientAPI = (*graphrbac.ServicePrincipalsByAppIDClient)(nil)
 
 // UsersClientAPI contains the set of methods on the UsersClient type.
 type UsersClientAPI interface {

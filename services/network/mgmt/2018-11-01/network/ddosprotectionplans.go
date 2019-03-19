@@ -495,3 +495,83 @@ func (client DdosProtectionPlansClient) ListByResourceGroupComplete(ctx context.
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
+
+// Update update a DDoS protection plan
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// ddosProtectionPlanName - the name of the DDoS protection plan.
+// parameters - parameters supplied to the update DDoS protection plan resource.
+func (client DdosProtectionPlansClient) Update(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (result DdosProtectionPlan, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DdosProtectionPlansClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client DdosProtectionPlansClient) UpdatePreparer(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"ddosProtectionPlanName": autorest.Encode("path", ddosProtectionPlanName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client DdosProtectionPlansClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client DdosProtectionPlansClient) UpdateResponder(resp *http.Response) (result DdosProtectionPlan, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

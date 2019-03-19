@@ -114,6 +114,7 @@ type DdosProtectionPlansClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (result network.DdosProtectionPlan, err error)
 	List(ctx context.Context) (result network.DdosProtectionPlanListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.DdosProtectionPlanListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters network.TagsObject) (result network.DdosProtectionPlan, err error)
 }
 
 var _ DdosProtectionPlansClientAPI = (*network.DdosProtectionPlansClient)(nil)

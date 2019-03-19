@@ -1512,7 +1512,7 @@ func (client AppsClient) CreateMSDeployOperationSlotResponder(resp *http.Respons
 // CreateOrUpdate creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
-// name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
+// name - unique name of the APP to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
 func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site) (result AppsCreateOrUpdateFuture, err error) {

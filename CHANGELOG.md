@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v26.5.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| anomalydetector | v1.0 |
+| containerservice | 2019-02-01 |
+| storage | 2018-11-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| network | 2018-12-01 |
+
 ## `v26.4.0`
 
 ### New Packages

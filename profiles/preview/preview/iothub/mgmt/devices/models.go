@@ -141,15 +141,6 @@ const (
 	JobTypeWriteDeviceProperties     JobType = original.JobTypeWriteDeviceProperties
 )
 
-type OperationMonitoringLevel = original.OperationMonitoringLevel
-
-const (
-	OperationMonitoringLevelError            OperationMonitoringLevel = original.OperationMonitoringLevelError
-	OperationMonitoringLevelErrorInformation OperationMonitoringLevel = original.OperationMonitoringLevelErrorInformation
-	OperationMonitoringLevelInformation      OperationMonitoringLevel = original.OperationMonitoringLevelInformation
-	OperationMonitoringLevelNone             OperationMonitoringLevel = original.OperationMonitoringLevelNone
-)
-
 type RouteErrorSeverity = original.RouteErrorSeverity
 
 const (
@@ -235,7 +226,6 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
-type OperationsMonitoringProperties = original.OperationsMonitoringProperties
 type RegistryStatistics = original.RegistryStatistics
 type Resource = original.Resource
 type ResourceProviderCommonClient = original.ResourceProviderCommonClient
@@ -377,9 +367,6 @@ func PossibleJobStatusValues() []JobStatus {
 }
 func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
-}
-func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
-	return original.PossibleOperationMonitoringLevelValues()
 }
 func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
 	return original.PossibleRouteErrorSeverityValues()

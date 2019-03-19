@@ -126,11 +126,15 @@ const (
 	Standard2 SkuName = "standard2"
 	// Standard3 ...
 	Standard3 SkuName = "standard3"
+	// StorageOptimizedL1 ...
+	StorageOptimizedL1 SkuName = "storage_optimized_l1"
+	// StorageOptimizedL2 ...
+	StorageOptimizedL2 SkuName = "storage_optimized_l2"
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Free, Standard, Standard2, Standard3}
+	return []SkuName{Basic, Free, Standard, Standard2, Standard3, StorageOptimizedL1, StorageOptimizedL2}
 }
 
 // UnavailableNameReason enumerates the values for unavailable name reason.
@@ -484,6 +488,6 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Ser
 
 // Sku defines the SKU of an Azure Search Service, which determines price tier and capacity limits.
 type Sku struct {
-	// Name - The SKU of the Search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': Offers maximum capacity per search unit with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). Possible values include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3'
+	// Name - The SKU of the Search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'. Possible values include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3', 'StorageOptimizedL1', 'StorageOptimizedL2'
 	Name SkuName `json:"name,omitempty"`
 }

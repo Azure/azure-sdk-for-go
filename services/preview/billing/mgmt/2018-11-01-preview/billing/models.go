@@ -357,6 +357,93 @@ type Amount struct {
 	Value *float64 `json:"value,omitempty"`
 }
 
+// AvailableBalance latest available balance on Monetary Credit PI.
+type AvailableBalance struct {
+	autorest.Response           `json:"-"`
+	*AvailableBalanceProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AvailableBalance.
+func (ab AvailableBalance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ab.AvailableBalanceProperties != nil {
+		objectMap["properties"] = ab.AvailableBalanceProperties
+	}
+	if ab.ID != nil {
+		objectMap["id"] = ab.ID
+	}
+	if ab.Name != nil {
+		objectMap["name"] = ab.Name
+	}
+	if ab.Type != nil {
+		objectMap["type"] = ab.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AvailableBalance struct.
+func (ab *AvailableBalance) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var availableBalanceProperties AvailableBalanceProperties
+				err = json.Unmarshal(*v, &availableBalanceProperties)
+				if err != nil {
+					return err
+				}
+				ab.AvailableBalanceProperties = &availableBalanceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ab.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ab.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ab.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AvailableBalanceProperties the properties of available balance.
+type AvailableBalanceProperties struct {
+	// Amount - Balance Amount.
+	Amount *Amount `json:"amount,omitempty"`
+}
+
 // Department a department resource.
 type Department struct {
 	autorest.Response `json:"-"`

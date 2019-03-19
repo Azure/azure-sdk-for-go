@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt
 
 type AccountsClientAPI = original.AccountsClientAPI
 type AccountsWithCreateInvoiceSectionPermissionClientAPI = original.AccountsWithCreateInvoiceSectionPermissionClientAPI
+type AvailableBalanceByBillingProfileClientAPI = original.AvailableBalanceByBillingProfileClientAPI
 type BaseClientAPI = original.BaseClientAPI
 type DepartmentsByBillingAccountIDClientAPI = original.DepartmentsByBillingAccountIDClientAPI
 type DepartmentsClientAPI = original.DepartmentsClientAPI

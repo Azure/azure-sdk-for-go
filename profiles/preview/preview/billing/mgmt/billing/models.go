@@ -120,6 +120,9 @@ type AccountsClient = original.AccountsClient
 type AccountsWithCreateInvoiceSectionPermissionClient = original.AccountsWithCreateInvoiceSectionPermissionClient
 type Address = original.Address
 type Amount = original.Amount
+type AvailableBalance = original.AvailableBalance
+type AvailableBalanceByBillingProfileClient = original.AvailableBalanceByBillingProfileClient
+type AvailableBalanceProperties = original.AvailableBalanceProperties
 type BaseClient = original.BaseClient
 type Department = original.Department
 type DepartmentListResult = original.DepartmentListResult
@@ -228,6 +231,12 @@ func NewAccountsWithCreateInvoiceSectionPermissionClient(subscriptionID string) 
 }
 func NewAccountsWithCreateInvoiceSectionPermissionClientWithBaseURI(baseURI string, subscriptionID string) AccountsWithCreateInvoiceSectionPermissionClient {
 	return original.NewAccountsWithCreateInvoiceSectionPermissionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAvailableBalanceByBillingProfileClient(subscriptionID string) AvailableBalanceByBillingProfileClient {
+	return original.NewAvailableBalanceByBillingProfileClient(subscriptionID)
+}
+func NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalanceByBillingProfileClient {
+	return original.NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDepartmentsByBillingAccountIDClient(subscriptionID string) DepartmentsByBillingAccountIDClient {
 	return original.NewDepartmentsByBillingAccountIDClient(subscriptionID)

@@ -19,9 +19,33 @@
 
 package billingapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing/billingapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-11-01-preview/billing/billingapi"
 
+type AccountsClientAPI = original.AccountsClientAPI
+type AccountsWithCreateInvoiceSectionPermissionClientAPI = original.AccountsWithCreateInvoiceSectionPermissionClientAPI
+type BaseClientAPI = original.BaseClientAPI
+type DepartmentsByBillingAccountIDClientAPI = original.DepartmentsByBillingAccountIDClientAPI
+type DepartmentsClientAPI = original.DepartmentsClientAPI
+type EnrollmentAccountsByBillingAccountIDClientAPI = original.EnrollmentAccountsByBillingAccountIDClientAPI
 type EnrollmentAccountsClientAPI = original.EnrollmentAccountsClientAPI
-type InvoicesClientAPI = original.InvoicesClientAPI
+type InvoiceClientAPI = original.InvoiceClientAPI
+type InvoicePricesheetClientAPI = original.InvoicePricesheetClientAPI
+type InvoiceSectionsByBillingAccountIDClientAPI = original.InvoiceSectionsByBillingAccountIDClientAPI
+type InvoiceSectionsClientAPI = original.InvoiceSectionsClientAPI
+type InvoiceSectionsWithCreateSubscriptionPermissionClientAPI = original.InvoiceSectionsWithCreateSubscriptionPermissionClientAPI
+type InvoicesByBillingAccountClientAPI = original.InvoicesByBillingAccountClientAPI
+type InvoicesByBillingProfileClientAPI = original.InvoicesByBillingProfileClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type PeriodsClientAPI = original.PeriodsClientAPI
+type PaymentMethodsByBillingProfileClientAPI = original.PaymentMethodsByBillingProfileClientAPI
+type PolicyClientAPI = original.PolicyClientAPI
+type ProductsByBillingAccountClientAPI = original.ProductsByBillingAccountClientAPI
+type ProductsByBillingSubscriptionsClientAPI = original.ProductsByBillingSubscriptionsClientAPI
+type ProductsByInvoiceSectionClientAPI = original.ProductsByInvoiceSectionClientAPI
+type ProductsClientAPI = original.ProductsClientAPI
+type ProfilesByBillingAccountIDClientAPI = original.ProfilesByBillingAccountIDClientAPI
+type ProfilesClientAPI = original.ProfilesClientAPI
+type PropertyClientAPI = original.PropertyClientAPI
+type SubscriptionClientAPI = original.SubscriptionClientAPI
+type SubscriptionsByBillingProfileClientAPI = original.SubscriptionsByBillingProfileClientAPI
+type SubscriptionsByInvoiceSectionClientAPI = original.SubscriptionsByInvoiceSectionClientAPI
+type TransactionsByBillingAccountClientAPI = original.TransactionsByBillingAccountClientAPI

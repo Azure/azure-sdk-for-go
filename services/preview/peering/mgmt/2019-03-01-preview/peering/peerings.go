@@ -47,7 +47,7 @@ func NewPeeringsClientWithBaseURI(baseURI string, subscriptionID string) Peering
 // resourceGroupName - the name of the resource group.
 // peeringName - the name of the peering.
 // peering - the properties needed to create or update a peering.
-func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering Model) (result Model, err error) {
+func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering BasicModel) (result ModelModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.CreateOrUpdate")
 		defer func() {
@@ -61,6 +61,7 @@ func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: peering,
 			Constraints: []validation.Constraint{{Target: "peering.Sku", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "peering.Properties", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "peering.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("peering.PeeringsClient", "CreateOrUpdate", err.Error())
 	}
@@ -87,7 +88,7 @@ func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PeeringsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, peeringName string, peering Model) (*http.Request, error) {
+func (client PeeringsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, peeringName string, peering BasicModel) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -118,7 +119,7 @@ func (client PeeringsClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PeeringsClient) CreateOrUpdateResponder(resp *http.Response) (result Model, err error) {
+func (client PeeringsClient) CreateOrUpdateResponder(resp *http.Response) (result ModelModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -209,7 +210,7 @@ func (client PeeringsClient) DeleteResponder(resp *http.Response) (result autore
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // peeringName - the name of the peering.
-func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, peeringName string) (result Model, err error) {
+func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, peeringName string) (result ModelModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.Get")
 		defer func() {
@@ -271,7 +272,7 @@ func (client PeeringsClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PeeringsClient) GetResponder(resp *http.Response) (result Model, err error) {
+func (client PeeringsClient) GetResponder(resp *http.Response) (result ModelModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -510,7 +511,7 @@ func (client PeeringsClient) ListBySubscriptionComplete(ctx context.Context) (re
 // resourceGroupName - the name of the resource group.
 // peeringName - the name of the peering.
 // tags - the resource tags.
-func (client PeeringsClient) Update(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags) (result Model, err error) {
+func (client PeeringsClient) Update(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags) (result ModelModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.Update")
 		defer func() {
@@ -574,7 +575,7 @@ func (client PeeringsClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client PeeringsClient) UpdateResponder(resp *http.Response) (result Model, err error) {
+func (client PeeringsClient) UpdateResponder(resp *http.Response) (result ModelModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

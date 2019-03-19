@@ -75,15 +75,26 @@ func PossibleFamilyValues() []Family {
 type Kind string
 
 const (
-	// KindDirect ...
-	KindDirect Kind = "Direct"
-	// KindExchange ...
-	KindExchange Kind = "Exchange"
+	// KindPeering ...
+	KindPeering Kind = "Peering"
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{KindDirect, KindExchange}
+	return []Kind{KindPeering}
+}
+
+// KindBasicLocation enumerates the values for kind basic location.
+type KindBasicLocation string
+
+const (
+	// KindPeeringLocation ...
+	KindPeeringLocation KindBasicLocation = "PeeringLocation"
+)
+
+// PossibleKindBasicLocationValues returns an array of possible values for the KindBasicLocation const type.
+func PossibleKindBasicLocationValues() []KindBasicLocation {
+	return []KindBasicLocation{KindPeeringLocation}
 }
 
 // Name enumerates the values for name.
@@ -345,9 +356,41 @@ type ExchangePeeringFacility struct {
 type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of peerings.
-	Value *[]Model `json:"value,omitempty"`
+	Value *[]BasicModel `json:"value,omitempty"`
 	// NextLink - The link to fetch the next page of peerings.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ListResult struct.
+func (lr *ListResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicModelArray(*v)
+				if err != nil {
+					return err
+				}
+				lr.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				lr.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
 }
 
 // ListResultIterator provides access to a complete listing of Model values.
@@ -401,7 +444,7 @@ func (iter ListResultIterator) Response() ListResult {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ListResultIterator) Value() Model {
+func (iter ListResultIterator) Value() BasicModel {
 	if !iter.page.NotDone() {
 		return Model{}
 	}
@@ -430,7 +473,7 @@ func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, err
 		autorest.WithBaseURL(to.String(lr.NextLink)))
 }
 
-// ListResultPage contains a page of Model values.
+// ListResultPage contains a page of BasicModel values.
 type ListResultPage struct {
 	fn func(context.Context, ListResult) (ListResult, error)
 	lr ListResult
@@ -475,7 +518,7 @@ func (page ListResultPage) Response() ListResult {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ListResultPage) Values() []Model {
+func (page ListResultPage) Values() []BasicModel {
 	if page.lr.IsEmpty() {
 		return nil
 	}
@@ -487,10 +530,13 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 	return ListResultPage{fn: getNextPage}
 }
 
+// BasicLocation peering location is where connectivity could be established to the Microsoft Cloud Edge.
+type BasicLocation interface {
+	AsLocation() (*Location, bool)
+}
+
 // Location peering location is where connectivity could be established to the Microsoft Cloud Edge.
 type Location struct {
-	// Kind - The kind of peering that the peering location supports. Possible values include: 'KindDirect', 'KindExchange'
-	Kind Kind `json:"kind,omitempty"`
 	// LocationProperties - The properties that define a peering location.
 	*LocationProperties `json:"properties,omitempty"`
 	// Name - The name of the resource.
@@ -499,14 +545,47 @@ type Location struct {
 	ID *string `json:"id,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindPeeringLocation'
+	Kind KindBasicLocation `json:"kind,omitempty"`
+}
+
+func unmarshalBasicLocation(body []byte) (BasicLocation, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	default:
+		var l Location
+		err := json.Unmarshal(body, &l)
+		return l, err
+	}
+}
+func unmarshalBasicLocationArray(body []byte) ([]BasicLocation, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	lArray := make([]BasicLocation, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		l, err := unmarshalBasicLocation(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		lArray[index] = l
+	}
+	return lArray, nil
 }
 
 // MarshalJSON is the custom marshaler for Location.
 func (l Location) MarshalJSON() ([]byte, error) {
+	l.Kind = KindPeeringLocation
 	objectMap := make(map[string]interface{})
-	if l.Kind != "" {
-		objectMap["kind"] = l.Kind
-	}
 	if l.LocationProperties != nil {
 		objectMap["properties"] = l.LocationProperties
 	}
@@ -519,7 +598,20 @@ func (l Location) MarshalJSON() ([]byte, error) {
 	if l.Type != nil {
 		objectMap["type"] = l.Type
 	}
+	if l.Kind != "" {
+		objectMap["kind"] = l.Kind
+	}
 	return json.Marshal(objectMap)
+}
+
+// AsLocation is the BasicLocation implementation for Location.
+func (l Location) AsLocation() (*Location, bool) {
+	return &l, true
+}
+
+// AsBasicLocation is the BasicLocation implementation for Location.
+func (l Location) AsBasicLocation() (BasicLocation, bool) {
+	return &l, true
 }
 
 // UnmarshalJSON is the custom unmarshaler for Location struct.
@@ -531,15 +623,6 @@ func (l *Location) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "kind":
-			if v != nil {
-				var kind Kind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				l.Kind = kind
-			}
 		case "properties":
 			if v != nil {
 				var locationProperties LocationProperties
@@ -576,6 +659,15 @@ func (l *Location) UnmarshalJSON(body []byte) error {
 				}
 				l.Type = &typeVar
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicLocation
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				l.Kind = kind
+			}
 		}
 	}
 
@@ -586,9 +678,41 @@ func (l *Location) UnmarshalJSON(body []byte) error {
 type LocationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of peering locations.
-	Value *[]Location `json:"value,omitempty"`
+	Value *[]BasicLocation `json:"value,omitempty"`
 	// NextLink - The link to fetch the next page of peering locations.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for LocationListResult struct.
+func (llr *LocationListResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicLocationArray(*v)
+				if err != nil {
+					return err
+				}
+				llr.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				llr.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
 }
 
 // LocationListResultIterator provides access to a complete listing of Location values.
@@ -642,7 +766,7 @@ func (iter LocationListResultIterator) Response() LocationListResult {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter LocationListResultIterator) Value() Location {
+func (iter LocationListResultIterator) Value() BasicLocation {
 	if !iter.page.NotDone() {
 		return Location{}
 	}
@@ -671,7 +795,7 @@ func (llr LocationListResult) locationListResultPreparer(ctx context.Context) (*
 		autorest.WithBaseURL(to.String(llr.NextLink)))
 }
 
-// LocationListResultPage contains a page of Location values.
+// LocationListResultPage contains a page of BasicLocation values.
 type LocationListResultPage struct {
 	fn  func(context.Context, LocationListResult) (LocationListResult, error)
 	llr LocationListResult
@@ -716,7 +840,7 @@ func (page LocationListResultPage) Response() LocationListResult {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page LocationListResultPage) Values() []Location {
+func (page LocationListResultPage) Values() []BasicLocation {
 	if page.llr.IsEmpty() {
 		return nil
 	}
@@ -756,14 +880,16 @@ type LocationPropertiesExchange struct {
 	PeeringFacilities *[]ExchangePeeringFacility `json:"peeringFacilities,omitempty"`
 }
 
-// Model peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a
-// location.
+// BasicModel peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
+type BasicModel interface {
+	AsModel() (*Model, bool)
+}
+
+// Model peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
 type Model struct {
 	autorest.Response `json:"-"`
 	// Sku - The SKU that defines the tier and kind of the peering.
 	Sku *Sku `json:"sku,omitempty"`
-	// Kind - The kind of the peering. Possible values include: 'KindDirect', 'KindExchange'
-	Kind Kind `json:"kind,omitempty"`
 	// Properties - The properties that define a peering.
 	*Properties `json:"properties,omitempty"`
 	// Location - The location of the resource.
@@ -776,16 +902,49 @@ type Model struct {
 	ID *string `json:"id,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindPeering'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+func unmarshalBasicModel(body []byte) (BasicModel, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	default:
+		var mVar Model
+		err := json.Unmarshal(body, &mVar)
+		return mVar, err
+	}
+}
+func unmarshalBasicModelArray(body []byte) ([]BasicModel, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mVarArray := make([]BasicModel, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mVar, err := unmarshalBasicModel(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mVarArray[index] = mVar
+	}
+	return mVarArray, nil
 }
 
 // MarshalJSON is the custom marshaler for Model.
 func (mVar Model) MarshalJSON() ([]byte, error) {
+	mVar.Kind = KindPeering
 	objectMap := make(map[string]interface{})
 	if mVar.Sku != nil {
 		objectMap["sku"] = mVar.Sku
-	}
-	if mVar.Kind != "" {
-		objectMap["kind"] = mVar.Kind
 	}
 	if mVar.Properties != nil {
 		objectMap["properties"] = mVar.Properties
@@ -805,7 +964,20 @@ func (mVar Model) MarshalJSON() ([]byte, error) {
 	if mVar.Type != nil {
 		objectMap["type"] = mVar.Type
 	}
+	if mVar.Kind != "" {
+		objectMap["kind"] = mVar.Kind
+	}
 	return json.Marshal(objectMap)
+}
+
+// AsModel is the BasicModel implementation for Model.
+func (mVar Model) AsModel() (*Model, bool) {
+	return &mVar, true
+}
+
+// AsBasicModel is the BasicModel implementation for Model.
+func (mVar Model) AsBasicModel() (BasicModel, bool) {
+	return &mVar, true
 }
 
 // UnmarshalJSON is the custom unmarshaler for Model struct.
@@ -825,15 +997,6 @@ func (mVar *Model) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mVar.Sku = &sku
-			}
-		case "kind":
-			if v != nil {
-				var kind Kind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				mVar.Kind = kind
 			}
 		case "properties":
 			if v != nil {
@@ -889,8 +1052,34 @@ func (mVar *Model) UnmarshalJSON(body []byte) error {
 				}
 				mVar.Type = &typeVar
 			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				mVar.Kind = kind
+			}
 		}
 	}
+
+	return nil
+}
+
+// ModelModel ...
+type ModelModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicModel `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ModelModel struct.
+func (mm *ModelModel) UnmarshalJSON(body []byte) error {
+	mVar, err := unmarshalBasicModel(body)
+	if err != nil {
+		return err
+	}
+	mm.Value = mVar
 
 	return nil
 }
@@ -1319,18 +1508,18 @@ type Properties struct {
 type PropertiesDirect struct {
 	// Connections - The set of connections that constitute a direct peering.
 	Connections *[]DirectConnection `json:"connections,omitempty"`
-	// PeerAsn - The Autonomous System Number (ASN) associated with the peering.
-	PeerAsn *int32 `json:"peerAsn,omitempty"`
 	// UseForPeeringService - The flag that indicates whether or not the peering is used for peering service.
 	UseForPeeringService *bool `json:"useForPeeringService,omitempty"`
+	// PeerAsn - The reference of the peer ASN.
+	PeerAsn *SubResource `json:"peerAsn,omitempty"`
 }
 
 // PropertiesExchange the properties that define an exchange peering.
 type PropertiesExchange struct {
 	// Connections - The set of connections that constitute an exchange peering.
 	Connections *[]ExchangeConnection `json:"connections,omitempty"`
-	// PeerAsn - The Autonomous System Number (ASN) associated with the peering.
-	PeerAsn *int32 `json:"peerAsn,omitempty"`
+	// PeerAsn - The reference of the peer ASN.
+	PeerAsn *SubResource `json:"peerAsn,omitempty"`
 }
 
 // ResourceTags the resource tags.
@@ -1358,4 +1547,10 @@ type Sku struct {
 	Family Family `json:"family,omitempty"`
 	// Size - The size of the peering SKU. Possible values include: 'Free', 'Metered', 'Unlimited'
 	Size Size `json:"size,omitempty"`
+}
+
+// SubResource the sub resource.
+type SubResource struct {
+	// ID - The identifier of the referenced resource.
+	ID *string `json:"id,omitempty"`
 }

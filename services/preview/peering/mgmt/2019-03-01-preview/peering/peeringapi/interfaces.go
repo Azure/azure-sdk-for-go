@@ -56,12 +56,12 @@ var _ LocationsClientAPI = (*peering.LocationsClient)(nil)
 
 // PeeringsClientAPI contains the set of methods on the PeeringsClient type.
 type PeeringsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering peering.Model) (result peering.Model, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering peering.BasicModel) (result peering.ModelModel, err error)
 	Delete(ctx context.Context, resourceGroupName string, peeringName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, peeringName string) (result peering.Model, err error)
+	Get(ctx context.Context, resourceGroupName string, peeringName string) (result peering.ModelModel, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result peering.ListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, peeringName string, tags peering.ResourceTags) (result peering.Model, err error)
+	Update(ctx context.Context, resourceGroupName string, peeringName string, tags peering.ResourceTags) (result peering.ModelModel, err error)
 }
 
 var _ PeeringsClientAPI = (*peering.PeeringsClient)(nil)

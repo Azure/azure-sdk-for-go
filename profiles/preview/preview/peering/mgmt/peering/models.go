@@ -52,8 +52,13 @@ const (
 type Kind = original.Kind
 
 const (
-	KindDirect   Kind = original.KindDirect
-	KindExchange Kind = original.KindExchange
+	KindPeering Kind = original.KindPeering
+)
+
+type KindBasicLocation = original.KindBasicLocation
+
+const (
+	KindPeeringLocation KindBasicLocation = original.KindPeeringLocation
 )
 
 type Name = original.Name
@@ -130,6 +135,8 @@ const (
 
 type BandwidthOffer = original.BandwidthOffer
 type BaseClient = original.BaseClient
+type BasicLocation = original.BasicLocation
+type BasicModel = original.BasicModel
 type BgpSession = original.BgpSession
 type ContactInfo = original.ContactInfo
 type DirectConnection = original.DirectConnection
@@ -150,6 +157,7 @@ type LocationPropertiesDirect = original.LocationPropertiesDirect
 type LocationPropertiesExchange = original.LocationPropertiesExchange
 type LocationsClient = original.LocationsClient
 type Model = original.Model
+type ModelModel = original.ModelModel
 type Operation = original.Operation
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationListResult = original.OperationListResult
@@ -168,6 +176,7 @@ type PropertiesDirect = original.PropertiesDirect
 type PropertiesExchange = original.PropertiesExchange
 type ResourceTags = original.ResourceTags
 type Sku = original.Sku
+type SubResource = original.SubResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -234,6 +243,9 @@ func PossibleConnectionStateValues() []ConnectionState {
 }
 func PossibleFamilyValues() []Family {
 	return original.PossibleFamilyValues()
+}
+func PossibleKindBasicLocationValues() []KindBasicLocation {
+	return original.PossibleKindBasicLocationValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

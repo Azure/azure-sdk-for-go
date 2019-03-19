@@ -32,17 +32,19 @@ type TrainClient struct {
 }
 
 // NewTrainClient creates an instance of the TrainClient client.
-func NewTrainClient(endpoint string) TrainClient {
-	return TrainClient{New(endpoint)}
+func NewTrainClient() TrainClient {
+	return TrainClient{New()}
 }
 
 // GetStatus gets the training status of all models (intents and entities) for the specified LUIS app. You must call
 // the train API to train the LUIS app before you call this API to get training status. "appID" specifies the LUIS app
 // ID. "versionId" specifies the version number of the LUIS app. For example, "0.1".
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versionID string) (result ListModelTrainingInfo, err error) {
+func (client TrainClient) GetStatus(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ListModelTrainingInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TrainClient.GetStatus")
 		defer func() {
@@ -53,7 +55,7 @@ func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetStatusPreparer(ctx, appID, versionID)
+	req, err := client.GetStatusPreparer(ctx, azureRegion, azureCloud, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.TrainClient", "GetStatus", nil, "Failure preparing request")
 		return
@@ -75,9 +77,10 @@ func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versio
 }
 
 // GetStatusPreparer prepares the GetStatus request.
-func (client TrainClient) GetStatusPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client TrainClient) GetStatusPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -87,7 +90,7 @@ func (client TrainClient) GetStatusPreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -118,9 +121,11 @@ func (client TrainClient) GetStatusResponder(resp *http.Response) (result ListMo
 // successfully or are up to date. To verify training success, get the training status at least once after training is
 // complete.
 // Parameters:
+// azureRegion - supported Azure regions for Cognitive Services endpoints
+// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, versionID string) (result EnqueueTrainingResponse, err error) {
+func (client TrainClient) TrainVersion(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result EnqueueTrainingResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TrainClient.TrainVersion")
 		defer func() {
@@ -131,7 +136,7 @@ func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, ver
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TrainVersionPreparer(ctx, appID, versionID)
+	req, err := client.TrainVersionPreparer(ctx, azureRegion, azureCloud, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.TrainClient", "TrainVersion", nil, "Failure preparing request")
 		return
@@ -153,9 +158,10 @@ func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, ver
 }
 
 // TrainVersionPreparer prepares the TrainVersion request.
-func (client TrainClient) TrainVersionPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client TrainClient) TrainVersionPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
+		"AzureCloud":  azureCloud,
+		"AzureRegion": azureRegion,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -165,7 +171,7 @@ func (client TrainClient) TrainVersionPreparer(ctx context.Context, appID uuid.U
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/train", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

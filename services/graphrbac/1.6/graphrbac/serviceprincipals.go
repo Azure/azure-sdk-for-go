@@ -33,13 +33,13 @@ type ServicePrincipalsClient struct {
 }
 
 // NewServicePrincipalsClient creates an instance of the ServicePrincipalsClient client.
-func NewServicePrincipalsClient(tenantID string, applicationID string) ServicePrincipalsClient {
-	return NewServicePrincipalsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
+func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
+	return NewServicePrincipalsClientWithBaseURI(DefaultBaseURI, tenantID)
 }
 
 // NewServicePrincipalsClientWithBaseURI creates an instance of the ServicePrincipalsClient client.
-func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ServicePrincipalsClient {
-	return ServicePrincipalsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
+func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
+	return ServicePrincipalsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
 // Create creates a service principal in the directory.

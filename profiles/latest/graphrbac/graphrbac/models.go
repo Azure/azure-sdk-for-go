@@ -132,8 +132,8 @@ type UserListResultPage = original.UserListResultPage
 type UserUpdateParameters = original.UserUpdateParameters
 type UsersClient = original.UsersClient
 
-func New(tenantID string, applicationID string) BaseClient {
-	return original.New(tenantID, applicationID)
+func New(tenantID string) BaseClient {
+	return original.New(tenantID)
 }
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)
@@ -141,17 +141,17 @@ func NewApplicationListResultIterator(page ApplicationListResultPage) Applicatio
 func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
 	return original.NewApplicationListResultPage(getNextPage)
 }
-func NewApplicationsClient(tenantID string, applicationID string) ApplicationsClient {
-	return original.NewApplicationsClient(tenantID, applicationID)
+func NewApplicationsClient(tenantID string) ApplicationsClient {
+	return original.NewApplicationsClient(tenantID)
 }
-func NewApplicationsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
 }
-func NewDeletedApplicationsClient(tenantID string, applicationID string) DeletedApplicationsClient {
-	return original.NewDeletedApplicationsClient(tenantID, applicationID)
+func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClient(tenantID)
 }
-func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string, applicationID string) DeletedApplicationsClient {
-	return original.NewDeletedApplicationsClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClientWithBaseURI(baseURI, tenantID)
 }
 func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) DirectoryObjectListResultIterator {
 	return original.NewDirectoryObjectListResultIterator(page)
@@ -159,11 +159,11 @@ func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) Di
 func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
 	return original.NewDirectoryObjectListResultPage(getNextPage)
 }
-func NewDomainsClient(tenantID string, applicationID string) DomainsClient {
-	return original.NewDomainsClient(tenantID, applicationID)
+func NewDomainsClient(tenantID string) DomainsClient {
+	return original.NewDomainsClient(tenantID)
 }
-func NewDomainsClientWithBaseURI(baseURI string, tenantID string, applicationID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
 }
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
@@ -171,17 +171,17 @@ func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterato
 func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
 	return original.NewGroupListResultPage(getNextPage)
 }
-func NewGroupsClient(tenantID string, applicationID string) GroupsClient {
-	return original.NewGroupsClient(tenantID, applicationID)
+func NewGroupsClient(tenantID string) GroupsClient {
+	return original.NewGroupsClient(tenantID)
 }
-func NewGroupsClientWithBaseURI(baseURI string, tenantID string, applicationID string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
 }
-func NewOAuth2PermissionGrantClient(tenantID string, applicationID string) OAuth2PermissionGrantClient {
-	return original.NewOAuth2PermissionGrantClient(tenantID, applicationID)
+func NewOAuth2PermissionGrantClient(tenantID string) OAuth2PermissionGrantClient {
+	return original.NewOAuth2PermissionGrantClient(tenantID)
 }
-func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string, applicationID string) OAuth2PermissionGrantClient {
-	return original.NewOAuth2PermissionGrantClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string) OAuth2PermissionGrantClient {
+	return original.NewOAuth2PermissionGrantClientWithBaseURI(baseURI, tenantID)
 }
 func NewOAuth2PermissionGrantListResultIterator(page OAuth2PermissionGrantListResultPage) OAuth2PermissionGrantListResultIterator {
 	return original.NewOAuth2PermissionGrantListResultIterator(page)
@@ -189,11 +189,11 @@ func NewOAuth2PermissionGrantListResultIterator(page OAuth2PermissionGrantListRe
 func NewOAuth2PermissionGrantListResultPage(getNextPage func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)) OAuth2PermissionGrantListResultPage {
 	return original.NewOAuth2PermissionGrantListResultPage(getNextPage)
 }
-func NewObjectsClient(tenantID string, applicationID string) ObjectsClient {
-	return original.NewObjectsClient(tenantID, applicationID)
+func NewObjectsClient(tenantID string) ObjectsClient {
+	return original.NewObjectsClient(tenantID)
 }
-func NewObjectsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ObjectsClient {
-	return original.NewObjectsClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
+	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
 }
 func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
 	return original.NewServicePrincipalListResultIterator(page)
@@ -201,17 +201,17 @@ func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) 
 func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
 	return original.NewServicePrincipalListResultPage(getNextPage)
 }
-func NewServicePrincipalsClient(tenantID string, applicationID string) ServicePrincipalsClient {
-	return original.NewServicePrincipalsClient(tenantID, applicationID)
+func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
+	return original.NewServicePrincipalsClient(tenantID)
 }
-func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ServicePrincipalsClient {
-	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
+	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
 }
-func NewSignedInUserClient(tenantID string, applicationID string) SignedInUserClient {
-	return original.NewSignedInUserClient(tenantID, applicationID)
+func NewSignedInUserClient(tenantID string) SignedInUserClient {
+	return original.NewSignedInUserClient(tenantID)
 }
-func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string, applicationID string) SignedInUserClient {
-	return original.NewSignedInUserClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string) SignedInUserClient {
+	return original.NewSignedInUserClientWithBaseURI(baseURI, tenantID)
 }
 func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
 	return original.NewUserListResultIterator(page)
@@ -219,14 +219,14 @@ func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
 func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
 	return original.NewUserListResultPage(getNextPage)
 }
-func NewUsersClient(tenantID string, applicationID string) UsersClient {
-	return original.NewUsersClient(tenantID, applicationID)
+func NewUsersClient(tenantID string) UsersClient {
+	return original.NewUsersClient(tenantID)
 }
-func NewUsersClientWithBaseURI(baseURI string, tenantID string, applicationID string) UsersClient {
-	return original.NewUsersClientWithBaseURI(baseURI, tenantID, applicationID)
+func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
+	return original.NewUsersClientWithBaseURI(baseURI, tenantID)
 }
-func NewWithBaseURI(baseURI string, tenantID string, applicationID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, tenantID, applicationID)
+func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, tenantID)
 }
 func PossibleConsentTypeValues() []ConsentType {
 	return original.PossibleConsentTypeValues()

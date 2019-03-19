@@ -33,13 +33,13 @@ type ApplicationsClient struct {
 }
 
 // NewApplicationsClient creates an instance of the ApplicationsClient client.
-func NewApplicationsClient(tenantID string, applicationID string) ApplicationsClient {
-	return NewApplicationsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
+func NewApplicationsClient(tenantID string) ApplicationsClient {
+	return NewApplicationsClientWithBaseURI(DefaultBaseURI, tenantID)
 }
 
 // NewApplicationsClientWithBaseURI creates an instance of the ApplicationsClient client.
-func NewApplicationsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ApplicationsClient {
-	return ApplicationsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
+func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
+	return ApplicationsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
 // AddOwner add an owner to an application.
@@ -142,8 +142,7 @@ func (client ApplicationsClient) Create(ctx context.Context, parameters Applicat
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.IdentifierUris", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.DisplayName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("graphrbac.ApplicationsClient", "Create", err.Error())
 	}
 
@@ -359,7 +358,9 @@ func (client ApplicationsClient) GetResponder(resp *http.Response) (result Appli
 }
 
 // GetServicePrincipalsIDByAppID gets an object id for a given application id from the current tenant.
-func (client ApplicationsClient) GetServicePrincipalsIDByAppID(ctx context.Context) (result ServicePrincipalObjectResult, err error) {
+// Parameters:
+// applicationID - the application ID.
+func (client ApplicationsClient) GetServicePrincipalsIDByAppID(ctx context.Context, applicationID string) (result ServicePrincipalObjectResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.GetServicePrincipalsIDByAppID")
 		defer func() {
@@ -370,7 +371,7 @@ func (client ApplicationsClient) GetServicePrincipalsIDByAppID(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetServicePrincipalsIDByAppIDPreparer(ctx)
+	req, err := client.GetServicePrincipalsIDByAppIDPreparer(ctx, applicationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "GetServicePrincipalsIDByAppID", nil, "Failure preparing request")
 		return
@@ -392,9 +393,9 @@ func (client ApplicationsClient) GetServicePrincipalsIDByAppID(ctx context.Conte
 }
 
 // GetServicePrincipalsIDByAppIDPreparer prepares the GetServicePrincipalsIDByAppID request.
-func (client ApplicationsClient) GetServicePrincipalsIDByAppIDPreparer(ctx context.Context) (*http.Request, error) {
+func (client ApplicationsClient) GetServicePrincipalsIDByAppIDPreparer(ctx context.Context, applicationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationID": autorest.Encode("path", client.ApplicationID),
+		"applicationID": autorest.Encode("path", applicationID),
 		"tenantID":      autorest.Encode("path", client.TenantID),
 	}
 

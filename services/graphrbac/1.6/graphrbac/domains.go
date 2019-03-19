@@ -31,13 +31,13 @@ type DomainsClient struct {
 }
 
 // NewDomainsClient creates an instance of the DomainsClient client.
-func NewDomainsClient(tenantID string, applicationID string) DomainsClient {
-	return NewDomainsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
+func NewDomainsClient(tenantID string) DomainsClient {
+	return NewDomainsClientWithBaseURI(DefaultBaseURI, tenantID)
 }
 
 // NewDomainsClientWithBaseURI creates an instance of the DomainsClient client.
-func NewDomainsClientWithBaseURI(baseURI string, tenantID string, applicationID string) DomainsClient {
-	return DomainsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
+func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
+	return DomainsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
 // Get gets a specific domain in the current tenant.

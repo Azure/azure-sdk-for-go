@@ -32,13 +32,13 @@ type ObjectsClient struct {
 }
 
 // NewObjectsClient creates an instance of the ObjectsClient client.
-func NewObjectsClient(tenantID string, applicationID string) ObjectsClient {
-	return NewObjectsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
+func NewObjectsClient(tenantID string) ObjectsClient {
+	return NewObjectsClientWithBaseURI(DefaultBaseURI, tenantID)
 }
 
 // NewObjectsClientWithBaseURI creates an instance of the ObjectsClient client.
-func NewObjectsClientWithBaseURI(baseURI string, tenantID string, applicationID string) ObjectsClient {
-	return ObjectsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
+func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
+	return ObjectsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
 // GetObjectsByObjectIds gets the directory objects specified in a list of object IDs. You can also specify which

@@ -32,13 +32,13 @@ type DeletedApplicationsClient struct {
 }
 
 // NewDeletedApplicationsClient creates an instance of the DeletedApplicationsClient client.
-func NewDeletedApplicationsClient(tenantID string, applicationID string) DeletedApplicationsClient {
-	return NewDeletedApplicationsClientWithBaseURI(DefaultBaseURI, tenantID, applicationID)
+func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
+	return NewDeletedApplicationsClientWithBaseURI(DefaultBaseURI, tenantID)
 }
 
 // NewDeletedApplicationsClientWithBaseURI creates an instance of the DeletedApplicationsClient client.
-func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string, applicationID string) DeletedApplicationsClient {
-	return DeletedApplicationsClient{NewWithBaseURI(baseURI, tenantID, applicationID)}
+func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
+	return DeletedApplicationsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
 // HardDelete hard-delete an application.

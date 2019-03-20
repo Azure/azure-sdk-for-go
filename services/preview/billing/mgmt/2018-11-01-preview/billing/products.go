@@ -42,10 +42,10 @@ func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) Product
 
 // Get get a single product by name.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
 // productName - invoide Id.
-func (client ProductsClient) Get(ctx context.Context, billingAccountID string, invoiceSectionID string, productName string) (result ProductSummary, err error) {
+func (client ProductsClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string) (result ProductSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.Get")
 		defer func() {
@@ -56,7 +56,7 @@ func (client ProductsClient) Get(ctx context.Context, billingAccountID string, i
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, invoiceSectionID, productName)
+	req, err := client.GetPreparer(ctx, billingAccountName, invoiceSectionName, productName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,11 +78,11 @@ func (client ProductsClient) Get(ctx context.Context, billingAccountID string, i
 }
 
 // GetPreparer prepares the Get request.
-func (client ProductsClient) GetPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, productName string) (*http.Request, error) {
+func (client ProductsClient) GetPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
-		"productName":      autorest.Encode("path", productName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+		"productName":        autorest.Encode("path", productName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,7 +93,7 @@ func (client ProductsClient) GetPreparer(ctx context.Context, billingAccountID s
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products/{productName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -120,11 +120,11 @@ func (client ProductsClient) GetResponder(resp *http.Response) (result ProductSu
 
 // Transfer the operation to transfer a Product to another InvoiceSection.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
 // productName - invoide Id.
 // parameters - parameters supplied to the Transfer Product operation.
-func (client ProductsClient) Transfer(ctx context.Context, billingAccountID string, invoiceSectionID string, productName string, parameters TransferProductRequestProperties) (result ProductSummary, err error) {
+func (client ProductsClient) Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (result ProductSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.Transfer")
 		defer func() {
@@ -135,7 +135,7 @@ func (client ProductsClient) Transfer(ctx context.Context, billingAccountID stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TransferPreparer(ctx, billingAccountID, invoiceSectionID, productName, parameters)
+	req, err := client.TransferPreparer(ctx, billingAccountName, invoiceSectionName, productName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "Transfer", nil, "Failure preparing request")
 		return
@@ -157,11 +157,11 @@ func (client ProductsClient) Transfer(ctx context.Context, billingAccountID stri
 }
 
 // TransferPreparer prepares the Transfer request.
-func (client ProductsClient) TransferPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, productName string, parameters TransferProductRequestProperties) (*http.Request, error) {
+func (client ProductsClient) TransferPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
-		"productName":      autorest.Encode("path", productName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+		"productName":        autorest.Encode("path", productName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -173,7 +173,7 @@ func (client ProductsClient) TransferPreparer(ctx context.Context, billingAccoun
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products/{productName}/transfer", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/transfer", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

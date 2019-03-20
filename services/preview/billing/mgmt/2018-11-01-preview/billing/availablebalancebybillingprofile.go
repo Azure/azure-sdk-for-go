@@ -42,11 +42,11 @@ func NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI string, subscr
 	return AvailableBalanceByBillingProfileClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get the latest available credit balance for a given billingAccountId and billingProfileId.
+// Get the latest available credit balance for a given billingAccountName and billingProfileName.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
-func (client AvailableBalanceByBillingProfileClient) Get(ctx context.Context, billingAccountID string, billingProfileID string) (result AvailableBalance, err error) {
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
+func (client AvailableBalanceByBillingProfileClient) Get(ctx context.Context, billingAccountName string, billingProfileName string) (result AvailableBalance, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AvailableBalanceByBillingProfileClient.Get")
 		defer func() {
@@ -57,7 +57,7 @@ func (client AvailableBalanceByBillingProfileClient) Get(ctx context.Context, bi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, billingProfileID)
+	req, err := client.GetPreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AvailableBalanceByBillingProfileClient", "Get", nil, "Failure preparing request")
 		return
@@ -79,10 +79,10 @@ func (client AvailableBalanceByBillingProfileClient) Get(ctx context.Context, bi
 }
 
 // GetPreparer prepares the Get request.
-func (client AvailableBalanceByBillingProfileClient) GetPreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
+func (client AvailableBalanceByBillingProfileClient) GetPreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,7 +93,7 @@ func (client AvailableBalanceByBillingProfileClient) GetPreparer(ctx context.Con
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/availableBalance/default", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/availableBalance/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

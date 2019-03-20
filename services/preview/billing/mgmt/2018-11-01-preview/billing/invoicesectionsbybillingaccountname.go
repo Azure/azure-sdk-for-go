@@ -25,31 +25,31 @@ import (
 	"net/http"
 )
 
-// InvoiceSectionsByBillingAccountIDClient is the billing client provides access to billing resources for Azure
+// InvoiceSectionsByBillingAccountNameClient is the billing client provides access to billing resources for Azure
 // subscriptions.
-type InvoiceSectionsByBillingAccountIDClient struct {
+type InvoiceSectionsByBillingAccountNameClient struct {
 	BaseClient
 }
 
-// NewInvoiceSectionsByBillingAccountIDClient creates an instance of the InvoiceSectionsByBillingAccountIDClient
+// NewInvoiceSectionsByBillingAccountNameClient creates an instance of the InvoiceSectionsByBillingAccountNameClient
 // client.
-func NewInvoiceSectionsByBillingAccountIDClient(subscriptionID string) InvoiceSectionsByBillingAccountIDClient {
-	return NewInvoiceSectionsByBillingAccountIDClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInvoiceSectionsByBillingAccountNameClient(subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
+	return NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoiceSectionsByBillingAccountIDClientWithBaseURI creates an instance of the
-// InvoiceSectionsByBillingAccountIDClient client.
-func NewInvoiceSectionsByBillingAccountIDClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsByBillingAccountIDClient {
-	return InvoiceSectionsByBillingAccountIDClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewInvoiceSectionsByBillingAccountNameClientWithBaseURI creates an instance of the
+// InvoiceSectionsByBillingAccountNameClient client.
+func NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
+	return InvoiceSectionsByBillingAccountNameClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all invoice sections for a user which he has access to.
 // Parameters:
-// billingAccountID - billing Account Id.
+// billingAccountName - billing Account Id.
 // expand - may be used to expand the billingProfiles.
-func (client InvoiceSectionsByBillingAccountIDClient) List(ctx context.Context, billingAccountID string, expand string) (result InvoiceSectionListResult, err error) {
+func (client InvoiceSectionsByBillingAccountNameClient) List(ctx context.Context, billingAccountName string, expand string) (result InvoiceSectionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsByBillingAccountIDClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsByBillingAccountNameClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -58,31 +58,31 @@ func (client InvoiceSectionsByBillingAccountIDClient) List(ctx context.Context, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountID, expand)
+	req, err := client.ListPreparer(ctx, billingAccountName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingAccountIDClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingAccountNameClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingAccountIDClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingAccountNameClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingAccountIDClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingAccountNameClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client InvoiceSectionsByBillingAccountIDClient) ListPreparer(ctx context.Context, billingAccountID string, expand string) (*http.Request, error) {
+func (client InvoiceSectionsByBillingAccountNameClient) ListPreparer(ctx context.Context, billingAccountName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -96,21 +96,21 @@ func (client InvoiceSectionsByBillingAccountIDClient) ListPreparer(ctx context.C
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoiceSectionsByBillingAccountIDClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client InvoiceSectionsByBillingAccountNameClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client InvoiceSectionsByBillingAccountIDClient) ListResponder(resp *http.Response) (result InvoiceSectionListResult, err error) {
+func (client InvoiceSectionsByBillingAccountNameClient) ListResponder(resp *http.Response) (result InvoiceSectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -42,10 +42,10 @@ func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string) InvoiceC
 
 // Get get the invoice by id.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
 // invoiceName - invoide Id.
-func (client InvoiceClient) Get(ctx context.Context, billingAccountID string, billingProfileID string, invoiceName string) (result InvoiceSummary, err error) {
+func (client InvoiceClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceName string) (result InvoiceSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceClient.Get")
 		defer func() {
@@ -56,7 +56,7 @@ func (client InvoiceClient) Get(ctx context.Context, billingAccountID string, bi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, billingProfileID, invoiceName)
+	req, err := client.GetPreparer(ctx, billingAccountName, billingProfileName, invoiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,11 +78,11 @@ func (client InvoiceClient) Get(ctx context.Context, billingAccountID string, bi
 }
 
 // GetPreparer prepares the Get request.
-func (client InvoiceClient) GetPreparer(ctx context.Context, billingAccountID string, billingProfileID string, invoiceName string) (*http.Request, error) {
+func (client InvoiceClient) GetPreparer(ctx context.Context, billingAccountName string, billingProfileName string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
-		"invoiceName":      autorest.Encode("path", invoiceName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
+		"invoiceName":        autorest.Encode("path", invoiceName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,7 +93,7 @@ func (client InvoiceClient) GetPreparer(ctx context.Context, billingAccountID st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoices/{invoiceName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices/{invoiceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

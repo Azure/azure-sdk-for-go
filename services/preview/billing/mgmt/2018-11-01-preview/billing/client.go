@@ -54,16 +54,16 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	}
 }
 
-// TransactionsByBillingProfile lists the transactions by billingProfileId for given start date and end date.
+// TransactionsByBillingProfile lists the transactions by billingProfileName for given start date and end date.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
 // startDate - start date
 // endDate - end date
 // filter - may be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and
 // 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
 // and value is separated by a colon (:).
-func (client BaseClient) TransactionsByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, filter string) (result TransactionsListResult, err error) {
+func (client BaseClient) TransactionsByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, startDate string, endDate string, filter string) (result TransactionsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.TransactionsByBillingProfile")
 		defer func() {
@@ -74,7 +74,7 @@ func (client BaseClient) TransactionsByBillingProfile(ctx context.Context, billi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TransactionsByBillingProfilePreparer(ctx, billingAccountID, billingProfileID, startDate, endDate, filter)
+	req, err := client.TransactionsByBillingProfilePreparer(ctx, billingAccountName, billingProfileName, startDate, endDate, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.BaseClient", "TransactionsByBillingProfile", nil, "Failure preparing request")
 		return
@@ -96,10 +96,10 @@ func (client BaseClient) TransactionsByBillingProfile(ctx context.Context, billi
 }
 
 // TransactionsByBillingProfilePreparer prepares the TransactionsByBillingProfile request.
-func (client BaseClient) TransactionsByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, filter string) (*http.Request, error) {
+func (client BaseClient) TransactionsByBillingProfilePreparer(ctx context.Context, billingAccountName string, billingProfileName string, startDate string, endDate string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -115,7 +115,7 @@ func (client BaseClient) TransactionsByBillingProfilePreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/transactions", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -142,10 +142,10 @@ func (client BaseClient) TransactionsByBillingProfileResponder(resp *http.Respon
 
 // UpdateAutoRenewForBillingAccount cancel product by product id
 // Parameters:
-// billingAccountID - billing Account Id.
+// billingAccountName - billing Account Id.
 // productName - invoide Id.
 // body - update auto renew request parameters.
-func (client BaseClient) UpdateAutoRenewForBillingAccount(ctx context.Context, billingAccountID string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
+func (client BaseClient) UpdateAutoRenewForBillingAccount(ctx context.Context, billingAccountName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateAutoRenewForBillingAccount")
 		defer func() {
@@ -156,7 +156,7 @@ func (client BaseClient) UpdateAutoRenewForBillingAccount(ctx context.Context, b
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateAutoRenewForBillingAccountPreparer(ctx, billingAccountID, productName, body)
+	req, err := client.UpdateAutoRenewForBillingAccountPreparer(ctx, billingAccountName, productName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.BaseClient", "UpdateAutoRenewForBillingAccount", nil, "Failure preparing request")
 		return
@@ -178,10 +178,10 @@ func (client BaseClient) UpdateAutoRenewForBillingAccount(ctx context.Context, b
 }
 
 // UpdateAutoRenewForBillingAccountPreparer prepares the UpdateAutoRenewForBillingAccount request.
-func (client BaseClient) UpdateAutoRenewForBillingAccountPreparer(ctx context.Context, billingAccountID string, productName string, body UpdateAutoRenewRequest) (*http.Request, error) {
+func (client BaseClient) UpdateAutoRenewForBillingAccountPreparer(ctx context.Context, billingAccountName string, productName string, body UpdateAutoRenewRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"productName":      autorest.Encode("path", productName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"productName":        autorest.Encode("path", productName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -193,7 +193,7 @@ func (client BaseClient) UpdateAutoRenewForBillingAccountPreparer(ctx context.Co
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/products/{productName}/updateAutoRenew", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/updateAutoRenew", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -221,11 +221,11 @@ func (client BaseClient) UpdateAutoRenewForBillingAccountResponder(resp *http.Re
 
 // UpdateAutoRenewForInvoiceSection cancel auto renew for product by product id
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
 // productName - invoide Id.
 // body - update auto renew request parameters.
-func (client BaseClient) UpdateAutoRenewForInvoiceSection(ctx context.Context, billingAccountID string, invoiceSectionID string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
+func (client BaseClient) UpdateAutoRenewForInvoiceSection(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateAutoRenewForInvoiceSection")
 		defer func() {
@@ -236,7 +236,7 @@ func (client BaseClient) UpdateAutoRenewForInvoiceSection(ctx context.Context, b
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateAutoRenewForInvoiceSectionPreparer(ctx, billingAccountID, invoiceSectionID, productName, body)
+	req, err := client.UpdateAutoRenewForInvoiceSectionPreparer(ctx, billingAccountName, invoiceSectionName, productName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.BaseClient", "UpdateAutoRenewForInvoiceSection", nil, "Failure preparing request")
 		return
@@ -258,11 +258,11 @@ func (client BaseClient) UpdateAutoRenewForInvoiceSection(ctx context.Context, b
 }
 
 // UpdateAutoRenewForInvoiceSectionPreparer prepares the UpdateAutoRenewForInvoiceSection request.
-func (client BaseClient) UpdateAutoRenewForInvoiceSectionPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, productName string, body UpdateAutoRenewRequest) (*http.Request, error) {
+func (client BaseClient) UpdateAutoRenewForInvoiceSectionPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body UpdateAutoRenewRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
-		"productName":      autorest.Encode("path", productName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+		"productName":        autorest.Encode("path", productName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -274,7 +274,7 @@ func (client BaseClient) UpdateAutoRenewForInvoiceSectionPreparer(ctx context.Co
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products/{productName}/updateAutoRenew", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/updateAutoRenew", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

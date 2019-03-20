@@ -42,9 +42,9 @@ func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string
 
 // Download get pricesheet data for invoice id (invoiceName).
 // Parameters:
-// billingAccountID - azure Billing Account ID.
+// billingAccountName - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.
-func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetDownloadFuture, err error) {
+func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccountName string, invoiceName string) (result InvoicePricesheetDownloadFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetClient.Download")
 		defer func() {
@@ -55,7 +55,7 @@ func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DownloadPreparer(ctx, billingAccountID, invoiceName)
+	req, err := client.DownloadPreparer(ctx, billingAccountName, invoiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Download", nil, "Failure preparing request")
 		return
@@ -71,10 +71,10 @@ func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccou
 }
 
 // DownloadPreparer prepares the Download request.
-func (client InvoicePricesheetClient) DownloadPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
+func (client InvoicePricesheetClient) DownloadPreparer(ctx context.Context, billingAccountName string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceName":      autorest.Encode("path", invoiceName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceName":        autorest.Encode("path", invoiceName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -85,7 +85,7 @@ func (client InvoicePricesheetClient) DownloadPreparer(ctx context.Context, bill
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheet/default/download", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/pricesheet/default/download", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

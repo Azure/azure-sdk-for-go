@@ -44,9 +44,9 @@ func NewPaymentMethodsByBillingProfileClientWithBaseURI(baseURI string, subscrip
 
 // List lists the Payment Methods by billing profile Id.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
-func (client PaymentMethodsByBillingProfileClient) List(ctx context.Context, billingAccountID string, billingProfileID string) (result PaymentMethodsListResultPage, err error) {
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
+func (client PaymentMethodsByBillingProfileClient) List(ctx context.Context, billingAccountName string, billingProfileName string) (result PaymentMethodsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PaymentMethodsByBillingProfileClient.List")
 		defer func() {
@@ -58,7 +58,7 @@ func (client PaymentMethodsByBillingProfileClient) List(ctx context.Context, bil
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, billingAccountID, billingProfileID)
+	req, err := client.ListPreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PaymentMethodsByBillingProfileClient", "List", nil, "Failure preparing request")
 		return
@@ -80,10 +80,10 @@ func (client PaymentMethodsByBillingProfileClient) List(ctx context.Context, bil
 }
 
 // ListPreparer prepares the List request.
-func (client PaymentMethodsByBillingProfileClient) ListPreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
+func (client PaymentMethodsByBillingProfileClient) ListPreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -94,7 +94,7 @@ func (client PaymentMethodsByBillingProfileClient) ListPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/paymentMethods", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/paymentMethods", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -141,7 +141,7 @@ func (client PaymentMethodsByBillingProfileClient) listNextResults(ctx context.C
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PaymentMethodsByBillingProfileClient) ListComplete(ctx context.Context, billingAccountID string, billingProfileID string) (result PaymentMethodsListResultIterator, err error) {
+func (client PaymentMethodsByBillingProfileClient) ListComplete(ctx context.Context, billingAccountName string, billingProfileName string) (result PaymentMethodsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PaymentMethodsByBillingProfileClient.List")
 		defer func() {
@@ -152,6 +152,6 @@ func (client PaymentMethodsByBillingProfileClient) ListComplete(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, billingAccountID, billingProfileID)
+	result.page, err = client.List(ctx, billingAccountName, billingProfileName)
 	return
 }

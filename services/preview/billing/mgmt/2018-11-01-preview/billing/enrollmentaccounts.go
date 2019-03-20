@@ -42,12 +42,12 @@ func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID strin
 
 // GetByEnrollmentAccountAccountID get the enrollment account by id.
 // Parameters:
-// billingAccountID - billing Account Id.
-// enrollmentAccountID - enrollment Account Id.
+// billingAccountName - billing Account Id.
+// enrollmentAccountName - enrollment Account Id.
 // expand - may be used to expand the Department.
 // filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
 // 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountID(ctx context.Context, billingAccountID string, enrollmentAccountID string, expand string, filter string) (result EnrollmentAccount, err error) {
+func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountID(ctx context.Context, billingAccountName string, enrollmentAccountName string, expand string, filter string) (result EnrollmentAccount, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnrollmentAccountsClient.GetByEnrollmentAccountAccountID")
 		defer func() {
@@ -58,7 +58,7 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountID(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByEnrollmentAccountAccountIDPreparer(ctx, billingAccountID, enrollmentAccountID, expand, filter)
+	req, err := client.GetByEnrollmentAccountAccountIDPreparer(ctx, billingAccountName, enrollmentAccountName, expand, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountAccountID", nil, "Failure preparing request")
 		return
@@ -80,10 +80,10 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountID(ctx conte
 }
 
 // GetByEnrollmentAccountAccountIDPreparer prepares the GetByEnrollmentAccountAccountID request.
-func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDPreparer(ctx context.Context, billingAccountID string, enrollmentAccountID string, expand string, filter string) (*http.Request, error) {
+func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDPreparer(ctx context.Context, billingAccountName string, enrollmentAccountName string, expand string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId":    autorest.Encode("path", billingAccountID),
-		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
+		"billingAccountName":    autorest.Encode("path", billingAccountName),
+		"enrollmentAccountName": autorest.Encode("path", enrollmentAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -100,7 +100,7 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDPreparer(c
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

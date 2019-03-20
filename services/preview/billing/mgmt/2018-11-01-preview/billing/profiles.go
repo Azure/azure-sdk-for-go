@@ -42,10 +42,10 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 
 // Get get the billing profile by id.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
 // expand - may be used to expand the invoiceSections.
-func (client ProfilesClient) Get(ctx context.Context, billingAccountID string, billingProfileID string, expand string) (result Profile, err error) {
+func (client ProfilesClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, expand string) (result Profile, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Get")
 		defer func() {
@@ -56,7 +56,7 @@ func (client ProfilesClient) Get(ctx context.Context, billingAccountID string, b
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, billingProfileID, expand)
+	req, err := client.GetPreparer(ctx, billingAccountName, billingProfileName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,10 +78,10 @@ func (client ProfilesClient) Get(ctx context.Context, billingAccountID string, b
 }
 
 // GetPreparer prepares the Get request.
-func (client ProfilesClient) GetPreparer(ctx context.Context, billingAccountID string, billingProfileID string, expand string) (*http.Request, error) {
+func (client ProfilesClient) GetPreparer(ctx context.Context, billingAccountName string, billingProfileName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -95,7 +95,7 @@ func (client ProfilesClient) GetPreparer(ctx context.Context, billingAccountID s
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -122,10 +122,10 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 
 // Update the operation to update a billing profile.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
 // parameters - parameters supplied to the update billing profile operation.
-func (client ProfilesClient) Update(ctx context.Context, billingAccountID string, billingProfileID string, parameters Profile) (result ProfilesUpdateFuture, err error) {
+func (client ProfilesClient) Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile) (result ProfilesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Update")
 		defer func() {
@@ -136,7 +136,7 @@ func (client ProfilesClient) Update(ctx context.Context, billingAccountID string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, billingAccountID, billingProfileID, parameters)
+	req, err := client.UpdatePreparer(ctx, billingAccountName, billingProfileName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "Update", nil, "Failure preparing request")
 		return
@@ -152,10 +152,10 @@ func (client ProfilesClient) Update(ctx context.Context, billingAccountID string
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ProfilesClient) UpdatePreparer(ctx context.Context, billingAccountID string, billingProfileID string, parameters Profile) (*http.Request, error) {
+func (client ProfilesClient) UpdatePreparer(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -167,7 +167,7 @@ func (client ProfilesClient) UpdatePreparer(ctx context.Context, billingAccountI
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

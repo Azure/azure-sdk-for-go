@@ -42,9 +42,9 @@ func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // Create the operation to create a InvoiceSection.
 // Parameters:
-// billingAccountID - billing Account Id.
+// billingAccountName - billing Account Id.
 // parameters - parameters supplied to the Create InvoiceSection operation.
-func (client InvoiceSectionsClient) Create(ctx context.Context, billingAccountID string, parameters InvoiceSectionProperties) (result InvoiceSectionsCreateFuture, err error) {
+func (client InvoiceSectionsClient) Create(ctx context.Context, billingAccountName string, parameters InvoiceSectionProperties) (result InvoiceSectionsCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.Create")
 		defer func() {
@@ -55,7 +55,7 @@ func (client InvoiceSectionsClient) Create(ctx context.Context, billingAccountID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, billingAccountID, parameters)
+	req, err := client.CreatePreparer(ctx, billingAccountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Create", nil, "Failure preparing request")
 		return
@@ -71,9 +71,9 @@ func (client InvoiceSectionsClient) Create(ctx context.Context, billingAccountID
 }
 
 // CreatePreparer prepares the Create request.
-func (client InvoiceSectionsClient) CreatePreparer(ctx context.Context, billingAccountID string, parameters InvoiceSectionProperties) (*http.Request, error) {
+func (client InvoiceSectionsClient) CreatePreparer(ctx context.Context, billingAccountName string, parameters InvoiceSectionProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -85,7 +85,7 @@ func (client InvoiceSectionsClient) CreatePreparer(ctx context.Context, billingA
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -119,10 +119,10 @@ func (client InvoiceSectionsClient) CreateResponder(resp *http.Response) (result
 
 // Get get the InvoiceSection by id.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
 // expand - may be used to expand the billingProfiles.
-func (client InvoiceSectionsClient) Get(ctx context.Context, billingAccountID string, invoiceSectionID string, expand string) (result InvoiceSection, err error) {
+func (client InvoiceSectionsClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, expand string) (result InvoiceSection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.Get")
 		defer func() {
@@ -133,7 +133,7 @@ func (client InvoiceSectionsClient) Get(ctx context.Context, billingAccountID st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, invoiceSectionID, expand)
+	req, err := client.GetPreparer(ctx, billingAccountName, invoiceSectionName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -155,10 +155,10 @@ func (client InvoiceSectionsClient) Get(ctx context.Context, billingAccountID st
 }
 
 // GetPreparer prepares the Get request.
-func (client InvoiceSectionsClient) GetPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, expand string) (*http.Request, error) {
+func (client InvoiceSectionsClient) GetPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -172,7 +172,7 @@ func (client InvoiceSectionsClient) GetPreparer(ctx context.Context, billingAcco
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -199,10 +199,10 @@ func (client InvoiceSectionsClient) GetResponder(resp *http.Response) (result In
 
 // Update the operation to update a InvoiceSection.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
 // parameters - parameters supplied to the Create InvoiceSection operation.
-func (client InvoiceSectionsClient) Update(ctx context.Context, billingAccountID string, invoiceSectionID string, parameters InvoiceSection) (result InvoiceSectionsUpdateFuture, err error) {
+func (client InvoiceSectionsClient) Update(ctx context.Context, billingAccountName string, invoiceSectionName string, parameters InvoiceSection) (result InvoiceSectionsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.Update")
 		defer func() {
@@ -213,7 +213,7 @@ func (client InvoiceSectionsClient) Update(ctx context.Context, billingAccountID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, billingAccountID, invoiceSectionID, parameters)
+	req, err := client.UpdatePreparer(ctx, billingAccountName, invoiceSectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "Update", nil, "Failure preparing request")
 		return
@@ -229,10 +229,10 @@ func (client InvoiceSectionsClient) Update(ctx context.Context, billingAccountID
 }
 
 // UpdatePreparer prepares the Update request.
-func (client InvoiceSectionsClient) UpdatePreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, parameters InvoiceSection) (*http.Request, error) {
+func (client InvoiceSectionsClient) UpdatePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, parameters InvoiceSection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -244,7 +244,7 @@ func (client InvoiceSectionsClient) UpdatePreparer(ctx context.Context, billingA
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

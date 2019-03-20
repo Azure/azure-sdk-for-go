@@ -25,30 +25,28 @@ import (
 	"net/http"
 )
 
-// SubscriptionsByInvoiceSectionClient is the billing client provides access to billing resources for Azure
-// subscriptions.
-type SubscriptionsByInvoiceSectionClient struct {
+// ProfilebillingPermissionsClient is the billing client provides access to billing resources for Azure subscriptions.
+type ProfilebillingPermissionsClient struct {
 	BaseClient
 }
 
-// NewSubscriptionsByInvoiceSectionClient creates an instance of the SubscriptionsByInvoiceSectionClient client.
-func NewSubscriptionsByInvoiceSectionClient(subscriptionID string) SubscriptionsByInvoiceSectionClient {
-	return NewSubscriptionsByInvoiceSectionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProfilebillingPermissionsClient creates an instance of the ProfilebillingPermissionsClient client.
+func NewProfilebillingPermissionsClient(subscriptionID string) ProfilebillingPermissionsClient {
+	return NewProfilebillingPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSubscriptionsByInvoiceSectionClientWithBaseURI creates an instance of the SubscriptionsByInvoiceSectionClient
-// client.
-func NewSubscriptionsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsByInvoiceSectionClient {
-	return SubscriptionsByInvoiceSectionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProfilebillingPermissionsClientWithBaseURI creates an instance of the ProfilebillingPermissionsClient client.
+func NewProfilebillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) ProfilebillingPermissionsClient {
+	return ProfilebillingPermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists billing subscription by invoiceSectionName.
+// List lists all billingPermissions for the caller has for a billing account.
 // Parameters:
 // billingAccountName - billing Account Id.
-// invoiceSectionName - invoiceSection Id.
-func (client SubscriptionsByInvoiceSectionClient) List(ctx context.Context, billingAccountName string, invoiceSectionName string) (result SubscriptionsListResult, err error) {
+// billingProfileName - billing Profile Id.
+func (client ProfilebillingPermissionsClient) List(ctx context.Context, billingAccountName string, billingProfileName string) (result PermissionsListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsByInvoiceSectionClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilebillingPermissionsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -57,32 +55,32 @@ func (client SubscriptionsByInvoiceSectionClient) List(ctx context.Context, bill
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountName, invoiceSectionName)
+	req, err := client.ListPreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionsByInvoiceSectionClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilebillingPermissionsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionsByInvoiceSectionClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilebillingPermissionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionsByInvoiceSectionClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilebillingPermissionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client SubscriptionsByInvoiceSectionClient) ListPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
+func (client ProfilebillingPermissionsClient) ListPreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
-		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,21 +91,21 @@ func (client SubscriptionsByInvoiceSectionClient) ListPreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Billing/billingPermissions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client SubscriptionsByInvoiceSectionClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProfilebillingPermissionsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SubscriptionsByInvoiceSectionClient) ListResponder(resp *http.Response) (result SubscriptionsListResult, err error) {
+func (client ProfilebillingPermissionsClient) ListResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

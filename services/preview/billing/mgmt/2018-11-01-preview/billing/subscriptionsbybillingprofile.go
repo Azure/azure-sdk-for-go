@@ -42,11 +42,11 @@ func NewSubscriptionsByBillingProfileClientWithBaseURI(baseURI string, subscript
 	return SubscriptionsByBillingProfileClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists billing subscriptions by billingProfileId.
+// List lists billing subscriptions by billingProfileName.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
-func (client SubscriptionsByBillingProfileClient) List(ctx context.Context, billingAccountID string, billingProfileID string) (result SubscriptionsListResult, err error) {
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
+func (client SubscriptionsByBillingProfileClient) List(ctx context.Context, billingAccountName string, billingProfileName string) (result SubscriptionsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsByBillingProfileClient.List")
 		defer func() {
@@ -57,7 +57,7 @@ func (client SubscriptionsByBillingProfileClient) List(ctx context.Context, bill
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountID, billingProfileID)
+	req, err := client.ListPreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsByBillingProfileClient", "List", nil, "Failure preparing request")
 		return
@@ -79,10 +79,10 @@ func (client SubscriptionsByBillingProfileClient) List(ctx context.Context, bill
 }
 
 // ListPreparer prepares the List request.
-func (client SubscriptionsByBillingProfileClient) ListPreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
+func (client SubscriptionsByBillingProfileClient) ListPreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,7 +93,7 @@ func (client SubscriptionsByBillingProfileClient) ListPreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfile/{billingProfileId}/billingSubscriptions", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfile/{billingProfileName}/billingSubscriptions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

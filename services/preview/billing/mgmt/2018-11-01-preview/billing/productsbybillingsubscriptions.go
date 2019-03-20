@@ -42,10 +42,10 @@ func NewProductsByBillingSubscriptionsClientWithBaseURI(baseURI string, subscrip
 	return ProductsByBillingSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists billing subscriptions by billingAccountId.
+// List lists billing subscriptions by billingAccountName.
 // Parameters:
-// billingAccountID - billing Account Id.
-func (client ProductsByBillingSubscriptionsClient) List(ctx context.Context, billingAccountID string) (result SubscriptionsListResultPage, err error) {
+// billingAccountName - billing Account Id.
+func (client ProductsByBillingSubscriptionsClient) List(ctx context.Context, billingAccountName string) (result SubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsByBillingSubscriptionsClient.List")
 		defer func() {
@@ -57,7 +57,7 @@ func (client ProductsByBillingSubscriptionsClient) List(ctx context.Context, bil
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, billingAccountID)
+	req, err := client.ListPreparer(ctx, billingAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsByBillingSubscriptionsClient", "List", nil, "Failure preparing request")
 		return
@@ -79,9 +79,9 @@ func (client ProductsByBillingSubscriptionsClient) List(ctx context.Context, bil
 }
 
 // ListPreparer prepares the List request.
-func (client ProductsByBillingSubscriptionsClient) ListPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client ProductsByBillingSubscriptionsClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -92,7 +92,7 @@ func (client ProductsByBillingSubscriptionsClient) ListPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingSubscriptions", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -139,7 +139,7 @@ func (client ProductsByBillingSubscriptionsClient) listNextResults(ctx context.C
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProductsByBillingSubscriptionsClient) ListComplete(ctx context.Context, billingAccountID string) (result SubscriptionsListResultIterator, err error) {
+func (client ProductsByBillingSubscriptionsClient) ListComplete(ctx context.Context, billingAccountName string) (result SubscriptionsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsByBillingSubscriptionsClient.List")
 		defer func() {
@@ -150,6 +150,6 @@ func (client ProductsByBillingSubscriptionsClient) ListComplete(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, billingAccountID)
+	result.page, err = client.List(ctx, billingAccountName)
 	return
 }

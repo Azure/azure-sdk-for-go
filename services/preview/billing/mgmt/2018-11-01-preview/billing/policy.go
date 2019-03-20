@@ -40,11 +40,11 @@ func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyCli
 	return PolicyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetByBillingProfile the policy for a given billingAccountId and billingProfileId.
+// GetByBillingProfile the policy for a given billingAccountName and billingProfileName.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
-func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccountID string, billingProfileID string) (result Policy, err error) {
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
+func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result Policy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.GetByBillingProfile")
 		defer func() {
@@ -55,7 +55,7 @@ func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByBillingProfilePreparer(ctx, billingAccountID, billingProfileID)
+	req, err := client.GetByBillingProfilePreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", nil, "Failure preparing request")
 		return
@@ -77,10 +77,10 @@ func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccou
 }
 
 // GetByBillingProfilePreparer prepares the GetByBillingProfile request.
-func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountID string, billingProfileID string) (*http.Request, error) {
+func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -91,7 +91,7 @@ func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, bill
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/policies/default", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -118,10 +118,10 @@ func (client PolicyClient) GetByBillingProfileResponder(resp *http.Response) (re
 
 // Update the operation to update a policy.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
 // parameters - parameters supplied to the update policy operation.
-func (client PolicyClient) Update(ctx context.Context, billingAccountID string, billingProfileID string, parameters Policy) (result Policy, err error) {
+func (client PolicyClient) Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy) (result Policy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Update")
 		defer func() {
@@ -132,7 +132,7 @@ func (client PolicyClient) Update(ctx context.Context, billingAccountID string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, billingAccountID, billingProfileID, parameters)
+	req, err := client.UpdatePreparer(ctx, billingAccountName, billingProfileName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "Update", nil, "Failure preparing request")
 		return
@@ -154,10 +154,10 @@ func (client PolicyClient) Update(ctx context.Context, billingAccountID string, 
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PolicyClient) UpdatePreparer(ctx context.Context, billingAccountID string, billingProfileID string, parameters Policy) (*http.Request, error) {
+func (client PolicyClient) UpdatePreparer(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -169,7 +169,7 @@ func (client PolicyClient) UpdatePreparer(ctx context.Context, billingAccountID 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/policies/default", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

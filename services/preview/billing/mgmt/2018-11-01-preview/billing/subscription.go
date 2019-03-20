@@ -42,10 +42,10 @@ func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) Sub
 
 // Get get a single billing subscription by name.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
-// billingSubscriptionID - billing Subscription Id.
-func (client SubscriptionClient) Get(ctx context.Context, billingAccountID string, invoiceSectionID string, billingSubscriptionID string) (result SubscriptionSummary, err error) {
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
+// billingSubscriptionName - billing Subscription Id.
+func (client SubscriptionClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string) (result SubscriptionSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionClient.Get")
 		defer func() {
@@ -56,7 +56,7 @@ func (client SubscriptionClient) Get(ctx context.Context, billingAccountID strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, invoiceSectionID, billingSubscriptionID)
+	req, err := client.GetPreparer(ctx, billingAccountName, invoiceSectionName, billingSubscriptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,11 +78,11 @@ func (client SubscriptionClient) Get(ctx context.Context, billingAccountID strin
 }
 
 // GetPreparer prepares the Get request.
-func (client SubscriptionClient) GetPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, billingSubscriptionID string) (*http.Request, error) {
+func (client SubscriptionClient) GetPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId":      autorest.Encode("path", billingAccountID),
-		"billingSubscriptionId": autorest.Encode("path", billingSubscriptionID),
-		"invoiceSectionId":      autorest.Encode("path", invoiceSectionID),
+		"billingAccountName":      autorest.Encode("path", billingAccountName),
+		"billingSubscriptionName": autorest.Encode("path", billingSubscriptionName),
+		"invoiceSectionName":      autorest.Encode("path", invoiceSectionName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,7 +93,7 @@ func (client SubscriptionClient) GetPreparer(ctx context.Context, billingAccount
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/billingSubscriptions/{billingSubscriptionId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions/{billingSubscriptionName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -120,10 +120,11 @@ func (client SubscriptionClient) GetResponder(resp *http.Response) (result Subsc
 
 // Transfer transfers the GTM subscription from one invoice section to another within a billing account.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
+// billingSubscriptionName - billing Subscription Id.
 // parameters - parameters supplied to the Transfer Billing Subscription operation.
-func (client SubscriptionClient) Transfer(ctx context.Context, billingAccountID string, invoiceSectionID string, parameters TransferBillingSubscriptionRequestProperties) (result SubscriptionTransferFuture, err error) {
+func (client SubscriptionClient) Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters TransferBillingSubscriptionRequestProperties) (result SubscriptionTransferFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionClient.Transfer")
 		defer func() {
@@ -134,7 +135,7 @@ func (client SubscriptionClient) Transfer(ctx context.Context, billingAccountID 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TransferPreparer(ctx, billingAccountID, invoiceSectionID, parameters)
+	req, err := client.TransferPreparer(ctx, billingAccountName, invoiceSectionName, billingSubscriptionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionClient", "Transfer", nil, "Failure preparing request")
 		return
@@ -150,18 +151,18 @@ func (client SubscriptionClient) Transfer(ctx context.Context, billingAccountID 
 }
 
 // TransferPreparer prepares the Transfer request.
-func (client SubscriptionClient) TransferPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, parameters TransferBillingSubscriptionRequestProperties) (*http.Request, error) {
+func (client SubscriptionClient) TransferPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters TransferBillingSubscriptionRequestProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
-		"subscriptionId":   autorest.Encode("path", client.SubscriptionID),
+		"billingAccountName":      autorest.Encode("path", billingAccountName),
+		"billingSubscriptionName": autorest.Encode("path", billingSubscriptionName),
+		"invoiceSectionName":      autorest.Encode("path", invoiceSectionName),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/billingSubscriptions/{subscriptionId}/transfer", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions/{billingSubscriptionName}/transfer", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

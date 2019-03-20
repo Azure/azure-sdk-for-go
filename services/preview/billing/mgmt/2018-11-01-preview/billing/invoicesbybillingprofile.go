@@ -42,11 +42,11 @@ func NewInvoicesByBillingProfileClientWithBaseURI(baseURI string, subscriptionID
 
 // List list of invoices for a billing profile.
 // Parameters:
-// billingAccountID - billing Account Id.
-// billingProfileID - billing Profile Id.
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
 // periodStartDate - invoice period start date.
 // periodEndDate - invoice period end date.
-func (client InvoicesByBillingProfileClient) List(ctx context.Context, billingAccountID string, billingProfileID string, periodStartDate string, periodEndDate string) (result InvoiceListResult, err error) {
+func (client InvoicesByBillingProfileClient) List(ctx context.Context, billingAccountName string, billingProfileName string, periodStartDate string, periodEndDate string) (result InvoiceListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesByBillingProfileClient.List")
 		defer func() {
@@ -57,7 +57,7 @@ func (client InvoicesByBillingProfileClient) List(ctx context.Context, billingAc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountID, billingProfileID, periodStartDate, periodEndDate)
+	req, err := client.ListPreparer(ctx, billingAccountName, billingProfileName, periodStartDate, periodEndDate)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesByBillingProfileClient", "List", nil, "Failure preparing request")
 		return
@@ -79,10 +79,10 @@ func (client InvoicesByBillingProfileClient) List(ctx context.Context, billingAc
 }
 
 // ListPreparer prepares the List request.
-func (client InvoicesByBillingProfileClient) ListPreparer(ctx context.Context, billingAccountID string, billingProfileID string, periodStartDate string, periodEndDate string) (*http.Request, error) {
+func (client InvoicesByBillingProfileClient) ListPreparer(ctx context.Context, billingAccountName string, billingProfileName string, periodStartDate string, periodEndDate string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"billingProfileId": autorest.Encode("path", billingProfileID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -95,7 +95,7 @@ func (client InvoicesByBillingProfileClient) ListPreparer(ctx context.Context, b
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoices", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

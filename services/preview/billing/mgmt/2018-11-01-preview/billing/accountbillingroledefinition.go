@@ -25,28 +25,30 @@ import (
 	"net/http"
 )
 
-// AccountsClient is the billing client provides access to billing resources for Azure subscriptions.
-type AccountsClient struct {
+// AccountbillingRoleDefinitionClient is the billing client provides access to billing resources for Azure
+// subscriptions.
+type AccountbillingRoleDefinitionClient struct {
 	BaseClient
 }
 
-// NewAccountsClient creates an instance of the AccountsClient client.
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAccountbillingRoleDefinitionClient creates an instance of the AccountbillingRoleDefinitionClient client.
+func NewAccountbillingRoleDefinitionClient(subscriptionID string) AccountbillingRoleDefinitionClient {
+	return NewAccountbillingRoleDefinitionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAccountsClientWithBaseURI creates an instance of the AccountsClient client.
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAccountbillingRoleDefinitionClientWithBaseURI creates an instance of the AccountbillingRoleDefinitionClient
+// client.
+func NewAccountbillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) AccountbillingRoleDefinitionClient {
+	return AccountbillingRoleDefinitionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get the billing account by id.
+// Get gets the role definition for a role
 // Parameters:
 // billingAccountName - billing Account Id.
-// expand - may be used to expand the invoiceSections and billingProfiles.
-func (client AccountsClient) Get(ctx context.Context, billingAccountName string, expand string) (result Account, err error) {
+// billingRoleDefinitionName - role definition id.
+func (client AccountbillingRoleDefinitionClient) Get(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingRoleDefinitionClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -55,59 +57,57 @@ func (client AccountsClient) Get(ctx context.Context, billingAccountName string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountName, expand)
+	req, err := client.GetPreparer(ctx, billingAccountName, billingRoleDefinitionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleDefinitionClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleDefinitionClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleDefinitionClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AccountsClient) GetPreparer(ctx context.Context, billingAccountName string, expand string) (*http.Request, error) {
+func (client AccountbillingRoleDefinitionClient) GetPreparer(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingAccountName":        autorest.Encode("path", billingAccountName),
+		"billingRoleDefinitionName": autorest.Encode("path", billingRoleDefinitionName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/providers/Microsoft.Billing/billingRoleDefinitions/{billingRoleDefinitionName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AccountbillingRoleDefinitionClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) GetResponder(resp *http.Response) (result Account, err error) {
+func (client AccountbillingRoleDefinitionClient) GetResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -118,12 +118,12 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result Account, 
 	return
 }
 
-// List lists all billing accounts for a user which he has access to.
+// List lists the role definition for a billing account
 // Parameters:
-// expand - may be used to expand the invoiceSections and billingProfiles.
-func (client AccountsClient) List(ctx context.Context, expand string) (result AccountListResult, err error) {
+// billingAccountName - billing Account Id.
+func (client AccountbillingRoleDefinitionClient) List(ctx context.Context, billingAccountName string) (result RoleDefinitionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingRoleDefinitionClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -132,55 +132,56 @@ func (client AccountsClient) List(ctx context.Context, expand string) (result Ac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, expand)
+	req, err := client.ListPreparer(ctx, billingAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleDefinitionClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleDefinitionClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleDefinitionClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AccountsClient) ListPreparer(ctx context.Context, expand string) (*http.Request, error) {
+func (client AccountbillingRoleDefinitionClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+	}
+
 	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Billing/billingAccounts"),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/providers/Microsoft.Billing/billingRoleDefinitions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AccountbillingRoleDefinitionClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListResponder(resp *http.Response) (result AccountListResult, err error) {
+func (client AccountbillingRoleDefinitionClient) ListResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

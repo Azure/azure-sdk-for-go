@@ -42,15 +42,15 @@ func NewTransactionsByBillingAccountClientWithBaseURI(baseURI string, subscripti
 	return TransactionsByBillingAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists the transactions by billingAccountId for given start and end date.
+// List lists the transactions by billingAccountName for given start and end date.
 // Parameters:
-// billingAccountID - billing Account Id.
+// billingAccountName - billing Account Id.
 // startDate - start date
 // endDate - end date
 // filter - may be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and
 // 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key
 // and value is separated by a colon (:).
-func (client TransactionsByBillingAccountClient) List(ctx context.Context, billingAccountID string, startDate string, endDate string, filter string) (result TransactionsListResultPage, err error) {
+func (client TransactionsByBillingAccountClient) List(ctx context.Context, billingAccountName string, startDate string, endDate string, filter string) (result TransactionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransactionsByBillingAccountClient.List")
 		defer func() {
@@ -62,7 +62,7 @@ func (client TransactionsByBillingAccountClient) List(ctx context.Context, billi
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, billingAccountID, startDate, endDate, filter)
+	req, err := client.ListPreparer(ctx, billingAccountName, startDate, endDate, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsByBillingAccountClient", "List", nil, "Failure preparing request")
 		return
@@ -84,9 +84,9 @@ func (client TransactionsByBillingAccountClient) List(ctx context.Context, billi
 }
 
 // ListPreparer prepares the List request.
-func (client TransactionsByBillingAccountClient) ListPreparer(ctx context.Context, billingAccountID string, startDate string, endDate string, filter string) (*http.Request, error) {
+func (client TransactionsByBillingAccountClient) ListPreparer(ctx context.Context, billingAccountName string, startDate string, endDate string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -102,7 +102,7 @@ func (client TransactionsByBillingAccountClient) ListPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/transactions", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/transactions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -149,7 +149,7 @@ func (client TransactionsByBillingAccountClient) listNextResults(ctx context.Con
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client TransactionsByBillingAccountClient) ListComplete(ctx context.Context, billingAccountID string, startDate string, endDate string, filter string) (result TransactionsListResultIterator, err error) {
+func (client TransactionsByBillingAccountClient) ListComplete(ctx context.Context, billingAccountName string, startDate string, endDate string, filter string) (result TransactionsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransactionsByBillingAccountClient.List")
 		defer func() {
@@ -160,6 +160,6 @@ func (client TransactionsByBillingAccountClient) ListComplete(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, billingAccountID, startDate, endDate, filter)
+	result.page, err = client.List(ctx, billingAccountName, startDate, endDate, filter)
 	return
 }

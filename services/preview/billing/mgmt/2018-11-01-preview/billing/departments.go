@@ -42,12 +42,12 @@ func NewDepartmentsClientWithBaseURI(baseURI string, subscriptionID string) Depa
 
 // Get get the department by id.
 // Parameters:
-// billingAccountID - billing Account Id.
-// departmentID - department Id.
+// billingAccountName - billing Account Id.
+// departmentName - department Id.
 // expand - may be used to expand the enrollmentAccounts.
 // filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
 // 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client DepartmentsClient) Get(ctx context.Context, billingAccountID string, departmentID string, expand string, filter string) (result Department, err error) {
+func (client DepartmentsClient) Get(ctx context.Context, billingAccountName string, departmentName string, expand string, filter string) (result Department, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DepartmentsClient.Get")
 		defer func() {
@@ -58,7 +58,7 @@ func (client DepartmentsClient) Get(ctx context.Context, billingAccountID string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountID, departmentID, expand, filter)
+	req, err := client.GetPreparer(ctx, billingAccountName, departmentName, expand, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "Get", nil, "Failure preparing request")
 		return
@@ -80,10 +80,10 @@ func (client DepartmentsClient) Get(ctx context.Context, billingAccountID string
 }
 
 // GetPreparer prepares the Get request.
-func (client DepartmentsClient) GetPreparer(ctx context.Context, billingAccountID string, departmentID string, expand string, filter string) (*http.Request, error) {
+func (client DepartmentsClient) GetPreparer(ctx context.Context, billingAccountName string, departmentName string, expand string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"departmentId":     autorest.Encode("path", departmentID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"departmentName":     autorest.Encode("path", departmentName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -100,7 +100,7 @@ func (client DepartmentsClient) GetPreparer(ctx context.Context, billingAccountI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

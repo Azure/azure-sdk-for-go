@@ -684,8 +684,8 @@ type EnrollmentAccountContext struct {
 	StartDate *date.Time `json:"startDate,omitempty"`
 	// EndDate - Account End Date
 	EndDate *date.Time `json:"endDate,omitempty"`
-	// EnrollmentAccountID - The enrollment account id.
-	EnrollmentAccountID *string `json:"enrollmentAccountId,omitempty"`
+	// EnrollmentAccountName - The enrollment account id.
+	EnrollmentAccountName *string `json:"enrollmentAccountName,omitempty"`
 }
 
 // EnrollmentAccountListResult result of listing enrollment accounts.
@@ -1472,6 +1472,21 @@ type PaymentProperties struct {
 	Date *date.Time `json:"date,omitempty"`
 }
 
+// Permissions the set of allowed action and not allowed actions a caller has on a billing account
+type Permissions struct {
+	// Actions - The set of actions that the caller is allowed to do
+	Actions *[]string `json:"actions,omitempty"`
+	// NotActions - The set of actions the caller is not allowed to do
+	NotActions *[]string `json:"notActions,omitempty"`
+}
+
+// PermissionsListResult result of list billingPermissions a caller has on a billing account.
+type PermissionsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list OF billingPermissions a caller has on a billing account.
+	Value *[]Permissions `json:"value,omitempty"`
+}
+
 // Policy the Policy.
 type Policy struct {
 	autorest.Response `json:"-"`
@@ -2004,6 +2019,277 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// RoleAssignment a role assignment
+type RoleAssignment struct {
+	autorest.Response `json:"-"`
+	// RoleAssignmentProperties - The role assignment the caller has
+	*RoleAssignmentProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleAssignment.
+func (ra RoleAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ra.RoleAssignmentProperties != nil {
+		objectMap["properties"] = ra.RoleAssignmentProperties
+	}
+	if ra.ID != nil {
+		objectMap["id"] = ra.ID
+	}
+	if ra.Name != nil {
+		objectMap["name"] = ra.Name
+	}
+	if ra.Type != nil {
+		objectMap["type"] = ra.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoleAssignment struct.
+func (ra *RoleAssignment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var roleAssignmentProperties RoleAssignmentProperties
+				err = json.Unmarshal(*v, &roleAssignmentProperties)
+				if err != nil {
+					return err
+				}
+				ra.RoleAssignmentProperties = &roleAssignmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ra.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ra.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ra.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RoleAssignmentListResult result of get list of role assignments
+type RoleAssignmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list role assignments
+	Value *[]RoleAssignment `json:"value,omitempty"`
+}
+
+// RoleAssignmentPayload the payload use to update role assignment on a scope
+type RoleAssignmentPayload struct {
+	// PrincipalID - The user's principal id that the role gets assigned to
+	PrincipalID *string `json:"principalId,omitempty"`
+	// BillingRoleDefinitionName - The role defintion id
+	BillingRoleDefinitionName *string `json:"billingRoleDefinitionName,omitempty"`
+}
+
+// RoleAssignmentProperties the properties of the a role assignment.
+type RoleAssignmentProperties struct {
+	// CreatedOn - the date the role assignment is created
+	CreatedOn *string `json:"createdOn,omitempty"`
+	// CreatedByPrincipalTenantID - the creator's tenant Id
+	CreatedByPrincipalTenantID *string `json:"createdByPrincipalTenantId,omitempty"`
+	// CreatedByPrincipalID - the creator's principal Id
+	CreatedByPrincipalID *string `json:"createdByPrincipalId,omitempty"`
+	// Name - the name of the role assignment
+	Name *string `json:"name,omitempty"`
+	// PrincipalID - The user's principal id that the role gets assigned to
+	PrincipalID *string `json:"principalId,omitempty"`
+	// RoleDefinitionName - The role defintion id
+	RoleDefinitionName *string `json:"roleDefinitionName,omitempty"`
+	// Scope - The scope the role get assigned to
+	Scope *string `json:"scope,omitempty"`
+}
+
+// RoleDefinition result of get role definition for a role.
+type RoleDefinition struct {
+	autorest.Response `json:"-"`
+	// RoleDefinitionProperties - The role definition for a role.
+	*RoleDefinitionProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleDefinition.
+func (rd RoleDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rd.RoleDefinitionProperties != nil {
+		objectMap["properties"] = rd.RoleDefinitionProperties
+	}
+	if rd.ID != nil {
+		objectMap["id"] = rd.ID
+	}
+	if rd.Name != nil {
+		objectMap["name"] = rd.Name
+	}
+	if rd.Type != nil {
+		objectMap["type"] = rd.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoleDefinition struct.
+func (rd *RoleDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var roleDefinitionProperties RoleDefinitionProperties
+				err = json.Unmarshal(*v, &roleDefinitionProperties)
+				if err != nil {
+					return err
+				}
+				rd.RoleDefinitionProperties = &roleDefinitionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rd.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RoleDefinitionListResult list the role definitions.
+type RoleDefinitionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of role definitions.
+	Value *[]RoleDefinition `json:"value,omitempty"`
+}
+
+// RoleDefinitionProperties the properties of the a role definition.
+type RoleDefinitionProperties struct {
+	// Description - The role description
+	Description *string `json:"description,omitempty"`
+	// PermissionsListResult - The billingPermissions the role has
+	*PermissionsListResult `json:"permissions,omitempty"`
+	// RoleName - The name of the role
+	RoleName *string `json:"roleName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleDefinitionProperties.
+func (rdp RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rdp.Description != nil {
+		objectMap["description"] = rdp.Description
+	}
+	if rdp.PermissionsListResult != nil {
+		objectMap["permissions"] = rdp.PermissionsListResult
+	}
+	if rdp.RoleName != nil {
+		objectMap["roleName"] = rdp.RoleName
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoleDefinitionProperties struct.
+func (rdp *RoleDefinitionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				rdp.Description = &description
+			}
+		case "permissions":
+			if v != nil {
+				var permissionsListResult PermissionsListResult
+				err = json.Unmarshal(*v, &permissionsListResult)
+				if err != nil {
+					return err
+				}
+				rdp.PermissionsListResult = &permissionsListResult
+			}
+		case "roleName":
+			if v != nil {
+				var roleName string
+				err = json.Unmarshal(*v, &roleName)
+				if err != nil {
+					return err
+				}
+				rdp.RoleName = &roleName
+			}
+		}
+	}
+
+	return nil
 }
 
 // SubscriptionProperties the usage context properties.
@@ -2591,8 +2877,8 @@ func (tbsr *TransferBillingSubscriptionRequest) UnmarshalJSON(body []byte) error
 
 // TransferBillingSubscriptionRequestProperties request parameters to transfer billing subscription.
 type TransferBillingSubscriptionRequestProperties struct {
-	// DestinationInvoiceSectionID - The destination invoiceSectionId.
-	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
+	// DestinationInvoiceSectionName - The destination invoiceSectionName.
+	DestinationInvoiceSectionName *string `json:"destinationInvoiceSectionName,omitempty"`
 }
 
 // TransferBillingSubscriptionResult request parameters to transfer billing subscription.
@@ -2637,14 +2923,14 @@ func (tbsr *TransferBillingSubscriptionResult) UnmarshalJSON(body []byte) error 
 
 // TransferBillingSubscriptionResultProperties transfer billing subscription result properties.
 type TransferBillingSubscriptionResultProperties struct {
-	// BillingSubscriptionID - The destination billing subscription id.
-	BillingSubscriptionID *string `json:"billingSubscriptionId,omitempty"`
+	// BillingSubscriptionName - The destination billing subscription id.
+	BillingSubscriptionName *string `json:"billingSubscriptionName,omitempty"`
 }
 
 // TransferProductRequestProperties the properties of the product to initiate a transfer.
 type TransferProductRequestProperties struct {
-	// DestinationInvoiceSectionID - Destination invoice section id.
-	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
+	// DestinationInvoiceSectionName - Destination invoice section id.
+	DestinationInvoiceSectionName *string `json:"destinationInvoiceSectionName,omitempty"`
 }
 
 // UpdateAutoRenewOperationSummary summary of cancel product operation

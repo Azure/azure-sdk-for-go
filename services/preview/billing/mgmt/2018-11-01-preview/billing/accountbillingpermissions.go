@@ -25,28 +25,27 @@ import (
 	"net/http"
 )
 
-// ProfilesByBillingAccountIDClient is the billing client provides access to billing resources for Azure subscriptions.
-type ProfilesByBillingAccountIDClient struct {
+// AccountbillingPermissionsClient is the billing client provides access to billing resources for Azure subscriptions.
+type AccountbillingPermissionsClient struct {
 	BaseClient
 }
 
-// NewProfilesByBillingAccountIDClient creates an instance of the ProfilesByBillingAccountIDClient client.
-func NewProfilesByBillingAccountIDClient(subscriptionID string) ProfilesByBillingAccountIDClient {
-	return NewProfilesByBillingAccountIDClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAccountbillingPermissionsClient creates an instance of the AccountbillingPermissionsClient client.
+func NewAccountbillingPermissionsClient(subscriptionID string) AccountbillingPermissionsClient {
+	return NewAccountbillingPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProfilesByBillingAccountIDClientWithBaseURI creates an instance of the ProfilesByBillingAccountIDClient client.
-func NewProfilesByBillingAccountIDClientWithBaseURI(baseURI string, subscriptionID string) ProfilesByBillingAccountIDClient {
-	return ProfilesByBillingAccountIDClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAccountbillingPermissionsClientWithBaseURI creates an instance of the AccountbillingPermissionsClient client.
+func NewAccountbillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) AccountbillingPermissionsClient {
+	return AccountbillingPermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all billing profiles for a user which that user has access to.
+// List lists all billingPermissions for the caller has for a billing account.
 // Parameters:
-// billingAccountID - billing Account Id.
-// expand - may be used to expand the invoiceSections.
-func (client ProfilesByBillingAccountIDClient) List(ctx context.Context, billingAccountID string, expand string) (result ProfileListResult, err error) {
+// billingAccountName - billing Account Id.
+func (client AccountbillingPermissionsClient) List(ctx context.Context, billingAccountName string) (result PermissionsListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesByBillingAccountIDClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingPermissionsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -55,59 +54,56 @@ func (client ProfilesByBillingAccountIDClient) List(ctx context.Context, billing
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountID, expand)
+	req, err := client.ListPreparer(ctx, billingAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesByBillingAccountIDClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingPermissionsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.ProfilesByBillingAccountIDClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingPermissionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesByBillingAccountIDClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountbillingPermissionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProfilesByBillingAccountIDClient) ListPreparer(ctx context.Context, billingAccountID string, expand string) (*http.Request, error) {
+func (client AccountbillingPermissionsClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/providers/Microsoft.Billing/billingPermissions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesByBillingAccountIDClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AccountbillingPermissionsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProfilesByBillingAccountIDClient) ListResponder(resp *http.Response) (result ProfileListResult, err error) {
+func (client AccountbillingPermissionsClient) ListResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

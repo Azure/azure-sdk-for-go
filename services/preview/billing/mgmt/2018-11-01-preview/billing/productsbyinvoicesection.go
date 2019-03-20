@@ -40,14 +40,14 @@ func NewProductsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID
 	return ProductsByInvoiceSectionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists products by invoiceSectionId.
+// List lists products by invoiceSectionName.
 // Parameters:
-// billingAccountID - billing Account Id.
-// invoiceSectionID - invoiceSection Id.
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
 // filter - may be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
 // It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and
 // value is separated by a colon (:).
-func (client ProductsByInvoiceSectionClient) List(ctx context.Context, billingAccountID string, invoiceSectionID string, filter string) (result ProductsListResult, err error) {
+func (client ProductsByInvoiceSectionClient) List(ctx context.Context, billingAccountName string, invoiceSectionName string, filter string) (result ProductsListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsByInvoiceSectionClient.List")
 		defer func() {
@@ -58,7 +58,7 @@ func (client ProductsByInvoiceSectionClient) List(ctx context.Context, billingAc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountID, invoiceSectionID, filter)
+	req, err := client.ListPreparer(ctx, billingAccountName, invoiceSectionName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsByInvoiceSectionClient", "List", nil, "Failure preparing request")
 		return
@@ -80,10 +80,10 @@ func (client ProductsByInvoiceSectionClient) List(ctx context.Context, billingAc
 }
 
 // ListPreparer prepares the List request.
-func (client ProductsByInvoiceSectionClient) ListPreparer(ctx context.Context, billingAccountID string, invoiceSectionID string, filter string) (*http.Request, error) {
+func (client ProductsByInvoiceSectionClient) ListPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
-		"invoiceSectionId": autorest.Encode("path", invoiceSectionID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -97,7 +97,7 @@ func (client ProductsByInvoiceSectionClient) ListPreparer(ctx context.Context, b
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

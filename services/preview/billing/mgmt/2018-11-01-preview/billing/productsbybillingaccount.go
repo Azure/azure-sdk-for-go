@@ -40,13 +40,13 @@ func NewProductsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID
 	return ProductsByBillingAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists products by billingAccountId.
+// List lists products by billingAccountName.
 // Parameters:
-// billingAccountID - billing Account Id.
+// billingAccountName - billing Account Id.
 // filter - may be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
 // It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and
 // value is separated by a colon (:).
-func (client ProductsByBillingAccountClient) List(ctx context.Context, billingAccountID string, filter string) (result ProductsListResultPage, err error) {
+func (client ProductsByBillingAccountClient) List(ctx context.Context, billingAccountName string, filter string) (result ProductsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsByBillingAccountClient.List")
 		defer func() {
@@ -58,7 +58,7 @@ func (client ProductsByBillingAccountClient) List(ctx context.Context, billingAc
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, billingAccountID, filter)
+	req, err := client.ListPreparer(ctx, billingAccountName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsByBillingAccountClient", "List", nil, "Failure preparing request")
 		return
@@ -80,9 +80,9 @@ func (client ProductsByBillingAccountClient) List(ctx context.Context, billingAc
 }
 
 // ListPreparer prepares the List request.
-func (client ProductsByBillingAccountClient) ListPreparer(ctx context.Context, billingAccountID string, filter string) (*http.Request, error) {
+func (client ProductsByBillingAccountClient) ListPreparer(ctx context.Context, billingAccountName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -96,7 +96,7 @@ func (client ProductsByBillingAccountClient) ListPreparer(ctx context.Context, b
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/products", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -143,7 +143,7 @@ func (client ProductsByBillingAccountClient) listNextResults(ctx context.Context
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProductsByBillingAccountClient) ListComplete(ctx context.Context, billingAccountID string, filter string) (result ProductsListResultIterator, err error) {
+func (client ProductsByBillingAccountClient) ListComplete(ctx context.Context, billingAccountName string, filter string) (result ProductsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsByBillingAccountClient.List")
 		defer func() {
@@ -154,6 +154,6 @@ func (client ProductsByBillingAccountClient) ListComplete(ctx context.Context, b
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, billingAccountID, filter)
+	result.page, err = client.List(ctx, billingAccountName, filter)
 	return
 }

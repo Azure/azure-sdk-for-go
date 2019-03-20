@@ -25,33 +25,32 @@ import (
 	"net/http"
 )
 
-// EnrollmentAccountsByBillingAccountIDClient is the billing client provides access to billing resources for Azure
+// DepartmentsByBillingAccountNameClient is the billing client provides access to billing resources for Azure
 // subscriptions.
-type EnrollmentAccountsByBillingAccountIDClient struct {
+type DepartmentsByBillingAccountNameClient struct {
 	BaseClient
 }
 
-// NewEnrollmentAccountsByBillingAccountIDClient creates an instance of the EnrollmentAccountsByBillingAccountIDClient
+// NewDepartmentsByBillingAccountNameClient creates an instance of the DepartmentsByBillingAccountNameClient client.
+func NewDepartmentsByBillingAccountNameClient(subscriptionID string) DepartmentsByBillingAccountNameClient {
+	return NewDepartmentsByBillingAccountNameClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewDepartmentsByBillingAccountNameClientWithBaseURI creates an instance of the DepartmentsByBillingAccountNameClient
 // client.
-func NewEnrollmentAccountsByBillingAccountIDClient(subscriptionID string) EnrollmentAccountsByBillingAccountIDClient {
-	return NewEnrollmentAccountsByBillingAccountIDClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDepartmentsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsByBillingAccountNameClient {
+	return DepartmentsByBillingAccountNameClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// NewEnrollmentAccountsByBillingAccountIDClientWithBaseURI creates an instance of the
-// EnrollmentAccountsByBillingAccountIDClient client.
-func NewEnrollmentAccountsByBillingAccountIDClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsByBillingAccountIDClient {
-	return EnrollmentAccountsByBillingAccountIDClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// List lists all Enrollment Accounts for a user which he has access to.
+// List lists all departments for a user which he has access to.
 // Parameters:
-// billingAccountID - billing Account Id.
-// expand - may be used to expand the department.
+// billingAccountName - billing Account Id.
+// expand - may be used to expand the enrollmentAccounts.
 // filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
 // 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client EnrollmentAccountsByBillingAccountIDClient) List(ctx context.Context, billingAccountID string, expand string, filter string) (result EnrollmentAccountListResult, err error) {
+func (client DepartmentsByBillingAccountNameClient) List(ctx context.Context, billingAccountName string, expand string, filter string) (result DepartmentListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EnrollmentAccountsByBillingAccountIDClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DepartmentsByBillingAccountNameClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -60,31 +59,31 @@ func (client EnrollmentAccountsByBillingAccountIDClient) List(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountID, expand, filter)
+	req, err := client.ListPreparer(ctx, billingAccountName, expand, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsByBillingAccountIDClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.DepartmentsByBillingAccountNameClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsByBillingAccountIDClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.DepartmentsByBillingAccountNameClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsByBillingAccountIDClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.DepartmentsByBillingAccountNameClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client EnrollmentAccountsByBillingAccountIDClient) ListPreparer(ctx context.Context, billingAccountID string, expand string, filter string) (*http.Request, error) {
+func (client DepartmentsByBillingAccountNameClient) ListPreparer(ctx context.Context, billingAccountName string, expand string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -101,21 +100,21 @@ func (client EnrollmentAccountsByBillingAccountIDClient) ListPreparer(ctx contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client EnrollmentAccountsByBillingAccountIDClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client DepartmentsByBillingAccountNameClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client EnrollmentAccountsByBillingAccountIDClient) ListResponder(resp *http.Response) (result EnrollmentAccountListResult, err error) {
+func (client DepartmentsByBillingAccountNameClient) ListResponder(resp *http.Response) (result DepartmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

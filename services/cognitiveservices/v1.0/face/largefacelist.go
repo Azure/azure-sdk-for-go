@@ -505,7 +505,8 @@ func (client LargeFaceListClient) DeleteFaceResponder(resp *http.Response) (resu
 // Get retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.
-func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID string) (result LargeFaceList, err error) {
+// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (result LargeFaceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.Get")
 		defer func() {
@@ -523,7 +524,7 @@ func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID strin
 		return result, validation.NewError("face.LargeFaceListClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, largeFaceListID)
+	req, err := client.GetPreparer(ctx, largeFaceListID, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Get", nil, "Failure preparing request")
 		return
@@ -545,7 +546,7 @@ func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID strin
 }
 
 // GetPreparer prepares the Get request.
-func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceListID string) (*http.Request, error) {
+func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -554,10 +555,18 @@ func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceList
 		"largeFaceListId": autorest.Encode("path", largeFaceListID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}", pathParameters))
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -755,7 +764,9 @@ func (client LargeFaceListClient) GetTrainingStatusResponder(resp *http.Response
 // <br /> "start=&top=" will return all 5 lists.
 // <br /> "start=&top=2" will return "list1", "list2".
 // <br /> "start=list2&top=3" will return "list3", "list4", "list5".
-func (client LargeFaceListClient) List(ctx context.Context) (result ListLargeFaceList, err error) {
+// Parameters:
+// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+func (client LargeFaceListClient) List(ctx context.Context, returnRecognitionModel *bool) (result ListLargeFaceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.List")
 		defer func() {
@@ -766,7 +777,7 @@ func (client LargeFaceListClient) List(ctx context.Context) (result ListLargeFac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "List", nil, "Failure preparing request")
 		return
@@ -788,15 +799,23 @@ func (client LargeFaceListClient) List(ctx context.Context) (result ListLargeFac
 }
 
 // ListPreparer prepares the List request.
-func (client LargeFaceListClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client LargeFaceListClient) ListPreparer(ctx context.Context, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPath("/largefacelists"))
+		autorest.WithPath("/largefacelists"),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -27,8 +27,8 @@ import (
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel) (result face.ListDetectedFace, err error)
-	DetectWithURL(ctx context.Context, imageURL face.ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel) (result face.ListDetectedFace, err error)
+	DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel, returnRecognitionModel *bool) (result face.ListDetectedFace, err error)
+	DetectWithURL(ctx context.Context, imageURL face.ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []face.AttributeType, recognitionModel face.RecognitionModel, returnRecognitionModel *bool) (result face.ListDetectedFace, err error)
 	FindSimilar(ctx context.Context, body face.FindSimilarRequest) (result face.ListSimilarFace, err error)
 	Group(ctx context.Context, body face.GroupRequest) (result face.GroupResult, err error)
 	Identify(ctx context.Context, body face.IdentifyRequest) (result face.ListIdentifyResult, err error)
@@ -58,9 +58,9 @@ var _ PersonGroupPersonClientAPI = (*face.PersonGroupPersonClient)(nil)
 type PersonGroupClientAPI interface {
 	Create(ctx context.Context, personGroupID string, body face.MetaDataContract) (result autorest.Response, err error)
 	Delete(ctx context.Context, personGroupID string) (result autorest.Response, err error)
-	Get(ctx context.Context, personGroupID string) (result face.PersonGroup, err error)
+	Get(ctx context.Context, personGroupID string, returnRecognitionModel *bool) (result face.PersonGroup, err error)
 	GetTrainingStatus(ctx context.Context, personGroupID string) (result face.TrainingStatus, err error)
-	List(ctx context.Context, start string, top *int32) (result face.ListPersonGroup, err error)
+	List(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (result face.ListPersonGroup, err error)
 	Train(ctx context.Context, personGroupID string) (result autorest.Response, err error)
 	Update(ctx context.Context, personGroupID string, body face.NameAndUserDataContract) (result autorest.Response, err error)
 }
@@ -74,8 +74,8 @@ type ListClientAPI interface {
 	Create(ctx context.Context, faceListID string, body face.MetaDataContract) (result autorest.Response, err error)
 	Delete(ctx context.Context, faceListID string) (result autorest.Response, err error)
 	DeleteFace(ctx context.Context, faceListID string, persistedFaceID uuid.UUID) (result autorest.Response, err error)
-	Get(ctx context.Context, faceListID string) (result face.List, err error)
-	List(ctx context.Context) (result face.ListList, err error)
+	Get(ctx context.Context, faceListID string, returnRecognitionModel *bool) (result face.List, err error)
+	List(ctx context.Context, returnRecognitionModel *bool) (result face.ListList, err error)
 	Update(ctx context.Context, faceListID string, body face.NameAndUserDataContract) (result autorest.Response, err error)
 }
 
@@ -101,9 +101,9 @@ var _ LargePersonGroupPersonClientAPI = (*face.LargePersonGroupPersonClient)(nil
 type LargePersonGroupClientAPI interface {
 	Create(ctx context.Context, largePersonGroupID string, body face.MetaDataContract) (result autorest.Response, err error)
 	Delete(ctx context.Context, largePersonGroupID string) (result autorest.Response, err error)
-	Get(ctx context.Context, largePersonGroupID string) (result face.LargePersonGroup, err error)
+	Get(ctx context.Context, largePersonGroupID string, returnRecognitionModel *bool) (result face.LargePersonGroup, err error)
 	GetTrainingStatus(ctx context.Context, largePersonGroupID string) (result face.TrainingStatus, err error)
-	List(ctx context.Context, start string, top *int32) (result face.ListLargePersonGroup, err error)
+	List(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (result face.ListLargePersonGroup, err error)
 	Train(ctx context.Context, largePersonGroupID string) (result autorest.Response, err error)
 	Update(ctx context.Context, largePersonGroupID string, body face.NameAndUserDataContract) (result autorest.Response, err error)
 }
@@ -117,10 +117,10 @@ type LargeFaceListClientAPI interface {
 	Create(ctx context.Context, largeFaceListID string, body face.MetaDataContract) (result autorest.Response, err error)
 	Delete(ctx context.Context, largeFaceListID string) (result autorest.Response, err error)
 	DeleteFace(ctx context.Context, largeFaceListID string, persistedFaceID uuid.UUID) (result autorest.Response, err error)
-	Get(ctx context.Context, largeFaceListID string) (result face.LargeFaceList, err error)
+	Get(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (result face.LargeFaceList, err error)
 	GetFace(ctx context.Context, largeFaceListID string, persistedFaceID uuid.UUID) (result face.PersistedFace, err error)
 	GetTrainingStatus(ctx context.Context, largeFaceListID string) (result face.TrainingStatus, err error)
-	List(ctx context.Context) (result face.ListLargeFaceList, err error)
+	List(ctx context.Context, returnRecognitionModel *bool) (result face.ListLargeFaceList, err error)
 	ListFaces(ctx context.Context, largeFaceListID string, start string, top *int32) (result face.ListPersistedFace, err error)
 	Train(ctx context.Context, largeFaceListID string) (result autorest.Response, err error)
 	Update(ctx context.Context, largeFaceListID string, body face.NameAndUserDataContract) (result autorest.Response, err error)

@@ -222,7 +222,8 @@ func (client LargePersonGroupClient) DeleteResponder(resp *http.Response) (resul
 // information under the large person group.
 // Parameters:
 // largePersonGroupID - id referencing a particular large person group.
-func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID string) (result LargePersonGroup, err error) {
+// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID string, returnRecognitionModel *bool) (result LargePersonGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargePersonGroupClient.Get")
 		defer func() {
@@ -240,7 +241,7 @@ func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID
 		return result, validation.NewError("face.LargePersonGroupClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, largePersonGroupID)
+	req, err := client.GetPreparer(ctx, largePersonGroupID, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "Get", nil, "Failure preparing request")
 		return
@@ -262,7 +263,7 @@ func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID
 }
 
 // GetPreparer prepares the Get request.
-func (client LargePersonGroupClient) GetPreparer(ctx context.Context, largePersonGroupID string) (*http.Request, error) {
+func (client LargePersonGroupClient) GetPreparer(ctx context.Context, largePersonGroupID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -271,10 +272,18 @@ func (client LargePersonGroupClient) GetPreparer(ctx context.Context, largePerso
 		"largePersonGroupId": autorest.Encode("path", largePersonGroupID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}", pathParameters))
+		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -391,7 +400,8 @@ func (client LargePersonGroupClient) GetTrainingStatusResponder(resp *http.Respo
 // Parameters:
 // start - list large person groups from the least largePersonGroupId greater than the "start".
 // top - the number of large person groups to list.
-func (client LargePersonGroupClient) List(ctx context.Context, start string, top *int32) (result ListLargePersonGroup, err error) {
+// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+func (client LargePersonGroupClient) List(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (result ListLargePersonGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargePersonGroupClient.List")
 		defer func() {
@@ -413,7 +423,7 @@ func (client LargePersonGroupClient) List(ctx context.Context, start string, top
 		return result, validation.NewError("face.LargePersonGroupClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, start, top)
+	req, err := client.ListPreparer(ctx, start, top, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargePersonGroupClient", "List", nil, "Failure preparing request")
 		return
@@ -435,7 +445,7 @@ func (client LargePersonGroupClient) List(ctx context.Context, start string, top
 }
 
 // ListPreparer prepares the List request.
-func (client LargePersonGroupClient) ListPreparer(ctx context.Context, start string, top *int32) (*http.Request, error) {
+func (client LargePersonGroupClient) ListPreparer(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -448,6 +458,11 @@ func (client LargePersonGroupClient) ListPreparer(ctx context.Context, start str
 		queryParameters["top"] = autorest.Encode("query", *top)
 	} else {
 		queryParameters["top"] = autorest.Encode("query", 1000)
+	}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(

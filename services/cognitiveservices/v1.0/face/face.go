@@ -52,7 +52,8 @@ func NewClient(endpoint string) Client {
 // and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be
 // provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The
 // default value is 'recognition_01', if latest model needed, please explicitly specify the model you need.
-func (client Client) DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel) (result ListDetectedFace, err error) {
+// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+func (client Client) DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool) (result ListDetectedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.DetectWithStream")
 		defer func() {
@@ -63,7 +64,7 @@ func (client Client) DetectWithStream(ctx context.Context, imageParameter io.Rea
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DetectWithStreamPreparer(ctx, imageParameter, returnFaceID, returnFaceLandmarks, returnFaceAttributes, recognitionModel)
+	req, err := client.DetectWithStreamPreparer(ctx, imageParameter, returnFaceID, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "DetectWithStream", nil, "Failure preparing request")
 		return
@@ -85,7 +86,7 @@ func (client Client) DetectWithStream(ctx context.Context, imageParameter io.Rea
 }
 
 // DetectWithStreamPreparer prepares the DetectWithStream request.
-func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel) (*http.Request, error) {
+func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -108,6 +109,11 @@ func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParamete
 		queryParameters["recognitionModel"] = autorest.Encode("query", recognitionModel)
 	} else {
 		queryParameters["recognitionModel"] = autorest.Encode("query", "recognition_01")
+	}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -180,7 +186,8 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be
 // provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The
 // default value is 'recognition_01', if latest model needed, please explicitly specify the model you need.
-func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel) (result ListDetectedFace, err error) {
+// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool) (result ListDetectedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.DetectWithURL")
 		defer func() {
@@ -197,7 +204,7 @@ func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, retur
 		return result, validation.NewError("face.Client", "DetectWithURL", err.Error())
 	}
 
-	req, err := client.DetectWithURLPreparer(ctx, imageURL, returnFaceID, returnFaceLandmarks, returnFaceAttributes, recognitionModel)
+	req, err := client.DetectWithURLPreparer(ctx, imageURL, returnFaceID, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.Client", "DetectWithURL", nil, "Failure preparing request")
 		return
@@ -219,7 +226,7 @@ func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, retur
 }
 
 // DetectWithURLPreparer prepares the DetectWithURL request.
-func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel) (*http.Request, error) {
+func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -242,6 +249,11 @@ func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageUR
 		queryParameters["recognitionModel"] = autorest.Encode("query", recognitionModel)
 	} else {
 		queryParameters["recognitionModel"] = autorest.Encode("query", "recognition_01")
+	}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(

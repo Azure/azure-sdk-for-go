@@ -3658,8 +3658,8 @@ func NewServicePrincipalListResultPage(getNextPage func(context.Context, Service
 // ServicePrincipalObjectResult service Principal Object Result.
 type ServicePrincipalObjectResult struct {
 	autorest.Response `json:"-"`
-	// Value - A collection of Application Objects.
-	Value *[]string `json:"value,omitempty"`
+	// Value - The Object ID of the service principal with the specified application ID.
+	Value *string `json:"value,omitempty"`
 	// OdataMetadata - The URL representing edm equivalent.
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 }

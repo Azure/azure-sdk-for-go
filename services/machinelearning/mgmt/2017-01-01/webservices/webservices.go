@@ -632,7 +632,7 @@ func (client Client) ListKeysResponder(resp *http.Response) (result Keys, err er
 // resourceGroupName - name of the resource group in which the web service is located.
 // webServiceName - the name of the web service.
 // patchPayload - the payload to use to patch the web service.
-func (client Client) Patch(ctx context.Context, resourceGroupName string, webServiceName string, patchPayload WebService) (result PatchFuture, err error) {
+func (client Client) Patch(ctx context.Context, resourceGroupName string, webServiceName string, patchPayload PatchedWebService) (result PatchFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Patch")
 		defer func() {
@@ -659,7 +659,7 @@ func (client Client) Patch(ctx context.Context, resourceGroupName string, webSer
 }
 
 // PatchPreparer prepares the Patch request.
-func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string, webServiceName string, patchPayload WebService) (*http.Request, error) {
+func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string, webServiceName string, patchPayload PatchedWebService) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

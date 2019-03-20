@@ -32,17 +32,17 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/netapp/mgmt/201
 type ServiceLevel string
 
 const (
-	// Extreme Extreme service level
-	Extreme ServiceLevel = "Extreme"
 	// Premium Premium service level
 	Premium ServiceLevel = "Premium"
 	// Standard Standard service level
 	Standard ServiceLevel = "Standard"
+	// Ultra Ultra service level
+	Ultra ServiceLevel = "Ultra"
 )
 
 // PossibleServiceLevelValues returns an array of possible values for the ServiceLevel const type.
 func PossibleServiceLevelValues() []ServiceLevel {
-	return []ServiceLevel{Extreme, Premium, Standard}
+	return []ServiceLevel{Premium, Standard, Ultra}
 }
 
 // Account netApp account resource
@@ -164,14 +164,119 @@ type AccountList struct {
 
 // AccountPatch netApp account patch resource
 type AccountPatch struct {
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
+	// AccountProperties - NetApp Account properties
+	*AccountProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountPatch.
+func (ap AccountPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.Location != nil {
+		objectMap["location"] = ap.Location
+	}
+	if ap.ID != nil {
+		objectMap["id"] = ap.ID
+	}
+	if ap.Name != nil {
+		objectMap["name"] = ap.Name
+	}
+	if ap.Type != nil {
+		objectMap["type"] = ap.Type
+	}
+	if ap.Tags != nil {
+		objectMap["tags"] = ap.Tags
+	}
+	if ap.AccountProperties != nil {
+		objectMap["properties"] = ap.AccountProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountPatch struct.
+func (ap *AccountPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ap.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ap.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags interface{}
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ap.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				ap.AccountProperties = &accountProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // AccountProperties netApp account properties
 type AccountProperties struct {
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ActiveDirectories - Active Directories
+	ActiveDirectories *ActiveDirectories `json:"activeDirectories,omitempty"`
 }
 
 // AccountsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -224,6 +329,26 @@ func (future *AccountsDeleteFuture) Result(client AccountsClient) (ar autorest.R
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ActiveDirectories active Directories
+type ActiveDirectories struct {
+	// ActiveDirectoryID - Id of the Active Directory
+	ActiveDirectoryID *string `json:"activeDirectoryId,omitempty"`
+	// Username - Username of Active Directory domain administrator
+	Username *string `json:"username,omitempty"`
+	// Password - Plain text password of Active Directory domain administrator
+	Password *string `json:"password,omitempty"`
+	// Domain - Name of the Active Directory domain
+	Domain *string `json:"domain,omitempty"`
+	// DNS - Comma separated list of DNS server IP addresses for the Active Directory domain
+	DNS *string `json:"dNS,omitempty"`
+	// Status - Status of the Active Directory
+	Status *string `json:"status,omitempty"`
+	// SMBServerName - NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
+	SMBServerName *string `json:"sMBServerName,omitempty"`
+	// OrganizationalUnit - The Organizational Unit (OU) within the Windows Active Directory
+	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
 }
 
 // CapacityPool capacity pool resource
@@ -345,8 +470,111 @@ type CapacityPoolList struct {
 
 // CapacityPoolPatch capacity pool patch resource
 type CapacityPoolPatch struct {
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
+	// PoolPatchProperties - Capacity pool properties
+	*PoolPatchProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CapacityPoolPatch.
+func (cpp CapacityPoolPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cpp.Location != nil {
+		objectMap["location"] = cpp.Location
+	}
+	if cpp.ID != nil {
+		objectMap["id"] = cpp.ID
+	}
+	if cpp.Name != nil {
+		objectMap["name"] = cpp.Name
+	}
+	if cpp.Type != nil {
+		objectMap["type"] = cpp.Type
+	}
+	if cpp.Tags != nil {
+		objectMap["tags"] = cpp.Tags
+	}
+	if cpp.PoolPatchProperties != nil {
+		objectMap["properties"] = cpp.PoolPatchProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CapacityPoolPatch struct.
+func (cpp *CapacityPoolPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				cpp.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cpp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cpp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cpp.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags interface{}
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				cpp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var poolPatchProperties PoolPatchProperties
+				err = json.Unmarshal(*v, &poolPatchProperties)
+				if err != nil {
+					return err
+				}
+				cpp.PoolPatchProperties = &poolPatchProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // Dimension dimension of blobs, possibly be blob type or access tier.
@@ -363,6 +591,24 @@ type Error struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Detailed error message
 	Message *string `json:"message,omitempty"`
+}
+
+// ExportPolicyRule volume Export Policy Rule
+type ExportPolicyRule struct {
+	// RuleIndex - Order index
+	RuleIndex *int32 `json:"ruleIndex,omitempty"`
+	// UnixReadOnly - Read only access
+	UnixReadOnly *bool `json:"unixReadOnly,omitempty"`
+	// UnixReadWrite - Read and write access
+	UnixReadWrite *bool `json:"unixReadWrite,omitempty"`
+	// Cifs - Allows CIFS protocol
+	Cifs *bool `json:"cifs,omitempty"`
+	// Nfsv3 - Allows NFSv3 protocol
+	Nfsv3 *bool `json:"nfsv3,omitempty"`
+	// Nfsv4 - Allows NFSv4 protocol
+	Nfsv4 *bool `json:"nfsv4,omitempty"`
+	// AllowedClients - Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
+	AllowedClients *string `json:"allowedClients,omitempty"`
 }
 
 // MetricSpecification metric specification of operation.
@@ -497,8 +743,8 @@ type MountTargetProperties struct {
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// IPAddress - The mount target's IPv4 address
 	IPAddress *string `json:"ipAddress,omitempty"`
-	// VlanID - Vlan Id
-	VlanID *int32 `json:"vlanId,omitempty"`
+	// Subnet - The subnet
+	Subnet *string `json:"subnet,omitempty"`
 	// StartIP - The start of IPv4 address range to use when creating a new mount target
 	StartIP *string `json:"startIp,omitempty"`
 	// EndIP - The end of IPv4 address range to use when creating a new mount target
@@ -507,6 +753,8 @@ type MountTargetProperties struct {
 	Gateway *string `json:"gateway,omitempty"`
 	// Netmask - The netmask of the IPv4 address range to use when creating a new mount target
 	Netmask *string `json:"netmask,omitempty"`
+	// SmbServerFqdn - The SMB server's Fully Qualified Domain Name, FQDN
+	SmbServerFqdn *string `json:"smbServerFqdn,omitempty"`
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -618,13 +866,21 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
+// PoolPatchProperties patchable pool properties
+type PoolPatchProperties struct {
+	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
+	Size *int64 `json:"size,omitempty"`
+	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
+	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+}
+
 // PoolProperties pool properties
 type PoolProperties struct {
 	// PoolID - UUID v4 used to identify the Pool
 	PoolID *string `json:"poolId,omitempty"`
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Extreme'
+	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -1102,10 +1358,12 @@ func (vp *VolumePatch) UnmarshalJSON(body []byte) error {
 
 // VolumePatchProperties patchable volume properties
 type VolumePatchProperties struct {
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Extreme'
+	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
+	// ExportPolicy - Export policy rule
+	ExportPolicy *ExportPolicyRule `json:"exportPolicy,omitempty"`
 }
 
 // VolumeProperties volume properties
@@ -1114,10 +1372,12 @@ type VolumeProperties struct {
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// CreationToken - A unique file path for the volume. Used when creating mount targets
 	CreationToken *string `json:"creationToken,omitempty"`
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Extreme'
+	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
+	// ExportPolicy - Export policy rule
+	ExportPolicy *ExportPolicyRule `json:"exportPolicy,omitempty"`
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes

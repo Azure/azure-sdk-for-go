@@ -116,6 +116,7 @@ type ServicePrincipalCreateParameters = original.ServicePrincipalCreateParameter
 type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
+type ServicePrincipalObjectResult = original.ServicePrincipalObjectResult
 type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
 type ServicePrincipalsClient = original.ServicePrincipalsClient
 type SignInName = original.SignInName

@@ -3655,6 +3655,15 @@ func NewServicePrincipalListResultPage(getNextPage func(context.Context, Service
 	return ServicePrincipalListResultPage{fn: getNextPage}
 }
 
+// ServicePrincipalObjectResult service Principal Object Result.
+type ServicePrincipalObjectResult struct {
+	autorest.Response `json:"-"`
+	// Value - The Object ID of the service principal with the specified application ID.
+	Value *string `json:"value,omitempty"`
+	// OdataMetadata - The URL representing edm equivalent.
+	OdataMetadata *string `json:"odata.metadata,omitempty"`
+}
+
 // ServicePrincipalUpdateParameters request parameters for update an existing service principal.
 type ServicePrincipalUpdateParameters struct {
 	// AccountEnabled - whether or not the service principal account is enabled

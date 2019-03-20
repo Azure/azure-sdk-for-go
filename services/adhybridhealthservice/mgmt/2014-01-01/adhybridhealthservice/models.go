@@ -1065,7 +1065,7 @@ type ConnectorMetadata struct {
 	RunProfileNames *[]string `json:"runProfileNames,omitempty"`
 }
 
-// ConnectorMetadataDetails details of the connector. Only has ConnectorId & Display Name.
+// ConnectorMetadataDetails details of the connector.
 type ConnectorMetadataDetails struct {
 	// ConnectorID - The Connector Id.
 	ConnectorID *string `json:"connectorId,omitempty"`

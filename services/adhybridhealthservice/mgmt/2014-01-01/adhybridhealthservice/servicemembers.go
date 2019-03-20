@@ -355,8 +355,9 @@ func (client ServiceMembersClient) GetResponder(resp *http.Response) (result Ser
 // GetConnectorMetadata gets the list of connectors and run profile names.
 // Parameters:
 // serviceName - the name of the service.
-// serviceMemberID - the server id.
-func (client ServiceMembersClient) GetConnectorMetadata(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result ConnectorMetadata, err error) {
+// serviceMemberID - the servic member id.
+// metricName - the name of the metric.
+func (client ServiceMembersClient) GetConnectorMetadata(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, metricName string) (result ConnectorMetadata, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceMembersClient.GetConnectorMetadata")
 		defer func() {
@@ -367,7 +368,7 @@ func (client ServiceMembersClient) GetConnectorMetadata(ctx context.Context, ser
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetConnectorMetadataPreparer(ctx, serviceName, serviceMemberID)
+	req, err := client.GetConnectorMetadataPreparer(ctx, serviceName, serviceMemberID, metricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "GetConnectorMetadata", nil, "Failure preparing request")
 		return
@@ -389,8 +390,9 @@ func (client ServiceMembersClient) GetConnectorMetadata(ctx context.Context, ser
 }
 
 // GetConnectorMetadataPreparer prepares the GetConnectorMetadata request.
-func (client ServiceMembersClient) GetConnectorMetadataPreparer(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (*http.Request, error) {
+func (client ServiceMembersClient) GetConnectorMetadataPreparer(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, metricName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"metricName":      autorest.Encode("path", metricName),
 		"serviceMemberId": autorest.Encode("path", serviceMemberID),
 		"serviceName":     autorest.Encode("path", serviceName),
 	}
@@ -403,7 +405,7 @@ func (client ServiceMembersClient) GetConnectorMetadataPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/servicemembers/{serviceMemberId}/metrics/connectormetadata", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/servicemembers/{serviceMemberId}/metrics/{metricName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

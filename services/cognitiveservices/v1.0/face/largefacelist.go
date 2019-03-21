@@ -505,7 +505,8 @@ func (client LargeFaceListClient) DeleteFaceResponder(resp *http.Response) (resu
 // Get retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (result LargeFaceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.Get")
@@ -765,7 +766,8 @@ func (client LargeFaceListClient) GetTrainingStatusResponder(resp *http.Response
 // <br /> "start=&top=2" will return "list1", "list2".
 // <br /> "start=list2&top=3" will return "list3", "list4", "list5".
 // Parameters:
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client LargeFaceListClient) List(ctx context.Context, returnRecognitionModel *bool) (result ListLargeFaceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.List")

@@ -222,7 +222,8 @@ func (client LargePersonGroupClient) DeleteResponder(resp *http.Response) (resul
 // information under the large person group.
 // Parameters:
 // largePersonGroupID - id referencing a particular large person group.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client LargePersonGroupClient) Get(ctx context.Context, largePersonGroupID string, returnRecognitionModel *bool) (result LargePersonGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargePersonGroupClient.Get")
@@ -400,7 +401,8 @@ func (client LargePersonGroupClient) GetTrainingStatusResponder(resp *http.Respo
 // Parameters:
 // start - list large person groups from the least largePersonGroupId greater than the "start".
 // top - the number of large person groups to list.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client LargePersonGroupClient) List(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (result ListLargePersonGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargePersonGroupClient.List")

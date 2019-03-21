@@ -221,7 +221,8 @@ func (client PersonGroupClient) DeleteResponder(resp *http.Response) (result aut
 // [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
 // Parameters:
 // personGroupID - id referencing a particular person group.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client PersonGroupClient) Get(ctx context.Context, personGroupID string, returnRecognitionModel *bool) (result PersonGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PersonGroupClient.Get")
@@ -399,7 +400,8 @@ func (client PersonGroupClient) GetTrainingStatusResponder(resp *http.Response) 
 // Parameters:
 // start - list person groups from the least personGroupId greater than the "start".
 // top - the number of person groups to list.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client PersonGroupClient) List(ctx context.Context, start string, top *int32, returnRecognitionModel *bool) (result ListPersonGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PersonGroupClient.List")

@@ -500,7 +500,8 @@ func (client ListClient) DeleteFaceResponder(resp *http.Response) (result autore
 // Get retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
 // Parameters:
 // faceListID - id referencing a particular face list.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client ListClient) Get(ctx context.Context, faceListID string, returnRecognitionModel *bool) (result List, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListClient.Get")
@@ -589,7 +590,8 @@ func (client ListClient) GetResponder(resp *http.Response) (result List, err err
 // To get face information inside faceList use [FaceList -
 // Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c)
 // Parameters:
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client ListClient) List(ctx context.Context, returnRecognitionModel *bool) (result ListList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListClient.List")

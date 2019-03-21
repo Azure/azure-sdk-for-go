@@ -52,7 +52,8 @@ func NewClient(endpoint string) Client {
 // and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be
 // provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The
 // default value is 'recognition_01', if latest model needed, please explicitly specify the model you need.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client Client) DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool) (result ListDetectedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.DetectWithStream")
@@ -186,7 +187,8 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be
 // provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The
 // default value is 'recognition_01', if latest model needed, please explicitly specify the model you need.
-// returnRecognitionModel - whether to return the 'RecognitionModel' required for the current operation.
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
 func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool) (result ListDetectedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.DetectWithURL")

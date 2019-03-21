@@ -914,7 +914,7 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 	return &itpis, true
 }
 
-// ImageTemplatePowerShellCustomizer runs the specified PowerSehll on the VM (Windows). Corresponds to
+// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
 // Packer powershell provisioner
 type ImageTemplatePowerShellCustomizer struct {
 	// Script - The PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc

@@ -166,6 +166,7 @@ type PeeringsClient = original.PeeringsClient
 type Properties = original.Properties
 type PropertiesDirect = original.PropertiesDirect
 type PropertiesExchange = original.PropertiesExchange
+type Resource = original.Resource
 type ResourceTags = original.ResourceTags
 type Sku = original.Sku
 type SubResource = original.SubResource

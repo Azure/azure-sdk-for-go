@@ -1333,6 +1333,16 @@ type PropertiesExchange struct {
 	PeerAsn *SubResource `json:"peerAsn,omitempty"`
 }
 
+// Resource the ARM resource class.
+type Resource struct {
+	// Name - The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// ID - The ID of the resource.
+	ID *string `json:"id,omitempty"`
+	// Type - The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
 // ResourceTags the resource tags.
 type ResourceTags struct {
 	// Tags - Gets or sets the tags, a dictionary of descriptors arm object

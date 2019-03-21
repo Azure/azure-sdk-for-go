@@ -496,14 +496,14 @@ func (client DdosProtectionPlansClient) ListByResourceGroupComplete(ctx context.
 	return
 }
 
-// Update update a DDoS protection plan
+// UpdateTags update a DDoS protection plan tags
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // ddosProtectionPlanName - the name of the DDoS protection plan.
-// parameters - parameters supplied to the update DDoS protection plan resource.
-func (client DdosProtectionPlansClient) Update(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (result DdosProtectionPlansUpdateFuture, err error) {
+// parameters - parameters supplied to the update DDoS protection plan resource tags.
+func (client DdosProtectionPlansClient) UpdateTags(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (result DdosProtectionPlansUpdateTagsFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DdosProtectionPlansClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DdosProtectionPlansClient.UpdateTags")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -512,23 +512,23 @@ func (client DdosProtectionPlansClient) Update(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "UpdateTags", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	result, err = client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansClient", "UpdateTags", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// UpdatePreparer prepares the Update request.
-func (client DdosProtectionPlansClient) UpdatePreparer(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (*http.Request, error) {
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client DdosProtectionPlansClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"ddosProtectionPlanName": autorest.Encode("path", ddosProtectionPlanName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -550,9 +550,9 @@ func (client DdosProtectionPlansClient) UpdatePreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateSender sends the Update request. The method will close the
+// UpdateTagsSender sends the UpdateTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client DdosProtectionPlansClient) UpdateSender(req *http.Request) (future DdosProtectionPlansUpdateFuture, err error) {
+func (client DdosProtectionPlansClient) UpdateTagsSender(req *http.Request) (future DdosProtectionPlansUpdateTagsFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -563,9 +563,9 @@ func (client DdosProtectionPlansClient) UpdateSender(req *http.Request) (future 
 	return
 }
 
-// UpdateResponder handles the response to the Update request. The method always
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
 // closes the http.Response Body.
-func (client DdosProtectionPlansClient) UpdateResponder(resp *http.Response) (result DdosProtectionPlan, err error) {
+func (client DdosProtectionPlansClient) UpdateTagsResponder(resp *http.Response) (result DdosProtectionPlan, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

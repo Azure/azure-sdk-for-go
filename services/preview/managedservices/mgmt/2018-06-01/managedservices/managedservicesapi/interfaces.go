@@ -24,9 +24,9 @@ import (
 
 // RegistrationDefinitionsClientAPI contains the set of methods on the RegistrationDefinitionsClient type.
 type RegistrationDefinitionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, registratonDefinitionID string, scope string, requestBody managedservices.RegistrationDefinition) (result managedservices.RegistrationDefinition, err error)
-	Delete(ctx context.Context, registratonDefinitionID string, scope string) (result managedservices.RegistrationDefinition, err error)
-	Get(ctx context.Context, scope string, registratonDefinitionID string) (result managedservices.RegistrationDefinition, err error)
+	CreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody managedservices.RegistrationDefinition) (result managedservices.RegistrationDefinition, err error)
+	Delete(ctx context.Context, registrationDefinitionID string, scope string) (result managedservices.RegistrationDefinition, err error)
+	Get(ctx context.Context, scope string, registrationDefinitionID string) (result managedservices.RegistrationDefinition, err error)
 	List(ctx context.Context, scope string) (result managedservices.RegistrationDefinitionListPage, err error)
 }
 

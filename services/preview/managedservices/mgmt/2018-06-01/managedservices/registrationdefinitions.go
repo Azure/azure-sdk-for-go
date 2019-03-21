@@ -43,10 +43,10 @@ func NewRegistrationDefinitionsClientWithBaseURI(baseURI string) RegistrationDef
 
 // CreateOrUpdate creates or updates a registration definition.
 // Parameters:
-// registratonDefinitionID - guid of the registration definition.
-// scope - id of the source subscription.
+// registrationDefinitionID - guid of the registration definition.
+// scope - scope of the resource.
 // requestBody - the parameters required to create new registration definition.
-func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, registratonDefinitionID string, scope string, requestBody RegistrationDefinition) (result RegistrationDefinition, err error) {
+func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.CreateOrUpdate")
 		defer func() {
@@ -72,7 +72,7 @@ func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, 
 		return result, validation.NewError("managedservices.RegistrationDefinitionsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, registratonDefinitionID, scope, requestBody)
+	req, err := client.CreateOrUpdatePreparer(ctx, registrationDefinitionID, scope, requestBody)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -94,10 +94,10 @@ func (client RegistrationDefinitionsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client RegistrationDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, registratonDefinitionID string, scope string, requestBody RegistrationDefinition) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, registrationDefinitionID string, scope string, requestBody RegistrationDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"registratonDefinitionId": autorest.Encode("path", registratonDefinitionID),
-		"scope":                   scope,
+		"registrationDefinitionId": autorest.Encode("path", registrationDefinitionID),
+		"scope":                    scope,
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -109,7 +109,7 @@ func (client RegistrationDefinitionsClient) CreateOrUpdatePreparer(ctx context.C
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions/{registratonDefinitionId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions/{registrationDefinitionId}", pathParameters),
 		autorest.WithJSON(requestBody),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -137,9 +137,9 @@ func (client RegistrationDefinitionsClient) CreateOrUpdateResponder(resp *http.R
 
 // Delete deletes the registration definition.
 // Parameters:
-// registratonDefinitionID - guid of the registration definition.
-// scope - id of the source subscription.
-func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registratonDefinitionID string, scope string) (result RegistrationDefinition, err error) {
+// registrationDefinitionID - guid of the registration definition.
+// scope - scope of the resource.
+func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registrationDefinitionID string, scope string) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.Delete")
 		defer func() {
@@ -150,7 +150,7 @@ func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registra
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, registratonDefinitionID, scope)
+	req, err := client.DeletePreparer(ctx, registrationDefinitionID, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -172,10 +172,10 @@ func (client RegistrationDefinitionsClient) Delete(ctx context.Context, registra
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RegistrationDefinitionsClient) DeletePreparer(ctx context.Context, registratonDefinitionID string, scope string) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) DeletePreparer(ctx context.Context, registrationDefinitionID string, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"registratonDefinitionId": autorest.Encode("path", registratonDefinitionID),
-		"scope":                   scope,
+		"registrationDefinitionId": autorest.Encode("path", registrationDefinitionID),
+		"scope":                    scope,
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -186,7 +186,7 @@ func (client RegistrationDefinitionsClient) DeletePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions/{registratonDefinitionId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions/{registrationDefinitionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -213,9 +213,9 @@ func (client RegistrationDefinitionsClient) DeleteResponder(resp *http.Response)
 
 // Get gets the registration definition details.
 // Parameters:
-// scope - id of the source subscription.
-// registratonDefinitionID - guid of the registration definition.
-func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope string, registratonDefinitionID string) (result RegistrationDefinition, err error) {
+// scope - scope of the resource.
+// registrationDefinitionID - guid of the registration definition.
+func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope string, registrationDefinitionID string) (result RegistrationDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.Get")
 		defer func() {
@@ -226,7 +226,7 @@ func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, registratonDefinitionID)
+	req, err := client.GetPreparer(ctx, scope, registrationDefinitionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationDefinitionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -248,10 +248,10 @@ func (client RegistrationDefinitionsClient) Get(ctx context.Context, scope strin
 }
 
 // GetPreparer prepares the Get request.
-func (client RegistrationDefinitionsClient) GetPreparer(ctx context.Context, scope string, registratonDefinitionID string) (*http.Request, error) {
+func (client RegistrationDefinitionsClient) GetPreparer(ctx context.Context, scope string, registrationDefinitionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"registratonDefinitionId": autorest.Encode("path", registratonDefinitionID),
-		"scope":                   scope,
+		"registrationDefinitionId": autorest.Encode("path", registrationDefinitionID),
+		"scope":                    scope,
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -262,7 +262,7 @@ func (client RegistrationDefinitionsClient) GetPreparer(ctx context.Context, sco
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions/{registratonDefinitionId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationDefinitions/{registrationDefinitionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -289,7 +289,7 @@ func (client RegistrationDefinitionsClient) GetResponder(resp *http.Response) (r
 
 // List gets a list of the registration definitions.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 func (client RegistrationDefinitionsClient) List(ctx context.Context, scope string) (result RegistrationDefinitionListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationDefinitionsClient.List")

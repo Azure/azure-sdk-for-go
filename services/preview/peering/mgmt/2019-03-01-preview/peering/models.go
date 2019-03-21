@@ -1063,7 +1063,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
-// PeerAsn the essential information related to the pee's ASN.
+// PeerAsn the essential information related to the peer's ASN.
 type PeerAsn struct {
 	autorest.Response `json:"-"`
 	// PeerAsnProperties - The properties that define a peer's ASN.
@@ -1145,12 +1145,12 @@ func (pa *PeerAsn) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PeerAsnListResult the paginated list of [T].
+// PeerAsnListResult the paginated list of peer ASNs.
 type PeerAsnListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of [T].
+	// Value - The list of peer ASNs.
 	Value *[]PeerAsn `json:"value,omitempty"`
-	// NextLink - The link to fetch the next page of [T].
+	// NextLink - The link to fetch the next page of peer ASNs.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

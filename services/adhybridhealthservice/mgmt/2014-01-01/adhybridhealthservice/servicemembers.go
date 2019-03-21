@@ -355,7 +355,7 @@ func (client ServiceMembersClient) GetResponder(resp *http.Response) (result Ser
 // GetConnectorMetadata gets the list of connectors and run profile names.
 // Parameters:
 // serviceName - the name of the service.
-// serviceMemberID - the servic member id.
+// serviceMemberID - the service member id.
 // metricName - the name of the metric.
 func (client ServiceMembersClient) GetConnectorMetadata(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, metricName string) (result ConnectorMetadata, err error) {
 	if tracing.IsEnabled() {

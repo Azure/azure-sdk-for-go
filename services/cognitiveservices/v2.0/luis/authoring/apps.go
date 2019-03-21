@@ -33,18 +33,16 @@ type AppsClient struct {
 }
 
 // NewAppsClient creates an instance of the AppsClient client.
-func NewAppsClient() AppsClient {
-	return AppsClient{New()}
+func NewAppsClient(endpoint string) AppsClient {
+	return AppsClient{New(endpoint)}
 }
 
 // Add creates a new LUIS app.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // applicationCreateObject - an application containing Name, Description (optional), Culture, Usage Scenario
 // (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the
 // version ID is "0.1". Note: the culture cannot be changed after the app is created.
-func (client AppsClient) Add(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, applicationCreateObject ApplicationCreateObject) (result UUID, err error) {
+func (client AppsClient) Add(ctx context.Context, applicationCreateObject ApplicationCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Add")
 		defer func() {
@@ -62,7 +60,7 @@ func (client AppsClient) Add(ctx context.Context, azureRegion AzureRegions, azur
 		return result, validation.NewError("authoring.AppsClient", "Add", err.Error())
 	}
 
-	req, err := client.AddPreparer(ctx, azureRegion, azureCloud, applicationCreateObject)
+	req, err := client.AddPreparer(ctx, applicationCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Add", nil, "Failure preparing request")
 		return
@@ -84,16 +82,15 @@ func (client AppsClient) Add(ctx context.Context, azureRegion AzureRegions, azur
 }
 
 // AddPreparer prepares the Add request.
-func (client AppsClient) AddPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, applicationCreateObject ApplicationCreateObject) (*http.Request, error) {
+func (client AppsClient) AddPreparer(ctx context.Context, applicationCreateObject ApplicationCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/"),
 		autorest.WithJSON(applicationCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -121,10 +118,8 @@ func (client AppsClient) AddResponder(resp *http.Response) (result UUID, err err
 
 // AddCustomPrebuiltDomain adds a prebuilt domain along with its intent and entity models as a new application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // prebuiltDomainCreateObject - a prebuilt domain create object containing the name and culture of the domain.
-func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (result UUID, err error) {
+func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.AddCustomPrebuiltDomain")
 		defer func() {
@@ -135,7 +130,7 @@ func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddCustomPrebuiltDomainPreparer(ctx, azureRegion, azureCloud, prebuiltDomainCreateObject)
+	req, err := client.AddCustomPrebuiltDomainPreparer(ctx, prebuiltDomainCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "AddCustomPrebuiltDomain", nil, "Failure preparing request")
 		return
@@ -157,16 +152,15 @@ func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, azureRegio
 }
 
 // AddCustomPrebuiltDomainPreparer prepares the AddCustomPrebuiltDomain request.
-func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (*http.Request, error) {
+func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/customprebuiltdomains"),
 		autorest.WithJSON(prebuiltDomainCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -194,11 +188,9 @@ func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (
 
 // Delete deletes an application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // force - a flag to indicate whether to force an operation.
-func (client AppsClient) Delete(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, force *bool) (result OperationStatus, err error) {
+func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID, force *bool) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Delete")
 		defer func() {
@@ -209,7 +201,7 @@ func (client AppsClient) Delete(ctx context.Context, azureRegion AzureRegions, a
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, azureRegion, azureCloud, appID, force)
+	req, err := client.DeletePreparer(ctx, appID, force)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -231,10 +223,9 @@ func (client AppsClient) Delete(ctx context.Context, azureRegion AzureRegions, a
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AppsClient) DeletePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, force *bool) (*http.Request, error) {
+func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, force *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -250,7 +241,7 @@ func (client AppsClient) DeletePreparer(ctx context.Context, azureRegion AzureRe
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -278,10 +269,8 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result OperationS
 
 // DownloadQueryLogs gets the logs of the past month's endpoint queries for the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client AppsClient) DownloadQueryLogs(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result ReadCloser, err error) {
+func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID) (result ReadCloser, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DownloadQueryLogs")
 		defer func() {
@@ -292,7 +281,7 @@ func (client AppsClient) DownloadQueryLogs(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DownloadQueryLogsPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.DownloadQueryLogsPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "DownloadQueryLogs", nil, "Failure preparing request")
 		return
@@ -314,10 +303,9 @@ func (client AppsClient) DownloadQueryLogs(ctx context.Context, azureRegion Azur
 }
 
 // DownloadQueryLogsPreparer prepares the DownloadQueryLogs request.
-func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -326,7 +314,7 @@ func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, azureReg
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -352,10 +340,8 @@ func (client AppsClient) DownloadQueryLogsResponder(resp *http.Response) (result
 
 // Get gets the application info.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client AppsClient) Get(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result ApplicationInfoResponse, err error) {
+func (client AppsClient) Get(ctx context.Context, appID uuid.UUID) (result ApplicationInfoResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Get")
 		defer func() {
@@ -366,7 +352,7 @@ func (client AppsClient) Get(ctx context.Context, azureRegion AzureRegions, azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.GetPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Get", nil, "Failure preparing request")
 		return
@@ -388,10 +374,9 @@ func (client AppsClient) Get(ctx context.Context, azureRegion AzureRegions, azur
 }
 
 // GetPreparer prepares the Get request.
-func (client AppsClient) GetPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client AppsClient) GetPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -400,7 +385,7 @@ func (client AppsClient) GetPreparer(ctx context.Context, azureRegion AzureRegio
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -427,10 +412,8 @@ func (client AppsClient) GetResponder(resp *http.Response) (result ApplicationIn
 
 // GetPublishSettings get the application publish settings including 'UseAllTrainingData'.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client AppsClient) GetPublishSettings(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result PublishSettings, err error) {
+func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID) (result PublishSettings, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetPublishSettings")
 		defer func() {
@@ -441,7 +424,7 @@ func (client AppsClient) GetPublishSettings(ctx context.Context, azureRegion Azu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPublishSettingsPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.GetPublishSettingsPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "GetPublishSettings", nil, "Failure preparing request")
 		return
@@ -463,10 +446,9 @@ func (client AppsClient) GetPublishSettings(ctx context.Context, azureRegion Azu
 }
 
 // GetPublishSettingsPreparer prepares the GetPublishSettings request.
-func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -475,7 +457,7 @@ func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, azureRe
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -502,10 +484,8 @@ func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (resul
 
 // GetSettings get the application settings including 'UseAllTrainingData'.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client AppsClient) GetSettings(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result ApplicationSettings, err error) {
+func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (result ApplicationSettings, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetSettings")
 		defer func() {
@@ -516,7 +496,7 @@ func (client AppsClient) GetSettings(ctx context.Context, azureRegion AzureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetSettingsPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.GetSettingsPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "GetSettings", nil, "Failure preparing request")
 		return
@@ -538,10 +518,9 @@ func (client AppsClient) GetSettings(ctx context.Context, azureRegion AzureRegio
 }
 
 // GetSettingsPreparer prepares the GetSettings request.
-func (client AppsClient) GetSettingsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client AppsClient) GetSettingsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -550,7 +529,7 @@ func (client AppsClient) GetSettingsPreparer(ctx context.Context, azureRegion Az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -577,12 +556,10 @@ func (client AppsClient) GetSettingsResponder(resp *http.Response) (result Appli
 
 // Import imports an application to LUIS, the application's structure is included in the request body.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // luisApp - a LUIS application structure.
 // appName - the application name to create. If not specified, the application name will be read from the
 // imported object. If the application name already exists, an error is returned.
-func (client AppsClient) Import(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, luisApp LuisApp, appName string) (result UUID, err error) {
+func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName string) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Import")
 		defer func() {
@@ -593,7 +570,7 @@ func (client AppsClient) Import(ctx context.Context, azureRegion AzureRegions, a
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ImportPreparer(ctx, azureRegion, azureCloud, luisApp, appName)
+	req, err := client.ImportPreparer(ctx, luisApp, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Import", nil, "Failure preparing request")
 		return
@@ -615,10 +592,9 @@ func (client AppsClient) Import(ctx context.Context, azureRegion AzureRegions, a
 }
 
 // ImportPreparer prepares the Import request.
-func (client AppsClient) ImportPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, luisApp LuisApp, appName string) (*http.Request, error) {
+func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, appName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -629,7 +605,7 @@ func (client AppsClient) ImportPreparer(ctx context.Context, azureRegion AzureRe
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/import"),
 		autorest.WithJSON(luisApp),
 		autorest.WithQueryParameters(queryParameters))
@@ -658,11 +634,9 @@ func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err 
 
 // List lists all of the user's applications.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client AppsClient) List(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, skip *int32, take *int32) (result ListApplicationInfoResponse, err error) {
+func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (result ListApplicationInfoResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.List")
 		defer func() {
@@ -685,7 +659,7 @@ func (client AppsClient) List(ctx context.Context, azureRegion AzureRegions, azu
 		return result, validation.NewError("authoring.AppsClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, azureRegion, azureCloud, skip, take)
+	req, err := client.ListPreparer(ctx, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "List", nil, "Failure preparing request")
 		return
@@ -707,10 +681,9 @@ func (client AppsClient) List(ctx context.Context, azureRegion AzureRegions, azu
 }
 
 // ListPreparer prepares the List request.
-func (client AppsClient) ListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, skip *int32, take *int32) (*http.Request, error) {
+func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -727,7 +700,7 @@ func (client AppsClient) ListPreparer(ctx context.Context, azureRegion AzureRegi
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -754,10 +727,7 @@ func (client AppsClient) ListResponder(resp *http.Response) (result ListApplicat
 }
 
 // ListAvailableCustomPrebuiltDomains gets all the available custom prebuilt domains for all cultures.
-// Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
-func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (result ListPrebuiltDomain, err error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context) (result ListPrebuiltDomain, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListAvailableCustomPrebuiltDomains")
 		defer func() {
@@ -768,7 +738,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListAvailableCustomPrebuiltDomainsPreparer(ctx, azureRegion, azureCloud)
+	req, err := client.ListAvailableCustomPrebuiltDomainsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListAvailableCustomPrebuiltDomains", nil, "Failure preparing request")
 		return
@@ -790,15 +760,14 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context,
 }
 
 // ListAvailableCustomPrebuiltDomainsPreparer prepares the ListAvailableCustomPrebuiltDomains request.
-func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (*http.Request, error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/customprebuiltdomains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -825,10 +794,8 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.
 
 // ListAvailableCustomPrebuiltDomainsForCulture gets all the available prebuilt domains for a specific culture.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // culture - culture.
-func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, culture string) (result ListPrebuiltDomain, err error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, culture string) (result ListPrebuiltDomain, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListAvailableCustomPrebuiltDomainsForCulture")
 		defer func() {
@@ -839,7 +806,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListAvailableCustomPrebuiltDomainsForCulturePreparer(ctx, azureRegion, azureCloud, culture)
+	req, err := client.ListAvailableCustomPrebuiltDomainsForCulturePreparer(ctx, culture)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListAvailableCustomPrebuiltDomainsForCulture", nil, "Failure preparing request")
 		return
@@ -861,10 +828,9 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx contex
 }
 
 // ListAvailableCustomPrebuiltDomainsForCulturePreparer prepares the ListAvailableCustomPrebuiltDomainsForCulture request.
-func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, culture string) (*http.Request, error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ctx context.Context, culture string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -873,7 +839,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ct
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -899,10 +865,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureResponder(r
 }
 
 // ListCortanaEndpoints gets the endpoint URLs for the prebuilt Cortana applications.
-// Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
-func (client AppsClient) ListCortanaEndpoints(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (result PersonalAssistantsResponse, err error) {
+func (client AppsClient) ListCortanaEndpoints(ctx context.Context) (result PersonalAssistantsResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListCortanaEndpoints")
 		defer func() {
@@ -913,7 +876,7 @@ func (client AppsClient) ListCortanaEndpoints(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListCortanaEndpointsPreparer(ctx, azureRegion, azureCloud)
+	req, err := client.ListCortanaEndpointsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListCortanaEndpoints", nil, "Failure preparing request")
 		return
@@ -935,15 +898,14 @@ func (client AppsClient) ListCortanaEndpoints(ctx context.Context, azureRegion A
 }
 
 // ListCortanaEndpointsPreparer prepares the ListCortanaEndpoints request.
-func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (*http.Request, error) {
+func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/assistants"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -969,10 +931,7 @@ func (client AppsClient) ListCortanaEndpointsResponder(resp *http.Response) (res
 }
 
 // ListDomains gets the available application domains.
-// Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
-func (client AppsClient) ListDomains(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (result ListString, err error) {
+func (client AppsClient) ListDomains(ctx context.Context) (result ListString, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListDomains")
 		defer func() {
@@ -983,7 +942,7 @@ func (client AppsClient) ListDomains(ctx context.Context, azureRegion AzureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListDomainsPreparer(ctx, azureRegion, azureCloud)
+	req, err := client.ListDomainsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListDomains", nil, "Failure preparing request")
 		return
@@ -1005,15 +964,14 @@ func (client AppsClient) ListDomains(ctx context.Context, azureRegion AzureRegio
 }
 
 // ListDomainsPreparer prepares the ListDomains request.
-func (client AppsClient) ListDomainsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (*http.Request, error) {
+func (client AppsClient) ListDomainsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/domains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1040,10 +998,8 @@ func (client AppsClient) ListDomainsResponder(resp *http.Response) (result ListS
 
 // ListEndpoints returns the available endpoint deployment regions and URLs.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client AppsClient) ListEndpoints(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result SetString, err error) {
+func (client AppsClient) ListEndpoints(ctx context.Context, appID uuid.UUID) (result SetString, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListEndpoints")
 		defer func() {
@@ -1054,7 +1010,7 @@ func (client AppsClient) ListEndpoints(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListEndpointsPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.ListEndpointsPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListEndpoints", nil, "Failure preparing request")
 		return
@@ -1076,10 +1032,9 @@ func (client AppsClient) ListEndpoints(ctx context.Context, azureRegion AzureReg
 }
 
 // ListEndpointsPreparer prepares the ListEndpoints request.
-func (client AppsClient) ListEndpointsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client AppsClient) ListEndpointsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1088,7 +1043,7 @@ func (client AppsClient) ListEndpointsPreparer(ctx context.Context, azureRegion 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1115,10 +1070,7 @@ func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result Set
 
 // ListSupportedCultures gets a list of supported cultures. Cultures are equivalent to the written language and locale.
 // For example,"en-us" represents the U.S. variation of English.
-// Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
-func (client AppsClient) ListSupportedCultures(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (result ListAvailableCulture, err error) {
+func (client AppsClient) ListSupportedCultures(ctx context.Context) (result ListAvailableCulture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSupportedCultures")
 		defer func() {
@@ -1129,7 +1081,7 @@ func (client AppsClient) ListSupportedCultures(ctx context.Context, azureRegion 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListSupportedCulturesPreparer(ctx, azureRegion, azureCloud)
+	req, err := client.ListSupportedCulturesPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListSupportedCultures", nil, "Failure preparing request")
 		return
@@ -1151,15 +1103,14 @@ func (client AppsClient) ListSupportedCultures(ctx context.Context, azureRegion 
 }
 
 // ListSupportedCulturesPreparer prepares the ListSupportedCultures request.
-func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (*http.Request, error) {
+func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/cultures"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1185,10 +1136,7 @@ func (client AppsClient) ListSupportedCulturesResponder(resp *http.Response) (re
 }
 
 // ListUsageScenarios gets the application available usage scenarios.
-// Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
-func (client AppsClient) ListUsageScenarios(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (result ListString, err error) {
+func (client AppsClient) ListUsageScenarios(ctx context.Context) (result ListString, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListUsageScenarios")
 		defer func() {
@@ -1199,7 +1147,7 @@ func (client AppsClient) ListUsageScenarios(ctx context.Context, azureRegion Azu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListUsageScenariosPreparer(ctx, azureRegion, azureCloud)
+	req, err := client.ListUsageScenariosPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ListUsageScenarios", nil, "Failure preparing request")
 		return
@@ -1221,15 +1169,14 @@ func (client AppsClient) ListUsageScenarios(ctx context.Context, azureRegion Azu
 }
 
 // ListUsageScenariosPreparer prepares the ListUsageScenarios request.
-func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (*http.Request, error) {
+func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/usagescenarios"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1257,11 +1204,9 @@ func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (resul
 // PackagePublishedApplicationAsGzip packages a published LUIS application as a GZip file to be used in the LUIS
 // container.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // slotName - the publishing slot name.
-func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, slotName string) (result ReadCloser, err error) {
+func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName string) (result ReadCloser, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.PackagePublishedApplicationAsGzip")
 		defer func() {
@@ -1272,7 +1217,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PackagePublishedApplicationAsGzipPreparer(ctx, azureRegion, azureCloud, appID, slotName)
+	req, err := client.PackagePublishedApplicationAsGzipPreparer(ctx, appID, slotName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackagePublishedApplicationAsGzip", nil, "Failure preparing request")
 		return
@@ -1294,10 +1239,9 @@ func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, 
 }
 
 // PackagePublishedApplicationAsGzipPreparer prepares the PackagePublishedApplicationAsGzip request.
-func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, slotName string) (*http.Request, error) {
+func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, slotName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1307,7 +1251,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.C
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/package/{appId}/slot/{slotName}/gzip", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1333,11 +1277,9 @@ func (client AppsClient) PackagePublishedApplicationAsGzipResponder(resp *http.R
 
 // PackageTrainedApplicationAsGzip packages trained LUIS application as GZip file to be used in the LUIS container.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ReadCloser, err error) {
+func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, appID uuid.UUID, versionID string) (result ReadCloser, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.PackageTrainedApplicationAsGzip")
 		defer func() {
@@ -1348,7 +1290,7 @@ func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, az
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PackageTrainedApplicationAsGzipPreparer(ctx, azureRegion, azureCloud, appID, versionID)
+	req, err := client.PackageTrainedApplicationAsGzipPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "PackageTrainedApplicationAsGzip", nil, "Failure preparing request")
 		return
@@ -1370,10 +1312,9 @@ func (client AppsClient) PackageTrainedApplicationAsGzip(ctx context.Context, az
 }
 
 // PackageTrainedApplicationAsGzipPreparer prepares the PackageTrainedApplicationAsGzip request.
-func (client AppsClient) PackageTrainedApplicationAsGzipPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client AppsClient) PackageTrainedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1383,7 +1324,7 @@ func (client AppsClient) PackageTrainedApplicationAsGzipPreparer(ctx context.Con
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/package/{appId}/versions/{versionId}/gzip", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1409,12 +1350,10 @@ func (client AppsClient) PackageTrainedApplicationAsGzipResponder(resp *http.Res
 
 // Publish publishes a specific version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // applicationPublishObject - the application publish object. The region is the target region that the
 // application is published to.
-func (client AppsClient) Publish(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (result ProductionOrStagingEndpointInfo, err error) {
+func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (result ProductionOrStagingEndpointInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Publish")
 		defer func() {
@@ -1425,7 +1364,7 @@ func (client AppsClient) Publish(ctx context.Context, azureRegion AzureRegions, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PublishPreparer(ctx, azureRegion, azureCloud, appID, applicationPublishObject)
+	req, err := client.PublishPreparer(ctx, appID, applicationPublishObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Publish", nil, "Failure preparing request")
 		return
@@ -1447,10 +1386,9 @@ func (client AppsClient) Publish(ctx context.Context, azureRegion AzureRegions, 
 }
 
 // PublishPreparer prepares the Publish request.
-func (client AppsClient) PublishPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (*http.Request, error) {
+func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1460,7 +1398,7 @@ func (client AppsClient) PublishPreparer(ctx context.Context, azureRegion AzureR
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publish", pathParameters),
 		autorest.WithJSON(applicationPublishObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1488,11 +1426,9 @@ func (client AppsClient) PublishResponder(resp *http.Response) (result Productio
 
 // Update updates the name or description of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // applicationUpdateObject - a model containing Name and Description of the application.
-func (client AppsClient) Update(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (result OperationStatus, err error) {
+func (client AppsClient) Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Update")
 		defer func() {
@@ -1503,7 +1439,7 @@ func (client AppsClient) Update(ctx context.Context, azureRegion AzureRegions, a
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, azureRegion, azureCloud, appID, applicationUpdateObject)
+	req, err := client.UpdatePreparer(ctx, appID, applicationUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "Update", nil, "Failure preparing request")
 		return
@@ -1525,10 +1461,9 @@ func (client AppsClient) Update(ctx context.Context, azureRegion AzureRegions, a
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AppsClient) UpdatePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (*http.Request, error) {
+func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1538,7 +1473,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, azureRegion AzureRe
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(applicationUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1566,11 +1501,9 @@ func (client AppsClient) UpdateResponder(resp *http.Response) (result OperationS
 
 // UpdatePublishSettings updates the application publish settings including 'UseAllTrainingData'.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // publishSettingUpdateObject - an object containing the new publish application settings.
-func (client AppsClient) UpdatePublishSettings(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (result OperationStatus, err error) {
+func (client AppsClient) UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdatePublishSettings")
 		defer func() {
@@ -1581,7 +1514,7 @@ func (client AppsClient) UpdatePublishSettings(ctx context.Context, azureRegion 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePublishSettingsPreparer(ctx, azureRegion, azureCloud, appID, publishSettingUpdateObject)
+	req, err := client.UpdatePublishSettingsPreparer(ctx, appID, publishSettingUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "UpdatePublishSettings", nil, "Failure preparing request")
 		return
@@ -1603,10 +1536,9 @@ func (client AppsClient) UpdatePublishSettings(ctx context.Context, azureRegion 
 }
 
 // UpdatePublishSettingsPreparer prepares the UpdatePublishSettings request.
-func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (*http.Request, error) {
+func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1616,7 +1548,7 @@ func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, azur
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
 		autorest.WithJSON(publishSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1644,11 +1576,9 @@ func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (re
 
 // UpdateSettings updates the application settings including 'UseAllTrainingData'.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // applicationSettingUpdateObject - an object containing the new application settings.
-func (client AppsClient) UpdateSettings(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (result OperationStatus, err error) {
+func (client AppsClient) UpdateSettings(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateSettings")
 		defer func() {
@@ -1659,7 +1589,7 @@ func (client AppsClient) UpdateSettings(ctx context.Context, azureRegion AzureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateSettingsPreparer(ctx, azureRegion, azureCloud, appID, applicationSettingUpdateObject)
+	req, err := client.UpdateSettingsPreparer(ctx, appID, applicationSettingUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "UpdateSettings", nil, "Failure preparing request")
 		return
@@ -1681,10 +1611,9 @@ func (client AppsClient) UpdateSettings(ctx context.Context, azureRegion AzureRe
 }
 
 // UpdateSettingsPreparer prepares the UpdateSettings request.
-func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (*http.Request, error) {
+func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1694,7 +1623,7 @@ func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, azureRegion
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
 		autorest.WithJSON(applicationSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

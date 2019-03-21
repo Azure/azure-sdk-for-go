@@ -33,18 +33,16 @@ type PatternClient struct {
 }
 
 // NewPatternClient creates an instance of the PatternClient client.
-func NewPatternClient() PatternClient {
-	return PatternClient{New()}
+func NewPatternClient(endpoint string) PatternClient {
+	return PatternClient{New(endpoint)}
 }
 
 // AddPattern sends the add pattern request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // pattern - the input pattern.
-func (client PatternClient) AddPattern(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result PatternRuleInfo, err error) {
+func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result PatternRuleInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.AddPattern")
 		defer func() {
@@ -55,7 +53,7 @@ func (client PatternClient) AddPattern(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPatternPreparer(ctx, azureRegion, azureCloud, appID, versionID, pattern)
+	req, err := client.AddPatternPreparer(ctx, appID, versionID, pattern)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "AddPattern", nil, "Failure preparing request")
 		return
@@ -77,10 +75,9 @@ func (client PatternClient) AddPattern(ctx context.Context, azureRegion AzureReg
 }
 
 // AddPatternPreparer prepares the AddPattern request.
-func (client PatternClient) AddPatternPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (*http.Request, error) {
+func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -91,7 +88,7 @@ func (client PatternClient) AddPatternPreparer(ctx context.Context, azureRegion 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrule", pathParameters),
 		autorest.WithJSON(pattern))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -119,12 +116,10 @@ func (client PatternClient) AddPatternResponder(resp *http.Response) (result Pat
 
 // BatchAddPatterns sends the batch add patterns request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // patterns - a JSON array containing patterns.
-func (client PatternClient) BatchAddPatterns(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result ListPatternRuleInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.BatchAddPatterns")
 		defer func() {
@@ -141,7 +136,7 @@ func (client PatternClient) BatchAddPatterns(ctx context.Context, azureRegion Az
 		return result, validation.NewError("authoring.PatternClient", "BatchAddPatterns", err.Error())
 	}
 
-	req, err := client.BatchAddPatternsPreparer(ctx, azureRegion, azureCloud, appID, versionID, patterns)
+	req, err := client.BatchAddPatternsPreparer(ctx, appID, versionID, patterns)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "BatchAddPatterns", nil, "Failure preparing request")
 		return
@@ -163,10 +158,9 @@ func (client PatternClient) BatchAddPatterns(ctx context.Context, azureRegion Az
 }
 
 // BatchAddPatternsPreparer prepares the BatchAddPatterns request.
-func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (*http.Request, error) {
+func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -177,7 +171,7 @@ func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, azureR
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
 		autorest.WithJSON(patterns))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -205,12 +199,10 @@ func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (resu
 
 // DeletePattern sends the delete pattern request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // patternID - the pattern ID.
-func (client PatternClient) DeletePattern(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patternID uuid.UUID) (result OperationStatus, err error) {
+func (client PatternClient) DeletePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.DeletePattern")
 		defer func() {
@@ -221,7 +213,7 @@ func (client PatternClient) DeletePattern(ctx context.Context, azureRegion Azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePatternPreparer(ctx, azureRegion, azureCloud, appID, versionID, patternID)
+	req, err := client.DeletePatternPreparer(ctx, appID, versionID, patternID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "DeletePattern", nil, "Failure preparing request")
 		return
@@ -243,10 +235,9 @@ func (client PatternClient) DeletePattern(ctx context.Context, azureRegion Azure
 }
 
 // DeletePatternPreparer prepares the DeletePattern request.
-func (client PatternClient) DeletePatternPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patternID uuid.UUID) (*http.Request, error) {
+func (client PatternClient) DeletePatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -257,7 +248,7 @@ func (client PatternClient) DeletePatternPreparer(ctx context.Context, azureRegi
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -284,12 +275,10 @@ func (client PatternClient) DeletePatternResponder(resp *http.Response) (result 
 
 // DeletePatterns sends the delete patterns request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // patternIds - the patterns IDs.
-func (client PatternClient) DeletePatterns(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (result OperationStatus, err error) {
+func (client PatternClient) DeletePatterns(ctx context.Context, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.DeletePatterns")
 		defer func() {
@@ -306,7 +295,7 @@ func (client PatternClient) DeletePatterns(ctx context.Context, azureRegion Azur
 		return result, validation.NewError("authoring.PatternClient", "DeletePatterns", err.Error())
 	}
 
-	req, err := client.DeletePatternsPreparer(ctx, azureRegion, azureCloud, appID, versionID, patternIds)
+	req, err := client.DeletePatternsPreparer(ctx, appID, versionID, patternIds)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "DeletePatterns", nil, "Failure preparing request")
 		return
@@ -328,10 +317,9 @@ func (client PatternClient) DeletePatterns(ctx context.Context, azureRegion Azur
 }
 
 // DeletePatternsPreparer prepares the DeletePatterns request.
-func (client PatternClient) DeletePatternsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (*http.Request, error) {
+func (client PatternClient) DeletePatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -342,7 +330,7 @@ func (client PatternClient) DeletePatternsPreparer(ctx context.Context, azureReg
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
 		autorest.WithJSON(patternIds))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -370,14 +358,12 @@ func (client PatternClient) DeletePatternsResponder(resp *http.Response) (result
 
 // ListIntentPatterns sends the list intent patterns request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client PatternClient) ListIntentPatterns(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) ListIntentPatterns(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.ListIntentPatterns")
 		defer func() {
@@ -400,7 +386,7 @@ func (client PatternClient) ListIntentPatterns(ctx context.Context, azureRegion 
 		return result, validation.NewError("authoring.PatternClient", "ListIntentPatterns", err.Error())
 	}
 
-	req, err := client.ListIntentPatternsPreparer(ctx, azureRegion, azureCloud, appID, versionID, intentID, skip, take)
+	req, err := client.ListIntentPatternsPreparer(ctx, appID, versionID, intentID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "ListIntentPatterns", nil, "Failure preparing request")
 		return
@@ -422,10 +408,9 @@ func (client PatternClient) ListIntentPatterns(ctx context.Context, azureRegion 
 }
 
 // ListIntentPatternsPreparer prepares the ListIntentPatterns request.
-func (client PatternClient) ListIntentPatternsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (*http.Request, error) {
+func (client PatternClient) ListIntentPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -448,7 +433,7 @@ func (client PatternClient) ListIntentPatternsPreparer(ctx context.Context, azur
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/patternrules", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -476,13 +461,11 @@ func (client PatternClient) ListIntentPatternsResponder(resp *http.Response) (re
 
 // ListPatterns sends the list patterns request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client PatternClient) ListPatterns(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) ListPatterns(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.ListPatterns")
 		defer func() {
@@ -505,7 +488,7 @@ func (client PatternClient) ListPatterns(ctx context.Context, azureRegion AzureR
 		return result, validation.NewError("authoring.PatternClient", "ListPatterns", err.Error())
 	}
 
-	req, err := client.ListPatternsPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListPatternsPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "ListPatterns", nil, "Failure preparing request")
 		return
@@ -527,10 +510,9 @@ func (client PatternClient) ListPatterns(ctx context.Context, azureRegion AzureR
 }
 
 // ListPatternsPreparer prepares the ListPatterns request.
-func (client PatternClient) ListPatternsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client PatternClient) ListPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -552,7 +534,7 @@ func (client PatternClient) ListPatternsPreparer(ctx context.Context, azureRegio
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -580,13 +562,11 @@ func (client PatternClient) ListPatternsResponder(resp *http.Response) (result L
 
 // UpdatePattern sends the update pattern request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // patternID - the pattern ID.
 // pattern - an object representing a pattern.
-func (client PatternClient) UpdatePattern(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result PatternRuleInfo, err error) {
+func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result PatternRuleInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.UpdatePattern")
 		defer func() {
@@ -597,7 +577,7 @@ func (client PatternClient) UpdatePattern(ctx context.Context, azureRegion Azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePatternPreparer(ctx, azureRegion, azureCloud, appID, versionID, patternID, pattern)
+	req, err := client.UpdatePatternPreparer(ctx, appID, versionID, patternID, pattern)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "UpdatePattern", nil, "Failure preparing request")
 		return
@@ -619,10 +599,9 @@ func (client PatternClient) UpdatePattern(ctx context.Context, azureRegion Azure
 }
 
 // UpdatePatternPreparer prepares the UpdatePattern request.
-func (client PatternClient) UpdatePatternPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (*http.Request, error) {
+func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -634,7 +613,7 @@ func (client PatternClient) UpdatePatternPreparer(ctx context.Context, azureRegi
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules/{patternId}", pathParameters),
 		autorest.WithJSON(pattern))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -662,12 +641,10 @@ func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result 
 
 // UpdatePatterns sends the update patterns request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // patterns - an array represents the patterns.
-func (client PatternClient) UpdatePatterns(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result ListPatternRuleInfo, err error) {
+func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result ListPatternRuleInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PatternClient.UpdatePatterns")
 		defer func() {
@@ -684,7 +661,7 @@ func (client PatternClient) UpdatePatterns(ctx context.Context, azureRegion Azur
 		return result, validation.NewError("authoring.PatternClient", "UpdatePatterns", err.Error())
 	}
 
-	req, err := client.UpdatePatternsPreparer(ctx, azureRegion, azureCloud, appID, versionID, patterns)
+	req, err := client.UpdatePatternsPreparer(ctx, appID, versionID, patterns)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PatternClient", "UpdatePatterns", nil, "Failure preparing request")
 		return
@@ -706,10 +683,9 @@ func (client PatternClient) UpdatePatterns(ctx context.Context, azureRegion Azur
 }
 
 // UpdatePatternsPreparer prepares the UpdatePatterns request.
-func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (*http.Request, error) {
+func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -720,7 +696,7 @@ func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, azureReg
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternrules", pathParameters),
 		autorest.WithJSON(patterns))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

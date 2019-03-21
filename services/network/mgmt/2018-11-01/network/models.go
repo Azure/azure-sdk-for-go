@@ -2058,30 +2058,6 @@ type ApplicationGatewayAutoscaleConfiguration struct {
 	MaxCapacity *int32 `json:"maxCapacity,omitempty"`
 }
 
-// ApplicationGatewayAvailableRequestHeadersResult response for ApplicationGatewayAvailableRequestHeaders
-// API service call.
-type ApplicationGatewayAvailableRequestHeadersResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of supported request headers in application gateway.
-	Value *[]string `json:"value,omitempty"`
-}
-
-// ApplicationGatewayAvailableResponseHeadersResult response for ApplicationGatewayAvailableResponeHeaders
-// API service call.
-type ApplicationGatewayAvailableResponseHeadersResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of supported response header in application gateway.
-	Value *[]string `json:"value,omitempty"`
-}
-
-// ApplicationGatewayAvailableServerVariablesResult response for ApplicationGatewayAvailableServerVariables
-// API service call.
-type ApplicationGatewayAvailableServerVariablesResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of supported server variables in application gateway.
-	Value *[]string `json:"value,omitempty"`
-}
-
 // ApplicationGatewayAvailableSslOptions response for ApplicationGatewayAvailableSslOptions API service
 // call.
 type ApplicationGatewayAvailableSslOptions struct {
@@ -15341,6 +15317,12 @@ func (page ListP2SVpnServerConfigurationsResultPage) Values() []P2SVpnServerConf
 // Creates a new instance of the ListP2SVpnServerConfigurationsResultPage type.
 func NewListP2SVpnServerConfigurationsResultPage(getNextPage func(context.Context, ListP2SVpnServerConfigurationsResult) (ListP2SVpnServerConfigurationsResult, error)) ListP2SVpnServerConfigurationsResultPage {
 	return ListP2SVpnServerConfigurationsResultPage{fn: getNextPage}
+}
+
+// ListString ...
+type ListString struct {
+	autorest.Response `json:"-"`
+	Value             *[]string `json:"value,omitempty"`
 }
 
 // ListVirtualHubsResult result of the request to list VirtualHubs. It contains a list of VirtualHubs and a

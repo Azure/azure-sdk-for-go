@@ -350,7 +350,7 @@ type Application struct {
 	Homepage *string `json:"homepage,omitempty"`
 	// IdentifierUris - A collection of URIs for the application.
 	IdentifierUris *[]string `json:"identifierUris,omitempty"`
-	// InformationalUrls - urls with more informations of the application.
+	// InformationalUrls - URLs with more information about the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
 	IsDeviceOnlyAuthSupported *bool `json:"isDeviceOnlyAuthSupported,omitempty"`
@@ -906,7 +906,7 @@ type ApplicationBase struct {
 	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
-	// InformationalUrls - urls with more informations of the application.
+	// InformationalUrls - URLs with more information about the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
 	IsDeviceOnlyAuthSupported *bool `json:"isDeviceOnlyAuthSupported,omitempty"`
@@ -971,7 +971,7 @@ type ApplicationCreateParameters struct {
 	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
-	// InformationalUrls - urls with more informations of the application.
+	// InformationalUrls - URLs with more information about the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
 	IsDeviceOnlyAuthSupported *bool `json:"isDeviceOnlyAuthSupported,omitempty"`
@@ -1170,7 +1170,7 @@ type ApplicationUpdateParameters struct {
 	GroupMembershipClaims interface{} `json:"groupMembershipClaims,omitempty"`
 	// Homepage - The home page of the application.
 	Homepage *string `json:"homepage,omitempty"`
-	// InformationalUrls - urls with more informations of the application.
+	// InformationalUrls - URLs with more information about the application.
 	InformationalUrls *InformationalURL `json:"informationalUrls,omitempty"`
 	// IsDeviceOnlyAuthSupported - Specifies whether this application supports device authentication without a user. The default is false.
 	IsDeviceOnlyAuthSupported *bool `json:"isDeviceOnlyAuthSupported,omitempty"`

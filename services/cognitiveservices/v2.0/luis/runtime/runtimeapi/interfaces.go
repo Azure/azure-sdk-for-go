@@ -25,7 +25,7 @@ import (
 
 // PredictionClientAPI contains the set of methods on the PredictionClient type.
 type PredictionClientAPI interface {
-	Resolve(ctx context.Context, azureRegion runtime.AzureRegions, azureCloud runtime.AzureClouds, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.LuisResult, err error)
+	Resolve(ctx context.Context, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.LuisResult, err error)
 }
 
 var _ PredictionClientAPI = (*runtime.PredictionClient)(nil)

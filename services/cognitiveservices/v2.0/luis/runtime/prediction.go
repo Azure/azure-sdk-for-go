@@ -33,15 +33,13 @@ type PredictionClient struct {
 }
 
 // NewPredictionClient creates an instance of the PredictionClient client.
-func NewPredictionClient() PredictionClient {
-	return PredictionClient{New()}
+func NewPredictionClient(endpoint string) PredictionClient {
+	return PredictionClient{New(endpoint)}
 }
 
 // Resolve gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
 // is 500 characters.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the LUIS application ID (Guid).
 // query - the utterance to predict.
 // timezoneOffset - the timezone offset for the location of the request.
@@ -50,7 +48,7 @@ func NewPredictionClient() PredictionClient {
 // spellCheck - enable spell checking.
 // bingSpellCheckSubscriptionKey - the subscription key to use when enabling Bing spell check
 // logParameter - log query (default is true)
-func (client PredictionClient) Resolve(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result LuisResult, err error) {
+func (client PredictionClient) Resolve(ctx context.Context, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result LuisResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PredictionClient.Resolve")
 		defer func() {
@@ -67,7 +65,7 @@ func (client PredictionClient) Resolve(ctx context.Context, azureRegion AzureReg
 		return result, validation.NewError("runtime.PredictionClient", "Resolve", err.Error())
 	}
 
-	req, err := client.ResolvePreparer(ctx, azureRegion, azureCloud, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
+	req, err := client.ResolvePreparer(ctx, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "runtime.PredictionClient", "Resolve", nil, "Failure preparing request")
 		return
@@ -89,10 +87,9 @@ func (client PredictionClient) Resolve(ctx context.Context, azureRegion AzureReg
 }
 
 // ResolvePreparer prepares the Resolve request.
-func (client PredictionClient) ResolvePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
+func (client PredictionClient) ResolvePreparer(ctx context.Context, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -122,7 +119,7 @@ func (client PredictionClient) ResolvePreparer(ctx context.Context, azureRegion 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(query),
 		autorest.WithQueryParameters(queryParameters))

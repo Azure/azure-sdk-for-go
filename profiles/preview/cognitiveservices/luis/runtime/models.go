@@ -21,31 +21,6 @@ package runtime
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/runtime"
 
-type AzureClouds = original.AzureClouds
-
-const (
-	Com AzureClouds = original.Com
-	Us  AzureClouds = original.Us
-)
-
-type AzureRegions = original.AzureRegions
-
-const (
-	Australiaeast  AzureRegions = original.Australiaeast
-	Brazilsouth    AzureRegions = original.Brazilsouth
-	Eastasia       AzureRegions = original.Eastasia
-	Eastus         AzureRegions = original.Eastus
-	Eastus2        AzureRegions = original.Eastus2
-	Northeurope    AzureRegions = original.Northeurope
-	Southcentralus AzureRegions = original.Southcentralus
-	Southeastasia  AzureRegions = original.Southeastasia
-	Virginia       AzureRegions = original.Virginia
-	Westcentralus  AzureRegions = original.Westcentralus
-	Westeurope     AzureRegions = original.Westeurope
-	Westus         AzureRegions = original.Westus
-	Westus2        AzureRegions = original.Westus2
-)
-
 type APIError = original.APIError
 type BaseClient = original.BaseClient
 type CompositeChildModel = original.CompositeChildModel
@@ -58,20 +33,14 @@ type LuisResult = original.LuisResult
 type PredictionClient = original.PredictionClient
 type Sentiment = original.Sentiment
 
-func New() BaseClient {
-	return original.New()
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
-func NewPredictionClient() PredictionClient {
-	return original.NewPredictionClient()
+func NewPredictionClient(endpoint string) PredictionClient {
+	return original.NewPredictionClient(endpoint)
 }
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
-func PossibleAzureCloudsValues() []AzureClouds {
-	return original.PossibleAzureCloudsValues()
-}
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

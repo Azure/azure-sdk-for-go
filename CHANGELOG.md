@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## `v26.6.0`
+
+## New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| prediction | v3.0 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| marketplaceordering | 2015-06-01 |
+| media | 2018-07-01 |
+
+### Breaking Changes - Preview
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| netapp | 2017-08-15 |
+
 ## `v26.5.0`
 
 ### New Packages

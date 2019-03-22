@@ -25,30 +25,30 @@ import (
 	"net/http"
 )
 
-// AccountbillingRoleAssignmentClient is the billing client provides access to billing resources for Azure
+// AccountBillingRoleAssignmentClient is the billing client provides access to billing resources for Azure
 // subscriptions.
-type AccountbillingRoleAssignmentClient struct {
+type AccountBillingRoleAssignmentClient struct {
 	BaseClient
 }
 
-// NewAccountbillingRoleAssignmentClient creates an instance of the AccountbillingRoleAssignmentClient client.
-func NewAccountbillingRoleAssignmentClient(subscriptionID string) AccountbillingRoleAssignmentClient {
-	return NewAccountbillingRoleAssignmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAccountBillingRoleAssignmentClient creates an instance of the AccountBillingRoleAssignmentClient client.
+func NewAccountBillingRoleAssignmentClient(subscriptionID string) AccountBillingRoleAssignmentClient {
+	return NewAccountBillingRoleAssignmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAccountbillingRoleAssignmentClientWithBaseURI creates an instance of the AccountbillingRoleAssignmentClient
+// NewAccountBillingRoleAssignmentClientWithBaseURI creates an instance of the AccountBillingRoleAssignmentClient
 // client.
-func NewAccountbillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) AccountbillingRoleAssignmentClient {
-	return AccountbillingRoleAssignmentClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAccountBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingRoleAssignmentClient {
+	return AccountBillingRoleAssignmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Add the operation to add a role assignment to a billing account.
 // Parameters:
 // billingAccountName - billing Account Id.
-// parameters - parameters supplied to add a role assginment.
-func (client AccountbillingRoleAssignmentClient) Add(ctx context.Context, billingAccountName string, parameters RoleAssignmentPayload) (result RoleAssignmentListResult, err error) {
+// parameters - parameters supplied to add a role assignment.
+func (client AccountBillingRoleAssignmentClient) Add(ctx context.Context, billingAccountName string, parameters RoleAssignmentPayload) (result RoleAssignmentListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingRoleAssignmentClient.Add")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountBillingRoleAssignmentClient.Add")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -59,27 +59,27 @@ func (client AccountbillingRoleAssignmentClient) Add(ctx context.Context, billin
 	}
 	req, err := client.AddPreparer(ctx, billingAccountName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Add", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Add", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // AddPreparer prepares the Add request.
-func (client AccountbillingRoleAssignmentClient) AddPreparer(ctx context.Context, billingAccountName string, parameters RoleAssignmentPayload) (*http.Request, error) {
+func (client AccountBillingRoleAssignmentClient) AddPreparer(ctx context.Context, billingAccountName string, parameters RoleAssignmentPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
@@ -101,14 +101,14 @@ func (client AccountbillingRoleAssignmentClient) AddPreparer(ctx context.Context
 
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountbillingRoleAssignmentClient) AddSender(req *http.Request) (*http.Response, error) {
+func (client AccountBillingRoleAssignmentClient) AddSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client AccountbillingRoleAssignmentClient) AddResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
+func (client AccountBillingRoleAssignmentClient) AddResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -123,9 +123,9 @@ func (client AccountbillingRoleAssignmentClient) AddResponder(resp *http.Respons
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingRoleAssignmentName - role assignment id.
-func (client AccountbillingRoleAssignmentClient) Delete(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (result RoleAssignment, err error) {
+func (client AccountBillingRoleAssignmentClient) Delete(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (result RoleAssignment, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingRoleAssignmentClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountBillingRoleAssignmentClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -136,27 +136,27 @@ func (client AccountbillingRoleAssignmentClient) Delete(ctx context.Context, bil
 	}
 	req, err := client.DeletePreparer(ctx, billingAccountName, billingRoleAssignmentName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AccountbillingRoleAssignmentClient) DeletePreparer(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (*http.Request, error) {
+func (client AccountBillingRoleAssignmentClient) DeletePreparer(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":        autorest.Encode("path", billingAccountName),
 		"billingRoleAssignmentName": autorest.Encode("path", billingRoleAssignmentName),
@@ -177,14 +177,14 @@ func (client AccountbillingRoleAssignmentClient) DeletePreparer(ctx context.Cont
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountbillingRoleAssignmentClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client AccountBillingRoleAssignmentClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AccountbillingRoleAssignmentClient) DeleteResponder(resp *http.Response) (result RoleAssignment, err error) {
+func (client AccountBillingRoleAssignmentClient) DeleteResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -199,9 +199,9 @@ func (client AccountbillingRoleAssignmentClient) DeleteResponder(resp *http.Resp
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingRoleAssignmentName - role assignment id.
-func (client AccountbillingRoleAssignmentClient) Get(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (result RoleAssignment, err error) {
+func (client AccountBillingRoleAssignmentClient) Get(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (result RoleAssignment, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingRoleAssignmentClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountBillingRoleAssignmentClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -212,27 +212,27 @@ func (client AccountbillingRoleAssignmentClient) Get(ctx context.Context, billin
 	}
 	req, err := client.GetPreparer(ctx, billingAccountName, billingRoleAssignmentName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AccountbillingRoleAssignmentClient) GetPreparer(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (*http.Request, error) {
+func (client AccountBillingRoleAssignmentClient) GetPreparer(ctx context.Context, billingAccountName string, billingRoleAssignmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":        autorest.Encode("path", billingAccountName),
 		"billingRoleAssignmentName": autorest.Encode("path", billingRoleAssignmentName),
@@ -253,14 +253,14 @@ func (client AccountbillingRoleAssignmentClient) GetPreparer(ctx context.Context
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountbillingRoleAssignmentClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AccountBillingRoleAssignmentClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AccountbillingRoleAssignmentClient) GetResponder(resp *http.Response) (result RoleAssignment, err error) {
+func (client AccountBillingRoleAssignmentClient) GetResponder(resp *http.Response) (result RoleAssignment, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -274,9 +274,9 @@ func (client AccountbillingRoleAssignmentClient) GetResponder(resp *http.Respons
 // List get the role assignments on the Billing Account
 // Parameters:
 // billingAccountName - billing Account Id.
-func (client AccountbillingRoleAssignmentClient) List(ctx context.Context, billingAccountName string) (result RoleAssignmentListResult, err error) {
+func (client AccountBillingRoleAssignmentClient) List(ctx context.Context, billingAccountName string) (result RoleAssignmentListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingRoleAssignmentClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountBillingRoleAssignmentClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -287,27 +287,27 @@ func (client AccountbillingRoleAssignmentClient) List(ctx context.Context, billi
 	}
 	req, err := client.ListPreparer(ctx, billingAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingRoleAssignmentClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingRoleAssignmentClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AccountbillingRoleAssignmentClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
+func (client AccountBillingRoleAssignmentClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
@@ -327,14 +327,14 @@ func (client AccountbillingRoleAssignmentClient) ListPreparer(ctx context.Contex
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountbillingRoleAssignmentClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AccountBillingRoleAssignmentClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AccountbillingRoleAssignmentClient) ListResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
+func (client AccountBillingRoleAssignmentClient) ListResponder(resp *http.Response) (result RoleAssignmentListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

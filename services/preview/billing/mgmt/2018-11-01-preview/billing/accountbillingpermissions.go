@@ -25,27 +25,27 @@ import (
 	"net/http"
 )
 
-// AccountbillingPermissionsClient is the billing client provides access to billing resources for Azure subscriptions.
-type AccountbillingPermissionsClient struct {
+// AccountBillingPermissionsClient is the billing client provides access to billing resources for Azure subscriptions.
+type AccountBillingPermissionsClient struct {
 	BaseClient
 }
 
-// NewAccountbillingPermissionsClient creates an instance of the AccountbillingPermissionsClient client.
-func NewAccountbillingPermissionsClient(subscriptionID string) AccountbillingPermissionsClient {
-	return NewAccountbillingPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAccountBillingPermissionsClient creates an instance of the AccountBillingPermissionsClient client.
+func NewAccountBillingPermissionsClient(subscriptionID string) AccountBillingPermissionsClient {
+	return NewAccountBillingPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAccountbillingPermissionsClientWithBaseURI creates an instance of the AccountbillingPermissionsClient client.
-func NewAccountbillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) AccountbillingPermissionsClient {
-	return AccountbillingPermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAccountBillingPermissionsClientWithBaseURI creates an instance of the AccountBillingPermissionsClient client.
+func NewAccountBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingPermissionsClient {
+	return AccountBillingPermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all billingPermissions for the caller has for a billing account.
 // Parameters:
 // billingAccountName - billing Account Id.
-func (client AccountbillingPermissionsClient) List(ctx context.Context, billingAccountName string) (result PermissionsListResult, err error) {
+func (client AccountBillingPermissionsClient) List(ctx context.Context, billingAccountName string) (result PermissionsListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AccountbillingPermissionsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountBillingPermissionsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -56,27 +56,27 @@ func (client AccountbillingPermissionsClient) List(ctx context.Context, billingA
 	}
 	req, err := client.ListPreparer(ctx, billingAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingPermissionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingPermissionsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingPermissionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingPermissionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountbillingPermissionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AccountBillingPermissionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AccountbillingPermissionsClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
+func (client AccountBillingPermissionsClient) ListPreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
@@ -96,14 +96,14 @@ func (client AccountbillingPermissionsClient) ListPreparer(ctx context.Context, 
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountbillingPermissionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AccountBillingPermissionsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AccountbillingPermissionsClient) ListResponder(resp *http.Response) (result PermissionsListResult, err error) {
+func (client AccountBillingPermissionsClient) ListResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

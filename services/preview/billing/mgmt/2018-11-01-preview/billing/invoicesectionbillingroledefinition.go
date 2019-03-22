@@ -25,22 +25,22 @@ import (
 	"net/http"
 )
 
-// InvoiceSectionbillingRoleDefinitionClient is the billing client provides access to billing resources for Azure
+// InvoiceSectionBillingRoleDefinitionClient is the billing client provides access to billing resources for Azure
 // subscriptions.
-type InvoiceSectionbillingRoleDefinitionClient struct {
+type InvoiceSectionBillingRoleDefinitionClient struct {
 	BaseClient
 }
 
-// NewInvoiceSectionbillingRoleDefinitionClient creates an instance of the InvoiceSectionbillingRoleDefinitionClient
+// NewInvoiceSectionBillingRoleDefinitionClient creates an instance of the InvoiceSectionBillingRoleDefinitionClient
 // client.
-func NewInvoiceSectionbillingRoleDefinitionClient(subscriptionID string) InvoiceSectionbillingRoleDefinitionClient {
-	return NewInvoiceSectionbillingRoleDefinitionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
+	return NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoiceSectionbillingRoleDefinitionClientWithBaseURI creates an instance of the
-// InvoiceSectionbillingRoleDefinitionClient client.
-func NewInvoiceSectionbillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionbillingRoleDefinitionClient {
-	return InvoiceSectionbillingRoleDefinitionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI creates an instance of the
+// InvoiceSectionBillingRoleDefinitionClient client.
+func NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
+	return InvoiceSectionBillingRoleDefinitionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the role definition for a role
@@ -48,9 +48,9 @@ func NewInvoiceSectionbillingRoleDefinitionClientWithBaseURI(baseURI string, sub
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
 // billingRoleDefinitionName - role definition id.
-func (client InvoiceSectionbillingRoleDefinitionClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionbillingRoleDefinitionClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionBillingRoleDefinitionClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -61,27 +61,27 @@ func (client InvoiceSectionbillingRoleDefinitionClient) Get(ctx context.Context,
 	}
 	req, err := client.GetPreparer(ctx, billingAccountName, invoiceSectionName, billingRoleDefinitionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionbillingRoleDefinitionClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionBillingRoleDefinitionClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionbillingRoleDefinitionClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionBillingRoleDefinitionClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionbillingRoleDefinitionClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionBillingRoleDefinitionClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client InvoiceSectionbillingRoleDefinitionClient) GetPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (*http.Request, error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) GetPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":        autorest.Encode("path", billingAccountName),
 		"billingRoleDefinitionName": autorest.Encode("path", billingRoleDefinitionName),
@@ -103,14 +103,14 @@ func (client InvoiceSectionbillingRoleDefinitionClient) GetPreparer(ctx context.
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoiceSectionbillingRoleDefinitionClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client InvoiceSectionbillingRoleDefinitionClient) GetResponder(resp *http.Response) (result RoleDefinition, err error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) GetResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -125,9 +125,9 @@ func (client InvoiceSectionbillingRoleDefinitionClient) GetResponder(resp *http.
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-func (client InvoiceSectionbillingRoleDefinitionClient) List(ctx context.Context, billingAccountName string, invoiceSectionName string) (result RoleDefinitionListResult, err error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) List(ctx context.Context, billingAccountName string, invoiceSectionName string) (result RoleDefinitionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionbillingRoleDefinitionClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionBillingRoleDefinitionClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -138,27 +138,27 @@ func (client InvoiceSectionbillingRoleDefinitionClient) List(ctx context.Context
 	}
 	req, err := client.ListPreparer(ctx, billingAccountName, invoiceSectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionbillingRoleDefinitionClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionBillingRoleDefinitionClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionbillingRoleDefinitionClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionBillingRoleDefinitionClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionbillingRoleDefinitionClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionBillingRoleDefinitionClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client InvoiceSectionbillingRoleDefinitionClient) ListPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) ListPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
@@ -179,14 +179,14 @@ func (client InvoiceSectionbillingRoleDefinitionClient) ListPreparer(ctx context
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoiceSectionbillingRoleDefinitionClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client InvoiceSectionbillingRoleDefinitionClient) ListResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
+func (client InvoiceSectionBillingRoleDefinitionClient) ListResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

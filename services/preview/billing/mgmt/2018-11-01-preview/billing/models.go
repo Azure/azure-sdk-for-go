@@ -590,8 +590,8 @@ type Enrollment struct {
 	CountryCode *string `json:"countryCode,omitempty"`
 	// Status - Enrollment status
 	Status *string `json:"status,omitempty"`
-	// BillingCylce - Enrollment billing cycle
-	BillingCylce *string `json:"billingCylce,omitempty"`
+	// BillingCycle - Enrollment billing cycle
+	BillingCycle *string `json:"billingCycle,omitempty"`
 }
 
 // EnrollmentAccount an account resource.
@@ -1999,8 +1999,8 @@ type Property struct {
 	BillingAccountName *string `json:"billingAccountName,omitempty"`
 	// BillingProfileID - Billing profile Id.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
-	// BillingProflieName - Billing profile name.
-	BillingProflieName *string `json:"billingProflieName,omitempty"`
+	// BillingProfileName - Billing profile name.
+	BillingProfileName *string `json:"billingProfileName,omitempty"`
 	// InvoiceSectionID - Invoice Section Id.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
 	// InvoiceSectionName - Invoice Section name.

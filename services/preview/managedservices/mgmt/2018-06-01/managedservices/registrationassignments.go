@@ -44,9 +44,9 @@ func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAss
 // CreateOrUpdate creates or updates a registration assignment.
 // Parameters:
 // scope - scope of the resource.
-// registratonAssignmentID - guid of the registration assignment.
+// registrationAssignmentID - guid of the registration assignment.
 // requestBody - the parameters required to create new registration assignment.
-func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registratonAssignmentID string, requestBody RegistrationAssignment) (result RegistrationAssignment, err error) {
+func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment) (result RegistrationAssignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.CreateOrUpdate")
 		defer func() {
@@ -73,7 +73,7 @@ func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, 
 		return result, validation.NewError("managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, scope, registratonAssignmentID, requestBody)
+	req, err := client.CreateOrUpdatePreparer(ctx, scope, registrationAssignmentID, requestBody)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -95,10 +95,10 @@ func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, 
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, registratonAssignmentID string, requestBody RegistrationAssignment) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"registratonAssignmentId": autorest.Encode("path", registratonAssignmentID),
-		"scope":                   scope,
+		"registrationAssignmentId": autorest.Encode("path", registrationAssignmentID),
+		"scope":                    scope,
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -110,7 +110,7 @@ func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.C
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registratonAssignmentId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registrationAssignmentId}", pathParameters),
 		autorest.WithJSON(requestBody),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -139,8 +139,8 @@ func (client RegistrationAssignmentsClient) CreateOrUpdateResponder(resp *http.R
 // Delete deletes the specified registration assignment.
 // Parameters:
 // scope - scope of the resource.
-// registratonAssignmentID - guid of the registration assignment.
-func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registratonAssignmentID string) (result RegistrationAssignment, err error) {
+// registrationAssignmentID - guid of the registration assignment.
+func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registrationAssignmentID string) (result RegistrationAssignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Delete")
 		defer func() {
@@ -151,7 +151,7 @@ func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, scope, registratonAssignmentID)
+	req, err := client.DeletePreparer(ctx, scope, registrationAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -173,10 +173,10 @@ func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, scope string, registratonAssignmentID string) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, scope string, registrationAssignmentID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"registratonAssignmentId": autorest.Encode("path", registratonAssignmentID),
-		"scope":                   scope,
+		"registrationAssignmentId": autorest.Encode("path", registrationAssignmentID),
+		"scope":                    scope,
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -187,7 +187,7 @@ func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registratonAssignmentId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registrationAssignmentId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -215,10 +215,10 @@ func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response)
 // Get gets the details of specified registration assignment.
 // Parameters:
 // scope - scope of the resource.
-// registratonAssignmentID - guid of the registration assignment.
+// registrationAssignmentID - guid of the registration assignment.
 // expandRegistrationDefinition - tells whether to return registration definition details also along with
 // registration assignment details.
-func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registratonAssignmentID string, expandRegistrationDefinition *bool) (result RegistrationAssignment, err error) {
+func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registrationAssignmentID string, expandRegistrationDefinition *bool) (result RegistrationAssignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Get")
 		defer func() {
@@ -229,7 +229,7 @@ func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, registratonAssignmentID, expandRegistrationDefinition)
+	req, err := client.GetPreparer(ctx, scope, registrationAssignmentID, expandRegistrationDefinition)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Get", nil, "Failure preparing request")
 		return
@@ -251,10 +251,10 @@ func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope strin
 }
 
 // GetPreparer prepares the Get request.
-func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, scope string, registratonAssignmentID string, expandRegistrationDefinition *bool) (*http.Request, error) {
+func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, scope string, registrationAssignmentID string, expandRegistrationDefinition *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"registratonAssignmentId": autorest.Encode("path", registratonAssignmentID),
-		"scope":                   scope,
+		"registrationAssignmentId": autorest.Encode("path", registrationAssignmentID),
+		"scope":                    scope,
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -268,7 +268,7 @@ func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, sco
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registratonAssignmentId}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedServices/registrationAssignments/{registrationAssignmentId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

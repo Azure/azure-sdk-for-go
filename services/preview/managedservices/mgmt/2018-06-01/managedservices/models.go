@@ -87,7 +87,7 @@ type ErrorResponseError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Operation object that desctibes a single Microsoft.ManagedServices operation.
+// Operation object that describes a single Microsoft.ManagedServices operation.
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
@@ -316,7 +316,7 @@ type RegistrationAssignmentPropertiesRegistrationDefinition struct {
 type RegistrationAssignmentPropertiesRegistrationDefinitionProperties struct {
 	// Description - Description of the registration definition.
 	Description *string `json:"description,omitempty"`
-	// Authorizations - Authorization tuple containing prinicpal id of the user/security group or service principal and id of the build-in role.
+	// Authorizations - Authorization tuple containing principal id of the user/security group or service principal and id of the build-in role.
 	Authorizations *[]Authorization `json:"authorizations,omitempty"`
 	// RegistrationDefinitionName - Name of the registration definition.
 	RegistrationDefinitionName *string `json:"registrationDefinitionName,omitempty"`
@@ -498,7 +498,7 @@ func NewRegistrationDefinitionListPage(getNextPage func(context.Context, Registr
 type RegistrationDefinitionProperties struct {
 	// Description - Description of the registration definition.
 	Description *string `json:"description,omitempty"`
-	// Authorizations - Authorization tuple containing prinicpal id of the user/security group or service principal and id of the build-in role.
+	// Authorizations - Authorization tuple containing principal id of the user/security group or service principal and id of the build-in role.
 	Authorizations *[]Authorization `json:"authorizations,omitempty"`
 	// RegistrationDefinitionName - Name of the registration definition.
 	RegistrationDefinitionName *string `json:"registrationDefinitionName,omitempty"`

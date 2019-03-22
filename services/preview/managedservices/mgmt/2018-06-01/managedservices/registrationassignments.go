@@ -43,7 +43,7 @@ func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAss
 
 // CreateOrUpdate creates or updates a registration assignment.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 // registratonAssignmentID - guid of the registration assignment.
 // requestBody - the parameters required to create new registration assignment.
 func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registratonAssignmentID string, requestBody RegistrationAssignment) (result RegistrationAssignment, err error) {
@@ -138,7 +138,7 @@ func (client RegistrationAssignmentsClient) CreateOrUpdateResponder(resp *http.R
 
 // Delete deletes the specified registration assignment.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 // registratonAssignmentID - guid of the registration assignment.
 func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registratonAssignmentID string) (result RegistrationAssignment, err error) {
 	if tracing.IsEnabled() {
@@ -214,10 +214,10 @@ func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response)
 
 // Get gets the details of specified registration assignment.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 // registratonAssignmentID - guid of the registration assignment.
 // expandRegistrationDefinition - tells whether to return registration definition details also along with
-// registration assingmnet details.
+// registration assignment details.
 func (client RegistrationAssignmentsClient) Get(ctx context.Context, scope string, registratonAssignmentID string, expandRegistrationDefinition *bool) (result RegistrationAssignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Get")
@@ -295,9 +295,9 @@ func (client RegistrationAssignmentsClient) GetResponder(resp *http.Response) (r
 
 // List gets a list of the registration assignments.
 // Parameters:
-// scope - id of the source subscription.
+// scope - scope of the resource.
 // expandRegistrationDefinition - tells whether to return registration definition details also along with
-// registration assingmnet details.
+// registration assignment details.
 func (client RegistrationAssignmentsClient) List(ctx context.Context, scope string, expandRegistrationDefinition *bool) (result RegistrationAssignmentListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.List")

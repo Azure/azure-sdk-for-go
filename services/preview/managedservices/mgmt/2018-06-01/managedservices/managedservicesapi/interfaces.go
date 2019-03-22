@@ -34,9 +34,9 @@ var _ RegistrationDefinitionsClientAPI = (*managedservices.RegistrationDefinitio
 
 // RegistrationAssignmentsClientAPI contains the set of methods on the RegistrationAssignmentsClient type.
 type RegistrationAssignmentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, registratonAssignmentID string, requestBody managedservices.RegistrationAssignment) (result managedservices.RegistrationAssignment, err error)
-	Delete(ctx context.Context, scope string, registratonAssignmentID string) (result managedservices.RegistrationAssignment, err error)
-	Get(ctx context.Context, scope string, registratonAssignmentID string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignment, err error)
+	CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody managedservices.RegistrationAssignment) (result managedservices.RegistrationAssignment, err error)
+	Delete(ctx context.Context, scope string, registrationAssignmentID string) (result managedservices.RegistrationAssignment, err error)
+	Get(ctx context.Context, scope string, registrationAssignmentID string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignment, err error)
 	List(ctx context.Context, scope string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignmentListPage, err error)
 }
 

@@ -352,6 +352,84 @@ func (client ServiceMembersClient) GetResponder(resp *http.Response) (result Ser
 	return
 }
 
+// GetConnectorMetadata gets the list of connectors and run profile names.
+// Parameters:
+// serviceName - the name of the service.
+// serviceMemberID - the service member id.
+// metricName - the name of the metric.
+func (client ServiceMembersClient) GetConnectorMetadata(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, metricName string) (result ConnectorMetadata, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceMembersClient.GetConnectorMetadata")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetConnectorMetadataPreparer(ctx, serviceName, serviceMemberID, metricName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "GetConnectorMetadata", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetConnectorMetadataSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "GetConnectorMetadata", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetConnectorMetadataResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceMembersClient", "GetConnectorMetadata", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetConnectorMetadataPreparer prepares the GetConnectorMetadata request.
+func (client ServiceMembersClient) GetConnectorMetadataPreparer(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, metricName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"metricName":      autorest.Encode("path", metricName),
+		"serviceMemberId": autorest.Encode("path", serviceMemberID),
+		"serviceName":     autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/servicemembers/{serviceMemberId}/metrics/{metricName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetConnectorMetadataSender sends the GetConnectorMetadata request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServiceMembersClient) GetConnectorMetadataSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetConnectorMetadataResponder handles the response to the GetConnectorMetadata request. The method always
+// closes the http.Response Body.
+func (client ServiceMembersClient) GetConnectorMetadataResponder(resp *http.Response) (result ConnectorMetadata, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetMetrics gets the server related metrics for a given metric and group combination.
 // Parameters:
 // serviceName - the name of the service.

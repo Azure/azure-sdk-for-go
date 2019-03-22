@@ -175,6 +175,7 @@ type ServiceMembersClientAPI interface {
 	Delete(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, confirm *bool) (result autorest.Response, err error)
 	DeleteData(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result autorest.Response, err error)
 	Get(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result adhybridhealthservice.ServiceMember, err error)
+	GetConnectorMetadata(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, metricName string) (result adhybridhealthservice.ConnectorMetadata, err error)
 	GetMetrics(ctx context.Context, serviceName string, metricName string, groupName string, serviceMemberID uuid.UUID, groupKey string, fromDate *date.Time, toDate *date.Time) (result adhybridhealthservice.MetricSets, err error)
 	GetServiceConfiguration(ctx context.Context, serviceName string, serviceMemberID string) (result adhybridhealthservice.ServiceConfiguration, err error)
 	List(ctx context.Context, serviceName string, filter string, dimensionType string, dimensionSignature string) (result adhybridhealthservice.ServiceMembersPage, err error)

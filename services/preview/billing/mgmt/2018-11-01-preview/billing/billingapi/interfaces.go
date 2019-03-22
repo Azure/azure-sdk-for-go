@@ -241,12 +241,12 @@ type AccountBillingPermissionsClientAPI interface {
 
 var _ AccountBillingPermissionsClientAPI = (*billing.AccountBillingPermissionsClient)(nil)
 
-// InvoiceSectionsbillingPermissionsClientAPI contains the set of methods on the InvoiceSectionsbillingPermissionsClient type.
-type InvoiceSectionsbillingPermissionsClientAPI interface {
+// InvoiceSectionsBillingPermissionsClientAPI contains the set of methods on the InvoiceSectionsBillingPermissionsClient type.
+type InvoiceSectionsBillingPermissionsClientAPI interface {
 	List(ctx context.Context, billingAccountName string, invoiceSectionName string) (result billing.PermissionsListResult, err error)
 }
 
-var _ InvoiceSectionsbillingPermissionsClientAPI = (*billing.InvoiceSectionsbillingPermissionsClient)(nil)
+var _ InvoiceSectionsBillingPermissionsClientAPI = (*billing.InvoiceSectionsBillingPermissionsClient)(nil)
 
 // ProfileBillingPermissionsClientAPI contains the set of methods on the ProfileBillingPermissionsClient type.
 type ProfileBillingPermissionsClientAPI interface {

@@ -44,7 +44,7 @@ func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string) InvoiceC
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
-// invoiceName - invoide Id.
+// invoiceName - invoice Id.
 func (client InvoiceClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceName string) (result InvoiceSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceClient.Get")

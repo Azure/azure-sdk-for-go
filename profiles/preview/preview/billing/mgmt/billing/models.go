@@ -154,12 +154,12 @@ type InvoiceSectionBillingRoleAssignmentClient = original.InvoiceSectionBillingR
 type InvoiceSectionBillingRoleDefinitionClient = original.InvoiceSectionBillingRoleDefinitionClient
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
+type InvoiceSectionsBillingPermissionsClient = original.InvoiceSectionsBillingPermissionsClient
 type InvoiceSectionsByBillingAccountNameClient = original.InvoiceSectionsByBillingAccountNameClient
 type InvoiceSectionsClient = original.InvoiceSectionsClient
 type InvoiceSectionsCreateFuture = original.InvoiceSectionsCreateFuture
 type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
 type InvoiceSectionsWithCreateSubscriptionPermissionClient = original.InvoiceSectionsWithCreateSubscriptionPermissionClient
-type InvoiceSectionsbillingPermissionsClient = original.InvoiceSectionsbillingPermissionsClient
 type InvoiceSummary = original.InvoiceSummary
 type InvoiceSummaryProperties = original.InvoiceSummaryProperties
 type InvoicesByBillingAccountClient = original.InvoicesByBillingAccountClient
@@ -322,6 +322,12 @@ func NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID string) Invoice
 func NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
 	return original.NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewInvoiceSectionsBillingPermissionsClient(subscriptionID string) InvoiceSectionsBillingPermissionsClient {
+	return original.NewInvoiceSectionsBillingPermissionsClient(subscriptionID)
+}
+func NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsBillingPermissionsClient {
+	return original.NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewInvoiceSectionsByBillingAccountNameClient(subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
 	return original.NewInvoiceSectionsByBillingAccountNameClient(subscriptionID)
 }
@@ -339,12 +345,6 @@ func NewInvoiceSectionsWithCreateSubscriptionPermissionClient(subscriptionID str
 }
 func NewInvoiceSectionsWithCreateSubscriptionPermissionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsWithCreateSubscriptionPermissionClient {
 	return original.NewInvoiceSectionsWithCreateSubscriptionPermissionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionsbillingPermissionsClient(subscriptionID string) InvoiceSectionsbillingPermissionsClient {
-	return original.NewInvoiceSectionsbillingPermissionsClient(subscriptionID)
-}
-func NewInvoiceSectionsbillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsbillingPermissionsClient {
-	return original.NewInvoiceSectionsbillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoicesByBillingAccountClient(subscriptionID string) InvoicesByBillingAccountClient {
 	return original.NewInvoicesByBillingAccountClient(subscriptionID)

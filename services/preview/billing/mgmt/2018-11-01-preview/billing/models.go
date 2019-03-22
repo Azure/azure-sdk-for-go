@@ -1943,7 +1943,7 @@ type ProfileProperties struct {
 	PoNumber *string `json:"poNumber,omitempty"`
 	// BillingAddress - Billing address.
 	BillingAddress *Address `json:"billingAddress,omitempty"`
-	// InvoiceEmailOptIn - If the billing profile is opted in to recieve invoices via email.
+	// InvoiceEmailOptIn - If the billing profile is opted in to receive invoices via email.
 	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
 	// IsClassic - Is OMS bootstrapped billing profile.
 	IsClassic *bool `json:"isClassic,omitempty"`
@@ -2114,7 +2114,7 @@ type RoleAssignmentListResult struct {
 type RoleAssignmentPayload struct {
 	// PrincipalID - The user's principal id that the role gets assigned to
 	PrincipalID *string `json:"principalId,omitempty"`
-	// BillingRoleDefinitionName - The role defintion id
+	// BillingRoleDefinitionName - The role definition id
 	BillingRoleDefinitionName *string `json:"billingRoleDefinitionName,omitempty"`
 }
 
@@ -2130,7 +2130,7 @@ type RoleAssignmentProperties struct {
 	Name *string `json:"name,omitempty"`
 	// PrincipalID - The user's principal id that the role gets assigned to
 	PrincipalID *string `json:"principalId,omitempty"`
-	// RoleDefinitionName - The role defintion id
+	// RoleDefinitionName - The role definition id
 	RoleDefinitionName *string `json:"roleDefinitionName,omitempty"`
 	// Scope - The scope the role get assigned to
 	Scope *string `json:"scope,omitempty"`
@@ -2979,7 +2979,7 @@ type UpdateAutoRenewOperationSummaryProperties struct {
 	EndDate *date.Time `json:"endDate,omitempty"`
 }
 
-// UpdateAutoRenewRequest request parameters to update auto renew for support prouct.
+// UpdateAutoRenewRequest request parameters to update auto renew for support product.
 type UpdateAutoRenewRequest struct {
 	// AutoRenew - Request parameters to update auto renew policy a product. Possible values include: 'True', 'False'
 	AutoRenew UpdateAutoRenew `json:"autoRenew,omitempty"`

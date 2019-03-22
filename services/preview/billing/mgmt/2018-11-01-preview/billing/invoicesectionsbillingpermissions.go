@@ -25,31 +25,31 @@ import (
 	"net/http"
 )
 
-// InvoiceSectionsbillingPermissionsClient is the billing client provides access to billing resources for Azure
+// InvoiceSectionsBillingPermissionsClient is the billing client provides access to billing resources for Azure
 // subscriptions.
-type InvoiceSectionsbillingPermissionsClient struct {
+type InvoiceSectionsBillingPermissionsClient struct {
 	BaseClient
 }
 
-// NewInvoiceSectionsbillingPermissionsClient creates an instance of the InvoiceSectionsbillingPermissionsClient
+// NewInvoiceSectionsBillingPermissionsClient creates an instance of the InvoiceSectionsBillingPermissionsClient
 // client.
-func NewInvoiceSectionsbillingPermissionsClient(subscriptionID string) InvoiceSectionsbillingPermissionsClient {
-	return NewInvoiceSectionsbillingPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInvoiceSectionsBillingPermissionsClient(subscriptionID string) InvoiceSectionsBillingPermissionsClient {
+	return NewInvoiceSectionsBillingPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoiceSectionsbillingPermissionsClientWithBaseURI creates an instance of the
-// InvoiceSectionsbillingPermissionsClient client.
-func NewInvoiceSectionsbillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsbillingPermissionsClient {
-	return InvoiceSectionsbillingPermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewInvoiceSectionsBillingPermissionsClientWithBaseURI creates an instance of the
+// InvoiceSectionsBillingPermissionsClient client.
+func NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsBillingPermissionsClient {
+	return InvoiceSectionsBillingPermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all billingPermissions for the caller has for a Invoice Section.
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-func (client InvoiceSectionsbillingPermissionsClient) List(ctx context.Context, billingAccountName string, invoiceSectionName string) (result PermissionsListResult, err error) {
+func (client InvoiceSectionsBillingPermissionsClient) List(ctx context.Context, billingAccountName string, invoiceSectionName string) (result PermissionsListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsbillingPermissionsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsBillingPermissionsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -60,27 +60,27 @@ func (client InvoiceSectionsbillingPermissionsClient) List(ctx context.Context, 
 	}
 	req, err := client.ListPreparer(ctx, billingAccountName, invoiceSectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsbillingPermissionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsBillingPermissionsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsbillingPermissionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsBillingPermissionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsbillingPermissionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsBillingPermissionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client InvoiceSectionsbillingPermissionsClient) ListPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
+func (client InvoiceSectionsBillingPermissionsClient) ListPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
@@ -101,14 +101,14 @@ func (client InvoiceSectionsbillingPermissionsClient) ListPreparer(ctx context.C
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoiceSectionsbillingPermissionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client InvoiceSectionsBillingPermissionsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client InvoiceSectionsbillingPermissionsClient) ListResponder(resp *http.Response) (result PermissionsListResult, err error) {
+func (client InvoiceSectionsBillingPermissionsClient) ListResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

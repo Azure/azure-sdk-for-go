@@ -143,7 +143,7 @@ func (client BaseClient) TransactionsByBillingProfileResponder(resp *http.Respon
 // UpdateAutoRenewForBillingAccount cancel product by product id
 // Parameters:
 // billingAccountName - billing Account Id.
-// productName - invoide Id.
+// productName - invoice Id.
 // body - update auto renew request parameters.
 func (client BaseClient) UpdateAutoRenewForBillingAccount(ctx context.Context, billingAccountName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
 	if tracing.IsEnabled() {
@@ -223,7 +223,7 @@ func (client BaseClient) UpdateAutoRenewForBillingAccountResponder(resp *http.Re
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoide Id.
+// productName - invoice Id.
 // body - update auto renew request parameters.
 func (client BaseClient) UpdateAutoRenewForInvoiceSection(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
 	if tracing.IsEnabled() {

@@ -44,7 +44,7 @@ func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) Product
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoide Id.
+// productName - invoice Id.
 func (client ProductsClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string) (result ProductSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.Get")
@@ -122,7 +122,7 @@ func (client ProductsClient) GetResponder(resp *http.Response) (result ProductSu
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoide Id.
+// productName - invoice Id.
 // parameters - parameters supplied to the Transfer Product operation.
 func (client ProductsClient) Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (result ProductSummary, err error) {
 	if tracing.IsEnabled() {

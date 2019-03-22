@@ -276,7 +276,7 @@ type AccountProperties struct {
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ActiveDirectories - Active Directories
-	ActiveDirectories *ActiveDirectories `json:"activeDirectories,omitempty"`
+	ActiveDirectories *[]ActiveDirectory `json:"activeDirectories,omitempty"`
 }
 
 // AccountsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -331,8 +331,8 @@ func (future *AccountsDeleteFuture) Result(client AccountsClient) (ar autorest.R
 	return
 }
 
-// ActiveDirectories active Directories
-type ActiveDirectories struct {
+// ActiveDirectory active Directory
+type ActiveDirectory struct {
 	// ActiveDirectoryID - Id of the Active Directory
 	ActiveDirectoryID *string `json:"activeDirectoryId,omitempty"`
 	// Username - Username of Active Directory domain administrator
@@ -1363,7 +1363,12 @@ type VolumePatchProperties struct {
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Export policy rule
-	ExportPolicy *ExportPolicyRule `json:"exportPolicy,omitempty"`
+	ExportPolicy *VolumePatchPropertiesExportPolicy `json:"exportPolicy,omitempty"`
+}
+
+// VolumePatchPropertiesExportPolicy export policy rule
+type VolumePatchPropertiesExportPolicy struct {
+	Rules *[]ExportPolicyRule `json:"rules,omitempty"`
 }
 
 // VolumeProperties volume properties
@@ -1377,11 +1382,16 @@ type VolumeProperties struct {
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Export policy rule
-	ExportPolicy *ExportPolicyRule `json:"exportPolicy,omitempty"`
+	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
 	// ProvisioningState - Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
+}
+
+// VolumePropertiesExportPolicy export policy rule
+type VolumePropertiesExportPolicy struct {
+	Rules *[]ExportPolicyRule `json:"rules,omitempty"`
 }
 
 // VolumesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

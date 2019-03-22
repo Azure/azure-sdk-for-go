@@ -1056,6 +1056,23 @@ type ConnectorConnectionErrors struct {
 	Value *[]ConnectorConnectionError `json:"value,omitempty"`
 }
 
+// ConnectorMetadata gets the list of connectors and run profile names.
+type ConnectorMetadata struct {
+	autorest.Response `json:"-"`
+	// Connectors - The list of connectors.
+	Connectors *[]ConnectorMetadataDetails `json:"connectors,omitempty"`
+	// RunProfileNames - The list of run profile names.
+	RunProfileNames *[]string `json:"runProfileNames,omitempty"`
+}
+
+// ConnectorMetadataDetails details of the connector.
+type ConnectorMetadataDetails struct {
+	// ConnectorID - The Connector Id.
+	ConnectorID *string `json:"connectorId,omitempty"`
+	// ConnectorDisplayName - The Connector Display Name
+	ConnectorDisplayName *string `json:"connectorDisplayName,omitempty"`
+}
+
 // ConnectorObjectError the connector object error.
 type ConnectorObjectError struct {
 	// ID - The error Id.

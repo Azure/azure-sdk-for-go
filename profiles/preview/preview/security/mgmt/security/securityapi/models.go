@@ -27,6 +27,7 @@ type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI
 type ContactsClientAPI = original.ContactsClientAPI
+type DeviceSecurityGroupsClientAPI = original.DeviceSecurityGroupsClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
 type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI

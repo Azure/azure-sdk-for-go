@@ -340,17 +340,18 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	}
 
 	receiveMode := amqp.ModeSecond
-	sendMode := amqp.ModeUnsettled
 	if r.mode == ReceiveAndDeleteMode {
 		receiveMode = amqp.ModeFirst
-		sendMode = amqp.ModeSettled
 	}
 
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkSenderSettle(sendMode),
 		amqp.LinkReceiverSettle(receiveMode),
 		amqp.LinkCredit(r.prefetch),
+	}
+
+	if r.mode == ReceiveAndDeleteMode {
+		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
 	}
 
 	if r.useSessions {

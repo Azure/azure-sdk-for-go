@@ -2,6 +2,10 @@
 
 ## `head`
 
+## `v0.4.0`
+- Update to AMQP 0.12.0 which introduces strict settlement mode
+  ([#111](https://github.com/Azure/azure-service-bus-go/issues/111))
+
 ## `v0.3.0`
 - Add disposition batching
 - Add NotFound errors for mgmt API

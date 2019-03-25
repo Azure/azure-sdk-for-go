@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v26.7.0`
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| training | v3.0 |
+
 ## `v26.6.0`
 
 ## New Packages

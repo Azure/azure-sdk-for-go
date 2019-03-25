@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -106,6 +107,21 @@ const (
 // PossibleConnectionTypeValues returns an array of possible values for the ConnectionType const type.
 func PossibleConnectionTypeValues() []ConnectionType {
 	return []ConnectionType{External, Internal}
+}
+
+// Direction enumerates the values for direction.
+type Direction string
+
+const (
+	// Inbound ...
+	Inbound Direction = "Inbound"
+	// Outbound ...
+	Outbound Direction = "Outbound"
+)
+
+// PossibleDirectionValues returns an array of possible values for the Direction const type.
+func PossibleDirectionValues() []Direction {
+	return []Direction{Inbound, Outbound}
 }
 
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
@@ -280,6 +296,36 @@ func PossibleStatusReasonValues() []StatusReason {
 	return []StatusReason{Expired, NewerRequestInitiated, UserRequested}
 }
 
+// TransportProtocol enumerates the values for transport protocol.
+type TransportProtocol string
+
+const (
+	// TransportProtocolTCP ...
+	TransportProtocolTCP TransportProtocol = "TCP"
+	// TransportProtocolUDP ...
+	TransportProtocolUDP TransportProtocol = "UDP"
+)
+
+// PossibleTransportProtocolValues returns an array of possible values for the TransportProtocol const type.
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return []TransportProtocol{TransportProtocolTCP, TransportProtocolUDP}
+}
+
+// ValueType enumerates the values for value type.
+type ValueType string
+
+const (
+	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	IPCidr ValueType = "IpCidr"
+	// String Any string value.
+	String ValueType = "String"
+)
+
+// PossibleValueTypeValues returns an array of possible values for the ValueType const type.
+func PossibleValueTypeValues() []ValueType {
+	return []ValueType{IPCidr, String}
+}
+
 // AadConnectivityState1 describes an Azure resource with kind
 type AadConnectivityState1 struct {
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
@@ -359,6 +405,277 @@ type AadSolutionProperties struct {
 	Workspace    *ConnectedWorkspace `json:"workspace,omitempty"`
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
+}
+
+// AdaptiveNetworkHardening the resource whose properties describes the Adaptive Network Hardening settings
+// for some Azure resource
+type AdaptiveNetworkHardening struct {
+	autorest.Response `json:"-"`
+	// AdaptiveNetworkHardeningProperties - Properties of the Adaptive Network Hardening resource
+	*AdaptiveNetworkHardeningProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdaptiveNetworkHardening.
+func (anh AdaptiveNetworkHardening) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if anh.AdaptiveNetworkHardeningProperties != nil {
+		objectMap["properties"] = anh.AdaptiveNetworkHardeningProperties
+	}
+	if anh.ID != nil {
+		objectMap["id"] = anh.ID
+	}
+	if anh.Name != nil {
+		objectMap["name"] = anh.Name
+	}
+	if anh.Type != nil {
+		objectMap["type"] = anh.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AdaptiveNetworkHardening struct.
+func (anh *AdaptiveNetworkHardening) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var adaptiveNetworkHardeningProperties AdaptiveNetworkHardeningProperties
+				err = json.Unmarshal(*v, &adaptiveNetworkHardeningProperties)
+				if err != nil {
+					return err
+				}
+				anh.AdaptiveNetworkHardeningProperties = &adaptiveNetworkHardeningProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				anh.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				anh.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				anh.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AdaptiveNetworkHardeningEnforceRequest ...
+type AdaptiveNetworkHardeningEnforceRequest struct {
+	// Rules - The rules to enforce
+	Rules *[]Rule `json:"rules,omitempty"`
+	// NetworkSecurityGroups - The Azure resource IDs of the effective network security groups that will be updated with the created security rules from the Adaptive Network Hardening rules
+	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
+}
+
+// AdaptiveNetworkHardeningProperties adaptive Network Hardening resource properties
+type AdaptiveNetworkHardeningProperties struct {
+	// Rules - The security rules which are recommended to be effective on the VM
+	Rules *[]Rule `json:"rules,omitempty"`
+	// RulesCalculationTime - The UTC time on which the rules were calculated
+	RulesCalculationTime *date.Time `json:"rulesCalculationTime,omitempty"`
+	// EffectiveNetworkSecurityGroups - The Network Security Groups effective on the network interfaces of the protected resource
+	EffectiveNetworkSecurityGroups *[]EffectiveNetworkSecurityGroups `json:"effectiveNetworkSecurityGroups,omitempty"`
+}
+
+// AdaptiveNetworkHardeningsEnforceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AdaptiveNetworkHardeningsEnforceFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AdaptiveNetworkHardeningsEnforceFuture) Result(client AdaptiveNetworkHardeningsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AdaptiveNetworkHardeningsEnforceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("security.AdaptiveNetworkHardeningsEnforceFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AdaptiveNetworkHardeningsList response for ListAdaptiveNetworkHardenings API service call
+type AdaptiveNetworkHardeningsList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of Adaptive Network Hardenings resources
+	Value *[]AdaptiveNetworkHardening `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AdaptiveNetworkHardeningsListIterator provides access to a complete listing of AdaptiveNetworkHardening
+// values.
+type AdaptiveNetworkHardeningsListIterator struct {
+	i    int
+	page AdaptiveNetworkHardeningsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AdaptiveNetworkHardeningsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveNetworkHardeningsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AdaptiveNetworkHardeningsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AdaptiveNetworkHardeningsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AdaptiveNetworkHardeningsListIterator) Response() AdaptiveNetworkHardeningsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AdaptiveNetworkHardeningsListIterator) Value() AdaptiveNetworkHardening {
+	if !iter.page.NotDone() {
+		return AdaptiveNetworkHardening{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AdaptiveNetworkHardeningsListIterator type.
+func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
+	return AdaptiveNetworkHardeningsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (anhl AdaptiveNetworkHardeningsList) IsEmpty() bool {
+	return anhl.Value == nil || len(*anhl.Value) == 0
+}
+
+// adaptiveNetworkHardeningsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (anhl AdaptiveNetworkHardeningsList) adaptiveNetworkHardeningsListPreparer(ctx context.Context) (*http.Request, error) {
+	if anhl.NextLink == nil || len(to.String(anhl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(anhl.NextLink)))
+}
+
+// AdaptiveNetworkHardeningsListPage contains a page of AdaptiveNetworkHardening values.
+type AdaptiveNetworkHardeningsListPage struct {
+	fn   func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)
+	anhl AdaptiveNetworkHardeningsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AdaptiveNetworkHardeningsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdaptiveNetworkHardeningsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.anhl)
+	if err != nil {
+		return err
+	}
+	page.anhl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AdaptiveNetworkHardeningsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AdaptiveNetworkHardeningsListPage) NotDone() bool {
+	return !page.anhl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AdaptiveNetworkHardeningsListPage) Response() AdaptiveNetworkHardeningsList {
+	return page.anhl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AdaptiveNetworkHardeningsListPage) Values() []AdaptiveNetworkHardening {
+	if page.anhl.IsEmpty() {
+		return nil
+	}
+	return *page.anhl.Value
+}
+
+// Creates a new instance of the AdaptiveNetworkHardeningsListPage type.
+func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return AdaptiveNetworkHardeningsListPage{fn: getNextPage}
 }
 
 // AdvancedThreatProtectionProperties the Advanced Threat Protection settings.
@@ -1110,6 +1427,23 @@ type AllowedConnectionsResourceProperties struct {
 	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
 	// ConnectableResources - List of connectable resources
 	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
+}
+
+// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is allowed
+type AllowlistCustomAlertRule struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
 }
 
 // AscLocation the ASC location of the subscription is in the "name" field
@@ -2409,6 +2743,18 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
+// CustomAlertRule a custom alert rule
+type CustomAlertRule struct {
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // DataExportSetting represents a data export setting
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
@@ -2508,6 +2854,263 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// denied
+type DenylistCustomAlertRule struct {
+	// DenylistValues - The values to deny. The format of the values depends on the rule type.
+	DenylistValues *[]string `json:"denylistValues,omitempty"`
+	// ValueType - The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// DeviceSecurityGroup the device security group resource
+type DeviceSecurityGroup struct {
+	autorest.Response `json:"-"`
+	// DeviceSecurityGroupProperties - Device Security group data
+	*DeviceSecurityGroupProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceSecurityGroup.
+func (dsg DeviceSecurityGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsg.DeviceSecurityGroupProperties != nil {
+		objectMap["properties"] = dsg.DeviceSecurityGroupProperties
+	}
+	if dsg.ID != nil {
+		objectMap["id"] = dsg.ID
+	}
+	if dsg.Name != nil {
+		objectMap["name"] = dsg.Name
+	}
+	if dsg.Type != nil {
+		objectMap["type"] = dsg.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeviceSecurityGroup struct.
+func (dsg *DeviceSecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deviceSecurityGroupProperties DeviceSecurityGroupProperties
+				err = json.Unmarshal(*v, &deviceSecurityGroupProperties)
+				if err != nil {
+					return err
+				}
+				dsg.DeviceSecurityGroupProperties = &deviceSecurityGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dsg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeviceSecurityGroupList list of device security groups
+type DeviceSecurityGroupList struct {
+	autorest.Response `json:"-"`
+	// Value - List of device security group objects
+	Value *[]DeviceSecurityGroup `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeviceSecurityGroupListIterator provides access to a complete listing of DeviceSecurityGroup values.
+type DeviceSecurityGroupListIterator struct {
+	i    int
+	page DeviceSecurityGroupListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeviceSecurityGroupListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DeviceSecurityGroupListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeviceSecurityGroupListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeviceSecurityGroupListIterator) Response() DeviceSecurityGroupList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeviceSecurityGroupListIterator) Value() DeviceSecurityGroup {
+	if !iter.page.NotDone() {
+		return DeviceSecurityGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DeviceSecurityGroupListIterator type.
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return DeviceSecurityGroupListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsgl DeviceSecurityGroupList) IsEmpty() bool {
+	return dsgl.Value == nil || len(*dsgl.Value) == 0
+}
+
+// deviceSecurityGroupListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsgl DeviceSecurityGroupList) deviceSecurityGroupListPreparer(ctx context.Context) (*http.Request, error) {
+	if dsgl.NextLink == nil || len(to.String(dsgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsgl.NextLink)))
+}
+
+// DeviceSecurityGroupListPage contains a page of DeviceSecurityGroup values.
+type DeviceSecurityGroupListPage struct {
+	fn   func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)
+	dsgl DeviceSecurityGroupList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeviceSecurityGroupListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dsgl)
+	if err != nil {
+		return err
+	}
+	page.dsgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DeviceSecurityGroupListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeviceSecurityGroupListPage) NotDone() bool {
+	return !page.dsgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeviceSecurityGroupListPage) Response() DeviceSecurityGroupList {
+	return page.dsgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeviceSecurityGroupListPage) Values() []DeviceSecurityGroup {
+	if page.dsgl.IsEmpty() {
+		return nil
+	}
+	return *page.dsgl.Value
+}
+
+// Creates a new instance of the DeviceSecurityGroupListPage type.
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return DeviceSecurityGroupListPage{fn: getNextPage}
+}
+
+// DeviceSecurityGroupProperties describes properties of a security group.
+type DeviceSecurityGroupProperties struct {
+	// ThresholdRules - A list of threshold custom alert rules.
+	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	// TimeWindowRules - A list of time window custom alert rules.
+	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	// AllowlistRules - A list of allow-list custom alert rules.
+	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	// DenylistRules - A list of deny-list custom alert rules.
+	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // DiscoveredSecuritySolution ...
@@ -2761,6 +3364,14 @@ type DiscoveredSecuritySolutionProperties struct {
 	Publisher *string `json:"publisher,omitempty"`
 	// Sku - The security solutions' image sku
 	Sku *string `json:"sku,omitempty"`
+}
+
+// EffectiveNetworkSecurityGroups describes the Network Security Groups effective on a network interface
+type EffectiveNetworkSecurityGroups struct {
+	// NetworkInterface - The Azure resource ID of the network interface
+	NetworkInterface *string `json:"networkInterface,omitempty"`
+	// NetworkSecurityGroups - The Network Security Groups effective on the network interface
+	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
 }
 
 // BasicExternalSecuritySolution represents a security solution external to Azure Security Center which sends
@@ -3791,6 +4402,20 @@ type Kind struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// ListCustomAlertRule a List custom alert rule
+type ListCustomAlertRule struct {
+	// ValueType - The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // Location describes an Azure resource with location
 type Location struct {
 	// Location - Location where the resource is stored
@@ -4804,6 +5429,21 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Rule describes remote addresses that is recommended to communicate with the Azure resource on some
+// (Protocol, Port, Direction). All other remote addresses are recommended to be blocked
+type Rule struct {
+	// Name - The name of the rule
+	Name *string `json:"name,omitempty"`
+	// Direction - The rule's direction. Possible values include: 'Inbound', 'Outbound'
+	Direction Direction `json:"direction,omitempty"`
+	// DestinationPort - The rule's destination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocols - The rule's transport protocols
+	Protocols *[]TransportProtocol `json:"protocols,omitempty"`
+	// IPAddresses - The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+}
+
 // SensitivityLabel the sensitivity label.
 type SensitivityLabel struct {
 	// DisplayName - The name of the sensitivity label.
@@ -5279,6 +5919,42 @@ type TaskProperties struct {
 	LastStateChangeTimeUtc *date.Time `json:"lastStateChangeTimeUtc,omitempty"`
 	// SubState - Additional data on the state of the task
 	SubState *string `json:"subState,omitempty"`
+}
+
+// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is within the given range.
+type ThresholdCustomAlertRule struct {
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
+// custom alert type) in a time window is within the given range.
+type TimeWindowCustomAlertRule struct {
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
 }
 
 // TopologyList ...

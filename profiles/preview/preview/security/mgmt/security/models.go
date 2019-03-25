@@ -65,6 +65,13 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
+type Direction = original.Direction
+
+const (
+	Inbound  Direction = original.Inbound
+	Outbound Direction = original.Outbound
+)
+
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
 
 const (
@@ -146,9 +153,31 @@ const (
 	UserRequested         StatusReason = original.UserRequested
 )
 
+type TransportProtocol = original.TransportProtocol
+
+const (
+	TransportProtocolTCP TransportProtocol = original.TransportProtocolTCP
+	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
+)
+
+type ValueType = original.ValueType
+
+const (
+	IPCidr ValueType = original.IPCidr
+	String ValueType = original.String
+)
+
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type AdaptiveNetworkHardening = original.AdaptiveNetworkHardening
+type AdaptiveNetworkHardeningEnforceRequest = original.AdaptiveNetworkHardeningEnforceRequest
+type AdaptiveNetworkHardeningProperties = original.AdaptiveNetworkHardeningProperties
+type AdaptiveNetworkHardeningsClient = original.AdaptiveNetworkHardeningsClient
+type AdaptiveNetworkHardeningsEnforceFuture = original.AdaptiveNetworkHardeningsEnforceFuture
+type AdaptiveNetworkHardeningsList = original.AdaptiveNetworkHardeningsList
+type AdaptiveNetworkHardeningsListIterator = original.AdaptiveNetworkHardeningsListIterator
+type AdaptiveNetworkHardeningsListPage = original.AdaptiveNetworkHardeningsListPage
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
 type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
@@ -166,6 +195,7 @@ type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
 type AllowedConnectionsListPage = original.AllowedConnectionsListPage
 type AllowedConnectionsResource = original.AllowedConnectionsResource
 type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
+type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -200,14 +230,23 @@ type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
 type ContactsClient = original.ContactsClient
+type CustomAlertRule = original.CustomAlertRule
 type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
+type DenylistCustomAlertRule = original.DenylistCustomAlertRule
+type DeviceSecurityGroup = original.DeviceSecurityGroup
+type DeviceSecurityGroupList = original.DeviceSecurityGroupList
+type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
+type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
+type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
+type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
 type DiscoveredSecuritySolutionListPage = original.DiscoveredSecuritySolutionListPage
 type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionProperties
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
+type EffectiveNetworkSecurityGroups = original.EffectiveNetworkSecurityGroups
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -239,6 +278,7 @@ type JitNetworkAccessRequest = original.JitNetworkAccessRequest
 type JitNetworkAccessRequestPort = original.JitNetworkAccessRequestPort
 type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVirtualMachine
 type Kind = original.Kind
+type ListCustomAlertRule = original.ListCustomAlertRule
 type Location = original.Location
 type LocationsClient = original.LocationsClient
 type Operation = original.Operation
@@ -270,6 +310,7 @@ type RegulatoryComplianceStandardListPage = original.RegulatoryComplianceStandar
 type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStandardProperties
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
+type Rule = original.Rule
 type SensitivityLabel = original.SensitivityLabel
 type Setting = original.Setting
 type SettingResource = original.SettingResource
@@ -284,6 +325,8 @@ type TaskListPage = original.TaskListPage
 type TaskParameters = original.TaskParameters
 type TaskProperties = original.TaskProperties
 type TasksClient = original.TasksClient
+type ThresholdCustomAlertRule = original.ThresholdCustomAlertRule
+type TimeWindowCustomAlertRule = original.TimeWindowCustomAlertRule
 type TopologyClient = original.TopologyClient
 type TopologyList = original.TopologyList
 type TopologyListIterator = original.TopologyListIterator
@@ -302,6 +345,18 @@ type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
 func New(subscriptionID string, ascLocation string) BaseClient {
 	return original.New(subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkHardeningsClient(subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
+	return original.NewAdaptiveNetworkHardeningsClient(subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
+	return original.NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
+	return original.NewAdaptiveNetworkHardeningsListIterator(page)
+}
+func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return original.NewAdaptiveNetworkHardeningsListPage(getNextPage)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -374,6 +429,18 @@ func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient
 }
 func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return original.NewDeviceSecurityGroupListIterator(page)
+}
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return original.NewDeviceSecurityGroupListPage(getNextPage)
+}
+func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
+}
+func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
@@ -549,6 +616,9 @@ func PossibleAutoProvisionValues() []AutoProvision {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
+func PossibleDirectionValues() []Direction {
+	return original.PossibleDirectionValues()
+}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
 }
@@ -578,6 +648,12 @@ func PossibleStatusReasonValues() []StatusReason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return original.PossibleTransportProtocolValues()
+}
+func PossibleValueTypeValues() []ValueType {
+	return original.PossibleValueTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

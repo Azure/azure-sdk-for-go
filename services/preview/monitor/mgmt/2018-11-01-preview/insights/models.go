@@ -3132,8 +3132,8 @@ type LogSettings struct {
 
 // LogToMetricAction specify action need to be taken when rule type is converting log to metric
 type LogToMetricAction struct {
-	// Criteria - Severity of the alert
-	Criteria *Criteria `json:"criteria,omitempty"`
+	// Criteria - Criteria of Metric
+	Criteria *[]Criteria `json:"criteria,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }

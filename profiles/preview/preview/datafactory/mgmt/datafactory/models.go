@@ -237,15 +237,6 @@ const (
 	LicenseIncluded IntegrationRuntimeLicenseType = original.LicenseIncluded
 )
 
-type IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTier
-
-const (
-	IntegrationRuntimeSsisCatalogPricingTierBasic     IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierBasic
-	IntegrationRuntimeSsisCatalogPricingTierPremium   IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremium
-	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremiumRS
-	IntegrationRuntimeSsisCatalogPricingTierStandard  IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierStandard
-)
-
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
@@ -1517,9 +1508,6 @@ func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []Integrati
 }
 func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
 	return original.PossibleIntegrationRuntimeLicenseTypeValues()
-}
-func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
-	return original.PossibleIntegrationRuntimeSsisCatalogPricingTierValues()
 }
 func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
 	return original.PossibleIntegrationRuntimeStateValues()

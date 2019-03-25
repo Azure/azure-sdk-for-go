@@ -474,26 +474,6 @@ func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseTy
 	return []IntegrationRuntimeLicenseType{BasePrice, LicenseIncluded}
 }
 
-// IntegrationRuntimeSsisCatalogPricingTier enumerates the values for integration runtime ssis catalog pricing
-// tier.
-type IntegrationRuntimeSsisCatalogPricingTier string
-
-const (
-	// IntegrationRuntimeSsisCatalogPricingTierBasic ...
-	IntegrationRuntimeSsisCatalogPricingTierBasic IntegrationRuntimeSsisCatalogPricingTier = "Basic"
-	// IntegrationRuntimeSsisCatalogPricingTierPremium ...
-	IntegrationRuntimeSsisCatalogPricingTierPremium IntegrationRuntimeSsisCatalogPricingTier = "Premium"
-	// IntegrationRuntimeSsisCatalogPricingTierPremiumRS ...
-	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = "PremiumRS"
-	// IntegrationRuntimeSsisCatalogPricingTierStandard ...
-	IntegrationRuntimeSsisCatalogPricingTierStandard IntegrationRuntimeSsisCatalogPricingTier = "Standard"
-)
-
-// PossibleIntegrationRuntimeSsisCatalogPricingTierValues returns an array of possible values for the IntegrationRuntimeSsisCatalogPricingTier const type.
-func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
-	return []IntegrationRuntimeSsisCatalogPricingTier{IntegrationRuntimeSsisCatalogPricingTierBasic, IntegrationRuntimeSsisCatalogPricingTierPremium, IntegrationRuntimeSsisCatalogPricingTierPremiumRS, IntegrationRuntimeSsisCatalogPricingTierStandard}
-}
-
 // IntegrationRuntimeState enumerates the values for integration runtime state.
 type IntegrationRuntimeState string
 
@@ -55020,8 +55000,8 @@ type IntegrationRuntimeSsisCatalogInfo struct {
 	CatalogAdminUserName *string `json:"catalogAdminUserName,omitempty"`
 	// CatalogAdminPassword - The password of the administrator user account of the catalog database.
 	CatalogAdminPassword *SecureString `json:"catalogAdminPassword,omitempty"`
-	// CatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/. Possible values include: 'IntegrationRuntimeSsisCatalogPricingTierBasic', 'IntegrationRuntimeSsisCatalogPricingTierStandard', 'IntegrationRuntimeSsisCatalogPricingTierPremium', 'IntegrationRuntimeSsisCatalogPricingTierPremiumRS'
-	CatalogPricingTier IntegrationRuntimeSsisCatalogPricingTier `json:"catalogPricingTier,omitempty"`
+	// CatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+	CatalogPricingTier *string `json:"catalogPricingTier,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeSsisCatalogInfo.
@@ -55036,7 +55016,7 @@ func (irsci IntegrationRuntimeSsisCatalogInfo) MarshalJSON() ([]byte, error) {
 	if irsci.CatalogAdminPassword != nil {
 		objectMap["catalogAdminPassword"] = irsci.CatalogAdminPassword
 	}
-	if irsci.CatalogPricingTier != "" {
+	if irsci.CatalogPricingTier != nil {
 		objectMap["catalogPricingTier"] = irsci.CatalogPricingTier
 	}
 	for k, v := range irsci.AdditionalProperties {
@@ -55095,12 +55075,12 @@ func (irsci *IntegrationRuntimeSsisCatalogInfo) UnmarshalJSON(body []byte) error
 			}
 		case "catalogPricingTier":
 			if v != nil {
-				var catalogPricingTier IntegrationRuntimeSsisCatalogPricingTier
+				var catalogPricingTier string
 				err = json.Unmarshal(*v, &catalogPricingTier)
 				if err != nil {
 					return err
 				}
-				irsci.CatalogPricingTier = catalogPricingTier
+				irsci.CatalogPricingTier = &catalogPricingTier
 			}
 		}
 	}

@@ -15,6 +15,6 @@ require (
 	github.com/uber/jaeger-lib v1.5.0 // indirect
 	go.opencensus.io v0.15.0
 	go.uber.org/atomic v1.3.2 // indirect
-	golang.org/x/net v0.0.0-20190311183353-d8887717615a // indirect
-	pack.ag/amqp v0.10.2
+	golang.org/x/net v0.0.0-20190322120337-addf6b3196f6 // indirect
+	pack.ag/amqp v0.11.0
 )

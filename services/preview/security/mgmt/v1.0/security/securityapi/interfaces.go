@@ -106,6 +106,16 @@ type AdvancedThreatProtectionClientAPI interface {
 
 var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
 
+// DeviceSecurityGroupsClientAPI contains the set of methods on the DeviceSecurityGroupsClient type.
+type DeviceSecurityGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup security.DeviceSecurityGroup) (result security.DeviceSecurityGroup, err error)
+	Delete(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result security.DeviceSecurityGroup, err error)
+	List(ctx context.Context, resourceID string) (result security.DeviceSecurityGroupListPage, err error)
+}
+
+var _ DeviceSecurityGroupsClientAPI = (*security.DeviceSecurityGroupsClient)(nil)
+
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
 	Get(ctx context.Context, settingName string) (result security.Setting, err error)
@@ -215,3 +225,12 @@ type AllowedConnectionsClientAPI interface {
 }
 
 var _ AllowedConnectionsClientAPI = (*security.AllowedConnectionsClient)(nil)
+
+// AdaptiveNetworkHardeningsClientAPI contains the set of methods on the AdaptiveNetworkHardeningsClient type.
+type AdaptiveNetworkHardeningsClientAPI interface {
+	Enforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body security.AdaptiveNetworkHardeningEnforceRequest) (result security.AdaptiveNetworkHardeningsEnforceFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string) (result security.AdaptiveNetworkHardening, err error)
+	ListByExtendedResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.AdaptiveNetworkHardeningsListPage, err error)
+}
+
+var _ AdaptiveNetworkHardeningsClientAPI = (*security.AdaptiveNetworkHardeningsClient)(nil)

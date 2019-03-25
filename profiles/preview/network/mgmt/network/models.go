@@ -1143,6 +1143,7 @@ type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesF
 type DdosProtectionPlansClient = original.DdosProtectionPlansClient
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
+type DdosProtectionPlansUpdateTagsFuture = original.DdosProtectionPlansUpdateTagsFuture
 type DdosSettings = original.DdosSettings
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation

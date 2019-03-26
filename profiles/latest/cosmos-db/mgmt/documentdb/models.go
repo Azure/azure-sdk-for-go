@@ -29,6 +29,24 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ConflictResolutionMode = original.ConflictResolutionMode
+
+const (
+	Custom         ConflictResolutionMode = original.Custom
+	LastWriterWins ConflictResolutionMode = original.LastWriterWins
+)
+
+type DataType = original.DataType
+
+const (
+	LineString   DataType = original.LineString
+	MultiPolygon DataType = original.MultiPolygon
+	Number       DataType = original.Number
+	Point        DataType = original.Point
+	Polygon      DataType = original.Polygon
+	String       DataType = original.String
+)
+
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
@@ -53,6 +71,22 @@ const (
 	Strong           DefaultConsistencyLevel = original.Strong
 )
 
+type IndexKind = original.IndexKind
+
+const (
+	Hash    IndexKind = original.Hash
+	Range   IndexKind = original.Range
+	Spatial IndexKind = original.Spatial
+)
+
+type IndexingMode = original.IndexingMode
+
+const (
+	Consistent IndexingMode = original.Consistent
+	Lazy       IndexingMode = original.Lazy
+	None       IndexingMode = original.None
+)
+
 type KeyKind = original.KeyKind
 
 const (
@@ -62,15 +96,22 @@ const (
 	SecondaryReadonly KeyKind = original.SecondaryReadonly
 )
 
+type PartitionKind = original.PartitionKind
+
+const (
+	PartitionKindHash  PartitionKind = original.PartitionKindHash
+	PartitionKindRange PartitionKind = original.PartitionKindRange
+)
+
 type PrimaryAggregationType = original.PrimaryAggregationType
 
 const (
-	Average   PrimaryAggregationType = original.Average
-	Last      PrimaryAggregationType = original.Last
-	Maximum   PrimaryAggregationType = original.Maximum
-	Minimimum PrimaryAggregationType = original.Minimimum
-	None      PrimaryAggregationType = original.None
-	Total     PrimaryAggregationType = original.Total
+	PrimaryAggregationTypeAverage   PrimaryAggregationType = original.PrimaryAggregationTypeAverage
+	PrimaryAggregationTypeLast      PrimaryAggregationType = original.PrimaryAggregationTypeLast
+	PrimaryAggregationTypeMaximum   PrimaryAggregationType = original.PrimaryAggregationTypeMaximum
+	PrimaryAggregationTypeMinimimum PrimaryAggregationType = original.PrimaryAggregationTypeMinimimum
+	PrimaryAggregationTypeNone      PrimaryAggregationType = original.PrimaryAggregationTypeNone
+	PrimaryAggregationTypeTotal     PrimaryAggregationType = original.PrimaryAggregationTypeTotal
 )
 
 type UnitType = original.UnitType
@@ -91,7 +132,9 @@ type CollectionClient = original.CollectionClient
 type CollectionPartitionClient = original.CollectionPartitionClient
 type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
 type CollectionRegionClient = original.CollectionRegionClient
+type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
+type CreateUpdateOptions = original.CreateUpdateOptions
 type DatabaseAccount = original.DatabaseAccount
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
@@ -106,17 +149,28 @@ type DatabaseAccountRegenerateKeyParameters = original.DatabaseAccountRegenerate
 type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
 type DatabaseAccountsClient = original.DatabaseAccountsClient
 type DatabaseAccountsCreateOrUpdateFuture = original.DatabaseAccountsCreateOrUpdateFuture
+type DatabaseAccountsCreateSQLContainerFuture = original.DatabaseAccountsCreateSQLContainerFuture
+type DatabaseAccountsCreateSQLDatabaseFuture = original.DatabaseAccountsCreateSQLDatabaseFuture
 type DatabaseAccountsDeleteFuture = original.DatabaseAccountsDeleteFuture
+type DatabaseAccountsDeleteSQLContainerFuture = original.DatabaseAccountsDeleteSQLContainerFuture
+type DatabaseAccountsDeleteSQLDatabaseFuture = original.DatabaseAccountsDeleteSQLDatabaseFuture
 type DatabaseAccountsFailoverPriorityChangeFuture = original.DatabaseAccountsFailoverPriorityChangeFuture
 type DatabaseAccountsListResult = original.DatabaseAccountsListResult
 type DatabaseAccountsOfflineRegionFuture = original.DatabaseAccountsOfflineRegionFuture
 type DatabaseAccountsOnlineRegionFuture = original.DatabaseAccountsOnlineRegionFuture
 type DatabaseAccountsPatchFuture = original.DatabaseAccountsPatchFuture
 type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKeyFuture
+type DatabaseAccountsUpdateSQLContainerFuture = original.DatabaseAccountsUpdateSQLContainerFuture
+type DatabaseAccountsUpdateSQLDatabaseFuture = original.DatabaseAccountsUpdateSQLDatabaseFuture
 type DatabaseClient = original.DatabaseClient
 type ErrorResponse = original.ErrorResponse
+type ExtenedResourceProperties = original.ExtenedResourceProperties
 type FailoverPolicies = original.FailoverPolicies
 type FailoverPolicy = original.FailoverPolicy
+type GenericResourceProperties = original.GenericResourceProperties
+type IncludedPaths = original.IncludedPaths
+type Indexes = original.Indexes
+type IndexingPolicy = original.IndexingPolicy
 type Location = original.Location
 type Metric = original.Metric
 type MetricAvailability = original.MetricAvailability
@@ -131,6 +185,7 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PartitionKey = original.PartitionKey
 type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
 type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
 type PartitionMetric = original.PartitionMetric
@@ -145,6 +200,18 @@ type PercentileSourceTargetClient = original.PercentileSourceTargetClient
 type PercentileTargetClient = original.PercentileTargetClient
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
+type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
+type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
+type SQLContainerCreateUpdateResource = original.SQLContainerCreateUpdateResource
+type SQLContainerListResult = original.SQLContainerListResult
+type SQLContainerResource = original.SQLContainerResource
+type SQLContainerResourceProperties = original.SQLContainerResourceProperties
+type SQLDatabaseCreateUpdateParameters = original.SQLDatabaseCreateUpdateParameters
+type SQLDatabaseCreateUpdateProperties = original.SQLDatabaseCreateUpdateProperties
+type SQLDatabaseCreateUpdateResource = original.SQLDatabaseCreateUpdateResource
+type SQLDatabaseListResult = original.SQLDatabaseListResult
+type SQLDatabaseResource = original.SQLDatabaseResource
+type SQLDatabaseResourceProperties = original.SQLDatabaseResourceProperties
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type VirtualNetworkRule = original.VirtualNetworkRule
@@ -239,6 +306,12 @@ func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string)
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
+	return original.PossibleConflictResolutionModeValues()
+}
+func PossibleDataTypeValues() []DataType {
+	return original.PossibleDataTypeValues()
+}
 func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
 	return original.PossibleDatabaseAccountKindValues()
 }
@@ -248,8 +321,17 @@ func PossibleDatabaseAccountOfferTypeValues() []DatabaseAccountOfferType {
 func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 	return original.PossibleDefaultConsistencyLevelValues()
 }
+func PossibleIndexKindValues() []IndexKind {
+	return original.PossibleIndexKindValues()
+}
+func PossibleIndexingModeValues() []IndexingMode {
+	return original.PossibleIndexingModeValues()
+}
 func PossibleKeyKindValues() []KeyKind {
 	return original.PossibleKeyKindValues()
+}
+func PossiblePartitionKindValues() []PartitionKind {
+	return original.PossiblePartitionKindValues()
 }
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()

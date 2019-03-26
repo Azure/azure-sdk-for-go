@@ -780,6 +780,8 @@ func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (As
 type AssignmentLockSettings struct {
 	// Mode - Lock mode. Possible values include: 'None', 'AllResourcesReadOnly', 'AllResourcesDoNotDelete'
 	Mode AssignmentLockMode `json:"mode,omitempty"`
+	// ExcludedPrincipals - List of AAD principals excluded from blueprint locks. Up to 5 principals are permitted.
+	ExcludedPrincipals *[]string `json:"excludedPrincipals,omitempty"`
 }
 
 // AssignmentOperation represents underlying deployment detail for each update to the blueprint assignment.
@@ -2487,4 +2489,12 @@ type UserAssignedIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - Client App Id associated with this identity.
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// WhoIsBlueprintContract response schema for querying the Azure Blueprints service principal in the
+// tenant.
+type WhoIsBlueprintContract struct {
+	autorest.Response `json:"-"`
+	// ObjectID - AAD object Id of the Azure Blueprints service principal in the tenant.
+	ObjectID *string `json:"objectId,omitempty"`
 }

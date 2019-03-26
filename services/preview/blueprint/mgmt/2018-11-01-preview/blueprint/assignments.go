@@ -401,3 +401,65 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, scope string) 
 	result.page, err = client.List(ctx, scope)
 	return
 }
+
+// WhoIsBlueprint get Blueprints service SPN objectId
+func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context) (result WhoIsBlueprintContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.WhoIsBlueprint")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.WhoIsBlueprintPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.WhoIsBlueprintSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.WhoIsBlueprintResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// WhoIsBlueprintPreparer prepares the WhoIsBlueprint request.
+func (client AssignmentsClient) WhoIsBlueprintPreparer(ctx context.Context) (*http.Request, error) {
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/WhoIsBlueprint"))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// WhoIsBlueprintSender sends the WhoIsBlueprint request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssignmentsClient) WhoIsBlueprintSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// WhoIsBlueprintResponder handles the response to the WhoIsBlueprint request. The method always
+// closes the http.Response Body.
+func (client AssignmentsClient) WhoIsBlueprintResponder(resp *http.Response) (result WhoIsBlueprintContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

@@ -22,19 +22,20 @@ package frontdoor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-04-01/frontdoor"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type Action = original.Action
+type ActionType = original.ActionType
 
 const (
-	Allow Action = original.Allow
-	Block Action = original.Block
-	Log   Action = original.Log
+	Allow    ActionType = original.Allow
+	Block    ActionType = original.Block
+	Log      ActionType = original.Log
+	Redirect ActionType = original.Redirect
 )
 
 type Availability = original.Availability
@@ -42,6 +43,13 @@ type Availability = original.Availability
 const (
 	Available   Availability = original.Available
 	Unavailable Availability = original.Unavailable
+)
+
+type BackendEnabledState = original.BackendEnabledState
+
+const (
+	Disabled BackendEnabledState = original.Disabled
+	Enabled  BackendEnabledState = original.Enabled
 )
 
 type CertificateSource = original.CertificateSource
@@ -60,11 +68,11 @@ const (
 type CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningState
 
 const (
-	Disabled  CustomHTTPSProvisioningState = original.Disabled
-	Disabling CustomHTTPSProvisioningState = original.Disabling
-	Enabled   CustomHTTPSProvisioningState = original.Enabled
-	Enabling  CustomHTTPSProvisioningState = original.Enabling
-	Failed    CustomHTTPSProvisioningState = original.Failed
+	CustomHTTPSProvisioningStateDisabled  CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningStateDisabled
+	CustomHTTPSProvisioningStateDisabling CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningStateDisabling
+	CustomHTTPSProvisioningStateEnabled   CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningStateEnabled
+	CustomHTTPSProvisioningStateEnabling  CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningStateEnabling
+	CustomHTTPSProvisioningStateFailed    CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningStateFailed
 )
 
 type CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstate
@@ -82,6 +90,13 @@ const (
 	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
 )
 
+type CustomRuleEnabledState = original.CustomRuleEnabledState
+
+const (
+	CustomRuleEnabledStateDisabled CustomRuleEnabledState = original.CustomRuleEnabledStateDisabled
+	CustomRuleEnabledStateEnabled  CustomRuleEnabledState = original.CustomRuleEnabledStateEnabled
+)
+
 type DynamicCompressionEnabled = original.DynamicCompressionEnabled
 
 const (
@@ -96,11 +111,11 @@ const (
 	EnabledStateEnabled  EnabledState = original.EnabledStateEnabled
 )
 
-type EnabledStateEnum = original.EnabledStateEnum
+type EnforceCertificateNameCheckEnabledState = original.EnforceCertificateNameCheckEnabledState
 
 const (
-	EnabledStateEnumDisabled EnabledStateEnum = original.EnabledStateEnumDisabled
-	EnabledStateEnumEnabled  EnabledStateEnum = original.EnabledStateEnumEnabled
+	EnforceCertificateNameCheckEnabledStateDisabled EnforceCertificateNameCheckEnabledState = original.EnforceCertificateNameCheckEnabledStateDisabled
+	EnforceCertificateNameCheckEnabledStateEnabled  EnforceCertificateNameCheckEnabledState = original.EnforceCertificateNameCheckEnabledStateEnabled
 )
 
 type ForwardingProtocol = original.ForwardingProtocol
@@ -111,31 +126,40 @@ const (
 	MatchRequest ForwardingProtocol = original.MatchRequest
 )
 
-type MatchCondition = original.MatchCondition
+type ManagedRuleEnabledState = original.ManagedRuleEnabledState
 
 const (
-	PostArgs      MatchCondition = original.PostArgs
-	QueryString   MatchCondition = original.QueryString
-	RemoteAddr    MatchCondition = original.RemoteAddr
-	RequestBody   MatchCondition = original.RequestBody
-	RequestHeader MatchCondition = original.RequestHeader
-	RequestMethod MatchCondition = original.RequestMethod
-	RequestURI    MatchCondition = original.RequestURI
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
+	ManagedRuleEnabledStateEnabled  ManagedRuleEnabledState = original.ManagedRuleEnabledStateEnabled
 )
 
-type Mode = original.Mode
+type MatchVariable = original.MatchVariable
 
 const (
-	Detection  Mode = original.Detection
-	Prevention Mode = original.Prevention
+	Cookies       MatchVariable = original.Cookies
+	PostArgs      MatchVariable = original.PostArgs
+	QueryString   MatchVariable = original.QueryString
+	RemoteAddr    MatchVariable = original.RemoteAddr
+	RequestBody   MatchVariable = original.RequestBody
+	RequestHeader MatchVariable = original.RequestHeader
+	RequestMethod MatchVariable = original.RequestMethod
+	RequestURI    MatchVariable = original.RequestURI
 )
 
 type NetworkOperationStatus = original.NetworkOperationStatus
 
 const (
-	NetworkOperationStatusFailed     NetworkOperationStatus = original.NetworkOperationStatusFailed
-	NetworkOperationStatusInProgress NetworkOperationStatus = original.NetworkOperationStatusInProgress
-	NetworkOperationStatusSucceeded  NetworkOperationStatus = original.NetworkOperationStatusSucceeded
+	Failed     NetworkOperationStatus = original.Failed
+	InProgress NetworkOperationStatus = original.InProgress
+	Succeeded  NetworkOperationStatus = original.Succeeded
+)
+
+type OdataType = original.OdataType
+
+const (
+	OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration OdataType = original.OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration
+	OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration   OdataType = original.OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration
+	OdataTypeRouteConfiguration                                            OdataType = original.OdataTypeRouteConfiguration
 )
 
 type Operator = original.Operator
@@ -152,6 +176,32 @@ const (
 	IPMatch            Operator = original.IPMatch
 	LessThan           Operator = original.LessThan
 	LessThanOrEqual    Operator = original.LessThanOrEqual
+	RegEx              Operator = original.RegEx
+)
+
+type PolicyEnabledState = original.PolicyEnabledState
+
+const (
+	PolicyEnabledStateDisabled PolicyEnabledState = original.PolicyEnabledStateDisabled
+	PolicyEnabledStateEnabled  PolicyEnabledState = original.PolicyEnabledStateEnabled
+)
+
+type PolicyMode = original.PolicyMode
+
+const (
+	Detection  PolicyMode = original.Detection
+	Prevention PolicyMode = original.Prevention
+)
+
+type PolicyResourceState = original.PolicyResourceState
+
+const (
+	PolicyResourceStateCreating  PolicyResourceState = original.PolicyResourceStateCreating
+	PolicyResourceStateDeleting  PolicyResourceState = original.PolicyResourceStateDeleting
+	PolicyResourceStateDisabled  PolicyResourceState = original.PolicyResourceStateDisabled
+	PolicyResourceStateDisabling PolicyResourceState = original.PolicyResourceStateDisabling
+	PolicyResourceStateEnabled   PolicyResourceState = original.PolicyResourceStateEnabled
+	PolicyResourceStateEnabling  PolicyResourceState = original.PolicyResourceStateEnabling
 )
 
 type Protocol = original.Protocol
@@ -166,6 +216,23 @@ type Query = original.Query
 const (
 	StripAll  Query = original.StripAll
 	StripNone Query = original.StripNone
+)
+
+type RedirectProtocol = original.RedirectProtocol
+
+const (
+	RedirectProtocolHTTPOnly     RedirectProtocol = original.RedirectProtocolHTTPOnly
+	RedirectProtocolHTTPSOnly    RedirectProtocol = original.RedirectProtocolHTTPSOnly
+	RedirectProtocolMatchRequest RedirectProtocol = original.RedirectProtocolMatchRequest
+)
+
+type RedirectType = original.RedirectType
+
+const (
+	Found             RedirectType = original.Found
+	Moved             RedirectType = original.Moved
+	PermanentRedirect RedirectType = original.PermanentRedirect
+	TemporaryRedirect RedirectType = original.TemporaryRedirect
 )
 
 type ResourceState = original.ResourceState
@@ -186,18 +253,11 @@ const (
 	MicrosoftNetworkfrontDoorsfrontendEndpoints ResourceType = original.MicrosoftNetworkfrontDoorsfrontendEndpoints
 )
 
-type RuleGroupOverride = original.RuleGroupOverride
+type RoutingRuleEnabledState = original.RoutingRuleEnabledState
 
 const (
-	SQLInjection RuleGroupOverride = original.SQLInjection
-	XSS          RuleGroupOverride = original.XSS
-)
-
-type RuleSetType = original.RuleSetType
-
-const (
-	RuleSetTypeAzureManagedRuleSet RuleSetType = original.RuleSetTypeAzureManagedRuleSet
-	RuleSetTypeUnknown             RuleSetType = original.RuleSetTypeUnknown
+	RoutingRuleEnabledStateDisabled RoutingRuleEnabledState = original.RoutingRuleEnabledStateDisabled
+	RoutingRuleEnabledStateEnabled  RoutingRuleEnabledState = original.RoutingRuleEnabledStateEnabled
 )
 
 type RuleType = original.RuleType
@@ -220,32 +280,18 @@ const (
 	ServerNameIndication TLSProtocolType = original.ServerNameIndication
 )
 
-type Transform = original.Transform
+type TransformType = original.TransformType
 
 const (
-	HTMLEntityDecode Transform = original.HTMLEntityDecode
-	Lowercase        Transform = original.Lowercase
-	RemoveNulls      Transform = original.RemoveNulls
-	Trim             Transform = original.Trim
-	Uppercase        Transform = original.Uppercase
-	URLDecode        Transform = original.URLDecode
-	URLEncode        Transform = original.URLEncode
-)
-
-type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
-
-const (
-	WebApplicationFirewallPolicyCreating  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyCreating
-	WebApplicationFirewallPolicyDeleting  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyDeleting
-	WebApplicationFirewallPolicyDisabled  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyDisabled
-	WebApplicationFirewallPolicyDisabling WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyDisabling
-	WebApplicationFirewallPolicyEnabled   WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyEnabled
-	WebApplicationFirewallPolicyEnabling  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyEnabling
+	Lowercase   TransformType = original.Lowercase
+	RemoveNulls TransformType = original.RemoveNulls
+	Trim        TransformType = original.Trim
+	Uppercase   TransformType = original.Uppercase
+	URLDecode   TransformType = original.URLDecode
+	URLEncode   TransformType = original.URLEncode
 )
 
 type AzureAsyncOperationResult = original.AzureAsyncOperationResult
-type AzureManagedOverrideRuleGroup = original.AzureManagedOverrideRuleGroup
-type AzureManagedRuleSet = original.AzureManagedRuleSet
 type Backend = original.Backend
 type BackendPool = original.BackendPool
 type BackendPoolListResult = original.BackendPoolListResult
@@ -256,25 +302,28 @@ type BackendPoolUpdateParameters = original.BackendPoolUpdateParameters
 type BackendPoolsClient = original.BackendPoolsClient
 type BackendPoolsCreateOrUpdateFuture = original.BackendPoolsCreateOrUpdateFuture
 type BackendPoolsDeleteFuture = original.BackendPoolsDeleteFuture
+type BackendPoolsSettings = original.BackendPoolsSettings
 type BaseClient = original.BaseClient
-type BasicManagedRuleSet = original.BasicManagedRuleSet
+type BasicRouteConfiguration = original.BasicRouteConfiguration
 type CacheConfiguration = original.CacheConfiguration
 type CertificateSourceParameters = original.CertificateSourceParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CustomHTTPSConfiguration = original.CustomHTTPSConfiguration
 type CustomRule = original.CustomRule
-type CustomRules = original.CustomRules
+type CustomRuleList = original.CustomRuleList
 type EndpointsClient = original.EndpointsClient
 type EndpointsPurgeContentFuture = original.EndpointsPurgeContentFuture
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
+type ForwardingConfiguration = original.ForwardingConfiguration
 type FrontDoor = original.FrontDoor
 type FrontDoorsClient = original.FrontDoorsClient
 type FrontDoorsCreateOrUpdateFutureType = original.FrontDoorsCreateOrUpdateFutureType
 type FrontDoorsDeleteFutureType = original.FrontDoorsDeleteFutureType
 type FrontendEndpoint = original.FrontendEndpoint
+type FrontendEndpointLink = original.FrontendEndpointLink
 type FrontendEndpointProperties = original.FrontendEndpointProperties
 type FrontendEndpointUpdateParameters = original.FrontendEndpointUpdateParameters
 type FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink = original.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink
@@ -309,15 +358,28 @@ type LoadBalancingSettingsListResultPage = original.LoadBalancingSettingsListRes
 type LoadBalancingSettingsModel = original.LoadBalancingSettingsModel
 type LoadBalancingSettingsProperties = original.LoadBalancingSettingsProperties
 type LoadBalancingSettingsUpdateParameters = original.LoadBalancingSettingsUpdateParameters
+type ManagedRuleDefinition = original.ManagedRuleDefinition
+type ManagedRuleGroupDefinition = original.ManagedRuleGroupDefinition
+type ManagedRuleGroupOverride = original.ManagedRuleGroupOverride
+type ManagedRuleOverride = original.ManagedRuleOverride
 type ManagedRuleSet = original.ManagedRuleSet
-type ManagedRuleSets = original.ManagedRuleSets
-type MatchCondition1 = original.MatchCondition1
+type ManagedRuleSetDefinition = original.ManagedRuleSetDefinition
+type ManagedRuleSetDefinitionList = original.ManagedRuleSetDefinitionList
+type ManagedRuleSetDefinitionListIterator = original.ManagedRuleSetDefinitionListIterator
+type ManagedRuleSetDefinitionListPage = original.ManagedRuleSetDefinitionListPage
+type ManagedRuleSetDefinitionProperties = original.ManagedRuleSetDefinitionProperties
+type ManagedRuleSetList = original.ManagedRuleSetList
+type ManagedRuleSetsClient = original.ManagedRuleSetsClient
+type MatchCondition = original.MatchCondition
 type PoliciesClient = original.PoliciesClient
+type PoliciesCreateOrUpdateFuture = original.PoliciesCreateOrUpdateFuture
 type PoliciesDeleteFuture = original.PoliciesDeleteFuture
 type PolicySettings = original.PolicySettings
 type Properties = original.Properties
 type PurgeParameters = original.PurgeParameters
+type RedirectConfiguration = original.RedirectConfiguration
 type Resource = original.Resource
+type RouteConfiguration = original.RouteConfiguration
 type RoutingRule = original.RoutingRule
 type RoutingRuleListResult = original.RoutingRuleListResult
 type RoutingRuleListResultIterator = original.RoutingRuleListResultIterator
@@ -332,11 +394,11 @@ type TagsObject = original.TagsObject
 type UpdateParameters = original.UpdateParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
-type WebApplicationFirewallPolicy1 = original.WebApplicationFirewallPolicy1
-type WebApplicationFirewallPolicyListResult = original.WebApplicationFirewallPolicyListResult
-type WebApplicationFirewallPolicyListResultIterator = original.WebApplicationFirewallPolicyListResultIterator
-type WebApplicationFirewallPolicyListResultPage = original.WebApplicationFirewallPolicyListResultPage
-type WebApplicationFirewallPolicyPropertiesFormat = original.WebApplicationFirewallPolicyPropertiesFormat
+type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
+type WebApplicationFirewallPolicyList = original.WebApplicationFirewallPolicyList
+type WebApplicationFirewallPolicyListIterator = original.WebApplicationFirewallPolicyListIterator
+type WebApplicationFirewallPolicyListPage = original.WebApplicationFirewallPolicyListPage
+type WebApplicationFirewallPolicyProperties = original.WebApplicationFirewallPolicyProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -407,6 +469,18 @@ func NewLoadBalancingSettingsListResultIterator(page LoadBalancingSettingsListRe
 func NewLoadBalancingSettingsListResultPage(getNextPage func(context.Context, LoadBalancingSettingsListResult) (LoadBalancingSettingsListResult, error)) LoadBalancingSettingsListResultPage {
 	return original.NewLoadBalancingSettingsListResultPage(getNextPage)
 }
+func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
+	return original.NewManagedRuleSetDefinitionListIterator(page)
+}
+func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return original.NewManagedRuleSetDefinitionListPage(getNextPage)
+}
+func NewManagedRuleSetsClient(subscriptionID string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClient(subscriptionID)
+}
+func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPoliciesClient(subscriptionID string) PoliciesClient {
 	return original.NewPoliciesClient(subscriptionID)
 }
@@ -425,20 +499,23 @@ func NewRoutingRulesClient(subscriptionID string) RoutingRulesClient {
 func NewRoutingRulesClientWithBaseURI(baseURI string, subscriptionID string) RoutingRulesClient {
 	return original.NewRoutingRulesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
-	return original.NewWebApplicationFirewallPolicyListResultIterator(page)
+func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
+	return original.NewWebApplicationFirewallPolicyListIterator(page)
 }
-func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
-	return original.NewWebApplicationFirewallPolicyListResultPage(getNextPage)
+func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
+	return original.NewWebApplicationFirewallPolicyListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleActionValues() []Action {
-	return original.PossibleActionValues()
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
 }
 func PossibleAvailabilityValues() []Availability {
 	return original.PossibleAvailabilityValues()
+}
+func PossibleBackendEnabledStateValues() []BackendEnabledState {
+	return original.PossibleBackendEnabledStateValues()
 }
 func PossibleCertificateSourceValues() []CertificateSource {
 	return original.PossibleCertificateSourceValues()
@@ -452,29 +529,44 @@ func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState
 func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
 	return original.PossibleCustomHTTPSProvisioningSubstateValues()
 }
+func PossibleCustomRuleEnabledStateValues() []CustomRuleEnabledState {
+	return original.PossibleCustomRuleEnabledStateValues()
+}
 func PossibleDynamicCompressionEnabledValues() []DynamicCompressionEnabled {
 	return original.PossibleDynamicCompressionEnabledValues()
-}
-func PossibleEnabledStateEnumValues() []EnabledStateEnum {
-	return original.PossibleEnabledStateEnumValues()
 }
 func PossibleEnabledStateValues() []EnabledState {
 	return original.PossibleEnabledStateValues()
 }
+func PossibleEnforceCertificateNameCheckEnabledStateValues() []EnforceCertificateNameCheckEnabledState {
+	return original.PossibleEnforceCertificateNameCheckEnabledStateValues()
+}
 func PossibleForwardingProtocolValues() []ForwardingProtocol {
 	return original.PossibleForwardingProtocolValues()
 }
-func PossibleMatchConditionValues() []MatchCondition {
-	return original.PossibleMatchConditionValues()
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return original.PossibleManagedRuleEnabledStateValues()
 }
-func PossibleModeValues() []Mode {
-	return original.PossibleModeValues()
+func PossibleMatchVariableValues() []MatchVariable {
+	return original.PossibleMatchVariableValues()
 }
 func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 	return original.PossibleNetworkOperationStatusValues()
 }
+func PossibleOdataTypeValues() []OdataType {
+	return original.PossibleOdataTypeValues()
+}
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
+}
+func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
+	return original.PossiblePolicyEnabledStateValues()
+}
+func PossiblePolicyModeValues() []PolicyMode {
+	return original.PossiblePolicyModeValues()
+}
+func PossiblePolicyResourceStateValues() []PolicyResourceState {
+	return original.PossiblePolicyResourceStateValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
@@ -482,17 +574,20 @@ func PossibleProtocolValues() []Protocol {
 func PossibleQueryValues() []Query {
 	return original.PossibleQueryValues()
 }
+func PossibleRedirectProtocolValues() []RedirectProtocol {
+	return original.PossibleRedirectProtocolValues()
+}
+func PossibleRedirectTypeValues() []RedirectType {
+	return original.PossibleRedirectTypeValues()
+}
 func PossibleResourceStateValues() []ResourceState {
 	return original.PossibleResourceStateValues()
 }
 func PossibleResourceTypeValues() []ResourceType {
 	return original.PossibleResourceTypeValues()
 }
-func PossibleRuleGroupOverrideValues() []RuleGroupOverride {
-	return original.PossibleRuleGroupOverrideValues()
-}
-func PossibleRuleSetTypeValues() []RuleSetType {
-	return original.PossibleRuleSetTypeValues()
+func PossibleRoutingRuleEnabledStateValues() []RoutingRuleEnabledState {
+	return original.PossibleRoutingRuleEnabledStateValues()
 }
 func PossibleRuleTypeValues() []RuleType {
 	return original.PossibleRuleTypeValues()
@@ -503,11 +598,8 @@ func PossibleSessionAffinityEnabledStateValues() []SessionAffinityEnabledState {
 func PossibleTLSProtocolTypeValues() []TLSProtocolType {
 	return original.PossibleTLSProtocolTypeValues()
 }
-func PossibleTransformValues() []Transform {
-	return original.PossibleTransformValues()
-}
-func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
-	return original.PossibleWebApplicationFirewallPolicyValues()
+func PossibleTransformTypeValues() []TransformType {
+	return original.PossibleTransformTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -34,9 +34,15 @@ type HanaInstancesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstance, err error)
 	List(ctx context.Context) (result hanaonazure.HanaInstancesListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hanaonazure.HanaInstancesListResultPage, err error)
-	Monitoring(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter hanaonazure.MonitoringDetails) (result hanaonazure.HanaInstancesMonitoringFuture, err error)
 	Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesRestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, hanaInstanceName string, tagsParameter hanaonazure.Tags) (result hanaonazure.HanaInstance, err error)
 }
 
 var _ HanaInstancesClientAPI = (*hanaonazure.HanaInstancesClient)(nil)
+
+// MonitorClientAPI contains the set of methods on the MonitorClient type.
+type MonitorClientAPI interface {
+	HanaInstancesMethod(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter hanaonazure.MonitoringDetails) (result hanaonazure.MonitorHanaInstancesMethodFuture, err error)
+}
+
+var _ MonitorClientAPI = (*hanaonazure.MonitorClient)(nil)

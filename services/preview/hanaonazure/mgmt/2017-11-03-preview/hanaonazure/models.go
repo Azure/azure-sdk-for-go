@@ -438,29 +438,6 @@ func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstan
 	return HanaInstancesListResultPage{fn: getNextPage}
 }
 
-// HanaInstancesMonitoringFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type HanaInstancesMonitoringFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *HanaInstancesMonitoringFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesMonitoringFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesMonitoringFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // HanaInstancesRestartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesRestartFuture struct {
@@ -496,6 +473,29 @@ type HardwareProfile struct {
 type IPAddress struct {
 	// IPAddress - Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`
+}
+
+// MonitorHanaInstancesMethodFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type MonitorHanaInstancesMethodFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *MonitorHanaInstancesMethodFuture) Result(client MonitorClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.MonitorHanaInstancesMethodFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.MonitorHanaInstancesMethodFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // MonitoringDetails details needed to monitor a Hana Instance

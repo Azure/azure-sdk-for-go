@@ -235,12 +235,12 @@ type PropertyClientAPI interface {
 
 var _ PropertyClientAPI = (*billing.PropertyClient)(nil)
 
-// ProfileInvoiceSectionClientAPI contains the set of methods on the ProfileInvoiceSectionClient type.
-type ProfileInvoiceSectionClientAPI interface {
-	Elevate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string) (result autorest.Response, err error)
+// InvoiceSectionClientAPI contains the set of methods on the InvoiceSectionClient type.
+type InvoiceSectionClientAPI interface {
+	Elevate(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error)
 }
 
-var _ ProfileInvoiceSectionClientAPI = (*billing.ProfileInvoiceSectionClient)(nil)
+var _ InvoiceSectionClientAPI = (*billing.InvoiceSectionClient)(nil)
 
 // TransfersClientAPI contains the set of methods on the TransfersClient type.
 type TransfersClientAPI interface {

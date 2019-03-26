@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type HanaDatabaseContainersEnum = original.HanaDatabaseContainersEnum
+
+const (
+	Multiple HanaDatabaseContainersEnum = original.Multiple
+	Single   HanaDatabaseContainersEnum = original.Single
+)
+
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
@@ -80,9 +87,11 @@ type HanaInstancesClient = original.HanaInstancesClient
 type HanaInstancesListResult = original.HanaInstancesListResult
 type HanaInstancesListResultIterator = original.HanaInstancesListResultIterator
 type HanaInstancesListResultPage = original.HanaInstancesListResultPage
+type HanaInstancesMonitoringFuture = original.HanaInstancesMonitoringFuture
 type HanaInstancesRestartFuture = original.HanaInstancesRestartFuture
 type HardwareProfile = original.HardwareProfile
 type IPAddress = original.IPAddress
+type MonitoringDetails = original.MonitoringDetails
 type NetworkProfile = original.NetworkProfile
 type OSProfile = original.OSProfile
 type Operation = original.Operation
@@ -115,6 +124,9 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleHanaDatabaseContainersEnumValues() []HanaDatabaseContainersEnum {
+	return original.PossibleHanaDatabaseContainersEnumValues()
 }
 func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
 	return original.PossibleHanaHardwareTypeNamesEnumValues()

@@ -342,6 +342,85 @@ func (client HanaInstancesClient) ListByResourceGroupComplete(ctx context.Contex
 	return
 }
 
+// Monitoring the operation to monitor a SAP HANA instance.
+// Parameters:
+// resourceGroupName - name of the resource group.
+// hanaInstanceName - name of the SAP HANA on Azure instance.
+// monitoringParameter - request body that only contains monitoring attributes
+func (client HanaInstancesClient) Monitoring(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter MonitoringDetails) (result HanaInstancesMonitoringFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Monitoring")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.MonitoringPreparer(ctx, resourceGroupName, hanaInstanceName, monitoringParameter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Monitoring", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.MonitoringSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Monitoring", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// MonitoringPreparer prepares the Monitoring request.
+func (client HanaInstancesClient) MonitoringPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter MonitoringDetails) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"hanaInstanceName":  autorest.Encode("path", hanaInstanceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-11-03-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/monitoring", pathParameters),
+		autorest.WithJSON(monitoringParameter),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// MonitoringSender sends the Monitoring request. The method will close the
+// http.Response Body if it receives an error.
+func (client HanaInstancesClient) MonitoringSender(req *http.Request) (future HanaInstancesMonitoringFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// MonitoringResponder handles the response to the Monitoring request. The method always
+// closes the http.Response Body.
+func (client HanaInstancesClient) MonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Restart the operation to restart a SAP HANA instance.
 // Parameters:
 // resourceGroupName - name of the resource group.

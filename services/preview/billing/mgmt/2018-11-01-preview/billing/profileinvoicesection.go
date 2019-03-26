@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// InvoiceSectionClient is the billing client provides access to billing resources for Azure subscriptions.
-type InvoiceSectionClient struct {
+// ProfileInvoiceSectionClient is the billing client provides access to billing resources for Azure subscriptions.
+type ProfileInvoiceSectionClient struct {
 	BaseClient
 }
 
-// NewInvoiceSectionClient creates an instance of the InvoiceSectionClient client.
-func NewInvoiceSectionClient(subscriptionID string) InvoiceSectionClient {
-	return NewInvoiceSectionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProfileInvoiceSectionClient creates an instance of the ProfileInvoiceSectionClient client.
+func NewProfileInvoiceSectionClient(subscriptionID string) ProfileInvoiceSectionClient {
+	return NewProfileInvoiceSectionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoiceSectionClientWithBaseURI creates an instance of the InvoiceSectionClient client.
-func NewInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionClient {
-	return InvoiceSectionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProfileInvoiceSectionClientWithBaseURI creates an instance of the ProfileInvoiceSectionClient client.
+func NewProfileInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) ProfileInvoiceSectionClient {
+	return ProfileInvoiceSectionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Elevate elevates the caller's access to match their billing profile access.
@@ -45,9 +45,9 @@ func NewInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) I
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
 // invoiceSectionName - invoiceSection Id.
-func (client InvoiceSectionClient) Elevate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string) (result autorest.Response, err error) {
+func (client ProfileInvoiceSectionClient) Elevate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionClient.Elevate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfileInvoiceSectionClient.Elevate")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -58,27 +58,27 @@ func (client InvoiceSectionClient) Elevate(ctx context.Context, billingAccountNa
 	}
 	req, err := client.ElevatePreparer(ctx, billingAccountName, billingProfileName, invoiceSectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionClient", "Elevate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.ProfileInvoiceSectionClient", "Elevate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ElevateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionClient", "Elevate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.ProfileInvoiceSectionClient", "Elevate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ElevateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionClient", "Elevate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.ProfileInvoiceSectionClient", "Elevate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ElevatePreparer prepares the Elevate request.
-func (client InvoiceSectionClient) ElevatePreparer(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string) (*http.Request, error) {
+func (client ProfileInvoiceSectionClient) ElevatePreparer(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -94,14 +94,14 @@ func (client InvoiceSectionClient) ElevatePreparer(ctx context.Context, billingA
 
 // ElevateSender sends the Elevate request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoiceSectionClient) ElevateSender(req *http.Request) (*http.Response, error) {
+func (client ProfileInvoiceSectionClient) ElevateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ElevateResponder handles the response to the Elevate request. The method always
 // closes the http.Response Body.
-func (client InvoiceSectionClient) ElevateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ProfileInvoiceSectionClient) ElevateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

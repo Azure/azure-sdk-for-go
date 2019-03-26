@@ -403,7 +403,12 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, scope string) 
 }
 
 // WhoIsBlueprint get Blueprints service SPN objectId
-func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context) (result WhoIsBlueprintContract, err error) {
+// Parameters:
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}').
+// assignmentName - name of the blueprint assignment.
+func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context, scope string, assignmentName string) (result WhoIsBlueprintContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.WhoIsBlueprint")
 		defer func() {
@@ -414,7 +419,7 @@ func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context) (result WhoI
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.WhoIsBlueprintPreparer(ctx)
+	req, err := client.WhoIsBlueprintPreparer(ctx, scope, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", nil, "Failure preparing request")
 		return
@@ -436,11 +441,22 @@ func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context) (result WhoI
 }
 
 // WhoIsBlueprintPreparer prepares the WhoIsBlueprint request.
-func (client AssignmentsClient) WhoIsBlueprintPreparer(ctx context.Context) (*http.Request, error) {
+func (client AssignmentsClient) WhoIsBlueprintPreparer(ctx context.Context, scope string, assignmentName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assignmentName": autorest.Encode("path", assignmentName),
+		"scope":          scope,
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/WhoIsBlueprint"))
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/WhoIsBlueprint", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -94,7 +94,7 @@ var _ InvoiceSectionsClientAPI = (*billing.InvoiceSectionsClient)(nil)
 
 // InvoiceSectionsByBillingProfileNameClientAPI contains the set of methods on the InvoiceSectionsByBillingProfileNameClient type.
 type InvoiceSectionsByBillingProfileNameClientAPI interface {
-	List(ctx context.Context, billingAccountName string, billingProfileName string, expand string) (result billing.InvoiceSectionListResult, err error)
+	List(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.InvoiceSectionListResult, err error)
 }
 
 var _ InvoiceSectionsByBillingProfileNameClientAPI = (*billing.InvoiceSectionsByBillingProfileNameClient)(nil)

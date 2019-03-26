@@ -47,8 +47,7 @@ func NewInvoiceSectionsByBillingProfileNameClientWithBaseURI(baseURI string, sub
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
-// expand - may be used to expand the billingProfiles.
-func (client InvoiceSectionsByBillingProfileNameClient) List(ctx context.Context, billingAccountName string, billingProfileName string, expand string) (result InvoiceSectionListResult, err error) {
+func (client InvoiceSectionsByBillingProfileNameClient) List(ctx context.Context, billingAccountName string, billingProfileName string) (result InvoiceSectionListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsByBillingProfileNameClient.List")
 		defer func() {
@@ -59,7 +58,7 @@ func (client InvoiceSectionsByBillingProfileNameClient) List(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, billingAccountName, billingProfileName, expand)
+	req, err := client.ListPreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsByBillingProfileNameClient", "List", nil, "Failure preparing request")
 		return
@@ -81,7 +80,7 @@ func (client InvoiceSectionsByBillingProfileNameClient) List(ctx context.Context
 }
 
 // ListPreparer prepares the List request.
-func (client InvoiceSectionsByBillingProfileNameClient) ListPreparer(ctx context.Context, billingAccountName string, billingProfileName string, expand string) (*http.Request, error) {
+func (client InvoiceSectionsByBillingProfileNameClient) ListPreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -90,9 +89,6 @@ func (client InvoiceSectionsByBillingProfileNameClient) ListPreparer(ctx context
 	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(

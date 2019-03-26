@@ -2549,7 +2549,7 @@ type RiskyIPBlobURI struct {
 	ServiceID *string `json:"serviceId,omitempty"`
 	// ResultSasURI - The blob uri for the report.
 	ResultSasURI *string `json:"resultSasUri,omitempty"`
-	// BlobCreateDateTime - Time at which the the new Risky IP report was requested.
+	// BlobCreateDateTime - Time at which the new Risky IP report was requested.
 	BlobCreateDateTime *date.Time `json:"blobCreateDateTime,omitempty"`
 	// JobCompletionTime - Time at which the blob creation job for the new Risky IP report was completed.
 	JobCompletionTime *date.Time `json:"jobCompletionTime,omitempty"`

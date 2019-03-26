@@ -40,9 +40,9 @@ type HanaInstancesClientAPI interface {
 
 var _ HanaInstancesClientAPI = (*hanaonazure.HanaInstancesClient)(nil)
 
-// MonitorClientAPI contains the set of methods on the MonitorClient type.
-type MonitorClientAPI interface {
-	HanaInstancesMethod(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter hanaonazure.MonitoringDetails) (result hanaonazure.MonitorHanaInstancesMethodFuture, err error)
+// MonitoringClientAPI contains the set of methods on the MonitoringClient type.
+type MonitoringClientAPI interface {
+	HanaInstancesMethod(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter hanaonazure.MonitoringDetails) (result hanaonazure.MonitoringHanaInstancesMethodFuture, err error)
 }
 
-var _ MonitorClientAPI = (*hanaonazure.MonitorClient)(nil)
+var _ MonitoringClientAPI = (*hanaonazure.MonitoringClient)(nil)

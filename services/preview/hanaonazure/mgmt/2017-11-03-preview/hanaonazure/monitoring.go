@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// MonitorClient is the HANA on Azure Client
-type MonitorClient struct {
+// MonitoringClient is the HANA on Azure Client
+type MonitoringClient struct {
 	BaseClient
 }
 
-// NewMonitorClient creates an instance of the MonitorClient client.
-func NewMonitorClient(subscriptionID string) MonitorClient {
-	return NewMonitorClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewMonitoringClient creates an instance of the MonitoringClient client.
+func NewMonitoringClient(subscriptionID string) MonitoringClient {
+	return NewMonitoringClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMonitorClientWithBaseURI creates an instance of the MonitorClient client.
-func NewMonitorClientWithBaseURI(baseURI string, subscriptionID string) MonitorClient {
-	return MonitorClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewMonitoringClientWithBaseURI creates an instance of the MonitoringClient client.
+func NewMonitoringClientWithBaseURI(baseURI string, subscriptionID string) MonitoringClient {
+	return MonitoringClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // HanaInstancesMethod the operation to monitor a SAP HANA instance.
@@ -45,9 +45,9 @@ func NewMonitorClientWithBaseURI(baseURI string, subscriptionID string) MonitorC
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
 // monitoringParameter - request body that only contains monitoring attributes
-func (client MonitorClient) HanaInstancesMethod(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter MonitoringDetails) (result MonitorHanaInstancesMethodFuture, err error) {
+func (client MonitoringClient) HanaInstancesMethod(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter MonitoringDetails) (result MonitoringHanaInstancesMethodFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorClient.HanaInstancesMethod")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitoringClient.HanaInstancesMethod")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -58,13 +58,13 @@ func (client MonitorClient) HanaInstancesMethod(ctx context.Context, resourceGro
 	}
 	req, err := client.HanaInstancesMethodPreparer(ctx, resourceGroupName, hanaInstanceName, monitoringParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.MonitorClient", "HanaInstancesMethod", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.MonitoringClient", "HanaInstancesMethod", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.HanaInstancesMethodSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.MonitorClient", "HanaInstancesMethod", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.MonitoringClient", "HanaInstancesMethod", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -72,7 +72,7 @@ func (client MonitorClient) HanaInstancesMethod(ctx context.Context, resourceGro
 }
 
 // HanaInstancesMethodPreparer prepares the HanaInstancesMethod request.
-func (client MonitorClient) HanaInstancesMethodPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter MonitoringDetails) (*http.Request, error) {
+func (client MonitoringClient) HanaInstancesMethodPreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter MonitoringDetails) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hanaInstanceName":  autorest.Encode("path", hanaInstanceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -96,7 +96,7 @@ func (client MonitorClient) HanaInstancesMethodPreparer(ctx context.Context, res
 
 // HanaInstancesMethodSender sends the HanaInstancesMethod request. The method will close the
 // http.Response Body if it receives an error.
-func (client MonitorClient) HanaInstancesMethodSender(req *http.Request) (future MonitorHanaInstancesMethodFuture, err error) {
+func (client MonitoringClient) HanaInstancesMethodSender(req *http.Request) (future MonitoringHanaInstancesMethodFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -109,7 +109,7 @@ func (client MonitorClient) HanaInstancesMethodSender(req *http.Request) (future
 
 // HanaInstancesMethodResponder handles the response to the HanaInstancesMethod request. The method always
 // closes the http.Response Body.
-func (client MonitorClient) HanaInstancesMethodResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client MonitoringClient) HanaInstancesMethodResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

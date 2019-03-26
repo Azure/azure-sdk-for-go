@@ -90,9 +90,9 @@ type HanaInstancesListResultPage = original.HanaInstancesListResultPage
 type HanaInstancesRestartFuture = original.HanaInstancesRestartFuture
 type HardwareProfile = original.HardwareProfile
 type IPAddress = original.IPAddress
-type MonitorClient = original.MonitorClient
-type MonitorHanaInstancesMethodFuture = original.MonitorHanaInstancesMethodFuture
+type MonitoringClient = original.MonitoringClient
 type MonitoringDetails = original.MonitoringDetails
+type MonitoringHanaInstancesMethodFuture = original.MonitoringHanaInstancesMethodFuture
 type NetworkProfile = original.NetworkProfile
 type OSProfile = original.OSProfile
 type Operation = original.Operation
@@ -117,11 +117,11 @@ func NewHanaInstancesListResultIterator(page HanaInstancesListResultPage) HanaIn
 func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
 	return original.NewHanaInstancesListResultPage(getNextPage)
 }
-func NewMonitorClient(subscriptionID string) MonitorClient {
-	return original.NewMonitorClient(subscriptionID)
+func NewMonitoringClient(subscriptionID string) MonitoringClient {
+	return original.NewMonitoringClient(subscriptionID)
 }
-func NewMonitorClientWithBaseURI(baseURI string, subscriptionID string) MonitorClient {
-	return original.NewMonitorClientWithBaseURI(baseURI, subscriptionID)
+func NewMonitoringClientWithBaseURI(baseURI string, subscriptionID string) MonitoringClient {
+	return original.NewMonitoringClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -86,6 +86,7 @@ type ResourceListIterator = original.ResourceListIterator
 type ResourceListPage = original.ResourceListPage
 type ResourceSku = original.ResourceSku
 type ResourceType = original.ResourceType
+type RestartFuture = original.RestartFuture
 type ServiceSpecification = original.ServiceSpecification
 type TrackedResource = original.TrackedResource
 type UpdateFuture = original.UpdateFuture

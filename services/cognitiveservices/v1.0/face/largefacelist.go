@@ -238,11 +238,34 @@ func (client LargeFaceListClient) AddFaceFromURLResponder(resp *http.Response) (
 	return
 }
 
-// Create create an empty large face list. Up to 64 large face lists are allowed to exist in one subscription.
+// Create create an empty large face list with user-specified largeFaceListId, name, an optional userData and
+// recognitionModel.
+// <br /> Large face list is a list of faces, up to 1,000,000 faces, and used by [Face - Find
+// Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+// <br /> After creation, user should use [LargeFaceList Face -
+// Add](/docs/services/563879b61984550e40cbbe8d/operations/5a158c10d2de3616c086f2d3) to import the faces and
+// [LargeFaceList - Train](/docs/services/563879b61984550e40cbbe8d/operations/5a158422d2de3616c086f2d1) to make it
+// ready for [Face - FindSimilar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237). Faces
+// are stored on server until [LargeFaceList -
+// Delete](/docs/services/563879b61984550e40cbbe8d/operations/5a1580d5d2de3616c086f2cd) is called.
+// <br /> Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light
+// way face identification. But if the actual use is to identify person, please use
+// [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) /
+// [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face -
+// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+// <br />
+// * Free-tier subscription quota: 64 large face lists.
+// * S0-tier subscription quota: 1,000,000 large face lists.
+// <br />
+// 'recognitionModel' should be specified to associate with this large face list. The default value for
+// 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in
+// this parameter. New faces that are added to an existing large face list will use the recognition model that's
+// already associated with the collection. Existing face features in a large face list can't be updated to features
+// extracted by another version of recognition model.
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.
 // body - request body for creating a large face list.
-func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID string, body NameAndUserDataContract) (result autorest.Response, err error) {
+func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID string, body MetaDataContract) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.Create")
 		defer func() {
@@ -256,12 +279,7 @@ func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID st
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: largeFaceListID,
 			Constraints: []validation.Constraint{{Target: "largeFaceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "largeFaceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
-				{Target: "body.UserData", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "body.UserData", Name: validation.MaxLength, Rule: 16384, Chain: nil}}}}}}); err != nil {
+				{Target: "largeFaceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("face.LargeFaceListClient", "Create", err.Error())
 	}
 
@@ -287,7 +305,7 @@ func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID st
 }
 
 // CreatePreparer prepares the Create request.
-func (client LargeFaceListClient) CreatePreparer(ctx context.Context, largeFaceListID string, body NameAndUserDataContract) (*http.Request, error) {
+func (client LargeFaceListClient) CreatePreparer(ctx context.Context, largeFaceListID string, body MetaDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -484,10 +502,12 @@ func (client LargeFaceListClient) DeleteFaceResponder(resp *http.Response) (resu
 	return
 }
 
-// Get retrieve a large face list's information.
+// Get retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.
-func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID string) (result LargeFaceList, err error) {
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
+func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (result LargeFaceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.Get")
 		defer func() {
@@ -505,7 +525,7 @@ func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID strin
 		return result, validation.NewError("face.LargeFaceListClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, largeFaceListID)
+	req, err := client.GetPreparer(ctx, largeFaceListID, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "Get", nil, "Failure preparing request")
 		return
@@ -527,7 +547,7 @@ func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID strin
 }
 
 // GetPreparer prepares the Get request.
-func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceListID string) (*http.Request, error) {
+func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -536,10 +556,18 @@ func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceList
 		"largeFaceListId": autorest.Encode("path", largeFaceListID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}", pathParameters))
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -724,9 +752,23 @@ func (client LargeFaceListClient) GetTrainingStatusResponder(resp *http.Response
 	return
 }
 
-// List retrieve information about all existing large face lists. Only largeFaceListId, name and userData will be
-// returned.
-func (client LargeFaceListClient) List(ctx context.Context) (result ListLargeFaceList, err error) {
+// List list large face lists’ information of largeFaceListId, name, userData and recognitionModel. <br />
+// To get face information inside largeFaceList use [LargeFaceList Face -
+// Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)<br />
+// * Large face lists are stored in alphabetical order of largeFaceListId.
+// * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger
+// ids by string comparison. "start" set to empty to indicate return from the first item.
+// * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be
+// returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+// <br />
+// For example, total 5 large person lists: "list1", ..., "list5".
+// <br /> "start=&top=" will return all 5 lists.
+// <br /> "start=&top=2" will return "list1", "list2".
+// <br /> "start=list2&top=3" will return "list3", "list4", "list5".
+// Parameters:
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
+func (client LargeFaceListClient) List(ctx context.Context, returnRecognitionModel *bool) (result ListLargeFaceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.List")
 		defer func() {
@@ -737,7 +779,7 @@ func (client LargeFaceListClient) List(ctx context.Context) (result ListLargeFac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "List", nil, "Failure preparing request")
 		return
@@ -759,15 +801,23 @@ func (client LargeFaceListClient) List(ctx context.Context) (result ListLargeFac
 }
 
 // ListPreparer prepares the List request.
-func (client LargeFaceListClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client LargeFaceListClient) ListPreparer(ctx context.Context, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPath("/largefacelists"))
+		autorest.WithPath("/largefacelists"),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

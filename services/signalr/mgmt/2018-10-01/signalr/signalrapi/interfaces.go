@@ -39,6 +39,7 @@ type ClientAPI interface {
 	ListBySubscription(ctx context.Context) (result signalr.ResourceListPage, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.Keys, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.RegenerateKeyParameters) (result signalr.RegenerateKeyFuture, err error)
+	Restart(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.RestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.UpdateParameters) (result signalr.UpdateFuture, err error)
 }
 

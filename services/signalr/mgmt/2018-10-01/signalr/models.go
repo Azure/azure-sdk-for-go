@@ -437,9 +437,9 @@ type Properties struct {
 	ExternalIP *string `json:"externalIP,omitempty"`
 	// HostName - FQDN of the SignalR service instance. Format: xxx.service.signalr.net
 	HostName *string `json:"hostName,omitempty"`
-	// PublicPort - The publicly accessibly port of the SignalR service which is designed for browser/client side usage.
+	// PublicPort - The publicly accessible port of the SignalR service which is designed for browser/client side usage.
 	PublicPort *int32 `json:"publicPort,omitempty"`
-	// ServerPort - The publicly accessibly port of the SignalR service which is designed for customer server side usage.
+	// ServerPort - The publicly accessible port of the SignalR service which is designed for customer server side usage.
 	ServerPort *int32 `json:"serverPort,omitempty"`
 	// Version - Version of the SignalR resource. Probably you need the same or higher version of client SDKs.
 	Version *string `json:"version,omitempty"`
@@ -644,7 +644,7 @@ func NewResourceListPage(getNextPage func(context.Context, ResourceList) (Resour
 type ResourceSku struct {
 	// Name - The name of the SKU. This is typically a letter + number code, such as A0 or P3.  Required (if sku is specified)
 	Name *string `json:"name,omitempty"`
-	// Tier - Optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
+	// Tier - Optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// Size - Optional, string. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
@@ -777,6 +777,28 @@ func (rt *ResourceType) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// RestartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type RestartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RestartFuture) Result(client Client) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.RestartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("signalr.RestartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // ServiceSpecification an object that describes a specification.

@@ -1947,7 +1947,7 @@ func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autore
 	return
 }
 
-// NetworkRuleSet description of topic resource.
+// NetworkRuleSet description of NetworkRuleSet resource.
 type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
 	// NetworkRuleSetProperties - NetworkRuleSet properties
@@ -2039,7 +2039,7 @@ type NetworkRuleSetProperties struct {
 	IPRules *[]NWRuleSetIPRules `json:"ipRules,omitempty"`
 }
 
-// NWRuleSetIPRules the response from the List namespace operation.
+// NWRuleSetIPRules description of NetWorkRuleSet - IpRules resource.
 type NWRuleSetIPRules struct {
 	// IPMask - IP Mask
 	IPMask *string `json:"ipMask,omitempty"`
@@ -2047,11 +2047,11 @@ type NWRuleSetIPRules struct {
 	Action NetworkRuleIPAction `json:"action,omitempty"`
 }
 
-// NWRuleSetVirtualNetworkRules the response from the List namespace operation.
+// NWRuleSetVirtualNetworkRules description of VirtualNetworkRules - NetworkRules resource.
 type NWRuleSetVirtualNetworkRules struct {
 	// Subnet - Subnet properties
 	Subnet *Subnet `json:"subnet,omitempty"`
-	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing Vnet Service Endpoint
+	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing VNet Service Endpoint
 	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
 }
 

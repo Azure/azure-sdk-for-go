@@ -7860,6 +7860,153 @@ type LocationCapabilities struct {
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
 }
 
+// LogicalServerSecurityAlertPolicyListResult a list of the server's security alert policies.
+type LogicalServerSecurityAlertPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]ServerSecurityAlertPolicy `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// LogicalServerSecurityAlertPolicyListResultIterator provides access to a complete listing of
+// ServerSecurityAlertPolicy values.
+type LogicalServerSecurityAlertPolicyListResultIterator struct {
+	i    int
+	page LogicalServerSecurityAlertPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *LogicalServerSecurityAlertPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LogicalServerSecurityAlertPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *LogicalServerSecurityAlertPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter LogicalServerSecurityAlertPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter LogicalServerSecurityAlertPolicyListResultIterator) Response() LogicalServerSecurityAlertPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter LogicalServerSecurityAlertPolicyListResultIterator) Value() ServerSecurityAlertPolicy {
+	if !iter.page.NotDone() {
+		return ServerSecurityAlertPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the LogicalServerSecurityAlertPolicyListResultIterator type.
+func NewLogicalServerSecurityAlertPolicyListResultIterator(page LogicalServerSecurityAlertPolicyListResultPage) LogicalServerSecurityAlertPolicyListResultIterator {
+	return LogicalServerSecurityAlertPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lssaplr LogicalServerSecurityAlertPolicyListResult) IsEmpty() bool {
+	return lssaplr.Value == nil || len(*lssaplr.Value) == 0
+}
+
+// logicalServerSecurityAlertPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lssaplr LogicalServerSecurityAlertPolicyListResult) logicalServerSecurityAlertPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if lssaplr.NextLink == nil || len(to.String(lssaplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lssaplr.NextLink)))
+}
+
+// LogicalServerSecurityAlertPolicyListResultPage contains a page of ServerSecurityAlertPolicy values.
+type LogicalServerSecurityAlertPolicyListResultPage struct {
+	fn      func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error)
+	lssaplr LogicalServerSecurityAlertPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *LogicalServerSecurityAlertPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LogicalServerSecurityAlertPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lssaplr)
+	if err != nil {
+		return err
+	}
+	page.lssaplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *LogicalServerSecurityAlertPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page LogicalServerSecurityAlertPolicyListResultPage) NotDone() bool {
+	return !page.lssaplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page LogicalServerSecurityAlertPolicyListResultPage) Response() LogicalServerSecurityAlertPolicyListResult {
+	return page.lssaplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page LogicalServerSecurityAlertPolicyListResultPage) Values() []ServerSecurityAlertPolicy {
+	if page.lssaplr.IsEmpty() {
+		return nil
+	}
+	return *page.lssaplr.Value
+}
+
+// Creates a new instance of the LogicalServerSecurityAlertPolicyListResultPage type.
+func NewLogicalServerSecurityAlertPolicyListResultPage(getNextPage func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error)) LogicalServerSecurityAlertPolicyListResultPage {
+	return LogicalServerSecurityAlertPolicyListResultPage{fn: getNextPage}
+}
+
 // ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving
 // the results of a long-running operation.
 type ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
@@ -10332,7 +10479,7 @@ func (future *RestorePointsCreateFuture) Result(client RestorePointsClient) (rp 
 
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
-	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
+	// State - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
 	State SecurityAlertPolicyState `json:"state,omitempty"`
 	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action
 	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`
@@ -10346,6 +10493,8 @@ type SecurityAlertPolicyProperties struct {
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RetentionDays - Specifies the number of days to keep in the Threat Detection audit logs.
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	// CreationTime - Specifies the UTC creation time of the policy.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
 // SensitivityLabel a sensitivity label.

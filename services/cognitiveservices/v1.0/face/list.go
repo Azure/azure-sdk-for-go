@@ -238,11 +238,29 @@ func (client ListClient) AddFaceFromURLResponder(resp *http.Response) (result Pe
 	return
 }
 
-// Create create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+// Create create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up
+// to 64 face lists are allowed in one subscription.
+// <br /> Face list is a list of faces, up to 1,000 faces, and used by [Face - Find
+// Similar](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395237).
+// <br /> After creation, user should use [FaceList - Add
+// Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395250) to import the faces. Faces are
+// stored on server until [FaceList -
+// Delete](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524f) is called.
+// <br /> Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light
+// way face identification. But if the actual use is to identify person, please use
+// [PersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395244) /
+// [LargePersonGroup](/docs/services/563879b61984550e40cbbe8d/operations/599acdee6ac60f11b48b5a9d) and [Face -
+// Identify](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395239).
+// <br /> Please consider [LargeFaceList](/docs/services/563879b61984550e40cbbe8d/operations/5a157b68d2de3616c086f2cc)
+// when the face number is large. It can support up to 1,000,000 faces. 'recognitionModel' should be specified to
+// associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model
+// needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face
+// list will use the recognition model that's already associated with the collection. Existing face features in a face
+// list can't be updated to features extracted by another version of recognition model.
 // Parameters:
 // faceListID - id referencing a particular face list.
 // body - request body for creating a face list.
-func (client ListClient) Create(ctx context.Context, faceListID string, body NameAndUserDataContract) (result autorest.Response, err error) {
+func (client ListClient) Create(ctx context.Context, faceListID string, body MetaDataContract) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListClient.Create")
 		defer func() {
@@ -256,12 +274,7 @@ func (client ListClient) Create(ctx context.Context, faceListID string, body Nam
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
-				{Target: "body.UserData", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "body.UserData", Name: validation.MaxLength, Rule: 16384, Chain: nil}}}}}}); err != nil {
+				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("face.ListClient", "Create", err.Error())
 	}
 
@@ -287,7 +300,7 @@ func (client ListClient) Create(ctx context.Context, faceListID string, body Nam
 }
 
 // CreatePreparer prepares the Create request.
-func (client ListClient) CreatePreparer(ctx context.Context, faceListID string, body NameAndUserDataContract) (*http.Request, error) {
+func (client ListClient) CreatePreparer(ctx context.Context, faceListID string, body MetaDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -484,10 +497,12 @@ func (client ListClient) DeleteFaceResponder(resp *http.Response) (result autore
 	return
 }
 
-// Get retrieve a face list's information.
+// Get retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
 // Parameters:
 // faceListID - id referencing a particular face list.
-func (client ListClient) Get(ctx context.Context, faceListID string) (result List, err error) {
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
+func (client ListClient) Get(ctx context.Context, faceListID string, returnRecognitionModel *bool) (result List, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListClient.Get")
 		defer func() {
@@ -505,7 +520,7 @@ func (client ListClient) Get(ctx context.Context, faceListID string) (result Lis
 		return result, validation.NewError("face.ListClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, faceListID)
+	req, err := client.GetPreparer(ctx, faceListID, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "Get", nil, "Failure preparing request")
 		return
@@ -527,7 +542,7 @@ func (client ListClient) Get(ctx context.Context, faceListID string) (result Lis
 }
 
 // GetPreparer prepares the Get request.
-func (client ListClient) GetPreparer(ctx context.Context, faceListID string) (*http.Request, error) {
+func (client ListClient) GetPreparer(ctx context.Context, faceListID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -536,10 +551,18 @@ func (client ListClient) GetPreparer(ctx context.Context, faceListID string) (*h
 		"faceListId": autorest.Encode("path", faceListID),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/facelists/{faceListId}", pathParameters))
+		autorest.WithPathParameters("/facelists/{faceListId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -563,8 +586,13 @@ func (client ListClient) GetResponder(resp *http.Response) (result List, err err
 	return
 }
 
-// List retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
-func (client ListClient) List(ctx context.Context) (result ListList, err error) {
+// List list face lists’ faceListId, name, userData and recognitionModel. <br />
+// To get face information inside faceList use [FaceList -
+// Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c)
+// Parameters:
+// returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
+// response.
+func (client ListClient) List(ctx context.Context, returnRecognitionModel *bool) (result ListList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListClient.List")
 		defer func() {
@@ -575,7 +603,7 @@ func (client ListClient) List(ctx context.Context) (result ListList, err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, returnRecognitionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "List", nil, "Failure preparing request")
 		return
@@ -597,15 +625,23 @@ func (client ListClient) List(ctx context.Context) (result ListList, err error) 
 }
 
 // ListPreparer prepares the List request.
-func (client ListClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ListClient) ListPreparer(ctx context.Context, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if returnRecognitionModel != nil {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", *returnRecognitionModel)
+	} else {
+		queryParameters["returnRecognitionModel"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPath("/facelists"))
+		autorest.WithPath("/facelists"),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

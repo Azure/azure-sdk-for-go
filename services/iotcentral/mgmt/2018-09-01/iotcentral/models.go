@@ -477,6 +477,31 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 	return
 }
 
+// AppTemplate ioT Central Application Template.
+type AppTemplate struct {
+	// ManifestID - The ID of the template.
+	ManifestID *string `json:"manifestId,omitempty"`
+	// ManifestVersion - The version of the template.
+	ManifestVersion *string `json:"manifestVersion,omitempty"`
+	// Name - The name of the template.
+	Name *string `json:"name,omitempty"`
+	// Title - The title of the template.
+	Title *string `json:"title,omitempty"`
+	// Order - The order of the template in the templates list.
+	Order *float64 `json:"order,omitempty"`
+	// Description - The description of the template.
+	Description *string `json:"description,omitempty"`
+}
+
+// AppTemplatesResult a list of IoT Central Application Templates with a next link.
+type AppTemplatesResult struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of IoT Central description objects.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - A list of IoT Central Application Templates.
+	Value *[]AppTemplate `json:"value,omitempty"`
+}
+
 // ErrorDetails error details.
 type ErrorDetails struct {
 	*ErrorResponseBody `json:"error,omitempty"`

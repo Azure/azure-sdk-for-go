@@ -679,6 +679,78 @@ func (client AppsClient) ListBySubscriptionComplete(ctx context.Context) (result
 	return
 }
 
+// Templates get all available application templates.
+func (client AppsClient) Templates(ctx context.Context) (result AppTemplatesResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Templates")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.TemplatesPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Templates", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.TemplatesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Templates", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.TemplatesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Templates", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// TemplatesPreparer prepares the Templates request.
+func (client AppsClient) TemplatesPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TemplatesSender sends the Templates request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) TemplatesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// TemplatesResponder handles the response to the Templates request. The method always
+// closes the http.Response Body.
+func (client AppsClient) TemplatesResponder(resp *http.Response) (result AppTemplatesResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Update update the metadata of an IoT Central application.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT Central application.

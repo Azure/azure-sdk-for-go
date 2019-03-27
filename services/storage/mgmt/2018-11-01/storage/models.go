@@ -1663,24 +1663,24 @@ type KeyVaultProperties struct {
 // LeaseContainerRequest lease Container request schema.
 type LeaseContainerRequest struct {
 	// Action - Specifies the lease action. Can be one of the available actions. Possible values include: 'Acquire', 'Renew', 'Change', 'Release', 'Break'
-	Action Action1 `json:"Action,omitempty"`
+	Action Action1 `json:"action,omitempty"`
 	// LeaseID - Identifies the lease. Can be specified in any valid GUID string format.
-	LeaseID *string `json:"LeaseId,omitempty"`
+	LeaseID *string `json:"leaseId,omitempty"`
 	// BreakPeriod - Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60.
-	BreakPeriod *int32 `json:"BreakPeriod,omitempty"`
+	BreakPeriod *int32 `json:"breakPeriod,omitempty"`
 	// LeaseDuration - Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
-	LeaseDuration *int32 `json:"LeaseDuration,omitempty"`
+	LeaseDuration *int32 `json:"leaseDuration,omitempty"`
 	// ProposedLeaseID - Optional for acquire, required for change. Proposed lease ID, in a GUID string format.
-	ProposedLeaseID *string `json:"ProposedLeaseId,omitempty"`
+	ProposedLeaseID *string `json:"proposedLeaseId,omitempty"`
 }
 
 // LeaseContainerResponse lease Container response schema.
 type LeaseContainerResponse struct {
 	autorest.Response `json:"-"`
 	// LeaseID - Returned unique lease ID that must be included with any request to delete the container, or to renew, change, or release the lease.
-	LeaseID *string `json:"LeaseId,omitempty"`
+	LeaseID *string `json:"leaseId,omitempty"`
 	// LeaseTimeSeconds - Approximate time remaining in the lease period, in seconds.
-	LeaseTimeSeconds *string `json:"LeaseTimeSeconds,omitempty"`
+	LeaseTimeSeconds *string `json:"leaseTimeSeconds,omitempty"`
 }
 
 // LegalHold the LegalHold property of a blob container.

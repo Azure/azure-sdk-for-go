@@ -29,11 +29,13 @@ type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ClustersDeleteFuture, err error)
 	ExecuteScriptActions(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ExecuteScriptActionParameters) (result hdinsight.ClustersExecuteScriptActionsFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.Cluster, err error)
+	GetGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.GatewaySettings, err error)
 	List(ctx context.Context) (result hdinsight.ClusterListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hdinsight.ClusterListResultPage, err error)
 	Resize(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterResizeParameters) (result hdinsight.ClustersResizeFuture, err error)
 	RotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterDiskEncryptionParameters) (result hdinsight.ClustersRotateDiskEncryptionKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterPatchParameters) (result hdinsight.Cluster, err error)
+	UpdateGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.UpdateGatewaySettingsParameters) (result hdinsight.ClustersUpdateGatewaySettingsFuture, err error)
 }
 
 var _ ClustersClientAPI = (*hdinsight.ClustersClient)(nil)
@@ -59,7 +61,8 @@ var _ LocationsClientAPI = (*hdinsight.LocationsClient)(nil)
 // ConfigurationsClientAPI contains the set of methods on the ConfigurationsClient type.
 type ConfigurationsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, clusterName string, configurationName string) (result hdinsight.SetString, err error)
-	UpdateHTTPSettings(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string) (result hdinsight.ConfigurationsUpdateHTTPSettingsFuture, err error)
+	List(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ClusterConfigurations, err error)
+	Update(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string) (result hdinsight.ConfigurationsUpdateFuture, err error)
 }
 
 var _ ConfigurationsClientAPI = (*hdinsight.ConfigurationsClient)(nil)

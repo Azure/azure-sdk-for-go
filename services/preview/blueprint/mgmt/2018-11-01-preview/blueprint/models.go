@@ -117,9 +117,10 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type TargetScope string
 
 const (
-	// ManagementGroup ...
+	// ManagementGroup The blueprint targets a management group during blueprint assignment. This is reserved
+	// for future use.
 	ManagementGroup TargetScope = "managementGroup"
-	// Subscription ...
+	// Subscription The blueprint targets a subscription during blueprint assignment.
 	Subscription TargetScope = "subscription"
 )
 

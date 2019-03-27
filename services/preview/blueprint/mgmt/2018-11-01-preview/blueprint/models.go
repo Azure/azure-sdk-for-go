@@ -1642,7 +1642,7 @@ type Properties struct {
 	Layout interface{} `json:"layout,omitempty"`
 	// Status - Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
-	// TargetScope - The scope where this blueprint definition can be assigned. Possible values include: 'Subscription', 'ManagementGroup'
+	// TargetScope - The scope where this blueprint definition can be assigned. Management group is reserved for future use. Possible values include: 'Subscription', 'ManagementGroup'
 	TargetScope TargetScope `json:"targetScope,omitempty"`
 	// Parameters - Parameters required by this blueprint definition.
 	Parameters map[string]*ParameterDefinition `json:"parameters"`
@@ -1920,7 +1920,7 @@ type PublishedBlueprintProperties struct {
 	ChangeNotes *string `json:"changeNotes,omitempty"`
 	// Status - Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
-	// TargetScope - The scope where this blueprint definition can be assigned. Possible values include: 'Subscription', 'ManagementGroup'
+	// TargetScope - The scope where this blueprint definition can be assigned. Management group is reserved for future use. Possible values include: 'Subscription', 'ManagementGroup'
 	TargetScope TargetScope `json:"targetScope,omitempty"`
 	// Parameters - Parameters required by this blueprint definition.
 	Parameters map[string]*ParameterDefinition `json:"parameters"`
@@ -2266,7 +2266,7 @@ type SecretValueReference struct {
 type SharedBlueprintProperties struct {
 	// Status - Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
-	// TargetScope - The scope where this blueprint definition can be assigned. Possible values include: 'Subscription', 'ManagementGroup'
+	// TargetScope - The scope where this blueprint definition can be assigned. Management group is reserved for future use. Possible values include: 'Subscription', 'ManagementGroup'
 	TargetScope TargetScope `json:"targetScope,omitempty"`
 	// Parameters - Parameters required by this blueprint definition.
 	Parameters map[string]*ParameterDefinition `json:"parameters"`

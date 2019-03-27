@@ -38,6 +38,7 @@ const (
 
 type App = original.App
 type AppAvailabilityInfo = original.AppAvailabilityInfo
+type AppClient = original.AppClient
 type AppListResult = original.AppListResult
 type AppListResultIterator = original.AppListResultIterator
 type AppListResultPage = original.AppListResultPage
@@ -45,7 +46,7 @@ type AppPatch = original.AppPatch
 type AppProperties = original.AppProperties
 type AppSkuInfo = original.AppSkuInfo
 type AppTemplate = original.AppTemplate
-type AppTemplates = original.AppTemplates
+type AppTemplatesResult = original.AppTemplatesResult
 type AppsClient = original.AppsClient
 type AppsCreateOrUpdateFuture = original.AppsCreateOrUpdateFuture
 type AppsDeleteFuture = original.AppsDeleteFuture
@@ -64,6 +65,12 @@ type Resource = original.Resource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAppClient(subscriptionID string) AppClient {
+	return original.NewAppClient(subscriptionID)
+}
+func NewAppClientWithBaseURI(baseURI string, subscriptionID string) AppClient {
+	return original.NewAppClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAppListResultIterator(page AppListResultPage) AppListResultIterator {
 	return original.NewAppListResultIterator(page)

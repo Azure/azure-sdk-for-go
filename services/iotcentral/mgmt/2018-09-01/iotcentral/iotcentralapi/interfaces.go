@@ -31,11 +31,17 @@ type AppsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result iotcentral.App, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result iotcentral.AppListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result iotcentral.AppListResultPage, err error)
-	Templates(ctx context.Context) (result iotcentral.AppTemplates, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, appPatch iotcentral.AppPatch) (result iotcentral.AppsUpdateFuture, err error)
 }
 
 var _ AppsClientAPI = (*iotcentral.AppsClient)(nil)
+
+// AppClientAPI contains the set of methods on the AppClient type.
+type AppClientAPI interface {
+	Templates(ctx context.Context) (result iotcentral.AppTemplatesResult, err error)
+}
+
+var _ AppClientAPI = (*iotcentral.AppClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

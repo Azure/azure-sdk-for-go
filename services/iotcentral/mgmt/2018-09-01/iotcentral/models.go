@@ -485,7 +485,7 @@ type AppTemplate struct {
 	ManifestVersion *string `json:"manifestVersion,omitempty"`
 	// Name - The name of the template.
 	Name *string `json:"name,omitempty"`
-	// Title - The localized title of the template.
+	// Title - The title of the template.
 	Title *string `json:"title,omitempty"`
 	// Order - The order of the template in the templates list.
 	Order *float64 `json:"order,omitempty"`
@@ -493,8 +493,8 @@ type AppTemplate struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// AppTemplates a list of IoT Central Application Templates with a next link.
-type AppTemplates struct {
+// AppTemplatesResult a list of IoT Central Application Templates with a next link.
+type AppTemplatesResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of IoT Central description objects.
 	NextLink *string `json:"nextLink,omitempty"`

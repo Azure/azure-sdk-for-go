@@ -262,18 +262,6 @@ type ConsistencyPolicy struct {
 	MaxIntervalInSeconds *int32 `json:"maxIntervalInSeconds,omitempty"`
 }
 
-// CreateUpdateOptions cosmos DB create database options
-type CreateUpdateOptions struct {
-	// IfMatch - The If-Match header for the request
-	IfMatch *string `json:"If-Match,omitempty"`
-	// IfNoneMatch - The If-Non-Match header for the request
-	IfNoneMatch *string `json:"If-None-Match,omitempty"`
-	// SessionToken - The x-ms-session-token header for the request
-	SessionToken *string `json:"Session-Token,omitempty"`
-	// Throughput - The x-ms-offer-throughput header for the request
-	Throughput *string `json:"Throughput,omitempty"`
-}
-
 // DatabaseAccount an Azure Cosmos DB database account.
 type DatabaseAccount struct {
 	autorest.Response `json:"-"`
@@ -1073,9 +1061,9 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ExtenedResourceProperties the system generated resource properties associated with SQL databases and SQL
-// containers.
-type ExtenedResourceProperties struct {
+// ExtendedResourceProperties the system generated resource properties associated with SQL databases and
+// SQL containers.
+type ExtendedResourceProperties struct {
 	// Rid - A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
 	// Ts - A system generated property that denotes the last updated timestamp of the resource.
@@ -1114,7 +1102,7 @@ type GenericResourceProperties struct {
 
 // IncludedPaths the paths that are included in indexing
 type IncludedPaths struct {
-	// Path - The path for which the indexing behavior applies to. Index paths typically start with root and end with windcard (/path/*)
+	// Path - The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
 	Path *string `json:"path,omitempty"`
 	// Indexes - List of indexes for this path
 	Indexes *[]Indexes `json:"indexes,omitempty"`
@@ -1401,7 +1389,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 // PartitionKey the configuration of the partition key to be used for partitioning data into multiple
 // partitions
 type PartitionKey struct {
-	// Paths - List of paths using which data within the SQL container can be parititoned
+	// Paths - List of paths using which data within the SQL container can be partitioned
 	Paths *[]string `json:"paths,omitempty"`
 	// Kind - Indicates the kind of algorithm used for partitioning. Possible values include: 'PartitionKindHash', 'PartitionKindRange'
 	Kind PartitionKind `json:"kind,omitempty"`
@@ -1596,7 +1584,19 @@ type SQLContainerCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a SQL container
 	Resource *SQLContainerCreateUpdateResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options *CreateUpdateOptions `json:"options,omitempty"`
+	Options map[string]*string `json:"options"`
+}
+
+// MarshalJSON is the custom marshaler for SQLContainerCreateUpdateProperties.
+func (sccup SQLContainerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sccup.Resource != nil {
+		objectMap["resource"] = sccup.Resource
+	}
+	if sccup.Options != nil {
+		objectMap["options"] = sccup.Options
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLContainerCreateUpdateResource cosmos DB SQL container resource object
@@ -1775,7 +1775,19 @@ type SQLDatabaseCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a SQL database
 	Resource *SQLDatabaseCreateUpdateResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options *CreateUpdateOptions `json:"options,omitempty"`
+	Options map[string]*string `json:"options"`
+}
+
+// MarshalJSON is the custom marshaler for SQLDatabaseCreateUpdateProperties.
+func (sdcup SQLDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sdcup.Resource != nil {
+		objectMap["resource"] = sdcup.Resource
+	}
+	if sdcup.Options != nil {
+		objectMap["options"] = sdcup.Options
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLDatabaseCreateUpdateResource cosmos DB SQL database id object

@@ -45,7 +45,8 @@ func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 // assignment - blueprint assignment object to save.
 func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, assignmentName string, assignment Assignment) (result Assignment, err error) {
@@ -136,7 +137,8 @@ func (client AssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 func (client AssignmentsClient) Delete(ctx context.Context, scope string, assignmentName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
@@ -214,7 +216,8 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 func (client AssignmentsClient) Get(ctx context.Context, scope string, assignmentName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
@@ -292,7 +295,8 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 func (client AssignmentsClient) List(ctx context.Context, scope string) (result AssignmentListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.List")
@@ -406,7 +410,8 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, scope string) 
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context, scope string, assignmentName string) (result WhoIsBlueprintContract, err error) {
 	if tracing.IsEnabled() {

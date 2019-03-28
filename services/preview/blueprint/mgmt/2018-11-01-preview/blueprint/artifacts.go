@@ -44,7 +44,8 @@ func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // artifactName - name of the blueprint artifact.
 // artifact - blueprint artifact to create or update.
@@ -127,7 +128,8 @@ func (client ArtifactsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // artifactName - name of the blueprint artifact.
 func (client ArtifactsClient) Delete(ctx context.Context, scope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
@@ -207,7 +209,8 @@ func (client ArtifactsClient) DeleteResponder(resp *http.Response) (result Artif
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // artifactName - name of the blueprint artifact.
 func (client ArtifactsClient) Get(ctx context.Context, scope string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
@@ -287,7 +290,8 @@ func (client ArtifactsClient) GetResponder(resp *http.Response) (result Artifact
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 func (client ArtifactsClient) List(ctx context.Context, scope string, blueprintName string) (result ArtifactListPage, err error) {
 	if tracing.IsEnabled() {

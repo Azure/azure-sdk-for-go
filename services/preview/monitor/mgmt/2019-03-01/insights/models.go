@@ -1819,6 +1819,14 @@ type Baseline struct {
 	HighThresholds *[]float64 `json:"highThresholds,omitempty"`
 }
 
+// BaselineMetadata represents a baseline metadata value.
+type BaselineMetadata struct {
+	// Name - Name of the baseline metadata.
+	Name *string `json:"name,omitempty"`
+	// Value - Value of the baseline metadata.
+	Value *string `json:"value,omitempty"`
+}
+
 // BaselineMetadataValue represents a baseline metadata value.
 type BaselineMetadataValue struct {
 	// Name - the name of the metadata.
@@ -4004,6 +4012,31 @@ type MetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+// MetricBaseline the baseline results of a specific metric.
+type MetricBaseline struct {
+	// ID - the metric baseline Id.
+	ID *string `json:"id,omitempty"`
+	// Type - the resource type of the metric baseline resource.
+	Type *string `json:"type,omitempty"`
+	// MetricName - the name of the metric.
+	MetricName *string `json:"metricName,omitempty"`
+	// Baselines - the baseline for each time series that was queried.
+	Baselines *[]TimeSeriesBaseline `json:"baselines,omitempty"`
+}
+
+// MetricBaselinesResponse the response to a metric baselines query.
+type MetricBaselinesResponse struct {
+	autorest.Response `json:"-"`
+	// Timespan - The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
+	Timespan *string `json:"timespan,omitempty"`
+	// Interval - The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and returned back from what was originally requested.  This is not present if a metadata request was made.
+	Interval *string `json:"interval,omitempty"`
+	// Namespace - The namespace of the metrics been queried.
+	Namespace *string `json:"namespace,omitempty"`
+	// Value - the properties of the baseline.
+	Value *MetricBaseline `json:"value,omitempty"`
+}
+
 // MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
 	// Name - Name of the criteria.
@@ -4250,6 +4283,14 @@ type MetricSettings struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// RetentionPolicy - the retention policy for this category.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+}
+
+// MetricSingleDimension the metric dimension name and value.
+type MetricSingleDimension struct {
+	// Name - Name of the dimension.
+	Name *string `json:"name,omitempty"`
+	// Value - Value of the dimension.
+	Value *string `json:"value,omitempty"`
 }
 
 // MetricTrigger the trigger that results in a scaling action.
@@ -5280,6 +5321,20 @@ func (trc *ThresholdRuleCondition) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// TimeSeriesBaseline the time series baseline class.
+type TimeSeriesBaseline struct {
+	// Aggregation - The aggregation type of the metric.
+	Aggregation *string `json:"aggregation,omitempty"`
+	// Dimensions - the dimensions of this time series.
+	Dimensions *[]MetricSingleDimension `json:"dimensions,omitempty"`
+	// Timestamps - the array of timestamps of the baselines.
+	Timestamps *[]date.Time `json:"timestamps,omitempty"`
+	// Data - the baseline values for each sensitivity.
+	Data *[]Baseline `json:"data,omitempty"`
+	// Metadata - the baseline metadata values.
+	Metadata *[]BaselineMetadata `json:"metadata,omitempty"`
 }
 
 // TimeSeriesElement a time series result type. The discriminator value is always TimeSeries in this case.

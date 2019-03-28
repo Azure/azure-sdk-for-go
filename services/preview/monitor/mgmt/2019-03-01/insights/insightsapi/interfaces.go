@@ -159,6 +159,13 @@ type MetricBaselineClientAPI interface {
 
 var _ MetricBaselineClientAPI = (*insights.MetricBaselineClient)(nil)
 
+// MetricBaselinesClientAPI contains the set of methods on the MetricBaselinesClient type.
+type MetricBaselinesClientAPI interface {
+	Get(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType insights.ResultType) (result insights.MetricBaselinesResponse, err error)
+}
+
+var _ MetricBaselinesClientAPI = (*insights.MetricBaselinesClient)(nil)
+
 // MetricAlertsClientAPI contains the set of methods on the MetricAlertsClient type.
 type MetricAlertsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters insights.MetricAlertResource) (result insights.MetricAlertResource, err error)

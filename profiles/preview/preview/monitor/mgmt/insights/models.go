@@ -324,6 +324,7 @@ type AzureAppPushReceiver = original.AzureAppPushReceiver
 type AzureFunctionReceiver = original.AzureFunctionReceiver
 type BaseClient = original.BaseClient
 type Baseline = original.Baseline
+type BaselineMetadata = original.BaselineMetadata
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
 type BaselineResponse = original.BaselineResponse
@@ -394,7 +395,10 @@ type MetricAlertStatusProperties = original.MetricAlertStatusProperties
 type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricAvailability = original.MetricAvailability
+type MetricBaseline = original.MetricBaseline
 type MetricBaselineClient = original.MetricBaselineClient
+type MetricBaselinesClient = original.MetricBaselinesClient
+type MetricBaselinesResponse = original.MetricBaselinesResponse
 type MetricCriteria = original.MetricCriteria
 type MetricDefinition = original.MetricDefinition
 type MetricDefinitionCollection = original.MetricDefinitionCollection
@@ -405,6 +409,7 @@ type MetricNamespaceCollection = original.MetricNamespaceCollection
 type MetricNamespaceName = original.MetricNamespaceName
 type MetricNamespacesClient = original.MetricNamespacesClient
 type MetricSettings = original.MetricSettings
+type MetricSingleDimension = original.MetricSingleDimension
 type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
 type MetricsClient = original.MetricsClient
@@ -439,6 +444,7 @@ type SmsReceiver = original.SmsReceiver
 type Source = original.Source
 type TenantActivityLogsClient = original.TenantActivityLogsClient
 type ThresholdRuleCondition = original.ThresholdRuleCondition
+type TimeSeriesBaseline = original.TimeSeriesBaseline
 type TimeSeriesElement = original.TimeSeriesElement
 type TimeSeriesInformation = original.TimeSeriesInformation
 type TimeWindow = original.TimeWindow
@@ -544,6 +550,12 @@ func NewMetricBaselineClient(subscriptionID string) MetricBaselineClient {
 }
 func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselineClient {
 	return original.NewMetricBaselineClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetricBaselinesClient(subscriptionID string) MetricBaselinesClient {
+	return original.NewMetricBaselinesClient(subscriptionID)
+}
+func NewMetricBaselinesClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselinesClient {
+	return original.NewMetricBaselinesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMetricDefinitionsClient(subscriptionID string) MetricDefinitionsClient {
 	return original.NewMetricDefinitionsClient(subscriptionID)

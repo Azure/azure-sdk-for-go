@@ -34,6 +34,7 @@ type LogProfilesClientAPI = original.LogProfilesClientAPI
 type MetricAlertsClientAPI = original.MetricAlertsClientAPI
 type MetricAlertsStatusClientAPI = original.MetricAlertsStatusClientAPI
 type MetricBaselineClientAPI = original.MetricBaselineClientAPI
+type MetricBaselinesClientAPI = original.MetricBaselinesClientAPI
 type MetricDefinitionsClientAPI = original.MetricDefinitionsClientAPI
 type MetricNamespacesClientAPI = original.MetricNamespacesClientAPI
 type MetricsClientAPI = original.MetricsClientAPI

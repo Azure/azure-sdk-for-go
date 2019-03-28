@@ -46,7 +46,7 @@ var _ ReplicationUsagesClientAPI = (*recoveryservices.ReplicationUsagesClient)(n
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input recoveryservices.ResourceNameAvailabilityParameters) (result recoveryservices.ResourceNameAvailabilityResponseResource, err error)
+	CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input recoveryservices.ResourceNameAvailabilityParameters) (result recoveryservices.ResourceNameAvailabilityResultResource, err error)
 }
 
 var _ ClientAPI = (*recoveryservices.Client)(nil)

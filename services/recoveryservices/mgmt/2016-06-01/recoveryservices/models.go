@@ -831,20 +831,20 @@ type ResourceNameAvailabilityParameters struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ResourceNameAvailabilityResponse response for check name availability API. Resource provider will set
+// ResourceNameAvailabilityResult response for check name availability API. Resource provider will set
 // availability as true | false.
-type ResourceNameAvailabilityResponse struct {
+type ResourceNameAvailabilityResult struct {
 	NameAvailable *bool   `json:"nameAvailable,omitempty"`
 	Reason        *string `json:"reason,omitempty"`
 	Message       *string `json:"message,omitempty"`
 }
 
-// ResourceNameAvailabilityResponseResource response for check name availability API. Resource provider
-// will set availability as true | false.
-type ResourceNameAvailabilityResponseResource struct {
+// ResourceNameAvailabilityResultResource response for check name availability API. Resource provider will
+// set availability as true | false.
+type ResourceNameAvailabilityResultResource struct {
 	autorest.Response `json:"-"`
-	// Properties - ResourceNameAvailabilityResponseResource properties
-	Properties *ResourceNameAvailabilityResponse `json:"properties,omitempty"`
+	// Properties - ResourceNameAvailabilityResultResource properties
+	Properties *ResourceNameAvailabilityResult `json:"properties,omitempty"`
 	// ID - Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name associated with the resource.

@@ -84,6 +84,7 @@ const (
 type BaseClient = original.BaseClient
 type BasicResourceCertificateDetails = original.BasicResourceCertificateDetails
 type CertificateRequest = original.CertificateRequest
+type Client = original.Client
 type ClientDiscoveryDisplay = original.ClientDiscoveryDisplay
 type ClientDiscoveryForLogSpecification = original.ClientDiscoveryForLogSpecification
 type ClientDiscoveryForProperties = original.ClientDiscoveryForProperties
@@ -107,6 +108,9 @@ type Resource = original.Resource
 type ResourceCertificateAndAadDetails = original.ResourceCertificateAndAadDetails
 type ResourceCertificateAndAcsDetails = original.ResourceCertificateAndAcsDetails
 type ResourceCertificateDetails = original.ResourceCertificateDetails
+type ResourceNameAvailabilityParameters = original.ResourceNameAvailabilityParameters
+type ResourceNameAvailabilityResponse = original.ResourceNameAvailabilityResponse
+type ResourceNameAvailabilityResponseResource = original.ResourceNameAvailabilityResponseResource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type UpgradeDetails = original.UpgradeDetails
@@ -128,11 +132,17 @@ type VaultsClient = original.VaultsClient
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
 func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
 	return original.NewClientDiscoveryResponseIterator(page)
 }
 func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
 	return original.NewClientDiscoveryResponsePage(getNextPage)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

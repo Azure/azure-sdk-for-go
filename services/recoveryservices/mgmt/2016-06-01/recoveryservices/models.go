@@ -822,6 +822,39 @@ func (rcd ResourceCertificateDetails) AsBasicResourceCertificateDetails() (Basic
 	return &rcd, true
 }
 
+// ResourceNameAvailabilityParameters resource Name availability input parameters - Resource type and
+// resource name
+type ResourceNameAvailabilityParameters struct {
+	// Type - Describes the Resource type: Microsoft.RecoveryServices/Vaults
+	Type *string `json:"type,omitempty"`
+	// Name - Resource name for which availability needs to be checked
+	Name *string `json:"name,omitempty"`
+}
+
+// ResourceNameAvailabilityResponse response for check name availability API. Resource provider will set
+// availability as true | false.
+type ResourceNameAvailabilityResponse struct {
+	NameAvailable *bool   `json:"nameAvailable,omitempty"`
+	Reason        *string `json:"reason,omitempty"`
+	Message       *string `json:"message,omitempty"`
+}
+
+// ResourceNameAvailabilityResponseResource response for check name availability API. Resource provider
+// will set availability as true | false.
+type ResourceNameAvailabilityResponseResource struct {
+	autorest.Response `json:"-"`
+	// Properties - ResourceNameAvailabilityResponseResource properties
+	Properties *ResourceNameAvailabilityResponse `json:"properties,omitempty"`
+	// ID - Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name associated with the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	Type *string `json:"type,omitempty"`
+	// ETag - Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+}
+
 // Sku identifies the unique system identifier for each Azure resource.
 type Sku struct {
 	// Name - The Sku name. Possible values include: 'Standard', 'RS0'

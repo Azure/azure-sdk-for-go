@@ -194,11 +194,11 @@ type InvoicePricesheetDownloadFuture = original.InvoicePricesheetDownloadFuture
 type InvoiceSection = original.InvoiceSection
 type InvoiceSectionBillingRoleAssignmentClient = original.InvoiceSectionBillingRoleAssignmentClient
 type InvoiceSectionBillingRoleDefinitionClient = original.InvoiceSectionBillingRoleDefinitionClient
+type InvoiceSectionClient = original.InvoiceSectionClient
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
 type InvoiceSectionsBillingPermissionsClient = original.InvoiceSectionsBillingPermissionsClient
 type InvoiceSectionsByBillingAccountNameClient = original.InvoiceSectionsByBillingAccountNameClient
-type InvoiceSectionsByBillingProfileNameClient = original.InvoiceSectionsByBillingProfileNameClient
 type InvoiceSectionsClient = original.InvoiceSectionsClient
 type InvoiceSectionsCreateFuture = original.InvoiceSectionsCreateFuture
 type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
@@ -240,7 +240,6 @@ type Profile = original.Profile
 type ProfileBillingPermissionsClient = original.ProfileBillingPermissionsClient
 type ProfileBillingRoleAssignmentClient = original.ProfileBillingRoleAssignmentClient
 type ProfileBillingRoleDefinitionClient = original.ProfileBillingRoleDefinitionClient
-type ProfileInvoiceSectionClient = original.ProfileInvoiceSectionClient
 type ProfileListResult = original.ProfileListResult
 type ProfileProperties = original.ProfileProperties
 type ProfilesByBillingAccountNameClient = original.ProfilesByBillingAccountNameClient
@@ -379,6 +378,12 @@ func NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID string) Invoice
 func NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
 	return original.NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewInvoiceSectionClient(subscriptionID string) InvoiceSectionClient {
+	return original.NewInvoiceSectionClient(subscriptionID)
+}
+func NewInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionClient {
+	return original.NewInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewInvoiceSectionsBillingPermissionsClient(subscriptionID string) InvoiceSectionsBillingPermissionsClient {
 	return original.NewInvoiceSectionsBillingPermissionsClient(subscriptionID)
 }
@@ -390,12 +395,6 @@ func NewInvoiceSectionsByBillingAccountNameClient(subscriptionID string) Invoice
 }
 func NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
 	return original.NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionsByBillingProfileNameClient(subscriptionID string) InvoiceSectionsByBillingProfileNameClient {
-	return original.NewInvoiceSectionsByBillingProfileNameClient(subscriptionID)
-}
-func NewInvoiceSectionsByBillingProfileNameClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsByBillingProfileNameClient {
-	return original.NewInvoiceSectionsByBillingProfileNameClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
 	return original.NewInvoiceSectionsClient(subscriptionID)
@@ -498,12 +497,6 @@ func NewProfileBillingRoleDefinitionClient(subscriptionID string) ProfileBilling
 }
 func NewProfileBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingRoleDefinitionClient {
 	return original.NewProfileBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProfileInvoiceSectionClient(subscriptionID string) ProfileInvoiceSectionClient {
-	return original.NewProfileInvoiceSectionClient(subscriptionID)
-}
-func NewProfileInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) ProfileInvoiceSectionClient {
-	return original.NewProfileInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfilesByBillingAccountNameClient(subscriptionID string) ProfilesByBillingAccountNameClient {
 	return original.NewProfilesByBillingAccountNameClient(subscriptionID)

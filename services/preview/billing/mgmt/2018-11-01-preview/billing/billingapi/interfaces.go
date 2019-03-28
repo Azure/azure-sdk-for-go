@@ -87,17 +87,11 @@ var _ InvoiceSectionsByBillingAccountNameClientAPI = (*billing.InvoiceSectionsBy
 type InvoiceSectionsClientAPI interface {
 	Create(ctx context.Context, billingAccountName string, parameters billing.InvoiceSectionProperties) (result billing.InvoiceSectionsCreateFuture, err error)
 	Get(ctx context.Context, billingAccountName string, invoiceSectionName string, expand string) (result billing.InvoiceSection, err error)
+	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.InvoiceSectionListResult, err error)
 	Update(ctx context.Context, billingAccountName string, invoiceSectionName string, parameters billing.InvoiceSection) (result billing.InvoiceSectionsUpdateFuture, err error)
 }
 
 var _ InvoiceSectionsClientAPI = (*billing.InvoiceSectionsClient)(nil)
-
-// InvoiceSectionsByBillingProfileNameClientAPI contains the set of methods on the InvoiceSectionsByBillingProfileNameClient type.
-type InvoiceSectionsByBillingProfileNameClientAPI interface {
-	List(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.InvoiceSectionListResult, err error)
-}
-
-var _ InvoiceSectionsByBillingProfileNameClientAPI = (*billing.InvoiceSectionsByBillingProfileNameClient)(nil)
 
 // InvoiceSectionsWithCreateSubscriptionPermissionClientAPI contains the set of methods on the InvoiceSectionsWithCreateSubscriptionPermissionClient type.
 type InvoiceSectionsWithCreateSubscriptionPermissionClientAPI interface {
@@ -235,12 +229,12 @@ type PropertyClientAPI interface {
 
 var _ PropertyClientAPI = (*billing.PropertyClient)(nil)
 
-// ProfileInvoiceSectionClientAPI contains the set of methods on the ProfileInvoiceSectionClient type.
-type ProfileInvoiceSectionClientAPI interface {
-	Elevate(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error)
+// InvoiceSectionClientAPI contains the set of methods on the InvoiceSectionClient type.
+type InvoiceSectionClientAPI interface {
+	ElevateToBillingProfile(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error)
 }
 
-var _ ProfileInvoiceSectionClientAPI = (*billing.ProfileInvoiceSectionClient)(nil)
+var _ InvoiceSectionClientAPI = (*billing.InvoiceSectionClient)(nil)
 
 // TransfersClientAPI contains the set of methods on the TransfersClient type.
 type TransfersClientAPI interface {

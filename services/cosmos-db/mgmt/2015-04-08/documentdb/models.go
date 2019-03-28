@@ -1090,16 +1090,6 @@ type FailoverPolicy struct {
 	FailoverPriority *int32 `json:"failoverPriority,omitempty"`
 }
 
-// GenericResourceProperties the general properties associated with all API resource.
-type GenericResourceProperties struct {
-	// ID - The unique resource identifier of the database account.
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
-	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
-	Type *string `json:"type,omitempty"`
-}
-
 // IncludedPaths the paths that are included in indexing
 type IncludedPaths struct {
 	// Path - The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
@@ -1498,6 +1488,16 @@ type PercentileMetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// ProxyResource the general properties associated with all API resource.
+type ProxyResource struct {
+	// ID - The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of Azure resource.
+	Type *string `json:"type,omitempty"`
 }
 
 // RegionForOnlineOffline cosmos DB region to online or offline.

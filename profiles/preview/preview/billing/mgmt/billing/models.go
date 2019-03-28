@@ -194,7 +194,6 @@ type InvoicePricesheetDownloadFuture = original.InvoicePricesheetDownloadFuture
 type InvoiceSection = original.InvoiceSection
 type InvoiceSectionBillingRoleAssignmentClient = original.InvoiceSectionBillingRoleAssignmentClient
 type InvoiceSectionBillingRoleDefinitionClient = original.InvoiceSectionBillingRoleDefinitionClient
-type InvoiceSectionClient = original.InvoiceSectionClient
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
 type InvoiceSectionsBillingPermissionsClient = original.InvoiceSectionsBillingPermissionsClient
@@ -377,12 +376,6 @@ func NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID string) Invoice
 }
 func NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
 	return original.NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionClient(subscriptionID string) InvoiceSectionClient {
-	return original.NewInvoiceSectionClient(subscriptionID)
-}
-func NewInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionClient {
-	return original.NewInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoiceSectionsBillingPermissionsClient(subscriptionID string) InvoiceSectionsBillingPermissionsClient {
 	return original.NewInvoiceSectionsBillingPermissionsClient(subscriptionID)

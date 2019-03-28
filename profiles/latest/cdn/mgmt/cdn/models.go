@@ -37,21 +37,6 @@ const (
 	SetIfMissing CacheBehavior = original.SetIfMissing
 )
 
-type CertificateSource = original.CertificateSource
-
-const (
-	CertificateSourceAzureKeyVault               CertificateSource = original.CertificateSourceAzureKeyVault
-	CertificateSourceCdn                         CertificateSource = original.CertificateSourceCdn
-	CertificateSourceCustomDomainHTTPSParameters CertificateSource = original.CertificateSourceCustomDomainHTTPSParameters
-)
-
-type CertificateType = original.CertificateType
-
-const (
-	Dedicated CertificateType = original.Dedicated
-	Shared    CertificateType = original.Shared
-)
-
 type CustomDomainResourceState = original.CustomDomainResourceState
 
 const (
@@ -152,13 +137,6 @@ const (
 	ProfileResourceStateDisabled ProfileResourceState = original.ProfileResourceStateDisabled
 )
 
-type ProtocolType = original.ProtocolType
-
-const (
-	IPBased              ProtocolType = original.IPBased
-	ServerNameIndication ProtocolType = original.ServerNameIndication
-)
-
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
 
 const (
@@ -186,16 +164,13 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type BasicCustomDomainHTTPSParameters = original.BasicCustomDomainHTTPSParameters
 type BasicDeliveryRuleAction = original.BasicDeliveryRuleAction
 type BasicDeliveryRuleCondition = original.BasicDeliveryRuleCondition
 type CacheExpirationActionParameters = original.CacheExpirationActionParameters
-type CertificateSourceParameters = original.CertificateSourceParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CidrIPAddress = original.CidrIPAddress
 type CustomDomain = original.CustomDomain
-type CustomDomainHTTPSParameters = original.CustomDomainHTTPSParameters
 type CustomDomainListResult = original.CustomDomainListResult
 type CustomDomainListResultIterator = original.CustomDomainListResultIterator
 type CustomDomainListResultPage = original.CustomDomainListResultPage
@@ -238,9 +213,7 @@ type EndpointsUpdateFuture = original.EndpointsUpdateFuture
 type ErrorResponse = original.ErrorResponse
 type GeoFilter = original.GeoFilter
 type IPAddressGroup = original.IPAddressGroup
-type KeyVaultCertificateSourceParameters = original.KeyVaultCertificateSourceParameters
 type LoadParameters = original.LoadParameters
-type ManagedHTTPSParameters = original.ManagedHTTPSParameters
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -280,7 +253,6 @@ type SupportedOptimizationTypesListResult = original.SupportedOptimizationTypesL
 type TrackedResource = original.TrackedResource
 type URLFileExtensionConditionParameters = original.URLFileExtensionConditionParameters
 type URLPathConditionParameters = original.URLPathConditionParameters
-type UserManagedHTTPSParameters = original.UserManagedHTTPSParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
@@ -379,12 +351,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleCacheBehaviorValues() []CacheBehavior {
 	return original.PossibleCacheBehaviorValues()
 }
-func PossibleCertificateSourceValues() []CertificateSource {
-	return original.PossibleCertificateSourceValues()
-}
-func PossibleCertificateTypeValues() []CertificateType {
-	return original.PossibleCertificateTypeValues()
-}
 func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
 	return original.PossibleCustomDomainResourceStateValues()
 }
@@ -417,9 +383,6 @@ func PossibleOriginResourceStateValues() []OriginResourceState {
 }
 func PossibleProfileResourceStateValues() []ProfileResourceState {
 	return original.PossibleProfileResourceStateValues()
-}
-func PossibleProtocolTypeValues() []ProtocolType {
-	return original.PossibleProtocolTypeValues()
 }
 func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
 	return original.PossibleQueryStringCachingBehaviorValues()

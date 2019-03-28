@@ -8557,7 +8557,7 @@ type VirtualMachineScaleSetOSProfile struct {
 	// CustomData - Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. <br><br> For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
 	CustomData *string `json:"customData,omitempty"`
 	// WindowsConfiguration - Specifies Windows operating system settings on the virtual machine.
-	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
+	WindowsConfiguration *VirtualMachineScaleSetWindowsConfiguration `json:"windowsConfiguration,omitempty"`
 	// LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine. <br><br>For a list of supported Linux distributions, see [Linux on Azure-Endorsed Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json) <br><br> For running non-endorsed distributions, see [Information for Non-Endorsed Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 	// Secrets - Specifies set of certificates that should be installed onto the virtual machines in the scale set.
@@ -9372,7 +9372,7 @@ type VirtualMachineScaleSetUpdateOSProfile struct {
 	// CustomData - A base-64 encoded string of custom data.
 	CustomData *string `json:"customData,omitempty"`
 	// WindowsConfiguration - The Windows Configuration of the OS profile.
-	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
+	WindowsConfiguration *VirtualMachineScaleSetWindowsConfiguration `json:"windowsConfiguration,omitempty"`
 	// LinuxConfiguration - The Linux Configuration of the OS profile.
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 	// Secrets - The List of certificates for addition to the VM.
@@ -10177,6 +10177,21 @@ func (future *VirtualMachineScaleSetVMsUpdateFuture) Result(client VirtualMachin
 	return
 }
 
+// VirtualMachineScaleSetWindowsConfiguration specifies Windows operating system settings on the virtual
+// machine.
+type VirtualMachineScaleSetWindowsConfiguration struct {
+	// ProvisionVMAgent - Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
+	ProvisionVMAgent *bool `json:"provisionVMAgent,omitempty"`
+	// EnableAutomaticUpdates - Indicates whether Virtual Machine Scale Set virtual machine is enabled for automatic windows updates. <br><br> Default behavior is true. Updates to this property will take effect on OS reprovisioning.
+	EnableAutomaticUpdates *bool `json:"enableAutomaticUpdates,omitempty"`
+	// TimeZone - Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time"
+	TimeZone *string `json:"timeZone,omitempty"`
+	// AdditionalUnattendContent - Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
+	AdditionalUnattendContent *[]AdditionalUnattendContent `json:"additionalUnattendContent,omitempty"`
+	// WinRM - Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
+	WinRM *WinRMConfiguration `json:"winRM,omitempty"`
+}
+
 // VirtualMachinesCaptureFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualMachinesCaptureFuture struct {
@@ -10630,7 +10645,7 @@ func (vmu *VirtualMachineUpdate) UnmarshalJSON(body []byte) error {
 type WindowsConfiguration struct {
 	// ProvisionVMAgent - Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
 	ProvisionVMAgent *bool `json:"provisionVMAgent,omitempty"`
-	// EnableAutomaticUpdates - Indicates whether virtual machine is enabled for automatic updates.
+	// EnableAutomaticUpdates - Indicates whether virtual machine is enabled for automatic windows updates. <br> <br> Default behavior is true.
 	EnableAutomaticUpdates *bool `json:"enableAutomaticUpdates,omitempty"`
 	// TimeZone - Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time"
 	TimeZone *string `json:"timeZone,omitempty"`

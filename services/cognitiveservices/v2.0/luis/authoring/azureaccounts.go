@@ -33,17 +33,15 @@ type AzureAccountsClient struct {
 }
 
 // NewAzureAccountsClient creates an instance of the AzureAccountsClient client.
-func NewAzureAccountsClient() AzureAccountsClient {
-	return AzureAccountsClient{New()}
+func NewAzureAccountsClient(endpoint string) AzureAccountsClient {
+	return AzureAccountsClient{New(endpoint)}
 }
 
 // AssignToApp assigns an Azure account to the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // azureAccountInfoObject - the Azure account information object.
-func (client AzureAccountsClient) AssignToApp(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
+func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.AssignToApp")
 		defer func() {
@@ -64,7 +62,7 @@ func (client AzureAccountsClient) AssignToApp(ctx context.Context, azureRegion A
 		return result, validation.NewError("authoring.AzureAccountsClient", "AssignToApp", err.Error())
 	}
 
-	req, err := client.AssignToAppPreparer(ctx, azureRegion, azureCloud, appID, azureAccountInfoObject)
+	req, err := client.AssignToAppPreparer(ctx, appID, azureAccountInfoObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "AssignToApp", nil, "Failure preparing request")
 		return
@@ -86,10 +84,9 @@ func (client AzureAccountsClient) AssignToApp(ctx context.Context, azureRegion A
 }
 
 // AssignToAppPreparer prepares the AssignToApp request.
-func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
+func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -99,7 +96,7 @@ func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, azure
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
 	if azureAccountInfoObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -130,10 +127,8 @@ func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (res
 
 // GetAssigned gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client AzureAccountsClient) GetAssigned(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result ListAzureAccountInfoObject, err error) {
+func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UUID) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.GetAssigned")
 		defer func() {
@@ -144,7 +139,7 @@ func (client AzureAccountsClient) GetAssigned(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAssignedPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.GetAssignedPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "GetAssigned", nil, "Failure preparing request")
 		return
@@ -166,10 +161,9 @@ func (client AzureAccountsClient) GetAssigned(ctx context.Context, azureRegion A
 }
 
 // GetAssignedPreparer prepares the GetAssigned request.
-func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -178,7 +172,7 @@ func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, azure
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -204,10 +198,7 @@ func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (res
 }
 
 // ListUserLUISAccounts gets the LUIS Azure accounts for the user using his ARM token.
-// Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
-func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (result ListAzureAccountInfoObject, err error) {
+func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.ListUserLUISAccounts")
 		defer func() {
@@ -218,7 +209,7 @@ func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context, azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListUserLUISAccountsPreparer(ctx, azureRegion, azureCloud)
+	req, err := client.ListUserLUISAccountsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "ListUserLUISAccounts", nil, "Failure preparing request")
 		return
@@ -240,15 +231,14 @@ func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context, azur
 }
 
 // ListUserLUISAccountsPreparer prepares the ListUserLUISAccounts request.
-func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds) (*http.Request, error) {
+func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/azureaccounts"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -275,11 +265,9 @@ func (client AzureAccountsClient) ListUserLUISAccountsResponder(resp *http.Respo
 
 // RemoveFromApp removes assigned Azure account from the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // azureAccountInfoObject - the Azure account information object.
-func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
+func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.RemoveFromApp")
 		defer func() {
@@ -300,7 +288,7 @@ func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, azureRegion
 		return result, validation.NewError("authoring.AzureAccountsClient", "RemoveFromApp", err.Error())
 	}
 
-	req, err := client.RemoveFromAppPreparer(ctx, azureRegion, azureCloud, appID, azureAccountInfoObject)
+	req, err := client.RemoveFromAppPreparer(ctx, appID, azureAccountInfoObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "RemoveFromApp", nil, "Failure preparing request")
 		return
@@ -322,10 +310,9 @@ func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, azureRegion
 }
 
 // RemoveFromAppPreparer prepares the RemoveFromApp request.
-func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
+func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -335,7 +322,7 @@ func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
 	if azureAccountInfoObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,

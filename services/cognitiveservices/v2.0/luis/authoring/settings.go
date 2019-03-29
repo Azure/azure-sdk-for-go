@@ -33,17 +33,15 @@ type SettingsClient struct {
 }
 
 // NewSettingsClient creates an instance of the SettingsClient client.
-func NewSettingsClient() SettingsClient {
-	return SettingsClient{New()}
+func NewSettingsClient(endpoint string) SettingsClient {
+	return SettingsClient{New(endpoint)}
 }
 
 // List gets the settings in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client SettingsClient) List(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ListAppVersionSettingObject, err error) {
+func (client SettingsClient) List(ctx context.Context, appID uuid.UUID, versionID string) (result ListAppVersionSettingObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.List")
 		defer func() {
@@ -54,7 +52,7 @@ func (client SettingsClient) List(ctx context.Context, azureRegion AzureRegions,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, azureRegion, azureCloud, appID, versionID)
+	req, err := client.ListPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "List", nil, "Failure preparing request")
 		return
@@ -76,10 +74,9 @@ func (client SettingsClient) List(ctx context.Context, azureRegion AzureRegions,
 }
 
 // ListPreparer prepares the List request.
-func (client SettingsClient) ListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client SettingsClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -89,7 +86,7 @@ func (client SettingsClient) ListPreparer(ctx context.Context, azureRegion Azure
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -116,12 +113,10 @@ func (client SettingsClient) ListResponder(resp *http.Response) (result ListAppV
 
 // Update updates the settings in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // listOfAppVersionSettingObject - a list of the updated application version settings.
-func (client SettingsClient) Update(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (result OperationStatus, err error) {
+func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Update")
 		defer func() {
@@ -138,7 +133,7 @@ func (client SettingsClient) Update(ctx context.Context, azureRegion AzureRegion
 		return result, validation.NewError("authoring.SettingsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, azureRegion, azureCloud, appID, versionID, listOfAppVersionSettingObject)
+	req, err := client.UpdatePreparer(ctx, appID, versionID, listOfAppVersionSettingObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "Update", nil, "Failure preparing request")
 		return
@@ -160,10 +155,9 @@ func (client SettingsClient) Update(ctx context.Context, azureRegion AzureRegion
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SettingsClient) UpdatePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (*http.Request, error) {
+func (client SettingsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -174,7 +168,7 @@ func (client SettingsClient) UpdatePreparer(ctx context.Context, azureRegion Azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/settings", pathParameters),
 		autorest.WithJSON(listOfAppVersionSettingObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

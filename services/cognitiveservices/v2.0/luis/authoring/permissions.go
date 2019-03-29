@@ -32,18 +32,16 @@ type PermissionsClient struct {
 }
 
 // NewPermissionsClient creates an instance of the PermissionsClient client.
-func NewPermissionsClient() PermissionsClient {
-	return PermissionsClient{New()}
+func NewPermissionsClient(endpoint string) PermissionsClient {
+	return PermissionsClient{New(endpoint)}
 }
 
 // Add adds a user to the allowed list of users to access this LUIS application. Users are added using their email
 // address.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // userToAdd - a model containing the user's email address.
-func (client PermissionsClient) Add(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, userToAdd UserCollaborator) (result OperationStatus, err error) {
+func (client PermissionsClient) Add(ctx context.Context, appID uuid.UUID, userToAdd UserCollaborator) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Add")
 		defer func() {
@@ -54,7 +52,7 @@ func (client PermissionsClient) Add(ctx context.Context, azureRegion AzureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPreparer(ctx, azureRegion, azureCloud, appID, userToAdd)
+	req, err := client.AddPreparer(ctx, appID, userToAdd)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PermissionsClient", "Add", nil, "Failure preparing request")
 		return
@@ -76,10 +74,9 @@ func (client PermissionsClient) Add(ctx context.Context, azureRegion AzureRegion
 }
 
 // AddPreparer prepares the Add request.
-func (client PermissionsClient) AddPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, userToAdd UserCollaborator) (*http.Request, error) {
+func (client PermissionsClient) AddPreparer(ctx context.Context, appID uuid.UUID, userToAdd UserCollaborator) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -89,7 +86,7 @@ func (client PermissionsClient) AddPreparer(ctx context.Context, azureRegion Azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
 		autorest.WithJSON(userToAdd))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -118,11 +115,9 @@ func (client PermissionsClient) AddResponder(resp *http.Response) (result Operat
 // Delete removes a user from the allowed list of users to access this LUIS application. Users are removed using their
 // email address.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // userToDelete - a model containing the user's email address.
-func (client PermissionsClient) Delete(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, userToDelete UserCollaborator) (result OperationStatus, err error) {
+func (client PermissionsClient) Delete(ctx context.Context, appID uuid.UUID, userToDelete UserCollaborator) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Delete")
 		defer func() {
@@ -133,7 +128,7 @@ func (client PermissionsClient) Delete(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, azureRegion, azureCloud, appID, userToDelete)
+	req, err := client.DeletePreparer(ctx, appID, userToDelete)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PermissionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -155,10 +150,9 @@ func (client PermissionsClient) Delete(ctx context.Context, azureRegion AzureReg
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PermissionsClient) DeletePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, userToDelete UserCollaborator) (*http.Request, error) {
+func (client PermissionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, userToDelete UserCollaborator) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -168,7 +162,7 @@ func (client PermissionsClient) DeletePreparer(ctx context.Context, azureRegion 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
 		autorest.WithJSON(userToDelete))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -196,10 +190,8 @@ func (client PermissionsClient) DeleteResponder(resp *http.Response) (result Ope
 
 // List gets the list of user emails that have permissions to access your application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
-func (client PermissionsClient) List(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (result UserAccessList, err error) {
+func (client PermissionsClient) List(ctx context.Context, appID uuid.UUID) (result UserAccessList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.List")
 		defer func() {
@@ -210,7 +202,7 @@ func (client PermissionsClient) List(ctx context.Context, azureRegion AzureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, azureRegion, azureCloud, appID)
+	req, err := client.ListPreparer(ctx, appID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PermissionsClient", "List", nil, "Failure preparing request")
 		return
@@ -232,10 +224,9 @@ func (client PermissionsClient) List(ctx context.Context, azureRegion AzureRegio
 }
 
 // ListPreparer prepares the List request.
-func (client PermissionsClient) ListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID) (*http.Request, error) {
+func (client PermissionsClient) ListPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -244,7 +235,7 @@ func (client PermissionsClient) ListPreparer(ctx context.Context, azureRegion Az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -272,11 +263,9 @@ func (client PermissionsClient) ListResponder(resp *http.Response) (result UserA
 // Update replaces the current user access list with the new list sent in the body. If an empty list is sent, all
 // access to other users will be removed.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // collaborators - a model containing a list of user email addresses.
-func (client PermissionsClient) Update(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, collaborators CollaboratorsArray) (result OperationStatus, err error) {
+func (client PermissionsClient) Update(ctx context.Context, appID uuid.UUID, collaborators CollaboratorsArray) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Update")
 		defer func() {
@@ -287,7 +276,7 @@ func (client PermissionsClient) Update(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, azureRegion, azureCloud, appID, collaborators)
+	req, err := client.UpdatePreparer(ctx, appID, collaborators)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.PermissionsClient", "Update", nil, "Failure preparing request")
 		return
@@ -309,10 +298,9 @@ func (client PermissionsClient) Update(ctx context.Context, azureRegion AzureReg
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PermissionsClient) UpdatePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, collaborators CollaboratorsArray) (*http.Request, error) {
+func (client PermissionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, collaborators CollaboratorsArray) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -322,7 +310,7 @@ func (client PermissionsClient) UpdatePreparer(ctx context.Context, azureRegion 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
 		autorest.WithJSON(collaborators))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

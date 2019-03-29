@@ -154,6 +154,7 @@ type TemplateArtifact = original.TemplateArtifact
 type TemplateArtifactProperties = original.TemplateArtifactProperties
 type TrackedResource = original.TrackedResource
 type UserAssignedIdentity = original.UserAssignedIdentity
+type WhoIsBlueprintContract = original.WhoIsBlueprintContract
 
 func New() BaseClient {
 	return original.New()

@@ -66,6 +66,7 @@ type AssignmentsClientAPI interface {
 	Delete(ctx context.Context, scope string, assignmentName string) (result blueprint.Assignment, err error)
 	Get(ctx context.Context, scope string, assignmentName string) (result blueprint.Assignment, err error)
 	List(ctx context.Context, scope string) (result blueprint.AssignmentListPage, err error)
+	WhoIsBlueprint(ctx context.Context, scope string, assignmentName string) (result blueprint.WhoIsBlueprintContract, err error)
 }
 
 var _ AssignmentsClientAPI = (*blueprint.AssignmentsClient)(nil)

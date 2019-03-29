@@ -65,13 +65,6 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
-type Direction = original.Direction
-
-const (
-	Inbound  Direction = original.Inbound
-	Outbound Direction = original.Outbound
-)
-
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
 
 const (
@@ -153,13 +146,6 @@ const (
 	UserRequested         StatusReason = original.UserRequested
 )
 
-type TransportProtocol = original.TransportProtocol
-
-const (
-	TransportProtocolTCP TransportProtocol = original.TransportProtocolTCP
-	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
-)
-
 type ValueType = original.ValueType
 
 const (
@@ -170,14 +156,6 @@ const (
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
-type AdaptiveNetworkHardening = original.AdaptiveNetworkHardening
-type AdaptiveNetworkHardeningEnforceRequest = original.AdaptiveNetworkHardeningEnforceRequest
-type AdaptiveNetworkHardeningProperties = original.AdaptiveNetworkHardeningProperties
-type AdaptiveNetworkHardeningsClient = original.AdaptiveNetworkHardeningsClient
-type AdaptiveNetworkHardeningsEnforceFuture = original.AdaptiveNetworkHardeningsEnforceFuture
-type AdaptiveNetworkHardeningsList = original.AdaptiveNetworkHardeningsList
-type AdaptiveNetworkHardeningsListIterator = original.AdaptiveNetworkHardeningsListIterator
-type AdaptiveNetworkHardeningsListPage = original.AdaptiveNetworkHardeningsListPage
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
 type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
@@ -246,7 +224,6 @@ type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutio
 type DiscoveredSecuritySolutionListPage = original.DiscoveredSecuritySolutionListPage
 type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionProperties
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
-type EffectiveNetworkSecurityGroups = original.EffectiveNetworkSecurityGroups
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -310,7 +287,6 @@ type RegulatoryComplianceStandardListPage = original.RegulatoryComplianceStandar
 type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStandardProperties
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
-type Rule = original.Rule
 type SensitivityLabel = original.SensitivityLabel
 type Setting = original.Setting
 type SettingResource = original.SettingResource
@@ -345,18 +321,6 @@ type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
 func New(subscriptionID string, ascLocation string) BaseClient {
 	return original.New(subscriptionID, ascLocation)
-}
-func NewAdaptiveNetworkHardeningsClient(subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
-	return original.NewAdaptiveNetworkHardeningsClient(subscriptionID, ascLocation)
-}
-func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
-	return original.NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
-	return original.NewAdaptiveNetworkHardeningsListIterator(page)
-}
-func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
-	return original.NewAdaptiveNetworkHardeningsListPage(getNextPage)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -616,9 +580,6 @@ func PossibleAutoProvisionValues() []AutoProvision {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
-func PossibleDirectionValues() []Direction {
-	return original.PossibleDirectionValues()
-}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
 }
@@ -648,9 +609,6 @@ func PossibleStatusReasonValues() []StatusReason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
-}
-func PossibleTransportProtocolValues() []TransportProtocol {
-	return original.PossibleTransportProtocolValues()
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()

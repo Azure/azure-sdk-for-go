@@ -41,7 +41,7 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 	return PoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update policy with specified ruleset name within a resource group.
+// CreateOrUpdate create or update policy with specified rule set name within a resource group.
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // policyName - the name of the Web Application Firewall Policy.

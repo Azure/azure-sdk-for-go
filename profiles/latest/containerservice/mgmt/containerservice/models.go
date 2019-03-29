@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-04-01/containerservice"
 )
 
 const (
@@ -345,6 +345,7 @@ type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
+type ManagedClusterWindowsProfile = original.ManagedClusterWindowsProfile
 type ManagedClustersClient = original.ManagedClustersClient
 type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
 type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture

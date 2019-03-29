@@ -20,6 +20,7 @@ package billingapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-11-01-preview/billing"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
@@ -85,7 +86,9 @@ var _ InvoiceSectionsByBillingAccountNameClientAPI = (*billing.InvoiceSectionsBy
 // InvoiceSectionsClientAPI contains the set of methods on the InvoiceSectionsClient type.
 type InvoiceSectionsClientAPI interface {
 	Create(ctx context.Context, billingAccountName string, parameters billing.InvoiceSectionProperties) (result billing.InvoiceSectionsCreateFuture, err error)
+	ElevateToBillingProfile(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, billingAccountName string, invoiceSectionName string, expand string) (result billing.InvoiceSection, err error)
+	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.InvoiceSectionListResult, err error)
 	Update(ctx context.Context, billingAccountName string, invoiceSectionName string, parameters billing.InvoiceSection) (result billing.InvoiceSectionsUpdateFuture, err error)
 }
 

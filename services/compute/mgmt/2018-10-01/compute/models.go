@@ -8574,6 +8574,8 @@ type VirtualMachineScaleSetProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Overprovision - Specifies whether the Virtual Machine Scale Set should be overprovisioned.
 	Overprovision *bool `json:"overprovision,omitempty"`
+	// DoNotRunExtensionsOnOverprovisionedVMs - When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
+	DoNotRunExtensionsOnOverprovisionedVMs *bool `json:"doNotRunExtensionsOnOverprovisionedVMs,omitempty"`
 	// UniqueID - Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
 	UniqueID *string `json:"uniqueId,omitempty"`
 	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.

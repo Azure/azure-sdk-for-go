@@ -32,13 +32,13 @@ type AppsClient struct {
 }
 
 // NewAppsClient creates an instance of the AppsClient client.
-func NewAppsClient(subscriptionID string, applicationTemplateID string) AppsClient {
-	return NewAppsClientWithBaseURI(DefaultBaseURI, subscriptionID, applicationTemplateID)
+func NewAppsClient(subscriptionID string) AppsClient {
+	return NewAppsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAppsClientWithBaseURI creates an instance of the AppsClient client.
-func NewAppsClientWithBaseURI(baseURI string, subscriptionID string, applicationTemplateID string) AppsClient {
-	return AppsClient{NewWithBaseURI(baseURI, subscriptionID, applicationTemplateID)}
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
+	return AppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameAvailability check if an IoT Central application name is available.
@@ -790,7 +790,10 @@ func (client AppsClient) ListTemplatesComplete(ctx context.Context) (result AppT
 }
 
 // Template get a single application template.
-func (client AppsClient) Template(ctx context.Context) (result AppTemplate, err error) {
+// Parameters:
+// applicationTemplateID - the combination id of manifestId and manifestVersion of the IoT Central application
+// template.
+func (client AppsClient) Template(ctx context.Context, applicationTemplateID string) (result AppTemplate, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Template")
 		defer func() {
@@ -801,7 +804,7 @@ func (client AppsClient) Template(ctx context.Context) (result AppTemplate, err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TemplatePreparer(ctx)
+	req, err := client.TemplatePreparer(ctx, applicationTemplateID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "Template", nil, "Failure preparing request")
 		return
@@ -823,9 +826,9 @@ func (client AppsClient) Template(ctx context.Context) (result AppTemplate, err 
 }
 
 // TemplatePreparer prepares the Template request.
-func (client AppsClient) TemplatePreparer(ctx context.Context) (*http.Request, error) {
+func (client AppsClient) TemplatePreparer(ctx context.Context, applicationTemplateID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationTemplateId": autorest.Encode("path", client.ApplicationTemplateID),
+		"applicationTemplateId": autorest.Encode("path", applicationTemplateID),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

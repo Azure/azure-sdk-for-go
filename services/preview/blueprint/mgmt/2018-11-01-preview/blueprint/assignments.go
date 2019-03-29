@@ -45,7 +45,8 @@ func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 // assignment - blueprint assignment object to save.
 func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, assignmentName string, assignment Assignment) (result Assignment, err error) {
@@ -136,7 +137,8 @@ func (client AssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 func (client AssignmentsClient) Delete(ctx context.Context, scope string, assignmentName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
@@ -214,7 +216,8 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // assignmentName - name of the blueprint assignment.
 func (client AssignmentsClient) Get(ctx context.Context, scope string, assignmentName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
@@ -292,7 +295,8 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 func (client AssignmentsClient) List(ctx context.Context, scope string) (result AssignmentListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.List")
@@ -399,5 +403,84 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, scope string) 
 		}()
 	}
 	result.page, err = client.List(ctx, scope)
+	return
+}
+
+// WhoIsBlueprint get Blueprints service SPN objectId
+// Parameters:
+// scope - the scope of the resource. Valid scopes are: management group (format:
+// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
+// assignmentName - name of the blueprint assignment.
+func (client AssignmentsClient) WhoIsBlueprint(ctx context.Context, scope string, assignmentName string) (result WhoIsBlueprintContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.WhoIsBlueprint")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.WhoIsBlueprintPreparer(ctx, scope, assignmentName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.WhoIsBlueprintSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.WhoIsBlueprintResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "WhoIsBlueprint", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// WhoIsBlueprintPreparer prepares the WhoIsBlueprint request.
+func (client AssignmentsClient) WhoIsBlueprintPreparer(ctx context.Context, scope string, assignmentName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assignmentName": autorest.Encode("path", assignmentName),
+		"scope":          scope,
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/WhoIsBlueprint", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// WhoIsBlueprintSender sends the WhoIsBlueprint request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssignmentsClient) WhoIsBlueprintSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// WhoIsBlueprintResponder handles the response to the WhoIsBlueprint request. The method always
+// closes the http.Response Body.
+func (client AssignmentsClient) WhoIsBlueprintResponder(resp *http.Response) (result WhoIsBlueprintContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

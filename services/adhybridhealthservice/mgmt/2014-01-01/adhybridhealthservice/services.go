@@ -992,6 +992,154 @@ func (client ServicesClient) ListAlertsComplete(ctx context.Context, serviceName
 	return
 }
 
+// ListAllRiskyIPDownloadReport gets all Risky IP report URIs for the last 7 days.
+// Parameters:
+// serviceName - the name of the service.
+func (client ServicesClient) ListAllRiskyIPDownloadReport(ctx context.Context, serviceName string) (result RiskyIPBlobUris, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.ListAllRiskyIPDownloadReport")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListAllRiskyIPDownloadReportPreparer(ctx, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListAllRiskyIPDownloadReport", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAllRiskyIPDownloadReportSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListAllRiskyIPDownloadReport", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListAllRiskyIPDownloadReportResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListAllRiskyIPDownloadReport", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAllRiskyIPDownloadReportPreparer prepares the ListAllRiskyIPDownloadReport request.
+func (client ServicesClient) ListAllRiskyIPDownloadReportPreparer(ctx context.Context, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/blobUris", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAllRiskyIPDownloadReportSender sends the ListAllRiskyIPDownloadReport request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicesClient) ListAllRiskyIPDownloadReportSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAllRiskyIPDownloadReportResponder handles the response to the ListAllRiskyIPDownloadReport request. The method always
+// closes the http.Response Body.
+func (client ServicesClient) ListAllRiskyIPDownloadReportResponder(resp *http.Response) (result RiskyIPBlobUris, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListCurrentRiskyIPDownloadReport initiate the generation of a new Risky IP report. Returns the URI for the new one.
+// Parameters:
+// serviceName - the name of the service.
+func (client ServicesClient) ListCurrentRiskyIPDownloadReport(ctx context.Context, serviceName string) (result RiskyIPBlobUris, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.ListCurrentRiskyIPDownloadReport")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListCurrentRiskyIPDownloadReportPreparer(ctx, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListCurrentRiskyIPDownloadReport", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListCurrentRiskyIPDownloadReportSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListCurrentRiskyIPDownloadReport", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListCurrentRiskyIPDownloadReportResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListCurrentRiskyIPDownloadReport", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListCurrentRiskyIPDownloadReportPreparer prepares the ListCurrentRiskyIPDownloadReport request.
+func (client ServicesClient) ListCurrentRiskyIPDownloadReportPreparer(ctx context.Context, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/generateBlobUri", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListCurrentRiskyIPDownloadReportSender sends the ListCurrentRiskyIPDownloadReport request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicesClient) ListCurrentRiskyIPDownloadReportSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListCurrentRiskyIPDownloadReportResponder handles the response to the ListCurrentRiskyIPDownloadReport request. The method always
+// closes the http.Response Body.
+func (client ServicesClient) ListCurrentRiskyIPDownloadReportResponder(resp *http.Response) (result RiskyIPBlobUris, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListExportErrors gets the count of latest AAD export errors.
 // Parameters:
 // serviceName - the name of the service.

@@ -45,7 +45,8 @@ func NewBlueprintsClientWithBaseURI(baseURI string) BlueprintsClient {
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // blueprint - blueprint definition.
 func (client BlueprintsClient) CreateOrUpdate(ctx context.Context, scope string, blueprintName string, blueprint Model) (result Model, err error) {
@@ -132,7 +133,8 @@ func (client BlueprintsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 func (client BlueprintsClient) Delete(ctx context.Context, scope string, blueprintName string) (result Model, err error) {
 	if tracing.IsEnabled() {
@@ -210,7 +212,8 @@ func (client BlueprintsClient) DeleteResponder(resp *http.Response) (result Mode
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 func (client BlueprintsClient) Get(ctx context.Context, scope string, blueprintName string) (result Model, err error) {
 	if tracing.IsEnabled() {
@@ -288,7 +291,8 @@ func (client BlueprintsClient) GetResponder(resp *http.Response) (result Model, 
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 func (client BlueprintsClient) List(ctx context.Context, scope string) (result ListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.List")

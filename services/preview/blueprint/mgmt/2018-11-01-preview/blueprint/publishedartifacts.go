@@ -44,7 +44,8 @@ func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsCl
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
 // artifactName - name of the blueprint artifact.
@@ -126,7 +127,8 @@ func (client PublishedArtifactsClient) GetResponder(resp *http.Response) (result
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
 func (client PublishedArtifactsClient) List(ctx context.Context, scope string, blueprintName string, versionID string) (result ArtifactListPage, err error) {

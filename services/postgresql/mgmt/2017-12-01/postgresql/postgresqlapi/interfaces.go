@@ -29,17 +29,18 @@ type ServersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.Server, err error)
 	List(ctx context.Context) (result postgresql.ServerListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result postgresql.ServerListResult, err error)
+	Restart(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServersRestartFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerUpdateParameters) (result postgresql.ServersUpdateFuture, err error)
 }
 
 var _ ServersClientAPI = (*postgresql.ServersClient)(nil)
 
-// ServerClientAPI contains the set of methods on the ServerClient type.
-type ServerClientAPI interface {
-	Restart(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerRestartFuture, err error)
+// ReplicasClientAPI contains the set of methods on the ReplicasClient type.
+type ReplicasClientAPI interface {
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerListResult, err error)
 }
 
-var _ ServerClientAPI = (*postgresql.ServerClient)(nil)
+var _ ReplicasClientAPI = (*postgresql.ReplicasClient)(nil)
 
 // FirewallRulesClientAPI contains the set of methods on the FirewallRulesClient type.
 type FirewallRulesClientAPI interface {

@@ -83,6 +83,20 @@ const (
 	Printed     TextRecognitionMode = original.Printed
 )
 
+type TextRecognitionResultConfidenceClass = original.TextRecognitionResultConfidenceClass
+
+const (
+	High TextRecognitionResultConfidenceClass = original.High
+	Low  TextRecognitionResultConfidenceClass = original.Low
+)
+
+type TextRecognitionResultDimensionUnit = original.TextRecognitionResultDimensionUnit
+
+const (
+	Inch  TextRecognitionResultDimensionUnit = original.Inch
+	Pixel TextRecognitionResultDimensionUnit = original.Pixel
+)
+
 type VisualFeatureTypes = original.VisualFeatureTypes
 
 const (
@@ -132,9 +146,10 @@ type OcrRegion = original.OcrRegion
 type OcrResult = original.OcrResult
 type OcrWord = original.OcrWord
 type ReadCloser = original.ReadCloser
-type RecognitionResult = original.RecognitionResult
+type ReadOperationResult = original.ReadOperationResult
 type TagResult = original.TagResult
 type TextOperationResult = original.TextOperationResult
+type TextRecognitionResult = original.TextRecognitionResult
 type Word = original.Word
 
 func New(endpoint string) BaseClient {
@@ -157,6 +172,12 @@ func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
 }
 func PossibleTextRecognitionModeValues() []TextRecognitionMode {
 	return original.PossibleTextRecognitionModeValues()
+}
+func PossibleTextRecognitionResultConfidenceClassValues() []TextRecognitionResultConfidenceClass {
+	return original.PossibleTextRecognitionResultConfidenceClassValues()
+}
+func PossibleTextRecognitionResultDimensionUnitValues() []TextRecognitionResultDimensionUnit {
+	return original.PossibleTextRecognitionResultDimensionUnitValues()
 }
 func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
 	return original.PossibleVisualFeatureTypesValues()

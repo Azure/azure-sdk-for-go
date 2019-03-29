@@ -9882,8 +9882,6 @@ type VirtualMachineScaleSetVMProfile struct {
 type VirtualMachineScaleSetVMProperties struct {
 	// LatestModelApplied - Specifies whether the latest model has been applied to the virtual machine.
 	LatestModelApplied *bool `json:"latestModelApplied,omitempty"`
-	// ProtectFromScaleIn - Specifies whether the virtual machine instance shouldn't be considered for deletion during a scale-in operation
-	ProtectFromScaleIn *bool `json:"protectFromScaleIn,omitempty"`
 	// VMID - Azure VM unique ID.
 	VMID *string `json:"vmId,omitempty"`
 	// InstanceView - The virtual machine instance view.

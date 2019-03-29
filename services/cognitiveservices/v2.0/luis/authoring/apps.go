@@ -39,9 +39,9 @@ func NewAppsClient(endpoint string) AppsClient {
 
 // Add creates a new LUIS app.
 // Parameters:
-// applicationCreateObject - a model containing Name, Description (optional), Culture, Usage Scenario
+// applicationCreateObject - an application containing Name, Description (optional), Culture, Usage Scenario
 // (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the
-// version ID is 0.1. Note: the culture cannot be changed after the app is created.
+// version ID is "0.1". Note: the culture cannot be changed after the app is created.
 func (client AppsClient) Add(ctx context.Context, applicationCreateObject ApplicationCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Add")
@@ -116,7 +116,7 @@ func (client AppsClient) AddResponder(resp *http.Response) (result UUID, err err
 	return
 }
 
-// AddCustomPrebuiltDomain adds a prebuilt domain along with its models as a new application.
+// AddCustomPrebuiltDomain adds a prebuilt domain along with its intent and entity models as a new application.
 // Parameters:
 // prebuiltDomainCreateObject - a prebuilt domain create object containing the name and culture of the domain.
 func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (result UUID, err error) {
@@ -267,7 +267,7 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result OperationS
 	return
 }
 
-// DownloadQueryLogs gets the query logs of the past month for the application.
+// DownloadQueryLogs gets the logs of the past month's endpoint queries for the application.
 // Parameters:
 // appID - the application ID.
 func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID) (result ReadCloser, err error) {
@@ -410,7 +410,7 @@ func (client AppsClient) GetResponder(resp *http.Response) (result ApplicationIn
 	return
 }
 
-// GetPublishSettings get the application publish settings.
+// GetPublishSettings get the application publish settings including 'UseAllTrainingData'.
 // Parameters:
 // appID - the application ID.
 func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID) (result PublishSettings, err error) {
@@ -482,7 +482,7 @@ func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (resul
 	return
 }
 
-// GetSettings get the application settings.
+// GetSettings get the application settings including 'UseAllTrainingData'.
 // Parameters:
 // appID - the application ID.
 func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (result ApplicationSettings, err error) {
@@ -554,11 +554,11 @@ func (client AppsClient) GetSettingsResponder(resp *http.Response) (result Appli
 	return
 }
 
-// Import imports an application to LUIS, the application's structure should be included in the request body.
+// Import imports an application to LUIS, the application's structure is included in the request body.
 // Parameters:
 // luisApp - a LUIS application structure.
 // appName - the application name to create. If not specified, the application name will be read from the
-// imported object.
+// imported object. If the application name already exists, an error is returned.
 func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName string) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Import")
@@ -632,7 +632,7 @@ func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err 
 	return
 }
 
-// List lists all of the user applications.
+// List lists all of the user's applications.
 // Parameters:
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
@@ -792,7 +792,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.
 	return
 }
 
-// ListAvailableCustomPrebuiltDomainsForCulture gets all the available custom prebuilt domains for a specific culture.
+// ListAvailableCustomPrebuiltDomainsForCulture gets all the available prebuilt domains for a specific culture.
 // Parameters:
 // culture - culture.
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, culture string) (result ListPrebuiltDomain, err error) {
@@ -1068,7 +1068,8 @@ func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result Set
 	return
 }
 
-// ListSupportedCultures gets the supported application cultures.
+// ListSupportedCultures gets a list of supported cultures. Cultures are equivalent to the written language and locale.
+// For example,"en-us" represents the U.S. variation of English.
 func (client AppsClient) ListSupportedCultures(ctx context.Context) (result ListAvailableCulture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSupportedCultures")
@@ -1200,11 +1201,12 @@ func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (resul
 	return
 }
 
-// PackagePublishedApplicationAsGzip packages published LUIS application as GZip.
+// PackagePublishedApplicationAsGzip packages a published LUIS application as a GZip file to be used in the LUIS
+// container.
 // Parameters:
 // appID - the application ID.
 // slotName - the publishing slot name.
-func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (result ReadCloser, err error) {
+func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, appID uuid.UUID, slotName string) (result ReadCloser, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.PackagePublishedApplicationAsGzip")
 		defer func() {
@@ -1237,7 +1239,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzip(ctx context.Context, 
 }
 
 // PackagePublishedApplicationAsGzipPreparer prepares the PackagePublishedApplicationAsGzip request.
-func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, slotName uuid.UUID) (*http.Request, error) {
+func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.Context, appID uuid.UUID, slotName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -1273,7 +1275,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzipResponder(resp *http.R
 	return
 }
 
-// PackageTrainedApplicationAsGzip packages trained LUIS application as GZip.
+// PackageTrainedApplicationAsGzip packages trained LUIS application as GZip file to be used in the LUIS container.
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
@@ -1497,7 +1499,7 @@ func (client AppsClient) UpdateResponder(resp *http.Response) (result OperationS
 	return
 }
 
-// UpdatePublishSettings updates the application publish settings.
+// UpdatePublishSettings updates the application publish settings including 'UseAllTrainingData'.
 // Parameters:
 // appID - the application ID.
 // publishSettingUpdateObject - an object containing the new publish application settings.
@@ -1572,7 +1574,7 @@ func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (re
 	return
 }
 
-// UpdateSettings updates the application settings.
+// UpdateSettings updates the application settings including 'UseAllTrainingData'.
 // Parameters:
 // appID - the application ID.
 // applicationSettingUpdateObject - an object containing the new application settings.

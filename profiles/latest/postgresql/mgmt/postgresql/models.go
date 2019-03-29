@@ -35,6 +35,7 @@ const (
 	CreateModeDefault                   CreateMode = original.CreateModeDefault
 	CreateModeGeoRestore                CreateMode = original.CreateModeGeoRestore
 	CreateModePointInTimeRestore        CreateMode = original.CreateModePointInTimeRestore
+	CreateModeReplica                   CreateMode = original.CreateModeReplica
 	CreateModeServerPropertiesForCreate CreateMode = original.CreateModeServerPropertiesForCreate
 )
 
@@ -106,6 +107,8 @@ const (
 type BaseClient = original.BaseClient
 type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type Configuration = original.Configuration
 type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationProperties = original.ConfigurationProperties
@@ -138,17 +141,17 @@ type PerformanceTierListResult = original.PerformanceTierListResult
 type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
 type ProxyResource = original.ProxyResource
+type ReplicasClient = original.ReplicasClient
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
-type ServerClient = original.ServerClient
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
 type ServerProperties = original.ServerProperties
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
 type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreate
 type ServerPropertiesForGeoRestore = original.ServerPropertiesForGeoRestore
+type ServerPropertiesForReplica = original.ServerPropertiesForReplica
 type ServerPropertiesForRestore = original.ServerPropertiesForRestore
-type ServerRestartFuture = original.ServerRestartFuture
 type ServerSecurityAlertPoliciesClient = original.ServerSecurityAlertPoliciesClient
 type ServerSecurityAlertPoliciesCreateOrUpdateFuture = original.ServerSecurityAlertPoliciesCreateOrUpdateFuture
 type ServerSecurityAlertPolicy = original.ServerSecurityAlertPolicy
@@ -157,6 +160,7 @@ type ServerUpdateParametersProperties = original.ServerUpdateParametersPropertie
 type ServersClient = original.ServersClient
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
+type ServersRestartFuture = original.ServersRestartFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type Sku = original.Sku
 type StorageProfile = original.StorageProfile
@@ -215,11 +219,11 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServerClient(subscriptionID string) ServerClient {
-	return original.NewServerClient(subscriptionID)
+func NewReplicasClient(subscriptionID string) ReplicasClient {
+	return original.NewReplicasClient(subscriptionID)
 }
-func NewServerClientWithBaseURI(baseURI string, subscriptionID string) ServerClient {
-	return original.NewServerClientWithBaseURI(baseURI, subscriptionID)
+func NewReplicasClientWithBaseURI(baseURI string, subscriptionID string) ReplicasClient {
+	return original.NewReplicasClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)

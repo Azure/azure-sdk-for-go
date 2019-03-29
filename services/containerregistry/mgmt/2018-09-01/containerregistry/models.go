@@ -3348,6 +3348,8 @@ type RunProperties struct {
 	SourceRegistryAuth *string `json:"sourceRegistryAuth,omitempty"`
 	// CustomRegistries - The list of custom registries that were logged in during this run.
 	CustomRegistries *[]string `json:"customRegistries,omitempty"`
+	// RunErrorMessage - The error message received from backend systems after the run is scheduled.
+	RunErrorMessage *string `json:"runErrorMessage,omitempty"`
 	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
@@ -3675,6 +3677,10 @@ type Target struct {
 	URL *string `json:"url,omitempty"`
 	// Tag - The tag name.
 	Tag *string `json:"tag,omitempty"`
+	// Name - The name of the artifact.
+	Name *string `json:"name,omitempty"`
+	// Version - The version of the artifact.
+	Version *string `json:"version,omitempty"`
 }
 
 // Task the task that has the ARM resource and task properties.

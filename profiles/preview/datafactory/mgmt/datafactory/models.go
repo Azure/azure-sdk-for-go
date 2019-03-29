@@ -615,6 +615,7 @@ const (
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
 	TypeWait                     TypeBasicActivity = original.TypeWait
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
+	TypeWebHook                  TypeBasicActivity = original.TypeWebHook
 )
 
 type TypeBasicCopySink = original.TypeBasicCopySink
@@ -716,71 +717,70 @@ const (
 type TypeBasicDataset = original.TypeBasicDataset
 
 const (
-	TypeAmazonMWSObject                              TypeBasicDataset = original.TypeAmazonMWSObject
-	TypeAmazonS3Object                               TypeBasicDataset = original.TypeAmazonS3Object
-	TypeAzureBlob                                    TypeBasicDataset = original.TypeAzureBlob
-	TypeAzureBlobFSFile                              TypeBasicDataset = original.TypeAzureBlobFSFile
-	TypeAzureDataExplorerTable                       TypeBasicDataset = original.TypeAzureDataExplorerTable
-	TypeAzureDataLakeStoreCosmosStructuredStreamFile TypeBasicDataset = original.TypeAzureDataLakeStoreCosmosStructuredStreamFile
-	TypeAzureDataLakeStoreFile                       TypeBasicDataset = original.TypeAzureDataLakeStoreFile
-	TypeAzureMySQLTable                              TypeBasicDataset = original.TypeAzureMySQLTable
-	TypeAzurePostgreSQLTable                         TypeBasicDataset = original.TypeAzurePostgreSQLTable
-	TypeAzureSearchIndex                             TypeBasicDataset = original.TypeAzureSearchIndex
-	TypeAzureSQLDWTable                              TypeBasicDataset = original.TypeAzureSQLDWTable
-	TypeAzureSQLTable                                TypeBasicDataset = original.TypeAzureSQLTable
-	TypeAzureTable                                   TypeBasicDataset = original.TypeAzureTable
-	TypeCassandraTable                               TypeBasicDataset = original.TypeCassandraTable
-	TypeConcurObject                                 TypeBasicDataset = original.TypeConcurObject
-	TypeCosmosDbMongoDbAPICollection                 TypeBasicDataset = original.TypeCosmosDbMongoDbAPICollection
-	TypeCouchbaseTable                               TypeBasicDataset = original.TypeCouchbaseTable
-	TypeCustomDataset                                TypeBasicDataset = original.TypeCustomDataset
-	TypeDataset                                      TypeBasicDataset = original.TypeDataset
-	TypeDocumentDbCollection                         TypeBasicDataset = original.TypeDocumentDbCollection
-	TypeDrillTable                                   TypeBasicDataset = original.TypeDrillTable
-	TypeDynamicsAXResource                           TypeBasicDataset = original.TypeDynamicsAXResource
-	TypeDynamicsEntity                               TypeBasicDataset = original.TypeDynamicsEntity
-	TypeEloquaObject                                 TypeBasicDataset = original.TypeEloquaObject
-	TypeFileShare                                    TypeBasicDataset = original.TypeFileShare
-	TypeGoogleAdWordsObject                          TypeBasicDataset = original.TypeGoogleAdWordsObject
-	TypeGoogleBigQueryObject                         TypeBasicDataset = original.TypeGoogleBigQueryObject
-	TypeGreenplumTable                               TypeBasicDataset = original.TypeGreenplumTable
-	TypeHBaseObject                                  TypeBasicDataset = original.TypeHBaseObject
-	TypeHiveObject                                   TypeBasicDataset = original.TypeHiveObject
-	TypeHTTPFile                                     TypeBasicDataset = original.TypeHTTPFile
-	TypeHubspotObject                                TypeBasicDataset = original.TypeHubspotObject
-	TypeImpalaObject                                 TypeBasicDataset = original.TypeImpalaObject
-	TypeJiraObject                                   TypeBasicDataset = original.TypeJiraObject
-	TypeMagentoObject                                TypeBasicDataset = original.TypeMagentoObject
-	TypeMariaDBTable                                 TypeBasicDataset = original.TypeMariaDBTable
-	TypeMarketoObject                                TypeBasicDataset = original.TypeMarketoObject
-	TypeMongoDbCollection                            TypeBasicDataset = original.TypeMongoDbCollection
-	TypeMongoDbV2Collection                          TypeBasicDataset = original.TypeMongoDbV2Collection
-	TypeNetezzaTable                                 TypeBasicDataset = original.TypeNetezzaTable
-	TypeODataResource                                TypeBasicDataset = original.TypeODataResource
-	TypeOffice365Table                               TypeBasicDataset = original.TypeOffice365Table
-	TypeOracleServiceCloudObject                     TypeBasicDataset = original.TypeOracleServiceCloudObject
-	TypeOracleTable                                  TypeBasicDataset = original.TypeOracleTable
-	TypePaypalObject                                 TypeBasicDataset = original.TypePaypalObject
-	TypePhoenixObject                                TypeBasicDataset = original.TypePhoenixObject
-	TypePrestoObject                                 TypeBasicDataset = original.TypePrestoObject
-	TypeQuickBooksObject                             TypeBasicDataset = original.TypeQuickBooksObject
-	TypeRelationalTable                              TypeBasicDataset = original.TypeRelationalTable
-	TypeResponsysObject                              TypeBasicDataset = original.TypeResponsysObject
-	TypeRestResource                                 TypeBasicDataset = original.TypeRestResource
-	TypeSalesforceMarketingCloudObject               TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
-	TypeSalesforceObject                             TypeBasicDataset = original.TypeSalesforceObject
-	TypeSapCloudForCustomerResource                  TypeBasicDataset = original.TypeSapCloudForCustomerResource
-	TypeSapEccResource                               TypeBasicDataset = original.TypeSapEccResource
-	TypeSapOpenHubTable                              TypeBasicDataset = original.TypeSapOpenHubTable
-	TypeServiceNowObject                             TypeBasicDataset = original.TypeServiceNowObject
-	TypeShopifyObject                                TypeBasicDataset = original.TypeShopifyObject
-	TypeSparkObject                                  TypeBasicDataset = original.TypeSparkObject
-	TypeSQLServerTable                               TypeBasicDataset = original.TypeSQLServerTable
-	TypeSquareObject                                 TypeBasicDataset = original.TypeSquareObject
-	TypeVerticaTable                                 TypeBasicDataset = original.TypeVerticaTable
-	TypeWebTable                                     TypeBasicDataset = original.TypeWebTable
-	TypeXeroObject                                   TypeBasicDataset = original.TypeXeroObject
-	TypeZohoObject                                   TypeBasicDataset = original.TypeZohoObject
+	TypeAmazonMWSObject                TypeBasicDataset = original.TypeAmazonMWSObject
+	TypeAmazonS3Object                 TypeBasicDataset = original.TypeAmazonS3Object
+	TypeAzureBlob                      TypeBasicDataset = original.TypeAzureBlob
+	TypeAzureBlobFSFile                TypeBasicDataset = original.TypeAzureBlobFSFile
+	TypeAzureDataExplorerTable         TypeBasicDataset = original.TypeAzureDataExplorerTable
+	TypeAzureDataLakeStoreFile         TypeBasicDataset = original.TypeAzureDataLakeStoreFile
+	TypeAzureMySQLTable                TypeBasicDataset = original.TypeAzureMySQLTable
+	TypeAzurePostgreSQLTable           TypeBasicDataset = original.TypeAzurePostgreSQLTable
+	TypeAzureSearchIndex               TypeBasicDataset = original.TypeAzureSearchIndex
+	TypeAzureSQLDWTable                TypeBasicDataset = original.TypeAzureSQLDWTable
+	TypeAzureSQLTable                  TypeBasicDataset = original.TypeAzureSQLTable
+	TypeAzureTable                     TypeBasicDataset = original.TypeAzureTable
+	TypeCassandraTable                 TypeBasicDataset = original.TypeCassandraTable
+	TypeConcurObject                   TypeBasicDataset = original.TypeConcurObject
+	TypeCosmosDbMongoDbAPICollection   TypeBasicDataset = original.TypeCosmosDbMongoDbAPICollection
+	TypeCouchbaseTable                 TypeBasicDataset = original.TypeCouchbaseTable
+	TypeCustomDataset                  TypeBasicDataset = original.TypeCustomDataset
+	TypeDataset                        TypeBasicDataset = original.TypeDataset
+	TypeDocumentDbCollection           TypeBasicDataset = original.TypeDocumentDbCollection
+	TypeDrillTable                     TypeBasicDataset = original.TypeDrillTable
+	TypeDynamicsAXResource             TypeBasicDataset = original.TypeDynamicsAXResource
+	TypeDynamicsEntity                 TypeBasicDataset = original.TypeDynamicsEntity
+	TypeEloquaObject                   TypeBasicDataset = original.TypeEloquaObject
+	TypeFileShare                      TypeBasicDataset = original.TypeFileShare
+	TypeGoogleAdWordsObject            TypeBasicDataset = original.TypeGoogleAdWordsObject
+	TypeGoogleBigQueryObject           TypeBasicDataset = original.TypeGoogleBigQueryObject
+	TypeGreenplumTable                 TypeBasicDataset = original.TypeGreenplumTable
+	TypeHBaseObject                    TypeBasicDataset = original.TypeHBaseObject
+	TypeHiveObject                     TypeBasicDataset = original.TypeHiveObject
+	TypeHTTPFile                       TypeBasicDataset = original.TypeHTTPFile
+	TypeHubspotObject                  TypeBasicDataset = original.TypeHubspotObject
+	TypeImpalaObject                   TypeBasicDataset = original.TypeImpalaObject
+	TypeJiraObject                     TypeBasicDataset = original.TypeJiraObject
+	TypeMagentoObject                  TypeBasicDataset = original.TypeMagentoObject
+	TypeMariaDBTable                   TypeBasicDataset = original.TypeMariaDBTable
+	TypeMarketoObject                  TypeBasicDataset = original.TypeMarketoObject
+	TypeMongoDbCollection              TypeBasicDataset = original.TypeMongoDbCollection
+	TypeMongoDbV2Collection            TypeBasicDataset = original.TypeMongoDbV2Collection
+	TypeNetezzaTable                   TypeBasicDataset = original.TypeNetezzaTable
+	TypeODataResource                  TypeBasicDataset = original.TypeODataResource
+	TypeOffice365Table                 TypeBasicDataset = original.TypeOffice365Table
+	TypeOracleServiceCloudObject       TypeBasicDataset = original.TypeOracleServiceCloudObject
+	TypeOracleTable                    TypeBasicDataset = original.TypeOracleTable
+	TypePaypalObject                   TypeBasicDataset = original.TypePaypalObject
+	TypePhoenixObject                  TypeBasicDataset = original.TypePhoenixObject
+	TypePrestoObject                   TypeBasicDataset = original.TypePrestoObject
+	TypeQuickBooksObject               TypeBasicDataset = original.TypeQuickBooksObject
+	TypeRelationalTable                TypeBasicDataset = original.TypeRelationalTable
+	TypeResponsysObject                TypeBasicDataset = original.TypeResponsysObject
+	TypeRestResource                   TypeBasicDataset = original.TypeRestResource
+	TypeSalesforceMarketingCloudObject TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
+	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
+	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
+	TypeSapEccResource                 TypeBasicDataset = original.TypeSapEccResource
+	TypeSapOpenHubTable                TypeBasicDataset = original.TypeSapOpenHubTable
+	TypeServiceNowObject               TypeBasicDataset = original.TypeServiceNowObject
+	TypeShopifyObject                  TypeBasicDataset = original.TypeShopifyObject
+	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
+	TypeSQLServerTable                 TypeBasicDataset = original.TypeSQLServerTable
+	TypeSquareObject                   TypeBasicDataset = original.TypeSquareObject
+	TypeVerticaTable                   TypeBasicDataset = original.TypeVerticaTable
+	TypeWebTable                       TypeBasicDataset = original.TypeWebTable
+	TypeXeroObject                     TypeBasicDataset = original.TypeXeroObject
+	TypeZohoObject                     TypeBasicDataset = original.TypeZohoObject
 )
 
 type TypeBasicDatasetCompression = original.TypeBasicDatasetCompression
@@ -961,6 +961,12 @@ const (
 	WebActivityMethodPUT    WebActivityMethod = original.WebActivityMethodPUT
 )
 
+type WebHookActivityMethod = original.WebHookActivityMethod
+
+const (
+	WebHookActivityMethodPOST WebHookActivityMethod = original.WebHookActivityMethodPOST
+)
+
 type AccessPolicyResponse = original.AccessPolicyResponse
 type Activity = original.Activity
 type ActivityDependency = original.ActivityDependency
@@ -1002,8 +1008,6 @@ type AzureDataExplorerSource = original.AzureDataExplorerSource
 type AzureDataExplorerTableDataset = original.AzureDataExplorerTableDataset
 type AzureDataLakeAnalyticsLinkedService = original.AzureDataLakeAnalyticsLinkedService
 type AzureDataLakeAnalyticsLinkedServiceTypeProperties = original.AzureDataLakeAnalyticsLinkedServiceTypeProperties
-type AzureDataLakeStoreCosmosStructuredStreamDataset = original.AzureDataLakeStoreCosmosStructuredStreamDataset
-type AzureDataLakeStoreCosmosStructuredStreamDatasetTypeProperties = original.AzureDataLakeStoreCosmosStructuredStreamDatasetTypeProperties
 type AzureDataLakeStoreDataset = original.AzureDataLakeStoreDataset
 type AzureDataLakeStoreDatasetTypeProperties = original.AzureDataLakeStoreDatasetTypeProperties
 type AzureDataLakeStoreLinkedService = original.AzureDataLakeStoreLinkedService
@@ -1569,6 +1573,8 @@ type WebActivityTypeProperties = original.WebActivityTypeProperties
 type WebAnonymousAuthentication = original.WebAnonymousAuthentication
 type WebBasicAuthentication = original.WebBasicAuthentication
 type WebClientCertificateAuthentication = original.WebClientCertificateAuthentication
+type WebHookActivity = original.WebHookActivity
+type WebHookActivityTypeProperties = original.WebHookActivityTypeProperties
 type WebLinkedService = original.WebLinkedService
 type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
 type WebSource = original.WebSource
@@ -1960,6 +1966,9 @@ func PossibleVariableTypeValues() []VariableType {
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()
+}
+func PossibleWebHookActivityMethodValues() []WebHookActivityMethod {
+	return original.PossibleWebHookActivityMethodValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -229,6 +229,25 @@ func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
 }
 
+// State enumerates the values for state.
+type State string
+
+const (
+	// Failed At least one supported regulatory compliance control in the given standard has a state of failed
+	Failed State = "Failed"
+	// Passed All supported regulatory compliance controls in the given standard have a passed state
+	Passed State = "Passed"
+	// Skipped All supported regulatory compliance controls in the given standard have a state of skipped
+	Skipped State = "Skipped"
+	// Unsupported No supported regulatory compliance data for the given standard
+	Unsupported State = "Unsupported"
+)
+
+// PossibleStateValues returns an array of possible values for the State const type.
+func PossibleStateValues() []State {
+	return []State{Failed, Passed, Skipped, Unsupported}
+}
+
 // Status enumerates the values for status.
 type Status string
 
@@ -259,6 +278,21 @@ const (
 // PossibleStatusReasonValues returns an array of possible values for the StatusReason const type.
 func PossibleStatusReasonValues() []StatusReason {
 	return []StatusReason{Expired, NewerRequestInitiated, UserRequested}
+}
+
+// ValueType enumerates the values for value type.
+type ValueType string
+
+const (
+	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	IPCidr ValueType = "IpCidr"
+	// String Any string value.
+	String ValueType = "String"
+)
+
+// PossibleValueTypeValues returns an array of possible values for the ValueType const type.
+func PossibleValueTypeValues() []ValueType {
+	return []ValueType{IPCidr, String}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -764,6 +798,8 @@ type AlertProperties struct {
 	InstanceID *string `json:"instanceId,omitempty"`
 	// WorkspaceArmID - Azure resource ID of the workspace that the alert was reported to.
 	WorkspaceArmID *string `json:"workspaceArmId,omitempty"`
+	// CorrelationKey - Alerts with the same CorrelationKey will be grouped together in Ibiza.
+	CorrelationKey *string `json:"correlationKey,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AlertProperties.
@@ -834,6 +870,9 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.WorkspaceArmID != nil {
 		objectMap["workspaceArmId"] = ap.WorkspaceArmID
+	}
+	if ap.CorrelationKey != nil {
+		objectMap["correlationKey"] = ap.CorrelationKey
 	}
 	return json.Marshal(objectMap)
 }
@@ -1086,6 +1125,23 @@ type AllowedConnectionsResourceProperties struct {
 	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
 	// ConnectableResources - List of connectable resources
 	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
+}
+
+// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is allowed
+type AllowlistCustomAlertRule struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
 }
 
 // AscLocation the ASC location of the subscription is in the "name" field
@@ -2385,6 +2441,18 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
+// CustomAlertRule a custom alert rule
+type CustomAlertRule struct {
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // DataExportSetting represents a data export setting
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
@@ -2484,6 +2552,263 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// denied
+type DenylistCustomAlertRule struct {
+	// DenylistValues - The values to deny. The format of the values depends on the rule type.
+	DenylistValues *[]string `json:"denylistValues,omitempty"`
+	// ValueType - The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// DeviceSecurityGroup the device security group resource
+type DeviceSecurityGroup struct {
+	autorest.Response `json:"-"`
+	// DeviceSecurityGroupProperties - Device Security group data
+	*DeviceSecurityGroupProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceSecurityGroup.
+func (dsg DeviceSecurityGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsg.DeviceSecurityGroupProperties != nil {
+		objectMap["properties"] = dsg.DeviceSecurityGroupProperties
+	}
+	if dsg.ID != nil {
+		objectMap["id"] = dsg.ID
+	}
+	if dsg.Name != nil {
+		objectMap["name"] = dsg.Name
+	}
+	if dsg.Type != nil {
+		objectMap["type"] = dsg.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeviceSecurityGroup struct.
+func (dsg *DeviceSecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deviceSecurityGroupProperties DeviceSecurityGroupProperties
+				err = json.Unmarshal(*v, &deviceSecurityGroupProperties)
+				if err != nil {
+					return err
+				}
+				dsg.DeviceSecurityGroupProperties = &deviceSecurityGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dsg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeviceSecurityGroupList list of device security groups
+type DeviceSecurityGroupList struct {
+	autorest.Response `json:"-"`
+	// Value - List of device security group objects
+	Value *[]DeviceSecurityGroup `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeviceSecurityGroupListIterator provides access to a complete listing of DeviceSecurityGroup values.
+type DeviceSecurityGroupListIterator struct {
+	i    int
+	page DeviceSecurityGroupListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeviceSecurityGroupListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DeviceSecurityGroupListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeviceSecurityGroupListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeviceSecurityGroupListIterator) Response() DeviceSecurityGroupList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeviceSecurityGroupListIterator) Value() DeviceSecurityGroup {
+	if !iter.page.NotDone() {
+		return DeviceSecurityGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DeviceSecurityGroupListIterator type.
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return DeviceSecurityGroupListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsgl DeviceSecurityGroupList) IsEmpty() bool {
+	return dsgl.Value == nil || len(*dsgl.Value) == 0
+}
+
+// deviceSecurityGroupListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsgl DeviceSecurityGroupList) deviceSecurityGroupListPreparer(ctx context.Context) (*http.Request, error) {
+	if dsgl.NextLink == nil || len(to.String(dsgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsgl.NextLink)))
+}
+
+// DeviceSecurityGroupListPage contains a page of DeviceSecurityGroup values.
+type DeviceSecurityGroupListPage struct {
+	fn   func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)
+	dsgl DeviceSecurityGroupList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeviceSecurityGroupListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dsgl)
+	if err != nil {
+		return err
+	}
+	page.dsgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DeviceSecurityGroupListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeviceSecurityGroupListPage) NotDone() bool {
+	return !page.dsgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeviceSecurityGroupListPage) Response() DeviceSecurityGroupList {
+	return page.dsgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeviceSecurityGroupListPage) Values() []DeviceSecurityGroup {
+	if page.dsgl.IsEmpty() {
+		return nil
+	}
+	return *page.dsgl.Value
+}
+
+// Creates a new instance of the DeviceSecurityGroupListPage type.
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return DeviceSecurityGroupListPage{fn: getNextPage}
+}
+
+// DeviceSecurityGroupProperties describes properties of a security group.
+type DeviceSecurityGroupProperties struct {
+	// ThresholdRules - A list of threshold custom alert rules.
+	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	// TimeWindowRules - A list of time window custom alert rules.
+	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	// AllowlistRules - A list of allow-list custom alert rules.
+	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	// DenylistRules - A list of deny-list custom alert rules.
+	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // DiscoveredSecuritySolution ...
@@ -3767,6 +4092,20 @@ type Kind struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// ListCustomAlertRule a List custom alert rule
+type ListCustomAlertRule struct {
+	// ValueType - The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // Location describes an Azure resource with location
 type Location struct {
 	// Location - Location where the resource is stored
@@ -4035,6 +4374,739 @@ type PricingProperties struct {
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
+}
+
+// RegulatoryComplianceAssessment regulatory compliance assessment details and state
+type RegulatoryComplianceAssessment struct {
+	autorest.Response `json:"-"`
+	// RegulatoryComplianceAssessmentProperties - Regulatory compliance assessment data
+	*RegulatoryComplianceAssessmentProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegulatoryComplianceAssessment.
+func (rca RegulatoryComplianceAssessment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rca.RegulatoryComplianceAssessmentProperties != nil {
+		objectMap["properties"] = rca.RegulatoryComplianceAssessmentProperties
+	}
+	if rca.ID != nil {
+		objectMap["id"] = rca.ID
+	}
+	if rca.Name != nil {
+		objectMap["name"] = rca.Name
+	}
+	if rca.Type != nil {
+		objectMap["type"] = rca.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RegulatoryComplianceAssessment struct.
+func (rca *RegulatoryComplianceAssessment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var regulatoryComplianceAssessmentProperties RegulatoryComplianceAssessmentProperties
+				err = json.Unmarshal(*v, &regulatoryComplianceAssessmentProperties)
+				if err != nil {
+					return err
+				}
+				rca.RegulatoryComplianceAssessmentProperties = &regulatoryComplianceAssessmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rca.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rca.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rca.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RegulatoryComplianceAssessmentList list of regulatory compliance assessment response
+type RegulatoryComplianceAssessmentList struct {
+	autorest.Response `json:"-"`
+	Value             *[]RegulatoryComplianceAssessment `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RegulatoryComplianceAssessmentListIterator provides access to a complete listing of
+// RegulatoryComplianceAssessment values.
+type RegulatoryComplianceAssessmentListIterator struct {
+	i    int
+	page RegulatoryComplianceAssessmentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RegulatoryComplianceAssessmentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegulatoryComplianceAssessmentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RegulatoryComplianceAssessmentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RegulatoryComplianceAssessmentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RegulatoryComplianceAssessmentListIterator) Response() RegulatoryComplianceAssessmentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RegulatoryComplianceAssessmentListIterator) Value() RegulatoryComplianceAssessment {
+	if !iter.page.NotDone() {
+		return RegulatoryComplianceAssessment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RegulatoryComplianceAssessmentListIterator type.
+func NewRegulatoryComplianceAssessmentListIterator(page RegulatoryComplianceAssessmentListPage) RegulatoryComplianceAssessmentListIterator {
+	return RegulatoryComplianceAssessmentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rcal RegulatoryComplianceAssessmentList) IsEmpty() bool {
+	return rcal.Value == nil || len(*rcal.Value) == 0
+}
+
+// regulatoryComplianceAssessmentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rcal RegulatoryComplianceAssessmentList) regulatoryComplianceAssessmentListPreparer(ctx context.Context) (*http.Request, error) {
+	if rcal.NextLink == nil || len(to.String(rcal.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rcal.NextLink)))
+}
+
+// RegulatoryComplianceAssessmentListPage contains a page of RegulatoryComplianceAssessment values.
+type RegulatoryComplianceAssessmentListPage struct {
+	fn   func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)
+	rcal RegulatoryComplianceAssessmentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RegulatoryComplianceAssessmentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegulatoryComplianceAssessmentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rcal)
+	if err != nil {
+		return err
+	}
+	page.rcal = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RegulatoryComplianceAssessmentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RegulatoryComplianceAssessmentListPage) NotDone() bool {
+	return !page.rcal.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RegulatoryComplianceAssessmentListPage) Response() RegulatoryComplianceAssessmentList {
+	return page.rcal
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RegulatoryComplianceAssessmentListPage) Values() []RegulatoryComplianceAssessment {
+	if page.rcal.IsEmpty() {
+		return nil
+	}
+	return *page.rcal.Value
+}
+
+// Creates a new instance of the RegulatoryComplianceAssessmentListPage type.
+func NewRegulatoryComplianceAssessmentListPage(getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
+	return RegulatoryComplianceAssessmentListPage{fn: getNextPage}
+}
+
+// RegulatoryComplianceAssessmentProperties regulatory compliance assessment data
+type RegulatoryComplianceAssessmentProperties struct {
+	// Description - The description of the regulatory compliance assessment
+	Description *string `json:"description,omitempty"`
+	// AssessmentType - The expected type of assessment contained in the AssessmentDetailsLink
+	AssessmentType *string `json:"assessmentType,omitempty"`
+	// AssessmentDetailsLink - Link to more detailed assessment results data. The response type will be according to the assessmentType field
+	AssessmentDetailsLink *string `json:"assessmentDetailsLink,omitempty"`
+	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
+	State State `json:"state,omitempty"`
+	// PassedResources - The given assessment's related resources count with passed state.
+	PassedResources *int32 `json:"passedResources,omitempty"`
+	// FailedResources - The given assessment's related resources count with failed state.
+	FailedResources *int32 `json:"failedResources,omitempty"`
+	// SkippedResources - The given assessment's related resources count with skipped state.
+	SkippedResources *int32 `json:"skippedResources,omitempty"`
+	// UnsupportedResources - The given assessment's related resources count with unsupported state.
+	UnsupportedResources *int32 `json:"unsupportedResources,omitempty"`
+}
+
+// RegulatoryComplianceControl regulatory compliance control details and state
+type RegulatoryComplianceControl struct {
+	autorest.Response `json:"-"`
+	// RegulatoryComplianceControlProperties - Regulatory compliance control data
+	*RegulatoryComplianceControlProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegulatoryComplianceControl.
+func (rcc RegulatoryComplianceControl) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rcc.RegulatoryComplianceControlProperties != nil {
+		objectMap["properties"] = rcc.RegulatoryComplianceControlProperties
+	}
+	if rcc.ID != nil {
+		objectMap["id"] = rcc.ID
+	}
+	if rcc.Name != nil {
+		objectMap["name"] = rcc.Name
+	}
+	if rcc.Type != nil {
+		objectMap["type"] = rcc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RegulatoryComplianceControl struct.
+func (rcc *RegulatoryComplianceControl) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var regulatoryComplianceControlProperties RegulatoryComplianceControlProperties
+				err = json.Unmarshal(*v, &regulatoryComplianceControlProperties)
+				if err != nil {
+					return err
+				}
+				rcc.RegulatoryComplianceControlProperties = &regulatoryComplianceControlProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rcc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rcc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rcc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RegulatoryComplianceControlList list of regulatory compliance controls response
+type RegulatoryComplianceControlList struct {
+	autorest.Response `json:"-"`
+	// Value - List of regulatory compliance controls
+	Value *[]RegulatoryComplianceControl `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RegulatoryComplianceControlListIterator provides access to a complete listing of
+// RegulatoryComplianceControl values.
+type RegulatoryComplianceControlListIterator struct {
+	i    int
+	page RegulatoryComplianceControlListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RegulatoryComplianceControlListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegulatoryComplianceControlListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RegulatoryComplianceControlListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RegulatoryComplianceControlListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RegulatoryComplianceControlListIterator) Response() RegulatoryComplianceControlList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RegulatoryComplianceControlListIterator) Value() RegulatoryComplianceControl {
+	if !iter.page.NotDone() {
+		return RegulatoryComplianceControl{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RegulatoryComplianceControlListIterator type.
+func NewRegulatoryComplianceControlListIterator(page RegulatoryComplianceControlListPage) RegulatoryComplianceControlListIterator {
+	return RegulatoryComplianceControlListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rccl RegulatoryComplianceControlList) IsEmpty() bool {
+	return rccl.Value == nil || len(*rccl.Value) == 0
+}
+
+// regulatoryComplianceControlListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rccl RegulatoryComplianceControlList) regulatoryComplianceControlListPreparer(ctx context.Context) (*http.Request, error) {
+	if rccl.NextLink == nil || len(to.String(rccl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rccl.NextLink)))
+}
+
+// RegulatoryComplianceControlListPage contains a page of RegulatoryComplianceControl values.
+type RegulatoryComplianceControlListPage struct {
+	fn   func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)
+	rccl RegulatoryComplianceControlList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RegulatoryComplianceControlListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegulatoryComplianceControlListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rccl)
+	if err != nil {
+		return err
+	}
+	page.rccl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RegulatoryComplianceControlListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RegulatoryComplianceControlListPage) NotDone() bool {
+	return !page.rccl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RegulatoryComplianceControlListPage) Response() RegulatoryComplianceControlList {
+	return page.rccl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RegulatoryComplianceControlListPage) Values() []RegulatoryComplianceControl {
+	if page.rccl.IsEmpty() {
+		return nil
+	}
+	return *page.rccl.Value
+}
+
+// Creates a new instance of the RegulatoryComplianceControlListPage type.
+func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
+	return RegulatoryComplianceControlListPage{fn: getNextPage}
+}
+
+// RegulatoryComplianceControlProperties regulatory compliance control data
+type RegulatoryComplianceControlProperties struct {
+	// Description - The description of the regulatory compliance control
+	Description *string `json:"description,omitempty"`
+	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
+	State State `json:"state,omitempty"`
+	// PassedAssessments - The number of supported regulatory compliance assessments of the given control with a passed state
+	PassedAssessments *int32 `json:"passedAssessments,omitempty"`
+	// FailedAssessments - The number of supported regulatory compliance assessments of the given control with a failed state
+	FailedAssessments *int32 `json:"failedAssessments,omitempty"`
+	// SkippedAssessments - The number of supported regulatory compliance assessments of the given control with a skipped state
+	SkippedAssessments *int32 `json:"skippedAssessments,omitempty"`
+}
+
+// RegulatoryComplianceStandard regulatory compliance standard details and state
+type RegulatoryComplianceStandard struct {
+	autorest.Response `json:"-"`
+	// RegulatoryComplianceStandardProperties - Regulatory compliance standard data
+	*RegulatoryComplianceStandardProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegulatoryComplianceStandard.
+func (rcs RegulatoryComplianceStandard) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rcs.RegulatoryComplianceStandardProperties != nil {
+		objectMap["properties"] = rcs.RegulatoryComplianceStandardProperties
+	}
+	if rcs.ID != nil {
+		objectMap["id"] = rcs.ID
+	}
+	if rcs.Name != nil {
+		objectMap["name"] = rcs.Name
+	}
+	if rcs.Type != nil {
+		objectMap["type"] = rcs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RegulatoryComplianceStandard struct.
+func (rcs *RegulatoryComplianceStandard) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var regulatoryComplianceStandardProperties RegulatoryComplianceStandardProperties
+				err = json.Unmarshal(*v, &regulatoryComplianceStandardProperties)
+				if err != nil {
+					return err
+				}
+				rcs.RegulatoryComplianceStandardProperties = &regulatoryComplianceStandardProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rcs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rcs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rcs.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RegulatoryComplianceStandardList list of regulatory compliance standards response
+type RegulatoryComplianceStandardList struct {
+	autorest.Response `json:"-"`
+	Value             *[]RegulatoryComplianceStandard `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RegulatoryComplianceStandardListIterator provides access to a complete listing of
+// RegulatoryComplianceStandard values.
+type RegulatoryComplianceStandardListIterator struct {
+	i    int
+	page RegulatoryComplianceStandardListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RegulatoryComplianceStandardListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegulatoryComplianceStandardListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RegulatoryComplianceStandardListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RegulatoryComplianceStandardListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RegulatoryComplianceStandardListIterator) Response() RegulatoryComplianceStandardList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RegulatoryComplianceStandardListIterator) Value() RegulatoryComplianceStandard {
+	if !iter.page.NotDone() {
+		return RegulatoryComplianceStandard{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RegulatoryComplianceStandardListIterator type.
+func NewRegulatoryComplianceStandardListIterator(page RegulatoryComplianceStandardListPage) RegulatoryComplianceStandardListIterator {
+	return RegulatoryComplianceStandardListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rcsl RegulatoryComplianceStandardList) IsEmpty() bool {
+	return rcsl.Value == nil || len(*rcsl.Value) == 0
+}
+
+// regulatoryComplianceStandardListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rcsl RegulatoryComplianceStandardList) regulatoryComplianceStandardListPreparer(ctx context.Context) (*http.Request, error) {
+	if rcsl.NextLink == nil || len(to.String(rcsl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rcsl.NextLink)))
+}
+
+// RegulatoryComplianceStandardListPage contains a page of RegulatoryComplianceStandard values.
+type RegulatoryComplianceStandardListPage struct {
+	fn   func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)
+	rcsl RegulatoryComplianceStandardList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RegulatoryComplianceStandardListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegulatoryComplianceStandardListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rcsl)
+	if err != nil {
+		return err
+	}
+	page.rcsl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RegulatoryComplianceStandardListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RegulatoryComplianceStandardListPage) NotDone() bool {
+	return !page.rcsl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RegulatoryComplianceStandardListPage) Response() RegulatoryComplianceStandardList {
+	return page.rcsl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RegulatoryComplianceStandardListPage) Values() []RegulatoryComplianceStandard {
+	if page.rcsl.IsEmpty() {
+		return nil
+	}
+	return *page.rcsl.Value
+}
+
+// Creates a new instance of the RegulatoryComplianceStandardListPage type.
+func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
+	return RegulatoryComplianceStandardListPage{fn: getNextPage}
+}
+
+// RegulatoryComplianceStandardProperties regulatory compliance standard data
+type RegulatoryComplianceStandardProperties struct {
+	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
+	State State `json:"state,omitempty"`
+	// PassedControls - The number of supported regulatory compliance controls of the given standard with a passed state
+	PassedControls *int32 `json:"passedControls,omitempty"`
+	// FailedControls - The number of supported regulatory compliance controls of the given standard with a failed state
+	FailedControls *int32 `json:"failedControls,omitempty"`
+	// SkippedControls - The number of supported regulatory compliance controls of the given standard with a skipped state
+	SkippedControls *int32 `json:"skippedControls,omitempty"`
+	// UnsupportedControls - The number of regulatory compliance controls of the given standard which are unsupported by automated assessments
+	UnsupportedControls *int32 `json:"unsupportedControls,omitempty"`
 }
 
 // Resource describes an Azure resource.
@@ -4522,6 +5594,42 @@ type TaskProperties struct {
 	LastStateChangeTimeUtc *date.Time `json:"lastStateChangeTimeUtc,omitempty"`
 	// SubState - Additional data on the state of the task
 	SubState *string `json:"subState,omitempty"`
+}
+
+// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is within the given range.
+type ThresholdCustomAlertRule struct {
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
+// custom alert type) in a time window is within the given range.
+type TimeWindowCustomAlertRule struct {
+	// DisplayName - The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
 }
 
 // TopologyList ...

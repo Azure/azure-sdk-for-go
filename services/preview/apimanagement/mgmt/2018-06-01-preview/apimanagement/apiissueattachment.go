@@ -49,8 +49,7 @@ func NewAPIIssueAttachmentClientWithBaseURI(baseURI string, subscriptionID strin
 // issueID - issue identifier. Must be unique in the current API Management service instance.
 // attachmentID - attachment identifier within an Issue. Must be unique in the current Issue.
 // parameters - create parameters.
-// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
-// the GET request or it should be * for unconditional update.
+// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
 func (client APIIssueAttachmentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, parameters IssueAttachmentContract, ifMatch string) (result IssueAttachmentContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIIssueAttachmentClient.CreateOrUpdate")
@@ -70,7 +69,7 @@ func (client APIIssueAttachmentClient) CreateOrUpdate(ctx context.Context, resou
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -166,8 +165,8 @@ func (client APIIssueAttachmentClient) CreateOrUpdateResponder(resp *http.Respon
 // apiid - API identifier. Must be unique in the current API Management service instance.
 // issueID - issue identifier. Must be unique in the current API Management service instance.
 // attachmentID - attachment identifier within an Issue. Must be unique in the current Issue.
-// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
-// the GET request or it should be * for unconditional update.
+// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
+// request or it should be * for unconditional update.
 func (client APIIssueAttachmentClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, ifMatch string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIIssueAttachmentClient.Delete")
@@ -187,7 +186,7 @@ func (client APIIssueAttachmentClient) Delete(ctx context.Context, resourceGroup
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -290,7 +289,7 @@ func (client APIIssueAttachmentClient) Get(ctx context.Context, resourceGroupNam
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -393,7 +392,7 @@ func (client APIIssueAttachmentClient) GetEntityTag(ctx context.Context, resourc
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -469,7 +468,7 @@ func (client APIIssueAttachmentClient) GetEntityTagResponder(resp *http.Response
 	return
 }
 
-// ListByService lists all comments for the Issue associated with the specified API.
+// ListByService lists all attachments for the Issue associated with the specified API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -477,8 +476,9 @@ func (client APIIssueAttachmentClient) GetEntityTagResponder(resp *http.Response
 // issueID - issue identifier. Must be unique in the current API Management service instance.
 // filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
-// | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |userId | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client APIIssueAttachmentClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (result IssueAttachmentCollectionPage, err error) {
@@ -500,7 +500,7 @@ func (client APIIssueAttachmentClient) ListByService(ctx context.Context, resour
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},

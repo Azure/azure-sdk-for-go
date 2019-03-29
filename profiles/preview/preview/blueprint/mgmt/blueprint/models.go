@@ -32,8 +32,9 @@ const (
 type AssignmentLockMode = original.AssignmentLockMode
 
 const (
-	AllResources AssignmentLockMode = original.AllResources
-	None         AssignmentLockMode = original.None
+	AllResourcesDoNotDelete AssignmentLockMode = original.AllResourcesDoNotDelete
+	AllResourcesReadOnly    AssignmentLockMode = original.AllResourcesReadOnly
+	None                    AssignmentLockMode = original.None
 )
 
 type AssignmentProvisioningState = original.AssignmentProvisioningState
@@ -153,6 +154,7 @@ type TemplateArtifact = original.TemplateArtifact
 type TemplateArtifactProperties = original.TemplateArtifactProperties
 type TrackedResource = original.TrackedResource
 type UserAssignedIdentity = original.UserAssignedIdentity
+type WhoIsBlueprintContract = original.WhoIsBlueprintContract
 
 func New() BaseClient {
 	return original.New()

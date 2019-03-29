@@ -45,10 +45,10 @@ func NewLoggerClientWithBaseURI(baseURI string, subscriptionID string) LoggerCli
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
+// loggerID - logger identifier. Must be unique in the API Management service instance.
 // parameters - create parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters LoggerContract, ifMatch string) (result LoggerContract, err error) {
+func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, ifMatch string) (result LoggerContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoggerClient.CreateOrUpdate")
 		defer func() {
@@ -64,9 +64,9 @@ func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: loggerid,
-			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "loggerid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+		{TargetValue: loggerID,
+			Constraints: []validation.Constraint{{Target: "loggerID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.LoggerContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.LoggerContractProperties.Description", Name: validation.Null, Rule: false,
@@ -76,7 +76,7 @@ func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 		return result, validation.NewError("apimanagement.LoggerClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, loggerid, parameters, ifMatch)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, loggerID, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -98,9 +98,9 @@ func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client LoggerClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters LoggerContract, ifMatch string) (*http.Request, error) {
+func (client LoggerClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"loggerid":          autorest.Encode("path", loggerid),
+		"loggerId":          autorest.Encode("path", loggerID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -115,7 +115,7 @@ func (client LoggerClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
@@ -149,10 +149,11 @@ func (client LoggerClient) CreateOrUpdateResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
+// loggerID - logger identifier. Must be unique in the API Management service instance.
 // ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
 // request or it should be * for unconditional update.
-func (client LoggerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, ifMatch string) (result autorest.Response, err error) {
+// force - force deletion even if diagnostic is attached.
+func (client LoggerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, force *bool) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoggerClient.Delete")
 		defer func() {
@@ -168,13 +169,13 @@ func (client LoggerClient) Delete(ctx context.Context, resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: loggerid,
-			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "loggerid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: loggerID,
+			Constraints: []validation.Constraint{{Target: "loggerID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.LoggerClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, loggerid, ifMatch)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, loggerID, ifMatch, force)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "Delete", nil, "Failure preparing request")
 		return
@@ -196,9 +197,9 @@ func (client LoggerClient) Delete(ctx context.Context, resourceGroupName string,
 }
 
 // DeletePreparer prepares the Delete request.
-func (client LoggerClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, ifMatch string) (*http.Request, error) {
+func (client LoggerClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, ifMatch string, force *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"loggerid":          autorest.Encode("path", loggerid),
+		"loggerId":          autorest.Encode("path", loggerID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -208,11 +209,14 @@ func (client LoggerClient) DeletePreparer(ctx context.Context, resourceGroupName
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
+	if force != nil {
+		queryParameters["force"] = autorest.Encode("query", *force)
+	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -241,8 +245,8 @@ func (client LoggerClient) DeleteResponder(resp *http.Response) (result autorest
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
-func (client LoggerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (result LoggerContract, err error) {
+// loggerID - logger identifier. Must be unique in the API Management service instance.
+func (client LoggerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, loggerID string) (result LoggerContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoggerClient.Get")
 		defer func() {
@@ -258,13 +262,13 @@ func (client LoggerClient) Get(ctx context.Context, resourceGroupName string, se
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: loggerid,
-			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "loggerid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: loggerID,
+			Constraints: []validation.Constraint{{Target: "loggerID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.LoggerClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, loggerid)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, loggerID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "Get", nil, "Failure preparing request")
 		return
@@ -286,9 +290,9 @@ func (client LoggerClient) Get(ctx context.Context, resourceGroupName string, se
 }
 
 // GetPreparer prepares the Get request.
-func (client LoggerClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (*http.Request, error) {
+func (client LoggerClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"loggerid":          autorest.Encode("path", loggerid),
+		"loggerId":          autorest.Encode("path", loggerID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -302,7 +306,7 @@ func (client LoggerClient) GetPreparer(ctx context.Context, resourceGroupName st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -331,8 +335,8 @@ func (client LoggerClient) GetResponder(resp *http.Response) (result LoggerContr
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
-func (client LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (result autorest.Response, err error) {
+// loggerID - logger identifier. Must be unique in the API Management service instance.
+func (client LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, loggerID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoggerClient.GetEntityTag")
 		defer func() {
@@ -348,13 +352,13 @@ func (client LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: loggerid,
-			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "loggerid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: loggerID,
+			Constraints: []validation.Constraint{{Target: "loggerID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.LoggerClient", "GetEntityTag", err.Error())
 	}
 
-	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, loggerid)
+	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, loggerID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "GetEntityTag", nil, "Failure preparing request")
 		return
@@ -376,9 +380,9 @@ func (client LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName s
 }
 
 // GetEntityTagPreparer prepares the GetEntityTag request.
-func (client LoggerClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (*http.Request, error) {
+func (client LoggerClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"loggerid":          autorest.Encode("path", loggerid),
+		"loggerId":          autorest.Encode("path", loggerID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -392,7 +396,7 @@ func (client LoggerClient) GetEntityTagPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -420,10 +424,13 @@ func (client LoggerClient) GetEntityTagResponder(resp *http.Response) (result au
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                         |
-// |-------|------------------------|---------------------------------------------|
-// | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | type  | eq                     |                                             |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |loggerType | eq |    |
+// |resourceId | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client LoggerClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result LoggerCollectionPage, err error) {
@@ -564,11 +571,11 @@ func (client LoggerClient) ListByServiceComplete(ctx context.Context, resourceGr
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
+// loggerID - logger identifier. Must be unique in the API Management service instance.
 // parameters - update parameters.
 // ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
 // request or it should be * for unconditional update.
-func (client LoggerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters LoggerUpdateContract, ifMatch string) (result autorest.Response, err error) {
+func (client LoggerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoggerClient.Update")
 		defer func() {
@@ -584,13 +591,13 @@ func (client LoggerClient) Update(ctx context.Context, resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: loggerid,
-			Constraints: []validation.Constraint{{Target: "loggerid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "loggerid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: loggerID,
+			Constraints: []validation.Constraint{{Target: "loggerID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "loggerID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.LoggerClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, loggerid, parameters, ifMatch)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, loggerID, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "Update", nil, "Failure preparing request")
 		return
@@ -612,9 +619,9 @@ func (client LoggerClient) Update(ctx context.Context, resourceGroupName string,
 }
 
 // UpdatePreparer prepares the Update request.
-func (client LoggerClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters LoggerUpdateContract, ifMatch string) (*http.Request, error) {
+func (client LoggerClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerID string, parameters LoggerUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"loggerid":          autorest.Encode("path", loggerid),
+		"loggerId":          autorest.Encode("path", loggerID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -629,7 +636,7 @@ func (client LoggerClient) UpdatePreparer(ctx context.Context, resourceGroupName
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerid}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("If-Match", autorest.String(ifMatch)))

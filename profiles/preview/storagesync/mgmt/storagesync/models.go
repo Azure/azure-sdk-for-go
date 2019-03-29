@@ -22,7 +22,7 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-10-01/storagesync"
+	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-02-01/storagesync"
 )
 
 const (
@@ -135,14 +135,12 @@ const (
 	Succeeded Status = original.Succeeded
 )
 
-type SyncDirection = original.SyncDirection
+type SyncActivity = original.SyncActivity
 
 const (
-	Download   SyncDirection = original.Download
-	Initialize SyncDirection = original.Initialize
-	None       SyncDirection = original.None
-	Recall     SyncDirection = original.Recall
-	Upload     SyncDirection = original.Upload
+	Download          SyncActivity = original.Download
+	Upload            SyncActivity = original.Upload
+	UploadAndDownload SyncActivity = original.UploadAndDownload
 )
 
 type UploadHealth = original.UploadHealth
@@ -175,6 +173,7 @@ type CloudEndpointsPreBackupFuture = original.CloudEndpointsPreBackupFuture
 type CloudEndpointsPreRestoreFuture = original.CloudEndpointsPreRestoreFuture
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
+type FilesNotSyncingError = original.FilesNotSyncingError
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationDisplayResource = original.OperationDisplayResource
 type OperationEntity = original.OperationEntity
@@ -204,8 +203,8 @@ type ServerEndpoint = original.ServerEndpoint
 type ServerEndpointArray = original.ServerEndpointArray
 type ServerEndpointCreateParameters = original.ServerEndpointCreateParameters
 type ServerEndpointCreateParametersProperties = original.ServerEndpointCreateParametersProperties
-type ServerEndpointHealth = original.ServerEndpointHealth
 type ServerEndpointProperties = original.ServerEndpointProperties
+type ServerEndpointSyncStatus = original.ServerEndpointSyncStatus
 type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
 type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
 type ServerEndpointsClient = original.ServerEndpointsClient
@@ -220,12 +219,12 @@ type ServiceProperties = original.ServiceProperties
 type ServiceUpdateParameters = original.ServiceUpdateParameters
 type ServicesClient = original.ServicesClient
 type SubscriptionState = original.SubscriptionState
+type SyncActivityStatus = original.SyncActivityStatus
 type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type SyncGroupsClient = original.SyncGroupsClient
-type SyncProgressStatus = original.SyncProgressStatus
 type SyncSessionStatus = original.SyncSessionStatus
 type TrackedResource = original.TrackedResource
 type TriggerRolloverRequest = original.TriggerRolloverRequest
@@ -327,8 +326,8 @@ func PossibleReasonValues() []Reason {
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
-func PossibleSyncDirectionValues() []SyncDirection {
-	return original.PossibleSyncDirectionValues()
+func PossibleSyncActivityValues() []SyncActivity {
+	return original.PossibleSyncActivityValues()
 }
 func PossibleUploadHealthValues() []UploadHealth {
 	return original.PossibleUploadHealthValues()

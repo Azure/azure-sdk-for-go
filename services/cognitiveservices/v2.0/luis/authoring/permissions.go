@@ -260,11 +260,11 @@ func (client PermissionsClient) ListResponder(resp *http.Response) (result UserA
 	return
 }
 
-// Update replaces the current users access list with the one sent in the body. If an empty list is sent, all access to
-// other users will be removed.
+// Update replaces the current user access list with the new list sent in the body. If an empty list is sent, all
+// access to other users will be removed.
 // Parameters:
 // appID - the application ID.
-// collaborators - a model containing a list of user's email addresses.
+// collaborators - a model containing a list of user email addresses.
 func (client PermissionsClient) Update(ctx context.Context, appID uuid.UUID, collaborators CollaboratorsArray) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionsClient.Update")

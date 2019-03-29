@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"github.com/satori/go.uuid"
 	"net/http"
@@ -36,7 +37,7 @@ func NewSettingsClient(endpoint string) SettingsClient {
 	return SettingsClient{New(endpoint)}
 }
 
-// List gets the application version settings.
+// List gets the settings in a version of the application.
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
@@ -110,12 +111,12 @@ func (client SettingsClient) ListResponder(resp *http.Response) (result ListAppV
 	return
 }
 
-// Update updates the application version settings.
+// Update updates the settings in a version of the application.
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
 // listOfAppVersionSettingObject - a list of the updated application version settings.
-func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject AppVersionSettingObject) (result OperationStatus, err error) {
+func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Update")
 		defer func() {
@@ -126,6 +127,12 @@ func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: listOfAppVersionSettingObject,
+			Constraints: []validation.Constraint{{Target: "listOfAppVersionSettingObject", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("authoring.SettingsClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, appID, versionID, listOfAppVersionSettingObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "Update", nil, "Failure preparing request")
@@ -148,7 +155,7 @@ func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versio
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SettingsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject AppVersionSettingObject) (*http.Request, error) {
+func (client SettingsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject []AppVersionSettingObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}

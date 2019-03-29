@@ -22,51 +22,330 @@ package billing
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-11-01-preview/billing"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AccountType = original.AccountType
+
+const (
+	AccountTypeEnrollment   AccountType = original.AccountTypeEnrollment
+	AccountTypeOrganization AccountType = original.AccountTypeOrganization
+)
+
+type EligibleProductType = original.EligibleProductType
+
+const (
+	AzureReservation          EligibleProductType = original.AzureReservation
+	DevTestAzureSubscription  EligibleProductType = original.DevTestAzureSubscription
+	StandardAzureSubscription EligibleProductType = original.StandardAzureSubscription
+)
+
+type Frequency = original.Frequency
+
+const (
+	Monthly    Frequency = original.Monthly
+	OneTime    Frequency = original.OneTime
+	UsageBased Frequency = original.UsageBased
+)
+
+type Kind = original.Kind
+
+const (
+	CreditNote Kind = original.CreditNote
+	Invoice    Kind = original.Invoice
+	Receipt    Kind = original.Receipt
+	VoidNote   Kind = original.VoidNote
+)
+
+type PaymentMethodType = original.PaymentMethodType
+
+const (
+	ChequeWire PaymentMethodType = original.ChequeWire
+	Credits    PaymentMethodType = original.Credits
+)
+
+type ProductStatusType = original.ProductStatusType
+
+const (
+	Active    ProductStatusType = original.Active
+	AutoRenew ProductStatusType = original.AutoRenew
+	Cancelled ProductStatusType = original.Cancelled
+	Disabled  ProductStatusType = original.Disabled
+	Expired   ProductStatusType = original.Expired
+	Expiring  ProductStatusType = original.Expiring
+	Inactive  ProductStatusType = original.Inactive
+	PastDue   ProductStatusType = original.PastDue
+)
+
+type ProductTransferStatus = original.ProductTransferStatus
+
+const (
+	Completed  ProductTransferStatus = original.Completed
+	Failed     ProductTransferStatus = original.Failed
+	InProgress ProductTransferStatus = original.InProgress
+	NotStarted ProductTransferStatus = original.NotStarted
+)
+
+type ProductType = original.ProductType
+
+const (
+	ProductTypeAzureReservation  ProductType = original.ProductTypeAzureReservation
+	ProductTypeAzureSubscription ProductType = original.ProductTypeAzureSubscription
+)
+
+type ReservationType = original.ReservationType
+
+const (
+	Purchase    ReservationType = original.Purchase
+	UsageCharge ReservationType = original.UsageCharge
+)
+
+type Status = original.Status
+
+const (
+	StatusDue     Status = original.StatusDue
+	StatusPaid    Status = original.StatusPaid
+	StatusPastDue Status = original.StatusPastDue
+	StatusVoid    Status = original.StatusVoid
+)
+
+type SubscriptionStatusType = original.SubscriptionStatusType
+
+const (
+	SubscriptionStatusTypeAbandoned SubscriptionStatusType = original.SubscriptionStatusTypeAbandoned
+	SubscriptionStatusTypeActive    SubscriptionStatusType = original.SubscriptionStatusTypeActive
+	SubscriptionStatusTypeDeleted   SubscriptionStatusType = original.SubscriptionStatusTypeDeleted
+	SubscriptionStatusTypeInactive  SubscriptionStatusType = original.SubscriptionStatusTypeInactive
+	SubscriptionStatusTypeWarning   SubscriptionStatusType = original.SubscriptionStatusTypeWarning
+)
+
+type TransactionTypeKind = original.TransactionTypeKind
+
+const (
+	All         TransactionTypeKind = original.All
+	Reservation TransactionTypeKind = original.Reservation
+)
+
+type TransferStatus = original.TransferStatus
+
+const (
+	TransferStatusCanceled            TransferStatus = original.TransferStatusCanceled
+	TransferStatusCompleted           TransferStatus = original.TransferStatusCompleted
+	TransferStatusCompletedWithErrors TransferStatus = original.TransferStatusCompletedWithErrors
+	TransferStatusDeclined            TransferStatus = original.TransferStatusDeclined
+	TransferStatusFailed              TransferStatus = original.TransferStatusFailed
+	TransferStatusInProgress          TransferStatus = original.TransferStatusInProgress
+	TransferStatusPending             TransferStatus = original.TransferStatusPending
+)
+
+type UpdateAutoRenew = original.UpdateAutoRenew
+
+const (
+	False UpdateAutoRenew = original.False
+	True  UpdateAutoRenew = original.True
+)
+
+type AcceptTransferProperties = original.AcceptTransferProperties
+type AcceptTransferRequest = original.AcceptTransferRequest
+type Account = original.Account
+type AccountBillingPermissionsClient = original.AccountBillingPermissionsClient
+type AccountBillingRoleAssignmentClient = original.AccountBillingRoleAssignmentClient
+type AccountBillingRoleDefinitionClient = original.AccountBillingRoleDefinitionClient
+type AccountListResult = original.AccountListResult
+type AccountProperties = original.AccountProperties
+type AccountsClient = original.AccountsClient
+type AccountsWithCreateInvoiceSectionPermissionClient = original.AccountsWithCreateInvoiceSectionPermissionClient
+type Address = original.Address
+type Amount = original.Amount
+type AvailableBalance = original.AvailableBalance
+type AvailableBalanceByBillingProfileClient = original.AvailableBalanceByBillingProfileClient
+type AvailableBalanceProperties = original.AvailableBalanceProperties
 type BaseClient = original.BaseClient
+type Department = original.Department
+type DepartmentListResult = original.DepartmentListResult
+type DepartmentProperties = original.DepartmentProperties
+type DepartmentsByBillingAccountNameClient = original.DepartmentsByBillingAccountNameClient
+type DepartmentsClient = original.DepartmentsClient
+type DetailedTransferStatus = original.DetailedTransferStatus
+type DownloadProperties = original.DownloadProperties
 type DownloadURL = original.DownloadURL
+type EnabledAzureSKUs = original.EnabledAzureSKUs
+type Enrollment = original.Enrollment
 type EnrollmentAccount = original.EnrollmentAccount
+type EnrollmentAccountContext = original.EnrollmentAccountContext
 type EnrollmentAccountListResult = original.EnrollmentAccountListResult
-type EnrollmentAccountListResultIterator = original.EnrollmentAccountListResultIterator
-type EnrollmentAccountListResultPage = original.EnrollmentAccountListResultPage
 type EnrollmentAccountProperties = original.EnrollmentAccountProperties
+type EnrollmentAccountsByBillingAccountNameClient = original.EnrollmentAccountsByBillingAccountNameClient
 type EnrollmentAccountsClient = original.EnrollmentAccountsClient
+type EnrollmentPolicies = original.EnrollmentPolicies
+type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
-type Invoice = original.Invoice
-type InvoiceProperties = original.InvoiceProperties
-type InvoicesClient = original.InvoicesClient
-type InvoicesListResult = original.InvoicesListResult
-type InvoicesListResultIterator = original.InvoicesListResultIterator
-type InvoicesListResultPage = original.InvoicesListResultPage
+type InitiateTransferProperties = original.InitiateTransferProperties
+type InitiateTransferRequest = original.InitiateTransferRequest
+type InvoiceClient = original.InvoiceClient
+type InvoiceListResult = original.InvoiceListResult
+type InvoicePricesheetClient = original.InvoicePricesheetClient
+type InvoicePricesheetDownloadFuture = original.InvoicePricesheetDownloadFuture
+type InvoiceSection = original.InvoiceSection
+type InvoiceSectionBillingRoleAssignmentClient = original.InvoiceSectionBillingRoleAssignmentClient
+type InvoiceSectionBillingRoleDefinitionClient = original.InvoiceSectionBillingRoleDefinitionClient
+type InvoiceSectionListResult = original.InvoiceSectionListResult
+type InvoiceSectionProperties = original.InvoiceSectionProperties
+type InvoiceSectionsBillingPermissionsClient = original.InvoiceSectionsBillingPermissionsClient
+type InvoiceSectionsByBillingAccountNameClient = original.InvoiceSectionsByBillingAccountNameClient
+type InvoiceSectionsClient = original.InvoiceSectionsClient
+type InvoiceSectionsCreateFuture = original.InvoiceSectionsCreateFuture
+type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
+type InvoiceSectionsWithCreateSubscriptionPermissionClient = original.InvoiceSectionsWithCreateSubscriptionPermissionClient
+type InvoiceSummary = original.InvoiceSummary
+type InvoiceSummaryProperties = original.InvoiceSummaryProperties
+type InvoicesByBillingAccountClient = original.InvoicesByBillingAccountClient
+type InvoicesByBillingProfileClient = original.InvoicesByBillingProfileClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationStatus = original.OperationStatus
 type OperationsClient = original.OperationsClient
-type Period = original.Period
-type PeriodProperties = original.PeriodProperties
-type PeriodsClient = original.PeriodsClient
-type PeriodsListResult = original.PeriodsListResult
-type PeriodsListResultIterator = original.PeriodsListResultIterator
-type PeriodsListResultPage = original.PeriodsListResultPage
+type PaymentMethod = original.PaymentMethod
+type PaymentMethodProperties = original.PaymentMethodProperties
+type PaymentMethodsByBillingProfileClient = original.PaymentMethodsByBillingProfileClient
+type PaymentMethodsListResult = original.PaymentMethodsListResult
+type PaymentMethodsListResultIterator = original.PaymentMethodsListResultIterator
+type PaymentMethodsListResultPage = original.PaymentMethodsListResultPage
+type PaymentProperties = original.PaymentProperties
+type Permissions = original.Permissions
+type PermissionsListResult = original.PermissionsListResult
+type Policy = original.Policy
+type PolicyClient = original.PolicyClient
+type PolicyProperties = original.PolicyProperties
+type ProductDetails = original.ProductDetails
+type ProductSummary = original.ProductSummary
+type ProductSummaryProperties = original.ProductSummaryProperties
+type ProductsByBillingAccountClient = original.ProductsByBillingAccountClient
+type ProductsByBillingSubscriptionsClient = original.ProductsByBillingSubscriptionsClient
+type ProductsByInvoiceSectionClient = original.ProductsByInvoiceSectionClient
+type ProductsClient = original.ProductsClient
+type ProductsListResult = original.ProductsListResult
+type ProductsListResultIterator = original.ProductsListResultIterator
+type ProductsListResultPage = original.ProductsListResultPage
+type Profile = original.Profile
+type ProfileBillingPermissionsClient = original.ProfileBillingPermissionsClient
+type ProfileBillingRoleAssignmentClient = original.ProfileBillingRoleAssignmentClient
+type ProfileBillingRoleDefinitionClient = original.ProfileBillingRoleDefinitionClient
+type ProfileListResult = original.ProfileListResult
+type ProfileProperties = original.ProfileProperties
+type ProfilesByBillingAccountNameClient = original.ProfilesByBillingAccountNameClient
+type ProfilesClient = original.ProfilesClient
+type ProfilesUpdateFuture = original.ProfilesUpdateFuture
+type Property = original.Property
+type PropertyClient = original.PropertyClient
+type RecipientTransferDetails = original.RecipientTransferDetails
+type RecipientTransferDetailsListResult = original.RecipientTransferDetailsListResult
+type RecipientTransferDetailsListResultIterator = original.RecipientTransferDetailsListResultIterator
+type RecipientTransferDetailsListResultPage = original.RecipientTransferDetailsListResultPage
+type RecipientTransferProperties = original.RecipientTransferProperties
+type RecipientTransfersClient = original.RecipientTransfersClient
 type Resource = original.Resource
+type RoleAssignment = original.RoleAssignment
+type RoleAssignmentListResult = original.RoleAssignmentListResult
+type RoleAssignmentPayload = original.RoleAssignmentPayload
+type RoleAssignmentProperties = original.RoleAssignmentProperties
+type RoleDefinition = original.RoleDefinition
+type RoleDefinitionListResult = original.RoleDefinitionListResult
+type RoleDefinitionProperties = original.RoleDefinitionProperties
+type SubscriptionClient = original.SubscriptionClient
+type SubscriptionProperties = original.SubscriptionProperties
+type SubscriptionSummary = original.SubscriptionSummary
+type SubscriptionTransferFuture = original.SubscriptionTransferFuture
+type SubscriptionsByBillingProfileClient = original.SubscriptionsByBillingProfileClient
+type SubscriptionsByInvoiceSectionClient = original.SubscriptionsByInvoiceSectionClient
+type SubscriptionsListResult = original.SubscriptionsListResult
+type SubscriptionsListResultIterator = original.SubscriptionsListResultIterator
+type SubscriptionsListResultPage = original.SubscriptionsListResultPage
+type TransactionsByBillingAccountClient = original.TransactionsByBillingAccountClient
+type TransactionsListResult = original.TransactionsListResult
+type TransactionsListResultIterator = original.TransactionsListResultIterator
+type TransactionsListResultPage = original.TransactionsListResultPage
+type TransactionsSummary = original.TransactionsSummary
+type TransactionsSummaryProperties = original.TransactionsSummaryProperties
+type TransferBillingSubscriptionRequest = original.TransferBillingSubscriptionRequest
+type TransferBillingSubscriptionRequestProperties = original.TransferBillingSubscriptionRequestProperties
+type TransferBillingSubscriptionResult = original.TransferBillingSubscriptionResult
+type TransferBillingSubscriptionResultProperties = original.TransferBillingSubscriptionResultProperties
+type TransferDetails = original.TransferDetails
+type TransferDetailsListResult = original.TransferDetailsListResult
+type TransferDetailsListResultIterator = original.TransferDetailsListResultIterator
+type TransferDetailsListResultPage = original.TransferDetailsListResultPage
+type TransferProductRequestProperties = original.TransferProductRequestProperties
+type TransferProperties = original.TransferProperties
+type TransfersClient = original.TransfersClient
+type UpdateAutoRenewOperationSummary = original.UpdateAutoRenewOperationSummary
+type UpdateAutoRenewOperationSummaryProperties = original.UpdateAutoRenewOperationSummaryProperties
+type UpdateAutoRenewRequest = original.UpdateAutoRenewRequest
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewEnrollmentAccountListResultIterator(page EnrollmentAccountListResultPage) EnrollmentAccountListResultIterator {
-	return original.NewEnrollmentAccountListResultIterator(page)
+func NewAccountBillingPermissionsClient(subscriptionID string) AccountBillingPermissionsClient {
+	return original.NewAccountBillingPermissionsClient(subscriptionID)
 }
-func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
-	return original.NewEnrollmentAccountListResultPage(getNextPage)
+func NewAccountBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingPermissionsClient {
+	return original.NewAccountBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountBillingRoleAssignmentClient(subscriptionID string) AccountBillingRoleAssignmentClient {
+	return original.NewAccountBillingRoleAssignmentClient(subscriptionID)
+}
+func NewAccountBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingRoleAssignmentClient {
+	return original.NewAccountBillingRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountBillingRoleDefinitionClient(subscriptionID string) AccountBillingRoleDefinitionClient {
+	return original.NewAccountBillingRoleDefinitionClient(subscriptionID)
+}
+func NewAccountBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingRoleDefinitionClient {
+	return original.NewAccountBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountsWithCreateInvoiceSectionPermissionClient(subscriptionID string) AccountsWithCreateInvoiceSectionPermissionClient {
+	return original.NewAccountsWithCreateInvoiceSectionPermissionClient(subscriptionID)
+}
+func NewAccountsWithCreateInvoiceSectionPermissionClientWithBaseURI(baseURI string, subscriptionID string) AccountsWithCreateInvoiceSectionPermissionClient {
+	return original.NewAccountsWithCreateInvoiceSectionPermissionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAvailableBalanceByBillingProfileClient(subscriptionID string) AvailableBalanceByBillingProfileClient {
+	return original.NewAvailableBalanceByBillingProfileClient(subscriptionID)
+}
+func NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalanceByBillingProfileClient {
+	return original.NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDepartmentsByBillingAccountNameClient(subscriptionID string) DepartmentsByBillingAccountNameClient {
+	return original.NewDepartmentsByBillingAccountNameClient(subscriptionID)
+}
+func NewDepartmentsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsByBillingAccountNameClient {
+	return original.NewDepartmentsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDepartmentsClient(subscriptionID string) DepartmentsClient {
+	return original.NewDepartmentsClient(subscriptionID)
+}
+func NewDepartmentsClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsClient {
+	return original.NewDepartmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEnrollmentAccountsByBillingAccountNameClient(subscriptionID string) EnrollmentAccountsByBillingAccountNameClient {
+	return original.NewEnrollmentAccountsByBillingAccountNameClient(subscriptionID)
+}
+func NewEnrollmentAccountsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsByBillingAccountNameClient {
+	return original.NewEnrollmentAccountsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClient(subscriptionID)
@@ -74,17 +353,65 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInvoicesClient(subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClient(subscriptionID)
+func NewInvoiceClient(subscriptionID string) InvoiceClient {
+	return original.NewInvoiceClient(subscriptionID)
 }
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string) InvoiceClient {
+	return original.NewInvoiceClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInvoicesListResultIterator(page InvoicesListResultPage) InvoicesListResultIterator {
-	return original.NewInvoicesListResultIterator(page)
+func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
+	return original.NewInvoicePricesheetClient(subscriptionID)
 }
-func NewInvoicesListResultPage(getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
-	return original.NewInvoicesListResultPage(getNextPage)
+func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
+	return original.NewInvoicePricesheetClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoiceSectionBillingRoleAssignmentClient(subscriptionID string) InvoiceSectionBillingRoleAssignmentClient {
+	return original.NewInvoiceSectionBillingRoleAssignmentClient(subscriptionID)
+}
+func NewInvoiceSectionBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleAssignmentClient {
+	return original.NewInvoiceSectionBillingRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
+	return original.NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID)
+}
+func NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
+	return original.NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoiceSectionsBillingPermissionsClient(subscriptionID string) InvoiceSectionsBillingPermissionsClient {
+	return original.NewInvoiceSectionsBillingPermissionsClient(subscriptionID)
+}
+func NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsBillingPermissionsClient {
+	return original.NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoiceSectionsByBillingAccountNameClient(subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
+	return original.NewInvoiceSectionsByBillingAccountNameClient(subscriptionID)
+}
+func NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
+	return original.NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
+	return original.NewInvoiceSectionsClient(subscriptionID)
+}
+func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsClient {
+	return original.NewInvoiceSectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoiceSectionsWithCreateSubscriptionPermissionClient(subscriptionID string) InvoiceSectionsWithCreateSubscriptionPermissionClient {
+	return original.NewInvoiceSectionsWithCreateSubscriptionPermissionClient(subscriptionID)
+}
+func NewInvoiceSectionsWithCreateSubscriptionPermissionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsWithCreateSubscriptionPermissionClient {
+	return original.NewInvoiceSectionsWithCreateSubscriptionPermissionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoicesByBillingAccountClient(subscriptionID string) InvoicesByBillingAccountClient {
+	return original.NewInvoicesByBillingAccountClient(subscriptionID)
+}
+func NewInvoicesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) InvoicesByBillingAccountClient {
+	return original.NewInvoicesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoicesByBillingProfileClient(subscriptionID string) InvoicesByBillingProfileClient {
+	return original.NewInvoicesByBillingProfileClient(subscriptionID)
+}
+func NewInvoicesByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) InvoicesByBillingProfileClient {
+	return original.NewInvoicesByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -98,20 +425,194 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPeriodsClient(subscriptionID string) PeriodsClient {
-	return original.NewPeriodsClient(subscriptionID)
+func NewPaymentMethodsByBillingProfileClient(subscriptionID string) PaymentMethodsByBillingProfileClient {
+	return original.NewPaymentMethodsByBillingProfileClient(subscriptionID)
 }
-func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
-	return original.NewPeriodsClientWithBaseURI(baseURI, subscriptionID)
+func NewPaymentMethodsByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) PaymentMethodsByBillingProfileClient {
+	return original.NewPaymentMethodsByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPeriodsListResultIterator(page PeriodsListResultPage) PeriodsListResultIterator {
-	return original.NewPeriodsListResultIterator(page)
+func NewPaymentMethodsListResultIterator(page PaymentMethodsListResultPage) PaymentMethodsListResultIterator {
+	return original.NewPaymentMethodsListResultIterator(page)
 }
-func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
-	return original.NewPeriodsListResultPage(getNextPage)
+func NewPaymentMethodsListResultPage(getNextPage func(context.Context, PaymentMethodsListResult) (PaymentMethodsListResult, error)) PaymentMethodsListResultPage {
+	return original.NewPaymentMethodsListResultPage(getNextPage)
+}
+func NewPolicyClient(subscriptionID string) PolicyClient {
+	return original.NewPolicyClient(subscriptionID)
+}
+func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
+	return original.NewPolicyClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductsByBillingAccountClient(subscriptionID string) ProductsByBillingAccountClient {
+	return original.NewProductsByBillingAccountClient(subscriptionID)
+}
+func NewProductsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) ProductsByBillingAccountClient {
+	return original.NewProductsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductsByBillingSubscriptionsClient(subscriptionID string) ProductsByBillingSubscriptionsClient {
+	return original.NewProductsByBillingSubscriptionsClient(subscriptionID)
+}
+func NewProductsByBillingSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductsByBillingSubscriptionsClient {
+	return original.NewProductsByBillingSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductsByInvoiceSectionClient(subscriptionID string) ProductsByInvoiceSectionClient {
+	return original.NewProductsByInvoiceSectionClient(subscriptionID)
+}
+func NewProductsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) ProductsByInvoiceSectionClient {
+	return original.NewProductsByInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductsClient(subscriptionID string) ProductsClient {
+	return original.NewProductsClient(subscriptionID)
+}
+func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
+	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductsListResultIterator(page ProductsListResultPage) ProductsListResultIterator {
+	return original.NewProductsListResultIterator(page)
+}
+func NewProductsListResultPage(getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
+	return original.NewProductsListResultPage(getNextPage)
+}
+func NewProfileBillingPermissionsClient(subscriptionID string) ProfileBillingPermissionsClient {
+	return original.NewProfileBillingPermissionsClient(subscriptionID)
+}
+func NewProfileBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingPermissionsClient {
+	return original.NewProfileBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProfileBillingRoleAssignmentClient(subscriptionID string) ProfileBillingRoleAssignmentClient {
+	return original.NewProfileBillingRoleAssignmentClient(subscriptionID)
+}
+func NewProfileBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingRoleAssignmentClient {
+	return original.NewProfileBillingRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProfileBillingRoleDefinitionClient(subscriptionID string) ProfileBillingRoleDefinitionClient {
+	return original.NewProfileBillingRoleDefinitionClient(subscriptionID)
+}
+func NewProfileBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingRoleDefinitionClient {
+	return original.NewProfileBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProfilesByBillingAccountNameClient(subscriptionID string) ProfilesByBillingAccountNameClient {
+	return original.NewProfilesByBillingAccountNameClient(subscriptionID)
+}
+func NewProfilesByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) ProfilesByBillingAccountNameClient {
+	return original.NewProfilesByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
+}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPropertyClient(subscriptionID string) PropertyClient {
+	return original.NewPropertyClient(subscriptionID)
+}
+func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
+	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecipientTransferDetailsListResultIterator(page RecipientTransferDetailsListResultPage) RecipientTransferDetailsListResultIterator {
+	return original.NewRecipientTransferDetailsListResultIterator(page)
+}
+func NewRecipientTransferDetailsListResultPage(getNextPage func(context.Context, RecipientTransferDetailsListResult) (RecipientTransferDetailsListResult, error)) RecipientTransferDetailsListResultPage {
+	return original.NewRecipientTransferDetailsListResultPage(getNextPage)
+}
+func NewRecipientTransfersClient(subscriptionID string) RecipientTransfersClient {
+	return original.NewRecipientTransfersClient(subscriptionID)
+}
+func NewRecipientTransfersClientWithBaseURI(baseURI string, subscriptionID string) RecipientTransfersClient {
+	return original.NewRecipientTransfersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
+	return original.NewSubscriptionClient(subscriptionID)
+}
+func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
+	return original.NewSubscriptionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionsByBillingProfileClient(subscriptionID string) SubscriptionsByBillingProfileClient {
+	return original.NewSubscriptionsByBillingProfileClient(subscriptionID)
+}
+func NewSubscriptionsByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsByBillingProfileClient {
+	return original.NewSubscriptionsByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionsByInvoiceSectionClient(subscriptionID string) SubscriptionsByInvoiceSectionClient {
+	return original.NewSubscriptionsByInvoiceSectionClient(subscriptionID)
+}
+func NewSubscriptionsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsByInvoiceSectionClient {
+	return original.NewSubscriptionsByInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionsListResultIterator(page SubscriptionsListResultPage) SubscriptionsListResultIterator {
+	return original.NewSubscriptionsListResultIterator(page)
+}
+func NewSubscriptionsListResultPage(getNextPage func(context.Context, SubscriptionsListResult) (SubscriptionsListResult, error)) SubscriptionsListResultPage {
+	return original.NewSubscriptionsListResultPage(getNextPage)
+}
+func NewTransactionsByBillingAccountClient(subscriptionID string) TransactionsByBillingAccountClient {
+	return original.NewTransactionsByBillingAccountClient(subscriptionID)
+}
+func NewTransactionsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByBillingAccountClient {
+	return original.NewTransactionsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTransactionsListResultIterator(page TransactionsListResultPage) TransactionsListResultIterator {
+	return original.NewTransactionsListResultIterator(page)
+}
+func NewTransactionsListResultPage(getNextPage func(context.Context, TransactionsListResult) (TransactionsListResult, error)) TransactionsListResultPage {
+	return original.NewTransactionsListResultPage(getNextPage)
+}
+func NewTransferDetailsListResultIterator(page TransferDetailsListResultPage) TransferDetailsListResultIterator {
+	return original.NewTransferDetailsListResultIterator(page)
+}
+func NewTransferDetailsListResultPage(getNextPage func(context.Context, TransferDetailsListResult) (TransferDetailsListResult, error)) TransferDetailsListResultPage {
+	return original.NewTransferDetailsListResultPage(getNextPage)
+}
+func NewTransfersClient(subscriptionID string) TransfersClient {
+	return original.NewTransfersClient(subscriptionID)
+}
+func NewTransfersClientWithBaseURI(baseURI string, subscriptionID string) TransfersClient {
+	return original.NewTransfersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccountTypeValues() []AccountType {
+	return original.PossibleAccountTypeValues()
+}
+func PossibleEligibleProductTypeValues() []EligibleProductType {
+	return original.PossibleEligibleProductTypeValues()
+}
+func PossibleFrequencyValues() []Frequency {
+	return original.PossibleFrequencyValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossiblePaymentMethodTypeValues() []PaymentMethodType {
+	return original.PossiblePaymentMethodTypeValues()
+}
+func PossibleProductStatusTypeValues() []ProductStatusType {
+	return original.PossibleProductStatusTypeValues()
+}
+func PossibleProductTransferStatusValues() []ProductTransferStatus {
+	return original.PossibleProductTransferStatusValues()
+}
+func PossibleProductTypeValues() []ProductType {
+	return original.PossibleProductTypeValues()
+}
+func PossibleReservationTypeValues() []ReservationType {
+	return original.PossibleReservationTypeValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func PossibleSubscriptionStatusTypeValues() []SubscriptionStatusType {
+	return original.PossibleSubscriptionStatusTypeValues()
+}
+func PossibleTransactionTypeKindValues() []TransactionTypeKind {
+	return original.PossibleTransactionTypeKindValues()
+}
+func PossibleTransferStatusValues() []TransferStatus {
+	return original.PossibleTransferStatusValues()
+}
+func PossibleUpdateAutoRenewValues() []UpdateAutoRenew {
+	return original.PossibleUpdateAutoRenewValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

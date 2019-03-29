@@ -202,3 +202,119 @@ func (client ServerSecurityAlertPoliciesClient) GetResponder(resp *http.Response
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// ListByServer get the server's threat detection policies.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+func (client ServerSecurityAlertPoliciesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result LogicalServerSecurityAlertPolicyListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerSecurityAlertPoliciesClient.ListByServer")
+		defer func() {
+			sc := -1
+			if result.lssaplr.Response.Response != nil {
+				sc = result.lssaplr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listByServerNextResults
+	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesClient", "ListByServer", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByServerSender(req)
+	if err != nil {
+		result.lssaplr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesClient", "ListByServer", resp, "Failure sending request")
+		return
+	}
+
+	result.lssaplr, err = client.ListByServerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesClient", "ListByServer", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByServerPreparer prepares the ListByServer request.
+func (client ServerSecurityAlertPoliciesClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/securityAlertPolicies", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByServerSender sends the ListByServer request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServerSecurityAlertPoliciesClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByServerResponder handles the response to the ListByServer request. The method always
+// closes the http.Response Body.
+func (client ServerSecurityAlertPoliciesClient) ListByServerResponder(resp *http.Response) (result LogicalServerSecurityAlertPolicyListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByServerNextResults retrieves the next set of results, if any.
+func (client ServerSecurityAlertPoliciesClient) listByServerNextResults(ctx context.Context, lastResults LogicalServerSecurityAlertPolicyListResult) (result LogicalServerSecurityAlertPolicyListResult, err error) {
+	req, err := lastResults.logicalServerSecurityAlertPolicyListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesClient", "listByServerNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByServerSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesClient", "listByServerNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByServerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesClient", "listByServerNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByServerComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServerSecurityAlertPoliciesClient) ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result LogicalServerSecurityAlertPolicyListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerSecurityAlertPoliciesClient.ListByServer")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByServer(ctx, resourceGroupName, serverName)
+	return
+}

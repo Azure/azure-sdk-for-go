@@ -37,10 +37,10 @@ func NewAzureAccountsClient(endpoint string) AzureAccountsClient {
 	return AzureAccountsClient{New(endpoint)}
 }
 
-// AssignToApp assigns an azure account to the application.
+// AssignToApp assigns an Azure account to the application.
 // Parameters:
 // appID - the application ID.
-// azureAccountInfoObject - the azure account information object.
+// azureAccountInfoObject - the Azure account information object.
 func (client AzureAccountsClient) AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.AssignToApp")
@@ -125,7 +125,7 @@ func (client AzureAccountsClient) AssignToAppResponder(resp *http.Response) (res
 	return
 }
 
-// GetAssigned gets the LUIS azure accounts assigned to the application for the user using his ARM token.
+// GetAssigned gets the LUIS Azure accounts assigned to the application for the user using his ARM token.
 // Parameters:
 // appID - the application ID.
 func (client AzureAccountsClient) GetAssigned(ctx context.Context, appID uuid.UUID) (result ListAzureAccountInfoObject, err error) {
@@ -197,10 +197,10 @@ func (client AzureAccountsClient) GetAssignedResponder(resp *http.Response) (res
 	return
 }
 
-// GetUserLUISAccounts gets the LUIS azure accounts for the user using his ARM token.
-func (client AzureAccountsClient) GetUserLUISAccounts(ctx context.Context) (result ListAzureAccountInfoObject, err error) {
+// ListUserLUISAccounts gets the LUIS Azure accounts for the user using his ARM token.
+func (client AzureAccountsClient) ListUserLUISAccounts(ctx context.Context) (result ListAzureAccountInfoObject, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.GetUserLUISAccounts")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.ListUserLUISAccounts")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -209,29 +209,29 @@ func (client AzureAccountsClient) GetUserLUISAccounts(ctx context.Context) (resu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetUserLUISAccountsPreparer(ctx)
+	req, err := client.ListUserLUISAccountsPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "GetUserLUISAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "ListUserLUISAccounts", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetUserLUISAccountsSender(req)
+	resp, err := client.ListUserLUISAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "GetUserLUISAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "ListUserLUISAccounts", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetUserLUISAccountsResponder(resp)
+	result, err = client.ListUserLUISAccountsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "GetUserLUISAccounts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authoring.AzureAccountsClient", "ListUserLUISAccounts", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetUserLUISAccountsPreparer prepares the GetUserLUISAccounts request.
-func (client AzureAccountsClient) GetUserLUISAccountsPreparer(ctx context.Context) (*http.Request, error) {
+// ListUserLUISAccountsPreparer prepares the ListUserLUISAccounts request.
+func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -243,16 +243,16 @@ func (client AzureAccountsClient) GetUserLUISAccountsPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetUserLUISAccountsSender sends the GetUserLUISAccounts request. The method will close the
+// ListUserLUISAccountsSender sends the ListUserLUISAccounts request. The method will close the
 // http.Response Body if it receives an error.
-func (client AzureAccountsClient) GetUserLUISAccountsSender(req *http.Request) (*http.Response, error) {
+func (client AzureAccountsClient) ListUserLUISAccountsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetUserLUISAccountsResponder handles the response to the GetUserLUISAccounts request. The method always
+// ListUserLUISAccountsResponder handles the response to the ListUserLUISAccounts request. The method always
 // closes the http.Response Body.
-func (client AzureAccountsClient) GetUserLUISAccountsResponder(resp *http.Response) (result ListAzureAccountInfoObject, err error) {
+func (client AzureAccountsClient) ListUserLUISAccountsResponder(resp *http.Response) (result ListAzureAccountInfoObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -263,10 +263,10 @@ func (client AzureAccountsClient) GetUserLUISAccountsResponder(resp *http.Respon
 	return
 }
 
-// RemoveFromApp removes assigned azure account from the application.
+// RemoveFromApp removes assigned Azure account from the application.
 // Parameters:
 // appID - the application ID.
-// azureAccountInfoObject - the azure account information object.
+// azureAccountInfoObject - the Azure account information object.
 func (client AzureAccountsClient) RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *AzureAccountInfoObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureAccountsClient.RemoveFromApp")

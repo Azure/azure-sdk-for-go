@@ -41,12 +41,12 @@ func NewUserIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) U
 	return UserIdentitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all user identities.
+// List list of all user identities.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// UID - user identifier. Must be unique in the current API Management service instance.
-func (client UserIdentitiesClient) List(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result UserIdentityCollectionPage, err error) {
+// userID - user identifier. Must be unique in the current API Management service instance.
+func (client UserIdentitiesClient) List(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result UserIdentityCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UserIdentitiesClient.List")
 		defer func() {
@@ -62,15 +62,15 @@ func (client UserIdentitiesClient) List(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: UID,
-			Constraints: []validation.Constraint{{Target: "UID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "UID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "UID", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+		{TargetValue: userID,
+			Constraints: []validation.Constraint{{Target: "userID", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "userID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.UserIdentitiesClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, serviceName, UID)
+	req, err := client.ListPreparer(ctx, resourceGroupName, serviceName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserIdentitiesClient", "List", nil, "Failure preparing request")
 		return
@@ -92,12 +92,12 @@ func (client UserIdentitiesClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client UserIdentitiesClient) ListPreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
+func (client UserIdentitiesClient) ListPreparer(ctx context.Context, resourceGroupName string, serviceName string, userID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"uid":               autorest.Encode("path", UID),
+		"userId":            autorest.Encode("path", userID),
 	}
 
 	const APIVersion = "2018-06-01-preview"
@@ -108,7 +108,7 @@ func (client UserIdentitiesClient) ListPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{uid}/identities", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/identities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -155,7 +155,7 @@ func (client UserIdentitiesClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UserIdentitiesClient) ListComplete(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result UserIdentityCollectionIterator, err error) {
+func (client UserIdentitiesClient) ListComplete(ctx context.Context, resourceGroupName string, serviceName string, userID string) (result UserIdentityCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UserIdentitiesClient.List")
 		defer func() {
@@ -166,6 +166,6 @@ func (client UserIdentitiesClient) ListComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, serviceName, UID)
+	result.page, err = client.List(ctx, resourceGroupName, serviceName, userID)
 	return
 }

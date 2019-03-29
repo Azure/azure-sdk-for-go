@@ -39,6 +39,13 @@ const (
 	HighDensity HostingMode = original.HighDensity
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	None           IdentityType = original.None
+	SystemAssigned IdentityType = original.SystemAssigned
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -61,11 +68,13 @@ const (
 type SkuName = original.SkuName
 
 const (
-	Basic     SkuName = original.Basic
-	Free      SkuName = original.Free
-	Standard  SkuName = original.Standard
-	Standard2 SkuName = original.Standard2
-	Standard3 SkuName = original.Standard3
+	Basic              SkuName = original.Basic
+	Free               SkuName = original.Free
+	Standard           SkuName = original.Standard
+	Standard2          SkuName = original.Standard2
+	Standard3          SkuName = original.Standard3
+	StorageOptimizedL1 SkuName = original.StorageOptimizedL1
+	StorageOptimizedL2 SkuName = original.StorageOptimizedL2
 )
 
 type UnavailableNameReason = original.UnavailableNameReason
@@ -133,6 +142,9 @@ func PossibleAdminKeyKindValues() []AdminKeyKind {
 }
 func PossibleHostingModeValues() []HostingMode {
 	return original.PossibleHostingModeValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

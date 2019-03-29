@@ -746,6 +746,147 @@ type Parameter struct {
 	CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
 }
 
+// PatchedResource azure resource.
+type PatchedResource struct {
+	// ID - Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Specifies the name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+	// Type - Specifies the type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Tags - Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PatchedResource.
+func (pr PatchedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.ID != nil {
+		objectMap["id"] = pr.ID
+	}
+	if pr.Name != nil {
+		objectMap["name"] = pr.Name
+	}
+	if pr.Location != nil {
+		objectMap["location"] = pr.Location
+	}
+	if pr.Type != nil {
+		objectMap["type"] = pr.Type
+	}
+	if pr.Tags != nil {
+		objectMap["tags"] = pr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// PatchedWebService instance of an Patched Azure ML web service resource.
+type PatchedWebService struct {
+	// Properties - Contains the property payload that describes the web service.
+	Properties BasicProperties `json:"properties,omitempty"`
+	// ID - Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Specifies the name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+	// Type - Specifies the type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Tags - Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PatchedWebService.
+func (pws PatchedWebService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = pws.Properties
+	if pws.ID != nil {
+		objectMap["id"] = pws.ID
+	}
+	if pws.Name != nil {
+		objectMap["name"] = pws.Name
+	}
+	if pws.Location != nil {
+		objectMap["location"] = pws.Location
+	}
+	if pws.Type != nil {
+		objectMap["type"] = pws.Type
+	}
+	if pws.Tags != nil {
+		objectMap["tags"] = pws.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PatchedWebService struct.
+func (pws *PatchedWebService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicProperties(*v)
+				if err != nil {
+					return err
+				}
+				pws.Properties = properties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pws.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pws.Name = &name
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pws.Location = &location
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pws.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pws.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // PatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type PatchFuture struct {
 	azure.Future

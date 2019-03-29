@@ -47,17 +47,18 @@ func NewOperationClientWithBaseURI(baseURI string, subscriptionID string) Operat
 // serviceName - the name of the API Management service.
 // apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
 // revision has ;rev=n as a suffix where n is the revision number.
-// filter - | Field       | Supported operators    | Supported functions                         |
-// |-------------|------------------------|---------------------------------------------|
-// | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | apiName     | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | method      | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | urlTemplate | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |apiName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |method | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |urlTemplate | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
-// includeNotTaggedOperations - include not tagged operations in response
+// includeNotTaggedOperations - include not tagged Operations.
 func (client OperationClient) ListByTags(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32, includeNotTaggedOperations *bool) (result TagResourceCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationClient.ListByTags")
@@ -133,8 +134,6 @@ func (client OperationClient) ListByTagsPreparer(ctx context.Context, resourceGr
 	}
 	if includeNotTaggedOperations != nil {
 		queryParameters["includeNotTaggedOperations"] = autorest.Encode("query", *includeNotTaggedOperations)
-	} else {
-		queryParameters["includeNotTaggedOperations"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(

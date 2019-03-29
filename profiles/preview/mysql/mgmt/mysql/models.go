@@ -104,6 +104,8 @@ const (
 type BaseClient = original.BaseClient
 type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type Configuration = original.Configuration
 type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationProperties = original.ConfigurationProperties
@@ -157,6 +159,7 @@ type ServerUpdateParametersProperties = original.ServerUpdateParametersPropertie
 type ServersClient = original.ServersClient
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
+type ServersRestartFuture = original.ServersRestartFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type Sku = original.Sku
 type StorageProfile = original.StorageProfile

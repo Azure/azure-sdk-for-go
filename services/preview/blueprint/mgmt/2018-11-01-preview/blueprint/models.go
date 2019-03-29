@@ -33,15 +33,17 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/
 type AssignmentLockMode string
 
 const (
-	// AllResources ...
-	AllResources AssignmentLockMode = "AllResources"
+	// AllResourcesDoNotDelete ...
+	AllResourcesDoNotDelete AssignmentLockMode = "AllResourcesDoNotDelete"
+	// AllResourcesReadOnly ...
+	AllResourcesReadOnly AssignmentLockMode = "AllResourcesReadOnly"
 	// None ...
 	None AssignmentLockMode = "None"
 )
 
 // PossibleAssignmentLockModeValues returns an array of possible values for the AssignmentLockMode const type.
 func PossibleAssignmentLockModeValues() []AssignmentLockMode {
-	return []AssignmentLockMode{AllResources, None}
+	return []AssignmentLockMode{AllResourcesDoNotDelete, AllResourcesReadOnly, None}
 }
 
 // AssignmentProvisioningState enumerates the values for assignment provisioning state.
@@ -115,9 +117,10 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type TargetScope string
 
 const (
-	// ManagementGroup ...
+	// ManagementGroup The blueprint targets a management group during blueprint assignment. This is reserved
+	// for future use.
 	ManagementGroup TargetScope = "managementGroup"
-	// Subscription ...
+	// Subscription The blueprint targets a subscription during blueprint assignment.
 	Subscription TargetScope = "subscription"
 )
 
@@ -776,8 +779,10 @@ func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (As
 
 // AssignmentLockSettings defines how resources deployed by a blueprint assignment are locked.
 type AssignmentLockSettings struct {
-	// Mode - Lock mode. Possible values include: 'None', 'AllResources'
+	// Mode - Lock mode. Possible values include: 'None', 'AllResourcesReadOnly', 'AllResourcesDoNotDelete'
 	Mode AssignmentLockMode `json:"mode,omitempty"`
+	// ExcludedPrincipals - List of AAD principals excluded from blueprint locks. Up to 5 principals are permitted.
+	ExcludedPrincipals *[]string `json:"excludedPrincipals,omitempty"`
 }
 
 // AssignmentOperation represents underlying deployment detail for each update to the blueprint assignment.
@@ -1968,6 +1973,8 @@ type ResourceGroupDefinition struct {
 	*ParameterDefinitionMetadata `json:"metadata,omitempty"`
 	// DependsOn - Artifacts which need to be deployed before this resource group.
 	DependsOn *[]string `json:"dependsOn,omitempty"`
+	// Tags - Tags to be assigned to this resource group.
+	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for ResourceGroupDefinition.
@@ -1984,6 +1991,9 @@ func (rgd ResourceGroupDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if rgd.DependsOn != nil {
 		objectMap["dependsOn"] = rgd.DependsOn
+	}
+	if rgd.Tags != nil {
+		objectMap["tags"] = rgd.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -2032,6 +2042,15 @@ func (rgd *ResourceGroupDefinition) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				rgd.DependsOn = &dependsOn
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rgd.Tags = tags
 			}
 		}
 	}
@@ -2471,4 +2490,12 @@ type UserAssignedIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - Client App Id associated with this identity.
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// WhoIsBlueprintContract response schema for querying the Azure Blueprints service principal in the
+// tenant.
+type WhoIsBlueprintContract struct {
+	autorest.Response `json:"-"`
+	// ObjectID - AAD object Id of the Azure Blueprints service principal in the tenant.
+	ObjectID *string `json:"objectId,omitempty"`
 }

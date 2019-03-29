@@ -23,6 +23,30 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
+type RegulatoryComplianceStandardsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)
+	List(ctx context.Context, resourceGroupName string, filter string) (result security.RegulatoryComplianceStandardListPage, err error)
+}
+
+var _ RegulatoryComplianceStandardsClientAPI = (*security.RegulatoryComplianceStandardsClient)(nil)
+
+// RegulatoryComplianceControlsClientAPI contains the set of methods on the RegulatoryComplianceControlsClient type.
+type RegulatoryComplianceControlsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, regulatoryComplianceControlName string) (result security.RegulatoryComplianceControl, err error)
+	List(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, filter string) (result security.RegulatoryComplianceControlListPage, err error)
+}
+
+var _ RegulatoryComplianceControlsClientAPI = (*security.RegulatoryComplianceControlsClient)(nil)
+
+// RegulatoryComplianceAssessmentsClientAPI contains the set of methods on the RegulatoryComplianceAssessmentsClient type.
+type RegulatoryComplianceAssessmentsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, regulatoryComplianceAssessmentName string) (result security.RegulatoryComplianceAssessment, err error)
+	List(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, filter string) (result security.RegulatoryComplianceAssessmentListPage, err error)
+}
+
+var _ RegulatoryComplianceAssessmentsClientAPI = (*security.RegulatoryComplianceAssessmentsClient)(nil)
+
 // PricingsClientAPI contains the set of methods on the PricingsClient type.
 type PricingsClientAPI interface {
 	CreateOrUpdateResourceGroupPricing(ctx context.Context, resourceGroupName string, pricingName string, pricing security.Pricing) (result security.Pricing, err error)
@@ -81,6 +105,16 @@ type AdvancedThreatProtectionClientAPI interface {
 }
 
 var _ AdvancedThreatProtectionClientAPI = (*security.AdvancedThreatProtectionClient)(nil)
+
+// DeviceSecurityGroupsClientAPI contains the set of methods on the DeviceSecurityGroupsClient type.
+type DeviceSecurityGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup security.DeviceSecurityGroup) (result security.DeviceSecurityGroup, err error)
+	Delete(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result security.DeviceSecurityGroup, err error)
+	List(ctx context.Context, resourceID string) (result security.DeviceSecurityGroupListPage, err error)
+}
+
+var _ DeviceSecurityGroupsClientAPI = (*security.DeviceSecurityGroupsClient)(nil)
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {

@@ -67,7 +67,7 @@ func (client AuthorizationServerClient) CreateOrUpdate(ctx context.Context, reso
 		{TargetValue: authsid,
 			Constraints: []validation.Constraint{{Target: "authsid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "authsid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "authsid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+				{Target: "authsid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.AuthorizationServerContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.AuthorizationServerContractProperties.DisplayName", Name: validation.Null, Rule: true,
@@ -177,7 +177,7 @@ func (client AuthorizationServerClient) Delete(ctx context.Context, resourceGrou
 		{TargetValue: authsid,
 			Constraints: []validation.Constraint{{Target: "authsid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "authsid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "authsid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "authsid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.AuthorizationServerClient", "Delete", err.Error())
 	}
 
@@ -268,7 +268,7 @@ func (client AuthorizationServerClient) Get(ctx context.Context, resourceGroupNa
 		{TargetValue: authsid,
 			Constraints: []validation.Constraint{{Target: "authsid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "authsid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "authsid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "authsid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.AuthorizationServerClient", "Get", err.Error())
 	}
 
@@ -359,7 +359,7 @@ func (client AuthorizationServerClient) GetEntityTag(ctx context.Context, resour
 		{TargetValue: authsid,
 			Constraints: []validation.Constraint{{Target: "authsid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "authsid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "authsid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "authsid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.AuthorizationServerClient", "GetEntityTag", err.Error())
 	}
 
@@ -429,10 +429,11 @@ func (client AuthorizationServerClient) GetEntityTagResponder(resp *http.Respons
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                         |
-// |-------|------------------------|---------------------------------------------|
-// | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// filter - | Field       | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+// |displayName | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
 // top - number of records to return.
 // skip - number of records to skip.
 func (client AuthorizationServerClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result AuthorizationServerCollectionPage, err error) {
@@ -596,7 +597,7 @@ func (client AuthorizationServerClient) Update(ctx context.Context, resourceGrou
 		{TargetValue: authsid,
 			Constraints: []validation.Constraint{{Target: "authsid", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "authsid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "authsid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}}}); err != nil {
+				{Target: "authsid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.AuthorizationServerClient", "Update", err.Error())
 	}
 

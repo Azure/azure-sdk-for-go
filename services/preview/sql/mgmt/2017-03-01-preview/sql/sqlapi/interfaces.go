@@ -598,6 +598,7 @@ var _ ServerDNSAliasesClientAPI = (*sql.ServerDNSAliasesClient)(nil)
 type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerSecurityAlertPolicy) (result sql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerSecurityAlertPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*sql.ServerSecurityAlertPoliciesClient)(nil)

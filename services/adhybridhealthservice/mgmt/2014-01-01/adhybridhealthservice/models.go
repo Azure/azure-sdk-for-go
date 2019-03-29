@@ -1056,6 +1056,23 @@ type ConnectorConnectionErrors struct {
 	Value *[]ConnectorConnectionError `json:"value,omitempty"`
 }
 
+// ConnectorMetadata gets the list of connectors and run profile names.
+type ConnectorMetadata struct {
+	autorest.Response `json:"-"`
+	// Connectors - The list of connectors.
+	Connectors *[]ConnectorMetadataDetails `json:"connectors,omitempty"`
+	// RunProfileNames - The list of run profile names.
+	RunProfileNames *[]string `json:"runProfileNames,omitempty"`
+}
+
+// ConnectorMetadataDetails details of the connector.
+type ConnectorMetadataDetails struct {
+	// ConnectorID - The Connector Id.
+	ConnectorID *string `json:"connectorId,omitempty"`
+	// ConnectorDisplayName - The Connector Display Name
+	ConnectorDisplayName *string `json:"connectorDisplayName,omitempty"`
+}
+
 // ConnectorObjectError the connector object error.
 type ConnectorObjectError struct {
 	// ID - The error Id.
@@ -2522,6 +2539,29 @@ type Result struct {
 	autorest.Response `json:"-"`
 	// Value - The value.
 	Value *bool `json:"value,omitempty"`
+}
+
+// RiskyIPBlobURI the blob uri pointing to Risky IP Report.
+type RiskyIPBlobURI struct {
+	// TenantID - The tenant id for whom the report belongs to.
+	TenantID *string `json:"tenantId,omitempty"`
+	// ServiceID - The service id for whom the report belongs to.
+	ServiceID *string `json:"serviceId,omitempty"`
+	// ResultSasURI - The blob uri for the report.
+	ResultSasURI *string `json:"resultSasUri,omitempty"`
+	// BlobCreateDateTime - Time at which the new Risky IP report was requested.
+	BlobCreateDateTime *date.Time `json:"blobCreateDateTime,omitempty"`
+	// JobCompletionTime - Time at which the blob creation job for the new Risky IP report was completed.
+	JobCompletionTime *date.Time `json:"jobCompletionTime,omitempty"`
+	// Status - Status of the Risky IP report generation.
+	Status *string `json:"status,omitempty"`
+}
+
+// RiskyIPBlobUris the list containing blob uris.
+type RiskyIPBlobUris struct {
+	autorest.Response `json:"-"`
+	// Value - The list of blob uris.
+	Value *[]RiskyIPBlobURI `json:"value,omitempty"`
 }
 
 // RuleErrorInfo the error details in legacy rule processing.

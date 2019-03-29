@@ -1050,6 +1050,35 @@ type APIContractUpdateProperties struct {
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 }
 
+// APICreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type APICreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *APICreateOrUpdateFuture) Result(client APIClient) (ac APIContract, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APICreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("apimanagement.APICreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ac.Response.Response, err = future.GetResult(sender); err == nil && ac.Response.Response.StatusCode != http.StatusNoContent {
+		ac, err = client.CreateOrUpdateResponder(ac.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.APICreateOrUpdateFuture", "Result", ac.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // APICreateOrUpdateParameter API Create or Update Parameters.
 type APICreateOrUpdateParameter struct {
 	// APICreateOrUpdateProperties - Api entity create of update properties.
@@ -2944,6 +2973,293 @@ type BodyDiagnosticSettings struct {
 	Bytes *int32 `json:"bytes,omitempty"`
 }
 
+// CacheCollection paged Caches list representation.
+type CacheCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Page values.
+	Value *[]CacheContract `json:"value,omitempty"`
+	// NextLink - Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CacheCollectionIterator provides access to a complete listing of CacheContract values.
+type CacheCollectionIterator struct {
+	i    int
+	page CacheCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CacheCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CacheCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CacheCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CacheCollectionIterator) Response() CacheCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CacheCollectionIterator) Value() CacheContract {
+	if !iter.page.NotDone() {
+		return CacheContract{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CacheCollectionIterator type.
+func NewCacheCollectionIterator(page CacheCollectionPage) CacheCollectionIterator {
+	return CacheCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cc CacheCollection) IsEmpty() bool {
+	return cc.Value == nil || len(*cc.Value) == 0
+}
+
+// cacheCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cc CacheCollection) cacheCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cc.NextLink)))
+}
+
+// CacheCollectionPage contains a page of CacheContract values.
+type CacheCollectionPage struct {
+	fn func(context.Context, CacheCollection) (CacheCollection, error)
+	cc CacheCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CacheCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CacheCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.cc)
+	if err != nil {
+		return err
+	}
+	page.cc = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CacheCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CacheCollectionPage) NotDone() bool {
+	return !page.cc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CacheCollectionPage) Response() CacheCollection {
+	return page.cc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CacheCollectionPage) Values() []CacheContract {
+	if page.cc.IsEmpty() {
+		return nil
+	}
+	return *page.cc.Value
+}
+
+// Creates a new instance of the CacheCollectionPage type.
+func NewCacheCollectionPage(getNextPage func(context.Context, CacheCollection) (CacheCollection, error)) CacheCollectionPage {
+	return CacheCollectionPage{fn: getNextPage}
+}
+
+// CacheContract cache details.
+type CacheContract struct {
+	autorest.Response `json:"-"`
+	// CacheContractProperties - Cache properties details.
+	*CacheContractProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CacheContract.
+func (cc CacheContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cc.CacheContractProperties != nil {
+		objectMap["properties"] = cc.CacheContractProperties
+	}
+	if cc.ID != nil {
+		objectMap["id"] = cc.ID
+	}
+	if cc.Name != nil {
+		objectMap["name"] = cc.Name
+	}
+	if cc.Type != nil {
+		objectMap["type"] = cc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CacheContract struct.
+func (cc *CacheContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var cacheContractProperties CacheContractProperties
+				err = json.Unmarshal(*v, &cacheContractProperties)
+				if err != nil {
+					return err
+				}
+				cc.CacheContractProperties = &cacheContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CacheContractProperties properties of the Cache contract.
+type CacheContractProperties struct {
+	// Description - Cache description
+	Description *string `json:"description,omitempty"`
+	// ConnectionString - Runtime connection string to cache
+	ConnectionString *string `json:"connectionString,omitempty"`
+	// ResourceID - Original uri of entity in external system cache points to
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// CacheUpdateParameters cache update details.
+type CacheUpdateParameters struct {
+	// CacheUpdateProperties - Cache update properties details.
+	*CacheUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CacheUpdateParameters.
+func (cup CacheUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cup.CacheUpdateProperties != nil {
+		objectMap["properties"] = cup.CacheUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CacheUpdateParameters struct.
+func (cup *CacheUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var cacheUpdateProperties CacheUpdateProperties
+				err = json.Unmarshal(*v, &cacheUpdateProperties)
+				if err != nil {
+					return err
+				}
+				cup.CacheUpdateProperties = &cacheUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// CacheUpdateProperties parameters supplied to the Update Cache operation.
+type CacheUpdateProperties struct {
+	// Description - Cache description
+	Description *string `json:"description,omitempty"`
+	// ConnectionString - Runtime connection string to cache
+	ConnectionString *string `json:"connectionString,omitempty"`
+	// ResourceID - Original uri of entity in external system cache points to
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 // CertificateCollection paged Certificates list representation.
 type CertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -3269,7 +3585,6 @@ type ConnectivityStatusContract struct {
 
 // CurrentUserIdentity ...
 type CurrentUserIdentity struct {
-	autorest.Response `json:"-"`
 	// ID - API Management service user id.
 	ID *string `json:"id,omitempty"`
 }
@@ -4287,6 +4602,8 @@ type IdentityProviderBaseParameters struct {
 	Type IdentityProviderType `json:"type,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
+	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
 	// SignupPolicyName - Signup Policy Name. Only applies to AAD B2C Identity Provider.
 	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
 	// SigninPolicyName - Signin Policy Name. Only applies to AAD B2C Identity Provider.
@@ -4391,6 +4708,8 @@ type IdentityProviderContractProperties struct {
 	Type IdentityProviderType `json:"type,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
+	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
 	// SignupPolicyName - Signup Policy Name. Only applies to AAD B2C Identity Provider.
 	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
 	// SigninPolicyName - Signin Policy Name. Only applies to AAD B2C Identity Provider.
@@ -4596,6 +4915,8 @@ type IdentityProviderUpdateProperties struct {
 	Type IdentityProviderType `json:"type,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
+	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+	Authority *string `json:"authority,omitempty"`
 	// SignupPolicyName - Signup Policy Name. Only applies to AAD B2C Identity Provider.
 	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
 	// SigninPolicyName - Signin Policy Name. Only applies to AAD B2C Identity Provider.
@@ -9321,6 +9642,35 @@ func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sr Serv
 	return
 }
 
+// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServiceDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServiceDeleteFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.ServiceDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceDeleteFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr, err = client.DeleteResponder(sr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceDeleteFuture", "Result", sr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // ServiceGetSsoTokenResult the response of the GetSsoToken operation.
 type ServiceGetSsoTokenResult struct {
 	autorest.Response `json:"-"`
@@ -10338,7 +10688,7 @@ func (sc *SubscriptionContract) UnmarshalJSON(body []byte) error {
 
 // SubscriptionContractProperties subscription details.
 type SubscriptionContractProperties struct {
-	// OwnerID - The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{uid} where {uid} is a user identifier.
+	// OwnerID - The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{userId} where {userId} is a user identifier.
 	OwnerID *string `json:"ownerId,omitempty"`
 	// Scope - Scope like /products/{productId} or /apis or /apis/{apiId}.
 	Scope *string `json:"scope,omitempty"`
@@ -10368,7 +10718,7 @@ type SubscriptionContractProperties struct {
 
 // SubscriptionCreateParameterProperties parameters supplied to the Create subscription operation.
 type SubscriptionCreateParameterProperties struct {
-	// OwnerID - User (user id path) for whom subscription is being created in form /users/{uid}
+	// OwnerID - User (user id path) for whom subscription is being created in form /users/{userId}
 	OwnerID *string `json:"ownerId,omitempty"`
 	// Scope - Scope like /products/{productId} or /apis or /apis/{apiId}.
 	Scope *string `json:"scope,omitempty"`
@@ -10439,7 +10789,7 @@ type SubscriptionsDelegationSettingsProperties struct {
 
 // SubscriptionUpdateParameterProperties parameters supplied to the Update subscription operation.
 type SubscriptionUpdateParameterProperties struct {
-	// OwnerID - User identifier path: /users/{uid}
+	// OwnerID - User identifier path: /users/{userId}
 	OwnerID *string `json:"ownerId,omitempty"`
 	// Scope - Scope like /products/{productId} or /apis or /apis/{apiId}
 	Scope *string `json:"scope,omitempty"`

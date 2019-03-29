@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ConsentType = original.ConsentType
+
+const (
+	AllPrincipals ConsentType = original.AllPrincipals
+	Principal     ConsentType = original.Principal
+)
+
 type ObjectType = original.ObjectType
 
 const (
@@ -50,6 +57,7 @@ type ADGroup = original.ADGroup
 type AddOwnerParameters = original.AddOwnerParameters
 type AppRole = original.AppRole
 type Application = original.Application
+type ApplicationBase = original.ApplicationBase
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
@@ -79,24 +87,36 @@ type GroupListResult = original.GroupListResult
 type GroupListResultIterator = original.GroupListResultIterator
 type GroupListResultPage = original.GroupListResultPage
 type GroupsClient = original.GroupsClient
+type InformationalURL = original.InformationalURL
 type KeyCredential = original.KeyCredential
 type KeyCredentialListResult = original.KeyCredentialListResult
 type KeyCredentialsUpdateParameters = original.KeyCredentialsUpdateParameters
-type OAuth2Client = original.OAuth2Client
+type OAuth2Permission = original.OAuth2Permission
+type OAuth2PermissionGrant = original.OAuth2PermissionGrant
+type OAuth2PermissionGrantClient = original.OAuth2PermissionGrantClient
+type OAuth2PermissionGrantListResult = original.OAuth2PermissionGrantListResult
+type OAuth2PermissionGrantListResultIterator = original.OAuth2PermissionGrantListResultIterator
+type OAuth2PermissionGrantListResultPage = original.OAuth2PermissionGrantListResultPage
 type ObjectsClient = original.ObjectsClient
 type OdataError = original.OdataError
+type OptionalClaim = original.OptionalClaim
+type OptionalClaims = original.OptionalClaims
 type PasswordCredential = original.PasswordCredential
 type PasswordCredentialListResult = original.PasswordCredentialListResult
 type PasswordCredentialsUpdateParameters = original.PasswordCredentialsUpdateParameters
 type PasswordProfile = original.PasswordProfile
-type Permissions = original.Permissions
+type PreAuthorizedApplication = original.PreAuthorizedApplication
+type PreAuthorizedApplicationExtension = original.PreAuthorizedApplicationExtension
+type PreAuthorizedApplicationPermission = original.PreAuthorizedApplicationPermission
 type RequiredResourceAccess = original.RequiredResourceAccess
 type ResourceAccess = original.ResourceAccess
 type ServicePrincipal = original.ServicePrincipal
+type ServicePrincipalBase = original.ServicePrincipalBase
 type ServicePrincipalCreateParameters = original.ServicePrincipalCreateParameters
 type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
+type ServicePrincipalObjectResult = original.ServicePrincipalObjectResult
 type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
 type ServicePrincipalsClient = original.ServicePrincipalsClient
 type SignInName = original.SignInName
@@ -157,11 +177,17 @@ func NewGroupsClient(tenantID string) GroupsClient {
 func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
 	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
 }
-func NewOAuth2Client(tenantID string) OAuth2Client {
-	return original.NewOAuth2Client(tenantID)
+func NewOAuth2PermissionGrantClient(tenantID string) OAuth2PermissionGrantClient {
+	return original.NewOAuth2PermissionGrantClient(tenantID)
 }
-func NewOAuth2ClientWithBaseURI(baseURI string, tenantID string) OAuth2Client {
-	return original.NewOAuth2ClientWithBaseURI(baseURI, tenantID)
+func NewOAuth2PermissionGrantClientWithBaseURI(baseURI string, tenantID string) OAuth2PermissionGrantClient {
+	return original.NewOAuth2PermissionGrantClientWithBaseURI(baseURI, tenantID)
+}
+func NewOAuth2PermissionGrantListResultIterator(page OAuth2PermissionGrantListResultPage) OAuth2PermissionGrantListResultIterator {
+	return original.NewOAuth2PermissionGrantListResultIterator(page)
+}
+func NewOAuth2PermissionGrantListResultPage(getNextPage func(context.Context, OAuth2PermissionGrantListResult) (OAuth2PermissionGrantListResult, error)) OAuth2PermissionGrantListResultPage {
+	return original.NewOAuth2PermissionGrantListResultPage(getNextPage)
 }
 func NewObjectsClient(tenantID string) ObjectsClient {
 	return original.NewObjectsClient(tenantID)
@@ -201,6 +227,9 @@ func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
 }
 func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, tenantID)
+}
+func PossibleConsentTypeValues() []ConsentType {
+	return original.PossibleConsentTypeValues()
 }
 func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()

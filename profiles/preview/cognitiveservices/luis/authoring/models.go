@@ -32,155 +32,155 @@ const (
 type ReadableType = original.ReadableType
 
 const (
-	ReadableTypeClosedListEntityExtractor        ReadableType = original.ReadableTypeClosedListEntityExtractor
 	ReadableTypeCompositeEntityExtractor         ReadableType = original.ReadableTypeCompositeEntityExtractor
 	ReadableTypeEntityExtractor                  ReadableType = original.ReadableTypeEntityExtractor
 	ReadableTypeHierarchicalChildEntityExtractor ReadableType = original.ReadableTypeHierarchicalChildEntityExtractor
 	ReadableTypeHierarchicalEntityExtractor      ReadableType = original.ReadableTypeHierarchicalEntityExtractor
 	ReadableTypeIntentClassifier                 ReadableType = original.ReadableTypeIntentClassifier
+	ReadableTypeListEntityExtractor              ReadableType = original.ReadableTypeListEntityExtractor
 	ReadableTypePatternAnyEntityExtractor        ReadableType = original.ReadableTypePatternAnyEntityExtractor
 	ReadableTypePrebuiltEntityExtractor          ReadableType = original.ReadableTypePrebuiltEntityExtractor
-	ReadableTypeRegexEntityExtractor             ReadableType = original.ReadableTypeRegexEntityExtractor
+	ReadableTypeRegularExpressionEntityExtractor ReadableType = original.ReadableTypeRegularExpressionEntityExtractor
 )
 
 type ReadableType1 = original.ReadableType1
 
 const (
-	ReadableType1ClosedListEntityExtractor        ReadableType1 = original.ReadableType1ClosedListEntityExtractor
 	ReadableType1CompositeEntityExtractor         ReadableType1 = original.ReadableType1CompositeEntityExtractor
 	ReadableType1EntityExtractor                  ReadableType1 = original.ReadableType1EntityExtractor
 	ReadableType1HierarchicalChildEntityExtractor ReadableType1 = original.ReadableType1HierarchicalChildEntityExtractor
 	ReadableType1HierarchicalEntityExtractor      ReadableType1 = original.ReadableType1HierarchicalEntityExtractor
 	ReadableType1IntentClassifier                 ReadableType1 = original.ReadableType1IntentClassifier
+	ReadableType1ListEntityExtractor              ReadableType1 = original.ReadableType1ListEntityExtractor
 	ReadableType1PatternAnyEntityExtractor        ReadableType1 = original.ReadableType1PatternAnyEntityExtractor
 	ReadableType1PrebuiltEntityExtractor          ReadableType1 = original.ReadableType1PrebuiltEntityExtractor
-	ReadableType1RegexEntityExtractor             ReadableType1 = original.ReadableType1RegexEntityExtractor
+	ReadableType1RegularExpressionEntityExtractor ReadableType1 = original.ReadableType1RegularExpressionEntityExtractor
 )
 
 type ReadableType10 = original.ReadableType10
 
 const (
-	ReadableType10ClosedListEntityExtractor        ReadableType10 = original.ReadableType10ClosedListEntityExtractor
 	ReadableType10CompositeEntityExtractor         ReadableType10 = original.ReadableType10CompositeEntityExtractor
 	ReadableType10EntityExtractor                  ReadableType10 = original.ReadableType10EntityExtractor
 	ReadableType10HierarchicalChildEntityExtractor ReadableType10 = original.ReadableType10HierarchicalChildEntityExtractor
 	ReadableType10HierarchicalEntityExtractor      ReadableType10 = original.ReadableType10HierarchicalEntityExtractor
 	ReadableType10IntentClassifier                 ReadableType10 = original.ReadableType10IntentClassifier
+	ReadableType10ListEntityExtractor              ReadableType10 = original.ReadableType10ListEntityExtractor
 	ReadableType10PatternAnyEntityExtractor        ReadableType10 = original.ReadableType10PatternAnyEntityExtractor
 	ReadableType10PrebuiltEntityExtractor          ReadableType10 = original.ReadableType10PrebuiltEntityExtractor
-	ReadableType10RegexEntityExtractor             ReadableType10 = original.ReadableType10RegexEntityExtractor
+	ReadableType10RegularExpressionEntityExtractor ReadableType10 = original.ReadableType10RegularExpressionEntityExtractor
 )
 
 type ReadableType2 = original.ReadableType2
 
 const (
-	ReadableType2ClosedListEntityExtractor        ReadableType2 = original.ReadableType2ClosedListEntityExtractor
 	ReadableType2CompositeEntityExtractor         ReadableType2 = original.ReadableType2CompositeEntityExtractor
 	ReadableType2EntityExtractor                  ReadableType2 = original.ReadableType2EntityExtractor
 	ReadableType2HierarchicalChildEntityExtractor ReadableType2 = original.ReadableType2HierarchicalChildEntityExtractor
 	ReadableType2HierarchicalEntityExtractor      ReadableType2 = original.ReadableType2HierarchicalEntityExtractor
 	ReadableType2IntentClassifier                 ReadableType2 = original.ReadableType2IntentClassifier
+	ReadableType2ListEntityExtractor              ReadableType2 = original.ReadableType2ListEntityExtractor
 	ReadableType2PatternAnyEntityExtractor        ReadableType2 = original.ReadableType2PatternAnyEntityExtractor
 	ReadableType2PrebuiltEntityExtractor          ReadableType2 = original.ReadableType2PrebuiltEntityExtractor
-	ReadableType2RegexEntityExtractor             ReadableType2 = original.ReadableType2RegexEntityExtractor
+	ReadableType2RegularExpressionEntityExtractor ReadableType2 = original.ReadableType2RegularExpressionEntityExtractor
 )
 
 type ReadableType3 = original.ReadableType3
 
 const (
-	ReadableType3ClosedListEntityExtractor        ReadableType3 = original.ReadableType3ClosedListEntityExtractor
 	ReadableType3CompositeEntityExtractor         ReadableType3 = original.ReadableType3CompositeEntityExtractor
 	ReadableType3EntityExtractor                  ReadableType3 = original.ReadableType3EntityExtractor
 	ReadableType3HierarchicalChildEntityExtractor ReadableType3 = original.ReadableType3HierarchicalChildEntityExtractor
 	ReadableType3HierarchicalEntityExtractor      ReadableType3 = original.ReadableType3HierarchicalEntityExtractor
 	ReadableType3IntentClassifier                 ReadableType3 = original.ReadableType3IntentClassifier
+	ReadableType3ListEntityExtractor              ReadableType3 = original.ReadableType3ListEntityExtractor
 	ReadableType3PatternAnyEntityExtractor        ReadableType3 = original.ReadableType3PatternAnyEntityExtractor
 	ReadableType3PrebuiltEntityExtractor          ReadableType3 = original.ReadableType3PrebuiltEntityExtractor
-	ReadableType3RegexEntityExtractor             ReadableType3 = original.ReadableType3RegexEntityExtractor
+	ReadableType3RegularExpressionEntityExtractor ReadableType3 = original.ReadableType3RegularExpressionEntityExtractor
 )
 
 type ReadableType4 = original.ReadableType4
 
 const (
-	ReadableType4ClosedListEntityExtractor        ReadableType4 = original.ReadableType4ClosedListEntityExtractor
 	ReadableType4CompositeEntityExtractor         ReadableType4 = original.ReadableType4CompositeEntityExtractor
 	ReadableType4EntityExtractor                  ReadableType4 = original.ReadableType4EntityExtractor
 	ReadableType4HierarchicalChildEntityExtractor ReadableType4 = original.ReadableType4HierarchicalChildEntityExtractor
 	ReadableType4HierarchicalEntityExtractor      ReadableType4 = original.ReadableType4HierarchicalEntityExtractor
 	ReadableType4IntentClassifier                 ReadableType4 = original.ReadableType4IntentClassifier
+	ReadableType4ListEntityExtractor              ReadableType4 = original.ReadableType4ListEntityExtractor
 	ReadableType4PatternAnyEntityExtractor        ReadableType4 = original.ReadableType4PatternAnyEntityExtractor
 	ReadableType4PrebuiltEntityExtractor          ReadableType4 = original.ReadableType4PrebuiltEntityExtractor
-	ReadableType4RegexEntityExtractor             ReadableType4 = original.ReadableType4RegexEntityExtractor
+	ReadableType4RegularExpressionEntityExtractor ReadableType4 = original.ReadableType4RegularExpressionEntityExtractor
 )
 
 type ReadableType5 = original.ReadableType5
 
 const (
-	ReadableType5ClosedListEntityExtractor        ReadableType5 = original.ReadableType5ClosedListEntityExtractor
 	ReadableType5CompositeEntityExtractor         ReadableType5 = original.ReadableType5CompositeEntityExtractor
 	ReadableType5EntityExtractor                  ReadableType5 = original.ReadableType5EntityExtractor
 	ReadableType5HierarchicalChildEntityExtractor ReadableType5 = original.ReadableType5HierarchicalChildEntityExtractor
 	ReadableType5HierarchicalEntityExtractor      ReadableType5 = original.ReadableType5HierarchicalEntityExtractor
 	ReadableType5IntentClassifier                 ReadableType5 = original.ReadableType5IntentClassifier
+	ReadableType5ListEntityExtractor              ReadableType5 = original.ReadableType5ListEntityExtractor
 	ReadableType5PatternAnyEntityExtractor        ReadableType5 = original.ReadableType5PatternAnyEntityExtractor
 	ReadableType5PrebuiltEntityExtractor          ReadableType5 = original.ReadableType5PrebuiltEntityExtractor
-	ReadableType5RegexEntityExtractor             ReadableType5 = original.ReadableType5RegexEntityExtractor
+	ReadableType5RegularExpressionEntityExtractor ReadableType5 = original.ReadableType5RegularExpressionEntityExtractor
 )
 
 type ReadableType6 = original.ReadableType6
 
 const (
-	ReadableType6ClosedListEntityExtractor        ReadableType6 = original.ReadableType6ClosedListEntityExtractor
 	ReadableType6CompositeEntityExtractor         ReadableType6 = original.ReadableType6CompositeEntityExtractor
 	ReadableType6EntityExtractor                  ReadableType6 = original.ReadableType6EntityExtractor
 	ReadableType6HierarchicalChildEntityExtractor ReadableType6 = original.ReadableType6HierarchicalChildEntityExtractor
 	ReadableType6HierarchicalEntityExtractor      ReadableType6 = original.ReadableType6HierarchicalEntityExtractor
 	ReadableType6IntentClassifier                 ReadableType6 = original.ReadableType6IntentClassifier
+	ReadableType6ListEntityExtractor              ReadableType6 = original.ReadableType6ListEntityExtractor
 	ReadableType6PatternAnyEntityExtractor        ReadableType6 = original.ReadableType6PatternAnyEntityExtractor
 	ReadableType6PrebuiltEntityExtractor          ReadableType6 = original.ReadableType6PrebuiltEntityExtractor
-	ReadableType6RegexEntityExtractor             ReadableType6 = original.ReadableType6RegexEntityExtractor
+	ReadableType6RegularExpressionEntityExtractor ReadableType6 = original.ReadableType6RegularExpressionEntityExtractor
 )
 
 type ReadableType7 = original.ReadableType7
 
 const (
-	ReadableType7ClosedListEntityExtractor        ReadableType7 = original.ReadableType7ClosedListEntityExtractor
 	ReadableType7CompositeEntityExtractor         ReadableType7 = original.ReadableType7CompositeEntityExtractor
 	ReadableType7EntityExtractor                  ReadableType7 = original.ReadableType7EntityExtractor
 	ReadableType7HierarchicalChildEntityExtractor ReadableType7 = original.ReadableType7HierarchicalChildEntityExtractor
 	ReadableType7HierarchicalEntityExtractor      ReadableType7 = original.ReadableType7HierarchicalEntityExtractor
 	ReadableType7IntentClassifier                 ReadableType7 = original.ReadableType7IntentClassifier
+	ReadableType7ListEntityExtractor              ReadableType7 = original.ReadableType7ListEntityExtractor
 	ReadableType7PatternAnyEntityExtractor        ReadableType7 = original.ReadableType7PatternAnyEntityExtractor
 	ReadableType7PrebuiltEntityExtractor          ReadableType7 = original.ReadableType7PrebuiltEntityExtractor
-	ReadableType7RegexEntityExtractor             ReadableType7 = original.ReadableType7RegexEntityExtractor
+	ReadableType7RegularExpressionEntityExtractor ReadableType7 = original.ReadableType7RegularExpressionEntityExtractor
 )
 
 type ReadableType8 = original.ReadableType8
 
 const (
-	ReadableType8ClosedListEntityExtractor        ReadableType8 = original.ReadableType8ClosedListEntityExtractor
 	ReadableType8CompositeEntityExtractor         ReadableType8 = original.ReadableType8CompositeEntityExtractor
 	ReadableType8EntityExtractor                  ReadableType8 = original.ReadableType8EntityExtractor
 	ReadableType8HierarchicalChildEntityExtractor ReadableType8 = original.ReadableType8HierarchicalChildEntityExtractor
 	ReadableType8HierarchicalEntityExtractor      ReadableType8 = original.ReadableType8HierarchicalEntityExtractor
 	ReadableType8IntentClassifier                 ReadableType8 = original.ReadableType8IntentClassifier
+	ReadableType8ListEntityExtractor              ReadableType8 = original.ReadableType8ListEntityExtractor
 	ReadableType8PatternAnyEntityExtractor        ReadableType8 = original.ReadableType8PatternAnyEntityExtractor
 	ReadableType8PrebuiltEntityExtractor          ReadableType8 = original.ReadableType8PrebuiltEntityExtractor
-	ReadableType8RegexEntityExtractor             ReadableType8 = original.ReadableType8RegexEntityExtractor
+	ReadableType8RegularExpressionEntityExtractor ReadableType8 = original.ReadableType8RegularExpressionEntityExtractor
 )
 
 type ReadableType9 = original.ReadableType9
 
 const (
-	ReadableType9ClosedListEntityExtractor        ReadableType9 = original.ReadableType9ClosedListEntityExtractor
 	ReadableType9CompositeEntityExtractor         ReadableType9 = original.ReadableType9CompositeEntityExtractor
 	ReadableType9EntityExtractor                  ReadableType9 = original.ReadableType9EntityExtractor
 	ReadableType9HierarchicalChildEntityExtractor ReadableType9 = original.ReadableType9HierarchicalChildEntityExtractor
 	ReadableType9HierarchicalEntityExtractor      ReadableType9 = original.ReadableType9HierarchicalEntityExtractor
 	ReadableType9IntentClassifier                 ReadableType9 = original.ReadableType9IntentClassifier
+	ReadableType9ListEntityExtractor              ReadableType9 = original.ReadableType9ListEntityExtractor
 	ReadableType9PatternAnyEntityExtractor        ReadableType9 = original.ReadableType9PatternAnyEntityExtractor
 	ReadableType9PrebuiltEntityExtractor          ReadableType9 = original.ReadableType9PrebuiltEntityExtractor
-	ReadableType9RegexEntityExtractor             ReadableType9 = original.ReadableType9RegexEntityExtractor
+	ReadableType9RegularExpressionEntityExtractor ReadableType9 = original.ReadableType9RegularExpressionEntityExtractor
 )
 
 type Status = original.Status
@@ -263,6 +263,7 @@ type HierarchicalEntityExtractor = original.HierarchicalEntityExtractor
 type HierarchicalEntityModel = original.HierarchicalEntityModel
 type HierarchicalModel = original.HierarchicalModel
 type Int32 = original.Int32
+type Int64 = original.Int64
 type IntentClassifier = original.IntentClassifier
 type IntentPrediction = original.IntentPrediction
 type IntentsSuggestionExample = original.IntentsSuggestionExample
@@ -294,6 +295,7 @@ type ListLabeledUtterance = original.ListLabeledUtterance
 type ListModelInfoResponse = original.ListModelInfoResponse
 type ListModelTrainingInfo = original.ListModelTrainingInfo
 type ListPatternAnyEntityExtractor = original.ListPatternAnyEntityExtractor
+type ListPatternFeatureInfo = original.ListPatternFeatureInfo
 type ListPatternRuleInfo = original.ListPatternRuleInfo
 type ListPhraseListFeatureInfo = original.ListPhraseListFeatureInfo
 type ListPrebuiltDomain = original.ListPrebuiltDomain

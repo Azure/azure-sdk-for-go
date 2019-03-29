@@ -122,6 +122,15 @@ const (
 	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
 )
 
+type State = original.State
+
+const (
+	Failed      State = original.Failed
+	Passed      State = original.Passed
+	Skipped     State = original.Skipped
+	Unsupported State = original.Unsupported
+)
+
 type Status = original.Status
 
 const (
@@ -135,6 +144,13 @@ const (
 	Expired               StatusReason = original.Expired
 	NewerRequestInitiated StatusReason = original.NewerRequestInitiated
 	UserRequested         StatusReason = original.UserRequested
+)
+
+type ValueType = original.ValueType
+
+const (
+	IPCidr ValueType = original.IPCidr
+	String ValueType = original.String
 )
 
 type AadConnectivityState1 = original.AadConnectivityState1
@@ -157,6 +173,7 @@ type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
 type AllowedConnectionsListPage = original.AllowedConnectionsListPage
 type AllowedConnectionsResource = original.AllowedConnectionsResource
 type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
+type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -191,8 +208,16 @@ type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
 type ContactsClient = original.ContactsClient
+type CustomAlertRule = original.CustomAlertRule
 type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
+type DenylistCustomAlertRule = original.DenylistCustomAlertRule
+type DeviceSecurityGroup = original.DeviceSecurityGroup
+type DeviceSecurityGroupList = original.DeviceSecurityGroupList
+type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
+type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
+type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
+type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
@@ -230,6 +255,7 @@ type JitNetworkAccessRequest = original.JitNetworkAccessRequest
 type JitNetworkAccessRequestPort = original.JitNetworkAccessRequestPort
 type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVirtualMachine
 type Kind = original.Kind
+type ListCustomAlertRule = original.ListCustomAlertRule
 type Location = original.Location
 type LocationsClient = original.LocationsClient
 type Operation = original.Operation
@@ -242,6 +268,24 @@ type Pricing = original.Pricing
 type PricingList = original.PricingList
 type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
+type RegulatoryComplianceAssessment = original.RegulatoryComplianceAssessment
+type RegulatoryComplianceAssessmentList = original.RegulatoryComplianceAssessmentList
+type RegulatoryComplianceAssessmentListIterator = original.RegulatoryComplianceAssessmentListIterator
+type RegulatoryComplianceAssessmentListPage = original.RegulatoryComplianceAssessmentListPage
+type RegulatoryComplianceAssessmentProperties = original.RegulatoryComplianceAssessmentProperties
+type RegulatoryComplianceAssessmentsClient = original.RegulatoryComplianceAssessmentsClient
+type RegulatoryComplianceControl = original.RegulatoryComplianceControl
+type RegulatoryComplianceControlList = original.RegulatoryComplianceControlList
+type RegulatoryComplianceControlListIterator = original.RegulatoryComplianceControlListIterator
+type RegulatoryComplianceControlListPage = original.RegulatoryComplianceControlListPage
+type RegulatoryComplianceControlProperties = original.RegulatoryComplianceControlProperties
+type RegulatoryComplianceControlsClient = original.RegulatoryComplianceControlsClient
+type RegulatoryComplianceStandard = original.RegulatoryComplianceStandard
+type RegulatoryComplianceStandardList = original.RegulatoryComplianceStandardList
+type RegulatoryComplianceStandardListIterator = original.RegulatoryComplianceStandardListIterator
+type RegulatoryComplianceStandardListPage = original.RegulatoryComplianceStandardListPage
+type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStandardProperties
+type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type SensitivityLabel = original.SensitivityLabel
 type Setting = original.Setting
@@ -257,6 +301,8 @@ type TaskListPage = original.TaskListPage
 type TaskParameters = original.TaskParameters
 type TaskProperties = original.TaskProperties
 type TasksClient = original.TasksClient
+type ThresholdCustomAlertRule = original.ThresholdCustomAlertRule
+type TimeWindowCustomAlertRule = original.TimeWindowCustomAlertRule
 type TopologyClient = original.TopologyClient
 type TopologyList = original.TopologyList
 type TopologyListIterator = original.TopologyListIterator
@@ -348,6 +394,18 @@ func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient
 func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return original.NewDeviceSecurityGroupListIterator(page)
+}
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return original.NewDeviceSecurityGroupListPage(getNextPage)
+}
+func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
+}
+func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
 }
@@ -419,6 +477,42 @@ func NewPricingsClient(subscriptionID string, ascLocation string) PricingsClient
 }
 func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) PricingsClient {
 	return original.NewPricingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewRegulatoryComplianceAssessmentListIterator(page RegulatoryComplianceAssessmentListPage) RegulatoryComplianceAssessmentListIterator {
+	return original.NewRegulatoryComplianceAssessmentListIterator(page)
+}
+func NewRegulatoryComplianceAssessmentListPage(getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
+	return original.NewRegulatoryComplianceAssessmentListPage(getNextPage)
+}
+func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
+	return original.NewRegulatoryComplianceAssessmentsClient(subscriptionID, ascLocation)
+}
+func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
+	return original.NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewRegulatoryComplianceControlListIterator(page RegulatoryComplianceControlListPage) RegulatoryComplianceControlListIterator {
+	return original.NewRegulatoryComplianceControlListIterator(page)
+}
+func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
+	return original.NewRegulatoryComplianceControlListPage(getNextPage)
+}
+func NewRegulatoryComplianceControlsClient(subscriptionID string, ascLocation string) RegulatoryComplianceControlsClient {
+	return original.NewRegulatoryComplianceControlsClient(subscriptionID, ascLocation)
+}
+func NewRegulatoryComplianceControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceControlsClient {
+	return original.NewRegulatoryComplianceControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewRegulatoryComplianceStandardListIterator(page RegulatoryComplianceStandardListPage) RegulatoryComplianceStandardListIterator {
+	return original.NewRegulatoryComplianceStandardListIterator(page)
+}
+func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
+	return original.NewRegulatoryComplianceStandardListPage(getNextPage)
+}
+func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
+	return original.NewRegulatoryComplianceStandardsClient(subscriptionID, ascLocation)
+}
+func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
+	return original.NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewSettingsClient(subscriptionID string, ascLocation string) SettingsClient {
 	return original.NewSettingsClient(subscriptionID, ascLocation)
@@ -507,11 +601,17 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()
 }
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
 func PossibleStatusReasonValues() []StatusReason {
 	return original.PossibleStatusReasonValues()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleValueTypeValues() []ValueType {
+	return original.PossibleValueTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

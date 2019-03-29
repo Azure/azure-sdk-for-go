@@ -38,6 +38,7 @@ type ApplicationsClientAPI interface {
 	Create(ctx context.Context, parameters graphrbac.ApplicationCreateParameters) (result graphrbac.Application, err error)
 	Delete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error)
 	Get(ctx context.Context, applicationObjectID string) (result graphrbac.Application, err error)
+	GetServicePrincipalsIDByAppID(ctx context.Context, applicationID string) (result graphrbac.ServicePrincipalObjectResult, err error)
 	List(ctx context.Context, filter string) (result graphrbac.ApplicationListResultPage, err error)
 	ListKeyCredentials(ctx context.Context, applicationObjectID string) (result graphrbac.KeyCredentialListResult, err error)
 	ListNext(ctx context.Context, nextLink string) (result graphrbac.ApplicationListResult, err error)
@@ -127,10 +128,12 @@ type DomainsClientAPI interface {
 
 var _ DomainsClientAPI = (*graphrbac.DomainsClient)(nil)
 
-// OAuth2ClientAPI contains the set of methods on the OAuth2Client type.
-type OAuth2ClientAPI interface {
-	Get(ctx context.Context, filter string) (result graphrbac.Permissions, err error)
-	Grant(ctx context.Context, body *graphrbac.Permissions) (result graphrbac.Permissions, err error)
+// OAuth2PermissionGrantClientAPI contains the set of methods on the OAuth2PermissionGrantClient type.
+type OAuth2PermissionGrantClientAPI interface {
+	Create(ctx context.Context, body *graphrbac.OAuth2PermissionGrant) (result graphrbac.OAuth2PermissionGrant, err error)
+	Delete(ctx context.Context, objectID string) (result autorest.Response, err error)
+	List(ctx context.Context, filter string) (result graphrbac.OAuth2PermissionGrantListResultPage, err error)
+	ListNext(ctx context.Context, nextLink string) (result graphrbac.OAuth2PermissionGrantListResult, err error)
 }
 
-var _ OAuth2ClientAPI = (*graphrbac.OAuth2Client)(nil)
+var _ OAuth2PermissionGrantClientAPI = (*graphrbac.OAuth2PermissionGrantClient)(nil)

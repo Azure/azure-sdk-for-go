@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## `v27.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| billing | 2018-11-01-preview |
+| frontdoor | 2019-04-01 |
+| healthcareapis | 2018-08-20-preview |
+| managedservices | 2018-06-01 |
+| peering | 2019-03-01-preview |
+| resourcegraph | 2019-04-01 |
+| storagesync | 2019-02-01 |
+| virtualmachineimagebuilder | 2018-02-01-preview<br/>2019-02-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| adhybridhealthservice | 2014-01-01 |
+| catalog | 2016-11-01-preview |
+| containerregistry | 2017-10-01<br/>2018-02-01<br/>2018-09-01 |
+| eventgrid | 2018-01-01 |
+| eventhub | 2017-04-01 |
+| hanaonazure | 2017-11-03-preview |
+| mysql | 2017-12-01 |
+| postgresql | 2017-12-01 |
+| security | v1.0<br/>v2.0 |
+| servicebus | 2017-04-01 |
+| signalr | 2018-10-01 |
+| sql | 2017-03-01-preview |
+| storage | 2018-11-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-06-01-preview |
+| authoring | luis |
+| blueprint | 2018-11-01-preview |
+| cdn | 2017-10-12 |
+| compute | 2018-10-01 |
+| computervision | v2.0 |
+| datafactory | 2017-09-01-preview<br/>2018-06-01 |
+| devices | 2018-12-01-preview |
+| edgegateway | 2019-03-01 |
+| face | v1.0 |
+| graphrbac | 1.6 |
+| insights | 2018-03-01 |
+| postgresqlapi | postgresql |
+| search | 2015-08-19 |
+| web | 2018-02-01 |
+| webservices | 2017-01-01 |
+
 ## `v26.7.0`
 
 | Package Name | API Version |

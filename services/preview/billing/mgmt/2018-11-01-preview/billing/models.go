@@ -1766,7 +1766,7 @@ type PolicyProperties struct {
 
 // ProductDetails details of the product to be transferred.
 type ProductDetails struct {
-	// ProductType - Type of the prouct to be transferred. Possible values include: 'ProductTypeAzureSubscription', 'ProductTypeAzureReservation'
+	// ProductType - Type of the product to be transferred. Possible values include: 'ProductTypeAzureSubscription', 'ProductTypeAzureReservation'
 	ProductType ProductType `json:"productType,omitempty"`
 	// ProductID - Id of product to be transferred.
 	ProductID *string `json:"productId,omitempty"`
@@ -3530,7 +3530,7 @@ type TransferProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ExpirationTime - Transfer expiration time.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// InvoiceSectionID - Target invoice setion Id.
+	// InvoiceSectionID - Target invoice section Id.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
 	// BillingAccountID - Target billing account Id.
 	BillingAccountID *string `json:"billingAccountId,omitempty"`

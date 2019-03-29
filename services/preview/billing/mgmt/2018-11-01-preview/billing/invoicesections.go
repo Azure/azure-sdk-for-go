@@ -117,6 +117,75 @@ func (client InvoiceSectionsClient) CreateResponder(resp *http.Response) (result
 	return
 }
 
+// ElevateToBillingProfile elevates the caller's access to match their billing profile access.
+// Parameters:
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
+func (client InvoiceSectionsClient) ElevateToBillingProfile(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.ElevateToBillingProfile")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ElevateToBillingProfilePreparer(ctx, billingAccountName, invoiceSectionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ElevateToBillingProfile", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ElevateToBillingProfileSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ElevateToBillingProfile", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ElevateToBillingProfileResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ElevateToBillingProfile", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ElevateToBillingProfilePreparer prepares the ElevateToBillingProfile request.
+func (client InvoiceSectionsClient) ElevateToBillingProfilePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/elevate", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ElevateToBillingProfileSender sends the ElevateToBillingProfile request. The method will close the
+// http.Response Body if it receives an error.
+func (client InvoiceSectionsClient) ElevateToBillingProfileSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ElevateToBillingProfileResponder handles the response to the ElevateToBillingProfile request. The method always
+// closes the http.Response Body.
+func (client InvoiceSectionsClient) ElevateToBillingProfileResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get get the InvoiceSection by id.
 // Parameters:
 // billingAccountName - billing Account Id.
@@ -187,6 +256,82 @@ func (client InvoiceSectionsClient) GetSender(req *http.Request) (*http.Response
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client InvoiceSectionsClient) GetResponder(resp *http.Response) (result InvoiceSection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByBillingProfileName lists all invoice sections under a billing profile for a user which he has access to.
+// Parameters:
+// billingAccountName - billing Account Id.
+// billingProfileName - billing Profile Id.
+func (client InvoiceSectionsClient) ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result InvoiceSectionListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.ListByBillingProfileName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByBillingProfileNamePreparer(ctx, billingAccountName, billingProfileName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ListByBillingProfileName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByBillingProfileNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ListByBillingProfileName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByBillingProfileNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByBillingProfileNamePreparer prepares the ListByBillingProfileName request.
+func (client InvoiceSectionsClient) ListByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"billingProfileName": autorest.Encode("path", billingProfileName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByBillingProfileNameSender sends the ListByBillingProfileName request. The method will close the
+// http.Response Body if it receives an error.
+func (client InvoiceSectionsClient) ListByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByBillingProfileNameResponder handles the response to the ListByBillingProfileName request. The method always
+// closes the http.Response Body.
+func (client InvoiceSectionsClient) ListByBillingProfileNameResponder(resp *http.Response) (result InvoiceSectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

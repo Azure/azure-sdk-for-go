@@ -84,6 +84,7 @@ const (
 type BaseClient = original.BaseClient
 type BasicResourceCertificateDetails = original.BasicResourceCertificateDetails
 type CertificateRequest = original.CertificateRequest
+type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CheckNameAvailabilityResultResource = original.CheckNameAvailabilityResultResource
 type Client = original.Client
@@ -110,7 +111,6 @@ type Resource = original.Resource
 type ResourceCertificateAndAadDetails = original.ResourceCertificateAndAadDetails
 type ResourceCertificateAndAcsDetails = original.ResourceCertificateAndAcsDetails
 type ResourceCertificateDetails = original.ResourceCertificateDetails
-type ResourceNameAvailabilityParameters = original.ResourceNameAvailabilityParameters
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type UpgradeDetails = original.UpgradeDetails

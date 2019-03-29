@@ -146,6 +146,15 @@ type CertificateRequest struct {
 	Properties *RawCertificateData `json:"properties,omitempty"`
 }
 
+// CheckNameAvailabilityParameters resource Name availability input parameters - Resource type and resource
+// name
+type CheckNameAvailabilityParameters struct {
+	// Type - Describes the Resource type: Microsoft.RecoveryServices/Vaults
+	Type *string `json:"type,omitempty"`
+	// Name - Resource name for which availability needs to be checked
+	Name *string `json:"name,omitempty"`
+}
+
 // CheckNameAvailabilityResult response for check name availability API. Resource provider will set
 // availability as true | false.
 type CheckNameAvailabilityResult struct {
@@ -844,15 +853,6 @@ func (rcd ResourceCertificateDetails) AsResourceCertificateDetails() (*ResourceC
 // AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
 func (rcd ResourceCertificateDetails) AsBasicResourceCertificateDetails() (BasicResourceCertificateDetails, bool) {
 	return &rcd, true
-}
-
-// ResourceNameAvailabilityParameters resource Name availability input parameters - Resource type and
-// resource name
-type ResourceNameAvailabilityParameters struct {
-	// Type - Describes the Resource type: Microsoft.RecoveryServices/Vaults
-	Type *string `json:"type,omitempty"`
-	// Name - Resource name for which availability needs to be checked
-	Name *string `json:"name,omitempty"`
 }
 
 // Sku identifies the unique system identifier for each Azure resource.

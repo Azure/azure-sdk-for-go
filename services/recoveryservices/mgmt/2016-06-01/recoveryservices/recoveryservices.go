@@ -45,7 +45,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
 // location - location of the resource
 // input - contains information about Resource type and Resource name
-func (client Client) CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input ResourceNameAvailabilityParameters) (result CheckNameAvailabilityResultResource, err error) {
+func (client Client) CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input CheckNameAvailabilityParameters) (result CheckNameAvailabilityResultResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CheckNameAvailability")
 		defer func() {
@@ -78,7 +78,7 @@ func (client Client) CheckNameAvailability(ctx context.Context, resourceGroupNam
 }
 
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
-func (client Client) CheckNameAvailabilityPreparer(ctx context.Context, resourceGroupName string, location string, input ResourceNameAvailabilityParameters) (*http.Request, error) {
+func (client Client) CheckNameAvailabilityPreparer(ctx context.Context, resourceGroupName string, location string, input CheckNameAvailabilityParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":          autorest.Encode("path", location),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

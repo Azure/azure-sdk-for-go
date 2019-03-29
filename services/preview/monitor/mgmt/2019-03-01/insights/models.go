@@ -4012,18 +4012,6 @@ type MetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
-// MetricBaseline the baseline results of a specific metric.
-type MetricBaseline struct {
-	// ID - the metric baseline Id.
-	ID *string `json:"id,omitempty"`
-	// Type - the resource type of the metric baseline resource.
-	Type *string `json:"type,omitempty"`
-	// MetricName - the name of the metric.
-	MetricName *string `json:"metricName,omitempty"`
-	// Baselines - the baseline for each time series that was queried.
-	Baselines *[]TimeSeriesBaseline `json:"baselines,omitempty"`
-}
-
 // MetricBaselinesResponse the response to a metric baselines query.
 type MetricBaselinesResponse struct {
 	autorest.Response `json:"-"`
@@ -4033,8 +4021,8 @@ type MetricBaselinesResponse struct {
 	Interval *string `json:"interval,omitempty"`
 	// Namespace - The namespace of the metrics been queried.
 	Namespace *string `json:"namespace,omitempty"`
-	// Value - the properties of the baseline.
-	Value *MetricBaseline `json:"value,omitempty"`
+	// Value - The baseline results of a single metric.
+	Value *SingleMetricBaseline `json:"value,omitempty"`
 }
 
 // MetricCriteria criterion to filter metrics.
@@ -5165,6 +5153,18 @@ type SenderAuthorization struct {
 	Role *string `json:"role,omitempty"`
 	// Scope - the scope.
 	Scope *string `json:"scope,omitempty"`
+}
+
+// SingleMetricBaseline the baseline results of a single metric.
+type SingleMetricBaseline struct {
+	// ID - the metric baseline Id.
+	ID *string `json:"id,omitempty"`
+	// Type - the resource type of the metric baseline resource.
+	Type *string `json:"type,omitempty"`
+	// MetricName - the name of the metric.
+	MetricName *string `json:"metricName,omitempty"`
+	// Baselines - the baseline for each time series that was queried.
+	Baselines *[]TimeSeriesBaseline `json:"baselines,omitempty"`
 }
 
 // SmsReceiver an SMS receiver.

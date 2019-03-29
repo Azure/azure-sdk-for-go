@@ -64,8 +64,8 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, applicationTemplateID string) BaseClient {
+	return original.New(subscriptionID, applicationTemplateID)
 }
 func NewAppListResultIterator(page AppListResultPage) AppListResultIterator {
 	return original.NewAppListResultIterator(page)
@@ -79,11 +79,11 @@ func NewAppTemplatesResultIterator(page AppTemplatesResultPage) AppTemplatesResu
 func NewAppTemplatesResultPage(getNextPage func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)) AppTemplatesResultPage {
 	return original.NewAppTemplatesResultPage(getNextPage)
 }
-func NewAppsClient(subscriptionID string) AppsClient {
-	return original.NewAppsClient(subscriptionID)
+func NewAppsClient(subscriptionID string, applicationTemplateID string) AppsClient {
+	return original.NewAppsClient(subscriptionID, applicationTemplateID)
 }
-func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
-	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string, applicationTemplateID string) AppsClient {
+	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID, applicationTemplateID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -91,14 +91,14 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, applicationTemplateID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, applicationTemplateID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, applicationTemplateID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, applicationTemplateID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, applicationTemplateID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, applicationTemplateID)
 }
 func PossibleAppSkuValues() []AppSku {
 	return original.PossibleAppSkuValues()

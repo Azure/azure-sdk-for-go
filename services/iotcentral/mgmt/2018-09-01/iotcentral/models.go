@@ -479,6 +479,7 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // AppTemplate ioT Central Application Template.
 type AppTemplate struct {
+	autorest.Response `json:"-"`
 	// ManifestID - The ID of the template.
 	ManifestID *string `json:"manifestId,omitempty"`
 	// ManifestVersion - The version of the template.
@@ -496,7 +497,7 @@ type AppTemplate struct {
 // AppTemplatesResult a list of IoT Central Application Templates with a next link.
 type AppTemplatesResult struct {
 	autorest.Response `json:"-"`
-	// NextLink - The link used to get the next page of IoT Central description objects.
+	// NextLink - The link used to get the next page of IoT Central application templates.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - A list of IoT Central Application Templates.
 	Value *[]AppTemplate `json:"value,omitempty"`

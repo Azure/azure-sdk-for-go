@@ -31,13 +31,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewOperationsClient(subscriptionID string, applicationTemplateID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, applicationTemplateID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, applicationTemplateID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, applicationTemplateID)}
 }
 
 // List lists all of the available IoT Central application REST API operations.

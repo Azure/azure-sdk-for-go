@@ -22,7 +22,7 @@ package virtualmachineimagebuilder
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2018-02-01-preview/virtualmachineimagebuilder"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-02-01-preview/virtualmachineimagebuilder"
 )
 
 const (
@@ -32,13 +32,17 @@ const (
 type ProvisioningErrorCode = original.ProvisioningErrorCode
 
 const (
-	BadCustomizerType       ProvisioningErrorCode = original.BadCustomizerType
-	BadISOSource            ProvisioningErrorCode = original.BadISOSource
-	BadPIRSource            ProvisioningErrorCode = original.BadPIRSource
-	BadSourceType           ProvisioningErrorCode = original.BadSourceType
-	NoCustomizerShellScript ProvisioningErrorCode = original.NoCustomizerShellScript
-	Other                   ProvisioningErrorCode = original.Other
-	ServerError             ProvisioningErrorCode = original.ServerError
+	BadCustomizerType         ProvisioningErrorCode = original.BadCustomizerType
+	BadDistributeType         ProvisioningErrorCode = original.BadDistributeType
+	BadISOSource              ProvisioningErrorCode = original.BadISOSource
+	BadManagedImageSource     ProvisioningErrorCode = original.BadManagedImageSource
+	BadPIRSource              ProvisioningErrorCode = original.BadPIRSource
+	BadSharedImageDistribute  ProvisioningErrorCode = original.BadSharedImageDistribute
+	BadSourceType             ProvisioningErrorCode = original.BadSourceType
+	NoCustomizerScript        ProvisioningErrorCode = original.NoCustomizerScript
+	Other                     ProvisioningErrorCode = original.Other
+	ServerError               ProvisioningErrorCode = original.ServerError
+	UnsupportedCustomizerType ProvisioningErrorCode = original.UnsupportedCustomizerType
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -64,7 +68,6 @@ type RunState = original.RunState
 const (
 	RunStateFailed             RunState = original.RunStateFailed
 	RunStatePartiallySucceeded RunState = original.RunStatePartiallySucceeded
-	RunStateReady              RunState = original.RunStateReady
 	RunStateRunning            RunState = original.RunStateRunning
 	RunStateSucceeded          RunState = original.RunStateSucceeded
 )
@@ -83,6 +86,7 @@ type Type = original.Type
 const (
 	TypeImageTemplateSource Type = original.TypeImageTemplateSource
 	TypeISO                 Type = original.TypeISO
+	TypeManagedImage        Type = original.TypeManagedImage
 	TypePlatformImage       Type = original.TypePlatformImage
 )
 
@@ -90,15 +94,18 @@ type TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomize
 
 const (
 	TypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = original.TypeImageTemplateCustomizer
+	TypePowerShell              TypeBasicImageTemplateCustomizer = original.TypePowerShell
 	TypeShell                   TypeBasicImageTemplateCustomizer = original.TypeShell
+	TypeWindowsRestart          TypeBasicImageTemplateCustomizer = original.TypeWindowsRestart
 )
 
 type TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributor
 
 const (
-	TypeImageTemplateDistributor TypeBasicImageTemplateDistributor = original.TypeImageTemplateDistributor
-	TypeManagedImage             TypeBasicImageTemplateDistributor = original.TypeManagedImage
-	TypeSharedImage              TypeBasicImageTemplateDistributor = original.TypeSharedImage
+	TypeBasicImageTemplateDistributorTypeImageTemplateDistributor TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributorTypeImageTemplateDistributor
+	TypeBasicImageTemplateDistributorTypeManagedImage             TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributorTypeManagedImage
+	TypeBasicImageTemplateDistributorTypeSharedImage              TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributorTypeSharedImage
+	TypeBasicImageTemplateDistributorTypeVHD                      TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributorTypeVHD
 )
 
 type APIError = original.APIError
@@ -116,12 +123,16 @@ type ImageTemplateListResult = original.ImageTemplateListResult
 type ImageTemplateListResultIterator = original.ImageTemplateListResultIterator
 type ImageTemplateListResultPage = original.ImageTemplateListResultPage
 type ImageTemplateManagedImageDistributor = original.ImageTemplateManagedImageDistributor
+type ImageTemplateManagedImageSource = original.ImageTemplateManagedImageSource
 type ImageTemplatePlatformImageSource = original.ImageTemplatePlatformImageSource
+type ImageTemplatePowerShellCustomizer = original.ImageTemplatePowerShellCustomizer
 type ImageTemplateProperties = original.ImageTemplateProperties
+type ImageTemplateRestartCustomizer = original.ImageTemplateRestartCustomizer
 type ImageTemplateSharedImageDistributor = original.ImageTemplateSharedImageDistributor
 type ImageTemplateShellCustomizer = original.ImageTemplateShellCustomizer
 type ImageTemplateSource = original.ImageTemplateSource
 type ImageTemplateUpdateParameters = original.ImageTemplateUpdateParameters
+type ImageTemplateVhdDistributor = original.ImageTemplateVhdDistributor
 type InnerError = original.InnerError
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -137,10 +148,10 @@ type RunOutputCollectionIterator = original.RunOutputCollectionIterator
 type RunOutputCollectionPage = original.RunOutputCollectionPage
 type RunOutputProperties = original.RunOutputProperties
 type SubResource = original.SubResource
-type VirtualMachineImageTemplateClient = original.VirtualMachineImageTemplateClient
-type VirtualMachineImageTemplateCreateOrUpdateFuture = original.VirtualMachineImageTemplateCreateOrUpdateFuture
-type VirtualMachineImageTemplateDeleteFuture = original.VirtualMachineImageTemplateDeleteFuture
-type VirtualMachineImageTemplateRunFuture = original.VirtualMachineImageTemplateRunFuture
+type VirtualMachineImageTemplatesClient = original.VirtualMachineImageTemplatesClient
+type VirtualMachineImageTemplatesCreateOrUpdateFuture = original.VirtualMachineImageTemplatesCreateOrUpdateFuture
+type VirtualMachineImageTemplatesDeleteFuture = original.VirtualMachineImageTemplatesDeleteFuture
+type VirtualMachineImageTemplatesRunFuture = original.VirtualMachineImageTemplatesRunFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -169,11 +180,11 @@ func NewRunOutputCollectionIterator(page RunOutputCollectionPage) RunOutputColle
 func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
 	return original.NewRunOutputCollectionPage(getNextPage)
 }
-func NewVirtualMachineImageTemplateClient(subscriptionID string) VirtualMachineImageTemplateClient {
-	return original.NewVirtualMachineImageTemplateClient(subscriptionID)
+func NewVirtualMachineImageTemplatesClient(subscriptionID string) VirtualMachineImageTemplatesClient {
+	return original.NewVirtualMachineImageTemplatesClient(subscriptionID)
 }
-func NewVirtualMachineImageTemplateClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImageTemplateClient {
-	return original.NewVirtualMachineImageTemplateClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineImageTemplatesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImageTemplatesClient {
+	return original.NewVirtualMachineImageTemplatesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

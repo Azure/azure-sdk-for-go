@@ -45,7 +45,8 @@ func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprints
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
 func (client PublishedBlueprintsClient) Create(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
@@ -125,7 +126,8 @@ func (client PublishedBlueprintsClient) CreateResponder(resp *http.Response) (re
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
 func (client PublishedBlueprintsClient) Delete(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
@@ -205,7 +207,8 @@ func (client PublishedBlueprintsClient) DeleteResponder(resp *http.Response) (re
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 // versionID - version of the published blueprint definition.
 func (client PublishedBlueprintsClient) Get(ctx context.Context, scope string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
@@ -285,7 +288,8 @@ func (client PublishedBlueprintsClient) GetResponder(resp *http.Response) (resul
 // Parameters:
 // scope - the scope of the resource. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}').
+// '/subscriptions/{subscriptionId}'). For blueprint assignments management group scope is reserved for future
+// use.
 // blueprintName - name of the blueprint definition.
 func (client PublishedBlueprintsClient) List(ctx context.Context, scope string, blueprintName string) (result PublishedBlueprintListPage, err error) {
 	if tracing.IsEnabled() {

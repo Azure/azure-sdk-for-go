@@ -747,7 +747,7 @@ type DatabaseAccountsCreateSQLContainerFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DatabaseAccountsCreateSQLContainerFuture) Result(client DatabaseAccountsClient) (scr SQLContainerResource, err error) {
+func (future *DatabaseAccountsCreateSQLContainerFuture) Result(client DatabaseAccountsClient) (sc SQLContainer, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -759,10 +759,10 @@ func (future *DatabaseAccountsCreateSQLContainerFuture) Result(client DatabaseAc
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if scr.Response.Response, err = future.GetResult(sender); err == nil && scr.Response.Response.StatusCode != http.StatusNoContent {
-		scr, err = client.CreateSQLContainerResponder(scr.Response.Response)
+	if sc.Response.Response, err = future.GetResult(sender); err == nil && sc.Response.Response.StatusCode != http.StatusNoContent {
+		sc, err = client.CreateSQLContainerResponder(sc.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateSQLContainerFuture", "Result", scr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateSQLContainerFuture", "Result", sc.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -776,7 +776,7 @@ type DatabaseAccountsCreateSQLDatabaseFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DatabaseAccountsCreateSQLDatabaseFuture) Result(client DatabaseAccountsClient) (sdr SQLDatabaseResource, err error) {
+func (future *DatabaseAccountsCreateSQLDatabaseFuture) Result(client DatabaseAccountsClient) (sd SQLDatabase, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -788,10 +788,10 @@ func (future *DatabaseAccountsCreateSQLDatabaseFuture) Result(client DatabaseAcc
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sdr.Response.Response, err = future.GetResult(sender); err == nil && sdr.Response.Response.StatusCode != http.StatusNoContent {
-		sdr, err = client.CreateSQLDatabaseResponder(sdr.Response.Response)
+	if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
+		sd, err = client.CreateSQLDatabaseResponder(sd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateSQLDatabaseFuture", "Result", sdr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateSQLDatabaseFuture", "Result", sd.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1003,7 +1003,7 @@ type DatabaseAccountsUpdateSQLContainerFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DatabaseAccountsUpdateSQLContainerFuture) Result(client DatabaseAccountsClient) (scr SQLContainerResource, err error) {
+func (future *DatabaseAccountsUpdateSQLContainerFuture) Result(client DatabaseAccountsClient) (sc SQLContainer, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1015,10 +1015,10 @@ func (future *DatabaseAccountsUpdateSQLContainerFuture) Result(client DatabaseAc
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if scr.Response.Response, err = future.GetResult(sender); err == nil && scr.Response.Response.StatusCode != http.StatusNoContent {
-		scr, err = client.UpdateSQLContainerResponder(scr.Response.Response)
+	if sc.Response.Response, err = future.GetResult(sender); err == nil && sc.Response.Response.StatusCode != http.StatusNoContent {
+		sc, err = client.UpdateSQLContainerResponder(sc.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLContainerFuture", "Result", scr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLContainerFuture", "Result", sc.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1032,7 +1032,7 @@ type DatabaseAccountsUpdateSQLDatabaseFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DatabaseAccountsUpdateSQLDatabaseFuture) Result(client DatabaseAccountsClient) (sdr SQLDatabaseResource, err error) {
+func (future *DatabaseAccountsUpdateSQLDatabaseFuture) Result(client DatabaseAccountsClient) (sd SQLDatabase, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1044,10 +1044,10 @@ func (future *DatabaseAccountsUpdateSQLDatabaseFuture) Result(client DatabaseAcc
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sdr.Response.Response, err = future.GetResult(sender); err == nil && sdr.Response.Response.StatusCode != http.StatusNoContent {
-		sdr, err = client.UpdateSQLDatabaseResponder(sdr.Response.Response)
+	if sd.Response.Response, err = future.GetResult(sender); err == nil && sd.Response.Response.StatusCode != http.StatusNoContent {
+		sd, err = client.UpdateSQLDatabaseResponder(sd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLDatabaseFuture", "Result", sdr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateSQLDatabaseFuture", "Result", sd.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1490,23 +1490,13 @@ type PercentileMetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
-// ProxyResource the general properties associated with all API resource.
-type ProxyResource struct {
-	// ID - The unique resource identifier of the database account.
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
-	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
-	Type *string `json:"type,omitempty"`
-}
-
 // RegionForOnlineOffline cosmos DB region to online or offline.
 type RegionForOnlineOffline struct {
 	// Region - Cosmos DB region, with spaces between words and each word capitalized.
 	Region *string `json:"region,omitempty"`
 }
 
-// Resource a database account resource.
+// Resource the core properties of ARM resources.
 type Resource struct {
 	// ID - The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
@@ -1538,6 +1528,115 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// SQLContainer an Azure Cosmos DB SQL container.
+type SQLContainer struct {
+	autorest.Response `json:"-"`
+	// SQLContainerProperties - The properties of an Azure Cosmos DB SQL container
+	*SQLContainerProperties `json:"properties,omitempty"`
+	// ID - The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource group to which the resource belongs.
+	Location *string            `json:"location,omitempty"`
+	Tags     map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SQLContainer.
+func (sc SQLContainer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.SQLContainerProperties != nil {
+		objectMap["properties"] = sc.SQLContainerProperties
+	}
+	if sc.ID != nil {
+		objectMap["id"] = sc.ID
+	}
+	if sc.Name != nil {
+		objectMap["name"] = sc.Name
+	}
+	if sc.Type != nil {
+		objectMap["type"] = sc.Type
+	}
+	if sc.Location != nil {
+		objectMap["location"] = sc.Location
+	}
+	if sc.Tags != nil {
+		objectMap["tags"] = sc.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLContainer struct.
+func (sc *SQLContainer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLContainerProperties SQLContainerProperties
+				err = json.Unmarshal(*v, &SQLContainerProperties)
+				if err != nil {
+					return err
+				}
+				sc.SQLContainerProperties = &SQLContainerProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sc.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sc.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // SQLContainerCreateUpdateParameters parameters to create and update Cosmos DB SQL container.
@@ -1582,7 +1681,7 @@ func (sccup *SQLContainerCreateUpdateParameters) UnmarshalJSON(body []byte) erro
 // SQLContainerCreateUpdateProperties properties to create and update Azure Cosmos DB SQL container.
 type SQLContainerCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a SQL container
-	Resource *SQLContainerCreateUpdateResource `json:"resource,omitempty"`
+	Resource *SQLContainerResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
 	Options map[string]*string `json:"options"`
 }
@@ -1599,116 +1698,26 @@ func (sccup SQLContainerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SQLContainerCreateUpdateResource cosmos DB SQL container resource object
-type SQLContainerCreateUpdateResource struct {
-	// ID - Name of the Cosmos DB SQL container
-	ID *string `json:"id,omitempty"`
-	// IndexingPolicy - The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the SQL container
-	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
-	// PartitionKey - The configuration of the partition key to be used for partitioning data into multiple partitions
-	PartitionKey *PartitionKey `json:"partitionKey,omitempty"`
-	// ConflictResolutionPolicy - The conflict resolution policy for the SQL container.
-	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
-}
-
 // SQLContainerListResult the List operation response, that contains the SQL containers and their
 // properties.
 type SQLContainerListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of SQL containers and their properties.
-	Value *[]SQLContainerResource `json:"value,omitempty"`
+	Value *[]SQLContainer `json:"value,omitempty"`
 }
 
-// SQLContainerResource an Azure Cosmos DB SQL container.
-type SQLContainerResource struct {
-	autorest.Response `json:"-"`
-	// SQLContainerResourceProperties - The properties of an Azure Cosmos DB SQL container
-	*SQLContainerResourceProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
-	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SQLContainerResource.
-func (scr SQLContainerResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if scr.SQLContainerResourceProperties != nil {
-		objectMap["properties"] = scr.SQLContainerResourceProperties
-	}
-	if scr.ID != nil {
-		objectMap["id"] = scr.ID
-	}
-	if scr.Name != nil {
-		objectMap["name"] = scr.Name
-	}
-	if scr.Type != nil {
-		objectMap["type"] = scr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for SQLContainerResource struct.
-func (scr *SQLContainerResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var SQLContainerResourceProperties SQLContainerResourceProperties
-				err = json.Unmarshal(*v, &SQLContainerResourceProperties)
-				if err != nil {
-					return err
-				}
-				scr.SQLContainerResourceProperties = &SQLContainerResourceProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				scr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				scr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				scr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// SQLContainerResourceProperties the properties of an Azure Cosmos DB SQL container
-type SQLContainerResourceProperties struct {
+// SQLContainerProperties the properties of an Azure Cosmos DB SQL container
+type SQLContainerProperties struct {
 	// ID - Name of the Cosmos DB SQL container
 	ID *string `json:"id,omitempty"`
 	// IndexingPolicy - The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the SQL container
 	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
 	// PartitionKey - The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *PartitionKey `json:"partitionKey,omitempty"`
+	// DefaultTTL - Default time to live
+	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
+	// UniqueKeyPolicy - The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
+	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 	// ConflictResolutionPolicy - The conflict resolution policy for the SQL container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 	// Rid - A system generated property. A unique identifier.
@@ -1729,6 +1738,131 @@ type SQLContainerResourceProperties struct {
 	Udfs *string `json:"_udfs,omitempty"`
 	// Conflicts - A system generated property that specifies the addressable path of the conflicts resource.
 	Conflicts *string `json:"_conflicts,omitempty"`
+}
+
+// SQLContainerResource cosmos DB SQL container resource object
+type SQLContainerResource struct {
+	// ID - Name of the Cosmos DB SQL container
+	ID *string `json:"id,omitempty"`
+	// IndexingPolicy - The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the SQL container
+	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
+	// PartitionKey - The configuration of the partition key to be used for partitioning data into multiple partitions
+	PartitionKey *PartitionKey `json:"partitionKey,omitempty"`
+	// DefaultTTL - Default time to live
+	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
+	// UniqueKeyPolicy - The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
+	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
+	// ConflictResolutionPolicy - The conflict resolution policy for the SQL container.
+	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
+}
+
+// SQLDatabase an Azure Cosmos DB SQL database.
+type SQLDatabase struct {
+	autorest.Response `json:"-"`
+	// SQLDatabaseProperties - The properties of an Azure Cosmos DB SQL database
+	*SQLDatabaseProperties `json:"properties,omitempty"`
+	// ID - The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource group to which the resource belongs.
+	Location *string            `json:"location,omitempty"`
+	Tags     map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SQLDatabase.
+func (sd SQLDatabase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sd.SQLDatabaseProperties != nil {
+		objectMap["properties"] = sd.SQLDatabaseProperties
+	}
+	if sd.ID != nil {
+		objectMap["id"] = sd.ID
+	}
+	if sd.Name != nil {
+		objectMap["name"] = sd.Name
+	}
+	if sd.Type != nil {
+		objectMap["type"] = sd.Type
+	}
+	if sd.Location != nil {
+		objectMap["location"] = sd.Location
+	}
+	if sd.Tags != nil {
+		objectMap["tags"] = sd.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLDatabase struct.
+func (sd *SQLDatabase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLDatabaseProperties SQLDatabaseProperties
+				err = json.Unmarshal(*v, &SQLDatabaseProperties)
+				if err != nil {
+					return err
+				}
+				sd.SQLDatabaseProperties = &SQLDatabaseProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sd.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sd.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sd.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // SQLDatabaseCreateUpdateParameters parameters to create and update Cosmos DB SQL database.
@@ -1773,7 +1907,7 @@ func (sdcup *SQLDatabaseCreateUpdateParameters) UnmarshalJSON(body []byte) error
 // SQLDatabaseCreateUpdateProperties properties to create and update Azure Cosmos DB SQL database.
 type SQLDatabaseCreateUpdateProperties struct {
 	// Resource - The standard JSON format of a SQL database
-	Resource *SQLDatabaseCreateUpdateResource `json:"resource,omitempty"`
+	Resource *SQLDatabaseResource `json:"resource,omitempty"`
 	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
 	Options map[string]*string `json:"options"`
 }
@@ -1790,103 +1924,15 @@ func (sdcup SQLDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SQLDatabaseCreateUpdateResource cosmos DB SQL database id object
-type SQLDatabaseCreateUpdateResource struct {
-	// ID - Name of the Cosmos DB SQL database
-	ID *string `json:"id,omitempty"`
-}
-
 // SQLDatabaseListResult the List operation response, that contains the SQL databases and their properties.
 type SQLDatabaseListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of SQL databases and their properties.
-	Value *[]SQLDatabaseResource `json:"value,omitempty"`
+	Value *[]SQLDatabase `json:"value,omitempty"`
 }
 
-// SQLDatabaseResource an Azure Cosmos DB SQL database.
-type SQLDatabaseResource struct {
-	autorest.Response `json:"-"`
-	// SQLDatabaseResourceProperties - The properties of an Azure Cosmos DB SQL database
-	*SQLDatabaseResourceProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
-	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SQLDatabaseResource.
-func (sdr SQLDatabaseResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sdr.SQLDatabaseResourceProperties != nil {
-		objectMap["properties"] = sdr.SQLDatabaseResourceProperties
-	}
-	if sdr.ID != nil {
-		objectMap["id"] = sdr.ID
-	}
-	if sdr.Name != nil {
-		objectMap["name"] = sdr.Name
-	}
-	if sdr.Type != nil {
-		objectMap["type"] = sdr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for SQLDatabaseResource struct.
-func (sdr *SQLDatabaseResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var SQLDatabaseResourceProperties SQLDatabaseResourceProperties
-				err = json.Unmarshal(*v, &SQLDatabaseResourceProperties)
-				if err != nil {
-					return err
-				}
-				sdr.SQLDatabaseResourceProperties = &SQLDatabaseResourceProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				sdr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				sdr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				sdr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// SQLDatabaseResourceProperties the properties of an Azure Cosmos DB SQL database
-type SQLDatabaseResourceProperties struct {
+// SQLDatabaseProperties the properties of an Azure Cosmos DB SQL database
+type SQLDatabaseProperties struct {
 	// ID - Name of the Cosmos DB SQL database
 	ID *string `json:"id,omitempty"`
 	// Rid - A system generated property. A unique identifier.
@@ -1901,6 +1947,26 @@ type SQLDatabaseResourceProperties struct {
 	Colls *string `json:"_colls,omitempty"`
 	// Users - A system generated property that specifies the addressable path of the users resource.
 	Users *string `json:"_users,omitempty"`
+}
+
+// SQLDatabaseResource cosmos DB SQL database id object
+type SQLDatabaseResource struct {
+	// ID - Name of the Cosmos DB SQL database
+	ID *string `json:"id,omitempty"`
+}
+
+// UniqueKey the unique key on that enforces uniqueness constraint on documents in the collection in the
+// Azure Cosmos DB service.
+type UniqueKey struct {
+	// Paths - List of paths must be unique for each document in the Azure Cosmos DB service
+	Paths *[]string `json:"paths,omitempty"`
+}
+
+// UniqueKeyPolicy the unique key policy configuration for specifying uniqueness constraints on documents
+// in the collection in the Azure Cosmos DB service.
+type UniqueKeyPolicy struct {
+	// UniqueKeys - List of unique keys on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
+	UniqueKeys *[]UniqueKey `json:"uniqueKeys,omitempty"`
 }
 
 // Usage the usage data for a usage request.

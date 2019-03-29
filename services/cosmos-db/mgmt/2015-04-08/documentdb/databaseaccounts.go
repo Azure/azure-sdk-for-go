@@ -316,7 +316,7 @@ func (client DatabaseAccountsClient) CreateSQLContainerSender(req *http.Request)
 
 // CreateSQLContainerResponder handles the response to the CreateSQLContainer request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateSQLContainerResponder(resp *http.Response) (result SQLContainerResource, err error) {
+func (client DatabaseAccountsClient) CreateSQLContainerResponder(resp *http.Response) (result SQLContainer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -413,7 +413,7 @@ func (client DatabaseAccountsClient) CreateSQLDatabaseSender(req *http.Request) 
 
 // CreateSQLDatabaseResponder handles the response to the CreateSQLDatabase request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateSQLDatabaseResponder(resp *http.Response) (result SQLDatabaseResource, err error) {
+func (client DatabaseAccountsClient) CreateSQLDatabaseResponder(resp *http.Response) (result SQLDatabase, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -967,7 +967,7 @@ func (client DatabaseAccountsClient) GetReadOnlyKeysResponder(resp *http.Respons
 // accountName - cosmos DB database account name.
 // databaseRid - cosmos DB database rid.
 // containerRid - cosmos DB container rid.
-func (client DatabaseAccountsClient) GetSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (result SQLContainerResource, err error) {
+func (client DatabaseAccountsClient) GetSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (result SQLContainer, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetSQLContainer")
 		defer func() {
@@ -1042,7 +1042,7 @@ func (client DatabaseAccountsClient) GetSQLContainerSender(req *http.Request) (*
 
 // GetSQLContainerResponder handles the response to the GetSQLContainer request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) GetSQLContainerResponder(resp *http.Response) (result SQLContainerResource, err error) {
+func (client DatabaseAccountsClient) GetSQLContainerResponder(resp *http.Response) (result SQLContainer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1058,7 +1058,7 @@ func (client DatabaseAccountsClient) GetSQLContainerResponder(resp *http.Respons
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseRid - cosmos DB database rid.
-func (client DatabaseAccountsClient) GetSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (result SQLDatabaseResource, err error) {
+func (client DatabaseAccountsClient) GetSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (result SQLDatabase, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetSQLDatabase")
 		defer func() {
@@ -1132,7 +1132,7 @@ func (client DatabaseAccountsClient) GetSQLDatabaseSender(req *http.Request) (*h
 
 // GetSQLDatabaseResponder handles the response to the GetSQLDatabase request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) GetSQLDatabaseResponder(resp *http.Response) (result SQLDatabaseResource, err error) {
+func (client DatabaseAccountsClient) GetSQLDatabaseResponder(resp *http.Response) (result SQLDatabase, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2468,7 +2468,7 @@ func (client DatabaseAccountsClient) UpdateSQLContainerSender(req *http.Request)
 
 // UpdateSQLContainerResponder handles the response to the UpdateSQLContainer request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) UpdateSQLContainerResponder(resp *http.Response) (result SQLContainerResource, err error) {
+func (client DatabaseAccountsClient) UpdateSQLContainerResponder(resp *http.Response) (result SQLContainer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2567,7 +2567,7 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseSender(req *http.Request) 
 
 // UpdateSQLDatabaseResponder handles the response to the UpdateSQLDatabase request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) UpdateSQLDatabaseResponder(resp *http.Response) (result SQLDatabaseResource, err error) {
+func (client DatabaseAccountsClient) UpdateSQLDatabaseResponder(resp *http.Response) (result SQLDatabase, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

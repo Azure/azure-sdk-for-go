@@ -33,19 +33,17 @@ type FeaturesClient struct {
 }
 
 // NewFeaturesClient creates an instance of the FeaturesClient client.
-func NewFeaturesClient() FeaturesClient {
-	return FeaturesClient{New()}
+func NewFeaturesClient(endpoint string) FeaturesClient {
+	return FeaturesClient{New(endpoint)}
 }
 
 // AddPhraseList creates a new phraselist feature in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // phraselistCreateObject - a Phraselist object containing Name, comma-separated Phrases and the isExchangeable
 // boolean. Default value for isExchangeable is true.
-func (client FeaturesClient) AddPhraseList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (result Int32, err error) {
+func (client FeaturesClient) AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (result Int32, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.AddPhraseList")
 		defer func() {
@@ -56,7 +54,7 @@ func (client FeaturesClient) AddPhraseList(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPhraseListPreparer(ctx, azureRegion, azureCloud, appID, versionID, phraselistCreateObject)
+	req, err := client.AddPhraseListPreparer(ctx, appID, versionID, phraselistCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddPhraseList", nil, "Failure preparing request")
 		return
@@ -78,10 +76,9 @@ func (client FeaturesClient) AddPhraseList(ctx context.Context, azureRegion Azur
 }
 
 // AddPhraseListPreparer prepares the AddPhraseList request.
-func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (*http.Request, error) {
+func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -92,7 +89,7 @@ func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, azureReg
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists", pathParameters),
 		autorest.WithJSON(phraselistCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -120,12 +117,10 @@ func (client FeaturesClient) AddPhraseListResponder(resp *http.Response) (result
 
 // DeletePhraseList deletes a phraselist feature from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // phraselistID - the ID of the feature to be deleted.
-func (client FeaturesClient) DeletePhraseList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistID int32) (result OperationStatus, err error) {
+func (client FeaturesClient) DeletePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.DeletePhraseList")
 		defer func() {
@@ -136,7 +131,7 @@ func (client FeaturesClient) DeletePhraseList(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePhraseListPreparer(ctx, azureRegion, azureCloud, appID, versionID, phraselistID)
+	req, err := client.DeletePhraseListPreparer(ctx, appID, versionID, phraselistID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "DeletePhraseList", nil, "Failure preparing request")
 		return
@@ -158,10 +153,9 @@ func (client FeaturesClient) DeletePhraseList(ctx context.Context, azureRegion A
 }
 
 // DeletePhraseListPreparer prepares the DeletePhraseList request.
-func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistID int32) (*http.Request, error) {
+func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -172,7 +166,7 @@ func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, azure
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -199,12 +193,10 @@ func (client FeaturesClient) DeletePhraseListResponder(resp *http.Response) (res
 
 // GetPhraseList gets phraselist feature info in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // phraselistID - the ID of the feature to be retrieved.
-func (client FeaturesClient) GetPhraseList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistID int32) (result PhraseListFeatureInfo, err error) {
+func (client FeaturesClient) GetPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result PhraseListFeatureInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.GetPhraseList")
 		defer func() {
@@ -215,7 +207,7 @@ func (client FeaturesClient) GetPhraseList(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPhraseListPreparer(ctx, azureRegion, azureCloud, appID, versionID, phraselistID)
+	req, err := client.GetPhraseListPreparer(ctx, appID, versionID, phraselistID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "GetPhraseList", nil, "Failure preparing request")
 		return
@@ -237,10 +229,9 @@ func (client FeaturesClient) GetPhraseList(ctx context.Context, azureRegion Azur
 }
 
 // GetPhraseListPreparer prepares the GetPhraseList request.
-func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistID int32) (*http.Request, error) {
+func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -251,7 +242,7 @@ func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, azureReg
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -278,13 +269,11 @@ func (client FeaturesClient) GetPhraseListResponder(resp *http.Response) (result
 
 // List gets all the extraction phraselist and pattern features in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client FeaturesClient) List(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result FeaturesResponseObject, err error) {
+func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result FeaturesResponseObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.List")
 		defer func() {
@@ -307,7 +296,7 @@ func (client FeaturesClient) List(ctx context.Context, azureRegion AzureRegions,
 		return result, validation.NewError("authoring.FeaturesClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "List", nil, "Failure preparing request")
 		return
@@ -329,10 +318,9 @@ func (client FeaturesClient) List(ctx context.Context, azureRegion AzureRegions,
 }
 
 // ListPreparer prepares the List request.
-func (client FeaturesClient) ListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client FeaturesClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -354,7 +342,7 @@ func (client FeaturesClient) ListPreparer(ctx context.Context, azureRegion Azure
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/features", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -383,13 +371,11 @@ func (client FeaturesClient) ListResponder(resp *http.Response) (result Features
 // ListApplicationVersionPatternFeatures [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern
 // features.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client FeaturesClient) ListApplicationVersionPatternFeatures(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternFeatureInfo, err error) {
+func (client FeaturesClient) ListApplicationVersionPatternFeatures(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternFeatureInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.ListApplicationVersionPatternFeatures")
 		defer func() {
@@ -412,7 +398,7 @@ func (client FeaturesClient) ListApplicationVersionPatternFeatures(ctx context.C
 		return result, validation.NewError("authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", err.Error())
 	}
 
-	req, err := client.ListApplicationVersionPatternFeaturesPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListApplicationVersionPatternFeaturesPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", nil, "Failure preparing request")
 		return
@@ -434,10 +420,9 @@ func (client FeaturesClient) ListApplicationVersionPatternFeatures(ctx context.C
 }
 
 // ListApplicationVersionPatternFeaturesPreparer prepares the ListApplicationVersionPatternFeatures request.
-func (client FeaturesClient) ListApplicationVersionPatternFeaturesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client FeaturesClient) ListApplicationVersionPatternFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -459,7 +444,7 @@ func (client FeaturesClient) ListApplicationVersionPatternFeaturesPreparer(ctx c
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patterns", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -487,13 +472,11 @@ func (client FeaturesClient) ListApplicationVersionPatternFeaturesResponder(resp
 
 // ListPhraseLists gets all the phraselist features in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client FeaturesClient) ListPhraseLists(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPhraseListFeatureInfo, err error) {
+func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPhraseListFeatureInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.ListPhraseLists")
 		defer func() {
@@ -516,7 +499,7 @@ func (client FeaturesClient) ListPhraseLists(ctx context.Context, azureRegion Az
 		return result, validation.NewError("authoring.FeaturesClient", "ListPhraseLists", err.Error())
 	}
 
-	req, err := client.ListPhraseListsPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListPhraseListsPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "ListPhraseLists", nil, "Failure preparing request")
 		return
@@ -538,10 +521,9 @@ func (client FeaturesClient) ListPhraseLists(ctx context.Context, azureRegion Az
 }
 
 // ListPhraseListsPreparer prepares the ListPhraseLists request.
-func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -563,7 +545,7 @@ func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, azureR
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -592,14 +574,12 @@ func (client FeaturesClient) ListPhraseListsResponder(resp *http.Response) (resu
 // UpdatePhraseList updates the phrases, the state and the name of the phraselist feature in a version of the
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // phraselistID - the ID of the feature to be updated.
 // phraselistUpdateObject - the new values for: - Just a boolean called IsActive, in which case the status of
 // the feature will be changed. - Name, Pattern, Mode, and a boolean called IsActive to update the feature.
-func (client FeaturesClient) UpdatePhraseList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (result OperationStatus, err error) {
+func (client FeaturesClient) UpdatePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.UpdatePhraseList")
 		defer func() {
@@ -610,7 +590,7 @@ func (client FeaturesClient) UpdatePhraseList(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePhraseListPreparer(ctx, azureRegion, azureCloud, appID, versionID, phraselistID, phraselistUpdateObject)
+	req, err := client.UpdatePhraseListPreparer(ctx, appID, versionID, phraselistID, phraselistUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "UpdatePhraseList", nil, "Failure preparing request")
 		return
@@ -632,10 +612,9 @@ func (client FeaturesClient) UpdatePhraseList(ctx context.Context, azureRegion A
 }
 
 // UpdatePhraseListPreparer prepares the UpdatePhraseList request.
-func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (*http.Request, error) {
+func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -647,7 +626,7 @@ func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, azure
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
 	if phraselistUpdateObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,

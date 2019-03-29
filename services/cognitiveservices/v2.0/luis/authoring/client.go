@@ -27,16 +27,18 @@ import (
 // BaseClient is the base client for Authoring.
 type BaseClient struct {
 	autorest.Client
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults()
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults() BaseClient {
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client: autorest.NewClientWithUserAgent(UserAgent()),
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
 	}
 }

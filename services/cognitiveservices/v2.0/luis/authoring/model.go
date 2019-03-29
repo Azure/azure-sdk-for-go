@@ -33,18 +33,16 @@ type ModelClient struct {
 }
 
 // NewModelClient creates an instance of the ModelClient client.
-func NewModelClient() ModelClient {
-	return ModelClient{New()}
+func NewModelClient(endpoint string) ModelClient {
+	return ModelClient{New(endpoint)}
 }
 
 // AddClosedList adds a list entity model to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // closedListModelCreateObject - a model containing the name and words for the new list entity extractor.
-func (client ModelClient) AddClosedList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddClosedList(ctx context.Context, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddClosedList")
 		defer func() {
@@ -55,7 +53,7 @@ func (client ModelClient) AddClosedList(ctx context.Context, azureRegion AzureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddClosedListPreparer(ctx, azureRegion, azureCloud, appID, versionID, closedListModelCreateObject)
+	req, err := client.AddClosedListPreparer(ctx, appID, versionID, closedListModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddClosedList", nil, "Failure preparing request")
 		return
@@ -77,10 +75,9 @@ func (client ModelClient) AddClosedList(ctx context.Context, azureRegion AzureRe
 }
 
 // AddClosedListPreparer prepares the AddClosedList request.
-func (client ModelClient) AddClosedListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -91,7 +88,7 @@ func (client ModelClient) AddClosedListPreparer(ctx context.Context, azureRegion
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists", pathParameters),
 		autorest.WithJSON(closedListModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -119,12 +116,10 @@ func (client ModelClient) AddClosedListResponder(resp *http.Response) (result UU
 
 // AddCompositeEntity adds a composite entity extractor to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // compositeModelCreateObject - a model containing the name and children of the new entity extractor.
-func (client ModelClient) AddCompositeEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, compositeModelCreateObject CompositeEntityModel) (result UUID, err error) {
+func (client ModelClient) AddCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, compositeModelCreateObject CompositeEntityModel) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCompositeEntity")
 		defer func() {
@@ -135,7 +130,7 @@ func (client ModelClient) AddCompositeEntity(ctx context.Context, azureRegion Az
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddCompositeEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, compositeModelCreateObject)
+	req, err := client.AddCompositeEntityPreparer(ctx, appID, versionID, compositeModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCompositeEntity", nil, "Failure preparing request")
 		return
@@ -157,10 +152,9 @@ func (client ModelClient) AddCompositeEntity(ctx context.Context, azureRegion Az
 }
 
 // AddCompositeEntityPreparer prepares the AddCompositeEntity request.
-func (client ModelClient) AddCompositeEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, compositeModelCreateObject CompositeEntityModel) (*http.Request, error) {
+func (client ModelClient) AddCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, compositeModelCreateObject CompositeEntityModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -171,7 +165,7 @@ func (client ModelClient) AddCompositeEntityPreparer(ctx context.Context, azureR
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities", pathParameters),
 		autorest.WithJSON(compositeModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -200,13 +194,11 @@ func (client ModelClient) AddCompositeEntityResponder(resp *http.Response) (resu
 // AddCompositeEntityChild creates a single child in an existing composite entity model in a version of the
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // compositeChildModelCreateObject - a model object containing the name of the new composite child model.
-func (client ModelClient) AddCompositeEntityChild(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddCompositeEntityChild(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCompositeEntityChild")
 		defer func() {
@@ -217,7 +209,7 @@ func (client ModelClient) AddCompositeEntityChild(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddCompositeEntityChildPreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, compositeChildModelCreateObject)
+	req, err := client.AddCompositeEntityChildPreparer(ctx, appID, versionID, cEntityID, compositeChildModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCompositeEntityChild", nil, "Failure preparing request")
 		return
@@ -239,10 +231,9 @@ func (client ModelClient) AddCompositeEntityChild(ctx context.Context, azureRegi
 }
 
 // AddCompositeEntityChildPreparer prepares the AddCompositeEntityChild request.
-func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -254,7 +245,7 @@ func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children", pathParameters),
 		autorest.WithJSON(compositeChildModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -283,12 +274,10 @@ func (client ModelClient) AddCompositeEntityChildResponder(resp *http.Response) 
 // AddCustomPrebuiltDomain adds a customizable prebuilt domain along with all of its intent and entity models in a
 // version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltDomainObject - a prebuilt domain create object containing the name of the domain.
-func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (result ListUUID, err error) {
+func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (result ListUUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCustomPrebuiltDomain")
 		defer func() {
@@ -299,7 +288,7 @@ func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddCustomPrebuiltDomainPreparer(ctx, azureRegion, azureCloud, appID, versionID, prebuiltDomainObject)
+	req, err := client.AddCustomPrebuiltDomainPreparer(ctx, appID, versionID, prebuiltDomainObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCustomPrebuiltDomain", nil, "Failure preparing request")
 		return
@@ -321,10 +310,9 @@ func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, azureRegi
 }
 
 // AddCustomPrebuiltDomainPreparer prepares the AddCustomPrebuiltDomain request.
-func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (*http.Request, error) {
+func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -335,7 +323,7 @@ func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains", pathParameters),
 		autorest.WithJSON(prebuiltDomainObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -363,13 +351,11 @@ func (client ModelClient) AddCustomPrebuiltDomainResponder(resp *http.Response) 
 
 // AddCustomPrebuiltEntity adds a prebuilt entity model to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltDomainModelCreateObject - a model object containing the name of the prebuilt entity and the name of
 // the domain to which this model belongs.
-func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCustomPrebuiltEntity")
 		defer func() {
@@ -380,7 +366,7 @@ func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddCustomPrebuiltEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, prebuiltDomainModelCreateObject)
+	req, err := client.AddCustomPrebuiltEntityPreparer(ctx, appID, versionID, prebuiltDomainModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCustomPrebuiltEntity", nil, "Failure preparing request")
 		return
@@ -402,10 +388,9 @@ func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, azureRegi
 }
 
 // AddCustomPrebuiltEntityPreparer prepares the AddCustomPrebuiltEntity request.
-func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -416,7 +401,7 @@ func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters),
 		autorest.WithJSON(prebuiltDomainModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -444,13 +429,11 @@ func (client ModelClient) AddCustomPrebuiltEntityResponder(resp *http.Response) 
 
 // AddCustomPrebuiltIntent adds a customizable prebuilt intent model to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltDomainModelCreateObject - a model object containing the name of the customizable prebuilt intent and
 // the name of the domain to which this model belongs.
-func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCustomPrebuiltIntent")
 		defer func() {
@@ -461,7 +444,7 @@ func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddCustomPrebuiltIntentPreparer(ctx, azureRegion, azureCloud, appID, versionID, prebuiltDomainModelCreateObject)
+	req, err := client.AddCustomPrebuiltIntentPreparer(ctx, appID, versionID, prebuiltDomainModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddCustomPrebuiltIntent", nil, "Failure preparing request")
 		return
@@ -483,10 +466,9 @@ func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, azureRegi
 }
 
 // AddCustomPrebuiltIntentPreparer prepares the AddCustomPrebuiltIntent request.
-func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -497,7 +479,7 @@ func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters),
 		autorest.WithJSON(prebuiltDomainModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -525,12 +507,10 @@ func (client ModelClient) AddCustomPrebuiltIntentResponder(resp *http.Response) 
 
 // AddEntity adds a simple entity extractor to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // modelCreateObject - a model object containing the name for the new simple entity extractor.
-func (client ModelClient) AddEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddEntity(ctx context.Context, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddEntity")
 		defer func() {
@@ -541,7 +521,7 @@ func (client ModelClient) AddEntity(ctx context.Context, azureRegion AzureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, modelCreateObject)
+	req, err := client.AddEntityPreparer(ctx, appID, versionID, modelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddEntity", nil, "Failure preparing request")
 		return
@@ -563,10 +543,9 @@ func (client ModelClient) AddEntity(ctx context.Context, azureRegion AzureRegion
 }
 
 // AddEntityPreparer prepares the AddEntity request.
-func (client ModelClient) AddEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -577,7 +556,7 @@ func (client ModelClient) AddEntityPreparer(ctx context.Context, azureRegion Azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities", pathParameters),
 		autorest.WithJSON(modelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -605,13 +584,11 @@ func (client ModelClient) AddEntityResponder(resp *http.Response) (result UUID, 
 
 // AddExplicitListItem sends the add explicit list item request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
 // item - the new explicit list item.
-func (client ModelClient) AddExplicitListItem(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (result Int32, err error) {
+func (client ModelClient) AddExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (result Int32, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddExplicitListItem")
 		defer func() {
@@ -622,7 +599,7 @@ func (client ModelClient) AddExplicitListItem(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddExplicitListItemPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, item)
+	req, err := client.AddExplicitListItemPreparer(ctx, appID, versionID, entityID, item)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddExplicitListItem", nil, "Failure preparing request")
 		return
@@ -644,10 +621,9 @@ func (client ModelClient) AddExplicitListItem(ctx context.Context, azureRegion A
 }
 
 // AddExplicitListItemPreparer prepares the AddExplicitListItem request.
-func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (*http.Request, error) {
+func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -659,7 +635,7 @@ func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, azure
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters),
 		autorest.WithJSON(item))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -687,12 +663,10 @@ func (client ModelClient) AddExplicitListItemResponder(resp *http.Response) (res
 
 // AddHierarchicalEntity adds a hierarchical entity extractor to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hierarchicalModelCreateObject - a model containing the name and children of the new entity extractor.
-func (client ModelClient) AddHierarchicalEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hierarchicalModelCreateObject HierarchicalEntityModel) (result UUID, err error) {
+func (client ModelClient) AddHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hierarchicalModelCreateObject HierarchicalEntityModel) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddHierarchicalEntity")
 		defer func() {
@@ -703,7 +677,7 @@ func (client ModelClient) AddHierarchicalEntity(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddHierarchicalEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, hierarchicalModelCreateObject)
+	req, err := client.AddHierarchicalEntityPreparer(ctx, appID, versionID, hierarchicalModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddHierarchicalEntity", nil, "Failure preparing request")
 		return
@@ -725,10 +699,9 @@ func (client ModelClient) AddHierarchicalEntity(ctx context.Context, azureRegion
 }
 
 // AddHierarchicalEntityPreparer prepares the AddHierarchicalEntity request.
-func (client ModelClient) AddHierarchicalEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hierarchicalModelCreateObject HierarchicalEntityModel) (*http.Request, error) {
+func (client ModelClient) AddHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hierarchicalModelCreateObject HierarchicalEntityModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -739,7 +712,7 @@ func (client ModelClient) AddHierarchicalEntityPreparer(ctx context.Context, azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities", pathParameters),
 		autorest.WithJSON(hierarchicalModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -768,13 +741,11 @@ func (client ModelClient) AddHierarchicalEntityResponder(resp *http.Response) (r
 // AddHierarchicalEntityChild creates a single child in an existing hierarchical entity model in a version of the
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hierarchicalChildModelCreateObject - a model object containing the name of the new hierarchical child model.
-func (client ModelClient) AddHierarchicalEntityChild(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalChildModelCreateObject HierarchicalChildModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalChildModelCreateObject HierarchicalChildModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddHierarchicalEntityChild")
 		defer func() {
@@ -785,7 +756,7 @@ func (client ModelClient) AddHierarchicalEntityChild(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddHierarchicalEntityChildPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, hierarchicalChildModelCreateObject)
+	req, err := client.AddHierarchicalEntityChildPreparer(ctx, appID, versionID, hEntityID, hierarchicalChildModelCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddHierarchicalEntityChild", nil, "Failure preparing request")
 		return
@@ -807,10 +778,9 @@ func (client ModelClient) AddHierarchicalEntityChild(ctx context.Context, azureR
 }
 
 // AddHierarchicalEntityChildPreparer prepares the AddHierarchicalEntityChild request.
-func (client ModelClient) AddHierarchicalEntityChildPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalChildModelCreateObject HierarchicalChildModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalChildModelCreateObject HierarchicalChildModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -822,7 +792,7 @@ func (client ModelClient) AddHierarchicalEntityChildPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children", pathParameters),
 		autorest.WithJSON(hierarchicalChildModelCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -850,12 +820,10 @@ func (client ModelClient) AddHierarchicalEntityChildResponder(resp *http.Respons
 
 // AddIntent adds an intent to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // intentCreateObject - a model object containing the name of the new intent.
-func (client ModelClient) AddIntent(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddIntent(ctx context.Context, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddIntent")
 		defer func() {
@@ -866,7 +834,7 @@ func (client ModelClient) AddIntent(ctx context.Context, azureRegion AzureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddIntentPreparer(ctx, azureRegion, azureCloud, appID, versionID, intentCreateObject)
+	req, err := client.AddIntentPreparer(ctx, appID, versionID, intentCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddIntent", nil, "Failure preparing request")
 		return
@@ -888,10 +856,9 @@ func (client ModelClient) AddIntent(ctx context.Context, azureRegion AzureRegion
 }
 
 // AddIntentPreparer prepares the AddIntent request.
-func (client ModelClient) AddIntentPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (*http.Request, error) {
+func (client ModelClient) AddIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -902,7 +869,7 @@ func (client ModelClient) AddIntentPreparer(ctx context.Context, azureRegion Azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents", pathParameters),
 		autorest.WithJSON(intentCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -930,12 +897,10 @@ func (client ModelClient) AddIntentResponder(resp *http.Response) (result UUID, 
 
 // AddPrebuilt adds a list of prebuilt entities to a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltExtractorNames - an array of prebuilt entity extractor names.
-func (client ModelClient) AddPrebuilt(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (result ListPrebuiltEntityExtractor, err error) {
+func (client ModelClient) AddPrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (result ListPrebuiltEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddPrebuilt")
 		defer func() {
@@ -952,7 +917,7 @@ func (client ModelClient) AddPrebuilt(ctx context.Context, azureRegion AzureRegi
 		return result, validation.NewError("authoring.ModelClient", "AddPrebuilt", err.Error())
 	}
 
-	req, err := client.AddPrebuiltPreparer(ctx, azureRegion, azureCloud, appID, versionID, prebuiltExtractorNames)
+	req, err := client.AddPrebuiltPreparer(ctx, appID, versionID, prebuiltExtractorNames)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddPrebuilt", nil, "Failure preparing request")
 		return
@@ -974,10 +939,9 @@ func (client ModelClient) AddPrebuilt(ctx context.Context, azureRegion AzureRegi
 }
 
 // AddPrebuiltPreparer prepares the AddPrebuilt request.
-func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (*http.Request, error) {
+func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -988,7 +952,7 @@ func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, azureRegion A
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts", pathParameters),
 		autorest.WithJSON(prebuiltExtractorNames))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1016,13 +980,11 @@ func (client ModelClient) AddPrebuiltResponder(resp *http.Response) (result List
 
 // AddSubList adds a sublist to an existing list entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list entity extractor ID.
 // wordListCreateObject - words list.
-func (client ModelClient) AddSubList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (result Int64, err error) {
+func (client ModelClient) AddSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (result Int64, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddSubList")
 		defer func() {
@@ -1033,7 +995,7 @@ func (client ModelClient) AddSubList(ctx context.Context, azureRegion AzureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddSubListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID, wordListCreateObject)
+	req, err := client.AddSubListPreparer(ctx, appID, versionID, clEntityID, wordListCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "AddSubList", nil, "Failure preparing request")
 		return
@@ -1055,10 +1017,9 @@ func (client ModelClient) AddSubList(ctx context.Context, azureRegion AzureRegio
 }
 
 // AddSubListPreparer prepares the AddSubList request.
-func (client ModelClient) AddSubListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (*http.Request, error) {
+func (client ModelClient) AddSubListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1070,7 +1031,7 @@ func (client ModelClient) AddSubListPreparer(ctx context.Context, azureRegion Az
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists", pathParameters),
 		autorest.WithJSON(wordListCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1098,13 +1059,11 @@ func (client ModelClient) AddSubListResponder(resp *http.Response) (result Int64
 
 // CreateClosedListEntityRole sends the create closed list entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateClosedListEntityRole")
 		defer func() {
@@ -1115,7 +1074,7 @@ func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateClosedListEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, entityRoleCreateObject)
+	req, err := client.CreateClosedListEntityRolePreparer(ctx, appID, versionID, entityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateClosedListEntityRole", nil, "Failure preparing request")
 		return
@@ -1137,10 +1096,9 @@ func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, azureR
 }
 
 // CreateClosedListEntityRolePreparer prepares the CreateClosedListEntityRole request.
-func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1152,7 +1110,7 @@ func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1180,13 +1138,11 @@ func (client ModelClient) CreateClosedListEntityRoleResponder(resp *http.Respons
 
 // CreateCompositeEntityRole sends the create composite entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateCompositeEntityRole")
 		defer func() {
@@ -1197,7 +1153,7 @@ func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateCompositeEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, entityRoleCreateObject)
+	req, err := client.CreateCompositeEntityRolePreparer(ctx, appID, versionID, cEntityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateCompositeEntityRole", nil, "Failure preparing request")
 		return
@@ -1219,10 +1175,9 @@ func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, azureRe
 }
 
 // CreateCompositeEntityRolePreparer prepares the CreateCompositeEntityRole request.
-func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1234,7 +1189,7 @@ func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1262,13 +1217,11 @@ func (client ModelClient) CreateCompositeEntityRoleResponder(resp *http.Response
 
 // CreateCustomPrebuiltEntityRole sends the create custom prebuilt entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateCustomPrebuiltEntityRole")
 		defer func() {
@@ -1279,7 +1232,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, az
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateCustomPrebuiltEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, entityRoleCreateObject)
+	req, err := client.CreateCustomPrebuiltEntityRolePreparer(ctx, appID, versionID, entityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateCustomPrebuiltEntityRole", nil, "Failure preparing request")
 		return
@@ -1301,10 +1254,9 @@ func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, az
 }
 
 // CreateCustomPrebuiltEntityRolePreparer prepares the CreateCustomPrebuiltEntityRole request.
-func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1316,7 +1268,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Con
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1344,13 +1296,11 @@ func (client ModelClient) CreateCustomPrebuiltEntityRoleResponder(resp *http.Res
 
 // CreateEntityRole sends the create entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateEntityRole")
 		defer func() {
@@ -1361,7 +1311,7 @@ func (client ModelClient) CreateEntityRole(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, entityRoleCreateObject)
+	req, err := client.CreateEntityRolePreparer(ctx, appID, versionID, entityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateEntityRole", nil, "Failure preparing request")
 		return
@@ -1383,10 +1333,9 @@ func (client ModelClient) CreateEntityRole(ctx context.Context, azureRegion Azur
 }
 
 // CreateEntityRolePreparer prepares the CreateEntityRole request.
-func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1398,7 +1347,7 @@ func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, azureReg
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1426,13 +1375,11 @@ func (client ModelClient) CreateEntityRoleResponder(resp *http.Response) (result
 
 // CreateHierarchicalEntityRole sends the create hierarchical entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateHierarchicalEntityRole")
 		defer func() {
@@ -1443,7 +1390,7 @@ func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateHierarchicalEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, entityRoleCreateObject)
+	req, err := client.CreateHierarchicalEntityRolePreparer(ctx, appID, versionID, hEntityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateHierarchicalEntityRole", nil, "Failure preparing request")
 		return
@@ -1465,10 +1412,9 @@ func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, azur
 }
 
 // CreateHierarchicalEntityRolePreparer prepares the CreateHierarchicalEntityRole request.
-func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1480,7 +1426,7 @@ func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1508,13 +1454,11 @@ func (client ModelClient) CreateHierarchicalEntityRoleResponder(resp *http.Respo
 
 // CreatePatternAnyEntityModel sends the create pattern any entity model request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // extractorCreateObject - a model object containing the name and explicit list for the new Pattern.Any entity
 // extractor.
-func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (result UUID, err error) {
+func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreatePatternAnyEntityModel")
 		defer func() {
@@ -1525,7 +1469,7 @@ func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePatternAnyEntityModelPreparer(ctx, azureRegion, azureCloud, appID, versionID, extractorCreateObject)
+	req, err := client.CreatePatternAnyEntityModelPreparer(ctx, appID, versionID, extractorCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreatePatternAnyEntityModel", nil, "Failure preparing request")
 		return
@@ -1547,10 +1491,9 @@ func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, azure
 }
 
 // CreatePatternAnyEntityModelPreparer prepares the CreatePatternAnyEntityModel request.
-func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (*http.Request, error) {
+func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1561,7 +1504,7 @@ func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
 		autorest.WithJSON(extractorCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1589,13 +1532,11 @@ func (client ModelClient) CreatePatternAnyEntityModelResponder(resp *http.Respon
 
 // CreatePatternAnyEntityRole sends the create pattern any entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreatePatternAnyEntityRole")
 		defer func() {
@@ -1606,7 +1547,7 @@ func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePatternAnyEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, entityRoleCreateObject)
+	req, err := client.CreatePatternAnyEntityRolePreparer(ctx, appID, versionID, entityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreatePatternAnyEntityRole", nil, "Failure preparing request")
 		return
@@ -1628,10 +1569,9 @@ func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, azureR
 }
 
 // CreatePatternAnyEntityRolePreparer prepares the CreatePatternAnyEntityRole request.
-func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1643,7 +1583,7 @@ func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1671,13 +1611,11 @@ func (client ModelClient) CreatePatternAnyEntityRoleResponder(resp *http.Respons
 
 // CreatePrebuiltEntityRole sends the create prebuilt entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreatePrebuiltEntityRole")
 		defer func() {
@@ -1688,7 +1626,7 @@ func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePrebuiltEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, entityRoleCreateObject)
+	req, err := client.CreatePrebuiltEntityRolePreparer(ctx, appID, versionID, entityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreatePrebuiltEntityRole", nil, "Failure preparing request")
 		return
@@ -1710,10 +1648,9 @@ func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, azureReg
 }
 
 // CreatePrebuiltEntityRolePreparer prepares the CreatePrebuiltEntityRole request.
-func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1725,7 +1662,7 @@ func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1753,13 +1690,11 @@ func (client ModelClient) CreatePrebuiltEntityRoleResponder(resp *http.Response)
 
 // CreateRegexEntityModel sends the create regex entity model request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // regexEntityExtractorCreateObj - a model object containing the name and regex pattern for the new regular
 // expression entity extractor.
-func (client ModelClient) CreateRegexEntityModel(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateRegexEntityModel")
 		defer func() {
@@ -1770,7 +1705,7 @@ func (client ModelClient) CreateRegexEntityModel(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateRegexEntityModelPreparer(ctx, azureRegion, azureCloud, appID, versionID, regexEntityExtractorCreateObj)
+	req, err := client.CreateRegexEntityModelPreparer(ctx, appID, versionID, regexEntityExtractorCreateObj)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateRegexEntityModel", nil, "Failure preparing request")
 		return
@@ -1792,10 +1727,9 @@ func (client ModelClient) CreateRegexEntityModel(ctx context.Context, azureRegio
 }
 
 // CreateRegexEntityModelPreparer prepares the CreateRegexEntityModel request.
-func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1806,7 +1740,7 @@ func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, az
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities", pathParameters),
 		autorest.WithJSON(regexEntityExtractorCreateObj))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1834,13 +1768,11 @@ func (client ModelClient) CreateRegexEntityModelResponder(resp *http.Response) (
 
 // CreateRegexEntityRole sends the create regex entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateRegexEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateRegexEntityRole")
 		defer func() {
@@ -1851,7 +1783,7 @@ func (client ModelClient) CreateRegexEntityRole(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateRegexEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, entityRoleCreateObject)
+	req, err := client.CreateRegexEntityRolePreparer(ctx, appID, versionID, entityID, entityRoleCreateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "CreateRegexEntityRole", nil, "Failure preparing request")
 		return
@@ -1873,10 +1805,9 @@ func (client ModelClient) CreateRegexEntityRole(ctx context.Context, azureRegion
 }
 
 // CreateRegexEntityRolePreparer prepares the CreateRegexEntityRole request.
-func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
+func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1888,7 +1819,7 @@ func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters),
 		autorest.WithJSON(entityRoleCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1916,12 +1847,10 @@ func (client ModelClient) CreateRegexEntityRoleResponder(resp *http.Response) (r
 
 // DeleteClosedList deletes a list entity model from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list entity model ID.
-func (client ModelClient) DeleteClosedList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteClosedList")
 		defer func() {
@@ -1932,7 +1861,7 @@ func (client ModelClient) DeleteClosedList(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteClosedListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID)
+	req, err := client.DeleteClosedListPreparer(ctx, appID, versionID, clEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteClosedList", nil, "Failure preparing request")
 		return
@@ -1954,10 +1883,9 @@ func (client ModelClient) DeleteClosedList(ctx context.Context, azureRegion Azur
 }
 
 // DeleteClosedListPreparer prepares the DeleteClosedList request.
-func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -1968,7 +1896,7 @@ func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, azureReg
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1995,13 +1923,11 @@ func (client ModelClient) DeleteClosedListResponder(resp *http.Response) (result
 
 // DeleteClosedListEntityRole sends the delete closed list entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteClosedListEntityRole")
 		defer func() {
@@ -2012,7 +1938,7 @@ func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteClosedListEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.DeleteClosedListEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteClosedListEntityRole", nil, "Failure preparing request")
 		return
@@ -2034,10 +1960,9 @@ func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, azureR
 }
 
 // DeleteClosedListEntityRolePreparer prepares the DeleteClosedListEntityRole request.
-func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2049,7 +1974,7 @@ func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2076,12 +2001,10 @@ func (client ModelClient) DeleteClosedListEntityRoleResponder(resp *http.Respons
 
 // DeleteCompositeEntity deletes a composite entity from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
-func (client ModelClient) DeleteCompositeEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCompositeEntity")
 		defer func() {
@@ -2092,7 +2015,7 @@ func (client ModelClient) DeleteCompositeEntity(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteCompositeEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID)
+	req, err := client.DeleteCompositeEntityPreparer(ctx, appID, versionID, cEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCompositeEntity", nil, "Failure preparing request")
 		return
@@ -2114,10 +2037,9 @@ func (client ModelClient) DeleteCompositeEntity(ctx context.Context, azureRegion
 }
 
 // DeleteCompositeEntityPreparer prepares the DeleteCompositeEntity request.
-func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2128,7 +2050,7 @@ func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2155,13 +2077,11 @@ func (client ModelClient) DeleteCompositeEntityResponder(resp *http.Response) (r
 
 // DeleteCompositeEntityChild deletes a composite entity extractor child from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // cChildID - the hierarchical entity extractor child ID.
-func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCompositeEntityChild")
 		defer func() {
@@ -2172,7 +2092,7 @@ func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteCompositeEntityChildPreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, cChildID)
+	req, err := client.DeleteCompositeEntityChildPreparer(ctx, appID, versionID, cEntityID, cChildID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCompositeEntityChild", nil, "Failure preparing request")
 		return
@@ -2194,10 +2114,9 @@ func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, azureR
 }
 
 // DeleteCompositeEntityChildPreparer prepares the DeleteCompositeEntityChild request.
-func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2209,7 +2128,7 @@ func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2236,13 +2155,11 @@ func (client ModelClient) DeleteCompositeEntityChildResponder(resp *http.Respons
 
 // DeleteCompositeEntityRole sends the delete composite entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCompositeEntityRole")
 		defer func() {
@@ -2253,7 +2170,7 @@ func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteCompositeEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, roleID)
+	req, err := client.DeleteCompositeEntityRolePreparer(ctx, appID, versionID, cEntityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCompositeEntityRole", nil, "Failure preparing request")
 		return
@@ -2275,10 +2192,9 @@ func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, azureRe
 }
 
 // DeleteCompositeEntityRolePreparer prepares the DeleteCompositeEntityRole request.
-func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2290,7 +2206,7 @@ func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2317,13 +2233,11 @@ func (client ModelClient) DeleteCompositeEntityRoleResponder(resp *http.Response
 
 // DeleteCustomEntityRole sends the delete custom entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCustomEntityRole")
 		defer func() {
@@ -2334,7 +2248,7 @@ func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteCustomEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.DeleteCustomEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCustomEntityRole", nil, "Failure preparing request")
 		return
@@ -2356,10 +2270,9 @@ func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, azureRegio
 }
 
 // DeleteCustomEntityRolePreparer prepares the DeleteCustomEntityRole request.
-func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2371,7 +2284,7 @@ func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2398,12 +2311,10 @@ func (client ModelClient) DeleteCustomEntityRoleResponder(resp *http.Response) (
 
 // DeleteCustomPrebuiltDomain deletes a prebuilt domain's models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // domainName - domain name.
-func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, domainName string) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, appID uuid.UUID, versionID string, domainName string) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCustomPrebuiltDomain")
 		defer func() {
@@ -2414,7 +2325,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteCustomPrebuiltDomainPreparer(ctx, azureRegion, azureCloud, appID, versionID, domainName)
+	req, err := client.DeleteCustomPrebuiltDomainPreparer(ctx, appID, versionID, domainName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteCustomPrebuiltDomain", nil, "Failure preparing request")
 		return
@@ -2436,10 +2347,9 @@ func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, azureR
 }
 
 // DeleteCustomPrebuiltDomainPreparer prepares the DeleteCustomPrebuiltDomain request.
-func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, domainName string) (*http.Request, error) {
+func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context, appID uuid.UUID, versionID string, domainName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2450,7 +2360,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2477,12 +2387,10 @@ func (client ModelClient) DeleteCustomPrebuiltDomainResponder(resp *http.Respons
 
 // DeleteEntity deletes an entity from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
-func (client ModelClient) DeleteEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteEntity")
 		defer func() {
@@ -2493,7 +2401,7 @@ func (client ModelClient) DeleteEntity(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.DeleteEntityPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntity", nil, "Failure preparing request")
 		return
@@ -2515,10 +2423,9 @@ func (client ModelClient) DeleteEntity(ctx context.Context, azureRegion AzureReg
 }
 
 // DeleteEntityPreparer prepares the DeleteEntity request.
-func (client ModelClient) DeleteEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2529,7 +2436,7 @@ func (client ModelClient) DeleteEntityPreparer(ctx context.Context, azureRegion 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2556,13 +2463,11 @@ func (client ModelClient) DeleteEntityResponder(resp *http.Response) (result Ope
 
 // DeleteEntityRole sends the delete entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteEntityRole")
 		defer func() {
@@ -2573,7 +2478,7 @@ func (client ModelClient) DeleteEntityRole(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.DeleteEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntityRole", nil, "Failure preparing request")
 		return
@@ -2595,10 +2500,9 @@ func (client ModelClient) DeleteEntityRole(ctx context.Context, azureRegion Azur
 }
 
 // DeleteEntityRolePreparer prepares the DeleteEntityRole request.
-func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2610,7 +2514,7 @@ func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, azureReg
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2637,13 +2541,11 @@ func (client ModelClient) DeleteEntityRoleResponder(resp *http.Response) (result
 
 // DeleteExplicitListItem sends the delete explicit list item request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the pattern.any entity id.
 // itemID - the explicit list item which will be deleted.
-func (client ModelClient) DeleteExplicitListItem(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result OperationStatus, err error) {
+func (client ModelClient) DeleteExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteExplicitListItem")
 		defer func() {
@@ -2654,7 +2556,7 @@ func (client ModelClient) DeleteExplicitListItem(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteExplicitListItemPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, itemID)
+	req, err := client.DeleteExplicitListItemPreparer(ctx, appID, versionID, entityID, itemID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteExplicitListItem", nil, "Failure preparing request")
 		return
@@ -2676,10 +2578,9 @@ func (client ModelClient) DeleteExplicitListItem(ctx context.Context, azureRegio
 }
 
 // DeleteExplicitListItemPreparer prepares the DeleteExplicitListItem request.
-func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (*http.Request, error) {
+func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2691,7 +2592,7 @@ func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2718,12 +2619,10 @@ func (client ModelClient) DeleteExplicitListItemResponder(resp *http.Response) (
 
 // DeleteHierarchicalEntity deletes a hierarchical entity from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
-func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteHierarchicalEntity")
 		defer func() {
@@ -2734,7 +2633,7 @@ func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteHierarchicalEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID)
+	req, err := client.DeleteHierarchicalEntityPreparer(ctx, appID, versionID, hEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteHierarchicalEntity", nil, "Failure preparing request")
 		return
@@ -2756,10 +2655,9 @@ func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, azureReg
 }
 
 // DeleteHierarchicalEntityPreparer prepares the DeleteHierarchicalEntity request.
-func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2770,7 +2668,7 @@ func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2797,13 +2695,11 @@ func (client ModelClient) DeleteHierarchicalEntityResponder(resp *http.Response)
 
 // DeleteHierarchicalEntityChild deletes a hierarchical entity extractor child in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hChildID - the hierarchical entity extractor child ID.
-func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteHierarchicalEntityChild")
 		defer func() {
@@ -2814,7 +2710,7 @@ func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, azu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteHierarchicalEntityChildPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, hChildID)
+	req, err := client.DeleteHierarchicalEntityChildPreparer(ctx, appID, versionID, hEntityID, hChildID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteHierarchicalEntityChild", nil, "Failure preparing request")
 		return
@@ -2836,10 +2732,9 @@ func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, azu
 }
 
 // DeleteHierarchicalEntityChildPreparer prepares the DeleteHierarchicalEntityChild request.
-func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2851,7 +2746,7 @@ func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Cont
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2878,13 +2773,11 @@ func (client ModelClient) DeleteHierarchicalEntityChildResponder(resp *http.Resp
 
 // DeleteHierarchicalEntityRole sends the delete hierarchical entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteHierarchicalEntityRole")
 		defer func() {
@@ -2895,7 +2788,7 @@ func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteHierarchicalEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, roleID)
+	req, err := client.DeleteHierarchicalEntityRolePreparer(ctx, appID, versionID, hEntityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteHierarchicalEntityRole", nil, "Failure preparing request")
 		return
@@ -2917,10 +2810,9 @@ func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, azur
 }
 
 // DeleteHierarchicalEntityRolePreparer prepares the DeleteHierarchicalEntityRole request.
-func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -2932,7 +2824,7 @@ func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Conte
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2959,14 +2851,12 @@ func (client ModelClient) DeleteHierarchicalEntityRoleResponder(resp *http.Respo
 
 // DeleteIntent deletes an intent from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // deleteUtterances - if true, deletes the intent's example utterances. If false, moves the example utterances
 // to the None intent. The default value is false.
-func (client ModelClient) DeleteIntent(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (result OperationStatus, err error) {
+func (client ModelClient) DeleteIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteIntent")
 		defer func() {
@@ -2977,7 +2867,7 @@ func (client ModelClient) DeleteIntent(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteIntentPreparer(ctx, azureRegion, azureCloud, appID, versionID, intentID, deleteUtterances)
+	req, err := client.DeleteIntentPreparer(ctx, appID, versionID, intentID, deleteUtterances)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteIntent", nil, "Failure preparing request")
 		return
@@ -2999,10 +2889,9 @@ func (client ModelClient) DeleteIntent(ctx context.Context, azureRegion AzureReg
 }
 
 // DeleteIntentPreparer prepares the DeleteIntent request.
-func (client ModelClient) DeleteIntentPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (*http.Request, error) {
+func (client ModelClient) DeleteIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3020,7 +2909,7 @@ func (client ModelClient) DeleteIntentPreparer(ctx context.Context, azureRegion 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -3048,12 +2937,10 @@ func (client ModelClient) DeleteIntentResponder(resp *http.Response) (result Ope
 
 // DeletePatternAnyEntityModel sends the delete pattern any entity model request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
-func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePatternAnyEntityModel")
 		defer func() {
@@ -3064,7 +2951,7 @@ func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePatternAnyEntityModelPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.DeletePatternAnyEntityModelPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePatternAnyEntityModel", nil, "Failure preparing request")
 		return
@@ -3086,10 +2973,9 @@ func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, azure
 }
 
 // DeletePatternAnyEntityModelPreparer prepares the DeletePatternAnyEntityModel request.
-func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3100,7 +2986,7 @@ func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Contex
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3127,13 +3013,11 @@ func (client ModelClient) DeletePatternAnyEntityModelResponder(resp *http.Respon
 
 // DeletePatternAnyEntityRole sends the delete pattern any entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePatternAnyEntityRole")
 		defer func() {
@@ -3144,7 +3028,7 @@ func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePatternAnyEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.DeletePatternAnyEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePatternAnyEntityRole", nil, "Failure preparing request")
 		return
@@ -3166,10 +3050,9 @@ func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, azureR
 }
 
 // DeletePatternAnyEntityRolePreparer prepares the DeletePatternAnyEntityRole request.
-func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3181,7 +3064,7 @@ func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3208,12 +3091,10 @@ func (client ModelClient) DeletePatternAnyEntityRoleResponder(resp *http.Respons
 
 // DeletePrebuilt deletes a prebuilt entity extractor from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltID - the prebuilt entity extractor ID.
-func (client ModelClient) DeletePrebuilt(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePrebuilt")
 		defer func() {
@@ -3224,7 +3105,7 @@ func (client ModelClient) DeletePrebuilt(ctx context.Context, azureRegion AzureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePrebuiltPreparer(ctx, azureRegion, azureCloud, appID, versionID, prebuiltID)
+	req, err := client.DeletePrebuiltPreparer(ctx, appID, versionID, prebuiltID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePrebuilt", nil, "Failure preparing request")
 		return
@@ -3246,10 +3127,9 @@ func (client ModelClient) DeletePrebuilt(ctx context.Context, azureRegion AzureR
 }
 
 // DeletePrebuiltPreparer prepares the DeletePrebuilt request.
-func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3260,7 +3140,7 @@ func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, azureRegio
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3287,13 +3167,11 @@ func (client ModelClient) DeletePrebuiltResponder(resp *http.Response) (result O
 
 // DeletePrebuiltEntityRole sends the delete prebuilt entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePrebuiltEntityRole")
 		defer func() {
@@ -3304,7 +3182,7 @@ func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePrebuiltEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.DeletePrebuiltEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeletePrebuiltEntityRole", nil, "Failure preparing request")
 		return
@@ -3326,10 +3204,9 @@ func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, azureReg
 }
 
 // DeletePrebuiltEntityRolePreparer prepares the DeletePrebuiltEntityRole request.
-func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3341,7 +3218,7 @@ func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3368,12 +3245,10 @@ func (client ModelClient) DeletePrebuiltEntityRoleResponder(resp *http.Response)
 
 // DeleteRegexEntityModel sends the delete regex entity model request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // regexEntityID - the regular expression entity extractor ID.
-func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteRegexEntityModel")
 		defer func() {
@@ -3384,7 +3259,7 @@ func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteRegexEntityModelPreparer(ctx, azureRegion, azureCloud, appID, versionID, regexEntityID)
+	req, err := client.DeleteRegexEntityModelPreparer(ctx, appID, versionID, regexEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteRegexEntityModel", nil, "Failure preparing request")
 		return
@@ -3406,10 +3281,9 @@ func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, azureRegio
 }
 
 // DeleteRegexEntityModelPreparer prepares the DeleteRegexEntityModel request.
-func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3420,7 +3294,7 @@ func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3447,13 +3321,11 @@ func (client ModelClient) DeleteRegexEntityModelResponder(resp *http.Response) (
 
 // DeleteRegexEntityRole sends the delete regex entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteRegexEntityRole")
 		defer func() {
@@ -3464,7 +3336,7 @@ func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteRegexEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.DeleteRegexEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteRegexEntityRole", nil, "Failure preparing request")
 		return
@@ -3486,10 +3358,9 @@ func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, azureRegion
 }
 
 // DeleteRegexEntityRolePreparer prepares the DeleteRegexEntityRole request.
-func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3501,7 +3372,7 @@ func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3528,13 +3399,11 @@ func (client ModelClient) DeleteRegexEntityRoleResponder(resp *http.Response) (r
 
 // DeleteSubList deletes a sublist of a specific list entity model from a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list entity extractor ID.
 // subListID - the sublist ID.
-func (client ModelClient) DeleteSubList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64) (result OperationStatus, err error) {
+func (client ModelClient) DeleteSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteSubList")
 		defer func() {
@@ -3545,7 +3414,7 @@ func (client ModelClient) DeleteSubList(ctx context.Context, azureRegion AzureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteSubListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID, subListID)
+	req, err := client.DeleteSubListPreparer(ctx, appID, versionID, clEntityID, subListID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteSubList", nil, "Failure preparing request")
 		return
@@ -3567,10 +3436,9 @@ func (client ModelClient) DeleteSubList(ctx context.Context, azureRegion AzureRe
 }
 
 // DeleteSubListPreparer prepares the DeleteSubList request.
-func (client ModelClient) DeleteSubListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64) (*http.Request, error) {
+func (client ModelClient) DeleteSubListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3582,7 +3450,7 @@ func (client ModelClient) DeleteSubListPreparer(ctx context.Context, azureRegion
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3609,14 +3477,12 @@ func (client ModelClient) DeleteSubListResponder(resp *http.Response) (result Op
 
 // ExamplesMethod gets the example utterances for the given intent or entity model in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // modelID - the ID (GUID) of the model.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ExamplesMethod(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (result ListLabelTextObject, err error) {
+func (client ModelClient) ExamplesMethod(ctx context.Context, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (result ListLabelTextObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ExamplesMethod")
 		defer func() {
@@ -3639,7 +3505,7 @@ func (client ModelClient) ExamplesMethod(ctx context.Context, azureRegion AzureR
 		return result, validation.NewError("authoring.ModelClient", "ExamplesMethod", err.Error())
 	}
 
-	req, err := client.ExamplesMethodPreparer(ctx, azureRegion, azureCloud, appID, versionID, modelID, skip, take)
+	req, err := client.ExamplesMethodPreparer(ctx, appID, versionID, modelID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ExamplesMethod", nil, "Failure preparing request")
 		return
@@ -3661,10 +3527,9 @@ func (client ModelClient) ExamplesMethod(ctx context.Context, azureRegion AzureR
 }
 
 // ExamplesMethodPreparer prepares the ExamplesMethod request.
-func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3687,7 +3552,7 @@ func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, azureRegio
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/models/{modelId}/examples", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -3715,12 +3580,10 @@ func (client ModelClient) ExamplesMethodResponder(resp *http.Response) (result L
 
 // GetClosedList gets information about a list entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list model ID.
-func (client ModelClient) GetClosedList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result ClosedListEntityExtractor, err error) {
+func (client ModelClient) GetClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result ClosedListEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetClosedList")
 		defer func() {
@@ -3731,7 +3594,7 @@ func (client ModelClient) GetClosedList(ctx context.Context, azureRegion AzureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetClosedListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID)
+	req, err := client.GetClosedListPreparer(ctx, appID, versionID, clEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetClosedList", nil, "Failure preparing request")
 		return
@@ -3753,10 +3616,9 @@ func (client ModelClient) GetClosedList(ctx context.Context, azureRegion AzureRe
 }
 
 // GetClosedListPreparer prepares the GetClosedList request.
-func (client ModelClient) GetClosedListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3767,7 +3629,7 @@ func (client ModelClient) GetClosedListPreparer(ctx context.Context, azureRegion
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3794,13 +3656,11 @@ func (client ModelClient) GetClosedListResponder(resp *http.Response) (result Cl
 
 // GetClosedListEntityRole sends the get closed list entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetClosedListEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetClosedListEntityRole")
 		defer func() {
@@ -3811,7 +3671,7 @@ func (client ModelClient) GetClosedListEntityRole(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetClosedListEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.GetClosedListEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetClosedListEntityRole", nil, "Failure preparing request")
 		return
@@ -3833,10 +3693,9 @@ func (client ModelClient) GetClosedListEntityRole(ctx context.Context, azureRegi
 }
 
 // GetClosedListEntityRolePreparer prepares the GetClosedListEntityRole request.
-func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3848,7 +3707,7 @@ func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, a
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3875,12 +3734,10 @@ func (client ModelClient) GetClosedListEntityRoleResponder(resp *http.Response) 
 
 // GetCompositeEntity gets information about a composite entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
-func (client ModelClient) GetCompositeEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result CompositeEntityExtractor, err error) {
+func (client ModelClient) GetCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result CompositeEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCompositeEntity")
 		defer func() {
@@ -3891,7 +3748,7 @@ func (client ModelClient) GetCompositeEntity(ctx context.Context, azureRegion Az
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetCompositeEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID)
+	req, err := client.GetCompositeEntityPreparer(ctx, appID, versionID, cEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetCompositeEntity", nil, "Failure preparing request")
 		return
@@ -3913,10 +3770,9 @@ func (client ModelClient) GetCompositeEntity(ctx context.Context, azureRegion Az
 }
 
 // GetCompositeEntityPreparer prepares the GetCompositeEntity request.
-func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -3927,7 +3783,7 @@ func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, azureR
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -3954,13 +3810,11 @@ func (client ModelClient) GetCompositeEntityResponder(resp *http.Response) (resu
 
 // GetCompositeEntityRole sends the get composite entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // roleID - entity role ID.
-func (client ModelClient) GetCompositeEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCompositeEntityRole")
 		defer func() {
@@ -3971,7 +3825,7 @@ func (client ModelClient) GetCompositeEntityRole(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetCompositeEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, roleID)
+	req, err := client.GetCompositeEntityRolePreparer(ctx, appID, versionID, cEntityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetCompositeEntityRole", nil, "Failure preparing request")
 		return
@@ -3993,10 +3847,9 @@ func (client ModelClient) GetCompositeEntityRole(ctx context.Context, azureRegio
 }
 
 // GetCompositeEntityRolePreparer prepares the GetCompositeEntityRole request.
-func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4008,7 +3861,7 @@ func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4035,13 +3888,11 @@ func (client ModelClient) GetCompositeEntityRoleResponder(resp *http.Response) (
 
 // GetCustomEntityRole sends the get custom entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetCustomEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetCustomEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCustomEntityRole")
 		defer func() {
@@ -4052,7 +3903,7 @@ func (client ModelClient) GetCustomEntityRole(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetCustomEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.GetCustomEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetCustomEntityRole", nil, "Failure preparing request")
 		return
@@ -4074,10 +3925,9 @@ func (client ModelClient) GetCustomEntityRole(ctx context.Context, azureRegion A
 }
 
 // GetCustomEntityRolePreparer prepares the GetCustomEntityRole request.
-func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4089,7 +3939,7 @@ func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, azure
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4116,12 +3966,10 @@ func (client ModelClient) GetCustomEntityRoleResponder(resp *http.Response) (res
 
 // GetEntity gets information about an entity model in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
-func (client ModelClient) GetEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result EntityExtractor, err error) {
+func (client ModelClient) GetEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result EntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntity")
 		defer func() {
@@ -4132,7 +3980,7 @@ func (client ModelClient) GetEntity(ctx context.Context, azureRegion AzureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.GetEntityPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntity", nil, "Failure preparing request")
 		return
@@ -4154,10 +4002,9 @@ func (client ModelClient) GetEntity(ctx context.Context, azureRegion AzureRegion
 }
 
 // GetEntityPreparer prepares the GetEntity request.
-func (client ModelClient) GetEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4168,7 +4015,7 @@ func (client ModelClient) GetEntityPreparer(ctx context.Context, azureRegion Azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4195,13 +4042,11 @@ func (client ModelClient) GetEntityResponder(resp *http.Response) (result Entity
 
 // GetEntityRole sends the get entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntityRole")
 		defer func() {
@@ -4212,7 +4057,7 @@ func (client ModelClient) GetEntityRole(ctx context.Context, azureRegion AzureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.GetEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntityRole", nil, "Failure preparing request")
 		return
@@ -4234,10 +4079,9 @@ func (client ModelClient) GetEntityRole(ctx context.Context, azureRegion AzureRe
 }
 
 // GetEntityRolePreparer prepares the GetEntityRole request.
-func (client ModelClient) GetEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4249,7 +4093,7 @@ func (client ModelClient) GetEntityRolePreparer(ctx context.Context, azureRegion
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4276,12 +4120,10 @@ func (client ModelClient) GetEntityRoleResponder(resp *http.Response) (result En
 
 // GetExplicitList sends the get explicit list request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity id.
-func (client ModelClient) GetExplicitList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListExplicitListItem, err error) {
+func (client ModelClient) GetExplicitList(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListExplicitListItem, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetExplicitList")
 		defer func() {
@@ -4292,7 +4134,7 @@ func (client ModelClient) GetExplicitList(ctx context.Context, azureRegion Azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetExplicitListPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.GetExplicitListPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetExplicitList", nil, "Failure preparing request")
 		return
@@ -4314,10 +4156,9 @@ func (client ModelClient) GetExplicitList(ctx context.Context, azureRegion Azure
 }
 
 // GetExplicitListPreparer prepares the GetExplicitList request.
-func (client ModelClient) GetExplicitListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetExplicitListPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4328,7 +4169,7 @@ func (client ModelClient) GetExplicitListPreparer(ctx context.Context, azureRegi
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4355,13 +4196,11 @@ func (client ModelClient) GetExplicitListResponder(resp *http.Response) (result 
 
 // GetExplicitListItem sends the get explicit list item request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity Id.
 // itemID - the explicit list item Id.
-func (client ModelClient) GetExplicitListItem(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result ExplicitListItem, err error) {
+func (client ModelClient) GetExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result ExplicitListItem, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetExplicitListItem")
 		defer func() {
@@ -4372,7 +4211,7 @@ func (client ModelClient) GetExplicitListItem(ctx context.Context, azureRegion A
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetExplicitListItemPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, itemID)
+	req, err := client.GetExplicitListItemPreparer(ctx, appID, versionID, entityID, itemID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetExplicitListItem", nil, "Failure preparing request")
 		return
@@ -4394,10 +4233,9 @@ func (client ModelClient) GetExplicitListItem(ctx context.Context, azureRegion A
 }
 
 // GetExplicitListItemPreparer prepares the GetExplicitListItem request.
-func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (*http.Request, error) {
+func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4409,7 +4247,7 @@ func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, azure
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4436,12 +4274,10 @@ func (client ModelClient) GetExplicitListItemResponder(resp *http.Response) (res
 
 // GetHierarchicalEntity gets information about a hierarchical entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
-func (client ModelClient) GetHierarchicalEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result HierarchicalEntityExtractor, err error) {
+func (client ModelClient) GetHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result HierarchicalEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntity")
 		defer func() {
@@ -4452,7 +4288,7 @@ func (client ModelClient) GetHierarchicalEntity(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetHierarchicalEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID)
+	req, err := client.GetHierarchicalEntityPreparer(ctx, appID, versionID, hEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetHierarchicalEntity", nil, "Failure preparing request")
 		return
@@ -4474,10 +4310,9 @@ func (client ModelClient) GetHierarchicalEntity(ctx context.Context, azureRegion
 }
 
 // GetHierarchicalEntityPreparer prepares the GetHierarchicalEntity request.
-func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4488,7 +4323,7 @@ func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4516,13 +4351,11 @@ func (client ModelClient) GetHierarchicalEntityResponder(resp *http.Response) (r
 // GetHierarchicalEntityChild gets information about the child's model contained in an hierarchical entity child model
 // in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hChildID - the hierarchical entity extractor child ID.
-func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result HierarchicalChildEntity, err error) {
+func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result HierarchicalChildEntity, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntityChild")
 		defer func() {
@@ -4533,7 +4366,7 @@ func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetHierarchicalEntityChildPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, hChildID)
+	req, err := client.GetHierarchicalEntityChildPreparer(ctx, appID, versionID, hEntityID, hChildID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetHierarchicalEntityChild", nil, "Failure preparing request")
 		return
@@ -4555,10 +4388,9 @@ func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, azureR
 }
 
 // GetHierarchicalEntityChildPreparer prepares the GetHierarchicalEntityChild request.
-func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4570,7 +4402,7 @@ func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4597,13 +4429,11 @@ func (client ModelClient) GetHierarchicalEntityChildResponder(resp *http.Respons
 
 // GetHierarchicalEntityRole sends the get hierarchical entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // roleID - entity role ID.
-func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntityRole")
 		defer func() {
@@ -4614,7 +4444,7 @@ func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetHierarchicalEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, roleID)
+	req, err := client.GetHierarchicalEntityRolePreparer(ctx, appID, versionID, hEntityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetHierarchicalEntityRole", nil, "Failure preparing request")
 		return
@@ -4636,10 +4466,9 @@ func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, azureRe
 }
 
 // GetHierarchicalEntityRolePreparer prepares the GetHierarchicalEntityRole request.
-func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4651,7 +4480,7 @@ func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4678,12 +4507,10 @@ func (client ModelClient) GetHierarchicalEntityRoleResponder(resp *http.Response
 
 // GetIntent gets information about the intent model in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // intentID - the intent classifier ID.
-func (client ModelClient) GetIntent(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID) (result IntentClassifier, err error) {
+func (client ModelClient) GetIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (result IntentClassifier, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetIntent")
 		defer func() {
@@ -4694,7 +4521,7 @@ func (client ModelClient) GetIntent(ctx context.Context, azureRegion AzureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetIntentPreparer(ctx, azureRegion, azureCloud, appID, versionID, intentID)
+	req, err := client.GetIntentPreparer(ctx, appID, versionID, intentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetIntent", nil, "Failure preparing request")
 		return
@@ -4716,10 +4543,9 @@ func (client ModelClient) GetIntent(ctx context.Context, azureRegion AzureRegion
 }
 
 // GetIntentPreparer prepares the GetIntent request.
-func (client ModelClient) GetIntentPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4730,7 +4556,7 @@ func (client ModelClient) GetIntentPreparer(ctx context.Context, azureRegion Azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4757,12 +4583,10 @@ func (client ModelClient) GetIntentResponder(resp *http.Response) (result Intent
 
 // GetPatternAnyEntityInfo sends the get pattern any entity info request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
-func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result PatternAnyEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result PatternAnyEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPatternAnyEntityInfo")
 		defer func() {
@@ -4773,7 +4597,7 @@ func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPatternAnyEntityInfoPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.GetPatternAnyEntityInfoPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPatternAnyEntityInfo", nil, "Failure preparing request")
 		return
@@ -4795,10 +4619,9 @@ func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, azureRegi
 }
 
 // GetPatternAnyEntityInfoPreparer prepares the GetPatternAnyEntityInfo request.
-func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4809,7 +4632,7 @@ func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, a
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4836,13 +4659,11 @@ func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) 
 
 // GetPatternAnyEntityRole sends the get pattern any entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPatternAnyEntityRole")
 		defer func() {
@@ -4853,7 +4674,7 @@ func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPatternAnyEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.GetPatternAnyEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPatternAnyEntityRole", nil, "Failure preparing request")
 		return
@@ -4875,10 +4696,9 @@ func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, azureRegi
 }
 
 // GetPatternAnyEntityRolePreparer prepares the GetPatternAnyEntityRole request.
-func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4890,7 +4710,7 @@ func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, a
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4917,12 +4737,10 @@ func (client ModelClient) GetPatternAnyEntityRoleResponder(resp *http.Response) 
 
 // GetPrebuilt gets information about a prebuilt entity model in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltID - the prebuilt entity extractor ID.
-func (client ModelClient) GetPrebuilt(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result PrebuiltEntityExtractor, err error) {
+func (client ModelClient) GetPrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result PrebuiltEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPrebuilt")
 		defer func() {
@@ -4933,7 +4751,7 @@ func (client ModelClient) GetPrebuilt(ctx context.Context, azureRegion AzureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPrebuiltPreparer(ctx, azureRegion, azureCloud, appID, versionID, prebuiltID)
+	req, err := client.GetPrebuiltPreparer(ctx, appID, versionID, prebuiltID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPrebuilt", nil, "Failure preparing request")
 		return
@@ -4955,10 +4773,9 @@ func (client ModelClient) GetPrebuilt(ctx context.Context, azureRegion AzureRegi
 }
 
 // GetPrebuiltPreparer prepares the GetPrebuilt request.
-func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -4969,7 +4786,7 @@ func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, azureRegion A
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -4996,13 +4813,11 @@ func (client ModelClient) GetPrebuiltResponder(resp *http.Response) (result Preb
 
 // GetPrebuiltEntityRole sends the get prebuilt entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPrebuiltEntityRole")
 		defer func() {
@@ -5013,7 +4828,7 @@ func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPrebuiltEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.GetPrebuiltEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetPrebuiltEntityRole", nil, "Failure preparing request")
 		return
@@ -5035,10 +4850,9 @@ func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, azureRegion
 }
 
 // GetPrebuiltEntityRolePreparer prepares the GetPrebuiltEntityRole request.
-func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5050,7 +4864,7 @@ func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5077,12 +4891,10 @@ func (client ModelClient) GetPrebuiltEntityRoleResponder(resp *http.Response) (r
 
 // GetRegexEntityEntityInfo sends the get regex entity entity info request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // regexEntityID - the regular expression entity model ID.
-func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result RegexEntityExtractor, err error) {
+func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result RegexEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetRegexEntityEntityInfo")
 		defer func() {
@@ -5093,7 +4905,7 @@ func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetRegexEntityEntityInfoPreparer(ctx, azureRegion, azureCloud, appID, versionID, regexEntityID)
+	req, err := client.GetRegexEntityEntityInfoPreparer(ctx, appID, versionID, regexEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetRegexEntityEntityInfo", nil, "Failure preparing request")
 		return
@@ -5115,10 +4927,9 @@ func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, azureReg
 }
 
 // GetRegexEntityEntityInfoPreparer prepares the GetRegexEntityEntityInfo request.
-func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5129,7 +4940,7 @@ func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5156,13 +4967,11 @@ func (client ModelClient) GetRegexEntityEntityInfoResponder(resp *http.Response)
 
 // GetRegexEntityRole sends the get regex entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetRegexEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetRegexEntityRole")
 		defer func() {
@@ -5173,7 +4982,7 @@ func (client ModelClient) GetRegexEntityRole(ctx context.Context, azureRegion Az
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetRegexEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID)
+	req, err := client.GetRegexEntityRolePreparer(ctx, appID, versionID, entityID, roleID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetRegexEntityRole", nil, "Failure preparing request")
 		return
@@ -5195,10 +5004,9 @@ func (client ModelClient) GetRegexEntityRole(ctx context.Context, azureRegion Az
 }
 
 // GetRegexEntityRolePreparer prepares the GetRegexEntityRole request.
-func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5210,7 +5018,7 @@ func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, azureR
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5237,12 +5045,10 @@ func (client ModelClient) GetRegexEntityRoleResponder(resp *http.Response) (resu
 
 // ListClosedListEntityRoles sends the list closed list entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) ListClosedListEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListClosedListEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListClosedListEntityRoles")
 		defer func() {
@@ -5253,7 +5059,7 @@ func (client ModelClient) ListClosedListEntityRoles(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListClosedListEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.ListClosedListEntityRolesPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListClosedListEntityRoles", nil, "Failure preparing request")
 		return
@@ -5275,10 +5081,9 @@ func (client ModelClient) ListClosedListEntityRoles(ctx context.Context, azureRe
 }
 
 // ListClosedListEntityRolesPreparer prepares the ListClosedListEntityRoles request.
-func (client ModelClient) ListClosedListEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListClosedListEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5289,7 +5094,7 @@ func (client ModelClient) ListClosedListEntityRolesPreparer(ctx context.Context,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5316,13 +5121,11 @@ func (client ModelClient) ListClosedListEntityRolesResponder(resp *http.Response
 
 // ListClosedLists gets information about all the list entity models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListClosedLists(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListClosedListEntityExtractor, err error) {
+func (client ModelClient) ListClosedLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListClosedListEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListClosedLists")
 		defer func() {
@@ -5345,7 +5148,7 @@ func (client ModelClient) ListClosedLists(ctx context.Context, azureRegion Azure
 		return result, validation.NewError("authoring.ModelClient", "ListClosedLists", err.Error())
 	}
 
-	req, err := client.ListClosedListsPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListClosedListsPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListClosedLists", nil, "Failure preparing request")
 		return
@@ -5367,10 +5170,9 @@ func (client ModelClient) ListClosedLists(ctx context.Context, azureRegion Azure
 }
 
 // ListClosedListsPreparer prepares the ListClosedLists request.
-func (client ModelClient) ListClosedListsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListClosedListsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5392,7 +5194,7 @@ func (client ModelClient) ListClosedListsPreparer(ctx context.Context, azureRegi
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -5420,13 +5222,11 @@ func (client ModelClient) ListClosedListsResponder(resp *http.Response) (result 
 
 // ListCompositeEntities gets information about all the composite entity models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListCompositeEntities(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListCompositeEntityExtractor, err error) {
+func (client ModelClient) ListCompositeEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListCompositeEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCompositeEntities")
 		defer func() {
@@ -5449,7 +5249,7 @@ func (client ModelClient) ListCompositeEntities(ctx context.Context, azureRegion
 		return result, validation.NewError("authoring.ModelClient", "ListCompositeEntities", err.Error())
 	}
 
-	req, err := client.ListCompositeEntitiesPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListCompositeEntitiesPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCompositeEntities", nil, "Failure preparing request")
 		return
@@ -5471,10 +5271,9 @@ func (client ModelClient) ListCompositeEntities(ctx context.Context, azureRegion
 }
 
 // ListCompositeEntitiesPreparer prepares the ListCompositeEntities request.
-func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5496,7 +5295,7 @@ func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -5524,12 +5323,10 @@ func (client ModelClient) ListCompositeEntitiesResponder(resp *http.Response) (r
 
 // ListCompositeEntityRoles sends the list composite entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
-func (client ModelClient) ListCompositeEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListCompositeEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCompositeEntityRoles")
 		defer func() {
@@ -5540,7 +5337,7 @@ func (client ModelClient) ListCompositeEntityRoles(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListCompositeEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID)
+	req, err := client.ListCompositeEntityRolesPreparer(ctx, appID, versionID, cEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCompositeEntityRoles", nil, "Failure preparing request")
 		return
@@ -5562,10 +5359,9 @@ func (client ModelClient) ListCompositeEntityRoles(ctx context.Context, azureReg
 }
 
 // ListCompositeEntityRolesPreparer prepares the ListCompositeEntityRoles request.
-func (client ModelClient) ListCompositeEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListCompositeEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5576,7 +5372,7 @@ func (client ModelClient) ListCompositeEntityRolesPreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5603,11 +5399,9 @@ func (client ModelClient) ListCompositeEntityRolesResponder(resp *http.Response)
 
 // ListCustomPrebuiltEntities gets all prebuilt entities used in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ListEntityExtractor, err error) {
+func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, appID uuid.UUID, versionID string) (result ListEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltEntities")
 		defer func() {
@@ -5618,7 +5412,7 @@ func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListCustomPrebuiltEntitiesPreparer(ctx, azureRegion, azureCloud, appID, versionID)
+	req, err := client.ListCustomPrebuiltEntitiesPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltEntities", nil, "Failure preparing request")
 		return
@@ -5640,10 +5434,9 @@ func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, azureR
 }
 
 // ListCustomPrebuiltEntitiesPreparer prepares the ListCustomPrebuiltEntities request.
-func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5653,7 +5446,7 @@ func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5680,12 +5473,10 @@ func (client ModelClient) ListCustomPrebuiltEntitiesResponder(resp *http.Respons
 
 // ListCustomPrebuiltEntityRoles sends the list custom prebuilt entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) ListCustomPrebuiltEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListCustomPrebuiltEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltEntityRoles")
 		defer func() {
@@ -5696,7 +5487,7 @@ func (client ModelClient) ListCustomPrebuiltEntityRoles(ctx context.Context, azu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListCustomPrebuiltEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.ListCustomPrebuiltEntityRolesPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltEntityRoles", nil, "Failure preparing request")
 		return
@@ -5718,10 +5509,9 @@ func (client ModelClient) ListCustomPrebuiltEntityRoles(ctx context.Context, azu
 }
 
 // ListCustomPrebuiltEntityRolesPreparer prepares the ListCustomPrebuiltEntityRoles request.
-func (client ModelClient) ListCustomPrebuiltEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListCustomPrebuiltEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5732,7 +5522,7 @@ func (client ModelClient) ListCustomPrebuiltEntityRolesPreparer(ctx context.Cont
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5760,11 +5550,9 @@ func (client ModelClient) ListCustomPrebuiltEntityRolesResponder(resp *http.Resp
 // ListCustomPrebuiltIntents gets information about customizable prebuilt intents added to a version of the
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ListIntentClassifier, err error) {
+func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, appID uuid.UUID, versionID string) (result ListIntentClassifier, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltIntents")
 		defer func() {
@@ -5775,7 +5563,7 @@ func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListCustomPrebuiltIntentsPreparer(ctx, azureRegion, azureCloud, appID, versionID)
+	req, err := client.ListCustomPrebuiltIntentsPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltIntents", nil, "Failure preparing request")
 		return
@@ -5797,10 +5585,9 @@ func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, azureRe
 }
 
 // ListCustomPrebuiltIntentsPreparer prepares the ListCustomPrebuiltIntents request.
-func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5810,7 +5597,7 @@ func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5838,11 +5625,9 @@ func (client ModelClient) ListCustomPrebuiltIntentsResponder(resp *http.Response
 // ListCustomPrebuiltModels gets all prebuilt intent and entity model information used in a version of this
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ListCustomPrebuiltModel, err error) {
+func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, appID uuid.UUID, versionID string) (result ListCustomPrebuiltModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltModels")
 		defer func() {
@@ -5853,7 +5638,7 @@ func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListCustomPrebuiltModelsPreparer(ctx, azureRegion, azureCloud, appID, versionID)
+	req, err := client.ListCustomPrebuiltModelsPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListCustomPrebuiltModels", nil, "Failure preparing request")
 		return
@@ -5875,10 +5660,9 @@ func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, azureReg
 }
 
 // ListCustomPrebuiltModelsPreparer prepares the ListCustomPrebuiltModels request.
-func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5888,7 +5672,7 @@ func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltmodels", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5915,13 +5699,11 @@ func (client ModelClient) ListCustomPrebuiltModelsResponder(resp *http.Response)
 
 // ListEntities gets information about all the simple entity models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListEntities(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListEntityExtractor, err error) {
+func (client ModelClient) ListEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListEntities")
 		defer func() {
@@ -5944,7 +5726,7 @@ func (client ModelClient) ListEntities(ctx context.Context, azureRegion AzureReg
 		return result, validation.NewError("authoring.ModelClient", "ListEntities", err.Error())
 	}
 
-	req, err := client.ListEntitiesPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListEntitiesPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntities", nil, "Failure preparing request")
 		return
@@ -5966,10 +5748,9 @@ func (client ModelClient) ListEntities(ctx context.Context, azureRegion AzureReg
 }
 
 // ListEntitiesPreparer prepares the ListEntities request.
-func (client ModelClient) ListEntitiesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -5991,7 +5772,7 @@ func (client ModelClient) ListEntitiesPreparer(ctx context.Context, azureRegion 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6019,12 +5800,10 @@ func (client ModelClient) ListEntitiesResponder(resp *http.Response) (result Lis
 
 // ListEntityRoles sends the list entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) ListEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListEntityRoles")
 		defer func() {
@@ -6035,7 +5814,7 @@ func (client ModelClient) ListEntityRoles(ctx context.Context, azureRegion Azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.ListEntityRolesPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntityRoles", nil, "Failure preparing request")
 		return
@@ -6057,10 +5836,9 @@ func (client ModelClient) ListEntityRoles(ctx context.Context, azureRegion Azure
 }
 
 // ListEntityRolesPreparer prepares the ListEntityRoles request.
-func (client ModelClient) ListEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6071,7 +5849,7 @@ func (client ModelClient) ListEntityRolesPreparer(ctx context.Context, azureRegi
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -6099,13 +5877,11 @@ func (client ModelClient) ListEntityRolesResponder(resp *http.Response) (result 
 // ListEntitySuggestions get suggested example utterances that would improve the accuracy of the entity model in a
 // version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the target entity extractor model to enhance.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListEntitySuggestions(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result ListEntitiesSuggestionExample, err error) {
+func (client ModelClient) ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result ListEntitiesSuggestionExample, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListEntitySuggestions")
 		defer func() {
@@ -6125,7 +5901,7 @@ func (client ModelClient) ListEntitySuggestions(ctx context.Context, azureRegion
 		return result, validation.NewError("authoring.ModelClient", "ListEntitySuggestions", err.Error())
 	}
 
-	req, err := client.ListEntitySuggestionsPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, take)
+	req, err := client.ListEntitySuggestionsPreparer(ctx, appID, versionID, entityID, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListEntitySuggestions", nil, "Failure preparing request")
 		return
@@ -6147,10 +5923,9 @@ func (client ModelClient) ListEntitySuggestions(ctx context.Context, azureRegion
 }
 
 // ListEntitySuggestionsPreparer prepares the ListEntitySuggestions request.
-func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (*http.Request, error) {
+func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6168,7 +5943,7 @@ func (client ModelClient) ListEntitySuggestionsPreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/suggest", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6196,13 +5971,11 @@ func (client ModelClient) ListEntitySuggestionsResponder(resp *http.Response) (r
 
 // ListHierarchicalEntities gets information about all the hierarchical entity models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListHierarchicalEntities(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListHierarchicalEntityExtractor, err error) {
+func (client ModelClient) ListHierarchicalEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListHierarchicalEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListHierarchicalEntities")
 		defer func() {
@@ -6225,7 +5998,7 @@ func (client ModelClient) ListHierarchicalEntities(ctx context.Context, azureReg
 		return result, validation.NewError("authoring.ModelClient", "ListHierarchicalEntities", err.Error())
 	}
 
-	req, err := client.ListHierarchicalEntitiesPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListHierarchicalEntitiesPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListHierarchicalEntities", nil, "Failure preparing request")
 		return
@@ -6247,10 +6020,9 @@ func (client ModelClient) ListHierarchicalEntities(ctx context.Context, azureReg
 }
 
 // ListHierarchicalEntitiesPreparer prepares the ListHierarchicalEntities request.
-func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6272,7 +6044,7 @@ func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6300,12 +6072,10 @@ func (client ModelClient) ListHierarchicalEntitiesResponder(resp *http.Response)
 
 // ListHierarchicalEntityRoles sends the list hierarchical entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
-func (client ModelClient) ListHierarchicalEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListHierarchicalEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListHierarchicalEntityRoles")
 		defer func() {
@@ -6316,7 +6086,7 @@ func (client ModelClient) ListHierarchicalEntityRoles(ctx context.Context, azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListHierarchicalEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID)
+	req, err := client.ListHierarchicalEntityRolesPreparer(ctx, appID, versionID, hEntityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListHierarchicalEntityRoles", nil, "Failure preparing request")
 		return
@@ -6338,10 +6108,9 @@ func (client ModelClient) ListHierarchicalEntityRoles(ctx context.Context, azure
 }
 
 // ListHierarchicalEntityRolesPreparer prepares the ListHierarchicalEntityRoles request.
-func (client ModelClient) ListHierarchicalEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListHierarchicalEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6352,7 +6121,7 @@ func (client ModelClient) ListHierarchicalEntityRolesPreparer(ctx context.Contex
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -6379,13 +6148,11 @@ func (client ModelClient) ListHierarchicalEntityRolesResponder(resp *http.Respon
 
 // ListIntents gets information about the intent models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListIntents(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListIntentClassifier, err error) {
+func (client ModelClient) ListIntents(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListIntentClassifier, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListIntents")
 		defer func() {
@@ -6408,7 +6175,7 @@ func (client ModelClient) ListIntents(ctx context.Context, azureRegion AzureRegi
 		return result, validation.NewError("authoring.ModelClient", "ListIntents", err.Error())
 	}
 
-	req, err := client.ListIntentsPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListIntentsPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListIntents", nil, "Failure preparing request")
 		return
@@ -6430,10 +6197,9 @@ func (client ModelClient) ListIntents(ctx context.Context, azureRegion AzureRegi
 }
 
 // ListIntentsPreparer prepares the ListIntents request.
-func (client ModelClient) ListIntentsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListIntentsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6455,7 +6221,7 @@ func (client ModelClient) ListIntentsPreparer(ctx context.Context, azureRegion A
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6484,13 +6250,11 @@ func (client ModelClient) ListIntentsResponder(resp *http.Response) (result List
 // ListIntentSuggestions suggests example utterances that would improve the accuracy of the intent model in a version
 // of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListIntentSuggestions(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result ListIntentsSuggestionExample, err error) {
+func (client ModelClient) ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result ListIntentsSuggestionExample, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListIntentSuggestions")
 		defer func() {
@@ -6510,7 +6274,7 @@ func (client ModelClient) ListIntentSuggestions(ctx context.Context, azureRegion
 		return result, validation.NewError("authoring.ModelClient", "ListIntentSuggestions", err.Error())
 	}
 
-	req, err := client.ListIntentSuggestionsPreparer(ctx, azureRegion, azureCloud, appID, versionID, intentID, take)
+	req, err := client.ListIntentSuggestionsPreparer(ctx, appID, versionID, intentID, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListIntentSuggestions", nil, "Failure preparing request")
 		return
@@ -6532,10 +6296,9 @@ func (client ModelClient) ListIntentSuggestions(ctx context.Context, azureRegion
 }
 
 // ListIntentSuggestionsPreparer prepares the ListIntentSuggestions request.
-func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (*http.Request, error) {
+func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6553,7 +6316,7 @@ func (client ModelClient) ListIntentSuggestionsPreparer(ctx context.Context, azu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/suggest", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6581,13 +6344,11 @@ func (client ModelClient) ListIntentSuggestionsResponder(resp *http.Response) (r
 
 // ListModels gets information about all the intent and entity models in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListModels(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListModelInfoResponse, err error) {
+func (client ModelClient) ListModels(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListModelInfoResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListModels")
 		defer func() {
@@ -6610,7 +6371,7 @@ func (client ModelClient) ListModels(ctx context.Context, azureRegion AzureRegio
 		return result, validation.NewError("authoring.ModelClient", "ListModels", err.Error())
 	}
 
-	req, err := client.ListModelsPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListModelsPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListModels", nil, "Failure preparing request")
 		return
@@ -6632,10 +6393,9 @@ func (client ModelClient) ListModels(ctx context.Context, azureRegion AzureRegio
 }
 
 // ListModelsPreparer prepares the ListModels request.
-func (client ModelClient) ListModelsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListModelsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6657,7 +6417,7 @@ func (client ModelClient) ListModelsPreparer(ctx context.Context, azureRegion Az
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/models", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6685,13 +6445,11 @@ func (client ModelClient) ListModelsResponder(resp *http.Response) (result ListM
 
 // ListPatternAnyEntityInfos sends the list pattern any entity infos request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListPatternAnyEntityInfos(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternAnyEntityExtractor, err error) {
+func (client ModelClient) ListPatternAnyEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternAnyEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPatternAnyEntityInfos")
 		defer func() {
@@ -6714,7 +6472,7 @@ func (client ModelClient) ListPatternAnyEntityInfos(ctx context.Context, azureRe
 		return result, validation.NewError("authoring.ModelClient", "ListPatternAnyEntityInfos", err.Error())
 	}
 
-	req, err := client.ListPatternAnyEntityInfosPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListPatternAnyEntityInfosPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPatternAnyEntityInfos", nil, "Failure preparing request")
 		return
@@ -6736,10 +6494,9 @@ func (client ModelClient) ListPatternAnyEntityInfos(ctx context.Context, azureRe
 }
 
 // ListPatternAnyEntityInfosPreparer prepares the ListPatternAnyEntityInfos request.
-func (client ModelClient) ListPatternAnyEntityInfosPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListPatternAnyEntityInfosPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6761,7 +6518,7 @@ func (client ModelClient) ListPatternAnyEntityInfosPreparer(ctx context.Context,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -6789,12 +6546,10 @@ func (client ModelClient) ListPatternAnyEntityInfosResponder(resp *http.Response
 
 // ListPatternAnyEntityRoles sends the list pattern any entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) ListPatternAnyEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListPatternAnyEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPatternAnyEntityRoles")
 		defer func() {
@@ -6805,7 +6560,7 @@ func (client ModelClient) ListPatternAnyEntityRoles(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPatternAnyEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.ListPatternAnyEntityRolesPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPatternAnyEntityRoles", nil, "Failure preparing request")
 		return
@@ -6827,10 +6582,9 @@ func (client ModelClient) ListPatternAnyEntityRoles(ctx context.Context, azureRe
 }
 
 // ListPatternAnyEntityRolesPreparer prepares the ListPatternAnyEntityRoles request.
-func (client ModelClient) ListPatternAnyEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListPatternAnyEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6841,7 +6595,7 @@ func (client ModelClient) ListPatternAnyEntityRolesPreparer(ctx context.Context,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -6868,11 +6622,9 @@ func (client ModelClient) ListPatternAnyEntityRolesResponder(resp *http.Response
 
 // ListPrebuiltEntities gets all the available prebuilt entities in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListPrebuiltEntities(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (result ListAvailablePrebuiltEntityModel, err error) {
+func (client ModelClient) ListPrebuiltEntities(ctx context.Context, appID uuid.UUID, versionID string) (result ListAvailablePrebuiltEntityModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPrebuiltEntities")
 		defer func() {
@@ -6883,7 +6635,7 @@ func (client ModelClient) ListPrebuiltEntities(ctx context.Context, azureRegion 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPrebuiltEntitiesPreparer(ctx, azureRegion, azureCloud, appID, versionID)
+	req, err := client.ListPrebuiltEntitiesPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPrebuiltEntities", nil, "Failure preparing request")
 		return
@@ -6905,10 +6657,9 @@ func (client ModelClient) ListPrebuiltEntities(ctx context.Context, azureRegion 
 }
 
 // ListPrebuiltEntitiesPreparer prepares the ListPrebuiltEntities request.
-func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string) (*http.Request, error) {
+func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6918,7 +6669,7 @@ func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, azur
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/listprebuilts", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -6945,12 +6696,10 @@ func (client ModelClient) ListPrebuiltEntitiesResponder(resp *http.Response) (re
 
 // ListPrebuiltEntityRoles sends the list prebuilt entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) ListPrebuiltEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListPrebuiltEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPrebuiltEntityRoles")
 		defer func() {
@@ -6961,7 +6710,7 @@ func (client ModelClient) ListPrebuiltEntityRoles(ctx context.Context, azureRegi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPrebuiltEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.ListPrebuiltEntityRolesPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPrebuiltEntityRoles", nil, "Failure preparing request")
 		return
@@ -6983,10 +6732,9 @@ func (client ModelClient) ListPrebuiltEntityRoles(ctx context.Context, azureRegi
 }
 
 // ListPrebuiltEntityRolesPreparer prepares the ListPrebuiltEntityRoles request.
-func (client ModelClient) ListPrebuiltEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListPrebuiltEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -6997,7 +6745,7 @@ func (client ModelClient) ListPrebuiltEntityRolesPreparer(ctx context.Context, a
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -7024,13 +6772,11 @@ func (client ModelClient) ListPrebuiltEntityRolesResponder(resp *http.Response) 
 
 // ListPrebuilts gets information about all the prebuilt entities in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListPrebuilts(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPrebuiltEntityExtractor, err error) {
+func (client ModelClient) ListPrebuilts(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPrebuiltEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPrebuilts")
 		defer func() {
@@ -7053,7 +6799,7 @@ func (client ModelClient) ListPrebuilts(ctx context.Context, azureRegion AzureRe
 		return result, validation.NewError("authoring.ModelClient", "ListPrebuilts", err.Error())
 	}
 
-	req, err := client.ListPrebuiltsPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListPrebuiltsPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListPrebuilts", nil, "Failure preparing request")
 		return
@@ -7075,10 +6821,9 @@ func (client ModelClient) ListPrebuilts(ctx context.Context, azureRegion AzureRe
 }
 
 // ListPrebuiltsPreparer prepares the ListPrebuilts request.
-func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7100,7 +6845,7 @@ func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, azureRegion
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7128,13 +6873,11 @@ func (client ModelClient) ListPrebuiltsResponder(resp *http.Response) (result Li
 
 // ListRegexEntityInfos sends the list regex entity infos request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListRegexEntityInfos(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListRegexEntityExtractor, err error) {
+func (client ModelClient) ListRegexEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListRegexEntityExtractor, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListRegexEntityInfos")
 		defer func() {
@@ -7157,7 +6900,7 @@ func (client ModelClient) ListRegexEntityInfos(ctx context.Context, azureRegion 
 		return result, validation.NewError("authoring.ModelClient", "ListRegexEntityInfos", err.Error())
 	}
 
-	req, err := client.ListRegexEntityInfosPreparer(ctx, azureRegion, azureCloud, appID, versionID, skip, take)
+	req, err := client.ListRegexEntityInfosPreparer(ctx, appID, versionID, skip, take)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListRegexEntityInfos", nil, "Failure preparing request")
 		return
@@ -7179,10 +6922,9 @@ func (client ModelClient) ListRegexEntityInfos(ctx context.Context, azureRegion 
 }
 
 // ListRegexEntityInfosPreparer prepares the ListRegexEntityInfos request.
-func (client ModelClient) ListRegexEntityInfosPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
+func (client ModelClient) ListRegexEntityInfosPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7204,7 +6946,7 @@ func (client ModelClient) ListRegexEntityInfosPreparer(ctx context.Context, azur
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7232,12 +6974,10 @@ func (client ModelClient) ListRegexEntityInfosResponder(resp *http.Response) (re
 
 // ListRegexEntityRoles sends the list regex entity roles request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) ListRegexEntityRoles(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) ListRegexEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListRegexEntityRoles")
 		defer func() {
@@ -7248,7 +6988,7 @@ func (client ModelClient) ListRegexEntityRoles(ctx context.Context, azureRegion 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListRegexEntityRolesPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID)
+	req, err := client.ListRegexEntityRolesPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ListRegexEntityRoles", nil, "Failure preparing request")
 		return
@@ -7270,10 +7010,9 @@ func (client ModelClient) ListRegexEntityRoles(ctx context.Context, azureRegion 
 }
 
 // ListRegexEntityRolesPreparer prepares the ListRegexEntityRoles request.
-func (client ModelClient) ListRegexEntityRolesPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+func (client ModelClient) ListRegexEntityRolesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7284,7 +7023,7 @@ func (client ModelClient) ListRegexEntityRolesPreparer(ctx context.Context, azur
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -7311,13 +7050,11 @@ func (client ModelClient) ListRegexEntityRolesResponder(resp *http.Response) (re
 
 // PatchClosedList adds a batch of sublists to an existing list entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list entity model ID.
 // closedListModelPatchObject - a words list batch.
-func (client ModelClient) PatchClosedList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (result OperationStatus, err error) {
+func (client ModelClient) PatchClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.PatchClosedList")
 		defer func() {
@@ -7328,7 +7065,7 @@ func (client ModelClient) PatchClosedList(ctx context.Context, azureRegion Azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PatchClosedListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID, closedListModelPatchObject)
+	req, err := client.PatchClosedListPreparer(ctx, appID, versionID, clEntityID, closedListModelPatchObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "PatchClosedList", nil, "Failure preparing request")
 		return
@@ -7350,10 +7087,9 @@ func (client ModelClient) PatchClosedList(ctx context.Context, azureRegion Azure
 }
 
 // PatchClosedListPreparer prepares the PatchClosedList request.
-func (client ModelClient) PatchClosedListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (*http.Request, error) {
+func (client ModelClient) PatchClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7365,7 +7101,7 @@ func (client ModelClient) PatchClosedListPreparer(ctx context.Context, azureRegi
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
 		autorest.WithJSON(closedListModelPatchObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7393,13 +7129,11 @@ func (client ModelClient) PatchClosedListResponder(resp *http.Response) (result 
 
 // UpdateClosedList updates the list entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list model ID.
 // closedListModelUpdateObject - the new list entity name and words list.
-func (client ModelClient) UpdateClosedList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateClosedList")
 		defer func() {
@@ -7410,7 +7144,7 @@ func (client ModelClient) UpdateClosedList(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateClosedListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID, closedListModelUpdateObject)
+	req, err := client.UpdateClosedListPreparer(ctx, appID, versionID, clEntityID, closedListModelUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateClosedList", nil, "Failure preparing request")
 		return
@@ -7432,10 +7166,9 @@ func (client ModelClient) UpdateClosedList(ctx context.Context, azureRegion Azur
 }
 
 // UpdateClosedListPreparer prepares the UpdateClosedList request.
-func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7447,7 +7180,7 @@ func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, azureReg
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
 		autorest.WithJSON(closedListModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7475,14 +7208,12 @@ func (client ModelClient) UpdateClosedListResponder(resp *http.Response) (result
 
 // UpdateClosedListEntityRole sends the update closed list entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateClosedListEntityRole")
 		defer func() {
@@ -7493,7 +7224,7 @@ func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateClosedListEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdateClosedListEntityRolePreparer(ctx, appID, versionID, entityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateClosedListEntityRole", nil, "Failure preparing request")
 		return
@@ -7515,10 +7246,9 @@ func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, azureR
 }
 
 // UpdateClosedListEntityRolePreparer prepares the UpdateClosedListEntityRole request.
-func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7531,7 +7261,7 @@ func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7559,13 +7289,11 @@ func (client ModelClient) UpdateClosedListEntityRoleResponder(resp *http.Respons
 
 // UpdateCompositeEntity updates a composite entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // compositeModelUpdateObject - a model object containing the new entity extractor name and children.
-func (client ModelClient) UpdateCompositeEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateCompositeEntity")
 		defer func() {
@@ -7576,7 +7304,7 @@ func (client ModelClient) UpdateCompositeEntity(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateCompositeEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, compositeModelUpdateObject)
+	req, err := client.UpdateCompositeEntityPreparer(ctx, appID, versionID, cEntityID, compositeModelUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateCompositeEntity", nil, "Failure preparing request")
 		return
@@ -7598,10 +7326,9 @@ func (client ModelClient) UpdateCompositeEntity(ctx context.Context, azureRegion
 }
 
 // UpdateCompositeEntityPreparer prepares the UpdateCompositeEntity request.
-func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (*http.Request, error) {
+func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7613,7 +7340,7 @@ func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
 		autorest.WithJSON(compositeModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7641,14 +7368,12 @@ func (client ModelClient) UpdateCompositeEntityResponder(resp *http.Response) (r
 
 // UpdateCompositeEntityRole sends the update composite entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateCompositeEntityRole")
 		defer func() {
@@ -7659,7 +7384,7 @@ func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, azureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateCompositeEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, cEntityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdateCompositeEntityRolePreparer(ctx, appID, versionID, cEntityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateCompositeEntityRole", nil, "Failure preparing request")
 		return
@@ -7681,10 +7406,9 @@ func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, azureRe
 }
 
 // UpdateCompositeEntityRolePreparer prepares the UpdateCompositeEntityRole request.
-func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7697,7 +7421,7 @@ func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7725,14 +7449,12 @@ func (client ModelClient) UpdateCompositeEntityRoleResponder(resp *http.Response
 
 // UpdateCustomPrebuiltEntityRole sends the update custom prebuilt entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateCustomPrebuiltEntityRole")
 		defer func() {
@@ -7743,7 +7465,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, az
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateCustomPrebuiltEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdateCustomPrebuiltEntityRolePreparer(ctx, appID, versionID, entityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateCustomPrebuiltEntityRole", nil, "Failure preparing request")
 		return
@@ -7765,10 +7487,9 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, az
 }
 
 // UpdateCustomPrebuiltEntityRolePreparer prepares the UpdateCustomPrebuiltEntityRole request.
-func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7781,7 +7502,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Con
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7809,13 +7530,11 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRoleResponder(resp *http.Res
 
 // UpdateEntity updates the name of an entity in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
 // modelUpdateObject - a model object containing the new entity extractor name.
-func (client ModelClient) UpdateEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, modelUpdateObject ModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, modelUpdateObject ModelUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateEntity")
 		defer func() {
@@ -7826,7 +7545,7 @@ func (client ModelClient) UpdateEntity(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, modelUpdateObject)
+	req, err := client.UpdateEntityPreparer(ctx, appID, versionID, entityID, modelUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateEntity", nil, "Failure preparing request")
 		return
@@ -7848,10 +7567,9 @@ func (client ModelClient) UpdateEntity(ctx context.Context, azureRegion AzureReg
 }
 
 // UpdateEntityPreparer prepares the UpdateEntity request.
-func (client ModelClient) UpdateEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, modelUpdateObject ModelUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, modelUpdateObject ModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7863,7 +7581,7 @@ func (client ModelClient) UpdateEntityPreparer(ctx context.Context, azureRegion 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
 		autorest.WithJSON(modelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7891,14 +7609,12 @@ func (client ModelClient) UpdateEntityResponder(resp *http.Response) (result Ope
 
 // UpdateEntityRole sends the update entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateEntityRole")
 		defer func() {
@@ -7909,7 +7625,7 @@ func (client ModelClient) UpdateEntityRole(ctx context.Context, azureRegion Azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdateEntityRolePreparer(ctx, appID, versionID, entityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateEntityRole", nil, "Failure preparing request")
 		return
@@ -7931,10 +7647,9 @@ func (client ModelClient) UpdateEntityRole(ctx context.Context, azureRegion Azur
 }
 
 // UpdateEntityRolePreparer prepares the UpdateEntityRole request.
-func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -7947,7 +7662,7 @@ func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, azureReg
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -7975,14 +7690,12 @@ func (client ModelClient) UpdateEntityRoleResponder(resp *http.Response) (result
 
 // UpdateExplicitListItem sends the update explicit list item request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
 // itemID - the explicit list item ID.
 // item - the new explicit list item.
-func (client ModelClient) UpdateExplicitListItem(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateExplicitListItem")
 		defer func() {
@@ -7993,7 +7706,7 @@ func (client ModelClient) UpdateExplicitListItem(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateExplicitListItemPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, itemID, item)
+	req, err := client.UpdateExplicitListItemPreparer(ctx, appID, versionID, entityID, itemID, item)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateExplicitListItem", nil, "Failure preparing request")
 		return
@@ -8015,10 +7728,9 @@ func (client ModelClient) UpdateExplicitListItem(ctx context.Context, azureRegio
 }
 
 // UpdateExplicitListItemPreparer prepares the UpdateExplicitListItem request.
-func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8031,7 +7743,7 @@ func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, az
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
 		autorest.WithJSON(item))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8060,13 +7772,11 @@ func (client ModelClient) UpdateExplicitListItemResponder(resp *http.Response) (
 // UpdateHierarchicalEntity updates the name and children of a hierarchical entity model in a version of the
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hierarchicalModelUpdateObject - model containing names of the children of the hierarchical entity.
-func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalModelUpdateObject HierarchicalEntityModel) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalModelUpdateObject HierarchicalEntityModel) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateHierarchicalEntity")
 		defer func() {
@@ -8077,7 +7787,7 @@ func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateHierarchicalEntityPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, hierarchicalModelUpdateObject)
+	req, err := client.UpdateHierarchicalEntityPreparer(ctx, appID, versionID, hEntityID, hierarchicalModelUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateHierarchicalEntity", nil, "Failure preparing request")
 		return
@@ -8099,10 +7809,9 @@ func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, azureReg
 }
 
 // UpdateHierarchicalEntityPreparer prepares the UpdateHierarchicalEntity request.
-func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalModelUpdateObject HierarchicalEntityModel) (*http.Request, error) {
+func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalModelUpdateObject HierarchicalEntityModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8114,7 +7823,7 @@ func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
 		autorest.WithJSON(hierarchicalModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8143,14 +7852,12 @@ func (client ModelClient) UpdateHierarchicalEntityResponder(resp *http.Response)
 // UpdateHierarchicalEntityChild renames a single child in an existing hierarchical entity model in a version of the
 // application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hChildID - the hierarchical entity extractor child ID.
 // hierarchicalChildModelUpdateObject - model object containing new name of the hierarchical entity child.
-func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateHierarchicalEntityChild")
 		defer func() {
@@ -8161,7 +7868,7 @@ func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, azu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateHierarchicalEntityChildPreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, hChildID, hierarchicalChildModelUpdateObject)
+	req, err := client.UpdateHierarchicalEntityChildPreparer(ctx, appID, versionID, hEntityID, hChildID, hierarchicalChildModelUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateHierarchicalEntityChild", nil, "Failure preparing request")
 		return
@@ -8183,10 +7890,9 @@ func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, azu
 }
 
 // UpdateHierarchicalEntityChildPreparer prepares the UpdateHierarchicalEntityChild request.
-func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8199,7 +7905,7 @@ func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
 		autorest.WithJSON(hierarchicalChildModelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8227,14 +7933,12 @@ func (client ModelClient) UpdateHierarchicalEntityChildResponder(resp *http.Resp
 
 // UpdateHierarchicalEntityRole sends the update hierarchical entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateHierarchicalEntityRole")
 		defer func() {
@@ -8245,7 +7949,7 @@ func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, azur
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateHierarchicalEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, hEntityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdateHierarchicalEntityRolePreparer(ctx, appID, versionID, hEntityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateHierarchicalEntityRole", nil, "Failure preparing request")
 		return
@@ -8267,10 +7971,9 @@ func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, azur
 }
 
 // UpdateHierarchicalEntityRolePreparer prepares the UpdateHierarchicalEntityRole request.
-func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8283,7 +7986,7 @@ func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8311,13 +8014,11 @@ func (client ModelClient) UpdateHierarchicalEntityRoleResponder(resp *http.Respo
 
 // UpdateIntent updates the name of an intent in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // modelUpdateObject - a model object containing the new intent name.
-func (client ModelClient) UpdateIntent(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateIntent")
 		defer func() {
@@ -8328,7 +8029,7 @@ func (client ModelClient) UpdateIntent(ctx context.Context, azureRegion AzureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateIntentPreparer(ctx, azureRegion, azureCloud, appID, versionID, intentID, modelUpdateObject)
+	req, err := client.UpdateIntentPreparer(ctx, appID, versionID, intentID, modelUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateIntent", nil, "Failure preparing request")
 		return
@@ -8350,10 +8051,9 @@ func (client ModelClient) UpdateIntent(ctx context.Context, azureRegion AzureReg
 }
 
 // UpdateIntentPreparer prepares the UpdateIntent request.
-func (client ModelClient) UpdateIntentPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateIntentPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8365,7 +8065,7 @@ func (client ModelClient) UpdateIntentPreparer(ctx context.Context, azureRegion 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
 		autorest.WithJSON(modelUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8393,13 +8093,11 @@ func (client ModelClient) UpdateIntentResponder(resp *http.Response) (result Ope
 
 // UpdatePatternAnyEntityModel sends the update pattern any entity model request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
 // patternAnyUpdateObject - an object containing the explicit list of the Pattern.Any entity.
-func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdatePatternAnyEntityModel")
 		defer func() {
@@ -8410,7 +8108,7 @@ func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, azure
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePatternAnyEntityModelPreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, patternAnyUpdateObject)
+	req, err := client.UpdatePatternAnyEntityModelPreparer(ctx, appID, versionID, entityID, patternAnyUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdatePatternAnyEntityModel", nil, "Failure preparing request")
 		return
@@ -8432,10 +8130,9 @@ func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, azure
 }
 
 // UpdatePatternAnyEntityModelPreparer prepares the UpdatePatternAnyEntityModel request.
-func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8447,7 +8144,7 @@ func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
 		autorest.WithJSON(patternAnyUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8475,14 +8172,12 @@ func (client ModelClient) UpdatePatternAnyEntityModelResponder(resp *http.Respon
 
 // UpdatePatternAnyEntityRole sends the update pattern any entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdatePatternAnyEntityRole")
 		defer func() {
@@ -8493,7 +8188,7 @@ func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, azureR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePatternAnyEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdatePatternAnyEntityRolePreparer(ctx, appID, versionID, entityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdatePatternAnyEntityRole", nil, "Failure preparing request")
 		return
@@ -8515,10 +8210,9 @@ func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, azureR
 }
 
 // UpdatePatternAnyEntityRolePreparer prepares the UpdatePatternAnyEntityRole request.
-func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8531,7 +8225,7 @@ func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8559,14 +8253,12 @@ func (client ModelClient) UpdatePatternAnyEntityRoleResponder(resp *http.Respons
 
 // UpdatePrebuiltEntityRole sends the update prebuilt entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdatePrebuiltEntityRole")
 		defer func() {
@@ -8577,7 +8269,7 @@ func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, azureReg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePrebuiltEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdatePrebuiltEntityRolePreparer(ctx, appID, versionID, entityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdatePrebuiltEntityRole", nil, "Failure preparing request")
 		return
@@ -8599,10 +8291,9 @@ func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, azureReg
 }
 
 // UpdatePrebuiltEntityRolePreparer prepares the UpdatePrebuiltEntityRole request.
-func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8615,7 +8306,7 @@ func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8643,13 +8334,11 @@ func (client ModelClient) UpdatePrebuiltEntityRoleResponder(resp *http.Response)
 
 // UpdateRegexEntityModel sends the update regex entity model request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // regexEntityID - the regular expression entity extractor ID.
 // regexEntityUpdateObject - an object containing the new entity name and regex pattern.
-func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateRegexEntityModel")
 		defer func() {
@@ -8660,7 +8349,7 @@ func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, azureRegio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateRegexEntityModelPreparer(ctx, azureRegion, azureCloud, appID, versionID, regexEntityID, regexEntityUpdateObject)
+	req, err := client.UpdateRegexEntityModelPreparer(ctx, appID, versionID, regexEntityID, regexEntityUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateRegexEntityModel", nil, "Failure preparing request")
 		return
@@ -8682,10 +8371,9 @@ func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, azureRegio
 }
 
 // UpdateRegexEntityModelPreparer prepares the UpdateRegexEntityModel request.
-func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8697,7 +8385,7 @@ func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, az
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
 		autorest.WithJSON(regexEntityUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8725,14 +8413,12 @@ func (client ModelClient) UpdateRegexEntityModelResponder(resp *http.Response) (
 
 // UpdateRegexEntityRole sends the update regex entity role request.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateRegexEntityRole")
 		defer func() {
@@ -8743,7 +8429,7 @@ func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, azureRegion
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateRegexEntityRolePreparer(ctx, azureRegion, azureCloud, appID, versionID, entityID, roleID, entityRoleUpdateObject)
+	req, err := client.UpdateRegexEntityRolePreparer(ctx, appID, versionID, entityID, roleID, entityRoleUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateRegexEntityRole", nil, "Failure preparing request")
 		return
@@ -8765,10 +8451,9 @@ func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, azureRegion
 }
 
 // UpdateRegexEntityRolePreparer prepares the UpdateRegexEntityRole request.
-func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8781,7 +8466,7 @@ func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, azu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
 		autorest.WithJSON(entityRoleUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -8809,14 +8494,12 @@ func (client ModelClient) UpdateRegexEntityRoleResponder(resp *http.Response) (r
 
 // UpdateSubList updates one of the list entity's sublists in a version of the application.
 // Parameters:
-// azureRegion - supported Azure regions for Cognitive Services endpoints
-// azureCloud - supported Azure Clouds for Cognitive Services endpoints
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the list entity extractor ID.
 // subListID - the sublist ID.
 // wordListBaseUpdateObject - a sublist update object containing the new canonical form and the list of words.
-func (client ModelClient) UpdateSubList(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64, wordListBaseUpdateObject WordListBaseUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64, wordListBaseUpdateObject WordListBaseUpdateObject) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateSubList")
 		defer func() {
@@ -8827,7 +8510,7 @@ func (client ModelClient) UpdateSubList(ctx context.Context, azureRegion AzureRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateSubListPreparer(ctx, azureRegion, azureCloud, appID, versionID, clEntityID, subListID, wordListBaseUpdateObject)
+	req, err := client.UpdateSubListPreparer(ctx, appID, versionID, clEntityID, subListID, wordListBaseUpdateObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "UpdateSubList", nil, "Failure preparing request")
 		return
@@ -8849,10 +8532,9 @@ func (client ModelClient) UpdateSubList(ctx context.Context, azureRegion AzureRe
 }
 
 // UpdateSubListPreparer prepares the UpdateSubList request.
-func (client ModelClient) UpdateSubListPreparer(ctx context.Context, azureRegion AzureRegions, azureCloud AzureClouds, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64, wordListBaseUpdateObject WordListBaseUpdateObject) (*http.Request, error) {
+func (client ModelClient) UpdateSubListPreparer(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int64, wordListBaseUpdateObject WordListBaseUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureCloud":  azureCloud,
-		"AzureRegion": azureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -8865,7 +8547,7 @@ func (client ModelClient) UpdateSubListPreparer(ctx context.Context, azureRegion
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{AzureRegion}.api.cognitive.microsoft.{AzureCloud}/luis/api/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters),
 		autorest.WithJSON(wordListBaseUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

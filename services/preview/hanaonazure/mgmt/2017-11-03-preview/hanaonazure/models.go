@@ -30,6 +30,21 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
+// HanaDatabaseContainersEnum enumerates the values for hana database containers enum.
+type HanaDatabaseContainersEnum string
+
+const (
+	// Multiple ...
+	Multiple HanaDatabaseContainersEnum = "multiple"
+	// Single ...
+	Single HanaDatabaseContainersEnum = "single"
+)
+
+// PossibleHanaDatabaseContainersEnumValues returns an array of possible values for the HanaDatabaseContainersEnum const type.
+func PossibleHanaDatabaseContainersEnumValues() []HanaDatabaseContainersEnum {
+	return []HanaDatabaseContainersEnum{Multiple, Single}
+}
+
 // HanaHardwareTypeNamesEnum enumerates the values for hana hardware type names enum.
 type HanaHardwareTypeNamesEnum string
 
@@ -458,6 +473,47 @@ type HardwareProfile struct {
 type IPAddress struct {
 	// IPAddress - Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`
+}
+
+// MonitoringDetails details needed to monitor a Hana Instance
+type MonitoringDetails struct {
+	// HanaVnet - ARM ID of an Azure Vnet with access to the HANA instance.
+	HanaVnet *string `json:"hanaVnet,omitempty"`
+	// HanaHostname - Hostname of the HANA Instance blade.
+	HanaHostname *string `json:"hanaHostname,omitempty"`
+	// HanaInstanceNum - A number between 00 and 99, stored as a string to maintain leading zero.
+	HanaInstanceNum *string `json:"hanaInstanceNum,omitempty"`
+	// DbContainer - Either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'Single', 'Multiple'
+	DbContainer HanaDatabaseContainersEnum `json:"dbContainer,omitempty"`
+	// HanaDatabase - Name of the database itself.  It only needs to be specified if using MDC
+	HanaDatabase *string `json:"hanaDatabase,omitempty"`
+	// HanaDbUsername - Username for the HANA database to login to for monitoring
+	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
+	// HanaDbPassword - Password for the HANA database to login for monitoring
+	HanaDbPassword *string `json:"hanaDbPassword,omitempty"`
+}
+
+// MonitoringHanaInstancesMethodFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type MonitoringHanaInstancesMethodFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *MonitoringHanaInstancesMethodFuture) Result(client MonitoringClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.MonitoringHanaInstancesMethodFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.MonitoringHanaInstancesMethodFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // NetworkProfile specifies the network settings for the HANA instance disks.

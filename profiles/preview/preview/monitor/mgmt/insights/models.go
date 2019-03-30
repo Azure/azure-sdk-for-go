@@ -324,7 +324,6 @@ type AzureAppPushReceiver = original.AzureAppPushReceiver
 type AzureFunctionReceiver = original.AzureFunctionReceiver
 type BaseClient = original.BaseClient
 type Baseline = original.Baseline
-type BaselineClient = original.BaselineClient
 type BaselineMetadata = original.BaselineMetadata
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
@@ -396,6 +395,7 @@ type MetricAlertStatusProperties = original.MetricAlertStatusProperties
 type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricAvailability = original.MetricAvailability
+type MetricBaselineClient = original.MetricBaselineClient
 type MetricBaselinesClient = original.MetricBaselinesClient
 type MetricBaselinesResponse = original.MetricBaselinesResponse
 type MetricCriteria = original.MetricCriteria
@@ -503,12 +503,6 @@ func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBaselineClient(subscriptionID string) BaselineClient {
-	return original.NewBaselineClient(subscriptionID)
-}
-func NewBaselineClientWithBaseURI(baseURI string, subscriptionID string) BaselineClient {
-	return original.NewBaselineClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
 	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
 }
@@ -550,6 +544,12 @@ func NewMetricAlertsStatusClient(subscriptionID string) MetricAlertsStatusClient
 }
 func NewMetricAlertsStatusClientWithBaseURI(baseURI string, subscriptionID string) MetricAlertsStatusClient {
 	return original.NewMetricAlertsStatusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetricBaselineClient(subscriptionID string) MetricBaselineClient {
+	return original.NewMetricBaselineClient(subscriptionID)
+}
+func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselineClient {
+	return original.NewMetricBaselineClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMetricBaselinesClient(subscriptionID string) MetricBaselinesClient {
 	return original.NewMetricBaselinesClient(subscriptionID)

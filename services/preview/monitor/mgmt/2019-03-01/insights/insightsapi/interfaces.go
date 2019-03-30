@@ -151,17 +151,17 @@ type MetricsClientAPI interface {
 
 var _ MetricsClientAPI = (*insights.MetricsClient)(nil)
 
-// BaselineClientAPI contains the set of methods on the BaselineClient type.
-type BaselineClientAPI interface {
+// MetricBaselineClientAPI contains the set of methods on the MetricBaselineClient type.
+type MetricBaselineClientAPI interface {
 	CalculateBaseline(ctx context.Context, resourceURI string, timeSeriesInformation insights.TimeSeriesInformation) (result insights.CalculateBaselineResponse, err error)
 	Get(ctx context.Context, resourceURI string, metricName string, timespan string, interval *string, aggregation string, sensitivities string, resultType insights.ResultType) (result insights.BaselineResponse, err error)
 }
 
-var _ BaselineClientAPI = (*insights.BaselineClient)(nil)
+var _ MetricBaselineClientAPI = (*insights.MetricBaselineClient)(nil)
 
 // MetricBaselinesClientAPI contains the set of methods on the MetricBaselinesClient type.
 type MetricBaselinesClientAPI interface {
-	Get(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType insights.ResultType) (result insights.MetricBaselinesResponse, err error)
+	List(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType insights.ResultType) (result insights.MetricBaselinesResponse, err error)
 }
 
 var _ MetricBaselinesClientAPI = (*insights.MetricBaselinesClient)(nil)

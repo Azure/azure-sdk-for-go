@@ -4021,8 +4021,8 @@ type MetricBaselinesResponse struct {
 	Interval *string `json:"interval,omitempty"`
 	// Namespace - The namespace of the metrics been queried.
 	Namespace *string `json:"namespace,omitempty"`
-	// Value - The baseline results of a single metric.
-	Value *SingleMetricBaseline `json:"value,omitempty"`
+	// Value - The list of baseline results for each metric.
+	Value *[]SingleMetricBaseline `json:"value,omitempty"`
 }
 
 // MetricCriteria criterion to filter metrics.
@@ -5157,13 +5157,13 @@ type SenderAuthorization struct {
 
 // SingleMetricBaseline the baseline results of a single metric.
 type SingleMetricBaseline struct {
-	// ID - the metric baseline Id.
+	// ID - The metric baseline Id.
 	ID *string `json:"id,omitempty"`
-	// Type - the resource type of the metric baseline resource.
+	// Type - The resource type of the metric baseline resource.
 	Type *string `json:"type,omitempty"`
-	// MetricName - the name of the metric.
+	// MetricName - The name of the metric.
 	MetricName *string `json:"metricName,omitempty"`
-	// Baselines - the baseline for each time series that was queried.
+	// Baselines - The baseline for each time series that was queried.
 	Baselines *[]TimeSeriesBaseline `json:"baselines,omitempty"`
 }
 
@@ -5323,17 +5323,17 @@ func (trc *ThresholdRuleCondition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TimeSeriesBaseline the time series baseline class.
+// TimeSeriesBaseline the baseline values for a single time series.
 type TimeSeriesBaseline struct {
 	// Aggregation - The aggregation type of the metric.
 	Aggregation *string `json:"aggregation,omitempty"`
-	// Dimensions - the dimensions of this time series.
+	// Dimensions - The dimensions of this time series.
 	Dimensions *[]MetricSingleDimension `json:"dimensions,omitempty"`
-	// Timestamps - the array of timestamps of the baselines.
+	// Timestamps - The list of timestamps of the baselines.
 	Timestamps *[]date.Time `json:"timestamps,omitempty"`
-	// Data - the baseline values for each sensitivity.
+	// Data - The baseline values for each sensitivity.
 	Data *[]Baseline `json:"data,omitempty"`
-	// Metadata - the baseline metadata values.
+	// Metadata - The baseline metadata values.
 	Metadata *[]BaselineMetadata `json:"metadata,omitempty"`
 }
 

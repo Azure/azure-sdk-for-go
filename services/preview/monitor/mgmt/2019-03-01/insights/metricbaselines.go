@@ -40,12 +40,9 @@ func NewMetricBaselinesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return MetricBaselinesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get **Gets the metric baseline values**.
+// List **Lists the metric baseline values for a resource**.
 // Parameters:
-// resourceURI - the identifier of the resource. It has the following structure:
-// subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
-// For example:
-// subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1
+// resourceURI - the identifier of the resource.
 // metricnames - the names of the metrics (comma separated) to retrieve.
 // metricnamespace - metric namespace to query metric definitions for.
 // timespan - the timespan of the query. It is a string with the following format
@@ -61,9 +58,9 @@ func NewMetricBaselinesClientWithBaseURI(baseURI string, subscriptionID string) 
 // ‘b1’ and C eq ‘c1’**<br>- Return all time series where A = a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq
 // ‘*’**.
 // resultType - allows retrieving only metadata of the baseline. On data request all information is retrieved.
-func (client MetricBaselinesClient) Get(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (result MetricBaselinesResponse, err error) {
+func (client MetricBaselinesClient) List(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (result MetricBaselinesResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MetricBaselinesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetricBaselinesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -72,29 +69,29 @@ func (client MetricBaselinesClient) Get(ctx context.Context, resourceURI string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceURI, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType)
+	req, err := client.ListPreparer(ctx, resourceURI, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetPreparer prepares the Get request.
-func (client MetricBaselinesClient) GetPreparer(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client MetricBaselinesClient) ListPreparer(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
@@ -136,16 +133,16 @@ func (client MetricBaselinesClient) GetPreparer(ctx context.Context, resourceURI
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetSender sends the Get request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client MetricBaselinesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client MetricBaselinesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetResponder handles the response to the Get request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client MetricBaselinesClient) GetResponder(resp *http.Response) (result MetricBaselinesResponse, err error) {
+func (client MetricBaselinesClient) ListResponder(resp *http.Response) (result MetricBaselinesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

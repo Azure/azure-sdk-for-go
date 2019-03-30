@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// MetricBaselinesClient is the monitor Management Client
-type MetricBaselinesClient struct {
+// BaselinesClient is the monitor Management Client
+type BaselinesClient struct {
 	BaseClient
 }
 
-// NewMetricBaselinesClient creates an instance of the MetricBaselinesClient client.
-func NewMetricBaselinesClient(subscriptionID string) MetricBaselinesClient {
-	return NewMetricBaselinesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewBaselinesClient creates an instance of the BaselinesClient client.
+func NewBaselinesClient(subscriptionID string) BaselinesClient {
+	return NewBaselinesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMetricBaselinesClientWithBaseURI creates an instance of the MetricBaselinesClient client.
-func NewMetricBaselinesClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselinesClient {
-	return MetricBaselinesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewBaselinesClientWithBaseURI creates an instance of the BaselinesClient client.
+func NewBaselinesClientWithBaseURI(baseURI string, subscriptionID string) BaselinesClient {
+	return BaselinesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List **Lists the metric baseline values for a resource**.
@@ -58,9 +58,9 @@ func NewMetricBaselinesClientWithBaseURI(baseURI string, subscriptionID string) 
 // ‘b1’ and C eq ‘c1’**<br>- Return all time series where A = a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq
 // ‘*’**.
 // resultType - allows retrieving only metadata of the baseline. On data request all information is retrieved.
-func (client MetricBaselinesClient) List(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (result MetricBaselinesResponse, err error) {
+func (client BaselinesClient) List(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (result MetricBaselinesResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MetricBaselinesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaselinesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -71,27 +71,27 @@ func (client MetricBaselinesClient) List(ctx context.Context, resourceURI string
 	}
 	req, err := client.ListPreparer(ctx, resourceURI, metricnames, metricnamespace, timespan, interval, aggregation, sensitivities, filter, resultType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.BaselinesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.BaselinesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.MetricBaselinesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.BaselinesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client MetricBaselinesClient) ListPreparer(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (*http.Request, error) {
+func (client BaselinesClient) ListPreparer(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType ResultType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
@@ -135,14 +135,14 @@ func (client MetricBaselinesClient) ListPreparer(ctx context.Context, resourceUR
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client MetricBaselinesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client BaselinesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client MetricBaselinesClient) ListResponder(resp *http.Response) (result MetricBaselinesResponse, err error) {
+func (client BaselinesClient) ListResponder(resp *http.Response) (result MetricBaselinesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

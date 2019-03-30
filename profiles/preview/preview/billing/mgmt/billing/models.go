@@ -270,6 +270,8 @@ type SubscriptionsListResult = original.SubscriptionsListResult
 type SubscriptionsListResultIterator = original.SubscriptionsListResultIterator
 type SubscriptionsListResultPage = original.SubscriptionsListResultPage
 type TransactionsByBillingAccountClient = original.TransactionsByBillingAccountClient
+type TransactionsByBillingProfileClient = original.TransactionsByBillingProfileClient
+type TransactionsByInvoiceSectionClient = original.TransactionsByInvoiceSectionClient
 type TransactionsListResult = original.TransactionsListResult
 type TransactionsListResultIterator = original.TransactionsListResultIterator
 type TransactionsListResultPage = original.TransactionsListResultPage
@@ -550,6 +552,18 @@ func NewTransactionsByBillingAccountClient(subscriptionID string) TransactionsBy
 }
 func NewTransactionsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByBillingAccountClient {
 	return original.NewTransactionsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTransactionsByBillingProfileClient(subscriptionID string) TransactionsByBillingProfileClient {
+	return original.NewTransactionsByBillingProfileClient(subscriptionID)
+}
+func NewTransactionsByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByBillingProfileClient {
+	return original.NewTransactionsByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTransactionsByInvoiceSectionClient(subscriptionID string) TransactionsByInvoiceSectionClient {
+	return original.NewTransactionsByInvoiceSectionClient(subscriptionID)
+}
+func NewTransactionsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByInvoiceSectionClient {
+	return original.NewTransactionsByInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTransactionsListResultIterator(page TransactionsListResultPage) TransactionsListResultIterator {
 	return original.NewTransactionsListResultIterator(page)

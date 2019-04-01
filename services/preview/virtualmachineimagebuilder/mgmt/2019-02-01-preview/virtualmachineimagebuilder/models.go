@@ -915,10 +915,13 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 }
 
 // ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
-// Packer powershell provisioner
+// Packer powershell provisioner. Exactly one of 'script' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
 	// Script - The PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
-	Script         *string  `json:"script,omitempty"`
+	Script *string `json:"script,omitempty"`
+	// Inline - Array of PowerShell commands to execute
+	Inline *[]string `json:"inline,omitempty"`
+	// ValidExitCodes - Valid exit codes for the PowerShell script. [Default: 0]
 	ValidExitCodes *[]int32 `json:"validExitCodes,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
@@ -932,6 +935,9 @@ func (itpsc ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if itpsc.Script != nil {
 		objectMap["script"] = itpsc.Script
+	}
+	if itpsc.Inline != nil {
+		objectMap["inline"] = itpsc.Inline
 	}
 	if itpsc.ValidExitCodes != nil {
 		objectMap["validExitCodes"] = itpsc.ValidExitCodes
@@ -1174,10 +1180,13 @@ func (itsid ImageTemplateSharedImageDistributor) AsBasicImageTemplateDistributor
 	return &itsid, true
 }
 
-// ImageTemplateShellCustomizer runs a shell script during the customization phase (Linux)
+// ImageTemplateShellCustomizer runs a shell script during the customization phase (Linux). Corresponds to
+// Packer shell provisioner. Exactly one of 'script' or 'inline' can be specified.
 type ImageTemplateShellCustomizer struct {
 	// Script - The shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
 	Script *string `json:"script,omitempty"`
+	// Inline - Array of shell commands to execute
+	Inline *[]string `json:"inline,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
 	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell'
@@ -1190,6 +1199,9 @@ func (itsc ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if itsc.Script != nil {
 		objectMap["script"] = itsc.Script
+	}
+	if itsc.Inline != nil {
+		objectMap["inline"] = itsc.Inline
 	}
 	if itsc.Name != nil {
 		objectMap["name"] = itsc.Name
@@ -1828,8 +1840,8 @@ func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputColle
 type RunOutputProperties struct {
 	// ArtifactID - The resource id of the artifact.
 	ArtifactID *string `json:"artifactId,omitempty"`
-	// ArtifactLocation - The URL location of the artifact.
-	ArtifactLocation *string `json:"artifactLocation,omitempty"`
+	// ArtifactURI - The location URI of the artifact.
+	ArtifactURI *string `json:"artifactUri,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
 	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 }

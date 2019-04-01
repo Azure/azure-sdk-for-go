@@ -27,6 +27,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -409,6 +410,56 @@ func (suite *serviceBusSuite) testSubscriptionManager(tests map[string]func(cont
 			defer cleanupTopic()
 		}
 		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
+func (suite *serviceBusSuite) TestSubscription_TwoWithReceiveAndDelete() {
+	ns := suite.getNewSasInstance()
+	topicName := suite.randEntityName()
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	topicCleanup := makeTopic(ctx, suite.T(), ns, topicName)
+	defer topicCleanup()
+	topic, err := ns.NewTopic(topicName)
+	if suite.NoError(err) {
+		subName1 := suite.randEntityName()
+		subCleanup1 := makeSubscription(ctx, suite.T(), topic, subName1)
+		defer subCleanup1()
+		subName2 := suite.randEntityName()
+		subCleanup2 := makeSubscription(ctx, suite.T(), topic, subName2)
+		defer subCleanup2()
+
+		sub1, err := topic.NewSubscription(subName1, SubscriptionWithReceiveAndDelete())
+		suite.Require().NoError(err)
+
+		sub2, err := topic.NewSubscription(subName2, SubscriptionWithReceiveAndDelete())
+		suite.Require().NoError(err)
+
+		wg := sync.WaitGroup{}
+		wg.Add(2)
+
+		go func(){
+			suite.Require().NoError(sub1.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+				wg.Done()
+				return nil
+			})))
+		}()
+
+		suite.Require().NoError(topic.Send(ctx, NewMessageFromString("foo")))
+
+		go func(){
+			suite.Require().NoError(sub2.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+				wg.Done()
+				return nil
+			})))
+		}()
+
+		suite.Require().NoError(topic.Send(ctx, NewMessageFromString("foo")))
+
+		wg.Wait()
+		suite.NoError(sub1.Close(ctx))
+		suite.NoError(sub2.Close(ctx))
 	}
 }
 

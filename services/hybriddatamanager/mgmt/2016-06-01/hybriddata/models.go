@@ -496,6 +496,56 @@ func (future *DataManagersDeleteFuture) Result(client DataManagersClient) (ar au
 	return
 }
 
+// DataManagersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DataManagersUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DataManagersUpdateFuture) Result(client DataManagersClient) (dm DataManager, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
+		dm, err = client.UpdateResponder(dm.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", dm.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DataManagerUpdateParameter the DataManagerUpdateParameter.
+type DataManagerUpdateParameter struct {
+	// Sku - The sku type.
+	Sku *Sku `json:"sku,omitempty"`
+	// Tags - The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups).
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DataManagerUpdateParameter.
+func (dmup DataManagerUpdateParameter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmup.Sku != nil {
+		objectMap["sku"] = dmup.Sku
+	}
+	if dmup.Tags != nil {
+		objectMap["tags"] = dmup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // DataService data Service.
 type DataService struct {
 	autorest.Response `json:"-"`
@@ -1274,7 +1324,7 @@ type DataStoreTypeProperties struct {
 	SupportedDataServicesAsSource *[]string `json:"supportedDataServicesAsSource,omitempty"`
 }
 
-// DmsBaseObject base class for all objects under DataManager.
+// DmsBaseObject base class for all objects under DataManager Service
 type DmsBaseObject struct {
 	// Name - Name of the object.
 	Name *string `json:"name,omitempty"`

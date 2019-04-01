@@ -36,6 +36,7 @@ type DataManagersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, dataManagerName string) (result hybriddata.DataManager, err error)
 	List(ctx context.Context) (result hybriddata.DataManagerList, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hybriddata.DataManagerList, err error)
+	Update(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter hybriddata.DataManagerUpdateParameter, ifMatch string) (result hybriddata.DataManagersUpdateFuture, err error)
 }
 
 var _ DataManagersClientAPI = (*hybriddata.DataManagersClient)(nil)

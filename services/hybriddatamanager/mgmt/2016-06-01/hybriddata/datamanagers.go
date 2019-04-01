@@ -449,3 +449,98 @@ func (client DataManagersClient) ListByResourceGroupResponder(resp *http.Respons
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// Update updates the properties of an existing data manager resource.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// dataManagerName - the name of the DataManager Resource within the specified resource group. DataManager
+// names must be between 3 and 24 characters in length and use any alphanumeric and underscore only
+// dataManagerUpdateParameter - data manager resource details from request body.
+// ifMatch - defines the If-Match condition. The patch will be performed only if the ETag of the data manager
+// resource on the server matches this value.
+func (client DataManagersClient) Update(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, ifMatch string) (result DataManagersUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataManagersClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataManagerName,
+			Constraints: []validation.Constraint{{Target: "dataManagerName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "dataManagerName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "dataManagerName", Name: validation.Pattern, Rule: `^[-\w\.]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("hybriddata.DataManagersClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, dataManagerName, dataManagerUpdateParameter, ifMatch)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Update", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client DataManagersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, ifMatch string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"dataManagerName":   autorest.Encode("path", dataManagerName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}", pathParameters),
+		autorest.WithJSON(dataManagerUpdateParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataManagersClient) UpdateSender(req *http.Request) (future DataManagersUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client DataManagersClient) UpdateResponder(resp *http.Response) (result DataManager, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

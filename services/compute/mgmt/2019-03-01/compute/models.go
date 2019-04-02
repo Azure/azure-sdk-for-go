@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-10-01/compute"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-03-01/compute"
 
 // AccessLevel enumerates the values for access level.
 type AccessLevel string
@@ -39,11 +39,13 @@ const (
 	None AccessLevel = "None"
 	// Read ...
 	Read AccessLevel = "Read"
+	// Write ...
+	Write AccessLevel = "Write"
 )
 
 // PossibleAccessLevelValues returns an array of possible values for the AccessLevel const type.
 func PossibleAccessLevelValues() []AccessLevel {
-	return []AccessLevel{None, Read}
+	return []AccessLevel{None, Read, Write}
 }
 
 // AggregatedReplicationState enumerates the values for aggregated replication state.
@@ -263,11 +265,13 @@ const (
 	Import DiskCreateOption = "Import"
 	// Restore ...
 	Restore DiskCreateOption = "Restore"
+	// Upload ...
+	Upload DiskCreateOption = "Upload"
 )
 
 // PossibleDiskCreateOptionValues returns an array of possible values for the DiskCreateOption const type.
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
-	return []DiskCreateOption{Attach, Copy, Empty, FromImage, Import, Restore}
+	return []DiskCreateOption{Attach, Copy, Empty, FromImage, Import, Restore, Upload}
 }
 
 // DiskCreateOptionTypes enumerates the values for disk create option types.
@@ -285,6 +289,29 @@ const (
 // PossibleDiskCreateOptionTypesValues returns an array of possible values for the DiskCreateOptionTypes const type.
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return []DiskCreateOptionTypes{DiskCreateOptionTypesAttach, DiskCreateOptionTypesEmpty, DiskCreateOptionTypesFromImage}
+}
+
+// DiskState enumerates the values for disk state.
+type DiskState string
+
+const (
+	// ActiveSAS ...
+	ActiveSAS DiskState = "ActiveSAS"
+	// ActiveUpload ...
+	ActiveUpload DiskState = "ActiveUpload"
+	// Attached ...
+	Attached DiskState = "Attached"
+	// ReadyToUpload ...
+	ReadyToUpload DiskState = "ReadyToUpload"
+	// Reserved ...
+	Reserved DiskState = "Reserved"
+	// Unattached ...
+	Unattached DiskState = "Unattached"
+)
+
+// PossibleDiskStateValues returns an array of possible values for the DiskState const type.
+func PossibleDiskStateValues() []DiskState {
+	return []DiskState{ActiveSAS, ActiveUpload, Attached, ReadyToUpload, Reserved, Unattached}
 }
 
 // DiskStorageAccountTypes enumerates the values for disk storage account types.
@@ -321,6 +348,21 @@ const (
 // PossibleHostCachingValues returns an array of possible values for the HostCaching const type.
 func PossibleHostCachingValues() []HostCaching {
 	return []HostCaching{HostCachingNone, HostCachingReadOnly, HostCachingReadWrite}
+}
+
+// HyperVGeneration enumerates the values for hyper v generation.
+type HyperVGeneration string
+
+const (
+	// V1 ...
+	V1 HyperVGeneration = "V1"
+	// V2 ...
+	V2 HyperVGeneration = "V2"
+)
+
+// PossibleHyperVGenerationValues returns an array of possible values for the HyperVGeneration const type.
+func PossibleHyperVGenerationValues() []HyperVGeneration {
+	return []HyperVGeneration{V1, V2}
 }
 
 // InstanceViewTypes enumerates the values for instance view types.
@@ -695,6 +737,21 @@ const (
 // PossibleStatusLevelTypesValues returns an array of possible values for the StatusLevelTypes const type.
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	return []StatusLevelTypes{Error, Info, Warning}
+}
+
+// StorageAccountType enumerates the values for storage account type.
+type StorageAccountType string
+
+const (
+	// StorageAccountTypeStandardLRS ...
+	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
+	// StorageAccountTypeStandardZRS ...
+	StorageAccountTypeStandardZRS StorageAccountType = "Standard_ZRS"
+)
+
+// PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return []StorageAccountType{StorageAccountTypeStandardLRS, StorageAccountTypeStandardZRS}
 }
 
 // StorageAccountTypes enumerates the values for storage account types.
@@ -2029,7 +2086,7 @@ type ContainerServiceWindowsProfile struct {
 
 // CreationData data used when creating a disk.
 type CreationData struct {
-	// CreateOption - This enumerates the possible sources of a disk's creation. Possible values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy', 'Restore'
+	// CreateOption - This enumerates the possible sources of a disk's creation. Possible values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy', 'Restore', 'Upload'
 	CreateOption DiskCreateOption `json:"createOption,omitempty"`
 	// StorageAccountID - If createOption is Import, the Azure Resource Manager identifier of the storage account containing the blob to import as a disk. Required only if the blob is in a different subscription
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
@@ -2411,18 +2468,22 @@ type DiskProperties struct {
 	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// OsType - The Operating System type. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	// HyperVGeneration - The hypervisor generation of the Virtual Machine. Applicable to OS disks only. Possible values include: 'V1', 'V2'
+	HyperVGeneration HyperVGeneration `json:"hyperVGeneration,omitempty"`
 	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// EncryptionSettings - Encryption settings for disk or snapshot
-	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
+	// EncryptionSettingsCollection - Encryption settings collection used for Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
+	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// ProvisioningState - The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes. For a description of the range of values you can set, see [Ultra SSD Managed Disk Offerings](https://docs.microsoft.com/azure/virtual-machines/windows/disks-ultra-ssd#ultra-ssd-managed-disk-offerings).
+	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes.
 	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
-	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10. For a description of the range of values you can set, see [Ultra SSD Managed Disk Offerings](https://docs.microsoft.com/azure/virtual-machines/windows/disks-ultra-ssd#ultra-ssd-managed-disk-offerings).
+	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
 	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
+	// DiskState - The state of the disk. Possible values include: 'Unattached', 'Attached', 'Reserved', 'ActiveSAS', 'ReadyToUpload', 'ActiveUpload'
+	DiskState DiskState `json:"diskState,omitempty"`
 }
 
 // DisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2635,21 +2696,27 @@ type DiskUpdateProperties struct {
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// EncryptionSettings - Encryption settings for disk or snapshot
-	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
+	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
+	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes.
 	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
 	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
 	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
 }
 
-// EncryptionSettings encryption settings for disk or snapshot
-type EncryptionSettings struct {
+// EncryptionSettingsCollection encryption settings for disk or snapshot
+type EncryptionSettingsCollection struct {
 	// Enabled - Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption. Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption. If EncryptionSettings is null in the request object, the existing settings remain unchanged.
 	Enabled *bool `json:"enabled,omitempty"`
+	// EncryptionSettings - A collection of encryption settings, one for each disk volume.
+	EncryptionSettings *[]EncryptionSettingsElement `json:"encryptionSettings,omitempty"`
+}
+
+// EncryptionSettingsElement encryption settings for one disk volume.
+type EncryptionSettingsElement struct {
 	// DiskEncryptionKey - Key Vault Secret Url and vault id of the disk encryption key
 	DiskEncryptionKey *KeyVaultAndSecretReference `json:"diskEncryptionKey,omitempty"`
-	// KeyEncryptionKey - Key Vault Key Url and vault id of the key encryption key
+	// KeyEncryptionKey - Key Vault Key Url and vault id of the key encryption key. KeyEncryptionKey is optional and when provided is used to unwrap the disk encryption key.
 	KeyEncryptionKey *KeyVaultAndKeyReference `json:"keyEncryptionKey,omitempty"`
 }
 
@@ -3466,6 +3533,8 @@ type GalleryImageVersionPublishingProfile struct {
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
 	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
 	Source        *GalleryArtifactSource `json:"source,omitempty"`
@@ -3695,7 +3764,7 @@ type GalleryProperties struct {
 
 // GrantAccessData data used for requesting a SAS.
 type GrantAccessData struct {
-	// Access - Possible values include: 'None', 'Read'
+	// Access - Possible values include: 'None', 'Read', 'Write'
 	Access AccessLevel `json:"access,omitempty"`
 	// DurationInSeconds - Time duration in seconds until the SAS access expires.
 	DurationInSeconds *int32 `json:"durationInSeconds,omitempty"`
@@ -5777,12 +5846,14 @@ type SnapshotProperties struct {
 	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// OsType - The Operating System type. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	// HyperVGeneration - The hypervisor generation of the Virtual Machine. Applicable to OS disks only. Possible values include: 'V1', 'V2'
+	HyperVGeneration HyperVGeneration `json:"hyperVGeneration,omitempty"`
 	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// EncryptionSettings - Encryption settings for disk or snapshot
-	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
+	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
+	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// ProvisioningState - The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -5999,8 +6070,8 @@ type SnapshotUpdateProperties struct {
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// EncryptionSettings - Encryption settings for disk or snapshot
-	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
+	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
+	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 }
 
 // SourceVault the vault id is an Azure Resource Manager Resource id in the form
@@ -6053,6 +6124,8 @@ type TargetRegion struct {
 	Name *string `json:"name,omitempty"`
 	// RegionalReplicaCount - The number of replicas of the Image Version to be created per region. This property is updatable.
 	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
 // ThrottledRequestsInput api request input for LogAnalytics getThrottledRequests Api.

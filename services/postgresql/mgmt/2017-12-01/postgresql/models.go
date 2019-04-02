@@ -1814,6 +1814,8 @@ type ServerUpdateParametersProperties struct {
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// ReplicationRole - The replication role of the server.
+	ReplicationRole *string `json:"replicationRole,omitempty"`
 }
 
 // Sku billing information related properties of a server.

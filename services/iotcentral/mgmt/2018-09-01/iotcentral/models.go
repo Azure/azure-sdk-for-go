@@ -479,19 +479,32 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // AppTemplate ioT Central Application Template.
 type AppTemplate struct {
-	autorest.Response `json:"-"`
-	// ManifestID - The ID of the template.
-	ManifestID *string `json:"manifestId,omitempty"`
-	// ManifestVersion - The version of the template.
-	ManifestVersion *string `json:"manifestVersion,omitempty"`
-	// Name - The name of the template.
+	// ID - The application template identifier.
+	ID *string `json:"id,omitempty"`
+	// Name - The application template name.
 	Name *string `json:"name,omitempty"`
-	// Title - The title of the template.
-	Title *string `json:"title,omitempty"`
-	// Order - The order of the template in the templates list.
-	Order *float64 `json:"order,omitempty"`
-	// Description - The description of the template.
-	Description *string `json:"description,omitempty"`
+	// Properties - The extra template properties.
+	Properties map[string]*string `json:"properties"`
+	// Type - the resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppTemplate.
+func (at AppTemplate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if at.ID != nil {
+		objectMap["id"] = at.ID
+	}
+	if at.Name != nil {
+		objectMap["name"] = at.Name
+	}
+	if at.Properties != nil {
+		objectMap["properties"] = at.Properties
+	}
+	if at.Type != nil {
+		objectMap["type"] = at.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppTemplatesResult a list of IoT Central Application Templates with a next link.

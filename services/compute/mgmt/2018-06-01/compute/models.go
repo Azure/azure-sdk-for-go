@@ -4877,7 +4877,7 @@ type ProximityPlacementGroupListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of proximity placement groups
 	Value *[]ProximityPlacementGroup `json:"value,omitempty"`
-	// NextLink - The URI to fetch the next page of proximity placement groups. Call ListNext() with this URI to fetch the next page of proximity placement groups.
+	// NextLink - The URI to fetch the next page of proximity placement groups.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

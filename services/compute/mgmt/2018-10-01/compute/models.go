@@ -4885,7 +4885,7 @@ type ProximityPlacementGroupListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of proximity placement groups
 	Value *[]ProximityPlacementGroup `json:"value,omitempty"`
-	// NextLink - The URI to fetch the next page of proximity placement groups. Call ListNext() with this URI to fetch the next page of proximity placement groups.
+	// NextLink - The URI to fetch the next page of proximity placement groups.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8876,7 +8876,7 @@ type VirtualMachineScaleSetProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Overprovision - Specifies whether the Virtual Machine Scale Set should be overprovisioned.
 	Overprovision *bool `json:"overprovision,omitempty"`
-	// DoNotRunExtensionsOnOverprovisionedVMs - In case of overprovisioning, determines whether extensions should be run immediately, or if they should be delayed until after overprovisioning has finished and the set of instances to keep have been selected.
+	// DoNotRunExtensionsOnOverprovisionedVMs - When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
 	DoNotRunExtensionsOnOverprovisionedVMs *bool `json:"doNotRunExtensionsOnOverprovisionedVMs,omitempty"`
 	// UniqueID - Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
 	UniqueID *string `json:"uniqueId,omitempty"`

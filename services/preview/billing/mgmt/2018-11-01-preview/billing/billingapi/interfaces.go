@@ -25,7 +25,6 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	TransactionsByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, startDate string, endDate string, filter string) (result billing.TransactionsListResult, err error)
 	UpdateAutoRenewForBillingAccount(ctx context.Context, billingAccountName string, productName string, body billing.UpdateAutoRenewRequest) (result billing.UpdateAutoRenewOperationSummary, err error)
 	UpdateAutoRenewForInvoiceSection(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body billing.UpdateAutoRenewRequest) (result billing.UpdateAutoRenewOperationSummary, err error)
 }
@@ -214,6 +213,20 @@ type TransactionsByBillingAccountClientAPI interface {
 }
 
 var _ TransactionsByBillingAccountClientAPI = (*billing.TransactionsByBillingAccountClient)(nil)
+
+// TransactionsByBillingProfileClientAPI contains the set of methods on the TransactionsByBillingProfileClient type.
+type TransactionsByBillingProfileClientAPI interface {
+	List(ctx context.Context, billingAccountName string, billingProfileName string, startDate string, endDate string, filter string) (result billing.TransactionsListResult, err error)
+}
+
+var _ TransactionsByBillingProfileClientAPI = (*billing.TransactionsByBillingProfileClient)(nil)
+
+// TransactionsByInvoiceSectionClientAPI contains the set of methods on the TransactionsByInvoiceSectionClient type.
+type TransactionsByInvoiceSectionClientAPI interface {
+	List(ctx context.Context, billingAccountName string, invoiceSectionName string, startDate string, endDate string, filter string) (result billing.TransactionsListResult, err error)
+}
+
+var _ TransactionsByInvoiceSectionClientAPI = (*billing.TransactionsByInvoiceSectionClient)(nil)
 
 // PolicyClientAPI contains the set of methods on the PolicyClient type.
 type PolicyClientAPI interface {

@@ -41,6 +41,158 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// GetAlertByExternalBillingAccounts gets an alert for external billing account by alert ID.
+// Parameters:
+// externalBillingAccountID - external Billing Account ID
+// alertID - alert ID.
+func (client AlertsClient) GetAlertByExternalBillingAccounts(ctx context.Context, externalBillingAccountID string, alertID string) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetAlertByExternalBillingAccounts")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetAlertByExternalBillingAccountsPreparer(ctx, externalBillingAccountID, alertID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByExternalBillingAccounts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetAlertByExternalBillingAccountsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByExternalBillingAccounts", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetAlertByExternalBillingAccountsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByExternalBillingAccounts", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetAlertByExternalBillingAccountsPreparer prepares the GetAlertByExternalBillingAccounts request.
+func (client AlertsClient) GetAlertByExternalBillingAccountsPreparer(ctx context.Context, externalBillingAccountID string, alertID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertId":                  autorest.Encode("path", alertID),
+		"externalBillingAccountId": autorest.Encode("path", externalBillingAccountID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}/alerts/{alertId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetAlertByExternalBillingAccountsSender sends the GetAlertByExternalBillingAccounts request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) GetAlertByExternalBillingAccountsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetAlertByExternalBillingAccountsResponder handles the response to the GetAlertByExternalBillingAccounts request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) GetAlertByExternalBillingAccountsResponder(resp *http.Response) (result Alert, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetAlertByExternalSubscriptions gets an alert for external subscription by alert ID.
+// Parameters:
+// externalSubscriptionID - external Subscription ID
+// alertID - alert ID.
+func (client AlertsClient) GetAlertByExternalSubscriptions(ctx context.Context, externalSubscriptionID string, alertID string) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetAlertByExternalSubscriptions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetAlertByExternalSubscriptionsPreparer(ctx, externalSubscriptionID, alertID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByExternalSubscriptions", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetAlertByExternalSubscriptionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByExternalSubscriptions", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetAlertByExternalSubscriptionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetAlertByExternalSubscriptions", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetAlertByExternalSubscriptionsPreparer prepares the GetAlertByExternalSubscriptions request.
+func (client AlertsClient) GetAlertByExternalSubscriptionsPreparer(ctx context.Context, externalSubscriptionID string, alertID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertId":                autorest.Encode("path", alertID),
+		"externalSubscriptionId": autorest.Encode("path", externalSubscriptionID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionId}/alerts/{alertId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetAlertByExternalSubscriptionsSender sends the GetAlertByExternalSubscriptions request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) GetAlertByExternalSubscriptionsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetAlertByExternalSubscriptionsResponder handles the response to the GetAlertByExternalSubscriptions request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) GetAlertByExternalSubscriptionsResponder(resp *http.Response) (result Alert, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetAlertByManagementGroups gets an alert for Management Groups by alert ID.
 // Parameters:
 // managementGroupID - management Group ID
@@ -1052,6 +1204,280 @@ func (client AlertsClient) ListByEnrollmentComplete(ctx context.Context, billing
 	return
 }
 
+// ListByexternalBillingAccounts list all alerts for external billing account.
+// Parameters:
+// externalBillingAccountID - external Billing Account ID
+// filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
+// properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
+// properties/status, properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the most recent N alerts.
+func (client AlertsClient) ListByexternalBillingAccounts(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByexternalBillingAccounts")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("costmanagement.AlertsClient", "ListByexternalBillingAccounts", err.Error())
+	}
+
+	result.fn = client.listByexternalBillingAccountsNextResults
+	req, err := client.ListByexternalBillingAccountsPreparer(ctx, externalBillingAccountID, filter, skiptoken, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByexternalBillingAccounts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByexternalBillingAccountsSender(req)
+	if err != nil {
+		result.alr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByexternalBillingAccounts", resp, "Failure sending request")
+		return
+	}
+
+	result.alr, err = client.ListByexternalBillingAccountsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByexternalBillingAccounts", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByexternalBillingAccountsPreparer prepares the ListByexternalBillingAccounts request.
+func (client AlertsClient) ListByexternalBillingAccountsPreparer(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"externalBillingAccountId": autorest.Encode("path", externalBillingAccountID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}/alerts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByexternalBillingAccountsSender sends the ListByexternalBillingAccounts request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) ListByexternalBillingAccountsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByexternalBillingAccountsResponder handles the response to the ListByexternalBillingAccounts request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) ListByexternalBillingAccountsResponder(resp *http.Response) (result AlertListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByexternalBillingAccountsNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listByexternalBillingAccountsNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+	req, err := lastResults.alertListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByexternalBillingAccountsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByexternalBillingAccountsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByexternalBillingAccountsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByexternalBillingAccountsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByexternalBillingAccountsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByexternalBillingAccountsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListByexternalBillingAccountsComplete(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByexternalBillingAccounts")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByexternalBillingAccounts(ctx, externalBillingAccountID, filter, skiptoken, top)
+	return
+}
+
+// ListByExternalSubscriptions list all alerts for external subscription.
+// Parameters:
+// externalSubscriptionID - external Subscription ID
+// filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
+// properties/definition/criteria, properties/costEntityId, properties/creationTime, properties/closeTime,
+// properties/status, properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the most recent N alerts.
+func (client AlertsClient) ListByExternalSubscriptions(ctx context.Context, externalSubscriptionID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByExternalSubscriptions")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("costmanagement.AlertsClient", "ListByExternalSubscriptions", err.Error())
+	}
+
+	result.fn = client.listByExternalSubscriptionsNextResults
+	req, err := client.ListByExternalSubscriptionsPreparer(ctx, externalSubscriptionID, filter, skiptoken, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByExternalSubscriptions", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByExternalSubscriptionsSender(req)
+	if err != nil {
+		result.alr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByExternalSubscriptions", resp, "Failure sending request")
+		return
+	}
+
+	result.alr, err = client.ListByExternalSubscriptionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByExternalSubscriptions", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByExternalSubscriptionsPreparer prepares the ListByExternalSubscriptions request.
+func (client AlertsClient) ListByExternalSubscriptionsPreparer(ctx context.Context, externalSubscriptionID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"externalSubscriptionId": autorest.Encode("path", externalSubscriptionID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionId}/alerts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByExternalSubscriptionsSender sends the ListByExternalSubscriptions request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) ListByExternalSubscriptionsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByExternalSubscriptionsResponder handles the response to the ListByExternalSubscriptions request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) ListByExternalSubscriptionsResponder(resp *http.Response) (result AlertListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByExternalSubscriptionsNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listByExternalSubscriptionsNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+	req, err := lastResults.alertListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByExternalSubscriptionsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByExternalSubscriptionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByExternalSubscriptionsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByExternalSubscriptionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByExternalSubscriptionsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByExternalSubscriptionsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListByExternalSubscriptionsComplete(ctx context.Context, externalSubscriptionID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByExternalSubscriptions")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByExternalSubscriptions(ctx, externalSubscriptionID, filter, skiptoken, top)
+	return
+}
+
 // ListByManagementGroups list all alerts for Management Groups.
 // Parameters:
 // managementGroupID - management Group ID
@@ -1558,6 +1984,164 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatusSender(req *http.Re
 // UpdateEnrollmentAccountAlertStatusResponder handles the response to the UpdateEnrollmentAccountAlertStatus request. The method always
 // closes the http.Response Body.
 func (client AlertsClient) UpdateEnrollmentAccountAlertStatusResponder(resp *http.Response) (result Alert, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateExternalBillingAccountAlertStatus update alerts status for external billing accounts.
+// Parameters:
+// externalBillingAccountID - external Billing Account ID
+// alertID - alert ID.
+// parameters - parameters supplied to the update alerts status operation.
+func (client AlertsClient) UpdateExternalBillingAccountAlertStatus(ctx context.Context, externalBillingAccountID string, alertID string, parameters Alert) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateExternalBillingAccountAlertStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateExternalBillingAccountAlertStatusPreparer(ctx, externalBillingAccountID, alertID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateExternalBillingAccountAlertStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateExternalBillingAccountAlertStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateExternalBillingAccountAlertStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateExternalBillingAccountAlertStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateExternalBillingAccountAlertStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateExternalBillingAccountAlertStatusPreparer prepares the UpdateExternalBillingAccountAlertStatus request.
+func (client AlertsClient) UpdateExternalBillingAccountAlertStatusPreparer(ctx context.Context, externalBillingAccountID string, alertID string, parameters Alert) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertId":                  autorest.Encode("path", alertID),
+		"externalBillingAccountId": autorest.Encode("path", externalBillingAccountID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountId}/alerts/{alertId}/UpdateStatus", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateExternalBillingAccountAlertStatusSender sends the UpdateExternalBillingAccountAlertStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) UpdateExternalBillingAccountAlertStatusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// UpdateExternalBillingAccountAlertStatusResponder handles the response to the UpdateExternalBillingAccountAlertStatus request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) UpdateExternalBillingAccountAlertStatusResponder(resp *http.Response) (result Alert, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateExternalSubscriptionAlertStatus update alerts status for external subscription.
+// Parameters:
+// externalSubscriptionID - external Subscription ID
+// alertID - alert ID.
+// parameters - parameters supplied to the update alerts status operation.
+func (client AlertsClient) UpdateExternalSubscriptionAlertStatus(ctx context.Context, externalSubscriptionID string, alertID string, parameters Alert) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.UpdateExternalSubscriptionAlertStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateExternalSubscriptionAlertStatusPreparer(ctx, externalSubscriptionID, alertID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateExternalSubscriptionAlertStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateExternalSubscriptionAlertStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateExternalSubscriptionAlertStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateExternalSubscriptionAlertStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "UpdateExternalSubscriptionAlertStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateExternalSubscriptionAlertStatusPreparer prepares the UpdateExternalSubscriptionAlertStatus request.
+func (client AlertsClient) UpdateExternalSubscriptionAlertStatusPreparer(ctx context.Context, externalSubscriptionID string, alertID string, parameters Alert) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertId":                autorest.Encode("path", alertID),
+		"externalSubscriptionId": autorest.Encode("path", externalSubscriptionID),
+	}
+
+	const APIVersion = "2018-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionId}/alerts/{alertId}/UpdateStatus", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateExternalSubscriptionAlertStatusSender sends the UpdateExternalSubscriptionAlertStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) UpdateExternalSubscriptionAlertStatusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// UpdateExternalSubscriptionAlertStatusResponder handles the response to the UpdateExternalSubscriptionAlertStatus request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) UpdateExternalSubscriptionAlertStatusResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -344,3 +344,11 @@ type ProfileBillingRoleAssignmentClientAPI interface {
 }
 
 var _ ProfileBillingRoleAssignmentClientAPI = (*billing.ProfileBillingRoleAssignmentClient)(nil)
+
+// AgreementsClientAPI contains the set of methods on the AgreementsClient type.
+type AgreementsClientAPI interface {
+	Get(ctx context.Context, billingAccountName string, agreementName string, expand string) (result billing.Agreement, err error)
+	ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string) (result billing.AgreementListResult, err error)
+}
+
+var _ AgreementsClientAPI = (*billing.AgreementsClient)(nil)

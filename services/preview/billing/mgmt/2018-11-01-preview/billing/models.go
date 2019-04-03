@@ -470,6 +470,111 @@ type Address struct {
 	PostalCode *string `json:"postalCode,omitempty"`
 }
 
+// Agreement an agreement resource.
+type Agreement struct {
+	autorest.Response `json:"-"`
+	// AgreementProperties - An agreement.
+	*AgreementProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Agreement.
+func (a Agreement) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AgreementProperties != nil {
+		objectMap["properties"] = a.AgreementProperties
+	}
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Agreement struct.
+func (a *Agreement) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var agreementProperties AgreementProperties
+				err = json.Unmarshal(*v, &agreementProperties)
+				if err != nil {
+					return err
+				}
+				a.AgreementProperties = &agreementProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AgreementListResult result of listing agreements.
+type AgreementListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of agreements.
+	Value *[]Agreement `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AgreementProperties the properties of the agreement.
+type AgreementProperties struct {
+	// AgreementLink - The link to the agreement.
+	AgreementLink *string `json:"agreementLink,omitempty"`
+	// EffectiveDate - Effective date.
+	EffectiveDate *date.Time `json:"effectiveDate,omitempty"`
+	// ExpirationDate - Expiration date.
+	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
+	// Participants - Participants or signer of the agreement.
+	Participants *[]Participants `json:"participants,omitempty"`
+	// Status - The agreement status
+	Status *string `json:"status,omitempty"`
+}
+
 // Amount the Amount.
 type Amount struct {
 	// Currency - The currency for the amount value.
@@ -1410,6 +1515,16 @@ type OperationStatus struct {
 	Status *string `json:"status,omitempty"`
 	// StatusDetail - Status Detail of the pending operation
 	StatusDetail *string `json:"statusDetail,omitempty"`
+}
+
+// Participants details about the participant or signer.
+type Participants struct {
+	// Status - The signing status
+	Status *string `json:"status,omitempty"`
+	// StatusDate - The date when status got changed.
+	StatusDate *date.Time `json:"statusDate,omitempty"`
+	// Email - The email address of the participant or signer.
+	Email *string `json:"email,omitempty"`
 }
 
 // PaymentMethod a payment method resource.

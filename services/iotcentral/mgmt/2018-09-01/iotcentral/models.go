@@ -482,29 +482,26 @@ type AppTemplate struct {
 	// ID - The application template identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - The application template name.
-	Name *string `json:"name,omitempty"`
-	// Properties - The extra template properties.
-	Properties map[string]*string `json:"properties"`
+	Name       *string                `json:"name,omitempty"`
+	Properties *AppTemplateProperties `json:"properties,omitempty"`
 	// Type - the resource type.
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AppTemplate.
-func (at AppTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if at.ID != nil {
-		objectMap["id"] = at.ID
-	}
-	if at.Name != nil {
-		objectMap["name"] = at.Name
-	}
-	if at.Properties != nil {
-		objectMap["properties"] = at.Properties
-	}
-	if at.Type != nil {
-		objectMap["type"] = at.Type
-	}
-	return json.Marshal(objectMap)
+// AppTemplateProperties ioT Central Application Template extra properties.
+type AppTemplateProperties struct {
+	// ManifestID - The ID of the template.
+	ManifestID *string `json:"manifestId,omitempty"`
+	// ManifestVersion - The version of the template.
+	ManifestVersion *string `json:"manifestVersion,omitempty"`
+	// AppTemplateName - The name of the template.
+	AppTemplateName *string `json:"appTemplateName,omitempty"`
+	// Title - The title of the template.
+	Title *string `json:"title,omitempty"`
+	// Order - The order of the template in the templates list.
+	Order *float64 `json:"order,omitempty"`
+	// Description - The description of the template.
+	Description *string `json:"description,omitempty"`
 }
 
 // AppTemplatesResult a list of IoT Central Application Templates with a next link.

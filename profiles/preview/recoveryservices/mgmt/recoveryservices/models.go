@@ -84,6 +84,10 @@ const (
 type BaseClient = original.BaseClient
 type BasicResourceCertificateDetails = original.BasicResourceCertificateDetails
 type CertificateRequest = original.CertificateRequest
+type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
+type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type CheckNameAvailabilityResultResource = original.CheckNameAvailabilityResultResource
+type Client = original.Client
 type ClientDiscoveryDisplay = original.ClientDiscoveryDisplay
 type ClientDiscoveryForLogSpecification = original.ClientDiscoveryForLogSpecification
 type ClientDiscoveryForProperties = original.ClientDiscoveryForProperties
@@ -128,11 +132,17 @@ type VaultsClient = original.VaultsClient
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
 func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
 	return original.NewClientDiscoveryResponseIterator(page)
 }
 func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
 	return original.NewClientDiscoveryResponsePage(getNextPage)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

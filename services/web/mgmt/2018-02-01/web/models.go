@@ -19331,6 +19331,7 @@ type SiteMachineKey struct {
 type SitePatchResource struct {
 	// SitePatchResourceProperties - SitePatchResource resource specific properties
 	*SitePatchResourceProperties `json:"properties,omitempty"`
+	Identity                     *ManagedServiceIdentity `json:"identity,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource Name.
@@ -19346,6 +19347,9 @@ func (spr SitePatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if spr.SitePatchResourceProperties != nil {
 		objectMap["properties"] = spr.SitePatchResourceProperties
+	}
+	if spr.Identity != nil {
+		objectMap["identity"] = spr.Identity
 	}
 	if spr.ID != nil {
 		objectMap["id"] = spr.ID
@@ -19379,6 +19383,15 @@ func (spr *SitePatchResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				spr.SitePatchResourceProperties = &sitePatchResourceProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity ManagedServiceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				spr.Identity = &identity
 			}
 		case "id":
 			if v != nil {

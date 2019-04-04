@@ -11415,8 +11415,6 @@ type TagResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]TagResourceContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }

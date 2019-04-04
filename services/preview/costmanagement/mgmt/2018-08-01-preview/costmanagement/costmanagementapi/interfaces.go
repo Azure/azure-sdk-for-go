@@ -109,7 +109,7 @@ type AlertsClientAPI interface {
 	ListByAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
 	ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
 	ListByEnrollment(ctx context.Context, billingAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
-	ListByexternalBillingAccounts(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
+	ListByExternalBillingAccounts(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
 	ListByExternalSubscriptions(ctx context.Context, externalSubscriptionID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
 	ListByManagementGroups(ctx context.Context, managementGroupID string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)
 	ListByResourceGroupName(ctx context.Context, resourceGroupName string, filter string, skiptoken string, top *int32) (result costmanagement.AlertListResultPage, err error)

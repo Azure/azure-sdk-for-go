@@ -1204,7 +1204,7 @@ func (client AlertsClient) ListByEnrollmentComplete(ctx context.Context, billing
 	return
 }
 
-// ListByexternalBillingAccounts list all alerts for external billing account.
+// ListByExternalBillingAccounts list all alerts for external billing account.
 // Parameters:
 // externalBillingAccountID - external Billing Account ID
 // filter - may be used to filter alerts by properties/definition/type, properties/definition/category,
@@ -1214,9 +1214,9 @@ func (client AlertsClient) ListByEnrollmentComplete(ctx context.Context, billing
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N alerts.
-func (client AlertsClient) ListByexternalBillingAccounts(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+func (client AlertsClient) ListByExternalBillingAccounts(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByexternalBillingAccounts")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByExternalBillingAccounts")
 		defer func() {
 			sc := -1
 			if result.alr.Response.Response != nil {
@@ -1231,33 +1231,33 @@ func (client AlertsClient) ListByexternalBillingAccounts(ctx context.Context, ex
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("costmanagement.AlertsClient", "ListByexternalBillingAccounts", err.Error())
+		return result, validation.NewError("costmanagement.AlertsClient", "ListByExternalBillingAccounts", err.Error())
 	}
 
-	result.fn = client.listByexternalBillingAccountsNextResults
-	req, err := client.ListByexternalBillingAccountsPreparer(ctx, externalBillingAccountID, filter, skiptoken, top)
+	result.fn = client.listByExternalBillingAccountsNextResults
+	req, err := client.ListByExternalBillingAccountsPreparer(ctx, externalBillingAccountID, filter, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByexternalBillingAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByExternalBillingAccounts", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByexternalBillingAccountsSender(req)
+	resp, err := client.ListByExternalBillingAccountsSender(req)
 	if err != nil {
 		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByexternalBillingAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByExternalBillingAccounts", resp, "Failure sending request")
 		return
 	}
 
-	result.alr, err = client.ListByexternalBillingAccountsResponder(resp)
+	result.alr, err = client.ListByExternalBillingAccountsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByexternalBillingAccounts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByExternalBillingAccounts", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByexternalBillingAccountsPreparer prepares the ListByexternalBillingAccounts request.
-func (client AlertsClient) ListByexternalBillingAccountsPreparer(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
+// ListByExternalBillingAccountsPreparer prepares the ListByExternalBillingAccounts request.
+func (client AlertsClient) ListByExternalBillingAccountsPreparer(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"externalBillingAccountId": autorest.Encode("path", externalBillingAccountID),
 	}
@@ -1284,16 +1284,16 @@ func (client AlertsClient) ListByexternalBillingAccountsPreparer(ctx context.Con
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByexternalBillingAccountsSender sends the ListByexternalBillingAccounts request. The method will close the
+// ListByExternalBillingAccountsSender sends the ListByExternalBillingAccounts request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertsClient) ListByexternalBillingAccountsSender(req *http.Request) (*http.Response, error) {
+func (client AlertsClient) ListByExternalBillingAccountsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListByexternalBillingAccountsResponder handles the response to the ListByexternalBillingAccounts request. The method always
+// ListByExternalBillingAccountsResponder handles the response to the ListByExternalBillingAccounts request. The method always
 // closes the http.Response Body.
-func (client AlertsClient) ListByexternalBillingAccountsResponder(resp *http.Response) (result AlertListResult, err error) {
+func (client AlertsClient) ListByExternalBillingAccountsResponder(resp *http.Response) (result AlertListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1304,31 +1304,31 @@ func (client AlertsClient) ListByexternalBillingAccountsResponder(resp *http.Res
 	return
 }
 
-// listByexternalBillingAccountsNextResults retrieves the next set of results, if any.
-func (client AlertsClient) listByexternalBillingAccountsNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+// listByExternalBillingAccountsNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listByExternalBillingAccountsNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
 	req, err := lastResults.alertListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByexternalBillingAccountsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByExternalBillingAccountsNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByexternalBillingAccountsSender(req)
+	resp, err := client.ListByExternalBillingAccountsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByexternalBillingAccountsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByExternalBillingAccountsNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByexternalBillingAccountsResponder(resp)
+	result, err = client.ListByExternalBillingAccountsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByexternalBillingAccountsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByExternalBillingAccountsNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByexternalBillingAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) ListByexternalBillingAccountsComplete(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+// ListByExternalBillingAccountsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListByExternalBillingAccountsComplete(ctx context.Context, externalBillingAccountID string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByexternalBillingAccounts")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByExternalBillingAccounts")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -1337,7 +1337,7 @@ func (client AlertsClient) ListByexternalBillingAccountsComplete(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByexternalBillingAccounts(ctx, externalBillingAccountID, filter, skiptoken, top)
+	result.page, err = client.ListByExternalBillingAccounts(ctx, externalBillingAccountID, filter, skiptoken, top)
 	return
 }
 

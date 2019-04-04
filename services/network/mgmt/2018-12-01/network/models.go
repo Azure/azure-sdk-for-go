@@ -2653,6 +2653,15 @@ type ApplicationGatewayBackendHealthHTTPSettings struct {
 	Servers *[]ApplicationGatewayBackendHealthServer `json:"servers,omitempty"`
 }
 
+// ApplicationGatewayBackendHealthOnDemand result of on demand test probe
+type ApplicationGatewayBackendHealthOnDemand struct {
+	autorest.Response `json:"-"`
+	// BackendAddressPool - Reference of an ApplicationGatewayBackendAddressPool resource.
+	BackendAddressPool *ApplicationGatewayBackendAddressPool `json:"backendAddressPool,omitempty"`
+	// BackendHealthHTTPSettings - Application gateway BackendHealthHttp settings.
+	BackendHealthHTTPSettings *ApplicationGatewayBackendHealthHTTPSettings `json:"backendHealthHttpSettings,omitempty"`
+}
+
 // ApplicationGatewayBackendHealthPool application gateway BackendHealth pool.
 type ApplicationGatewayBackendHealthPool struct {
 	// BackendAddressPool - Reference of an ApplicationGatewayBackendAddressPool resource.
@@ -3558,6 +3567,26 @@ func NewApplicationGatewayListResultPage(getNextPage func(context.Context, Appli
 	return ApplicationGatewayListResultPage{fn: getNextPage}
 }
 
+// ApplicationGatewayOnDemandProbe details of on demand test probe request
+type ApplicationGatewayOnDemandProbe struct {
+	// Protocol - The protocol used for the probe. Possible values are 'Http' and 'Https'. Possible values include: 'HTTP', 'HTTPS'
+	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
+	// Host - Host name to send the probe to.
+	Host *string `json:"host,omitempty"`
+	// Path - Relative path of probe. Valid path starts from '/'. Probe is sent to <Protocol>://<host>:<port><path>
+	Path *string `json:"path,omitempty"`
+	// Timeout - The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// PickHostNameFromBackendHTTPSettings - Whether the host header should be picked from the backend http settings. Default value is false.
+	PickHostNameFromBackendHTTPSettings *bool `json:"pickHostNameFromBackendHttpSettings,omitempty"`
+	// Match - Criterion for classifying a healthy probe response.
+	Match *ApplicationGatewayProbeHealthResponseMatch `json:"match,omitempty"`
+	// BackendPoolName - Name of backend pool of application gateway to which probe request will be sent.
+	BackendPoolName *string `json:"backendPoolName,omitempty"`
+	// BackendHTTPSettingName - Name of backend http setting of application gateway to be used for test probe
+	BackendHTTPSettingName *string `json:"backendHttpSettingName,omitempty"`
+}
+
 // ApplicationGatewayPathRule path rule of URL path map of an application gateway.
 type ApplicationGatewayPathRule struct {
 	*ApplicationGatewayPathRulePropertiesFormat `json:"properties,omitempty"`
@@ -4223,6 +4252,35 @@ func (future *ApplicationGatewaysBackendHealthFuture) Result(client ApplicationG
 		agbh, err = client.BackendHealthResponder(agbh.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", agbh.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ApplicationGatewaysBackendHealthOnDemandFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type ApplicationGatewaysBackendHealthOnDemandFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationGatewaysBackendHealthOnDemandFuture) Result(client ApplicationGatewaysClient) (agbhod ApplicationGatewayBackendHealthOnDemand, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthOnDemandFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysBackendHealthOnDemandFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if agbhod.Response.Response, err = future.GetResult(sender); err == nil && agbhod.Response.Response.StatusCode != http.StatusNoContent {
+		agbhod, err = client.BackendHealthOnDemandResponder(agbhod.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthOnDemandFuture", "Result", agbhod.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -29681,8 +29739,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 }
 
 // WebApplicationFirewallPolicyListResult result of the request to list WebApplicationFirewallPolicies. It
-// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the the next set of
-// results.
+// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
 type WebApplicationFirewallPolicyListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of WebApplicationFirewallPolicies within a resource group.

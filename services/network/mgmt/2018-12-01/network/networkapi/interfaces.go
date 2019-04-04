@@ -34,6 +34,7 @@ var _ BaseClientAPI = (*network.BaseClient)(nil)
 // ApplicationGatewaysClientAPI contains the set of methods on the ApplicationGatewaysClient type.
 type ApplicationGatewaysClientAPI interface {
 	BackendHealth(ctx context.Context, resourceGroupName string, applicationGatewayName string, expand string) (result network.ApplicationGatewaysBackendHealthFuture, err error)
+	BackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest network.ApplicationGatewayOnDemandProbe, expand string) (result network.ApplicationGatewaysBackendHealthOnDemandFuture, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters network.ApplicationGateway) (result network.ApplicationGatewaysCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result network.ApplicationGatewaysDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, applicationGatewayName string) (result network.ApplicationGateway, err error)

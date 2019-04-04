@@ -122,6 +122,91 @@ func (client ApplicationGatewaysClient) BackendHealthResponder(resp *http.Respon
 	return
 }
 
+// BackendHealthOnDemand gets the backend health for given combination of backend pool and http setting of the
+// specified application gateway in a resource group.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// applicationGatewayName - the name of the application gateway.
+// probeRequest - request body for on-demand test probe operation.
+// expand - expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+func (client ApplicationGatewaysClient) BackendHealthOnDemand(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, expand string) (result ApplicationGatewaysBackendHealthOnDemandFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.BackendHealthOnDemand")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.BackendHealthOnDemandPreparer(ctx, resourceGroupName, applicationGatewayName, probeRequest, expand)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "BackendHealthOnDemand", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.BackendHealthOnDemandSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "BackendHealthOnDemand", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// BackendHealthOnDemandPreparer prepares the BackendHealthOnDemand request.
+func (client ApplicationGatewaysClient) BackendHealthOnDemandPreparer(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, expand string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"applicationGatewayName": autorest.Encode("path", applicationGatewayName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendHealthOnDemand", pathParameters),
+		autorest.WithJSON(probeRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// BackendHealthOnDemandSender sends the BackendHealthOnDemand request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationGatewaysClient) BackendHealthOnDemandSender(req *http.Request) (future ApplicationGatewaysBackendHealthOnDemandFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// BackendHealthOnDemandResponder handles the response to the BackendHealthOnDemand request. The method always
+// closes the http.Response Body.
+func (client ApplicationGatewaysClient) BackendHealthOnDemandResponder(resp *http.Response) (result ApplicationGatewayBackendHealthOnDemand, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdate creates or updates the specified application gateway.
 // Parameters:
 // resourceGroupName - the name of the resource group.

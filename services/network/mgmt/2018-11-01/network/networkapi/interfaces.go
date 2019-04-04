@@ -114,6 +114,7 @@ type DdosProtectionPlansClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (result network.DdosProtectionPlan, err error)
 	List(ctx context.Context) (result network.DdosProtectionPlanListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.DdosProtectionPlanListResultPage, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters network.TagsObject) (result network.DdosProtectionPlansUpdateTagsFuture, err error)
 }
 
 var _ DdosProtectionPlansClientAPI = (*network.DdosProtectionPlansClient)(nil)
@@ -621,7 +622,7 @@ type VirtualNetworkGatewaysClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters network.VirtualNetworkGateway) (result network.VirtualNetworkGatewaysCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewaysDeleteFuture, err error)
 	Generatevpnclientpackage(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters network.VpnClientParameters) (result network.VirtualNetworkGatewaysGeneratevpnclientpackageFuture, err error)
-	GenerateVpnProfile(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters network.VpnClientParameters) (result network.VirtualNetworkGatewaysGenerateVpnProfileFuture, err error)
+	GenerateVpnProfile(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters network.VpnClientParameters) (result network.String, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGateway, err error)
 	GetAdvertisedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peer string) (result network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture, err error)
 	GetBgpPeerStatus(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peer string) (result network.VirtualNetworkGatewaysGetBgpPeerStatusFuture, err error)

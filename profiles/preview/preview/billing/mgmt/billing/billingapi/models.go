@@ -26,6 +26,7 @@ type AccountBillingRoleAssignmentClientAPI = original.AccountBillingRoleAssignme
 type AccountBillingRoleDefinitionClientAPI = original.AccountBillingRoleDefinitionClientAPI
 type AccountsClientAPI = original.AccountsClientAPI
 type AccountsWithCreateInvoiceSectionPermissionClientAPI = original.AccountsWithCreateInvoiceSectionPermissionClientAPI
+type AgreementsClientAPI = original.AgreementsClientAPI
 type AvailableBalanceByBillingProfileClientAPI = original.AvailableBalanceByBillingProfileClientAPI
 type BaseClientAPI = original.BaseClientAPI
 type DepartmentsByBillingAccountNameClientAPI = original.DepartmentsByBillingAccountNameClientAPI

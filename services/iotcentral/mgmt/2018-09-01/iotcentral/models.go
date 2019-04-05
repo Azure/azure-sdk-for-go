@@ -479,17 +479,6 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // AppTemplate ioT Central Application Template.
 type AppTemplate struct {
-	// ID - The application template identifier.
-	ID *string `json:"id,omitempty"`
-	// Name - The application template name.
-	Name       *string                `json:"name,omitempty"`
-	Properties *AppTemplateProperties `json:"properties,omitempty"`
-	// Type - the resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// AppTemplateProperties ioT Central Application Template extra properties.
-type AppTemplateProperties struct {
 	// ManifestID - The ID of the template.
 	ManifestID *string `json:"manifestId,omitempty"`
 	// ManifestVersion - The version of the template.

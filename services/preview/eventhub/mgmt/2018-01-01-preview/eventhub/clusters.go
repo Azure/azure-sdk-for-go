@@ -42,6 +42,92 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Delete deletes an existing Event Hubs Cluster. This operation is idempotent.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// clusterName - the name of the Event Hubs Cluster.
+func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: clusterName,
+			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "clusterName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventhub.ClustersClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "Delete", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) DeleteSender(req *http.Request) (future ClustersDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get gets the resource description of the specified Event Hubs Cluster.
 // Parameters:
 // resourceGroupName - name of the resource group within the Azure subscription.
@@ -329,6 +415,93 @@ func (client ClustersClient) PatchSender(req *http.Request) (future ClustersPatc
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
 func (client ClustersClient) PatchResponder(resp *http.Response) (result Cluster, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Put creates or updates an instance of an Event Hubs Cluster.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// clusterName - the name of the Event Hubs Cluster.
+func (client ClustersClient) Put(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersPutFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Put")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: clusterName,
+			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "clusterName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventhub.ClustersClient", "Put", err.Error())
+	}
+
+	req, err := client.PutPreparer(ctx, resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "Put", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.PutSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "Put", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// PutPreparer prepares the Put request.
+func (client ClustersClient) PutPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PutSender sends the Put request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) PutSender(req *http.Request) (future ClustersPutFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// PutResponder handles the response to the Put request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) PutResponder(resp *http.Response) (result Cluster, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

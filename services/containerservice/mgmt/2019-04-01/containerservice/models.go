@@ -60,6 +60,21 @@ func PossibleKindValues() []Kind {
 	return []Kind{KindAADIdentityProvider, KindOpenShiftManagedClusterBaseIdentityProvider}
 }
 
+// LoadBalancerSku enumerates the values for load balancer sku.
+type LoadBalancerSku string
+
+const (
+	// Basic ...
+	Basic LoadBalancerSku = "basic"
+	// Standard ...
+	Standard LoadBalancerSku = "standard"
+)
+
+// PossibleLoadBalancerSkuValues returns an array of possible values for the LoadBalancerSku const type.
+func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
+	return []LoadBalancerSku{Basic, Standard}
+}
+
 // NetworkPlugin enumerates the values for network plugin.
 type NetworkPlugin string
 
@@ -2111,6 +2126,8 @@ type NetworkProfileType struct {
 	DNSServiceIP *string `json:"dnsServiceIP,omitempty"`
 	// DockerBridgeCidr - A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.
 	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
+	// LoadBalancerSku - The load balancer sku for the managed cluster. Possible values include: 'Standard', 'Basic'
+	LoadBalancerSku LoadBalancerSku `json:"loadBalancerSku,omitempty"`
 }
 
 // OpenShiftManagedCluster openShift Managed cluster.

@@ -50,6 +50,14 @@ const (
 	Zero  AlertSeverity = original.Zero
 )
 
+type BaselineSensitivity = original.BaselineSensitivity
+
+const (
+	High   BaselineSensitivity = original.High
+	Low    BaselineSensitivity = original.Low
+	Medium BaselineSensitivity = original.Medium
+)
+
 type CategoryType = original.CategoryType
 
 const (
@@ -243,9 +251,9 @@ const (
 type Sensitivity = original.Sensitivity
 
 const (
-	High   Sensitivity = original.High
-	Low    Sensitivity = original.Low
-	Medium Sensitivity = original.Medium
+	SensitivityHigh   Sensitivity = original.SensitivityHigh
+	SensitivityLow    Sensitivity = original.SensitivityLow
+	SensitivityMedium Sensitivity = original.SensitivityMedium
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
@@ -397,6 +405,7 @@ type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricAvailability = original.MetricAvailability
 type MetricBaselineClient = original.MetricBaselineClient
+type MetricBaselinesProperties = original.MetricBaselinesProperties
 type MetricBaselinesResponse = original.MetricBaselinesResponse
 type MetricCriteria = original.MetricCriteria
 type MetricDefinition = original.MetricDefinition
@@ -439,6 +448,7 @@ type ScaleRule = original.ScaleRule
 type Schedule = original.Schedule
 type ScheduledQueryRulesClient = original.ScheduledQueryRulesClient
 type SenderAuthorization = original.SenderAuthorization
+type SingleBaseline = original.SingleBaseline
 type SingleMetricBaseline = original.SingleMetricBaseline
 type SmsReceiver = original.SmsReceiver
 type Source = original.Source
@@ -607,6 +617,9 @@ func PossibleAggregationTypeValues() []AggregationType {
 }
 func PossibleAlertSeverityValues() []AlertSeverity {
 	return original.PossibleAlertSeverityValues()
+}
+func PossibleBaselineSensitivityValues() []BaselineSensitivity {
+	return original.PossibleBaselineSensitivityValues()
 }
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()

@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-10-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-03-01/compute"
 )
 
 const (
@@ -32,8 +32,9 @@ const (
 type AccessLevel = original.AccessLevel
 
 const (
-	None AccessLevel = original.None
-	Read AccessLevel = original.Read
+	None  AccessLevel = original.None
+	Read  AccessLevel = original.Read
+	Write AccessLevel = original.Write
 )
 
 type AggregatedReplicationState = original.AggregatedReplicationState
@@ -142,6 +143,7 @@ const (
 	FromImage DiskCreateOption = original.FromImage
 	Import    DiskCreateOption = original.Import
 	Restore   DiskCreateOption = original.Restore
+	Upload    DiskCreateOption = original.Upload
 )
 
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
@@ -150,6 +152,17 @@ const (
 	DiskCreateOptionTypesAttach    DiskCreateOptionTypes = original.DiskCreateOptionTypesAttach
 	DiskCreateOptionTypesEmpty     DiskCreateOptionTypes = original.DiskCreateOptionTypesEmpty
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
+)
+
+type DiskState = original.DiskState
+
+const (
+	ActiveSAS     DiskState = original.ActiveSAS
+	ActiveUpload  DiskState = original.ActiveUpload
+	Attached      DiskState = original.Attached
+	ReadyToUpload DiskState = original.ReadyToUpload
+	Reserved      DiskState = original.Reserved
+	Unattached    DiskState = original.Unattached
 )
 
 type DiskStorageAccountTypes = original.DiskStorageAccountTypes
@@ -167,6 +180,13 @@ const (
 	HostCachingNone      HostCaching = original.HostCachingNone
 	HostCachingReadOnly  HostCaching = original.HostCachingReadOnly
 	HostCachingReadWrite HostCaching = original.HostCachingReadWrite
+)
+
+type HyperVGeneration = original.HyperVGeneration
+
+const (
+	V1 HyperVGeneration = original.V1
+	V2 HyperVGeneration = original.V2
 )
 
 type IPVersion = original.IPVersion
@@ -343,6 +363,13 @@ const (
 	Error   StatusLevelTypes = original.Error
 	Info    StatusLevelTypes = original.Info
 	Warning StatusLevelTypes = original.Warning
+)
+
+type StorageAccountType = original.StorageAccountType
+
+const (
+	StorageAccountTypeStandardLRS StorageAccountType = original.StorageAccountTypeStandardLRS
+	StorageAccountTypeStandardZRS StorageAccountType = original.StorageAccountTypeStandardZRS
 )
 
 type StorageAccountTypes = original.StorageAccountTypes
@@ -631,7 +658,8 @@ type DisksDeleteFuture = original.DisksDeleteFuture
 type DisksGrantAccessFuture = original.DisksGrantAccessFuture
 type DisksRevokeAccessFuture = original.DisksRevokeAccessFuture
 type DisksUpdateFuture = original.DisksUpdateFuture
-type EncryptionSettings = original.EncryptionSettings
+type EncryptionSettingsCollection = original.EncryptionSettingsCollection
+type EncryptionSettingsElement = original.EncryptionSettingsElement
 type GalleriesClient = original.GalleriesClient
 type GalleriesCreateOrUpdateFuture = original.GalleriesCreateOrUpdateFuture
 type GalleriesDeleteFuture = original.GalleriesDeleteFuture
@@ -1213,11 +1241,17 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
+func PossibleDiskStateValues() []DiskState {
+	return original.PossibleDiskStateValues()
+}
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return original.PossibleDiskStorageAccountTypesValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
+}
+func PossibleHyperVGenerationValues() []HyperVGeneration {
+	return original.PossibleHyperVGenerationValues()
 }
 func PossibleIPVersionValues() []IPVersion {
 	return original.PossibleIPVersionValues()
@@ -1284,6 +1318,9 @@ func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 }
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	return original.PossibleStatusLevelTypesValues()
+}
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return original.PossibleStorageAccountTypeValues()
 }
 func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 	return original.PossibleStorageAccountTypesValues()

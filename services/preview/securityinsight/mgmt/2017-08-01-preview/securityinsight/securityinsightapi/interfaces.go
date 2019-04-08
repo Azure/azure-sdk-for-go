@@ -104,3 +104,10 @@ type ProductSettingsClientAPI interface {
 }
 
 var _ ProductSettingsClientAPI = (*securityinsight.ProductSettingsClient)(nil)
+
+// CasesAggregationsClientAPI contains the set of methods on the CasesAggregationsClient type.
+type CasesAggregationsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, aggregationsName string) (result securityinsight.AggregationsModel, err error)
+}
+
+var _ CasesAggregationsClientAPI = (*securityinsight.CasesAggregationsClient)(nil)

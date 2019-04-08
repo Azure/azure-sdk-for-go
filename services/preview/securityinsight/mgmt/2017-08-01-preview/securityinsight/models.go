@@ -31,6 +31,19 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2017-08-01-preview/securityinsight"
 
+// AggregationsKind enumerates the values for aggregations kind.
+type AggregationsKind string
+
+const (
+	// CasesAggregation ...
+	CasesAggregation AggregationsKind = "CasesAggregation"
+)
+
+// PossibleAggregationsKindValues returns an array of possible values for the AggregationsKind const type.
+func PossibleAggregationsKindValues() []AggregationsKind {
+	return []AggregationsKind{CasesAggregation}
+}
+
 // AlertRuleKind enumerates the values for alert rule kind.
 type AlertRuleKind string
 
@@ -186,6 +199,19 @@ const (
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
 	return []Kind{KindAlertRule, KindScheduled}
+}
+
+// KindBasicAggregations enumerates the values for kind basic aggregations.
+type KindBasicAggregations string
+
+const (
+	// KindAggregations ...
+	KindAggregations KindBasicAggregations = "Aggregations"
+)
+
+// PossibleKindBasicAggregationsValues returns an array of possible values for the KindBasicAggregations const type.
+func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
+	return []KindBasicAggregations{KindAggregations}
 }
 
 // KindBasicDataConnector enumerates the values for kind basic data connector.
@@ -857,6 +883,109 @@ func (page ActionsListPage) Values() []Action {
 // Creates a new instance of the ActionsListPage type.
 func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
 	return ActionsListPage{fn: getNextPage}
+}
+
+// BasicAggregations the aggregation.
+type BasicAggregations interface {
+	AsAggregations() (*Aggregations, bool)
+}
+
+// Aggregations the aggregation.
+type Aggregations struct {
+	autorest.Response `json:"-"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindAggregations'
+	Kind KindBasicAggregations `json:"kind,omitempty"`
+}
+
+func unmarshalBasicAggregations(body []byte) (BasicAggregations, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	default:
+		var a Aggregations
+		err := json.Unmarshal(body, &a)
+		return a, err
+	}
+}
+func unmarshalBasicAggregationsArray(body []byte) ([]BasicAggregations, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	aArray := make([]BasicAggregations, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		a, err := unmarshalBasicAggregations(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		aArray[index] = a
+	}
+	return aArray, nil
+}
+
+// MarshalJSON is the custom marshaler for Aggregations.
+func (a Aggregations) MarshalJSON() ([]byte, error) {
+	a.Kind = KindAggregations
+	objectMap := make(map[string]interface{})
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	if a.Kind != "" {
+		objectMap["kind"] = a.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAggregations is the BasicAggregations implementation for Aggregations.
+func (a Aggregations) AsAggregations() (*Aggregations, bool) {
+	return &a, true
+}
+
+// AsBasicAggregations is the BasicAggregations implementation for Aggregations.
+func (a Aggregations) AsBasicAggregations() (BasicAggregations, bool) {
+	return &a, true
+}
+
+// AggregationsKind1 describes an Azure resource with kind.
+type AggregationsKind1 struct {
+	// Kind - The kind of the setting. Possible values include: 'CasesAggregation'
+	Kind AggregationsKind `json:"kind,omitempty"`
+}
+
+// AggregationsModel ...
+type AggregationsModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicAggregations `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AggregationsModel struct.
+func (am *AggregationsModel) UnmarshalJSON(body []byte) error {
+	a, err := unmarshalBasicAggregations(body)
+	if err != nil {
+		return err
+	}
+	am.Value = a
+
+	return nil
 }
 
 // BasicAlertRule alert rule.

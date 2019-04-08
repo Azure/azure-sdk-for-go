@@ -1800,27 +1800,27 @@ func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, erro
 // CaseProperties describes case properties
 type CaseProperties struct {
 	// LastUpdatedTimeUtc - The last time the case was updated
-	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+	LastUpdatedTimeUtc *date.Time `json:"LastUpdatedTimeUtc,omitempty"`
 	// CreatedTimeUtc - The time the case was created
-	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	CreatedTimeUtc *date.Time `json:"CreatedTimeUtc,omitempty"`
 	// EndTimeUtc - The end time of the case
-	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
+	EndTimeUtc *date.Time `json:"EndTimeUtc,omitempty"`
 	// StartTimeUtc - The start time of the case
-	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
+	StartTimeUtc *date.Time `json:"StartTimeUtc,omitempty"`
 	// Labels - List of labels relevant to this case
-	Labels *[]string `json:"labels,omitempty"`
+	Labels *[]string `json:"Labels,omitempty"`
 	// Description - The description of the case
-	Description *string `json:"description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Title - The title of the case
-	Title *string `json:"title,omitempty"`
+	Title *string `json:"Title,omitempty"`
 	// AssignedTo - Describes a user that the case is assigned to
-	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
+	AssignedTo *UserInfo `json:"AssignedTo,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
-	Severity CaseSeverity `json:"severity,omitempty"`
+	Severity CaseSeverity `json:"Severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'Draft', 'Open', 'InProgress', 'Closed'
-	Status CaseStatus `json:"status,omitempty"`
+	Status CaseStatus `json:"Status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
-	CloseReason CloseReason `json:"closeReason,omitempty"`
+	CloseReason CloseReason `json:"CloseReason,omitempty"`
 }
 
 // CloudError error response structure.

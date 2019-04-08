@@ -41,7 +41,7 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 	return AlertRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates the alert rule.
+// CreateOrUpdate creates or updates the scheduled alert rule.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -49,8 +49,8 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
-// alertRule - the alert rule
-func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (result AlertRuleModel, err error) {
+// scheduledAlertRule - the scheduled alert rule
+func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, scheduledAlertRule ScheduledAlertRule) (result ScheduledAlertRule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.CreateOrUpdate")
 		defer func() {
@@ -70,11 +70,23 @@ func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: scheduledAlertRule,
+			Constraints: []validation.Constraint{{Target: "scheduledAlertRule.ScheduledAlertRuleProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.Description", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.QueryFrequency", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.QueryPeriod", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.TriggerThreshold", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.SuppressionEnabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "scheduledAlertRule.ScheduledAlertRuleProperties.SuppressionDuration", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.AlertRulesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, alertRule)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, ruleID, scheduledAlertRule)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -96,7 +108,7 @@ func (client AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, alertRule BasicAlertRule) (*http.Request, error) {
+func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string, scheduledAlertRule ScheduledAlertRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -115,7 +127,7 @@ func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}", pathParameters),
-		autorest.WithJSON(alertRule),
+		autorest.WithJSON(scheduledAlertRule),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -129,7 +141,7 @@ func (client AlertRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Re
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (result ScheduledAlertRule, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -433,7 +445,7 @@ func (client AlertRulesClient) DeleteActionResponder(resp *http.Response) (resul
 	return
 }
 
-// Get gets the alert rule.
+// Get gets the scheduled alert rule.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -441,7 +453,7 @@ func (client AlertRulesClient) DeleteActionResponder(resp *http.Response) (resul
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
 // ruleID - alert rule ID
-func (client AlertRulesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ruleID string) (result ScheduledAlertRule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.Get")
 		defer func() {
@@ -518,7 +530,7 @@ func (client AlertRulesClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRuleModel, err error) {
+func (client AlertRulesClient) GetResponder(resp *http.Response) (result ScheduledAlertRule, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -627,20 +639,20 @@ func (client AlertRulesClient) GetActionResponder(resp *http.Response) (result A
 	return
 }
 
-// List gets all alert rules.
+// List gets all scheduled alert rules.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-func (client AlertRulesClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result AlertRulesListPage, err error) {
+func (client AlertRulesClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result ScheduledAlertRulesListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.List")
 		defer func() {
 			sc := -1
-			if result.arl.Response.Response != nil {
-				sc = result.arl.Response.Response.StatusCode
+			if result.sarl.Response.Response != nil {
+				sc = result.sarl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -667,12 +679,12 @@ func (client AlertRulesClient) List(ctx context.Context, resourceGroupName strin
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.arl.Response = autorest.Response{Response: resp}
+		result.sarl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.arl, err = client.ListResponder(resp)
+	result.sarl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "List", resp, "Failure responding to request")
 	}
@@ -711,7 +723,7 @@ func (client AlertRulesClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) ListResponder(resp *http.Response) (result AlertRulesList, err error) {
+func (client AlertRulesClient) ListResponder(resp *http.Response) (result ScheduledAlertRulesList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -723,8 +735,8 @@ func (client AlertRulesClient) ListResponder(resp *http.Response) (result AlertR
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AlertRulesClient) listNextResults(ctx context.Context, lastResults AlertRulesList) (result AlertRulesList, err error) {
-	req, err := lastResults.alertRulesListPreparer(ctx)
+func (client AlertRulesClient) listNextResults(ctx context.Context, lastResults ScheduledAlertRulesList) (result ScheduledAlertRulesList, err error) {
+	req, err := lastResults.scheduledAlertRulesListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "securityinsight.AlertRulesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -744,7 +756,7 @@ func (client AlertRulesClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertRulesClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result AlertRulesListIterator, err error) {
+func (client AlertRulesClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result ScheduledAlertRulesListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesClient.List")
 		defer func() {

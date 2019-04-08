@@ -43,6 +43,13 @@ const (
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
 )
 
+type LoadBalancerSku = original.LoadBalancerSku
+
+const (
+	Basic    LoadBalancerSku = original.Basic
+	Standard LoadBalancerSku = original.Standard
+)
+
 type NetworkPlugin = original.NetworkPlugin
 
 const (
@@ -456,6 +463,9 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
+	return original.PossibleLoadBalancerSkuValues()
 }
 func PossibleNetworkPluginValues() []NetworkPlugin {
 	return original.PossibleNetworkPluginValues()

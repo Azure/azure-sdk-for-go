@@ -40,13 +40,18 @@ const (
 type AzureSkuName = original.AzureSkuName
 
 const (
-	D11V2 AzureSkuName = original.D11V2
-	D12V2 AzureSkuName = original.D12V2
-	D13V2 AzureSkuName = original.D13V2
-	D14V2 AzureSkuName = original.D14V2
-	L16   AzureSkuName = original.L16
-	L4    AzureSkuName = original.L4
-	L8    AzureSkuName = original.L8
+	DevNoSLAStandardD11V2 AzureSkuName = original.DevNoSLAStandardD11V2
+	StandardD11V2         AzureSkuName = original.StandardD11V2
+	StandardD12V2         AzureSkuName = original.StandardD12V2
+	StandardD13V2         AzureSkuName = original.StandardD13V2
+	StandardD14V2         AzureSkuName = original.StandardD14V2
+	StandardDS13V21TBPS   AzureSkuName = original.StandardDS13V21TBPS
+	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
+	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
+	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
+	StandardL16s          AzureSkuName = original.StandardL16s
+	StandardL4s           AzureSkuName = original.StandardL4s
+	StandardL8s           AzureSkuName = original.StandardL8s
 )
 
 type DataFormat = original.DataFormat
@@ -92,12 +97,20 @@ const (
 	KindEventHub       Kind = original.KindEventHub
 )
 
+type NameAvailable = original.NameAvailable
+
+const (
+	Available    NameAvailable = original.Available
+	NotAvailable NameAvailable = original.NotAvailable
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
 	Creating  ProvisioningState = original.Creating
 	Deleting  ProvisioningState = original.Deleting
 	Failed    ProvisioningState = original.Failed
+	Moving    ProvisioningState = original.Moving
 	Running   ProvisioningState = original.Running
 	Succeeded ProvisioningState = original.Succeeded
 )
@@ -122,6 +135,7 @@ type AzureResourceSku = original.AzureResourceSku
 type AzureSku = original.AzureSku
 type BaseClient = original.BaseClient
 type BasicDataConnection = original.BasicDataConnection
+type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CheckNameResult = original.CheckNameResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -137,6 +151,7 @@ type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
 type DataConnection = original.DataConnection
+type DataConnectionCheckNameRequest = original.DataConnectionCheckNameRequest
 type DataConnectionListResult = original.DataConnectionListResult
 type DataConnectionModel = original.DataConnectionModel
 type DataConnectionValidation = original.DataConnectionValidation
@@ -163,8 +178,8 @@ type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
 type EventHubDataConnection = original.EventHubDataConnection
+type IntelligentAutoscale = original.IntelligentAutoscale
 type ListResourceSkusResult = original.ListResourceSkusResult
-type ListSkusResult = original.ListSkusResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -173,6 +188,9 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type SkuDescription = original.SkuDescription
+type SkuDescriptionList = original.SkuDescriptionList
+type SkuLocationInfoItem = original.SkuLocationInfoItem
 type TrackedResource = original.TrackedResource
 type TrustedExternalTenant = original.TrustedExternalTenant
 
@@ -229,6 +247,9 @@ func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleNameAvailableValues() []NameAvailable {
+	return original.PossibleNameAvailableValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

@@ -147,7 +147,14 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Sku.Tier", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.Sku.Tier", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "parameters.ClusterProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.IntelligentAutoscale", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.IntelligentAutoscale.Version", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.ClusterProperties.IntelligentAutoscale.Minimum", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.ClusterProperties.IntelligentAutoscale.Maximum", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					}}}}}); err != nil {
 		return result, validation.NewError("kusto.ClustersClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -516,7 +523,7 @@ func (client ClustersClient) ListByResourceGroupResponder(resp *http.Response) (
 }
 
 // ListSkus lists eligible SKUs for Kusto resource provider.
-func (client ClustersClient) ListSkus(ctx context.Context) (result ListSkusResult, err error) {
+func (client ClustersClient) ListSkus(ctx context.Context) (result SkuDescriptionList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListSkus")
 		defer func() {
@@ -576,7 +583,7 @@ func (client ClustersClient) ListSkusSender(req *http.Request) (*http.Response, 
 
 // ListSkusResponder handles the response to the ListSkus request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) ListSkusResponder(resp *http.Response) (result ListSkusResult, err error) {
+func (client ClustersClient) ListSkusResponder(resp *http.Response) (result SkuDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

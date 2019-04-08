@@ -51,25 +51,35 @@ func PossibleAzureScaleTypeValues() []AzureScaleType {
 type AzureSkuName string
 
 const (
-	// D11V2 ...
-	D11V2 AzureSkuName = "D11_v2"
-	// D12V2 ...
-	D12V2 AzureSkuName = "D12_v2"
-	// D13V2 ...
-	D13V2 AzureSkuName = "D13_v2"
-	// D14V2 ...
-	D14V2 AzureSkuName = "D14_v2"
-	// L16 ...
-	L16 AzureSkuName = "L16"
-	// L4 ...
-	L4 AzureSkuName = "L4"
-	// L8 ...
-	L8 AzureSkuName = "L8"
+	// DevNoSLAStandardD11V2 ...
+	DevNoSLAStandardD11V2 AzureSkuName = "Dev(No SLA)_Standard_D11_v2"
+	// StandardD11V2 ...
+	StandardD11V2 AzureSkuName = "Standard_D11_v2"
+	// StandardD12V2 ...
+	StandardD12V2 AzureSkuName = "Standard_D12_v2"
+	// StandardD13V2 ...
+	StandardD13V2 AzureSkuName = "Standard_D13_v2"
+	// StandardD14V2 ...
+	StandardD14V2 AzureSkuName = "Standard_D14_v2"
+	// StandardDS13V21TBPS ...
+	StandardDS13V21TBPS AzureSkuName = "Standard_DS13_v2+1TB_PS"
+	// StandardDS13V22TBPS ...
+	StandardDS13V22TBPS AzureSkuName = "Standard_DS13_v2+2TB_PS"
+	// StandardDS14V23TBPS ...
+	StandardDS14V23TBPS AzureSkuName = "Standard_DS14_v2+3TB_PS"
+	// StandardDS14V24TBPS ...
+	StandardDS14V24TBPS AzureSkuName = "Standard_DS14_v2+4TB_PS"
+	// StandardL16s ...
+	StandardL16s AzureSkuName = "Standard_L16s"
+	// StandardL4s ...
+	StandardL4s AzureSkuName = "Standard_L4s"
+	// StandardL8s ...
+	StandardL8s AzureSkuName = "Standard_L8s"
 )
 
 // PossibleAzureSkuNameValues returns an array of possible values for the AzureSkuName const type.
 func PossibleAzureSkuNameValues() []AzureSkuName {
-	return []AzureSkuName{D11V2, D12V2, D13V2, D14V2, L16, L4, L8}
+	return []AzureSkuName{DevNoSLAStandardD11V2, StandardD11V2, StandardD12V2, StandardD13V2, StandardD14V2, StandardDS13V21TBPS, StandardDS13V22TBPS, StandardDS14V23TBPS, StandardDS14V24TBPS, StandardL16s, StandardL4s, StandardL8s}
 }
 
 // DatabasePrincipalRole enumerates the values for database principal role.
@@ -162,6 +172,21 @@ func PossibleKindValues() []Kind {
 	return []Kind{KindDataConnection, KindEventGrid, KindEventHub}
 }
 
+// NameAvailable enumerates the values for name available.
+type NameAvailable string
+
+const (
+	// Available ...
+	Available NameAvailable = "Available"
+	// NotAvailable ...
+	NotAvailable NameAvailable = "NotAvailable"
+)
+
+// PossibleNameAvailableValues returns an array of possible values for the NameAvailable const type.
+func PossibleNameAvailableValues() []NameAvailable {
+	return []NameAvailable{Available, NotAvailable}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -172,6 +197,8 @@ const (
 	Deleting ProvisioningState = "Deleting"
 	// Failed ...
 	Failed ProvisioningState = "Failed"
+	// Moving ...
+	Moving ProvisioningState = "Moving"
 	// Running ...
 	Running ProvisioningState = "Running"
 	// Succeeded ...
@@ -180,7 +207,7 @@ const (
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Running, Succeeded}
+	return []ProvisioningState{Creating, Deleting, Failed, Moving, Running, Succeeded}
 }
 
 // State enumerates the values for state.
@@ -248,12 +275,23 @@ type AzureResourceSku struct {
 
 // AzureSku azure SKU definition.
 type AzureSku struct {
-	// Name - SKU name. Possible values include: 'D13V2', 'D14V2', 'L8', 'L16', 'D11V2', 'D12V2', 'L4'
+	// Name - SKU name. Possible values include: 'StandardDS13V21TBPS', 'StandardDS13V22TBPS', 'StandardDS14V23TBPS', 'StandardDS14V24TBPS', 'StandardD13V2', 'StandardD14V2', 'StandardL8s', 'StandardL16s', 'StandardD11V2', 'StandardD12V2', 'StandardL4s', 'DevNoSLAStandardD11V2'
 	Name AzureSkuName `json:"name,omitempty"`
 	// Capacity - SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`
 	// Tier - SKU tier.
 	Tier *string `json:"tier,omitempty"`
+}
+
+// CheckNameAvailabilityResult the result returned from a check name availability request.
+type CheckNameAvailabilityResult struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - Specifies whether or not the name is available. Possible values include: 'Available', 'NotAvailable'
+	NameAvailable NameAvailable `json:"nameAvailable,omitempty"`
+	// Name - The name that was checked.
+	Name *string `json:"name,omitempty"`
+	// Message - Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
+	Message *string `json:"message,omitempty"`
 }
 
 // CheckNameResult the result returned from a check name availability request.
@@ -428,7 +466,7 @@ type ClusterListResult struct {
 type ClusterProperties struct {
 	// State - The state of the resource. Possible values include: 'StateCreating', 'StateUnavailable', 'StateRunning', 'StateDeleting', 'StateDeleted', 'StateStopping', 'StateStopped', 'StateStarting', 'StateUpdating'
 	State State `json:"state,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'
+	// ProvisioningState - The provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// URI - The cluster URI.
 	URI *string `json:"uri,omitempty"`
@@ -436,6 +474,8 @@ type ClusterProperties struct {
 	DataIngestionURI *string `json:"dataIngestionUri,omitempty"`
 	// TrustedExternalTenants - The cluster's external tenants.
 	TrustedExternalTenants *[]TrustedExternalTenant `json:"trustedExternalTenants,omitempty"`
+	// IntelligentAutoscale - Intelligent auto scale definition.
+	IntelligentAutoscale *IntelligentAutoscale `json:"intelligentAutoscale,omitempty"`
 }
 
 // ClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -829,11 +869,11 @@ type DatabasePrincipalListResult struct {
 
 // DatabaseProperties class representing the Kusto database properties.
 type DatabaseProperties struct {
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed'
+	// ProvisioningState - The provisioned state of the resource. Possible values include: 'Running', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SoftDeletePeriod - The time the data should be kept before it stops being accessible to queries in TimeSpan.
 	SoftDeletePeriod *string `json:"softDeletePeriod,omitempty"`
-	// HotCachePeriod - The time the data that should be kept in cache for fast queries in TimeSpan.
+	// HotCachePeriod - The time the data should be kept in cache for fast queries in TimeSpan.
 	HotCachePeriod *string `json:"hotCachePeriod,omitempty"`
 	// Statistics - The statistics of the database.
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
@@ -1124,6 +1164,15 @@ func (dc DataConnection) AsDataConnection() (*DataConnection, bool) {
 // AsBasicDataConnection is the BasicDataConnection implementation for DataConnection.
 func (dc DataConnection) AsBasicDataConnection() (BasicDataConnection, bool) {
 	return &dc, true
+}
+
+// DataConnectionCheckNameRequest the result returned from a data connections check name availability
+// request.
+type DataConnectionCheckNameRequest struct {
+	// Name - Data Connection name.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of resource, Microsoft.Kusto/clusters/databases/dataConnections.
+	Type *string `json:"type,omitempty"`
 }
 
 // DataConnectionListResult the list Kusto data connections operation response.
@@ -1597,18 +1646,21 @@ func (ehdc *EventHubDataConnection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ListResourceSkusResult list of available SKUs for an existing Kusto Cluster.
+// IntelligentAutoscale a class that contains the intelligent auto scale definition.
+type IntelligentAutoscale struct {
+	// Version - The version of the template defined, for instance 1.
+	Version *int32 `json:"version,omitempty"`
+	// Minimum - Minimum allowed capacity.
+	Minimum *int32 `json:"minimum,omitempty"`
+	// Maximum - Maximum allowed capacity.
+	Maximum *int32 `json:"maximum,omitempty"`
+}
+
+// ListResourceSkusResult list of available SKUs for a Kusto Cluster.
 type ListResourceSkusResult struct {
 	autorest.Response `json:"-"`
 	// Value - The collection of available SKUs for an existing resource.
 	Value *[]AzureResourceSku `json:"value,omitempty"`
-}
-
-// ListSkusResult list of available SKUs for a new Kusto Cluster.
-type ListSkusResult struct {
-	autorest.Response `json:"-"`
-	// Value - The collection of available SKUs for new resources.
-	Value *[]AzureSku `json:"value,omitempty"`
 }
 
 // Operation ...
@@ -1792,6 +1844,37 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// SkuDescription the Kusto SKU description of given resource type
+type SkuDescription struct {
+	// ResourceType - The resource type
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Name - The name of the SKU
+	Name *string `json:"name,omitempty"`
+	// Tier - The tier of the SKU
+	Tier *string `json:"tier,omitempty"`
+	// Locations - The set of locations that the SKU is available
+	Locations *[]string `json:"locations,omitempty"`
+	// LocationInfo - Locations and zones
+	LocationInfo *[]SkuLocationInfoItem `json:"locationInfo,omitempty"`
+	// Restrictions - The restrictions because of which SKU cannot be used
+	Restrictions *[]interface{} `json:"restrictions,omitempty"`
+}
+
+// SkuDescriptionList the list of the EngagementFabric SKU descriptions
+type SkuDescriptionList struct {
+	autorest.Response `json:"-"`
+	// Value - SKU descriptions
+	Value *[]SkuDescription `json:"value,omitempty"`
+}
+
+// SkuLocationInfoItem the locations and zones info for SKU.
+type SkuLocationInfoItem struct {
+	// Location - The available location of the SKU.
+	Location *string `json:"location,omitempty"`
+	// Zones - The available zone of the SKU.
+	Zones *[]string `json:"zones,omitempty"`
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

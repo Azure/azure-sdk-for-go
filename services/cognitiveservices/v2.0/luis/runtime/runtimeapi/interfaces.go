@@ -20,11 +20,12 @@ package runtimeapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/runtime"
+	"github.com/satori/go.uuid"
 )
 
 // PredictionClientAPI contains the set of methods on the PredictionClient type.
 type PredictionClientAPI interface {
-	Resolve(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.LuisResult, err error)
+	Resolve(ctx context.Context, appID uuid.UUID, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result runtime.LuisResult, err error)
 }
 
 var _ PredictionClientAPI = (*runtime.PredictionClient)(nil)

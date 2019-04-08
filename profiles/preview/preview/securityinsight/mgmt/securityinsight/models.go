@@ -29,6 +29,12 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AggregationsKind = original.AggregationsKind
+
+const (
+	CasesAggregation AggregationsKind = original.CasesAggregation
+)
+
 type AlertRuleKind = original.AlertRuleKind
 
 const (
@@ -103,6 +109,12 @@ const (
 	KindScheduled Kind = original.KindScheduled
 )
 
+type KindBasicAggregations = original.KindBasicAggregations
+
+const (
+	KindAggregations KindBasicAggregations = original.KindAggregations
+)
+
 type KindBasicDataConnector = original.KindBasicDataConnector
 
 const (
@@ -175,6 +187,9 @@ type ActionsClient = original.ActionsClient
 type ActionsList = original.ActionsList
 type ActionsListIterator = original.ActionsListIterator
 type ActionsListPage = original.ActionsListPage
+type Aggregations = original.Aggregations
+type AggregationsKind1 = original.AggregationsKind1
+type AggregationsModel = original.AggregationsModel
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
@@ -185,6 +200,7 @@ type AlertRulesListPage = original.AlertRulesListPage
 type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
 type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
 type BaseClient = original.BaseClient
+type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule
 type BasicDataConnector = original.BasicDataConnector
 type BasicEntity = original.BasicEntity
@@ -200,6 +216,7 @@ type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
 type CaseProperties = original.CaseProperties
+type CasesAggregationsClient = original.CasesAggregationsClient
 type CasesClient = original.CasesClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -305,6 +322,12 @@ func NewCaseListIterator(page CaseListPage) CaseListIterator {
 func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
 	return original.NewCaseListPage(getNextPage)
 }
+func NewCasesAggregationsClient(subscriptionID string) CasesAggregationsClient {
+	return original.NewCasesAggregationsClient(subscriptionID)
+}
+func NewCasesAggregationsClientWithBaseURI(baseURI string, subscriptionID string) CasesAggregationsClient {
+	return original.NewCasesAggregationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCasesClient(subscriptionID string) CasesClient {
 	return original.NewCasesClient(subscriptionID)
 }
@@ -368,6 +391,9 @@ func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAggregationsKindValues() []AggregationsKind {
+	return original.PossibleAggregationsKindValues()
+}
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return original.PossibleAlertRuleKindValues()
 }
@@ -391,6 +417,9 @@ func PossibleDataTypeStateValues() []DataTypeState {
 }
 func PossibleEntityKindValues() []EntityKind {
 	return original.PossibleEntityKindValues()
+}
+func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
+	return original.PossibleKindBasicAggregationsValues()
 }
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return original.PossibleKindBasicDataConnectorValues()

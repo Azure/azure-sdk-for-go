@@ -95542,7 +95542,7 @@ type SSISLogLocation struct {
 	LogPath interface{} `json:"logPath,omitempty"`
 	// Type - The type of SSIS log location.
 	Type *string `json:"type,omitempty"`
-	// SSISLogLocationTypeProperties - SSIS package location properties.
+	// SSISLogLocationTypeProperties - SSIS package execution log location properties.
 	*SSISLogLocationTypeProperties `json:"typeProperties,omitempty"`
 }
 

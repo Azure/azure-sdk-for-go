@@ -353,6 +353,17 @@ type DeviceLifeCycleEventProperties struct {
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
 }
 
+// DeviceTelemetryEventProperties schema of the Data property of an EventGridEvent for a device telemetry
+// event (DeviceTelemetry).
+type DeviceTelemetryEventProperties struct {
+	// Body - The content of the message from the device.
+	Body interface{} `json:"body,omitempty"`
+	// Properties - Application properties are user-defined strings that can be added to the message. These fields are optional.
+	Properties interface{} `json:"properties,omitempty"`
+	// SystemProperties - System properties help identify contents and source of the messages.
+	SystemProperties interface{} `json:"systemProperties,omitempty"`
+}
+
 // DeviceTwinInfo information about the device twin, which is the cloud representation of application
 // device metadata.
 type DeviceTwinInfo struct {
@@ -498,6 +509,16 @@ type IotHubDeviceDisconnectedEventData struct {
 	HubName *string `json:"hubName,omitempty"`
 	// DeviceConnectionStateEventInfo - Information about the device connection state event.
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
+}
+
+// IotHubDeviceTelemetryEventData event data for Microsoft.Devices.DeviceTelemetry event.
+type IotHubDeviceTelemetryEventData struct {
+	// Body - The content of the message from the device.
+	Body interface{} `json:"body,omitempty"`
+	// Properties - Application properties are user-defined strings that can be added to the message. These fields are optional.
+	Properties interface{} `json:"properties,omitempty"`
+	// SystemProperties - System properties help identify contents and source of the messages.
+	SystemProperties interface{} `json:"systemProperties,omitempty"`
 }
 
 // MapsGeofenceEnteredEventData schema of the Data property of an EventGridEvent for a

@@ -48,7 +48,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type Client = original.Client
+type GroupClient = original.GroupClient
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -59,23 +59,23 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
-type OperationsClient = original.OperationsClient
+type OperationsGroupClient = original.OperationsGroupClient
 type Policies = original.Policies
 type Subscription = original.Subscription
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
-type TenantsClient = original.TenantsClient
+type TenantsGroupClient = original.TenantsGroupClient
 
 func New() BaseClient {
 	return original.New()
 }
-func NewClient() Client {
-	return original.NewClient()
+func NewGroupClient() GroupClient {
+	return original.NewGroupClient()
 }
-func NewClientWithBaseURI(baseURI string) Client {
-	return original.NewClientWithBaseURI(baseURI)
+func NewGroupClientWithBaseURI(baseURI string) GroupClient {
+	return original.NewGroupClientWithBaseURI(baseURI)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -89,11 +89,11 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
+func NewOperationsGroupClient() OperationsGroupClient {
+	return original.NewOperationsGroupClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
+func NewOperationsGroupClientWithBaseURI(baseURI string) OperationsGroupClient {
+	return original.NewOperationsGroupClientWithBaseURI(baseURI)
 }
 func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
 	return original.NewTenantListResultIterator(page)
@@ -101,11 +101,11 @@ func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIter
 func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
 	return original.NewTenantListResultPage(getNextPage)
 }
-func NewTenantsClient() TenantsClient {
-	return original.NewTenantsClient()
+func NewTenantsGroupClient() TenantsGroupClient {
+	return original.NewTenantsGroupClient()
 }
-func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
-	return original.NewTenantsClientWithBaseURI(baseURI)
+func NewTenantsGroupClientWithBaseURI(baseURI string) TenantsGroupClient {
+	return original.NewTenantsGroupClientWithBaseURI(baseURI)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)

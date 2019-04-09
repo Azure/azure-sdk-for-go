@@ -931,6 +931,21 @@ func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol
 	return []SparkThriftTransportProtocol{SparkThriftTransportProtocolBinary, SparkThriftTransportProtocolHTTP, SparkThriftTransportProtocolSASL}
 }
 
+// SsisPackageLocationType enumerates the values for ssis package location type.
+type SsisPackageLocationType string
+
+const (
+	// File ...
+	File SsisPackageLocationType = "File"
+	// SSISDB ...
+	SSISDB SsisPackageLocationType = "SSISDB"
+)
+
+// PossibleSsisPackageLocationTypeValues returns an array of possible values for the SsisPackageLocationType const type.
+func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
+	return []SsisPackageLocationType{File, SSISDB}
+}
+
 // StoredProcedureParameterType enumerates the values for stored procedure parameter type.
 type StoredProcedureParameterType string
 
@@ -36282,6 +36297,8 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	PackageConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"packageConnectionManagers"`
 	// PropertyOverrides - The property overrides to execute the SSIS package.
 	PropertyOverrides map[string]*SSISPropertyOverride `json:"propertyOverrides"`
+	// LogLocation - SSIS package exection log location.
+	LogLocation *SSISLogLocation `json:"logLocation,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ExecuteSSISPackageActivityTypeProperties.
@@ -36319,6 +36336,9 @@ func (espatp ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, er
 	}
 	if espatp.PropertyOverrides != nil {
 		objectMap["propertyOverrides"] = espatp.PropertyOverrides
+	}
+	if espatp.LogLocation != nil {
+		objectMap["logLocation"] = espatp.LogLocation
 	}
 	return json.Marshal(objectMap)
 }
@@ -95490,6 +95510,16 @@ func (ss *SquareSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// SSISAccessCredential SSIS access credential.
+type SSISAccessCredential struct {
+	// Domain - Domain for windows authentication.
+	Domain interface{} `json:"domain,omitempty"`
+	// UserName - UseName for windows authentication.
+	UserName interface{} `json:"userName,omitempty"`
+	// Password - Password for windows authentication.
+	Password *SecureString `json:"password,omitempty"`
+}
+
 // SSISExecutionCredential SSIS package execution credential.
 type SSISExecutionCredential struct {
 	// Domain - Domain for windows authentication.
@@ -95506,10 +95536,154 @@ type SSISExecutionParameter struct {
 	Value interface{} `json:"value,omitempty"`
 }
 
+// SSISLogLocation SSIS package exection log location
+type SSISLogLocation struct {
+	// LogPath - The SSIS package execution log path. Type: string (or Expression with resultType string).
+	LogPath interface{} `json:"logPath,omitempty"`
+	// Type - The type of SSIS log location.
+	Type *string `json:"type,omitempty"`
+	// SSISLogLocationTypeProperties - SSIS package location properties.
+	*SSISLogLocationTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SSISLogLocation.
+func (sll SSISLogLocation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sll.LogPath != nil {
+		objectMap["logPath"] = sll.LogPath
+	}
+	if sll.Type != nil {
+		objectMap["type"] = sll.Type
+	}
+	if sll.SSISLogLocationTypeProperties != nil {
+		objectMap["typeProperties"] = sll.SSISLogLocationTypeProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SSISLogLocation struct.
+func (sll *SSISLogLocation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "logPath":
+			if v != nil {
+				var logPath interface{}
+				err = json.Unmarshal(*v, &logPath)
+				if err != nil {
+					return err
+				}
+				sll.LogPath = logPath
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sll.Type = &typeVar
+			}
+		case "typeProperties":
+			if v != nil {
+				var sSISLogLocationTypeProperties SSISLogLocationTypeProperties
+				err = json.Unmarshal(*v, &sSISLogLocationTypeProperties)
+				if err != nil {
+					return err
+				}
+				sll.SSISLogLocationTypeProperties = &sSISLogLocationTypeProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SSISLogLocationTypeProperties SSIS package execution log location properties.
+type SSISLogLocationTypeProperties struct {
+	// AccessCredential - The package execution log access credential.
+	AccessCredential *SSISAccessCredential `json:"accessCredential,omitempty"`
+}
+
 // SSISPackageLocation SSIS package location.
 type SSISPackageLocation struct {
 	// PackagePath - The SSIS package path. Type: string (or Expression with resultType string).
 	PackagePath interface{} `json:"packagePath,omitempty"`
+	// Type - The type of SSIS package location. Possible values include: 'SSISDB', 'File'
+	Type SsisPackageLocationType `json:"type,omitempty"`
+	// SSISPackageLocationTypeProperties - SSIS package location properties.
+	*SSISPackageLocationTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SSISPackageLocation.
+func (spl SSISPackageLocation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spl.PackagePath != nil {
+		objectMap["packagePath"] = spl.PackagePath
+	}
+	if spl.Type != "" {
+		objectMap["type"] = spl.Type
+	}
+	if spl.SSISPackageLocationTypeProperties != nil {
+		objectMap["typeProperties"] = spl.SSISPackageLocationTypeProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SSISPackageLocation struct.
+func (spl *SSISPackageLocation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "packagePath":
+			if v != nil {
+				var packagePath interface{}
+				err = json.Unmarshal(*v, &packagePath)
+				if err != nil {
+					return err
+				}
+				spl.PackagePath = packagePath
+			}
+		case "type":
+			if v != nil {
+				var typeVar SsisPackageLocationType
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				spl.Type = typeVar
+			}
+		case "typeProperties":
+			if v != nil {
+				var sSISPackageLocationTypeProperties SSISPackageLocationTypeProperties
+				err = json.Unmarshal(*v, &sSISPackageLocationTypeProperties)
+				if err != nil {
+					return err
+				}
+				spl.SSISPackageLocationTypeProperties = &sSISPackageLocationTypeProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SSISPackageLocationTypeProperties SSIS package location properties.
+type SSISPackageLocationTypeProperties struct {
+	// PackagePassword - Password of the package.
+	PackagePassword *SecureString `json:"packagePassword,omitempty"`
+	// AccessCredential - The package access credential.
+	AccessCredential *SSISAccessCredential `json:"accessCredential,omitempty"`
+	// ConfigurationPath - The configuration file of the package execution. Type: string (or Expression with resultType string).
+	ConfigurationPath interface{} `json:"configurationPath,omitempty"`
 }
 
 // SSISPropertyOverride SSIS property override.

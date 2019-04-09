@@ -725,7 +725,7 @@ func (client AppsClient) ListTemplatesPreparer(ctx context.Context) (*http.Reque
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/IoTAppTemplates", pathParameters),
 		autorest.WithQueryParameters(queryParameters))

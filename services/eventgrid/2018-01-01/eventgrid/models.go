@@ -353,6 +353,32 @@ type DeviceLifeCycleEventProperties struct {
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
 }
 
+// DeviceTelemetryEventProperties schema of the Data property of an EventGridEvent for a device telemetry
+// event (DeviceTelemetry).
+type DeviceTelemetryEventProperties struct {
+	// Body - The content of the message from the device.
+	Body interface{} `json:"body,omitempty"`
+	// Properties - Application properties are user-defined strings that can be added to the message. These fields are optional.
+	Properties map[string]*string `json:"properties"`
+	// SystemProperties - System properties help identify contents and source of the messages.
+	SystemProperties map[string]*string `json:"systemProperties"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceTelemetryEventProperties.
+func (dtep DeviceTelemetryEventProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dtep.Body != nil {
+		objectMap["body"] = dtep.Body
+	}
+	if dtep.Properties != nil {
+		objectMap["properties"] = dtep.Properties
+	}
+	if dtep.SystemProperties != nil {
+		objectMap["systemProperties"] = dtep.SystemProperties
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeviceTwinInfo information about the device twin, which is the cloud representation of application
 // device metadata.
 type DeviceTwinInfo struct {
@@ -498,6 +524,31 @@ type IotHubDeviceDisconnectedEventData struct {
 	HubName *string `json:"hubName,omitempty"`
 	// DeviceConnectionStateEventInfo - Information about the device connection state event.
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
+}
+
+// IotHubDeviceTelemetryEventData event data for Microsoft.Devices.DeviceTelemetry event.
+type IotHubDeviceTelemetryEventData struct {
+	// Body - The content of the message from the device.
+	Body interface{} `json:"body,omitempty"`
+	// Properties - Application properties are user-defined strings that can be added to the message. These fields are optional.
+	Properties map[string]*string `json:"properties"`
+	// SystemProperties - System properties help identify contents and source of the messages.
+	SystemProperties map[string]*string `json:"systemProperties"`
+}
+
+// MarshalJSON is the custom marshaler for IotHubDeviceTelemetryEventData.
+func (ihdted IotHubDeviceTelemetryEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihdted.Body != nil {
+		objectMap["body"] = ihdted.Body
+	}
+	if ihdted.Properties != nil {
+		objectMap["properties"] = ihdted.Properties
+	}
+	if ihdted.SystemProperties != nil {
+		objectMap["systemProperties"] = ihdted.SystemProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // MapsGeofenceEnteredEventData schema of the Data property of an EventGridEvent for a

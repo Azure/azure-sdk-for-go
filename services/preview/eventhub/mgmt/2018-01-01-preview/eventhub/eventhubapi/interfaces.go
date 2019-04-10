@@ -34,8 +34,9 @@ var _ OperationsClientAPI = (*eventhub.OperationsClient)(nil)
 type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.Cluster, err error)
+	ListAvailableClusters(ctx context.Context) (result eventhub.AvailableClustersList, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.ClusterListResultPage, err error)
-	NamespaceList(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.EHNamespaceIDListResult, err error)
+	ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.EHNamespaceIDListResult, err error)
 	Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersPatchFuture, err error)
 	Put(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClustersPutFuture, err error)
 }

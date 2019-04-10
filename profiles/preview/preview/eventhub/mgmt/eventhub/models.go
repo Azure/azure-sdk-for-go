@@ -63,6 +63,7 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type AvailableClustersList = original.AvailableClustersList
 type BaseClient = original.BaseClient
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult

@@ -104,6 +104,23 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{SkuTierBasic, SkuTierStandard}
 }
 
+// AvailableClustersList enumeration of the pre-provisioned Event Hubs Cluster count per region with
+// clusters readily available.
+type AvailableClustersList struct {
+	autorest.Response `json:"-"`
+	// AvailableClusters - Pre-provisioned Event Hubs Cluster count per region with such clusters available.
+	AvailableClusters map[string]*int32 `json:"availableClusters"`
+}
+
+// MarshalJSON is the custom marshaler for AvailableClustersList.
+func (ACL AvailableClustersList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ACL.AvailableClusters != nil {
+		objectMap["availableClusters"] = ACL.AvailableClusters
+	}
+	return json.Marshal(objectMap)
+}
+
 // Cluster single Event Hubs Cluster resource in List or Get operations.
 type Cluster struct {
 	autorest.Response `json:"-"`

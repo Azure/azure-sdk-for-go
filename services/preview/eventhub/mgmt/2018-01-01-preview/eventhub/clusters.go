@@ -215,6 +215,74 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 	return
 }
 
+// ListAvailableClusters list the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+func (client ClustersClient) ListAvailableClusters(ctx context.Context) (result AvailableClustersList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListAvailableClusters")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListAvailableClustersPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "ListAvailableClusters", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAvailableClustersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "ListAvailableClusters", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListAvailableClustersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "ListAvailableClusters", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAvailableClustersPreparer prepares the ListAvailableClusters request.
+func (client ClustersClient) ListAvailableClustersPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2018-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.EventHub/availableClusters"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAvailableClustersSender sends the ListAvailableClusters request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) ListAvailableClustersSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAvailableClustersResponder handles the response to the ListAvailableClusters request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) ListAvailableClustersResponder(resp *http.Response) (result AvailableClustersList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListByResourceGroup lists the available Event Hubs Clusters within an ARM resource group.
 // Parameters:
 // resourceGroupName - name of the resource group within the Azure subscription.
@@ -335,13 +403,13 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 	return
 }
 
-// NamespaceList list all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
+// ListNamespaces list all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
 // Parameters:
 // resourceGroupName - name of the resource group within the Azure subscription.
 // clusterName - the name of the Event Hubs Cluster.
-func (client ClustersClient) NamespaceList(ctx context.Context, resourceGroupName string, clusterName string) (result EHNamespaceIDListResult, err error) {
+func (client ClustersClient) ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string) (result EHNamespaceIDListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.NamespaceList")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListNamespaces")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -357,32 +425,32 @@ func (client ClustersClient) NamespaceList(ctx context.Context, resourceGroupNam
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("eventhub.ClustersClient", "NamespaceList", err.Error())
+		return result, validation.NewError("eventhub.ClustersClient", "ListNamespaces", err.Error())
 	}
 
-	req, err := client.NamespaceListPreparer(ctx, resourceGroupName, clusterName)
+	req, err := client.ListNamespacesPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "NamespaceList", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "ListNamespaces", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.NamespaceListSender(req)
+	resp, err := client.ListNamespacesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "NamespaceList", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "ListNamespaces", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.NamespaceListResponder(resp)
+	result, err = client.ListNamespacesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "NamespaceList", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "ListNamespaces", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// NamespaceListPreparer prepares the NamespaceList request.
-func (client ClustersClient) NamespaceListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+// ListNamespacesPreparer prepares the ListNamespaces request.
+func (client ClustersClient) ListNamespacesPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -402,16 +470,16 @@ func (client ClustersClient) NamespaceListPreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// NamespaceListSender sends the NamespaceList request. The method will close the
+// ListNamespacesSender sends the ListNamespaces request. The method will close the
 // http.Response Body if it receives an error.
-func (client ClustersClient) NamespaceListSender(req *http.Request) (*http.Response, error) {
+func (client ClustersClient) ListNamespacesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// NamespaceListResponder handles the response to the NamespaceList request. The method always
+// ListNamespacesResponder handles the response to the ListNamespaces request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) NamespaceListResponder(resp *http.Response) (result EHNamespaceIDListResult, err error) {
+func (client ClustersClient) ListNamespacesResponder(resp *http.Response) (result EHNamespaceIDListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

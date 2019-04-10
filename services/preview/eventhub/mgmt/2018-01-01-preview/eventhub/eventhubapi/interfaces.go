@@ -35,18 +35,12 @@ type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.Cluster, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result eventhub.ClusterListResultPage, err error)
+	NamespaceList(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.EHNamespaceIDListResult, err error)
 	Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters eventhub.Cluster) (result eventhub.ClustersPatchFuture, err error)
 	Put(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.ClustersPutFuture, err error)
 }
 
 var _ ClustersClientAPI = (*eventhub.ClustersClient)(nil)
-
-// ClusterClientAPI contains the set of methods on the ClusterClient type.
-type ClusterClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, clusterName string) (result eventhub.EHNamespaceIDListResult, err error)
-}
-
-var _ ClusterClientAPI = (*eventhub.ClusterClient)(nil)
 
 // ConfigurationClientAPI contains the set of methods on the ConfigurationClient type.
 type ConfigurationClientAPI interface {

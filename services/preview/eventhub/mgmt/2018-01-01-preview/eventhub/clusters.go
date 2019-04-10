@@ -335,6 +335,93 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 	return
 }
 
+// NamespaceList list all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// clusterName - the name of the Event Hubs Cluster.
+func (client ClustersClient) NamespaceList(ctx context.Context, resourceGroupName string, clusterName string) (result EHNamespaceIDListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.NamespaceList")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: clusterName,
+			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "clusterName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventhub.ClustersClient", "NamespaceList", err.Error())
+	}
+
+	req, err := client.NamespaceListPreparer(ctx, resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "NamespaceList", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.NamespaceListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "NamespaceList", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.NamespaceListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersClient", "NamespaceList", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// NamespaceListPreparer prepares the NamespaceList request.
+func (client ClustersClient) NamespaceListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/namespaces", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// NamespaceListSender sends the NamespaceList request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) NamespaceListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// NamespaceListResponder handles the response to the NamespaceList request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) NamespaceListResponder(resp *http.Response) (result EHNamespaceIDListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Patch modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
 // Parameters:
 // resourceGroupName - name of the resource group within the Azure subscription.

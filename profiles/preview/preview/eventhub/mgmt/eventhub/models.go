@@ -65,7 +65,6 @@ const (
 
 type BaseClient = original.BaseClient
 type Cluster = original.Cluster
-type ClusterClient = original.ClusterClient
 type ClusterListResult = original.ClusterListResult
 type ClusterListResultIterator = original.ClusterListResultIterator
 type ClusterListResultPage = original.ClusterListResultPage
@@ -114,12 +113,6 @@ type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewClusterClient(subscriptionID string) ClusterClient {
-	return original.NewClusterClient(subscriptionID)
-}
-func NewClusterClientWithBaseURI(baseURI string, subscriptionID string) ClusterClient {
-	return original.NewClusterClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
 	return original.NewClusterListResultIterator(page)

@@ -36297,7 +36297,7 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	PackageConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"packageConnectionManagers"`
 	// PropertyOverrides - The property overrides to execute the SSIS package.
 	PropertyOverrides map[string]*SSISPropertyOverride `json:"propertyOverrides"`
-	// LogLocation - SSIS package exection log location.
+	// LogLocation - SSIS package execution log location.
 	LogLocation *SSISLogLocation `json:"logLocation,omitempty"`
 }
 
@@ -95536,7 +95536,7 @@ type SSISExecutionParameter struct {
 	Value interface{} `json:"value,omitempty"`
 }
 
-// SSISLogLocation SSIS package exection log location
+// SSISLogLocation SSIS package execution log location
 type SSISLogLocation struct {
 	// LogPath - The SSIS package execution log path. Type: string (or Expression with resultType string).
 	LogPath interface{} `json:"logPath,omitempty"`

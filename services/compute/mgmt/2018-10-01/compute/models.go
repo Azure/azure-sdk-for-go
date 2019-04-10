@@ -4773,7 +4773,8 @@ type Plan struct {
 
 // ProximityPlacementGroup specifies information about the proximity placement group.
 type ProximityPlacementGroup struct {
-	autorest.Response                  `json:"-"`
+	autorest.Response `json:"-"`
+	// ProximityPlacementGroupProperties - Describes the properties of a Proximity Placement Group.
 	*ProximityPlacementGroupProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`

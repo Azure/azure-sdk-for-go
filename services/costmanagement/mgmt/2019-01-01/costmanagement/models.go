@@ -166,10 +166,14 @@ func PossibleStatusTypeValues() []StatusType {
 type TimeframeType string
 
 const (
+	// BillingMonthToDate ...
+	BillingMonthToDate TimeframeType = "BillingMonthToDate"
 	// Custom ...
 	Custom TimeframeType = "Custom"
 	// MonthToDate ...
 	MonthToDate TimeframeType = "MonthToDate"
+	// TheLastBillingMonth ...
+	TheLastBillingMonth TimeframeType = "TheLastBillingMonth"
 	// TheLastMonth ...
 	TheLastMonth TimeframeType = "TheLastMonth"
 	// TheLastWeek ...
@@ -184,7 +188,7 @@ const (
 
 // PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
 func PossibleTimeframeTypeValues() []TimeframeType {
-	return []TimeframeType{Custom, MonthToDate, TheLastMonth, TheLastWeek, TheLastYear, WeekToDate, YearToDate}
+	return []TimeframeType{BillingMonthToDate, Custom, MonthToDate, TheLastBillingMonth, TheLastMonth, TheLastWeek, TheLastYear, WeekToDate, YearToDate}
 }
 
 // CommonExportProperties the common properties of the export.
@@ -928,7 +932,7 @@ type QueryDatasetConfiguration struct {
 type QueryDefinition struct {
 	// Type - The type of the query.
 	Type *string `json:"type,omitempty"`
-	// Timeframe - The time frame for pulling data for the query. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'YearToDate', 'TheLastWeek', 'TheLastMonth', 'TheLastYear', 'Custom'
+	// Timeframe - The time frame for pulling data for the query. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'BillingMonthToDate', 'YearToDate', 'TheLastWeek', 'TheLastMonth', 'TheLastBillingMonth', 'TheLastYear', 'Custom'
 	Timeframe TimeframeType `json:"timeframe,omitempty"`
 	// TimePeriod - Has time period for pulling data for the query.
 	TimePeriod *QueryTimePeriod `json:"timePeriod,omitempty"`

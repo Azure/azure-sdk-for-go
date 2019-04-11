@@ -74,6 +74,23 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 	return []AlertSeverity{Four, One, Three, Two, Zero}
 }
 
+// BaselineSensitivity enumerates the values for baseline sensitivity.
+type BaselineSensitivity string
+
+const (
+	// High ...
+	High BaselineSensitivity = "High"
+	// Low ...
+	Low BaselineSensitivity = "Low"
+	// Medium ...
+	Medium BaselineSensitivity = "Medium"
+)
+
+// PossibleBaselineSensitivityValues returns an array of possible values for the BaselineSensitivity const type.
+func PossibleBaselineSensitivityValues() []BaselineSensitivity {
+	return []BaselineSensitivity{High, Low, Medium}
+}
+
 // CategoryType enumerates the values for category type.
 type CategoryType string
 
@@ -481,17 +498,17 @@ func PossibleScaleTypeValues() []ScaleType {
 type Sensitivity string
 
 const (
-	// High ...
-	High Sensitivity = "High"
-	// Low ...
-	Low Sensitivity = "Low"
-	// Medium ...
-	Medium Sensitivity = "Medium"
+	// SensitivityHigh ...
+	SensitivityHigh Sensitivity = "High"
+	// SensitivityLow ...
+	SensitivityLow Sensitivity = "Low"
+	// SensitivityMedium ...
+	SensitivityMedium Sensitivity = "Medium"
 )
 
 // PossibleSensitivityValues returns an array of possible values for the Sensitivity const type.
 func PossibleSensitivityValues() []Sensitivity {
-	return []Sensitivity{High, Low, Medium}
+	return []Sensitivity{SensitivityHigh, SensitivityLow, SensitivityMedium}
 }
 
 // TimeAggregationOperator enumerates the values for time aggregation operator.
@@ -1811,12 +1828,20 @@ type AzureFunctionReceiver struct {
 
 // Baseline the baseline values for a single sensitivity value.
 type Baseline struct {
-	// Sensitivity - the sensitivity of the baseline. Possible values include: 'Low', 'Medium', 'High'
+	// Sensitivity - the sensitivity of the baseline. Possible values include: 'SensitivityLow', 'SensitivityMedium', 'SensitivityHigh'
 	Sensitivity Sensitivity `json:"sensitivity,omitempty"`
 	// LowThresholds - The low thresholds of the baseline.
 	LowThresholds *[]float64 `json:"lowThresholds,omitempty"`
 	// HighThresholds - The high thresholds of the baseline.
 	HighThresholds *[]float64 `json:"highThresholds,omitempty"`
+}
+
+// BaselineMetadata represents a baseline metadata value.
+type BaselineMetadata struct {
+	// Name - Name of the baseline metadata.
+	Name *string `json:"name,omitempty"`
+	// Value - Value of the baseline metadata.
+	Value *string `json:"value,omitempty"`
 }
 
 // BaselineMetadataValue represents a baseline metadata value.
@@ -4004,6 +4029,25 @@ type MetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+// MetricBaselinesProperties the response to a metric baselines query.
+type MetricBaselinesProperties struct {
+	// Timespan - The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
+	Timespan *string `json:"timespan,omitempty"`
+	// Interval - The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and returned back from what was originally requested.  This is not present if a metadata request was made.
+	Interval *string `json:"interval,omitempty"`
+	// Namespace - The namespace of the metrics been queried.
+	Namespace *string `json:"namespace,omitempty"`
+	// Baselines - The baseline for each time series that was queried.
+	Baselines *[]TimeSeriesBaseline `json:"baselines,omitempty"`
+}
+
+// MetricBaselinesResponse a list of metric baselines.
+type MetricBaselinesResponse struct {
+	autorest.Response `json:"-"`
+	// Value - The list of metric baselines.
+	Value *[]SingleMetricBaseline `json:"value,omitempty"`
+}
+
 // MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
 	// Name - Name of the criteria.
@@ -4250,6 +4294,14 @@ type MetricSettings struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// RetentionPolicy - the retention policy for this category.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+}
+
+// MetricSingleDimension the metric dimension name and value.
+type MetricSingleDimension struct {
+	// Name - Name of the dimension.
+	Name *string `json:"name,omitempty"`
+	// Value - Value of the dimension.
+	Value *string `json:"value,omitempty"`
 }
 
 // MetricTrigger the trigger that results in a scaling action.
@@ -5126,6 +5178,97 @@ type SenderAuthorization struct {
 	Scope *string `json:"scope,omitempty"`
 }
 
+// SingleBaseline the baseline values for a single sensitivity value.
+type SingleBaseline struct {
+	// Sensitivity - the sensitivity of the baseline. Possible values include: 'Low', 'Medium', 'High'
+	Sensitivity BaselineSensitivity `json:"sensitivity,omitempty"`
+	// LowThresholds - The low thresholds of the baseline.
+	LowThresholds *[]float64 `json:"lowThresholds,omitempty"`
+	// HighThresholds - The high thresholds of the baseline.
+	HighThresholds *[]float64 `json:"highThresholds,omitempty"`
+}
+
+// SingleMetricBaseline the baseline results of a single metric.
+type SingleMetricBaseline struct {
+	// ID - The metric baseline Id.
+	ID *string `json:"id,omitempty"`
+	// Type - The resource type of the metric baseline resource.
+	Type *string `json:"type,omitempty"`
+	// Name - The name of the metric for which the baselines were retrieved.
+	Name *string `json:"name,omitempty"`
+	// MetricBaselinesProperties - The metric baseline properties of the metric.
+	*MetricBaselinesProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SingleMetricBaseline.
+func (smb SingleMetricBaseline) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if smb.ID != nil {
+		objectMap["id"] = smb.ID
+	}
+	if smb.Type != nil {
+		objectMap["type"] = smb.Type
+	}
+	if smb.Name != nil {
+		objectMap["name"] = smb.Name
+	}
+	if smb.MetricBaselinesProperties != nil {
+		objectMap["properties"] = smb.MetricBaselinesProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SingleMetricBaseline struct.
+func (smb *SingleMetricBaseline) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				smb.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				smb.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				smb.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var metricBaselinesProperties MetricBaselinesProperties
+				err = json.Unmarshal(*v, &metricBaselinesProperties)
+				if err != nil {
+					return err
+				}
+				smb.MetricBaselinesProperties = &metricBaselinesProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // SmsReceiver an SMS receiver.
 type SmsReceiver struct {
 	// Name - The name of the SMS receiver. Names must be unique across all receivers within an action group.
@@ -5280,6 +5423,20 @@ func (trc *ThresholdRuleCondition) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// TimeSeriesBaseline the baseline values for a single time series.
+type TimeSeriesBaseline struct {
+	// Aggregation - The aggregation type of the metric.
+	Aggregation *string `json:"aggregation,omitempty"`
+	// Dimensions - The dimensions of this time series.
+	Dimensions *[]MetricSingleDimension `json:"dimensions,omitempty"`
+	// Timestamps - The list of timestamps of the baselines.
+	Timestamps *[]date.Time `json:"timestamps,omitempty"`
+	// Data - The baseline values for each sensitivity.
+	Data *[]SingleBaseline `json:"data,omitempty"`
+	// Metadata - The baseline metadata values.
+	Metadata *[]BaselineMetadata `json:"metadata,omitempty"`
 }
 
 // TimeSeriesElement a time series result type. The discriminator value is always TimeSeries in this case.

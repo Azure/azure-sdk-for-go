@@ -27,6 +27,7 @@ type ActivityLogsClientAPI = original.ActivityLogsClientAPI
 type AlertRuleIncidentsClientAPI = original.AlertRuleIncidentsClientAPI
 type AlertRulesClientAPI = original.AlertRulesClientAPI
 type AutoscaleSettingsClientAPI = original.AutoscaleSettingsClientAPI
+type BaselinesClientAPI = original.BaselinesClientAPI
 type DiagnosticSettingsCategoryClientAPI = original.DiagnosticSettingsCategoryClientAPI
 type DiagnosticSettingsClientAPI = original.DiagnosticSettingsClientAPI
 type EventCategoriesClientAPI = original.EventCategoriesClientAPI

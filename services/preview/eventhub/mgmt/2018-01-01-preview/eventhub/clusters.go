@@ -256,7 +256,7 @@ func (client ClustersClient) ListAvailableClustersPreparer(ctx context.Context) 
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/providers/Microsoft.EventHub/availableClusters"),
 		autorest.WithQueryParameters(queryParameters))
@@ -463,7 +463,7 @@ func (client ClustersClient) ListNamespacesPreparer(ctx context.Context, resourc
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/namespaces", pathParameters),
 		autorest.WithQueryParameters(queryParameters))

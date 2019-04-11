@@ -808,6 +808,7 @@ type UpgradePolicy = original.UpgradePolicy
 type Usage = original.Usage
 type UsageClient = original.UsageClient
 type UsageName = original.UsageName
+type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
 type VirtualHardDisk = original.VirtualHardDisk
@@ -844,6 +845,7 @@ type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineReimageParameters = original.VirtualMachineReimageParameters
 type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
 type VirtualMachineScaleSet = original.VirtualMachineScaleSet
+type VirtualMachineScaleSetClient = original.VirtualMachineScaleSetClient
 type VirtualMachineScaleSetDataDisk = original.VirtualMachineScaleSetDataDisk
 type VirtualMachineScaleSetExtension = original.VirtualMachineScaleSetExtension
 type VirtualMachineScaleSetExtensionListResult = original.VirtualMachineScaleSetExtensionListResult
@@ -913,8 +915,10 @@ type VirtualMachineScaleSetVMInstanceView = original.VirtualMachineScaleSetVMIns
 type VirtualMachineScaleSetVMListResult = original.VirtualMachineScaleSetVMListResult
 type VirtualMachineScaleSetVMListResultIterator = original.VirtualMachineScaleSetVMListResultIterator
 type VirtualMachineScaleSetVMListResultPage = original.VirtualMachineScaleSetVMListResultPage
+type VirtualMachineScaleSetVMNetworkProfileConfiguration = original.VirtualMachineScaleSetVMNetworkProfileConfiguration
 type VirtualMachineScaleSetVMProfile = original.VirtualMachineScaleSetVMProfile
 type VirtualMachineScaleSetVMProperties = original.VirtualMachineScaleSetVMProperties
+type VirtualMachineScaleSetVMProtectionPolicy = original.VirtualMachineScaleSetVMProtectionPolicy
 type VirtualMachineScaleSetVMReimageParameters = original.VirtualMachineScaleSetVMReimageParameters
 type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 type VirtualMachineScaleSetVMsDeallocateFuture = original.VirtualMachineScaleSetVMsDeallocateFuture
@@ -1135,6 +1139,12 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRun
 }
 func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
 	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachineScaleSetClient(subscriptionID string) VirtualMachineScaleSetClient {
+	return original.NewVirtualMachineScaleSetClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetClient {
+	return original.NewVirtualMachineScaleSetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
 	return original.NewVirtualMachineScaleSetExtensionListResultIterator(page)

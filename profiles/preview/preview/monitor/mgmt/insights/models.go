@@ -50,6 +50,14 @@ const (
 	Zero  AlertSeverity = original.Zero
 )
 
+type BaselineSensitivity = original.BaselineSensitivity
+
+const (
+	High   BaselineSensitivity = original.High
+	Low    BaselineSensitivity = original.Low
+	Medium BaselineSensitivity = original.Medium
+)
+
 type CategoryType = original.CategoryType
 
 const (
@@ -243,9 +251,9 @@ const (
 type Sensitivity = original.Sensitivity
 
 const (
-	High   Sensitivity = original.High
-	Low    Sensitivity = original.Low
-	Medium Sensitivity = original.Medium
+	SensitivityHigh   Sensitivity = original.SensitivityHigh
+	SensitivityLow    Sensitivity = original.SensitivityLow
+	SensitivityMedium Sensitivity = original.SensitivityMedium
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
@@ -324,9 +332,11 @@ type AzureAppPushReceiver = original.AzureAppPushReceiver
 type AzureFunctionReceiver = original.AzureFunctionReceiver
 type BaseClient = original.BaseClient
 type Baseline = original.Baseline
+type BaselineMetadata = original.BaselineMetadata
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
 type BaselineResponse = original.BaselineResponse
+type BaselinesClient = original.BaselinesClient
 type BasicAction = original.BasicAction
 type BasicMetricAlertCriteria = original.BasicMetricAlertCriteria
 type BasicMultiMetricCriteria = original.BasicMultiMetricCriteria
@@ -395,6 +405,8 @@ type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricAvailability = original.MetricAvailability
 type MetricBaselineClient = original.MetricBaselineClient
+type MetricBaselinesProperties = original.MetricBaselinesProperties
+type MetricBaselinesResponse = original.MetricBaselinesResponse
 type MetricCriteria = original.MetricCriteria
 type MetricDefinition = original.MetricDefinition
 type MetricDefinitionCollection = original.MetricDefinitionCollection
@@ -405,6 +417,7 @@ type MetricNamespaceCollection = original.MetricNamespaceCollection
 type MetricNamespaceName = original.MetricNamespaceName
 type MetricNamespacesClient = original.MetricNamespacesClient
 type MetricSettings = original.MetricSettings
+type MetricSingleDimension = original.MetricSingleDimension
 type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
 type MetricsClient = original.MetricsClient
@@ -435,10 +448,13 @@ type ScaleRule = original.ScaleRule
 type Schedule = original.Schedule
 type ScheduledQueryRulesClient = original.ScheduledQueryRulesClient
 type SenderAuthorization = original.SenderAuthorization
+type SingleBaseline = original.SingleBaseline
+type SingleMetricBaseline = original.SingleMetricBaseline
 type SmsReceiver = original.SmsReceiver
 type Source = original.Source
 type TenantActivityLogsClient = original.TenantActivityLogsClient
 type ThresholdRuleCondition = original.ThresholdRuleCondition
+type TimeSeriesBaseline = original.TimeSeriesBaseline
 type TimeSeriesElement = original.TimeSeriesElement
 type TimeSeriesInformation = original.TimeSeriesInformation
 type TimeWindow = original.TimeWindow
@@ -496,6 +512,12 @@ func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 }
 func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBaselinesClient(subscriptionID string) BaselinesClient {
+	return original.NewBaselinesClient(subscriptionID)
+}
+func NewBaselinesClientWithBaseURI(baseURI string, subscriptionID string) BaselinesClient {
+	return original.NewBaselinesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
 	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
@@ -595,6 +617,9 @@ func PossibleAggregationTypeValues() []AggregationType {
 }
 func PossibleAlertSeverityValues() []AlertSeverity {
 	return original.PossibleAlertSeverityValues()
+}
+func PossibleBaselineSensitivityValues() []BaselineSensitivity {
+	return original.PossibleBaselineSensitivityValues()
 }
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()

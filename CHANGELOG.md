@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## `v27.1.0`
+
+ ### New Packages
+
+ | Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2019-03-01 |
+
+ ### Updated Packages
+
+ | Package Name | API Version |
+| -----------: | :---------: |
+| cdn | 2017-10-12 |
+| compute | 2018-10-01 |
+| containerservice | 2018-08-01-preview<br/>2018-09-30-preview<br/>2019-02-01 |
+| datafactory | 2018-06-01 |
+| hdinsight | 2018-06-01-preview |
+| postgresql | 2017-12-01 |
+| recoveryservices | 2016-06-01 |
+| security | v1.0<br/>v2.0 |
+| securityinsight | 2017-08-01-preview |
+| storage | 2018-02-01<br/>2018-03-01-preview<br/>2018-07-01<br/>2018-11-01 |
+
+ ### Breaking Changes - Preview Only
+
+ | Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2015-03-01-preview |
+
 ## `v27.0.0`
 
 ### New Packages

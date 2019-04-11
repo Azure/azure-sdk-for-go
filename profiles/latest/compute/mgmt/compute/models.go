@@ -280,13 +280,6 @@ const (
 	ProvisioningState2Updating  ProvisioningState2 = original.ProvisioningState2Updating
 )
 
-type ProximityPlacementGroupType = original.ProximityPlacementGroupType
-
-const (
-	Standard ProximityPlacementGroupType = original.Standard
-	Ultra    ProximityPlacementGroupType = original.Ultra
-)
-
 type ReplicationState = original.ReplicationState
 
 const (
@@ -750,13 +743,6 @@ type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
-type ProximityPlacementGroup = original.ProximityPlacementGroup
-type ProximityPlacementGroupListResult = original.ProximityPlacementGroupListResult
-type ProximityPlacementGroupListResultIterator = original.ProximityPlacementGroupListResultIterator
-type ProximityPlacementGroupListResultPage = original.ProximityPlacementGroupListResultPage
-type ProximityPlacementGroupProperties = original.ProximityPlacementGroupProperties
-type ProximityPlacementGroupUpdate = original.ProximityPlacementGroupUpdate
-type ProximityPlacementGroupsClient = original.ProximityPlacementGroupsClient
 type PurchasePlan = original.PurchasePlan
 type RecommendedMachineConfiguration = original.RecommendedMachineConfiguration
 type RecoveryWalkResponse = original.RecoveryWalkResponse
@@ -927,8 +913,10 @@ type VirtualMachineScaleSetVMInstanceView = original.VirtualMachineScaleSetVMIns
 type VirtualMachineScaleSetVMListResult = original.VirtualMachineScaleSetVMListResult
 type VirtualMachineScaleSetVMListResultIterator = original.VirtualMachineScaleSetVMListResultIterator
 type VirtualMachineScaleSetVMListResultPage = original.VirtualMachineScaleSetVMListResultPage
+type VirtualMachineScaleSetVMNetworkProfileConfiguration = original.VirtualMachineScaleSetVMNetworkProfileConfiguration
 type VirtualMachineScaleSetVMProfile = original.VirtualMachineScaleSetVMProfile
 type VirtualMachineScaleSetVMProperties = original.VirtualMachineScaleSetVMProperties
+type VirtualMachineScaleSetVMProtectionPolicy = original.VirtualMachineScaleSetVMProtectionPolicy
 type VirtualMachineScaleSetVMReimageParameters = original.VirtualMachineScaleSetVMReimageParameters
 type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 type VirtualMachineScaleSetVMsDeallocateFuture = original.VirtualMachineScaleSetVMsDeallocateFuture
@@ -1083,18 +1071,6 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProximityPlacementGroupListResultIterator(page ProximityPlacementGroupListResultPage) ProximityPlacementGroupListResultIterator {
-	return original.NewProximityPlacementGroupListResultIterator(page)
-}
-func NewProximityPlacementGroupListResultPage(getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
-	return original.NewProximityPlacementGroupListResultPage(getNextPage)
-}
-func NewProximityPlacementGroupsClient(subscriptionID string) ProximityPlacementGroupsClient {
-	return original.NewProximityPlacementGroupsClient(subscriptionID)
-}
-func NewProximityPlacementGroupsClientWithBaseURI(baseURI string, subscriptionID string) ProximityPlacementGroupsClient {
-	return original.NewProximityPlacementGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)
@@ -1311,9 +1287,6 @@ func PossibleProvisioningState2Values() []ProvisioningState2 {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
-}
-func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
-	return original.PossibleProximityPlacementGroupTypeValues()
 }
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()

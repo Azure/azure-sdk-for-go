@@ -216,7 +216,7 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 }
 
 // ListAvailableClusters list the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
-func (client ClustersClient) ListAvailableClusters(ctx context.Context) (result AvailableClustersList, err error) {
+func (client ClustersClient) ListAvailableClusters(ctx context.Context) (result SetInt32, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListAvailableClusters")
 		defer func() {
@@ -272,12 +272,12 @@ func (client ClustersClient) ListAvailableClustersSender(req *http.Request) (*ht
 
 // ListAvailableClustersResponder handles the response to the ListAvailableClusters request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) ListAvailableClustersResponder(resp *http.Response) (result AvailableClustersList, err error) {
+func (client ClustersClient) ListAvailableClustersResponder(resp *http.Response) (result SetInt32, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

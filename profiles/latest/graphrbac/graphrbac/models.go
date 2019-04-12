@@ -58,6 +58,7 @@ type AddOwnerParameters = original.AddOwnerParameters
 type AppRole = original.AppRole
 type Application = original.Application
 type ApplicationBase = original.ApplicationBase
+type ApplicationClient = original.ApplicationClient
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
@@ -134,6 +135,12 @@ type UsersClient = original.UsersClient
 
 func New(tenantID string) BaseClient {
 	return original.New(tenantID)
+}
+func NewApplicationClient(tenantID string) ApplicationClient {
+	return original.NewApplicationClient(tenantID)
+}
+func NewApplicationClientWithBaseURI(baseURI string, tenantID string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI, tenantID)
 }
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)

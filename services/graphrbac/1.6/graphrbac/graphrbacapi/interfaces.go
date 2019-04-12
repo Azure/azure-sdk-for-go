@@ -52,6 +52,13 @@ type ApplicationsClientAPI interface {
 
 var _ ApplicationsClientAPI = (*graphrbac.ApplicationsClient)(nil)
 
+// ApplicationClientAPI contains the set of methods on the ApplicationClient type.
+type ApplicationClientAPI interface {
+	AddPassword(ctx context.Context, objectID string) (result autorest.Response, err error)
+}
+
+var _ ApplicationClientAPI = (*graphrbac.ApplicationClient)(nil)
+
 // DeletedApplicationsClientAPI contains the set of methods on the DeletedApplicationsClient type.
 type DeletedApplicationsClientAPI interface {
 	HardDelete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error)

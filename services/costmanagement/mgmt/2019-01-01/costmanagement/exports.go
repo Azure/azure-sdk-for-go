@@ -44,7 +44,7 @@ func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsC
 // CreateOrUpdate the operation to create or update a export. Update operation requires latest eTag to be set in the
 // request. You may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
 // Parameters:
-// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
@@ -140,7 +140,7 @@ func (client ExportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 
 // Delete the operation to delete a export.
 // Parameters:
-// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
@@ -221,7 +221,7 @@ func (client ExportsClient) DeleteResponder(resp *http.Response) (result autores
 
 // Execute the operation to execute a export.
 // Parameters:
-// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
@@ -302,7 +302,7 @@ func (client ExportsClient) ExecuteResponder(resp *http.Response) (result autore
 
 // Get gets the export for the defined scope by export name.
 // Parameters:
-// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
@@ -384,7 +384,7 @@ func (client ExportsClient) GetResponder(resp *http.Response) (result Export, er
 
 // GetExecutionHistory gets the execution history of a export for the defined scope by export name.
 // Parameters:
-// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
@@ -466,7 +466,7 @@ func (client ExportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 
 // List lists all exports at the given scope.
 // Parameters:
-// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department

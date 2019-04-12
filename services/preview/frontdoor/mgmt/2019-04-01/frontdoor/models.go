@@ -2918,7 +2918,7 @@ type RedirectConfiguration struct {
 	RedirectType RedirectType `json:"redirectType,omitempty"`
 	// RedirectProtocol - The protocol of the destination to where the traffic is redirected. Possible values include: 'RedirectProtocolHTTPOnly', 'RedirectProtocolHTTPSOnly', 'RedirectProtocolMatchRequest'
 	RedirectProtocol RedirectProtocol `json:"redirectProtocol,omitempty"`
-	// CustomHost - Host to redirect. Leave empty to use use the incoming host as the destination host.
+	// CustomHost - Host to redirect. Leave empty to use the incoming host as the destination host.
 	CustomHost *string `json:"customHost,omitempty"`
 	// CustomPath - The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination path.
 	CustomPath *string `json:"customPath,omitempty"`

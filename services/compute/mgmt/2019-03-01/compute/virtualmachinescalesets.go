@@ -41,6 +41,80 @@ func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID 
 	return VirtualMachineScaleSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// ConvertToSinglePlacementGroup converts SinglePlacementGroup property to false for a existing virtual machine scale
+// set.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMScaleSetName - the name of the virtual machine scale set to create or update.
+// parameters - the input object for ConvertToSinglePlacementGroup API.
+func (client VirtualMachineScaleSetsClient) ConvertToSinglePlacementGroup(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters VMScaleSetConvertToSinglePlacementGroupInput) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.ConvertToSinglePlacementGroup")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ConvertToSinglePlacementGroupPreparer(ctx, resourceGroupName, VMScaleSetName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "ConvertToSinglePlacementGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ConvertToSinglePlacementGroupSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "ConvertToSinglePlacementGroup", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ConvertToSinglePlacementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "ConvertToSinglePlacementGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ConvertToSinglePlacementGroupPreparer prepares the ConvertToSinglePlacementGroup request.
+func (client VirtualMachineScaleSetsClient) ConvertToSinglePlacementGroupPreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters VMScaleSetConvertToSinglePlacementGroupInput) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmScaleSetName":    autorest.Encode("path", VMScaleSetName),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/convertToSinglePlacementGroup", pathParameters),
+		autorest.WithJSON(parameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ConvertToSinglePlacementGroupSender sends the ConvertToSinglePlacementGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineScaleSetsClient) ConvertToSinglePlacementGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ConvertToSinglePlacementGroupResponder handles the response to the ConvertToSinglePlacementGroup request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineScaleSetsClient) ConvertToSinglePlacementGroupResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // CreateOrUpdate create or update a VM scale set.
 // Parameters:
 // resourceGroupName - the name of the resource group.

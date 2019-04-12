@@ -845,7 +845,6 @@ type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineReimageParameters = original.VirtualMachineReimageParameters
 type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
 type VirtualMachineScaleSet = original.VirtualMachineScaleSet
-type VirtualMachineScaleSetClient = original.VirtualMachineScaleSetClient
 type VirtualMachineScaleSetDataDisk = original.VirtualMachineScaleSetDataDisk
 type VirtualMachineScaleSetExtension = original.VirtualMachineScaleSetExtension
 type VirtualMachineScaleSetExtensionListResult = original.VirtualMachineScaleSetExtensionListResult
@@ -1139,12 +1138,6 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRun
 }
 func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
 	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualMachineScaleSetClient(subscriptionID string) VirtualMachineScaleSetClient {
-	return original.NewVirtualMachineScaleSetClient(subscriptionID)
-}
-func NewVirtualMachineScaleSetClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetClient {
-	return original.NewVirtualMachineScaleSetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
 	return original.NewVirtualMachineScaleSetExtensionListResultIterator(page)

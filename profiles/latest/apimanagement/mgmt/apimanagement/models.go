@@ -468,6 +468,7 @@ type IssueAttachmentCollectionIterator = original.IssueAttachmentCollectionItera
 type IssueAttachmentCollectionPage = original.IssueAttachmentCollectionPage
 type IssueAttachmentContract = original.IssueAttachmentContract
 type IssueAttachmentContractProperties = original.IssueAttachmentContractProperties
+type IssueClient = original.IssueClient
 type IssueCollection = original.IssueCollection
 type IssueCollectionIterator = original.IssueCollectionIterator
 type IssueCollectionPage = original.IssueCollectionPage
@@ -925,6 +926,12 @@ func NewIssueAttachmentCollectionIterator(page IssueAttachmentCollectionPage) Is
 }
 func NewIssueAttachmentCollectionPage(getNextPage func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)) IssueAttachmentCollectionPage {
 	return original.NewIssueAttachmentCollectionPage(getNextPage)
+}
+func NewIssueClient(subscriptionID string) IssueClient {
+	return original.NewIssueClient(subscriptionID)
+}
+func NewIssueClientWithBaseURI(baseURI string, subscriptionID string) IssueClient {
+	return original.NewIssueClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewIssueCollectionIterator(page IssueCollectionPage) IssueCollectionIterator {
 	return original.NewIssueCollectionIterator(page)

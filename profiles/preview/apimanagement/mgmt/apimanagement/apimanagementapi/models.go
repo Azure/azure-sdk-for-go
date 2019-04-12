@@ -46,6 +46,7 @@ type EmailTemplateClientAPI = original.EmailTemplateClientAPI
 type GroupClientAPI = original.GroupClientAPI
 type GroupUserClientAPI = original.GroupUserClientAPI
 type IdentityProviderClientAPI = original.IdentityProviderClientAPI
+type IssueClientAPI = original.IssueClientAPI
 type LoggerClientAPI = original.LoggerClientAPI
 type NetworkStatusClientAPI = original.NetworkStatusClientAPI
 type NotificationClientAPI = original.NotificationClientAPI

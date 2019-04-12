@@ -325,6 +325,13 @@ type IdentityProviderClientAPI interface {
 
 var _ IdentityProviderClientAPI = (*apimanagement.IdentityProviderClient)(nil)
 
+// IssueClientAPI contains the set of methods on the IssueClient type.
+type IssueClientAPI interface {
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.IssueCollectionPage, err error)
+}
+
+var _ IssueClientAPI = (*apimanagement.IssueClient)(nil)
+
 // LoggerClientAPI contains the set of methods on the LoggerClient type.
 type LoggerClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters apimanagement.LoggerContract, ifMatch string) (result apimanagement.LoggerContract, err error)

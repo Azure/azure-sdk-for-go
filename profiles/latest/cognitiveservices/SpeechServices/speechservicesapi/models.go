@@ -21,4 +21,39 @@ package speechservicesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/SpeechServices/speechservicesapi"
 
-type BaseClientAPI = original.BaseClientAPI
+type AccuracyTestClientAPI = original.AccuracyTestClientAPI
+type AccuracyTestsClientAPI = original.AccuracyTestsClientAPI
+type DatasetClientAPI = original.DatasetClientAPI
+type DatasetsClientAPI = original.DatasetsClientAPI
+type DeploymentClientAPI = original.DeploymentClientAPI
+type EndpointClientAPI = original.EndpointClientAPI
+type EndpointDataClientAPI = original.EndpointDataClientAPI
+type EndpointDataExportClientAPI = original.EndpointDataExportClientAPI
+type EndpointDataExportsClientAPI = original.EndpointDataExportsClientAPI
+type EndpointsClientAPI = original.EndpointsClientAPI
+type HealthStatusClientAPI = original.HealthStatusClientAPI
+type LanguageGenerationEndpointClientAPI = original.LanguageGenerationEndpointClientAPI
+type LanguageGenerationEndpointsClientAPI = original.LanguageGenerationEndpointsClientAPI
+type LanguageGenerationModelClientAPI = original.LanguageGenerationModelClientAPI
+type LanguageGenerationModelsClientAPI = original.LanguageGenerationModelsClientAPI
+type ModelClientAPI = original.ModelClientAPI
+type ModelsClientAPI = original.ModelsClientAPI
+type SupportedLocalesForDatasetsClientAPI = original.SupportedLocalesForDatasetsClientAPI
+type SupportedLocalesForEndpointsClientAPI = original.SupportedLocalesForEndpointsClientAPI
+type SupportedLocalesForLanguageGenerationEndpointsClientAPI = original.SupportedLocalesForLanguageGenerationEndpointsClientAPI
+type SupportedLocalesForLanguageGenerationModelsClientAPI = original.SupportedLocalesForLanguageGenerationModelsClientAPI
+type SupportedLocalesForModelsClientAPI = original.SupportedLocalesForModelsClientAPI
+type SupportedLocalesForTranscriptionsClientAPI = original.SupportedLocalesForTranscriptionsClientAPI
+type SupportedLocalesForVoiceDatasetsClientAPI = original.SupportedLocalesForVoiceDatasetsClientAPI
+type SupportedLocalesForVoiceEndpointsClientAPI = original.SupportedLocalesForVoiceEndpointsClientAPI
+type SupportedLocalesForVoiceModelsClientAPI = original.SupportedLocalesForVoiceModelsClientAPI
+type TranscriptionClientAPI = original.TranscriptionClientAPI
+type TranscriptionsClientAPI = original.TranscriptionsClientAPI
+type VoiceDatasetClientAPI = original.VoiceDatasetClientAPI
+type VoiceDatasetsClientAPI = original.VoiceDatasetsClientAPI
+type VoiceDeploymentClientAPI = original.VoiceDeploymentClientAPI
+type VoiceDeploymentsClientAPI = original.VoiceDeploymentsClientAPI
+type VoiceEndpointClientAPI = original.VoiceEndpointClientAPI
+type VoiceModelClientAPI = original.VoiceModelClientAPI
+type VoiceModelsClientAPI = original.VoiceModelsClientAPI
+type VoiceTestClientAPI = original.VoiceTestClientAPI

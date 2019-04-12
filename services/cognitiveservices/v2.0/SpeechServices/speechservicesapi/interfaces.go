@@ -24,75 +24,285 @@ import (
 	"io"
 )
 
-// BaseClientAPI contains the set of methods on the BaseClient type.
-type BaseClientAPI interface {
-	CreateAccuracyTest(ctx context.Context, testDefinition speechservices.TestDefinition) (result speechservices.ErrorContent, err error)
-	CreateEndpoint(ctx context.Context, endpointDefinition speechservices.SpeechEndpointDefinition) (result speechservices.ErrorContent, err error)
-	CreateEndpointDataExport(ctx context.Context, endpointID uuid.UUID, endpointDataDefinition speechservices.EndpointDataDefinition) (result speechservices.ErrorContent, err error)
-	CreateLanguageGenerationEndpoint(ctx context.Context, endpointDefinition speechservices.EndpointDefinition) (result speechservices.ErrorContent, err error)
-	CreateLanguageGenerationModel(ctx context.Context, modelDefinition speechservices.ModelDefinition) (result speechservices.ErrorContent, err error)
-	CreateModel(ctx context.Context, modelDefinition speechservices.SpeechModelDefinition) (result speechservices.ErrorContent, err error)
-	CreateTranscription(ctx context.Context, transcription speechservices.TranscriptionDefinition) (result speechservices.ErrorContent, err error)
-	CreateVoiceDeployment(ctx context.Context, endpoint speechservices.EndpointDefinition) (result speechservices.ErrorContent, err error)
-	CreateVoiceModel(ctx context.Context, modelDefinition speechservices.ModelDefinition) (result speechservices.ErrorContent, err error)
-	CreateVoiceTest(ctx context.Context, voiceTestDefinition speechservices.VoiceTestDefinition) (result speechservices.ErrorContent, err error)
-	DeleteAccuracyTest(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteDataset(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteDeployment(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteEndpoint(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteEndpointData(ctx context.Context, endpointID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteEndpointDataExport(ctx context.Context, endpointID uuid.UUID, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteLanguageGenerationEndpoint(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteLanguageGenerationModel(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteModel(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteTranscription(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteVoiceDataset(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteVoiceModel(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	DeleteVoiceTest(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
-	GetAccuracyTest(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetAccuracyTests(ctx context.Context) (result speechservices.SetObject, err error)
-	GetDataset(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetDatasets(ctx context.Context) (result speechservices.SetObject, err error)
-	GetEndpoint(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetEndpointDataExport(ctx context.Context, endpointID uuid.UUID, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetEndpointDataExports(ctx context.Context, endpointID uuid.UUID) (result speechservices.SetObject, err error)
-	GetEndpoints(ctx context.Context) (result speechservices.SetObject, err error)
-	GetHealthStatus(ctx context.Context) (result speechservices.HealthStatusResponse, err error)
-	GetLanguageGenerationEndpoint(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetLanguageGenerationEndpoints(ctx context.Context) (result speechservices.SetObject, err error)
-	GetLanguageGenerationModel(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetLanguageGenerationModels(ctx context.Context) (result speechservices.SetObject, err error)
-	GetModel(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetModels(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForDatasets(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForEndpoints(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForLanguageGenerationEndpoints(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForLanguageGenerationModels(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForModels(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForTranscriptions(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForVoiceDatasets(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForVoiceEndpoints(ctx context.Context) (result speechservices.SetObject, err error)
-	GetSupportedLocalesForVoiceModels(ctx context.Context) (result speechservices.SetObject, err error)
-	GetTranscription(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetTranscriptions(ctx context.Context) (result speechservices.SetObject, err error)
-	GetVoiceDatasets(ctx context.Context) (result speechservices.SetObject, err error)
-	GetVoiceDeployment(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetVoiceDeployments(ctx context.Context) (result speechservices.SetObject, err error)
-	GetVoiceModel(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	GetVoiceModels(ctx context.Context) (result speechservices.SetObject, err error)
-	GetVoiceTest(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
-	UpdateAccuracyTest(ctx context.Context, ID uuid.UUID, testUpdate speechservices.TestUpdate) (result speechservices.SetObject, err error)
-	UpdateDataset(ctx context.Context, ID uuid.UUID, datasetUpdate speechservices.DatasetUpdate) (result speechservices.SetObject, err error)
-	UpdateEndpoint(ctx context.Context, ID uuid.UUID, endpointUpdate speechservices.EndpointUpdate) (result speechservices.SetObject, err error)
-	UpdateLanguageGenerationEndpoint(ctx context.Context, ID uuid.UUID, endpointUpdate speechservices.EndpointUpdate) (result speechservices.SetObject, err error)
-	UpdateLanguageGenerationModel(ctx context.Context, ID uuid.UUID, modelUpdate speechservices.ModelUpdate) (result speechservices.SetObject, err error)
-	UpdateModel(ctx context.Context, ID uuid.UUID, modelUpdate speechservices.ModelUpdate) (result speechservices.SetObject, err error)
-	UpdateTranscription(ctx context.Context, ID uuid.UUID, transcriptionUpdate speechservices.TranscriptionUpdate) (result speechservices.SetObject, err error)
-	UpdateVoiceDataset(ctx context.Context, ID uuid.UUID, datasetUpdate speechservices.DatasetUpdate) (result speechservices.SetObject, err error)
-	UpdateVoiceEndpoint(ctx context.Context, ID uuid.UUID, endpointUpdate speechservices.EndpointUpdate) (result speechservices.SetObject, err error)
-	UpdateVoiceModel(ctx context.Context, ID uuid.UUID, modelUpdate speechservices.ModelUpdate) (result speechservices.SetObject, err error)
-	UploadDataset(ctx context.Context, name string, description string, locale string, dataImportKind string, properties string, audiodata io.ReadCloser, transcriptions io.ReadCloser, languagedata io.ReadCloser) (result speechservices.ErrorContent, err error)
-	UploadVoiceDataset(ctx context.Context, name string, description string, locale string, dataImportKind string, properties string, audiodata io.ReadCloser, transcriptions io.ReadCloser) (result speechservices.ErrorContent, err error)
+// AccuracyTestsClientAPI contains the set of methods on the AccuracyTestsClient type.
+type AccuracyTestsClientAPI interface {
+	List(ctx context.Context) (result speechservices.SetObject, err error)
 }
 
-var _ BaseClientAPI = (*speechservices.BaseClient)(nil)
+var _ AccuracyTestsClientAPI = (*speechservices.AccuracyTestsClient)(nil)
+
+// AccuracyTestClientAPI contains the set of methods on the AccuracyTestClient type.
+type AccuracyTestClientAPI interface {
+	Create(ctx context.Context, testDefinition speechservices.TestDefinition) (result speechservices.AccuracyTestCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, testUpdate speechservices.TestUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ AccuracyTestClientAPI = (*speechservices.AccuracyTestClient)(nil)
+
+// DatasetsClientAPI contains the set of methods on the DatasetsClient type.
+type DatasetsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ DatasetsClientAPI = (*speechservices.DatasetsClient)(nil)
+
+// DatasetClientAPI contains the set of methods on the DatasetClient type.
+type DatasetClientAPI interface {
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, datasetUpdate speechservices.DatasetUpdate) (result speechservices.SetObject, err error)
+	Upload(ctx context.Context, name string, description string, locale string, dataImportKind string, properties string, audiodata io.ReadCloser, transcriptions io.ReadCloser, languagedata io.ReadCloser) (result speechservices.DatasetUploadFuture, err error)
+}
+
+var _ DatasetClientAPI = (*speechservices.DatasetClient)(nil)
+
+// SupportedLocalesForDatasetsClientAPI contains the set of methods on the SupportedLocalesForDatasetsClient type.
+type SupportedLocalesForDatasetsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForDatasetsClientAPI = (*speechservices.SupportedLocalesForDatasetsClient)(nil)
+
+// EndpointsClientAPI contains the set of methods on the EndpointsClient type.
+type EndpointsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ EndpointsClientAPI = (*speechservices.EndpointsClient)(nil)
+
+// EndpointClientAPI contains the set of methods on the EndpointClient type.
+type EndpointClientAPI interface {
+	Create(ctx context.Context, endpointDefinition speechservices.SpeechEndpointDefinition) (result speechservices.EndpointCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, endpointUpdate speechservices.EndpointUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ EndpointClientAPI = (*speechservices.EndpointClient)(nil)
+
+// SupportedLocalesForEndpointsClientAPI contains the set of methods on the SupportedLocalesForEndpointsClient type.
+type SupportedLocalesForEndpointsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForEndpointsClientAPI = (*speechservices.SupportedLocalesForEndpointsClient)(nil)
+
+// EndpointDataExportsClientAPI contains the set of methods on the EndpointDataExportsClient type.
+type EndpointDataExportsClientAPI interface {
+	Get(ctx context.Context, endpointID uuid.UUID) (result speechservices.SetObject, err error)
+}
+
+var _ EndpointDataExportsClientAPI = (*speechservices.EndpointDataExportsClient)(nil)
+
+// EndpointDataExportClientAPI contains the set of methods on the EndpointDataExportClient type.
+type EndpointDataExportClientAPI interface {
+	Create(ctx context.Context, endpointID uuid.UUID, endpointDataDefinition speechservices.EndpointDataDefinition) (result speechservices.EndpointDataExportCreateFuture, err error)
+	Delete(ctx context.Context, endpointID uuid.UUID, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, endpointID uuid.UUID, ID uuid.UUID) (result speechservices.SetObject, err error)
+}
+
+var _ EndpointDataExportClientAPI = (*speechservices.EndpointDataExportClient)(nil)
+
+// EndpointDataClientAPI contains the set of methods on the EndpointDataClient type.
+type EndpointDataClientAPI interface {
+	Delete(ctx context.Context, endpointID uuid.UUID) (result speechservices.ErrorContent, err error)
+}
+
+var _ EndpointDataClientAPI = (*speechservices.EndpointDataClient)(nil)
+
+// ModelsClientAPI contains the set of methods on the ModelsClient type.
+type ModelsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ ModelsClientAPI = (*speechservices.ModelsClient)(nil)
+
+// ModelClientAPI contains the set of methods on the ModelClient type.
+type ModelClientAPI interface {
+	Create(ctx context.Context, modelDefinition speechservices.SpeechModelDefinition) (result speechservices.ModelCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, modelUpdate speechservices.ModelUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ ModelClientAPI = (*speechservices.ModelClient)(nil)
+
+// SupportedLocalesForModelsClientAPI contains the set of methods on the SupportedLocalesForModelsClient type.
+type SupportedLocalesForModelsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForModelsClientAPI = (*speechservices.SupportedLocalesForModelsClient)(nil)
+
+// TranscriptionsClientAPI contains the set of methods on the TranscriptionsClient type.
+type TranscriptionsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ TranscriptionsClientAPI = (*speechservices.TranscriptionsClient)(nil)
+
+// TranscriptionClientAPI contains the set of methods on the TranscriptionClient type.
+type TranscriptionClientAPI interface {
+	Create(ctx context.Context, transcription speechservices.TranscriptionDefinition) (result speechservices.ErrorContent, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, transcriptionUpdate speechservices.TranscriptionUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ TranscriptionClientAPI = (*speechservices.TranscriptionClient)(nil)
+
+// SupportedLocalesForTranscriptionsClientAPI contains the set of methods on the SupportedLocalesForTranscriptionsClient type.
+type SupportedLocalesForTranscriptionsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForTranscriptionsClientAPI = (*speechservices.SupportedLocalesForTranscriptionsClient)(nil)
+
+// LanguageGenerationEndpointsClientAPI contains the set of methods on the LanguageGenerationEndpointsClient type.
+type LanguageGenerationEndpointsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ LanguageGenerationEndpointsClientAPI = (*speechservices.LanguageGenerationEndpointsClient)(nil)
+
+// LanguageGenerationEndpointClientAPI contains the set of methods on the LanguageGenerationEndpointClient type.
+type LanguageGenerationEndpointClientAPI interface {
+	Create(ctx context.Context, endpointDefinition speechservices.EndpointDefinition) (result speechservices.LanguageGenerationEndpointCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, endpointUpdate speechservices.EndpointUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ LanguageGenerationEndpointClientAPI = (*speechservices.LanguageGenerationEndpointClient)(nil)
+
+// SupportedLocalesForLanguageGenerationEndpointsClientAPI contains the set of methods on the SupportedLocalesForLanguageGenerationEndpointsClient type.
+type SupportedLocalesForLanguageGenerationEndpointsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForLanguageGenerationEndpointsClientAPI = (*speechservices.SupportedLocalesForLanguageGenerationEndpointsClient)(nil)
+
+// LanguageGenerationModelsClientAPI contains the set of methods on the LanguageGenerationModelsClient type.
+type LanguageGenerationModelsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ LanguageGenerationModelsClientAPI = (*speechservices.LanguageGenerationModelsClient)(nil)
+
+// LanguageGenerationModelClientAPI contains the set of methods on the LanguageGenerationModelClient type.
+type LanguageGenerationModelClientAPI interface {
+	Create(ctx context.Context, modelDefinition speechservices.ModelDefinition) (result speechservices.LanguageGenerationModelCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, modelUpdate speechservices.ModelUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ LanguageGenerationModelClientAPI = (*speechservices.LanguageGenerationModelClient)(nil)
+
+// SupportedLocalesForLanguageGenerationModelsClientAPI contains the set of methods on the SupportedLocalesForLanguageGenerationModelsClient type.
+type SupportedLocalesForLanguageGenerationModelsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForLanguageGenerationModelsClientAPI = (*speechservices.SupportedLocalesForLanguageGenerationModelsClient)(nil)
+
+// HealthStatusClientAPI contains the set of methods on the HealthStatusClient type.
+type HealthStatusClientAPI interface {
+	Get(ctx context.Context) (result speechservices.HealthStatusResponse, err error)
+}
+
+var _ HealthStatusClientAPI = (*speechservices.HealthStatusClient)(nil)
+
+// VoiceDatasetsClientAPI contains the set of methods on the VoiceDatasetsClient type.
+type VoiceDatasetsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceDatasetsClientAPI = (*speechservices.VoiceDatasetsClient)(nil)
+
+// SupportedLocalesForVoiceDatasetsClientAPI contains the set of methods on the SupportedLocalesForVoiceDatasetsClient type.
+type SupportedLocalesForVoiceDatasetsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForVoiceDatasetsClientAPI = (*speechservices.SupportedLocalesForVoiceDatasetsClient)(nil)
+
+// VoiceDatasetClientAPI contains the set of methods on the VoiceDatasetClient type.
+type VoiceDatasetClientAPI interface {
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Update(ctx context.Context, ID uuid.UUID, datasetUpdate speechservices.DatasetUpdate) (result speechservices.SetObject, err error)
+	Upload(ctx context.Context, name string, description string, locale string, dataImportKind string, properties string, audiodata io.ReadCloser, transcriptions io.ReadCloser) (result speechservices.VoiceDatasetUploadFuture, err error)
+}
+
+var _ VoiceDatasetClientAPI = (*speechservices.VoiceDatasetClient)(nil)
+
+// VoiceDeploymentsClientAPI contains the set of methods on the VoiceDeploymentsClient type.
+type VoiceDeploymentsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceDeploymentsClientAPI = (*speechservices.VoiceDeploymentsClient)(nil)
+
+// VoiceDeploymentClientAPI contains the set of methods on the VoiceDeploymentClient type.
+type VoiceDeploymentClientAPI interface {
+	Create(ctx context.Context, endpoint speechservices.EndpointDefinition) (result speechservices.VoiceDeploymentCreateFuture, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceDeploymentClientAPI = (*speechservices.VoiceDeploymentClient)(nil)
+
+// DeploymentClientAPI contains the set of methods on the DeploymentClient type.
+type DeploymentClientAPI interface {
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+}
+
+var _ DeploymentClientAPI = (*speechservices.DeploymentClient)(nil)
+
+// VoiceEndpointClientAPI contains the set of methods on the VoiceEndpointClient type.
+type VoiceEndpointClientAPI interface {
+	Update(ctx context.Context, ID uuid.UUID, endpointUpdate speechservices.EndpointUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceEndpointClientAPI = (*speechservices.VoiceEndpointClient)(nil)
+
+// SupportedLocalesForVoiceEndpointsClientAPI contains the set of methods on the SupportedLocalesForVoiceEndpointsClient type.
+type SupportedLocalesForVoiceEndpointsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForVoiceEndpointsClientAPI = (*speechservices.SupportedLocalesForVoiceEndpointsClient)(nil)
+
+// VoiceModelsClientAPI contains the set of methods on the VoiceModelsClient type.
+type VoiceModelsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceModelsClientAPI = (*speechservices.VoiceModelsClient)(nil)
+
+// VoiceModelClientAPI contains the set of methods on the VoiceModelClient type.
+type VoiceModelClientAPI interface {
+	Create(ctx context.Context, modelDefinition speechservices.ModelDefinition) (result speechservices.VoiceModelCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+	Update(ctx context.Context, ID uuid.UUID, modelUpdate speechservices.ModelUpdate) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceModelClientAPI = (*speechservices.VoiceModelClient)(nil)
+
+// SupportedLocalesForVoiceModelsClientAPI contains the set of methods on the SupportedLocalesForVoiceModelsClient type.
+type SupportedLocalesForVoiceModelsClientAPI interface {
+	Get(ctx context.Context) (result speechservices.SetObject, err error)
+}
+
+var _ SupportedLocalesForVoiceModelsClientAPI = (*speechservices.SupportedLocalesForVoiceModelsClient)(nil)
+
+// VoiceTestClientAPI contains the set of methods on the VoiceTestClient type.
+type VoiceTestClientAPI interface {
+	Create(ctx context.Context, voiceTestDefinition speechservices.VoiceTestDefinition) (result speechservices.VoiceTestCreateFuture, err error)
+	Delete(ctx context.Context, ID uuid.UUID) (result speechservices.ErrorContent, err error)
+	Get(ctx context.Context, ID uuid.UUID) (result speechservices.SetObject, err error)
+}
+
+var _ VoiceTestClientAPI = (*speechservices.VoiceTestClient)(nil)

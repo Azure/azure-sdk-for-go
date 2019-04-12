@@ -20,8 +20,10 @@ package speechservices
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/satori/go.uuid"
+	"net/http"
 )
 
 // The package's fully qualified name.
@@ -376,6 +378,35 @@ func PossibleVoiceTestKind1Values() []VoiceTestKind1 {
 	return []VoiceTestKind1{VoiceTestKind1None, VoiceTestKind1SSML, VoiceTestKind1Text}
 }
 
+// AccuracyTestCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AccuracyTestCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AccuracyTestCreateFuture) Result(client AccuracyTestClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.AccuracyTestCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.AccuracyTestCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.AccuracyTestCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // Component ...
 type Component struct {
 	Name *string `json:"name,omitempty"`
@@ -489,6 +520,35 @@ type DatasetUpdate struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// DatasetUploadFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatasetUploadFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DatasetUploadFuture) Result(client DatasetClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.DatasetUploadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.DatasetUploadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.UploadResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.DatasetUploadFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // Endpoint ...
 type Endpoint struct {
 	// ConcurrentRecognitions - The number of concurrent recognitions the endpoint supports
@@ -566,6 +626,35 @@ func (e Endpoint) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// EndpointCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type EndpointCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EndpointCreateFuture) Result(client EndpointClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.EndpointCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.EndpointCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.EndpointCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // EndpointData ...
 type EndpointData struct {
 	// ID - The identifier of this entity
@@ -590,6 +679,35 @@ type EndpointDataDefinition struct {
 	StartDate *date.Time `json:"startDate,omitempty"`
 	// EndDate - The end date of the demplyment data export
 	EndDate *date.Time `json:"endDate,omitempty"`
+}
+
+// EndpointDataExportCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type EndpointDataExportCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EndpointDataExportCreateFuture) Result(client EndpointDataExportClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.EndpointDataExportCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.EndpointDataExportCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.EndpointDataExportCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // EndpointDefinition ...
@@ -681,28 +799,6 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// GetSupportedLocalesForDatasetsOKResponse ...
-type GetSupportedLocalesForDatasetsOKResponse struct {
-	None               *[]string `json:"None,omitempty"`
-	Language           *[]string `json:"Language,omitempty"`
-	Acoustic           *[]string `json:"Acoustic,omitempty"`
-	Pronunciation      *[]string `json:"Pronunciation,omitempty"`
-	CustomVoice        *[]string `json:"CustomVoice,omitempty"`
-	LanguageGeneration *[]string `json:"LanguageGeneration,omitempty"`
-}
-
-// GetSupportedLocalesForModelsOKResponse ...
-type GetSupportedLocalesForModelsOKResponse struct {
-	None                   *[]string `json:"None,omitempty"`
-	Acoustic               *[]string `json:"Acoustic,omitempty"`
-	Language               *[]string `json:"Language,omitempty"`
-	AcousticAndLanguage    *[]string `json:"AcousticAndLanguage,omitempty"`
-	CustomVoice            *[]string `json:"CustomVoice,omitempty"`
-	LanguageGeneration     *[]string `json:"LanguageGeneration,omitempty"`
-	Sentiment              *[]string `json:"Sentiment,omitempty"`
-	LanguageIdentification *[]string `json:"LanguageIdentification,omitempty"`
-}
-
 // HealthStatusResponse ...
 type HealthStatusResponse struct {
 	autorest.Response `json:"-"`
@@ -724,6 +820,79 @@ type InnerError struct {
 	// Innererror - A human-readable representation of the error. It is intended as
 	// an aid to developers and is not suitable for exposure to end users
 	Innererror *InnerError `json:"innererror,omitempty"`
+}
+
+// IReadOnlyDictionary ...
+type IReadOnlyDictionary struct {
+	None *[]string `json:"none,omitempty"`
+	// Language - language data information
+	Language *[]string `json:"language,omitempty"`
+	// Acoustic - acoustic data information
+	Acoustic *[]string `json:"acoustic,omitempty"`
+	// Pronunciation - pronunciation data information
+	Pronunciation *[]string `json:"pronunciation,omitempty"`
+	// CustomVoice - voice data information
+	CustomVoice *[]string `json:"customVoice,omitempty"`
+	// LanguageGeneration - language information
+	LanguageGeneration *[]string `json:"languageGeneration,omitempty"`
+}
+
+// LanguageGenerationEndpointCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LanguageGenerationEndpointCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LanguageGenerationEndpointCreateFuture) Result(client LanguageGenerationEndpointClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.LanguageGenerationEndpointCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.LanguageGenerationEndpointCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.LanguageGenerationEndpointCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LanguageGenerationModelCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LanguageGenerationModelCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LanguageGenerationModelCreateFuture) Result(client LanguageGenerationModelClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.LanguageGenerationModelCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.LanguageGenerationModelCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.LanguageGenerationModelCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // Model ...
@@ -789,6 +958,34 @@ func (mVar Model) MarshalJSON() ([]byte, error) {
 		objectMap["status"] = mVar.Status
 	}
 	return json.Marshal(objectMap)
+}
+
+// ModelCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ModelCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ModelCreateFuture) Result(client ModelClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.ModelCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.ModelCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.ModelCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // ModelDefinition ...
@@ -1183,6 +1380,93 @@ type TranscriptionUpdate struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// VoiceDatasetUploadFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VoiceDatasetUploadFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VoiceDatasetUploadFuture) Result(client VoiceDatasetClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.VoiceDatasetUploadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.VoiceDatasetUploadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.UploadResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.VoiceDatasetUploadFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VoiceDeploymentCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VoiceDeploymentCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VoiceDeploymentCreateFuture) Result(client VoiceDeploymentClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.VoiceDeploymentCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.VoiceDeploymentCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.VoiceDeploymentCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VoiceModelCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VoiceModelCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VoiceModelCreateFuture) Result(client VoiceModelClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.VoiceModelCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.VoiceModelCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.VoiceModelCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // VoiceTest ...
 type VoiceTest struct {
 	// ID - The identifier of this entity
@@ -1201,6 +1485,35 @@ type VoiceTest struct {
 	Model *Model `json:"model,omitempty"`
 	// VoiceTestKind - The kind of this test (e.g. Text, SSML). Possible values include: 'VoiceTestKindNone', 'VoiceTestKindText', 'VoiceTestKindSSML'
 	VoiceTestKind VoiceTestKind `json:"voiceTestKind,omitempty"`
+}
+
+// VoiceTestCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VoiceTestCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VoiceTestCreateFuture) Result(client VoiceTestClient) (ec ErrorContent, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "speechservices.VoiceTestCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("speechservices.VoiceTestCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "speechservices.VoiceTestCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // VoiceTestDefinition ...

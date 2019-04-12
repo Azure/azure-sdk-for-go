@@ -84,9 +84,12 @@ const (
 type TimeGrainType = original.TimeGrainType
 
 const (
-	TimeGrainTypeAnnually  TimeGrainType = original.TimeGrainTypeAnnually
-	TimeGrainTypeMonthly   TimeGrainType = original.TimeGrainTypeMonthly
-	TimeGrainTypeQuarterly TimeGrainType = original.TimeGrainTypeQuarterly
+	TimeGrainTypeAnnually       TimeGrainType = original.TimeGrainTypeAnnually
+	TimeGrainTypeBillingAnnual  TimeGrainType = original.TimeGrainTypeBillingAnnual
+	TimeGrainTypeBillingMonth   TimeGrainType = original.TimeGrainTypeBillingMonth
+	TimeGrainTypeBillingQuarter TimeGrainType = original.TimeGrainTypeBillingQuarter
+	TimeGrainTypeMonthly        TimeGrainType = original.TimeGrainTypeMonthly
+	TimeGrainTypeQuarterly      TimeGrainType = original.TimeGrainTypeQuarterly
 )
 
 type AggregatedCostClient = original.AggregatedCostClient

@@ -10722,6 +10722,12 @@ func (vmu *VirtualMachineUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// VMScaleSetConvertToSinglePlacementGroupInput ...
+type VMScaleSetConvertToSinglePlacementGroupInput struct {
+	// ActivePlacementGroupID - Id of the placement group in which you want future virtual machine instances to be placed. To query placement group Id, please use Virtual Machine Scale Set VMs - Get API. If not provided, the platform will choose one with maximum number of virtual machine instances.
+	ActivePlacementGroupID *string `json:"activePlacementGroupId,omitempty"`
+}
+
 // WindowsConfiguration specifies Windows operating system settings on the virtual machine.
 type WindowsConfiguration struct {
 	// ProvisionVMAgent - Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.

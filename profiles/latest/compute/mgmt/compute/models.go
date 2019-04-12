@@ -808,6 +808,7 @@ type UpgradePolicy = original.UpgradePolicy
 type Usage = original.Usage
 type UsageClient = original.UsageClient
 type UsageName = original.UsageName
+type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
 type VirtualHardDisk = original.VirtualHardDisk

@@ -128,6 +128,7 @@ var _ ImagesClientAPI = (*compute.ImagesClient)(nil)
 
 // VirtualMachineScaleSetsClientAPI contains the set of methods on the VirtualMachineScaleSetsClient type.
 type VirtualMachineScaleSetsClientAPI interface {
+	ConvertToSinglePlacementGroup(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters compute.VMScaleSetConvertToSinglePlacementGroupInput) (result autorest.Response, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters compute.VirtualMachineScaleSet) (result compute.VirtualMachineScaleSetsCreateOrUpdateFuture, err error)
 	Deallocate(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *compute.VirtualMachineScaleSetVMInstanceIDs) (result compute.VirtualMachineScaleSetsDeallocateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetsDeleteFuture, err error)

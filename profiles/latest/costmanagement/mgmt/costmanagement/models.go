@@ -94,13 +94,15 @@ const (
 type TimeframeType = original.TimeframeType
 
 const (
-	Custom       TimeframeType = original.Custom
-	MonthToDate  TimeframeType = original.MonthToDate
-	TheLastMonth TimeframeType = original.TheLastMonth
-	TheLastWeek  TimeframeType = original.TheLastWeek
-	TheLastYear  TimeframeType = original.TheLastYear
-	WeekToDate   TimeframeType = original.WeekToDate
-	YearToDate   TimeframeType = original.YearToDate
+	BillingMonthToDate  TimeframeType = original.BillingMonthToDate
+	Custom              TimeframeType = original.Custom
+	MonthToDate         TimeframeType = original.MonthToDate
+	TheLastBillingMonth TimeframeType = original.TheLastBillingMonth
+	TheLastMonth        TimeframeType = original.TheLastMonth
+	TheLastWeek         TimeframeType = original.TheLastWeek
+	TheLastYear         TimeframeType = original.TheLastYear
+	WeekToDate          TimeframeType = original.WeekToDate
+	YearToDate          TimeframeType = original.YearToDate
 )
 
 type BaseClient = original.BaseClient

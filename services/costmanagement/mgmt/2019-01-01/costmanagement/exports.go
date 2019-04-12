@@ -44,15 +44,13 @@ func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsC
 // CreateOrUpdate the operation to create or update a export. Update operation requires latest eTag to be set in the
 // request. You may obtain the latest eTag by performing a get operation. Create operation does not require eTag.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-// Management Group scope..
+// for EnrollmentAccount scope.
 // exportName - export Name.
 // parameters - parameters supplied to the CreateOrUpdate Export operation.
 func (client ExportsClient) CreateOrUpdate(ctx context.Context, scope string, exportName string, parameters Export) (result Export, err error) {
@@ -142,15 +140,13 @@ func (client ExportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 
 // Delete the operation to delete a export.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-// Management Group scope..
+// for EnrollmentAccount scope.
 // exportName - export Name.
 func (client ExportsClient) Delete(ctx context.Context, scope string, exportName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -225,15 +221,13 @@ func (client ExportsClient) DeleteResponder(resp *http.Response) (result autores
 
 // Execute the operation to execute a export.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-// Management Group scope..
+// for EnrollmentAccount scope.
 // exportName - export Name.
 func (client ExportsClient) Execute(ctx context.Context, scope string, exportName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -308,15 +302,13 @@ func (client ExportsClient) ExecuteResponder(resp *http.Response) (result autore
 
 // Get gets the export for the defined scope by export name.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-// Management Group scope..
+// for EnrollmentAccount scope.
 // exportName - export Name.
 func (client ExportsClient) Get(ctx context.Context, scope string, exportName string) (result Export, err error) {
 	if tracing.IsEnabled() {
@@ -392,15 +384,13 @@ func (client ExportsClient) GetResponder(resp *http.Response) (result Export, er
 
 // GetExecutionHistory gets the execution history of a export for the defined scope by export name.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-// Management Group scope..
+// for EnrollmentAccount scope.
 // exportName - export Name.
 func (client ExportsClient) GetExecutionHistory(ctx context.Context, scope string, exportName string) (result ExportExecutionListResult, err error) {
 	if tracing.IsEnabled() {
@@ -476,15 +466,13 @@ func (client ExportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 
 // List lists all exports at the given scope.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with export operations. This includes '/subscriptions/{subscriptionId}' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-// Management Group scope..
+// for EnrollmentAccount scope.
 func (client ExportsClient) List(ctx context.Context, scope string) (result ExportListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExportsClient.List")

@@ -172,6 +172,13 @@ type VirtualMachineScaleSetRollingUpgradesClientAPI interface {
 
 var _ VirtualMachineScaleSetRollingUpgradesClientAPI = (*compute.VirtualMachineScaleSetRollingUpgradesClient)(nil)
 
+// VirtualMachineScaleSetClientAPI contains the set of methods on the VirtualMachineScaleSetClient type.
+type VirtualMachineScaleSetClientAPI interface {
+	ConvertToSinglePlacementGroup(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters compute.VMScaleSetConvertToSinglePlacementGroupInput) (result autorest.Response, err error)
+}
+
+var _ VirtualMachineScaleSetClientAPI = (*compute.VirtualMachineScaleSetClient)(nil)
+
 // VirtualMachineScaleSetVMsClientAPI contains the set of methods on the VirtualMachineScaleSetVMsClient type.
 type VirtualMachineScaleSetVMsClientAPI interface {
 	Deallocate(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string) (result compute.VirtualMachineScaleSetVMsDeallocateFuture, err error)

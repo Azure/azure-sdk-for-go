@@ -110,7 +110,7 @@ func (client AccuracyTestClient) CreateResponder(resp *http.Response) (result Er
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusUnsupportedMediaType, http.StatusTooManyRequests),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusUnauthorized, http.StatusForbidden, http.StatusUnsupportedMediaType, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

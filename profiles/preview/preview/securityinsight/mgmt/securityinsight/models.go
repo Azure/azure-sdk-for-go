@@ -192,11 +192,8 @@ type AggregationsKind1 = original.AggregationsKind1
 type AggregationsModel = original.AggregationsModel
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
-type AlertRuleModel = original.AlertRuleModel
 type AlertRulesClient = original.AlertRulesClient
 type AlertRulesList = original.AlertRulesList
-type AlertRulesListIterator = original.AlertRulesListIterator
-type AlertRulesListPage = original.AlertRulesListPage
 type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
 type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
 type BaseClient = original.BaseClient
@@ -264,6 +261,9 @@ type ProductSettingsClient = original.ProductSettingsClient
 type Resource = original.Resource
 type ScheduledAlertRule = original.ScheduledAlertRule
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
+type ScheduledAlertRulesList = original.ScheduledAlertRulesList
+type ScheduledAlertRulesListIterator = original.ScheduledAlertRulesListIterator
+type ScheduledAlertRulesListPage = original.ScheduledAlertRulesListPage
 type Settings = original.Settings
 type SettingsKind = original.SettingsKind
 type SettingsModel = original.SettingsModel
@@ -297,12 +297,6 @@ func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 }
 func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
-	return original.NewAlertRulesListIterator(page)
-}
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return original.NewAlertRulesListPage(getNextPage)
 }
 func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
 	return original.NewBookmarkListIterator(page)
@@ -387,6 +381,12 @@ func NewProductSettingsClient(subscriptionID string) ProductSettingsClient {
 }
 func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) ProductSettingsClient {
 	return original.NewProductSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScheduledAlertRulesListIterator(page ScheduledAlertRulesListPage) ScheduledAlertRulesListIterator {
+	return original.NewScheduledAlertRulesListIterator(page)
+}
+func NewScheduledAlertRulesListPage(getNextPage func(context.Context, ScheduledAlertRulesList) (ScheduledAlertRulesList, error)) ScheduledAlertRulesListPage {
+	return original.NewScheduledAlertRulesListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

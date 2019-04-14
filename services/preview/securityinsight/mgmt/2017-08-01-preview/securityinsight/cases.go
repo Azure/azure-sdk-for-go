@@ -70,10 +70,7 @@ func (client CasesClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: caseParameter,
-			Constraints: []validation.Constraint{{Target: "caseParameter.CaseProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.Title", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CasesClient", "CreateOrUpdate", err.Error())
 	}
 

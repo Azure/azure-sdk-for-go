@@ -996,7 +996,6 @@ type BasicAlertRule interface {
 
 // AlertRule alert rule.
 type AlertRule struct {
-	autorest.Response `json:"-"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - Azure resource type
@@ -1089,26 +1088,8 @@ type AlertRuleKind1 struct {
 	Kind AlertRuleKind `json:"kind,omitempty"`
 }
 
-// AlertRuleModel ...
-type AlertRuleModel struct {
-	autorest.Response `json:"-"`
-	Value             BasicAlertRule `json:"value,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for AlertRuleModel struct.
-func (arm *AlertRuleModel) UnmarshalJSON(body []byte) error {
-	ar, err := unmarshalBasicAlertRule(body)
-	if err != nil {
-		return err
-	}
-	arm.Value = ar
-
-	return nil
-}
-
 // AlertRulesList list all the alert rules.
 type AlertRulesList struct {
-	autorest.Response `json:"-"`
 	// NextLink - URL to fetch the next set of alert rules.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of alert rules.
@@ -1145,143 +1126,6 @@ func (arl *AlertRulesList) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// AlertRulesListIterator provides access to a complete listing of AlertRule values.
-type AlertRulesListIterator struct {
-	i    int
-	page AlertRulesListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *AlertRulesListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *AlertRulesListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter AlertRulesListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter AlertRulesListIterator) Response() AlertRulesList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter AlertRulesListIterator) Value() BasicAlertRule {
-	if !iter.page.NotDone() {
-		return AlertRule{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the AlertRulesListIterator type.
-func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
-	return AlertRulesListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (arl AlertRulesList) IsEmpty() bool {
-	return arl.Value == nil || len(*arl.Value) == 0
-}
-
-// alertRulesListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (arl AlertRulesList) alertRulesListPreparer(ctx context.Context) (*http.Request, error) {
-	if arl.NextLink == nil || len(to.String(arl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(arl.NextLink)))
-}
-
-// AlertRulesListPage contains a page of BasicAlertRule values.
-type AlertRulesListPage struct {
-	fn  func(context.Context, AlertRulesList) (AlertRulesList, error)
-	arl AlertRulesList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *AlertRulesListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.arl)
-	if err != nil {
-		return err
-	}
-	page.arl = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *AlertRulesListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page AlertRulesListPage) NotDone() bool {
-	return !page.arl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page AlertRulesListPage) Response() AlertRulesList {
-	return page.arl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page AlertRulesListPage) Values() []BasicAlertRule {
-	if page.arl.IsEmpty() {
-		return nil
-	}
-	return *page.arl.Value
-}
-
-// Creates a new instance of the AlertRulesListPage type.
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return AlertRulesListPage{fn: getNextPage}
 }
 
 // AlertsDataTypeOfDataConnector alerts data type for data connectors.
@@ -1956,27 +1800,27 @@ func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, erro
 // CaseProperties describes case properties
 type CaseProperties struct {
 	// LastUpdatedTimeUtc - The last time the case was updated
-	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+	LastUpdatedTimeUtc *date.Time `json:"LastUpdatedTimeUtc,omitempty"`
 	// CreatedTimeUtc - The time the case was created
-	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	CreatedTimeUtc *date.Time `json:"CreatedTimeUtc,omitempty"`
 	// EndTimeUtc - The end time of the case
-	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
+	EndTimeUtc *date.Time `json:"EndTimeUtc,omitempty"`
 	// StartTimeUtc - The start time of the case
-	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
+	StartTimeUtc *date.Time `json:"StartTimeUtc,omitempty"`
 	// Labels - List of labels relevant to this case
-	Labels *[]string `json:"labels,omitempty"`
+	Labels *[]string `json:"Labels,omitempty"`
 	// Description - The description of the case
-	Description *string `json:"description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Title - The title of the case
-	Title *string `json:"title,omitempty"`
+	Title *string `json:"Title,omitempty"`
 	// AssignedTo - Describes a user that the case is assigned to
-	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
+	AssignedTo *UserInfo `json:"AssignedTo,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
-	Severity CaseSeverity `json:"severity,omitempty"`
+	Severity CaseSeverity `json:"Severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'Draft', 'Open', 'InProgress', 'Closed'
-	Status CaseStatus `json:"status,omitempty"`
+	Status CaseStatus `json:"Status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
-	CloseReason CloseReason `json:"closeReason,omitempty"`
+	CloseReason CloseReason `json:"CloseReason,omitempty"`
 }
 
 // CloudError error response structure.
@@ -3703,6 +3547,7 @@ type Resource struct {
 
 // ScheduledAlertRule represents scheduled alert rule.
 type ScheduledAlertRule struct {
+	autorest.Response `json:"-"`
 	// ScheduledAlertRuleProperties - Scheduled alert rule properties
 	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
 	// ID - Azure resource Id
@@ -3852,6 +3697,152 @@ type ScheduledAlertRuleProperties struct {
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
 	// LastModifiedUtc - The last time that this alert has been modified.
 	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
+}
+
+// ScheduledAlertRulesList list all the scheduled alert rules.
+type ScheduledAlertRulesList struct {
+	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of scheduled alert rules.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of scheduled alert rules.
+	Value *[]ScheduledAlertRule `json:"value,omitempty"`
+}
+
+// ScheduledAlertRulesListIterator provides access to a complete listing of ScheduledAlertRule values.
+type ScheduledAlertRulesListIterator struct {
+	i    int
+	page ScheduledAlertRulesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ScheduledAlertRulesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScheduledAlertRulesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ScheduledAlertRulesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ScheduledAlertRulesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ScheduledAlertRulesListIterator) Response() ScheduledAlertRulesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ScheduledAlertRulesListIterator) Value() ScheduledAlertRule {
+	if !iter.page.NotDone() {
+		return ScheduledAlertRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ScheduledAlertRulesListIterator type.
+func NewScheduledAlertRulesListIterator(page ScheduledAlertRulesListPage) ScheduledAlertRulesListIterator {
+	return ScheduledAlertRulesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sarl ScheduledAlertRulesList) IsEmpty() bool {
+	return sarl.Value == nil || len(*sarl.Value) == 0
+}
+
+// scheduledAlertRulesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sarl ScheduledAlertRulesList) scheduledAlertRulesListPreparer(ctx context.Context) (*http.Request, error) {
+	if sarl.NextLink == nil || len(to.String(sarl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sarl.NextLink)))
+}
+
+// ScheduledAlertRulesListPage contains a page of ScheduledAlertRule values.
+type ScheduledAlertRulesListPage struct {
+	fn   func(context.Context, ScheduledAlertRulesList) (ScheduledAlertRulesList, error)
+	sarl ScheduledAlertRulesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ScheduledAlertRulesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScheduledAlertRulesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.sarl)
+	if err != nil {
+		return err
+	}
+	page.sarl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ScheduledAlertRulesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ScheduledAlertRulesListPage) NotDone() bool {
+	return !page.sarl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ScheduledAlertRulesListPage) Response() ScheduledAlertRulesList {
+	return page.sarl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ScheduledAlertRulesListPage) Values() []ScheduledAlertRule {
+	if page.sarl.IsEmpty() {
+		return nil
+	}
+	return *page.sarl.Value
+}
+
+// Creates a new instance of the ScheduledAlertRulesListPage type.
+func NewScheduledAlertRulesListPage(getNextPage func(context.Context, ScheduledAlertRulesList) (ScheduledAlertRulesList, error)) ScheduledAlertRulesListPage {
+	return ScheduledAlertRulesListPage{fn: getNextPage}
 }
 
 // BasicSettings the Setting.

@@ -162,6 +162,21 @@ func PossibleKindValues() []Kind {
 	return []Kind{KindDataConnection, KindEventGrid, KindEventHub}
 }
 
+// NameAvailable enumerates the values for name available.
+type NameAvailable string
+
+const (
+	// Available ...
+	Available NameAvailable = "Available"
+	// NotAvailable ...
+	NotAvailable NameAvailable = "NotAvailable"
+)
+
+// PossibleNameAvailableValues returns an array of possible values for the NameAvailable const type.
+func PossibleNameAvailableValues() []NameAvailable {
+	return []NameAvailable{Available, NotAvailable}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -254,6 +269,17 @@ type AzureSku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 	// Tier - SKU tier.
 	Tier *string `json:"tier,omitempty"`
+}
+
+// CheckNameAvailabilityResult the result returned from a check name availability request.
+type CheckNameAvailabilityResult struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - Specifies whether or not the name is available. Possible values include: 'Available', 'NotAvailable'
+	NameAvailable NameAvailable `json:"nameAvailable,omitempty"`
+	// Name - The name that was checked.
+	Name *string `json:"name,omitempty"`
+	// Message - Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
+	Message *string `json:"message,omitempty"`
 }
 
 // CheckNameResult the result returned from a check name availability request.
@@ -1124,6 +1150,15 @@ func (dc DataConnection) AsDataConnection() (*DataConnection, bool) {
 // AsBasicDataConnection is the BasicDataConnection implementation for DataConnection.
 func (dc DataConnection) AsBasicDataConnection() (BasicDataConnection, bool) {
 	return &dc, true
+}
+
+// DataConnectionCheckNameRequest the result returned from a data connections check name availability
+// request.
+type DataConnectionCheckNameRequest struct {
+	// Name - Data Connection name.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of resource, Microsoft.Kusto/clusters/databases/dataConnections.
+	Type *string `json:"type,omitempty"`
 }
 
 // DataConnectionListResult the list Kusto data connections operation response.

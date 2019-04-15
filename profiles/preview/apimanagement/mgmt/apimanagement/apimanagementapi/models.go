@@ -19,11 +19,10 @@
 
 package apimanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement/apimanagementapi"
+import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2019-01-01/apimanagement/apimanagementapi"
 
 type APIClientAPI = original.APIClientAPI
 type APIDiagnosticClientAPI = original.APIDiagnosticClientAPI
-type APIDiagnosticLoggerClientAPI = original.APIDiagnosticLoggerClientAPI
 type APIExportClientAPI = original.APIExportClientAPI
 type APIIssueAttachmentClientAPI = original.APIIssueAttachmentClientAPI
 type APIIssueClientAPI = original.APIIssueClientAPI
@@ -33,19 +32,21 @@ type APIOperationPolicyClientAPI = original.APIOperationPolicyClientAPI
 type APIPolicyClientAPI = original.APIPolicyClientAPI
 type APIProductClientAPI = original.APIProductClientAPI
 type APIReleaseClientAPI = original.APIReleaseClientAPI
-type APIRevisionsClientAPI = original.APIRevisionsClientAPI
+type APIRevisionClientAPI = original.APIRevisionClientAPI
 type APISchemaClientAPI = original.APISchemaClientAPI
+type APITagDescriptionClientAPI = original.APITagDescriptionClientAPI
 type APIVersionSetClientAPI = original.APIVersionSetClientAPI
 type AuthorizationServerClientAPI = original.AuthorizationServerClientAPI
 type BackendClientAPI = original.BackendClientAPI
+type CacheClientAPI = original.CacheClientAPI
 type CertificateClientAPI = original.CertificateClientAPI
 type DelegationSettingsClientAPI = original.DelegationSettingsClientAPI
 type DiagnosticClientAPI = original.DiagnosticClientAPI
-type DiagnosticLoggerClientAPI = original.DiagnosticLoggerClientAPI
 type EmailTemplateClientAPI = original.EmailTemplateClientAPI
 type GroupClientAPI = original.GroupClientAPI
 type GroupUserClientAPI = original.GroupUserClientAPI
 type IdentityProviderClientAPI = original.IdentityProviderClientAPI
+type IssueClientAPI = original.IssueClientAPI
 type LoggerClientAPI = original.LoggerClientAPI
 type NetworkStatusClientAPI = original.NetworkStatusClientAPI
 type NotificationClientAPI = original.NotificationClientAPI
@@ -55,7 +56,7 @@ type OpenIDConnectProviderClientAPI = original.OpenIDConnectProviderClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PolicyClientAPI = original.PolicyClientAPI
-type PolicySnippetsClientAPI = original.PolicySnippetsClientAPI
+type PolicySnippetClientAPI = original.PolicySnippetClientAPI
 type ProductAPIClientAPI = original.ProductAPIClientAPI
 type ProductClientAPI = original.ProductClientAPI
 type ProductGroupClientAPI = original.ProductGroupClientAPI
@@ -64,7 +65,7 @@ type ProductSubscriptionsClientAPI = original.ProductSubscriptionsClientAPI
 type PropertyClientAPI = original.PropertyClientAPI
 type QuotaByCounterKeysClientAPI = original.QuotaByCounterKeysClientAPI
 type QuotaByPeriodKeysClientAPI = original.QuotaByPeriodKeysClientAPI
-type RegionsClientAPI = original.RegionsClientAPI
+type RegionClientAPI = original.RegionClientAPI
 type ReportsClientAPI = original.ReportsClientAPI
 type ServiceClientAPI = original.ServiceClientAPI
 type ServiceSkusClientAPI = original.ServiceSkusClientAPI
@@ -72,12 +73,12 @@ type SignInSettingsClientAPI = original.SignInSettingsClientAPI
 type SignUpSettingsClientAPI = original.SignUpSettingsClientAPI
 type SubscriptionClientAPI = original.SubscriptionClientAPI
 type TagClientAPI = original.TagClientAPI
-type TagDescriptionClientAPI = original.TagDescriptionClientAPI
 type TagResourceClientAPI = original.TagResourceClientAPI
 type TenantAccessClientAPI = original.TenantAccessClientAPI
 type TenantAccessGitClientAPI = original.TenantAccessGitClientAPI
 type TenantConfigurationClientAPI = original.TenantConfigurationClientAPI
 type UserClientAPI = original.UserClientAPI
+type UserConfirmationPasswordClientAPI = original.UserConfirmationPasswordClientAPI
 type UserGroupClientAPI = original.UserGroupClientAPI
 type UserIdentitiesClientAPI = original.UserIdentitiesClientAPI
 type UserSubscriptionClientAPI = original.UserSubscriptionClientAPI

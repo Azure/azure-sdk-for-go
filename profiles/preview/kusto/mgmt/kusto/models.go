@@ -40,18 +40,17 @@ const (
 type AzureSkuName = original.AzureSkuName
 
 const (
-	DevNoSLAStandardD11V2 AzureSkuName = original.DevNoSLAStandardD11V2
-	StandardD11V2         AzureSkuName = original.StandardD11V2
-	StandardD12V2         AzureSkuName = original.StandardD12V2
-	StandardD13V2         AzureSkuName = original.StandardD13V2
-	StandardD14V2         AzureSkuName = original.StandardD14V2
-	StandardDS13V21TBPS   AzureSkuName = original.StandardDS13V21TBPS
-	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
-	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
-	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
-	StandardL16s          AzureSkuName = original.StandardL16s
-	StandardL4s           AzureSkuName = original.StandardL4s
-	StandardL8s           AzureSkuName = original.StandardL8s
+	StandardD11V2       AzureSkuName = original.StandardD11V2
+	StandardD12V2       AzureSkuName = original.StandardD12V2
+	StandardD13V2       AzureSkuName = original.StandardD13V2
+	StandardD14V2       AzureSkuName = original.StandardD14V2
+	StandardDS13V21TBPS AzureSkuName = original.StandardDS13V21TBPS
+	StandardDS13V22TBPS AzureSkuName = original.StandardDS13V22TBPS
+	StandardDS14V23TBPS AzureSkuName = original.StandardDS14V23TBPS
+	StandardDS14V24TBPS AzureSkuName = original.StandardDS14V24TBPS
+	StandardL16s        AzureSkuName = original.StandardL16s
+	StandardL4s         AzureSkuName = original.StandardL4s
+	StandardL8s         AzureSkuName = original.StandardL8s
 )
 
 type DataFormat = original.DataFormat

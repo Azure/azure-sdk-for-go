@@ -51,8 +51,6 @@ func PossibleAzureScaleTypeValues() []AzureScaleType {
 type AzureSkuName string
 
 const (
-	// DevNoSLAStandardD11V2 ...
-	DevNoSLAStandardD11V2 AzureSkuName = "Dev(No SLA)_Standard_D11_v2"
 	// StandardD11V2 ...
 	StandardD11V2 AzureSkuName = "Standard_D11_v2"
 	// StandardD12V2 ...
@@ -79,7 +77,7 @@ const (
 
 // PossibleAzureSkuNameValues returns an array of possible values for the AzureSkuName const type.
 func PossibleAzureSkuNameValues() []AzureSkuName {
-	return []AzureSkuName{DevNoSLAStandardD11V2, StandardD11V2, StandardD12V2, StandardD13V2, StandardD14V2, StandardDS13V21TBPS, StandardDS13V22TBPS, StandardDS14V23TBPS, StandardDS14V24TBPS, StandardL16s, StandardL4s, StandardL8s}
+	return []AzureSkuName{StandardD11V2, StandardD12V2, StandardD13V2, StandardD14V2, StandardDS13V21TBPS, StandardDS13V22TBPS, StandardDS14V23TBPS, StandardDS14V24TBPS, StandardL16s, StandardL4s, StandardL8s}
 }
 
 // DatabasePrincipalRole enumerates the values for database principal role.
@@ -275,7 +273,7 @@ type AzureResourceSku struct {
 
 // AzureSku azure SKU definition.
 type AzureSku struct {
-	// Name - SKU name. Possible values include: 'StandardDS13V21TBPS', 'StandardDS13V22TBPS', 'StandardDS14V23TBPS', 'StandardDS14V24TBPS', 'StandardD13V2', 'StandardD14V2', 'StandardL8s', 'StandardL16s', 'StandardD11V2', 'StandardD12V2', 'StandardL4s', 'DevNoSLAStandardD11V2'
+	// Name - SKU name. Possible values include: 'StandardDS13V21TBPS', 'StandardDS13V22TBPS', 'StandardDS14V23TBPS', 'StandardDS14V24TBPS', 'StandardD13V2', 'StandardD14V2', 'StandardL8s', 'StandardL16s', 'StandardD11V2', 'StandardD12V2', 'StandardL4s'
 	Name AzureSkuName `json:"name,omitempty"`
 	// Capacity - SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`

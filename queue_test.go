@@ -553,15 +553,16 @@ func (suite *serviceBusSuite) TestQueueWithoutDuplicateDetection() {
 }
 
 func testSendBatch(ctx context.Context, t *testing.T, q *Queue) {
-	messages := make([]*Message, 5000)
-	for i := 0; i < 5000; i++ {
+	msgCount := 10000
+	messages := make([]*Message, msgCount)
+	for i := 0; i < msgCount; i++ {
 		rmsg := test.RandomString("foo", 10)
 		messages[i] = NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))
 	}
 
 	iterator := NewMessageBatchIterator(StandardMaxMessageSizeInBytes, messages...)
 	assert.NoError(t, q.SendBatch(ctx, iterator))
-	assertMessageCount(ctx, t, q.namespace, q.Name, 5000)
+	assertMessageCount(ctx, t, q.namespace, q.Name, int64(msgCount))
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
@@ -718,7 +719,8 @@ func (suite *serviceBusSuite) TestQueue_NewDeadLetter() {
 func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 	qdl := q.NewDeadLetter()
 	require.NotNil(t, qdl)
-	require.NoError(t, q.Send(ctx, NewMessageFromString("foo")))
+	err := q.Send(ctx, NewMessageFromString("foo"))
+	require.NoError(t, err)
 
 	// abandon multiple 10 times until the message is dead lettered
 	for i := 0; i < 10; i++ {
@@ -730,7 +732,7 @@ func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 
 	dl := q.NewDeadLetter()
 	called := false
-	err := dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+	err = dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 		assert.Equal(t, "foo", string(msg.Data))
 		called = true
 		return msg.Complete(ctx)

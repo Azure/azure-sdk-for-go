@@ -932,7 +932,7 @@ type QueryDatasetConfiguration struct {
 type QueryDefinition struct {
 	// Type - The type of the query.
 	Type *string `json:"type,omitempty"`
-	// Timeframe - The time frame for pulling data for the query. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'BillingMonthToDate', 'YearToDate', 'TheLastWeek', 'TheLastMonth', 'TheLastBillingMonth', 'TheLastYear', 'Custom'
+	// Timeframe - The time frame for pulling data for the query. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'YearToDate', 'TheLastWeek', 'TheLastMonth', 'TheLastYear', 'Custom', 'BillingMonthToDate', 'TheLastBillingMonth'
 	Timeframe TimeframeType `json:"timeframe,omitempty"`
 	// TimePeriod - Has time period for pulling data for the query.
 	TimePeriod *QueryTimePeriod `json:"timePeriod,omitempty"`

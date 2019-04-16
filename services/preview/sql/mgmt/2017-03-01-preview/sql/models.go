@@ -10735,6 +10735,8 @@ type SensitivityLabelProperties struct {
 	InformationType *string `json:"informationType,omitempty"`
 	// InformationTypeID - The information type ID.
 	InformationTypeID *string `json:"informationTypeId,omitempty"`
+	// IsDisabled - Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
+	IsDisabled *bool `json:"isDisabled,omitempty"`
 }
 
 // Server an Azure SQL Database server.

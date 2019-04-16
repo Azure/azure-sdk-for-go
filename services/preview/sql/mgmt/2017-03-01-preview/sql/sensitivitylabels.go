@@ -218,6 +218,179 @@ func (client SensitivityLabelsClient) DeleteResponder(resp *http.Response) (resu
 	return
 }
 
+// DisableRecommendation disables sensitivity recommendations on a given column
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database.
+// schemaName - the name of the schema.
+// tableName - the name of the table.
+// columnName - the name of the column.
+func (client SensitivityLabelsClient) DisableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.DisableRecommendation")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DisableRecommendationPreparer(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "DisableRecommendation", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DisableRecommendationSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "DisableRecommendation", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DisableRecommendationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "DisableRecommendation", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DisableRecommendationPreparer prepares the DisableRecommendation request.
+func (client SensitivityLabelsClient) DisableRecommendationPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"columnName":             autorest.Encode("path", columnName),
+		"databaseName":           autorest.Encode("path", databaseName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"schemaName":             autorest.Encode("path", schemaName),
+		"sensitivityLabelSource": autorest.Encode("path", "recommended"),
+		"serverName":             autorest.Encode("path", serverName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"tableName":              autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2017-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/disable", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DisableRecommendationSender sends the DisableRecommendation request. The method will close the
+// http.Response Body if it receives an error.
+func (client SensitivityLabelsClient) DisableRecommendationSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DisableRecommendationResponder handles the response to the DisableRecommendation request. The method always
+// closes the http.Response Body.
+func (client SensitivityLabelsClient) DisableRecommendationResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// EnableRecommendation enables sensitivity recommendations on a given column (recommendations are enabled by default
+// on all columns)
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database.
+// schemaName - the name of the schema.
+// tableName - the name of the table.
+// columnName - the name of the column.
+func (client SensitivityLabelsClient) EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.EnableRecommendation")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.EnableRecommendationPreparer(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "EnableRecommendation", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EnableRecommendationSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "EnableRecommendation", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EnableRecommendationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "EnableRecommendation", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// EnableRecommendationPreparer prepares the EnableRecommendation request.
+func (client SensitivityLabelsClient) EnableRecommendationPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"columnName":             autorest.Encode("path", columnName),
+		"databaseName":           autorest.Encode("path", databaseName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"schemaName":             autorest.Encode("path", schemaName),
+		"sensitivityLabelSource": autorest.Encode("path", "recommended"),
+		"serverName":             autorest.Encode("path", serverName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"tableName":              autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2017-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EnableRecommendationSender sends the EnableRecommendation request. The method will close the
+// http.Response Body if it receives an error.
+func (client SensitivityLabelsClient) EnableRecommendationSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// EnableRecommendationResponder handles the response to the EnableRecommendation request. The method always
+// closes the http.Response Body.
+func (client SensitivityLabelsClient) EnableRecommendationResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get gets the sensitivity label of a given column
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
@@ -434,8 +607,9 @@ func (client SensitivityLabelsClient) ListCurrentByDatabaseComplete(ctx context.
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // databaseName - the name of the database.
+// includeDisabledRecommendations - specifies whether to include disabled recommendations or not.
 // filter - an OData filter expression that filters elements in the collection.
-func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (result SensitivityLabelListResultPage, err error) {
+func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result SensitivityLabelListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.ListRecommendedByDatabase")
 		defer func() {
@@ -447,7 +621,7 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Cont
 		}()
 	}
 	result.fn = client.listRecommendedByDatabaseNextResults
-	req, err := client.ListRecommendedByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName, skipToken, filter)
+	req, err := client.ListRecommendedByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName, includeDisabledRecommendations, skipToken, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "ListRecommendedByDatabase", nil, "Failure preparing request")
 		return
@@ -469,7 +643,7 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabase(ctx context.Cont
 }
 
 // ListRecommendedByDatabasePreparer prepares the ListRecommendedByDatabase request.
-func (client SensitivityLabelsClient) ListRecommendedByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (*http.Request, error) {
+func (client SensitivityLabelsClient) ListRecommendedByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -480,6 +654,9 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabasePreparer(ctx cont
 	const APIVersion = "2017-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if includeDisabledRecommendations != nil {
+		queryParameters["includeDisabledRecommendations"] = autorest.Encode("query", *includeDisabledRecommendations)
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
@@ -538,7 +715,7 @@ func (client SensitivityLabelsClient) listRecommendedByDatabaseNextResults(ctx c
 }
 
 // ListRecommendedByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SensitivityLabelsClient) ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, filter string) (result SensitivityLabelListResultIterator, err error) {
+func (client SensitivityLabelsClient) ListRecommendedByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result SensitivityLabelListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.ListRecommendedByDatabase")
 		defer func() {
@@ -549,6 +726,6 @@ func (client SensitivityLabelsClient) ListRecommendedByDatabaseComplete(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListRecommendedByDatabase(ctx, resourceGroupName, serverName, databaseName, skipToken, filter)
+	result.page, err = client.ListRecommendedByDatabase(ctx, resourceGroupName, serverName, databaseName, includeDisabledRecommendations, skipToken, filter)
 	return
 }

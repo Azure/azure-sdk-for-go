@@ -74,9 +74,9 @@ type ExpressionEvaluationDetails struct {
 	// Path - Property path if the expression is a field or an alias.
 	Path *string `json:"path,omitempty"`
 	// ExpressionValue - Value of the expression.
-	ExpressionValue *string `json:"expressionValue,omitempty"`
+	ExpressionValue interface{} `json:"expressionValue,omitempty"`
 	// TargetValue - Target value to be compared with the expression value.
-	TargetValue *string `json:"targetValue,omitempty"`
+	TargetValue interface{} `json:"targetValue,omitempty"`
 	// Operator - Operator to compare the expression value and the target value.
 	Operator *string `json:"operator,omitempty"`
 }

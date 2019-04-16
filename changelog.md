@@ -2,8 +2,11 @@
 
 ## `head`
 
+## `v0.4.1`
+- fix issue with sender when SB returns a different receiver disposition [#119](https://github.com/Azure/azure-service-bus-go/issues/119)
+
 ## `v0.4.0`
-- Update to AMQP 0.12.0 which introduces strict settlement mode
+- Update to AMQP 0.11.0 which introduces strict settlement mode
   ([#111](https://github.com/Azure/azure-service-bus-go/issues/111))
 
 ## `v0.3.0`

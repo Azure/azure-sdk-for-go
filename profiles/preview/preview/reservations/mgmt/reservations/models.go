@@ -22,7 +22,7 @@ package reservations
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2018-06-01/reservations"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-04-01/reservations"
 )
 
 const (
@@ -99,9 +99,8 @@ const (
 type InstanceFlexibility = original.InstanceFlexibility
 
 const (
-	NotSupported InstanceFlexibility = original.NotSupported
-	Off          InstanceFlexibility = original.Off
-	On           InstanceFlexibility = original.On
+	Off InstanceFlexibility = original.Off
+	On  InstanceFlexibility = original.On
 )
 
 type ReservationTerm = original.ReservationTerm
@@ -115,7 +114,6 @@ type ReservedResourceType = original.ReservedResourceType
 
 const (
 	CosmosDb        ReservedResourceType = original.CosmosDb
-	RedHat          ReservedResourceType = original.RedHat
 	SQLDatabases    ReservedResourceType = original.SQLDatabases
 	SuseLinux       ReservedResourceType = original.SuseLinux
 	VirtualMachines ReservedResourceType = original.VirtualMachines
@@ -139,6 +137,10 @@ type AppliedReservationList = original.AppliedReservationList
 type AppliedReservations = original.AppliedReservations
 type AppliedReservationsProperties = original.AppliedReservationsProperties
 type BaseClient = original.BaseClient
+type CalculatePriceResponse = original.CalculatePriceResponse
+type CalculatePriceResponseProperties = original.CalculatePriceResponseProperties
+type CalculatePriceResponsePropertiesBillingCurrencyTotal = original.CalculatePriceResponsePropertiesBillingCurrencyTotal
+type CalculatePriceResponsePropertiesPricingCurrencyTotal = original.CalculatePriceResponsePropertiesPricingCurrencyTotal
 type Catalog = original.Catalog
 type Client = original.Client
 type Error = original.Error
@@ -163,10 +165,14 @@ type OrderList = original.OrderList
 type OrderListIterator = original.OrderListIterator
 type OrderListPage = original.OrderListPage
 type OrderProperties = original.OrderProperties
+type OrderPurchaseFuture = original.OrderPurchaseFuture
 type OrderResponse = original.OrderResponse
 type Patch = original.Patch
 type PatchProperties = original.PatchProperties
 type Properties = original.Properties
+type PurchaseRequest = original.PurchaseRequest
+type PurchaseRequestProperties = original.PurchaseRequestProperties
+type PurchaseRequestPropertiesReservedResourceProperties = original.PurchaseRequestPropertiesReservedResourceProperties
 type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
 type Response = original.Response

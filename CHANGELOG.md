@@ -1,16 +1,25 @@
 # CHANGELOG
 
+## `v27.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+| reservations | 2019-04-01 |
+
 ## `v27.1.0`
 
- ### New Packages
+### New Packages
 
- | Package Name | API Version |
+| Package Name | API Version |
 | -----------: | :---------: |
 | compute | 2019-03-01 |
 
- ### Updated Packages
+### Updated Packages
 
- | Package Name | API Version |
+| Package Name | API Version |
 | -----------: | :---------: |
 | cdn | 2017-10-12 |
 | compute | 2018-10-01 |
@@ -23,9 +32,9 @@
 | securityinsight | 2017-08-01-preview |
 | storage | 2018-02-01<br/>2018-03-01-preview<br/>2018-07-01<br/>2018-11-01 |
 
- ### Breaking Changes - Preview Only
+### Breaking Changes - Preview Only
 
- | Package Name | API Version |
+| Package Name | API Version |
 | -----------: | :---------: |
 | hdinsight | 2015-03-01-preview |
 

@@ -292,6 +292,29 @@ type HanaInstanceProperties struct {
 	HwRevision *string `json:"hwRevision,omitempty"`
 }
 
+// HanaInstancesEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type HanaInstancesEnableMonitoringFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesEnableMonitoringFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesEnableMonitoringFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // HanaInstancesListResult the response from the List HANA Instances operation.
 type HanaInstancesListResult struct {
 	autorest.Response `json:"-"`
@@ -491,29 +514,6 @@ type MonitoringDetails struct {
 	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
 	// HanaDbPassword - Password for the HANA database to login for monitoring
 	HanaDbPassword *string `json:"hanaDbPassword,omitempty"`
-}
-
-// MonitoringHanaInstancesMethodFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type MonitoringHanaInstancesMethodFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *MonitoringHanaInstancesMethodFuture) Result(client MonitoringClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.MonitoringHanaInstancesMethodFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("hanaonazure.MonitoringHanaInstancesMethodFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // NetworkProfile specifies the network settings for the HANA instance disks.

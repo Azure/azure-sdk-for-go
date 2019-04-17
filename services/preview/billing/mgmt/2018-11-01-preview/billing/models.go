@@ -432,6 +432,8 @@ type AccountProperties struct {
 	Address *Address `json:"address,omitempty"`
 	// Company - Company Name.
 	Company *string `json:"company,omitempty"`
+	// Country - Country Name.
+	Country *string `json:"country,omitempty"`
 	// InvoiceSections - The invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand.
 	InvoiceSections *[]InvoiceSection `json:"invoiceSections,omitempty"`
 	// BillingProfiles - The billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand.
@@ -2383,8 +2385,6 @@ func (p *Property) UnmarshalJSON(body []byte) error {
 
 // PropertySummary the billing property.
 type PropertySummary struct {
-	// ProductID - Product Id.
-	ProductID *string `json:"productId,omitempty"`
 	// BillingTenantID - Billing tenant Id.
 	BillingTenantID *string `json:"billingTenantId,omitempty"`
 	// BillingAccountID - Billing account Id.
@@ -2395,10 +2395,16 @@ type PropertySummary struct {
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
 	// BillingProfileName - Billing profile name.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// CostCenter - Cost center name.
+	CostCenter *string `json:"costCenter,omitempty"`
 	// InvoiceSectionID - Invoice Section Id.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
 	// InvoiceSectionName - Invoice Section name.
 	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
+	// ProductID - Product Id.
+	ProductID *string `json:"productId,omitempty"`
+	// ProductName - Product name.
+	ProductName *string `json:"productName,omitempty"`
 	// SkuID - SKU Id.
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - SKU description.

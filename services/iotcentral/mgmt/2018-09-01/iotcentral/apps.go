@@ -679,6 +679,116 @@ func (client AppsClient) ListBySubscriptionComplete(ctx context.Context) (result
 	return
 }
 
+// ListTemplates get all available application templates.
+func (client AppsClient) ListTemplates(ctx context.Context) (result AppTemplatesResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListTemplates")
+		defer func() {
+			sc := -1
+			if result.atr.Response.Response != nil {
+				sc = result.atr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listTemplatesNextResults
+	req, err := client.ListTemplatesPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "ListTemplates", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListTemplatesSender(req)
+	if err != nil {
+		result.atr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "ListTemplates", resp, "Failure sending request")
+		return
+	}
+
+	result.atr, err = client.ListTemplatesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "ListTemplates", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListTemplatesPreparer prepares the ListTemplates request.
+func (client AppsClient) ListTemplatesPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListTemplatesSender sends the ListTemplates request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListTemplatesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListTemplatesResponder handles the response to the ListTemplates request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListTemplatesResponder(resp *http.Response) (result AppTemplatesResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listTemplatesNextResults retrieves the next set of results, if any.
+func (client AppsClient) listTemplatesNextResults(ctx context.Context, lastResults AppTemplatesResult) (result AppTemplatesResult, err error) {
+	req, err := lastResults.appTemplatesResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "iotcentral.AppsClient", "listTemplatesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListTemplatesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "iotcentral.AppsClient", "listTemplatesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListTemplatesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "listTemplatesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListTemplatesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListTemplatesComplete(ctx context.Context) (result AppTemplatesResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListTemplates")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListTemplates(ctx)
+	return
+}
+
 // Update update the metadata of an IoT Central application.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT Central application.

@@ -366,6 +366,7 @@ type RunUpdateParameters = original.RunUpdateParameters
 type RunsCancelFuture = original.RunsCancelFuture
 type RunsClient = original.RunsClient
 type RunsUpdateFuture = original.RunsUpdateFuture
+type SchedulerTrigger = original.SchedulerTrigger
 type SecretObject = original.SecretObject
 type SetValue = original.SetValue
 type Sku = original.Sku

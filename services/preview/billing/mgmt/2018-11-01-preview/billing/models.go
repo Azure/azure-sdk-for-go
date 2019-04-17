@@ -430,6 +430,8 @@ type AccountProperties struct {
 	AccountType AccountType `json:"accountType,omitempty"`
 	// Address - The address associated with billing account.
 	Address *Address `json:"address,omitempty"`
+	// Company - Company Name.
+	Company *string `json:"company,omitempty"`
 	// InvoiceSections - The invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand.
 	InvoiceSections *[]InvoiceSection `json:"invoiceSections,omitempty"`
 	// BillingProfiles - The billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand.
@@ -2297,9 +2299,90 @@ func (future *ProfilesUpdateFuture) Result(client ProfilesClient) (p Profile, er
 	return
 }
 
-// Property the billing property.
+// Property a billing property resource.
 type Property struct {
 	autorest.Response `json:"-"`
+	// PropertySummary - A billing property.
+	*PropertySummary `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Property.
+func (p Property) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.PropertySummary != nil {
+		objectMap["properties"] = p.PropertySummary
+	}
+	if p.ID != nil {
+		objectMap["id"] = p.ID
+	}
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Type != nil {
+		objectMap["type"] = p.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Property struct.
+func (p *Property) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var propertySummary PropertySummary
+				err = json.Unmarshal(*v, &propertySummary)
+				if err != nil {
+					return err
+				}
+				p.PropertySummary = &propertySummary
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				p.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				p.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				p.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PropertySummary the billing property.
+type PropertySummary struct {
 	// ProductID - Product Id.
 	ProductID *string `json:"productId,omitempty"`
 	// BillingTenantID - Billing tenant Id.

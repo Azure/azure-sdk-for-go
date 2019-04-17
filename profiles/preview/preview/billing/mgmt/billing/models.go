@@ -250,6 +250,7 @@ type ProfilesClient = original.ProfilesClient
 type ProfilesUpdateFuture = original.ProfilesUpdateFuture
 type Property = original.Property
 type PropertyClient = original.PropertyClient
+type PropertySummary = original.PropertySummary
 type RecipientTransferDetails = original.RecipientTransferDetails
 type RecipientTransferDetailsListResult = original.RecipientTransferDetailsListResult
 type RecipientTransferDetailsListResultIterator = original.RecipientTransferDetailsListResultIterator

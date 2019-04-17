@@ -426,17 +426,13 @@ type AccountListResult struct {
 type AccountProperties struct {
 	// DisplayName - The billing account name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Company - The Company this billing account belongs to.
-	Company *string `json:"company,omitempty"`
 	// AccountType - The billing account Type. Possible values include: 'AccountTypeOrganization', 'AccountTypeEnrollment'
 	AccountType AccountType `json:"accountType,omitempty"`
 	// Address - The address associated with billing account.
 	Address *Address `json:"address,omitempty"`
-	// Country - The country associated with billing account..
-	Country *string `json:"country,omitempty"`
-	// InvoiceSections - The invoice sections associated to the billing account.
+	// InvoiceSections - The invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand.
 	InvoiceSections *[]InvoiceSection `json:"invoiceSections,omitempty"`
-	// BillingProfiles - The billing profiles associated to the billing account.
+	// BillingProfiles - The billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand.
 	BillingProfiles *[]Profile `json:"billingProfiles,omitempty"`
 	// EnrollmentDetails - The details about the associated legacy enrollment. By default this is not populated, unless it's specified in $expand.
 	EnrollmentDetails *Enrollment `json:"enrollmentDetails,omitempty"`
@@ -444,6 +440,8 @@ type AccountProperties struct {
 	Departments *[]Department `json:"departments,omitempty"`
 	// EnrollmentAccounts - The accounts associated to the enrollment.
 	EnrollmentAccounts *[]EnrollmentAccount `json:"enrollmentAccounts,omitempty"`
+	// HasReadAccess - Specifies whether the user has read access on billing account.
+	HasReadAccess *bool `json:"hasReadAccess,omitempty"`
 }
 
 // Address address details.
@@ -802,7 +800,7 @@ type DownloadURL struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// EnabledAzureSKUs details about the product.
+// EnabledAzureSKUs details about the enable azure sku.
 type EnabledAzureSKUs struct {
 	// SkuID - The sku id.
 	SkuID *string `json:"skuId,omitempty"`
@@ -1330,9 +1328,9 @@ type InvoiceSummaryProperties struct {
 	InvoicePeriodStartDate *date.Time `json:"invoicePeriodStartDate,omitempty"`
 	// InvoicePeriodEndDate - The end date of the billing period.
 	InvoicePeriodEndDate *date.Time `json:"invoicePeriodEndDate,omitempty"`
-	// BillingProfile - The profile id which invoice belongs to.
-	BillingProfile *string `json:"billingProfile,omitempty"`
-	// BillingProfileName - The profile name which invoice belongs to.
+	// BillingProfileID - The billing profile id this invoice belongs to.
+	BillingProfileID *string `json:"billingProfileId,omitempty"`
+	// BillingProfileName - The profile name this invoice belongs to.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
 	// PurchaseOrderNumber - The purchase identifier for the invoice.
 	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty"`
@@ -1609,8 +1607,8 @@ func (pm *PaymentMethod) UnmarshalJSON(body []byte) error {
 
 // PaymentMethodProperties the properties of the payment method.
 type PaymentMethodProperties struct {
-	// MethodType - Payment method type. Possible values include: 'Credits', 'ChequeWire'
-	MethodType PaymentMethodType `json:"methodType,omitempty"`
+	// PaymentMethodType - Payment method type. Possible values include: 'Credits', 'ChequeWire'
+	PaymentMethodType PaymentMethodType `json:"paymentMethodType,omitempty"`
 	// Details - Details about the payment method.
 	Details *string `json:"details,omitempty"`
 	// Expiration - Expiration date.
@@ -1873,10 +1871,12 @@ func (p *Policy) UnmarshalJSON(body []byte) error {
 
 // PolicyProperties the properties of policy.
 type PolicyProperties struct {
-	// ReservationPurchasesAllowed - The reservationPurchasesAllowed flag.
-	ReservationPurchasesAllowed *bool `json:"reservationPurchasesAllowed,omitempty"`
 	// MarketplacePurchasesAllowed - The marketplacePurchasesAllowed flag.
 	MarketplacePurchasesAllowed *bool `json:"marketplacePurchasesAllowed,omitempty"`
+	// ReservationPurchasesAllowed - The reservationPurchasesAllowed flag.
+	ReservationPurchasesAllowed *bool `json:"reservationPurchasesAllowed,omitempty"`
+	// SubscriptionOwnerCanViewCharges - The subscriptionOwnerCanViewCharges flag.
+	SubscriptionOwnerCanViewCharges *bool `json:"subscriptionOwnerCanViewCharges,omitempty"`
 }
 
 // ProductDetails details of the product to be transferred.
@@ -2252,8 +2252,8 @@ type ProfileProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// PoNumber - Purchase order number.
 	PoNumber *string `json:"poNumber,omitempty"`
-	// BillingAddress - Billing address.
-	BillingAddress *Address `json:"billingAddress,omitempty"`
+	// Address - Billing address.
+	Address *Address `json:"address,omitempty"`
 	// InvoiceEmailOptIn - If the billing profile is opted in to receive invoices via email.
 	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
 	// IsClassic - Is OMS bootstrapped billing profile.
@@ -2824,12 +2824,14 @@ type SubscriptionProperties struct {
 	LastMonthCharges *Amount `json:"lastMonthCharges,omitempty"`
 	// MonthToDateCharges - Month to date charges.
 	MonthToDateCharges *Amount `json:"monthToDateCharges,omitempty"`
-	// EnrollmentAccountContext - The enrollment account context.
-	EnrollmentAccountContext *EnrollmentAccountContext `json:"enrollmentAccountContext,omitempty"`
 	// BillingProfileID - Billing Profile id to which this product belongs.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
 	// BillingProfileName - Billing Profile name to which this product belongs.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// InvoiceSectionID - Invoice section id to which this product belongs.
+	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
+	// InvoiceSectionName - Invoice section name to which this product belongs.
+	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
 	// SkuID - The sku id.
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - The sku description.
@@ -3330,6 +3332,8 @@ type TransactionsSummaryProperties struct {
 	OrderID *string `json:"orderId,omitempty"`
 	// OrderName - The reservation order name.
 	OrderName *string `json:"orderName,omitempty"`
+	// ProductFamily - The product family.
+	ProductFamily *string `json:"productFamily,omitempty"`
 	// ProductTypeID - The product type id.
 	ProductTypeID *string `json:"productTypeId,omitempty"`
 	// ProductType - The type of product.

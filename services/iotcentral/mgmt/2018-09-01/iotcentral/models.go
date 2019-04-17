@@ -477,8 +477,171 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 	return
 }
 
+// AppTemplate ioT Central Application Template.
+type AppTemplate struct {
+	// ManifestID - The ID of the template.
+	ManifestID *string `json:"manifestId,omitempty"`
+	// ManifestVersion - The version of the template.
+	ManifestVersion *string `json:"manifestVersion,omitempty"`
+	// AppTemplateName - The name of the template.
+	AppTemplateName *string `json:"appTemplateName,omitempty"`
+	// Title - The title of the template.
+	Title *string `json:"title,omitempty"`
+	// Order - The order of the template in the templates list.
+	Order *float64 `json:"order,omitempty"`
+	// Description - The description of the template.
+	Description *string `json:"description,omitempty"`
+}
+
+// AppTemplatesResult a list of IoT Central Application Templates with a next link.
+type AppTemplatesResult struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of IoT Central application templates.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - A list of IoT Central Application Templates.
+	Value *[]AppTemplate `json:"value,omitempty"`
+}
+
+// AppTemplatesResultIterator provides access to a complete listing of AppTemplate values.
+type AppTemplatesResultIterator struct {
+	i    int
+	page AppTemplatesResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AppTemplatesResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppTemplatesResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AppTemplatesResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AppTemplatesResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AppTemplatesResultIterator) Response() AppTemplatesResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AppTemplatesResultIterator) Value() AppTemplate {
+	if !iter.page.NotDone() {
+		return AppTemplate{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AppTemplatesResultIterator type.
+func NewAppTemplatesResultIterator(page AppTemplatesResultPage) AppTemplatesResultIterator {
+	return AppTemplatesResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (atr AppTemplatesResult) IsEmpty() bool {
+	return atr.Value == nil || len(*atr.Value) == 0
+}
+
+// appTemplatesResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (atr AppTemplatesResult) appTemplatesResultPreparer(ctx context.Context) (*http.Request, error) {
+	if atr.NextLink == nil || len(to.String(atr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(atr.NextLink)))
+}
+
+// AppTemplatesResultPage contains a page of AppTemplate values.
+type AppTemplatesResultPage struct {
+	fn  func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)
+	atr AppTemplatesResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AppTemplatesResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppTemplatesResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.atr)
+	if err != nil {
+		return err
+	}
+	page.atr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AppTemplatesResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AppTemplatesResultPage) NotDone() bool {
+	return !page.atr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AppTemplatesResultPage) Response() AppTemplatesResult {
+	return page.atr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AppTemplatesResultPage) Values() []AppTemplate {
+	if page.atr.IsEmpty() {
+		return nil
+	}
+	return *page.atr.Value
+}
+
+// Creates a new instance of the AppTemplatesResultPage type.
+func NewAppTemplatesResultPage(getNextPage func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)) AppTemplatesResultPage {
+	return AppTemplatesResultPage{fn: getNextPage}
+}
+
 // ErrorDetails error details.
 type ErrorDetails struct {
+	// ErrorResponseBody - Error response body.
 	*ErrorResponseBody `json:"error,omitempty"`
 }
 

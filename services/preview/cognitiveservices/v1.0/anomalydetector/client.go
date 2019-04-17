@@ -25,6 +25,7 @@ package anomalydetector
 
 import (
 	"context"
+	"crypto/tls"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -46,7 +47,7 @@ func New(endpoint string) BaseClient {
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Client:   autorest.NewClientWithOptions(autorest.ClientOptions{UserAgent: UserAgent(), Renegotiation: tls.RenegotiateFreelyAsClient}),
 		Endpoint: endpoint,
 	}
 }

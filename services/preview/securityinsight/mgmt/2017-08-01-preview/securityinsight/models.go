@@ -35,13 +35,13 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight
 type AggregationsKind string
 
 const (
-	// CasesAggregation ...
-	CasesAggregation AggregationsKind = "CasesAggregation"
+	// AggregationsKindCasesAggregation ...
+	AggregationsKindCasesAggregation AggregationsKind = "CasesAggregation"
 )
 
 // PossibleAggregationsKindValues returns an array of possible values for the AggregationsKind const type.
 func PossibleAggregationsKindValues() []AggregationsKind {
-	return []AggregationsKind{CasesAggregation}
+	return []AggregationsKind{AggregationsKindCasesAggregation}
 }
 
 // AlertRuleKind enumerates the values for alert rule kind.
@@ -207,11 +207,13 @@ type KindBasicAggregations string
 const (
 	// KindAggregations ...
 	KindAggregations KindBasicAggregations = "Aggregations"
+	// KindCasesAggregation ...
+	KindCasesAggregation KindBasicAggregations = "CasesAggregation"
 )
 
 // PossibleKindBasicAggregationsValues returns an array of possible values for the KindBasicAggregations const type.
 func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
-	return []KindBasicAggregations{KindAggregations}
+	return []KindBasicAggregations{KindAggregations, KindCasesAggregation}
 }
 
 // KindBasicDataConnector enumerates the values for kind basic data connector.
@@ -887,6 +889,7 @@ func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsL
 
 // BasicAggregations the aggregation.
 type BasicAggregations interface {
+	AsCasesAggregation() (*CasesAggregation, bool)
 	AsAggregations() (*Aggregations, bool)
 }
 
@@ -899,7 +902,7 @@ type Aggregations struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindAggregations'
+	// Kind - Possible values include: 'KindAggregations', 'KindCasesAggregation'
 	Kind KindBasicAggregations `json:"kind,omitempty"`
 }
 
@@ -911,6 +914,10 @@ func unmarshalBasicAggregations(body []byte) (BasicAggregations, error) {
 	}
 
 	switch m["kind"] {
+	case string(KindCasesAggregation):
+		var ca CasesAggregation
+		err := json.Unmarshal(body, &ca)
+		return ca, err
 	default:
 		var a Aggregations
 		err := json.Unmarshal(body, &a)
@@ -955,6 +962,11 @@ func (a Aggregations) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsCasesAggregation is the BasicAggregations implementation for Aggregations.
+func (a Aggregations) AsCasesAggregation() (*CasesAggregation, bool) {
+	return nil, false
+}
+
 // AsAggregations is the BasicAggregations implementation for Aggregations.
 func (a Aggregations) AsAggregations() (*Aggregations, bool) {
 	return &a, true
@@ -967,7 +979,7 @@ func (a Aggregations) AsBasicAggregations() (BasicAggregations, bool) {
 
 // AggregationsKind1 describes an Azure resource with kind.
 type AggregationsKind1 struct {
-	// Kind - The kind of the setting. Possible values include: 'CasesAggregation'
+	// Kind - The kind of the setting. Possible values include: 'AggregationsKindCasesAggregation'
 	Kind AggregationsKind `json:"kind,omitempty"`
 }
 
@@ -1977,6 +1989,196 @@ type CaseProperties struct {
 	Status CaseStatus `json:"status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
+}
+
+// CasesAggregation represents aggregations results for cases.
+type CasesAggregation struct {
+	// CasesAggregationProperties - Properties of aggregations results of cases.
+	*CasesAggregationProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindAggregations', 'KindCasesAggregation'
+	Kind KindBasicAggregations `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CasesAggregation.
+func (ca CasesAggregation) MarshalJSON() ([]byte, error) {
+	ca.Kind = KindCasesAggregation
+	objectMap := make(map[string]interface{})
+	if ca.CasesAggregationProperties != nil {
+		objectMap["properties"] = ca.CasesAggregationProperties
+	}
+	if ca.ID != nil {
+		objectMap["id"] = ca.ID
+	}
+	if ca.Type != nil {
+		objectMap["type"] = ca.Type
+	}
+	if ca.Name != nil {
+		objectMap["name"] = ca.Name
+	}
+	if ca.Kind != "" {
+		objectMap["kind"] = ca.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCasesAggregation is the BasicAggregations implementation for CasesAggregation.
+func (ca CasesAggregation) AsCasesAggregation() (*CasesAggregation, bool) {
+	return &ca, true
+}
+
+// AsAggregations is the BasicAggregations implementation for CasesAggregation.
+func (ca CasesAggregation) AsAggregations() (*Aggregations, bool) {
+	return nil, false
+}
+
+// AsBasicAggregations is the BasicAggregations implementation for CasesAggregation.
+func (ca CasesAggregation) AsBasicAggregations() (BasicAggregations, bool) {
+	return &ca, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CasesAggregation struct.
+func (ca *CasesAggregation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var casesAggregationProperties CasesAggregationProperties
+				err = json.Unmarshal(*v, &casesAggregationProperties)
+				if err != nil {
+					return err
+				}
+				ca.CasesAggregationProperties = &casesAggregationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ca.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ca.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ca.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAggregations
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ca.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// CasesAggregationBySeverityProperties aggregative results of cases by severity property bag.
+type CasesAggregationBySeverityProperties struct {
+	// TotalCriticalSeverity - Total amount of open cases with severity Critical
+	TotalCriticalSeverity *string `json:"totalCriticalSeverity,omitempty"`
+	// TotalHighSeverity - Total amount of open cases with severity High
+	TotalHighSeverity *string `json:"totalHighSeverity,omitempty"`
+	// TotalMediumSeverity - Total amount of open cases with severity medium
+	TotalMediumSeverity *string `json:"totalMediumSeverity,omitempty"`
+	// TotalLowSeverity - Total amount of open cases with severity Low
+	TotalLowSeverity *string `json:"totalLowSeverity,omitempty"`
+	// TotalInformationalSeverity - Total amount of open cases with severity Informational
+	TotalInformationalSeverity *string `json:"totalInformationalSeverity,omitempty"`
+}
+
+// CasesAggregationByStatusProperties aggregative results of cases by status property bag.
+type CasesAggregationByStatusProperties struct {
+	// TotalNewStatus - Total amount of open cases with status New
+	TotalNewStatus *string `json:"totalNewStatus,omitempty"`
+	// TotalInProgressStatus - Total amount of open cases with status InProgress
+	TotalInProgressStatus *string `json:"totalInProgressStatus,omitempty"`
+	// TotalResolvedStatus - Total amount of open cases with status Resolved
+	TotalResolvedStatus *string `json:"totalResolvedStatus,omitempty"`
+	// TotalDismissedStatus - Total amount of open cases with status Dismissed
+	TotalDismissedStatus *string `json:"totalDismissedStatus,omitempty"`
+}
+
+// CasesAggregationProperties aggregative results of cases property bag.
+type CasesAggregationProperties struct {
+	// CasesAggregationBySeverityProperties - Aggregations results by case severity.
+	*CasesAggregationBySeverityProperties `json:"casesAggregationBySeverity,omitempty"`
+	// CasesAggregationByStatusProperties - Aggregations results by case status.
+	*CasesAggregationByStatusProperties `json:"casesAggregationByStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CasesAggregationProperties.
+func (capVar CasesAggregationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if capVar.CasesAggregationBySeverityProperties != nil {
+		objectMap["casesAggregationBySeverity"] = capVar.CasesAggregationBySeverityProperties
+	}
+	if capVar.CasesAggregationByStatusProperties != nil {
+		objectMap["casesAggregationByStatus"] = capVar.CasesAggregationByStatusProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CasesAggregationProperties struct.
+func (capVar *CasesAggregationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "casesAggregationBySeverity":
+			if v != nil {
+				var casesAggregationBySeverityProperties CasesAggregationBySeverityProperties
+				err = json.Unmarshal(*v, &casesAggregationBySeverityProperties)
+				if err != nil {
+					return err
+				}
+				capVar.CasesAggregationBySeverityProperties = &casesAggregationBySeverityProperties
+			}
+		case "casesAggregationByStatus":
+			if v != nil {
+				var casesAggregationByStatusProperties CasesAggregationByStatusProperties
+				err = json.Unmarshal(*v, &casesAggregationByStatusProperties)
+				if err != nil {
+					return err
+				}
+				capVar.CasesAggregationByStatusProperties = &casesAggregationByStatusProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // CloudError error response structure.

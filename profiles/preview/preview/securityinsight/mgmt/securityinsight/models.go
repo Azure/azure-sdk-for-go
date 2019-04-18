@@ -32,7 +32,7 @@ const (
 type AggregationsKind = original.AggregationsKind
 
 const (
-	CasesAggregation AggregationsKind = original.CasesAggregation
+	AggregationsKindCasesAggregation AggregationsKind = original.AggregationsKindCasesAggregation
 )
 
 type AlertRuleKind = original.AlertRuleKind
@@ -112,7 +112,8 @@ const (
 type KindBasicAggregations = original.KindBasicAggregations
 
 const (
-	KindAggregations KindBasicAggregations = original.KindAggregations
+	KindAggregations     KindBasicAggregations = original.KindAggregations
+	KindCasesAggregation KindBasicAggregations = original.KindCasesAggregation
 )
 
 type KindBasicDataConnector = original.KindBasicDataConnector
@@ -216,6 +217,10 @@ type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
 type CaseProperties = original.CaseProperties
+type CasesAggregation = original.CasesAggregation
+type CasesAggregationBySeverityProperties = original.CasesAggregationBySeverityProperties
+type CasesAggregationByStatusProperties = original.CasesAggregationByStatusProperties
+type CasesAggregationProperties = original.CasesAggregationProperties
 type CasesAggregationsClient = original.CasesAggregationsClient
 type CasesClient = original.CasesClient
 type CloudError = original.CloudError

@@ -8470,6 +8470,35 @@ func (future *DdosProtectionPlansDeleteFuture) Result(client DdosProtectionPlans
 	return
 }
 
+// DdosProtectionPlansUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DdosProtectionPlansUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DdosProtectionPlansUpdateTagsFuture) Result(client DdosProtectionPlansClient) (dpp DdosProtectionPlan, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.DdosProtectionPlansUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dpp.Response.Response, err = future.GetResult(sender); err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
+		dpp, err = client.UpdateTagsResponder(dpp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateTagsFuture", "Result", dpp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DdosSettings contains the DDoS protection settings of the public IP.
 type DdosSettings struct {
 	// DdosCustomPolicy - The DDoS custom policy associated with the public IP.
@@ -26525,35 +26554,6 @@ func (future *VirtualNetworkGatewaysGeneratevpnclientpackageFuture) Result(clien
 	return
 }
 
-// VirtualNetworkGatewaysGenerateVpnProfileFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualNetworkGatewaysGenerateVpnProfileFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworkGatewaysGenerateVpnProfileFuture) Result(client VirtualNetworkGatewaysClient) (s String, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGenerateVpnProfileFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGenerateVpnProfileFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
-		s, err = client.GenerateVpnProfileResponder(s.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGenerateVpnProfileFuture", "Result", s.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VirtualNetworkGatewaysGetAdvertisedRoutesFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type VirtualNetworkGatewaysGetAdvertisedRoutesFuture struct {
@@ -29681,7 +29681,8 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 }
 
 // WebApplicationFirewallPolicyListResult result of the request to list WebApplicationFirewallPolicies. It
-// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
+// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the the next set of
+// results.
 type WebApplicationFirewallPolicyListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of WebApplicationFirewallPolicies within a resource group.

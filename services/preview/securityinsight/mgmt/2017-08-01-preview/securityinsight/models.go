@@ -2130,55 +2130,10 @@ type CasesAggregationByStatusProperties struct {
 
 // CasesAggregationProperties aggregative results of cases property bag.
 type CasesAggregationProperties struct {
-	// CasesAggregationBySeverityProperties - Aggregations results by case severity.
-	*CasesAggregationBySeverityProperties `json:"casesAggregationBySeverity,omitempty"`
-	// CasesAggregationByStatusProperties - Aggregations results by case status.
-	*CasesAggregationByStatusProperties `json:"casesAggregationByStatus,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CasesAggregationProperties.
-func (capVar CasesAggregationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if capVar.CasesAggregationBySeverityProperties != nil {
-		objectMap["casesAggregationBySeverity"] = capVar.CasesAggregationBySeverityProperties
-	}
-	if capVar.CasesAggregationByStatusProperties != nil {
-		objectMap["casesAggregationByStatus"] = capVar.CasesAggregationByStatusProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for CasesAggregationProperties struct.
-func (capVar *CasesAggregationProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "casesAggregationBySeverity":
-			if v != nil {
-				var casesAggregationBySeverityProperties CasesAggregationBySeverityProperties
-				err = json.Unmarshal(*v, &casesAggregationBySeverityProperties)
-				if err != nil {
-					return err
-				}
-				capVar.CasesAggregationBySeverityProperties = &casesAggregationBySeverityProperties
-			}
-		case "casesAggregationByStatus":
-			if v != nil {
-				var casesAggregationByStatusProperties CasesAggregationByStatusProperties
-				err = json.Unmarshal(*v, &casesAggregationByStatusProperties)
-				if err != nil {
-					return err
-				}
-				capVar.CasesAggregationByStatusProperties = &casesAggregationByStatusProperties
-			}
-		}
-	}
-
-	return nil
+	// CasesAggregationBySeverity - Aggregations results by case severity.
+	CasesAggregationBySeverity *CasesAggregationBySeverityProperties `json:"casesAggregationBySeverity,omitempty"`
+	// CasesAggregationByStatus - Aggregations results by case status.
+	CasesAggregationByStatus *CasesAggregationByStatusProperties `json:"casesAggregationByStatus,omitempty"`
 }
 
 // CloudError error response structure.

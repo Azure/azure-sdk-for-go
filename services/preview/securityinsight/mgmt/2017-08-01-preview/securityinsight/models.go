@@ -2105,27 +2105,27 @@ func (ca *CasesAggregation) UnmarshalJSON(body []byte) error {
 // CasesAggregationBySeverityProperties aggregative results of cases by severity property bag.
 type CasesAggregationBySeverityProperties struct {
 	// TotalCriticalSeverity - Total amount of open cases with severity Critical
-	TotalCriticalSeverity *string `json:"totalCriticalSeverity,omitempty"`
+	TotalCriticalSeverity *int32 `json:"totalCriticalSeverity,omitempty"`
 	// TotalHighSeverity - Total amount of open cases with severity High
-	TotalHighSeverity *string `json:"totalHighSeverity,omitempty"`
+	TotalHighSeverity *int32 `json:"totalHighSeverity,omitempty"`
 	// TotalMediumSeverity - Total amount of open cases with severity medium
-	TotalMediumSeverity *string `json:"totalMediumSeverity,omitempty"`
+	TotalMediumSeverity *int32 `json:"totalMediumSeverity,omitempty"`
 	// TotalLowSeverity - Total amount of open cases with severity Low
-	TotalLowSeverity *string `json:"totalLowSeverity,omitempty"`
+	TotalLowSeverity *int32 `json:"totalLowSeverity,omitempty"`
 	// TotalInformationalSeverity - Total amount of open cases with severity Informational
-	TotalInformationalSeverity *string `json:"totalInformationalSeverity,omitempty"`
+	TotalInformationalSeverity *int32 `json:"totalInformationalSeverity,omitempty"`
 }
 
 // CasesAggregationByStatusProperties aggregative results of cases by status property bag.
 type CasesAggregationByStatusProperties struct {
 	// TotalNewStatus - Total amount of open cases with status New
-	TotalNewStatus *string `json:"totalNewStatus,omitempty"`
+	TotalNewStatus *int32 `json:"totalNewStatus,omitempty"`
 	// TotalInProgressStatus - Total amount of open cases with status InProgress
-	TotalInProgressStatus *string `json:"totalInProgressStatus,omitempty"`
+	TotalInProgressStatus *int32 `json:"totalInProgressStatus,omitempty"`
 	// TotalResolvedStatus - Total amount of open cases with status Resolved
-	TotalResolvedStatus *string `json:"totalResolvedStatus,omitempty"`
+	TotalResolvedStatus *int32 `json:"totalResolvedStatus,omitempty"`
 	// TotalDismissedStatus - Total amount of open cases with status Dismissed
-	TotalDismissedStatus *string `json:"totalDismissedStatus,omitempty"`
+	TotalDismissedStatus *int32 `json:"totalDismissedStatus,omitempty"`
 }
 
 // CasesAggregationProperties aggregative results of cases property bag.

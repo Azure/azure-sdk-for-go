@@ -3490,8 +3490,8 @@ func (tbsr *TransferBillingSubscriptionRequest) UnmarshalJSON(body []byte) error
 
 // TransferBillingSubscriptionRequestProperties request parameters to transfer billing subscription.
 type TransferBillingSubscriptionRequestProperties struct {
-	// DestinationInvoiceSectionName - The destination invoiceSectionName.
-	DestinationInvoiceSectionName *string `json:"destinationInvoiceSectionName,omitempty"`
+	// DestinationInvoiceSectionID - The destination invoiceSectionName.
+	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
 }
 
 // TransferBillingSubscriptionResult request parameters to transfer billing subscription.
@@ -3728,8 +3728,8 @@ func NewTransferDetailsListResultPage(getNextPage func(context.Context, Transfer
 
 // TransferProductRequestProperties the properties of the product to initiate a transfer.
 type TransferProductRequestProperties struct {
-	// DestinationInvoiceSectionName - Destination invoice section id.
-	DestinationInvoiceSectionName *string `json:"destinationInvoiceSectionName,omitempty"`
+	// DestinationInvoiceSectionID - Destination invoice section id.
+	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
 }
 
 // TransferProperties transfer details

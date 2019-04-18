@@ -3490,7 +3490,7 @@ func (tbsr *TransferBillingSubscriptionRequest) UnmarshalJSON(body []byte) error
 
 // TransferBillingSubscriptionRequestProperties request parameters to transfer billing subscription.
 type TransferBillingSubscriptionRequestProperties struct {
-	// DestinationInvoiceSectionID - The destination invoiceSectionName.
+	// DestinationInvoiceSectionID - The destination invoice section id.
 	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
 }
 

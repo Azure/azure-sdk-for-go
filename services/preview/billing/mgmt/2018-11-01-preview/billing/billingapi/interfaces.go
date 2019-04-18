@@ -39,13 +39,6 @@ type AccountsClientAPI interface {
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)
 
-// AccountsWithCreateInvoiceSectionPermissionClientAPI contains the set of methods on the AccountsWithCreateInvoiceSectionPermissionClient type.
-type AccountsWithCreateInvoiceSectionPermissionClientAPI interface {
-	List(ctx context.Context, expand string) (result billing.AccountListResult, err error)
-}
-
-var _ AccountsWithCreateInvoiceSectionPermissionClientAPI = (*billing.AccountsWithCreateInvoiceSectionPermissionClient)(nil)
-
 // AvailableBalanceByBillingProfileClientAPI contains the set of methods on the AvailableBalanceByBillingProfileClient type.
 type AvailableBalanceByBillingProfileClientAPI interface {
 	Get(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.AvailableBalance, err error)

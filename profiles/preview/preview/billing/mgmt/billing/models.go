@@ -158,7 +158,6 @@ type AccountBillingRoleDefinitionClient = original.AccountBillingRoleDefinitionC
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
-type AccountsWithCreateInvoiceSectionPermissionClient = original.AccountsWithCreateInvoiceSectionPermissionClient
 type Address = original.Address
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
@@ -251,6 +250,7 @@ type ProfilesClient = original.ProfilesClient
 type ProfilesUpdateFuture = original.ProfilesUpdateFuture
 type Property = original.Property
 type PropertyClient = original.PropertyClient
+type PropertySummary = original.PropertySummary
 type RecipientTransferDetails = original.RecipientTransferDetails
 type RecipientTransferDetailsListResult = original.RecipientTransferDetailsListResult
 type RecipientTransferDetailsListResultIterator = original.RecipientTransferDetailsListResultIterator
@@ -323,12 +323,6 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAccountsWithCreateInvoiceSectionPermissionClient(subscriptionID string) AccountsWithCreateInvoiceSectionPermissionClient {
-	return original.NewAccountsWithCreateInvoiceSectionPermissionClient(subscriptionID)
-}
-func NewAccountsWithCreateInvoiceSectionPermissionClientWithBaseURI(baseURI string, subscriptionID string) AccountsWithCreateInvoiceSectionPermissionClient {
-	return original.NewAccountsWithCreateInvoiceSectionPermissionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)

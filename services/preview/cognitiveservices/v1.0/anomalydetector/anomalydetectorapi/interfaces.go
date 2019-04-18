@@ -1,7 +1,4 @@
-// Package authoring implements the Azure ARM Authoring service API version 2.0.
-//
-//
-package authoring
+package anomalydetectorapi
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -21,22 +18,14 @@ package authoring
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"context"
+	"github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 )
 
-// BaseClient is the base client for Authoring.
-type BaseClient struct {
-	autorest.Client
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	EntireDetect(ctx context.Context, body anomalydetector.Request) (result anomalydetector.EntireDetectResponse, err error)
+	LastDetect(ctx context.Context, body anomalydetector.Request) (result anomalydetector.LastDetectResponse, err error)
 }
 
-// New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults()
-}
-
-// NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults() BaseClient {
-	return BaseClient{
-		Client: autorest.NewClientWithUserAgent(UserAgent()),
-	}
-}
+var _ BaseClientAPI = (*anomalydetector.BaseClient)(nil)

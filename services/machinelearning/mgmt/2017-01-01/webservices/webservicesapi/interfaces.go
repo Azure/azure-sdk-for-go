@@ -37,7 +37,7 @@ type ClientAPI interface {
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, skiptoken string) (result webservices.PaginatedWebServicesListPage, err error)
 	ListBySubscriptionID(ctx context.Context, skiptoken string) (result webservices.PaginatedWebServicesListPage, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, webServiceName string) (result webservices.Keys, err error)
-	Patch(ctx context.Context, resourceGroupName string, webServiceName string, patchPayload webservices.WebService) (result webservices.PatchFuture, err error)
+	Patch(ctx context.Context, resourceGroupName string, webServiceName string, patchPayload webservices.PatchedWebService) (result webservices.PatchFuture, err error)
 	Remove(ctx context.Context, resourceGroupName string, webServiceName string) (result webservices.RemoveFuture, err error)
 }
 

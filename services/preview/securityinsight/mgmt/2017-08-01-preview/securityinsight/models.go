@@ -2130,10 +2130,10 @@ type CasesAggregationByStatusProperties struct {
 
 // CasesAggregationProperties aggregative results of cases property bag.
 type CasesAggregationProperties struct {
-	// CasesAggregationBySeverity - Aggregations results by case severity.
-	CasesAggregationBySeverity *CasesAggregationBySeverityProperties `json:"casesAggregationBySeverity,omitempty"`
-	// CasesAggregationByStatus - Aggregations results by case status.
-	CasesAggregationByStatus *CasesAggregationByStatusProperties `json:"casesAggregationByStatus,omitempty"`
+	// AggregationBySeverity - Aggregations results by case severity.
+	AggregationBySeverity *CasesAggregationBySeverityProperties `json:"aggregationBySeverity,omitempty"`
+	// AggregationByStatus - Aggregations results by case status.
+	AggregationByStatus *CasesAggregationByStatusProperties `json:"aggregationByStatus,omitempty"`
 }
 
 // CloudError error response structure.

@@ -96,8 +96,9 @@ const (
 type CriterionType = original.CriterionType
 
 const (
-	CriterionTypeMultiMetricCriteria      CriterionType = original.CriterionTypeMultiMetricCriteria
-	CriterionTypeStaticThresholdCriterion CriterionType = original.CriterionTypeStaticThresholdCriterion
+	CriterionTypeDynamicThresholdCriterion CriterionType = original.CriterionTypeDynamicThresholdCriterion
+	CriterionTypeMultiMetricCriteria       CriterionType = original.CriterionTypeMultiMetricCriteria
+	CriterionTypeStaticThresholdCriterion  CriterionType = original.CriterionTypeStaticThresholdCriterion
 )
 
 type DataStatus = original.DataStatus
@@ -355,6 +356,8 @@ type DiagnosticSettingsClient = original.DiagnosticSettingsClient
 type DiagnosticSettingsResource = original.DiagnosticSettingsResource
 type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceCollection
 type Dimension = original.Dimension
+type DynamicMetricCriteria = original.DynamicMetricCriteria
+type DynamicThresholdFailingPeriods = original.DynamicThresholdFailingPeriods
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
@@ -407,7 +410,6 @@ type MetricAvailability = original.MetricAvailability
 type MetricBaselineClient = original.MetricBaselineClient
 type MetricBaselinesProperties = original.MetricBaselinesProperties
 type MetricBaselinesResponse = original.MetricBaselinesResponse
-type MetricCriteria = original.MetricCriteria
 type MetricDefinition = original.MetricDefinition
 type MetricDefinitionCollection = original.MetricDefinitionCollection
 type MetricDefinitionsClient = original.MetricDefinitionsClient
@@ -452,6 +454,7 @@ type SingleBaseline = original.SingleBaseline
 type SingleMetricBaseline = original.SingleMetricBaseline
 type SmsReceiver = original.SmsReceiver
 type Source = original.Source
+type StaticMetricCriteria = original.StaticMetricCriteria
 type TenantActivityLogsClient = original.TenantActivityLogsClient
 type ThresholdRuleCondition = original.ThresholdRuleCondition
 type TimeSeriesBaseline = original.TimeSeriesBaseline

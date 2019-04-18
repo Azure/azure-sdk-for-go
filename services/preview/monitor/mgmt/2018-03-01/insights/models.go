@@ -152,6 +152,8 @@ func PossibleConditionOperatorValues() []ConditionOperator {
 type CriterionType string
 
 const (
+	// CriterionTypeDynamicThresholdCriterion ...
+	CriterionTypeDynamicThresholdCriterion CriterionType = "DynamicThresholdCriterion"
 	// CriterionTypeMultiMetricCriteria ...
 	CriterionTypeMultiMetricCriteria CriterionType = "MultiMetricCriteria"
 	// CriterionTypeStaticThresholdCriterion ...
@@ -160,7 +162,7 @@ const (
 
 // PossibleCriterionTypeValues returns an array of possible values for the CriterionType const type.
 func PossibleCriterionTypeValues() []CriterionType {
-	return []CriterionType{CriterionTypeMultiMetricCriteria, CriterionTypeStaticThresholdCriterion}
+	return []CriterionType{CriterionTypeDynamicThresholdCriterion, CriterionTypeMultiMetricCriteria, CriterionTypeStaticThresholdCriterion}
 }
 
 // Enabled enumerates the values for enabled.
@@ -2109,6 +2111,218 @@ type Dimension struct {
 	Values *[]string `json:"values,omitempty"`
 }
 
+// DynamicMetricCriteria criterion for dynamic threshold.
+type DynamicMetricCriteria struct {
+	// Operator - The condition used to compare the metric value against the threshold
+	Operator interface{} `json:"operator,omitempty"`
+	// AlertSensitivity - The sensitivity of the threshold
+	AlertSensitivity interface{} `json:"alertSensitivity,omitempty"`
+	// FailingPeriods - Select minimum number of violations within the selected lookback time window required to raise an alert
+	FailingPeriods *DynamicThresholdFailingPeriods `json:"failingPeriods,omitempty"`
+	// IgnoreDataBefore - Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds
+	IgnoreDataBefore *date.Time `json:"ignoreDataBefore,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Name - Name of the criteria.
+	Name *string `json:"name,omitempty"`
+	// MetricName - Name of the metric.
+	MetricName *string `json:"metricName,omitempty"`
+	// MetricNamespace - Namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	// TimeAggregation - the criteria time aggregation types.
+	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
+	// Dimensions - List of dimension conditions.
+	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion', 'CriterionTypeDynamicThresholdCriterion'
+	CriterionType CriterionType `json:"criterionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DynamicMetricCriteria.
+func (dmc DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
+	dmc.CriterionType = CriterionTypeDynamicThresholdCriterion
+	objectMap := make(map[string]interface{})
+	if dmc.Operator != nil {
+		objectMap["operator"] = dmc.Operator
+	}
+	if dmc.AlertSensitivity != nil {
+		objectMap["alertSensitivity"] = dmc.AlertSensitivity
+	}
+	if dmc.FailingPeriods != nil {
+		objectMap["failingPeriods"] = dmc.FailingPeriods
+	}
+	if dmc.IgnoreDataBefore != nil {
+		objectMap["ignoreDataBefore"] = dmc.IgnoreDataBefore
+	}
+	if dmc.Name != nil {
+		objectMap["name"] = dmc.Name
+	}
+	if dmc.MetricName != nil {
+		objectMap["metricName"] = dmc.MetricName
+	}
+	if dmc.MetricNamespace != nil {
+		objectMap["metricNamespace"] = dmc.MetricNamespace
+	}
+	if dmc.TimeAggregation != nil {
+		objectMap["timeAggregation"] = dmc.TimeAggregation
+	}
+	if dmc.Dimensions != nil {
+		objectMap["dimensions"] = dmc.Dimensions
+	}
+	if dmc.CriterionType != "" {
+		objectMap["criterionType"] = dmc.CriterionType
+	}
+	for k, v := range dmc.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsStaticMetricCriteria is the BasicMultiMetricCriteria implementation for DynamicMetricCriteria.
+func (dmc DynamicMetricCriteria) AsStaticMetricCriteria() (*StaticMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsDynamicMetricCriteria is the BasicMultiMetricCriteria implementation for DynamicMetricCriteria.
+func (dmc DynamicMetricCriteria) AsDynamicMetricCriteria() (*DynamicMetricCriteria, bool) {
+	return &dmc, true
+}
+
+// AsMultiMetricCriteria is the BasicMultiMetricCriteria implementation for DynamicMetricCriteria.
+func (dmc DynamicMetricCriteria) AsMultiMetricCriteria() (*MultiMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsBasicMultiMetricCriteria is the BasicMultiMetricCriteria implementation for DynamicMetricCriteria.
+func (dmc DynamicMetricCriteria) AsBasicMultiMetricCriteria() (BasicMultiMetricCriteria, bool) {
+	return &dmc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DynamicMetricCriteria struct.
+func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "operator":
+			if v != nil {
+				var operator interface{}
+				err = json.Unmarshal(*v, &operator)
+				if err != nil {
+					return err
+				}
+				dmc.Operator = operator
+			}
+		case "alertSensitivity":
+			if v != nil {
+				var alertSensitivity interface{}
+				err = json.Unmarshal(*v, &alertSensitivity)
+				if err != nil {
+					return err
+				}
+				dmc.AlertSensitivity = alertSensitivity
+			}
+		case "failingPeriods":
+			if v != nil {
+				var failingPeriods DynamicThresholdFailingPeriods
+				err = json.Unmarshal(*v, &failingPeriods)
+				if err != nil {
+					return err
+				}
+				dmc.FailingPeriods = &failingPeriods
+			}
+		case "ignoreDataBefore":
+			if v != nil {
+				var ignoreDataBefore date.Time
+				err = json.Unmarshal(*v, &ignoreDataBefore)
+				if err != nil {
+					return err
+				}
+				dmc.IgnoreDataBefore = &ignoreDataBefore
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dmc.AdditionalProperties == nil {
+					dmc.AdditionalProperties = make(map[string]interface{})
+				}
+				dmc.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dmc.Name = &name
+			}
+		case "metricName":
+			if v != nil {
+				var metricName string
+				err = json.Unmarshal(*v, &metricName)
+				if err != nil {
+					return err
+				}
+				dmc.MetricName = &metricName
+			}
+		case "metricNamespace":
+			if v != nil {
+				var metricNamespace string
+				err = json.Unmarshal(*v, &metricNamespace)
+				if err != nil {
+					return err
+				}
+				dmc.MetricNamespace = &metricNamespace
+			}
+		case "timeAggregation":
+			if v != nil {
+				var timeAggregation interface{}
+				err = json.Unmarshal(*v, &timeAggregation)
+				if err != nil {
+					return err
+				}
+				dmc.TimeAggregation = timeAggregation
+			}
+		case "dimensions":
+			if v != nil {
+				var dimensions []MetricDimension
+				err = json.Unmarshal(*v, &dimensions)
+				if err != nil {
+					return err
+				}
+				dmc.Dimensions = &dimensions
+			}
+		case "criterionType":
+			if v != nil {
+				var criterionType CriterionType
+				err = json.Unmarshal(*v, &criterionType)
+				if err != nil {
+					return err
+				}
+				dmc.CriterionType = criterionType
+			}
+		}
+	}
+
+	return nil
+}
+
+// DynamicThresholdFailingPeriods select minimum number of violations within the selected lookback time
+// window required to raise an alert
+type DynamicThresholdFailingPeriods struct {
+	// NumberOfEvaluationPeriods - Select how many t the lookback time window,
+	NumberOfEvaluationPeriods *float64 `json:"numberOfEvaluationPeriods,omitempty"`
+	// MinFailingPeriodsToAlert - The least number of violations
+	MinFailingPeriodsToAlert *float64 `json:"minFailingPeriodsToAlert,omitempty"`
+}
+
 // EmailNotification email notification of an autoscale event.
 type EmailNotification struct {
 	// SendToSubscriptionAdministrator - a value indicating whether to send email to subscription administrator.
@@ -3797,7 +4011,7 @@ func (marp *MetricAlertResourcePatch) UnmarshalJSON(body []byte) error {
 // resource that has multiple metric criteria.
 type MetricAlertSingleResourceMultipleMetricCriteria struct {
 	// AllOf - The list of metric criteria for this 'all of' operation.
-	AllOf *[]MetricCriteria `json:"allOf,omitempty"`
+	AllOf *[]StaticMetricCriteria `json:"allOf,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
@@ -3851,7 +4065,7 @@ func (masrmmc *MetricAlertSingleResourceMultipleMetricCriteria) UnmarshalJSON(bo
 		switch k {
 		case "allOf":
 			if v != nil {
-				var allOf []MetricCriteria
+				var allOf []StaticMetricCriteria
 				err = json.Unmarshal(*v, &allOf)
 				if err != nil {
 					return err
@@ -3936,176 +4150,6 @@ type MetricAvailability struct {
 	TimeGrain *string `json:"timeGrain,omitempty"`
 	// Retention - the retention period for the metric at the specified timegrain.  Expressed as a duration 'PT1M', 'P1D', etc.
 	Retention *string `json:"retention,omitempty"`
-}
-
-// MetricCriteria criterion to filter metrics.
-type MetricCriteria struct {
-	// Name - Name of the criteria.
-	Name *string `json:"name,omitempty"`
-	// MetricName - Name of the metric.
-	MetricName *string `json:"metricName,omitempty"`
-	// MetricNamespace - Namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
-	// Operator - the criteria operator.
-	Operator interface{} `json:"operator,omitempty"`
-	// TimeAggregation - the criteria time aggregation types.
-	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
-	// Threshold - the criteria threshold value that activates the alert.
-	Threshold *float64 `json:"threshold,omitempty"`
-	// Dimensions - List of dimension conditions.
-	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
-	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion'
-	CriterionType CriterionType `json:"criterionType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MetricCriteria.
-func (mc MetricCriteria) MarshalJSON() ([]byte, error) {
-	mc.CriterionType = CriterionTypeStaticThresholdCriterion
-	objectMap := make(map[string]interface{})
-	if mc.Name != nil {
-		objectMap["name"] = mc.Name
-	}
-	if mc.MetricName != nil {
-		objectMap["metricName"] = mc.MetricName
-	}
-	if mc.MetricNamespace != nil {
-		objectMap["metricNamespace"] = mc.MetricNamespace
-	}
-	if mc.Operator != nil {
-		objectMap["operator"] = mc.Operator
-	}
-	if mc.TimeAggregation != nil {
-		objectMap["timeAggregation"] = mc.TimeAggregation
-	}
-	if mc.Threshold != nil {
-		objectMap["threshold"] = mc.Threshold
-	}
-	if mc.Dimensions != nil {
-		objectMap["dimensions"] = mc.Dimensions
-	}
-	if mc.CriterionType != "" {
-		objectMap["criterionType"] = mc.CriterionType
-	}
-	for k, v := range mc.AdditionalProperties {
-		objectMap[k] = v
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsMetricCriteria is the BasicMultiMetricCriteria implementation for MetricCriteria.
-func (mc MetricCriteria) AsMetricCriteria() (*MetricCriteria, bool) {
-	return &mc, true
-}
-
-// AsMultiMetricCriteria is the BasicMultiMetricCriteria implementation for MetricCriteria.
-func (mc MetricCriteria) AsMultiMetricCriteria() (*MultiMetricCriteria, bool) {
-	return nil, false
-}
-
-// AsBasicMultiMetricCriteria is the BasicMultiMetricCriteria implementation for MetricCriteria.
-func (mc MetricCriteria) AsBasicMultiMetricCriteria() (BasicMultiMetricCriteria, bool) {
-	return &mc, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for MetricCriteria struct.
-func (mc *MetricCriteria) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				mc.Name = &name
-			}
-		case "metricName":
-			if v != nil {
-				var metricName string
-				err = json.Unmarshal(*v, &metricName)
-				if err != nil {
-					return err
-				}
-				mc.MetricName = &metricName
-			}
-		case "metricNamespace":
-			if v != nil {
-				var metricNamespace string
-				err = json.Unmarshal(*v, &metricNamespace)
-				if err != nil {
-					return err
-				}
-				mc.MetricNamespace = &metricNamespace
-			}
-		case "operator":
-			if v != nil {
-				var operator interface{}
-				err = json.Unmarshal(*v, &operator)
-				if err != nil {
-					return err
-				}
-				mc.Operator = operator
-			}
-		case "timeAggregation":
-			if v != nil {
-				var timeAggregation interface{}
-				err = json.Unmarshal(*v, &timeAggregation)
-				if err != nil {
-					return err
-				}
-				mc.TimeAggregation = timeAggregation
-			}
-		case "threshold":
-			if v != nil {
-				var threshold float64
-				err = json.Unmarshal(*v, &threshold)
-				if err != nil {
-					return err
-				}
-				mc.Threshold = &threshold
-			}
-		case "dimensions":
-			if v != nil {
-				var dimensions []MetricDimension
-				err = json.Unmarshal(*v, &dimensions)
-				if err != nil {
-					return err
-				}
-				mc.Dimensions = &dimensions
-			}
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if mc.AdditionalProperties == nil {
-					mc.AdditionalProperties = make(map[string]interface{})
-				}
-				mc.AdditionalProperties[k] = additionalProperties
-			}
-		case "criterionType":
-			if v != nil {
-				var criterionType CriterionType
-				err = json.Unmarshal(*v, &criterionType)
-				if err != nil {
-					return err
-				}
-				mc.CriterionType = criterionType
-			}
-		}
-	}
-
-	return nil
 }
 
 // MetricDefinition metric definition class specifies the metadata for a metric.
@@ -4199,7 +4243,8 @@ type MetricValue struct {
 
 // BasicMultiMetricCriteria the types of conditions for a multi resource alert
 type BasicMultiMetricCriteria interface {
-	AsMetricCriteria() (*MetricCriteria, bool)
+	AsStaticMetricCriteria() (*StaticMetricCriteria, bool)
+	AsDynamicMetricCriteria() (*DynamicMetricCriteria, bool)
 	AsMultiMetricCriteria() (*MultiMetricCriteria, bool)
 }
 
@@ -4207,7 +4252,17 @@ type BasicMultiMetricCriteria interface {
 type MultiMetricCriteria struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion'
+	// Name - Name of the criteria.
+	Name *string `json:"name,omitempty"`
+	// MetricName - Name of the metric.
+	MetricName *string `json:"metricName,omitempty"`
+	// MetricNamespace - Namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	// TimeAggregation - the criteria time aggregation types.
+	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
+	// Dimensions - List of dimension conditions.
+	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion', 'CriterionTypeDynamicThresholdCriterion'
 	CriterionType CriterionType `json:"criterionType,omitempty"`
 }
 
@@ -4220,9 +4275,13 @@ func unmarshalBasicMultiMetricCriteria(body []byte) (BasicMultiMetricCriteria, e
 
 	switch m["criterionType"] {
 	case string(CriterionTypeStaticThresholdCriterion):
-		var mc MetricCriteria
-		err := json.Unmarshal(body, &mc)
-		return mc, err
+		var smc StaticMetricCriteria
+		err := json.Unmarshal(body, &smc)
+		return smc, err
+	case string(CriterionTypeDynamicThresholdCriterion):
+		var dmc DynamicMetricCriteria
+		err := json.Unmarshal(body, &dmc)
+		return dmc, err
 	default:
 		var mmc MultiMetricCriteria
 		err := json.Unmarshal(body, &mmc)
@@ -4252,6 +4311,21 @@ func unmarshalBasicMultiMetricCriteriaArray(body []byte) ([]BasicMultiMetricCrit
 func (mmc MultiMetricCriteria) MarshalJSON() ([]byte, error) {
 	mmc.CriterionType = CriterionTypeMultiMetricCriteria
 	objectMap := make(map[string]interface{})
+	if mmc.Name != nil {
+		objectMap["name"] = mmc.Name
+	}
+	if mmc.MetricName != nil {
+		objectMap["metricName"] = mmc.MetricName
+	}
+	if mmc.MetricNamespace != nil {
+		objectMap["metricNamespace"] = mmc.MetricNamespace
+	}
+	if mmc.TimeAggregation != nil {
+		objectMap["timeAggregation"] = mmc.TimeAggregation
+	}
+	if mmc.Dimensions != nil {
+		objectMap["dimensions"] = mmc.Dimensions
+	}
 	if mmc.CriterionType != "" {
 		objectMap["criterionType"] = mmc.CriterionType
 	}
@@ -4261,8 +4335,13 @@ func (mmc MultiMetricCriteria) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMetricCriteria is the BasicMultiMetricCriteria implementation for MultiMetricCriteria.
-func (mmc MultiMetricCriteria) AsMetricCriteria() (*MetricCriteria, bool) {
+// AsStaticMetricCriteria is the BasicMultiMetricCriteria implementation for MultiMetricCriteria.
+func (mmc MultiMetricCriteria) AsStaticMetricCriteria() (*StaticMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsDynamicMetricCriteria is the BasicMultiMetricCriteria implementation for MultiMetricCriteria.
+func (mmc MultiMetricCriteria) AsDynamicMetricCriteria() (*DynamicMetricCriteria, bool) {
 	return nil, false
 }
 
@@ -4296,6 +4375,51 @@ func (mmc *MultiMetricCriteria) UnmarshalJSON(body []byte) error {
 					mmc.AdditionalProperties = make(map[string]interface{})
 				}
 				mmc.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mmc.Name = &name
+			}
+		case "metricName":
+			if v != nil {
+				var metricName string
+				err = json.Unmarshal(*v, &metricName)
+				if err != nil {
+					return err
+				}
+				mmc.MetricName = &metricName
+			}
+		case "metricNamespace":
+			if v != nil {
+				var metricNamespace string
+				err = json.Unmarshal(*v, &metricNamespace)
+				if err != nil {
+					return err
+				}
+				mmc.MetricNamespace = &metricNamespace
+			}
+		case "timeAggregation":
+			if v != nil {
+				var timeAggregation interface{}
+				err = json.Unmarshal(*v, &timeAggregation)
+				if err != nil {
+					return err
+				}
+				mmc.TimeAggregation = timeAggregation
+			}
+		case "dimensions":
+			if v != nil {
+				var dimensions []MetricDimension
+				err = json.Unmarshal(*v, &dimensions)
+				if err != nil {
+					return err
+				}
+				mmc.Dimensions = &dimensions
 			}
 		case "criterionType":
 			if v != nil {
@@ -5041,6 +5165,181 @@ type Source struct {
 	DataSourceID *string `json:"dataSourceId,omitempty"`
 	// QueryType - Set value to 'ResultCount'. Possible values include: 'ResultCount'
 	QueryType QueryType `json:"queryType,omitempty"`
+}
+
+// StaticMetricCriteria criterion to filter metrics.
+type StaticMetricCriteria struct {
+	// Operator - the criteria operator.
+	Operator interface{} `json:"operator,omitempty"`
+	// Threshold - the criteria threshold value that activates the alert.
+	Threshold *float64 `json:"threshold,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Name - Name of the criteria.
+	Name *string `json:"name,omitempty"`
+	// MetricName - Name of the metric.
+	MetricName *string `json:"metricName,omitempty"`
+	// MetricNamespace - Namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	// TimeAggregation - the criteria time aggregation types.
+	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
+	// Dimensions - List of dimension conditions.
+	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion', 'CriterionTypeDynamicThresholdCriterion'
+	CriterionType CriterionType `json:"criterionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticMetricCriteria.
+func (smc StaticMetricCriteria) MarshalJSON() ([]byte, error) {
+	smc.CriterionType = CriterionTypeStaticThresholdCriterion
+	objectMap := make(map[string]interface{})
+	if smc.Operator != nil {
+		objectMap["operator"] = smc.Operator
+	}
+	if smc.Threshold != nil {
+		objectMap["threshold"] = smc.Threshold
+	}
+	if smc.Name != nil {
+		objectMap["name"] = smc.Name
+	}
+	if smc.MetricName != nil {
+		objectMap["metricName"] = smc.MetricName
+	}
+	if smc.MetricNamespace != nil {
+		objectMap["metricNamespace"] = smc.MetricNamespace
+	}
+	if smc.TimeAggregation != nil {
+		objectMap["timeAggregation"] = smc.TimeAggregation
+	}
+	if smc.Dimensions != nil {
+		objectMap["dimensions"] = smc.Dimensions
+	}
+	if smc.CriterionType != "" {
+		objectMap["criterionType"] = smc.CriterionType
+	}
+	for k, v := range smc.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsStaticMetricCriteria is the BasicMultiMetricCriteria implementation for StaticMetricCriteria.
+func (smc StaticMetricCriteria) AsStaticMetricCriteria() (*StaticMetricCriteria, bool) {
+	return &smc, true
+}
+
+// AsDynamicMetricCriteria is the BasicMultiMetricCriteria implementation for StaticMetricCriteria.
+func (smc StaticMetricCriteria) AsDynamicMetricCriteria() (*DynamicMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsMultiMetricCriteria is the BasicMultiMetricCriteria implementation for StaticMetricCriteria.
+func (smc StaticMetricCriteria) AsMultiMetricCriteria() (*MultiMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsBasicMultiMetricCriteria is the BasicMultiMetricCriteria implementation for StaticMetricCriteria.
+func (smc StaticMetricCriteria) AsBasicMultiMetricCriteria() (BasicMultiMetricCriteria, bool) {
+	return &smc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for StaticMetricCriteria struct.
+func (smc *StaticMetricCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "operator":
+			if v != nil {
+				var operator interface{}
+				err = json.Unmarshal(*v, &operator)
+				if err != nil {
+					return err
+				}
+				smc.Operator = operator
+			}
+		case "threshold":
+			if v != nil {
+				var threshold float64
+				err = json.Unmarshal(*v, &threshold)
+				if err != nil {
+					return err
+				}
+				smc.Threshold = &threshold
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if smc.AdditionalProperties == nil {
+					smc.AdditionalProperties = make(map[string]interface{})
+				}
+				smc.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				smc.Name = &name
+			}
+		case "metricName":
+			if v != nil {
+				var metricName string
+				err = json.Unmarshal(*v, &metricName)
+				if err != nil {
+					return err
+				}
+				smc.MetricName = &metricName
+			}
+		case "metricNamespace":
+			if v != nil {
+				var metricNamespace string
+				err = json.Unmarshal(*v, &metricNamespace)
+				if err != nil {
+					return err
+				}
+				smc.MetricNamespace = &metricNamespace
+			}
+		case "timeAggregation":
+			if v != nil {
+				var timeAggregation interface{}
+				err = json.Unmarshal(*v, &timeAggregation)
+				if err != nil {
+					return err
+				}
+				smc.TimeAggregation = timeAggregation
+			}
+		case "dimensions":
+			if v != nil {
+				var dimensions []MetricDimension
+				err = json.Unmarshal(*v, &dimensions)
+				if err != nil {
+					return err
+				}
+				smc.Dimensions = &dimensions
+			}
+		case "criterionType":
+			if v != nil {
+				var criterionType CriterionType
+				err = json.Unmarshal(*v, &criterionType)
+				if err != nil {
+					return err
+				}
+				smc.CriterionType = criterionType
+			}
+		}
+	}
+
+	return nil
 }
 
 // ThresholdRuleCondition a rule condition based on a metric crossing a threshold.

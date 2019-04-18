@@ -804,7 +804,7 @@ type DownloadURL struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// EnabledAzureSKUs details about the enable azure sku.
+// EnabledAzureSKUs details about the enabled azure sku.
 type EnabledAzureSKUs struct {
 	// SkuID - The sku id.
 	SkuID *string `json:"skuId,omitempty"`

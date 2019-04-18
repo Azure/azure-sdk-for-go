@@ -2161,13 +2161,13 @@ type Dimension struct {
 
 // DynamicMetricCriteria criterion for dynamic threshold.
 type DynamicMetricCriteria struct {
-	// Operator - The condition used to compare the metric value against the threshold
+	// Operator - The operator used to compare the metric value against the threshold.
 	Operator interface{} `json:"operator,omitempty"`
-	// AlertSensitivity - The sensitivity of the threshold
+	// AlertSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern.
 	AlertSensitivity interface{} `json:"alertSensitivity,omitempty"`
-	// FailingPeriods - Select minimum number of violations within the selected lookback time window required to raise an alert
+	// FailingPeriods - The minimum number of violations required within the selected lookback time window required to raise an alert.
 	FailingPeriods *DynamicThresholdFailingPeriods `json:"failingPeriods,omitempty"`
-	// IgnoreDataBefore - Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds
+	// IgnoreDataBefore - Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format)
 	IgnoreDataBefore *date.Time `json:"ignoreDataBefore,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -2362,12 +2362,12 @@ func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DynamicThresholdFailingPeriods select minimum number of violations within the selected lookback time
-// window required to raise an alert
+// DynamicThresholdFailingPeriods the minimum number of violations required within the selected lookback
+// time window required to raise an alert.
 type DynamicThresholdFailingPeriods struct {
-	// NumberOfEvaluationPeriods - Select how many t the lookback time window,
+	// NumberOfEvaluationPeriods - The number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
 	NumberOfEvaluationPeriods *float64 `json:"numberOfEvaluationPeriods,omitempty"`
-	// MinFailingPeriodsToAlert - The least number of violations
+	// MinFailingPeriodsToAlert - The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
 	MinFailingPeriodsToAlert *float64 `json:"minFailingPeriodsToAlert,omitempty"`
 }
 
@@ -4322,14 +4322,14 @@ type MetricValue struct {
 	Count *int64 `json:"count,omitempty"`
 }
 
-// BasicMultiMetricCriteria the types of conditions for a multi resource alert
+// BasicMultiMetricCriteria the types of conditions for a multi resource alert.
 type BasicMultiMetricCriteria interface {
 	AsStaticMetricCriteria() (*StaticMetricCriteria, bool)
 	AsDynamicMetricCriteria() (*DynamicMetricCriteria, bool)
 	AsMultiMetricCriteria() (*MultiMetricCriteria, bool)
 }
 
-// MultiMetricCriteria the types of conditions for a multi resource alert
+// MultiMetricCriteria the types of conditions for a multi resource alert.
 type MultiMetricCriteria struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`

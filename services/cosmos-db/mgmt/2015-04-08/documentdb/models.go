@@ -881,8 +881,6 @@ type ContainerProperties struct {
 	Rid *string `json:"_rid,omitempty"`
 	// Ts - A system generated property that denotes the last updated timestamp of the resource.
 	Ts interface{} `json:"_ts,omitempty"`
-	// Self - A system generated property. It is the unique addressable URI for the resource.
-	Self *string `json:"_self,omitempty"`
 	// Etag - A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
 }
@@ -2021,8 +2019,6 @@ type ExtendedResourceProperties struct {
 	Rid *string `json:"_rid,omitempty"`
 	// Ts - A system generated property that denotes the last updated timestamp of the resource.
 	Ts interface{} `json:"_ts,omitempty"`
-	// Self - A system generated property. It is the unique addressable URI for the resource.
-	Self *string `json:"_self,omitempty"`
 	// Etag - A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
 }
@@ -3287,8 +3283,6 @@ type SQLDatabaseProperties struct {
 	Rid *string `json:"_rid,omitempty"`
 	// Ts - A system generated property that denotes the last updated timestamp of the resource.
 	Ts interface{} `json:"_ts,omitempty"`
-	// Self - A system generated property. It is the unique addressable URI for the resource.
-	Self *string `json:"_self,omitempty"`
 	// Etag - A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
 	// Colls - A system generated property that specified the addressable path of the collections resource.

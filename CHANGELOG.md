@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v27.3.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| anomalydetector | v1.0 |
+
+### Breaking Changes - Preview Only
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hanaonazure | 2017-11-03-preview |
+
 ## `v27.2.0`
 
 ### New Packages

@@ -452,7 +452,7 @@ type AgentPoolProfile struct {
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FQDN for the agent pool.
+	// Fqdn - READ-ONLY; FQDN for the agent pool.
 	Fqdn *string `json:"fqdn,omitempty"`
 	// Ports - Ports number array used to expose on this agent pool. The default opened ports are different based on your choice of orchestrator.
 	Ports *[]int32 `json:"ports,omitempty"`
@@ -469,11 +469,11 @@ type ContainerService struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the container service.
 	*Properties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -486,15 +486,6 @@ func (cs ContainerService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cs.Properties != nil {
 		objectMap["properties"] = cs.Properties
-	}
-	if cs.ID != nil {
-		objectMap["id"] = cs.ID
-	}
-	if cs.Name != nil {
-		objectMap["name"] = cs.Name
-	}
-	if cs.Type != nil {
-		objectMap["type"] = cs.Type
 	}
 	if cs.Location != nil {
 		objectMap["location"] = cs.Location
@@ -584,7 +575,7 @@ type ContainerServicesCreateOrUpdateFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *ContainerServicesCreateOrUpdateFutureType) Result(client ContainerServicesClient) (cs ContainerService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -613,7 +604,7 @@ type ContainerServicesDeleteFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *ContainerServicesDeleteFutureType) Result(client ContainerServicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -661,7 +652,7 @@ type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of container services.
 	Value *[]ContainerService `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of container service results.
+	// NextLink - READ-ONLY; The URL to get the next set of container service results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -818,7 +809,7 @@ type MasterProfile struct {
 	FirstConsecutiveStaticIP *string `json:"firstConsecutiveStaticIP,omitempty"`
 	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
 	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
-	// Fqdn - FQDN for the master pool.
+	// Fqdn - READ-ONLY; FQDN for the master pool.
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
@@ -832,7 +823,7 @@ type OrchestratorProfile struct {
 
 // Properties properties of the container service.
 type Properties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OrchestratorProfile - Profile for the container service orchestrator.
 	OrchestratorProfile *OrchestratorProfile `json:"orchestratorProfile,omitempty"`
@@ -854,11 +845,11 @@ type Properties struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -869,15 +860,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -914,7 +896,7 @@ type SSHPublicKey struct {
 type VMDiagnostics struct {
 	// Enabled - Whether the VM diagnostic agent is provisioned on the VM.
 	Enabled *bool `json:"enabled,omitempty"`
-	// StorageURI - The URI of the storage account where diagnostics are stored.
+	// StorageURI - READ-ONLY; The URI of the storage account where diagnostics are stored.
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 

@@ -90,6 +90,9 @@ func (client ProjectsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		"api-version": APIVersion,
 	}
 
+	project.ID = nil
+	project.Name = nil
+	project.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -574,6 +577,9 @@ func (client ProjectsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"api-version": APIVersion,
 	}
 
+	project.ID = nil
+	project.Name = nil
+	project.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

@@ -2243,76 +2243,37 @@ func (ap *ActivityPolicy) UnmarshalJSON(body []byte) error {
 type ActivityRun struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// PipelineName - The name of the pipeline.
+	// PipelineName - READ-ONLY; The name of the pipeline.
 	PipelineName *string `json:"pipelineName,omitempty"`
-	// PipelineRunID - The id of the pipeline run.
+	// PipelineRunID - READ-ONLY; The id of the pipeline run.
 	PipelineRunID *string `json:"pipelineRunId,omitempty"`
-	// ActivityName - The name of the activity.
+	// ActivityName - READ-ONLY; The name of the activity.
 	ActivityName *string `json:"activityName,omitempty"`
-	// ActivityType - The type of the activity.
+	// ActivityType - READ-ONLY; The type of the activity.
 	ActivityType *string `json:"activityType,omitempty"`
-	// ActivityRunID - The id of the activity run.
+	// ActivityRunID - READ-ONLY; The id of the activity run.
 	ActivityRunID *string `json:"activityRunId,omitempty"`
-	// LinkedServiceName - The name of the compute linked service.
+	// LinkedServiceName - READ-ONLY; The name of the compute linked service.
 	LinkedServiceName *string `json:"linkedServiceName,omitempty"`
-	// Status - The status of the activity run.
+	// Status - READ-ONLY; The status of the activity run.
 	Status *string `json:"status,omitempty"`
-	// ActivityRunStart - The start time of the activity run in 'ISO 8601' format.
+	// ActivityRunStart - READ-ONLY; The start time of the activity run in 'ISO 8601' format.
 	ActivityRunStart *date.Time `json:"activityRunStart,omitempty"`
-	// ActivityRunEnd - The end time of the activity run in 'ISO 8601' format.
+	// ActivityRunEnd - READ-ONLY; The end time of the activity run in 'ISO 8601' format.
 	ActivityRunEnd *date.Time `json:"activityRunEnd,omitempty"`
-	// DurationInMs - The duration of the activity run.
+	// DurationInMs - READ-ONLY; The duration of the activity run.
 	DurationInMs *int32 `json:"durationInMs,omitempty"`
-	// Input - The input for the activity.
+	// Input - READ-ONLY; The input for the activity.
 	Input interface{} `json:"input,omitempty"`
-	// Output - The output for the activity.
+	// Output - READ-ONLY; The output for the activity.
 	Output interface{} `json:"output,omitempty"`
-	// Error - The error if any from the activity run.
+	// Error - READ-ONLY; The error if any from the activity run.
 	Error interface{} `json:"error,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ActivityRun.
 func (ar ActivityRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ar.PipelineName != nil {
-		objectMap["pipelineName"] = ar.PipelineName
-	}
-	if ar.PipelineRunID != nil {
-		objectMap["pipelineRunId"] = ar.PipelineRunID
-	}
-	if ar.ActivityName != nil {
-		objectMap["activityName"] = ar.ActivityName
-	}
-	if ar.ActivityType != nil {
-		objectMap["activityType"] = ar.ActivityType
-	}
-	if ar.ActivityRunID != nil {
-		objectMap["activityRunId"] = ar.ActivityRunID
-	}
-	if ar.LinkedServiceName != nil {
-		objectMap["linkedServiceName"] = ar.LinkedServiceName
-	}
-	if ar.Status != nil {
-		objectMap["status"] = ar.Status
-	}
-	if ar.ActivityRunStart != nil {
-		objectMap["activityRunStart"] = ar.ActivityRunStart
-	}
-	if ar.ActivityRunEnd != nil {
-		objectMap["activityRunEnd"] = ar.ActivityRunEnd
-	}
-	if ar.DurationInMs != nil {
-		objectMap["durationInMs"] = ar.DurationInMs
-	}
-	if ar.Input != nil {
-		objectMap["input"] = ar.Input
-	}
-	if ar.Output != nil {
-		objectMap["output"] = ar.Output
-	}
-	if ar.Error != nil {
-		objectMap["error"] = ar.Error
-	}
 	for k, v := range ar.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -19172,7 +19133,7 @@ type BlobEventsTrigger struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Trigger description.
 	Description *string `json:"description,omitempty"`
-	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	// RuntimeState - READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
 	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
@@ -19190,9 +19151,6 @@ func (bet BlobEventsTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if bet.Description != nil {
 		objectMap["description"] = bet.Description
-	}
-	if bet.RuntimeState != "" {
-		objectMap["runtimeState"] = bet.RuntimeState
 	}
 	if bet.Type != "" {
 		objectMap["type"] = bet.Type
@@ -19973,7 +19931,7 @@ type BlobTrigger struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Trigger description.
 	Description *string `json:"description,omitempty"`
-	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	// RuntimeState - READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
 	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
@@ -19991,9 +19949,6 @@ func (bt BlobTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if bt.Description != nil {
 		objectMap["description"] = bt.Description
-	}
-	if bt.RuntimeState != "" {
-		objectMap["runtimeState"] = bt.RuntimeState
 	}
 	if bt.Type != "" {
 		objectMap["type"] = bt.Type
@@ -29546,13 +29501,13 @@ type DatasetResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Dataset properties.
 	Properties BasicDataset `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag identifies change in the resource.
+	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -36725,11 +36680,11 @@ type Factory struct {
 	Identity *FactoryIdentity `json:"identity,omitempty"`
 	// FactoryProperties - Properties of the factory.
 	*FactoryProperties `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -36745,15 +36700,6 @@ func (f Factory) MarshalJSON() ([]byte, error) {
 	}
 	if f.FactoryProperties != nil {
 		objectMap["properties"] = f.FactoryProperties
-	}
-	if f.ID != nil {
-		objectMap["id"] = f.ID
-	}
-	if f.Name != nil {
-		objectMap["name"] = f.Name
-	}
-	if f.Type != nil {
-		objectMap["type"] = f.Type
 	}
 	if f.Location != nil {
 		objectMap["location"] = f.Location
@@ -36861,9 +36807,9 @@ func (f *Factory) UnmarshalJSON(body []byte) error {
 type FactoryIdentity struct {
 	// Type - The identity type. Currently the only supported type is 'SystemAssigned'.
 	Type *string `json:"type,omitempty"`
-	// PrincipalID - The principal id of the identity.
+	// PrincipalID - READ-ONLY; The principal id of the identity.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// TenantID - The client tenant id of the identity.
+	// TenantID - READ-ONLY; The client tenant id of the identity.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
@@ -37015,11 +36961,11 @@ func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListRes
 
 // FactoryProperties factory resource properties.
 type FactoryProperties struct {
-	// ProvisioningState - Factory provisioning state, example Succeeded.
+	// ProvisioningState - READ-ONLY; Factory provisioning state, example Succeeded.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// CreateTime - Time the factory was created in ISO8601 format.
+	// CreateTime - READ-ONLY; Time the factory was created in ISO8601 format.
 	CreateTime *date.Time `json:"createTime,omitempty"`
-	// Version - Version of the factory.
+	// Version - READ-ONLY; Version of the factory.
 	Version *string `json:"version,omitempty"`
 	// VstsConfiguration - VSTS repo information of the factory.
 	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
@@ -54381,41 +54327,23 @@ type IntegrationRuntimeConnectionInfo struct {
 	autorest.Response `json:"-"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// ServiceToken - The token generated in service. Callers use this token to authenticate to integration runtime.
+	// ServiceToken - READ-ONLY; The token generated in service. Callers use this token to authenticate to integration runtime.
 	ServiceToken *string `json:"serviceToken,omitempty"`
-	// IdentityCertThumbprint - The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
+	// IdentityCertThumbprint - READ-ONLY; The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
 	IdentityCertThumbprint *string `json:"identityCertThumbprint,omitempty"`
-	// HostServiceURI - The on-premises integration runtime host URL.
+	// HostServiceURI - READ-ONLY; The on-premises integration runtime host URL.
 	HostServiceURI *string `json:"hostServiceUri,omitempty"`
-	// Version - The integration runtime version.
+	// Version - READ-ONLY; The integration runtime version.
 	Version *string `json:"version,omitempty"`
-	// PublicKey - The public key for encrypting a credential when transferring the credential to the integration runtime.
+	// PublicKey - READ-ONLY; The public key for encrypting a credential when transferring the credential to the integration runtime.
 	PublicKey *string `json:"publicKey,omitempty"`
-	// IsIdentityCertExprired - Whether the identity certificate is expired.
+	// IsIdentityCertExprired - READ-ONLY; Whether the identity certificate is expired.
 	IsIdentityCertExprired *bool `json:"isIdentityCertExprired,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeConnectionInfo.
 func (irci IntegrationRuntimeConnectionInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if irci.ServiceToken != nil {
-		objectMap["serviceToken"] = irci.ServiceToken
-	}
-	if irci.IdentityCertThumbprint != nil {
-		objectMap["identityCertThumbprint"] = irci.IdentityCertThumbprint
-	}
-	if irci.HostServiceURI != nil {
-		objectMap["hostServiceUri"] = irci.HostServiceURI
-	}
-	if irci.Version != nil {
-		objectMap["version"] = irci.Version
-	}
-	if irci.PublicKey != nil {
-		objectMap["publicKey"] = irci.PublicKey
-	}
-	if irci.IsIdentityCertExprired != nil {
-		objectMap["isIdentityCertExprired"] = irci.IsIdentityCertExprired
-	}
 	for k, v := range irci.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -54671,7 +54599,7 @@ type IntegrationRuntimeMonitoringData struct {
 // IntegrationRuntimeNodeIPAddress the IP address of self-hosted integration runtime node.
 type IntegrationRuntimeNodeIPAddress struct {
 	autorest.Response `json:"-"`
-	// IPAddress - The IP address of self-hosted integration runtime node.
+	// IPAddress - READ-ONLY; The IP address of self-hosted integration runtime node.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
@@ -54679,51 +54607,27 @@ type IntegrationRuntimeNodeIPAddress struct {
 type IntegrationRuntimeNodeMonitoringData struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// NodeName - Name of the integration runtime node.
+	// NodeName - READ-ONLY; Name of the integration runtime node.
 	NodeName *string `json:"nodeName,omitempty"`
-	// AvailableMemoryInMB - Available memory (MB) on the integration runtime node.
+	// AvailableMemoryInMB - READ-ONLY; Available memory (MB) on the integration runtime node.
 	AvailableMemoryInMB *int32 `json:"availableMemoryInMB,omitempty"`
-	// CPUUtilization - CPU percentage on the integration runtime node.
+	// CPUUtilization - READ-ONLY; CPU percentage on the integration runtime node.
 	CPUUtilization *float64 `json:"cpuUtilization,omitempty"`
-	// ConcurrentJobsLimit - Maximum concurrent jobs on the integration runtime node.
+	// ConcurrentJobsLimit - READ-ONLY; Maximum concurrent jobs on the integration runtime node.
 	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
-	// ConcurrentJobsRunning - The number of jobs currently running on the integration runtime node.
+	// ConcurrentJobsRunning - READ-ONLY; The number of jobs currently running on the integration runtime node.
 	ConcurrentJobsRunning *int32 `json:"concurrentJobsRunning,omitempty"`
-	// MaxConcurrentJobs - The maximum concurrent jobs in this integration runtime.
+	// MaxConcurrentJobs - READ-ONLY; The maximum concurrent jobs in this integration runtime.
 	MaxConcurrentJobs *int32 `json:"maxConcurrentJobs,omitempty"`
-	// SentBytes - Sent bytes on the integration runtime node.
+	// SentBytes - READ-ONLY; Sent bytes on the integration runtime node.
 	SentBytes *float64 `json:"sentBytes,omitempty"`
-	// ReceivedBytes - Received bytes on the integration runtime node.
+	// ReceivedBytes - READ-ONLY; Received bytes on the integration runtime node.
 	ReceivedBytes *float64 `json:"receivedBytes,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeNodeMonitoringData.
 func (irnmd IntegrationRuntimeNodeMonitoringData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if irnmd.NodeName != nil {
-		objectMap["nodeName"] = irnmd.NodeName
-	}
-	if irnmd.AvailableMemoryInMB != nil {
-		objectMap["availableMemoryInMB"] = irnmd.AvailableMemoryInMB
-	}
-	if irnmd.CPUUtilization != nil {
-		objectMap["cpuUtilization"] = irnmd.CPUUtilization
-	}
-	if irnmd.ConcurrentJobsLimit != nil {
-		objectMap["concurrentJobsLimit"] = irnmd.ConcurrentJobsLimit
-	}
-	if irnmd.ConcurrentJobsRunning != nil {
-		objectMap["concurrentJobsRunning"] = irnmd.ConcurrentJobsRunning
-	}
-	if irnmd.MaxConcurrentJobs != nil {
-		objectMap["maxConcurrentJobs"] = irnmd.MaxConcurrentJobs
-	}
-	if irnmd.SentBytes != nil {
-		objectMap["sentBytes"] = irnmd.SentBytes
-	}
-	if irnmd.ReceivedBytes != nil {
-		objectMap["receivedBytes"] = irnmd.ReceivedBytes
-	}
 	for k, v := range irnmd.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -54921,13 +54825,13 @@ type IntegrationRuntimeResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Integration runtime properties.
 	Properties BasicIntegrationRuntime `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag identifies change in the resource.
+	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -55196,7 +55100,7 @@ type IntegrationRuntimesStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IntegrationRuntimesStartFuture) Result(client IntegrationRuntimesClient) (irsr IntegrationRuntimeStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -55225,7 +55129,7 @@ type IntegrationRuntimesStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IntegrationRuntimesStopFuture) Result(client IntegrationRuntimesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -55249,9 +55153,9 @@ type BasicIntegrationRuntimeStatus interface {
 type IntegrationRuntimeStatus struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// DataFactoryName - The data factory name which the integration runtime belong to.
+	// DataFactoryName - READ-ONLY; The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - READ-ONLY; The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -55302,12 +55206,6 @@ func unmarshalBasicIntegrationRuntimeStatusArray(body []byte) ([]BasicIntegratio
 func (irs IntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
 	irs.Type = TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus
 	objectMap := make(map[string]interface{})
-	if irs.DataFactoryName != nil {
-		objectMap["dataFactoryName"] = irs.DataFactoryName
-	}
-	if irs.State != "" {
-		objectMap["state"] = irs.State
-	}
 	if irs.Type != "" {
 		objectMap["type"] = irs.Type
 	}
@@ -55402,7 +55300,7 @@ type IntegrationRuntimeStatusListResponse struct {
 // IntegrationRuntimeStatusResponse integration runtime status response.
 type IntegrationRuntimeStatusResponse struct {
 	autorest.Response `json:"-"`
-	// Name - The integration runtime name.
+	// Name - READ-ONLY; The integration runtime name.
 	Name *string `json:"name,omitempty"`
 	// Properties - Integration runtime properties.
 	Properties BasicIntegrationRuntimeStatus `json:"properties,omitempty"`
@@ -57056,15 +56954,15 @@ func (jf *JSONFormat) UnmarshalJSON(body []byte) error {
 
 // LinkedIntegrationRuntime the linked integration runtime information.
 type LinkedIntegrationRuntime struct {
-	// Name - The name of the linked integration runtime.
+	// Name - READ-ONLY; The name of the linked integration runtime.
 	Name *string `json:"name,omitempty"`
-	// SubscriptionID - The subscription ID for which the linked integration runtime belong to.
+	// SubscriptionID - READ-ONLY; The subscription ID for which the linked integration runtime belong to.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// DataFactoryName - The name of the data factory for which the linked integration runtime belong to.
+	// DataFactoryName - READ-ONLY; The name of the data factory for which the linked integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// DataFactoryLocation - The location of the data factory for which the linked integration runtime belong to.
+	// DataFactoryLocation - READ-ONLY; The location of the data factory for which the linked integration runtime belong to.
 	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
-	// CreateTime - The creating time of the linked integration runtime.
+	// CreateTime - READ-ONLY; The creating time of the linked integration runtime.
 	CreateTime *date.Time `json:"createTime,omitempty"`
 }
 
@@ -58301,13 +58199,13 @@ type LinkedServiceResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of linked service.
 	Properties BasicLinkedService `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag identifies change in the resource.
+	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -60037,7 +59935,7 @@ func (ms *MagentoSource) UnmarshalJSON(body []byte) error {
 // ManagedIntegrationRuntime managed integration runtime, including managed elastic and managed dedicated
 // integration runtimes.
 type ManagedIntegrationRuntime struct {
-	// State - Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - READ-ONLY; Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
@@ -60053,9 +59951,6 @@ type ManagedIntegrationRuntime struct {
 func (mir ManagedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	mir.Type = TypeManaged
 	objectMap := make(map[string]interface{})
-	if mir.State != "" {
-		objectMap["state"] = mir.State
-	}
 	if mir.ManagedIntegrationRuntimeTypeProperties != nil {
 		objectMap["typeProperties"] = mir.ManagedIntegrationRuntimeTypeProperties
 	}
@@ -60156,21 +60051,21 @@ func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 
 // ManagedIntegrationRuntimeError error definition for managed integration runtime.
 type ManagedIntegrationRuntimeError struct {
-	// Time - The time when the error occurred.
+	// Time - READ-ONLY; The time when the error occurred.
 	Time *date.Time `json:"time,omitempty"`
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Parameters - Managed integration runtime error parameters.
+	// Parameters - READ-ONLY; Managed integration runtime error parameters.
 	Parameters *[]string `json:"parameters,omitempty"`
-	// Message - Error message.
+	// Message - READ-ONLY; Error message.
 	Message *string `json:"message,omitempty"`
 }
 
 // ManagedIntegrationRuntimeNode properties of integration runtime node.
 type ManagedIntegrationRuntimeNode struct {
-	// NodeID - The managed integration runtime node id.
+	// NodeID - READ-ONLY; The managed integration runtime node id.
 	NodeID *string `json:"nodeId,omitempty"`
-	// Status - The managed integration runtime node status. Possible values include: 'ManagedIntegrationRuntimeNodeStatusStarting', 'ManagedIntegrationRuntimeNodeStatusAvailable', 'ManagedIntegrationRuntimeNodeStatusRecycling', 'ManagedIntegrationRuntimeNodeStatusUnavailable'
+	// Status - READ-ONLY; The managed integration runtime node status. Possible values include: 'ManagedIntegrationRuntimeNodeStatusStarting', 'ManagedIntegrationRuntimeNodeStatusAvailable', 'ManagedIntegrationRuntimeNodeStatusRecycling', 'ManagedIntegrationRuntimeNodeStatusUnavailable'
 	Status ManagedIntegrationRuntimeNodeStatus `json:"status,omitempty"`
 	// Errors - The errors that occurred on this integration runtime node.
 	Errors *[]ManagedIntegrationRuntimeError `json:"errors,omitempty"`
@@ -60178,17 +60073,17 @@ type ManagedIntegrationRuntimeNode struct {
 
 // ManagedIntegrationRuntimeOperationResult properties of managed integration runtime operation result.
 type ManagedIntegrationRuntimeOperationResult struct {
-	// Type - The operation type. Could be start or stop.
+	// Type - READ-ONLY; The operation type. Could be start or stop.
 	Type *string `json:"type,omitempty"`
-	// StartTime - The start time of the operation.
+	// StartTime - READ-ONLY; The start time of the operation.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// Result - The operation result.
+	// Result - READ-ONLY; The operation result.
 	Result *string `json:"result,omitempty"`
-	// ErrorCode - The error code.
+	// ErrorCode - READ-ONLY; The error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// Parameters - Managed integration runtime error parameters.
+	// Parameters - READ-ONLY; Managed integration runtime error parameters.
 	Parameters *[]string `json:"parameters,omitempty"`
-	// ActivityID - The activity id for the operation request.
+	// ActivityID - READ-ONLY; The activity id for the operation request.
 	ActivityID *string `json:"activityId,omitempty"`
 }
 
@@ -60198,9 +60093,9 @@ type ManagedIntegrationRuntimeStatus struct {
 	*ManagedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// DataFactoryName - The data factory name which the integration runtime belong to.
+	// DataFactoryName - READ-ONLY; The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - READ-ONLY; The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -60212,12 +60107,6 @@ func (mirs ManagedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mirs.ManagedIntegrationRuntimeStatusTypeProperties != nil {
 		objectMap["typeProperties"] = mirs.ManagedIntegrationRuntimeStatusTypeProperties
-	}
-	if mirs.DataFactoryName != nil {
-		objectMap["dataFactoryName"] = mirs.DataFactoryName
-	}
-	if mirs.State != "" {
-		objectMap["state"] = mirs.State
 	}
 	if mirs.Type != "" {
 		objectMap["type"] = mirs.Type
@@ -60313,13 +60202,13 @@ func (mirs *ManagedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
 
 // ManagedIntegrationRuntimeStatusTypeProperties managed integration runtime status type properties.
 type ManagedIntegrationRuntimeStatusTypeProperties struct {
-	// CreateTime - The time at which the integration runtime was created, in ISO8601 format.
+	// CreateTime - READ-ONLY; The time at which the integration runtime was created, in ISO8601 format.
 	CreateTime *date.Time `json:"createTime,omitempty"`
-	// Nodes - The list of nodes for managed integration runtime.
+	// Nodes - READ-ONLY; The list of nodes for managed integration runtime.
 	Nodes *[]ManagedIntegrationRuntimeNode `json:"nodes,omitempty"`
-	// OtherErrors - The errors that occurred on this integration runtime.
+	// OtherErrors - READ-ONLY; The errors that occurred on this integration runtime.
 	OtherErrors *[]ManagedIntegrationRuntimeError `json:"otherErrors,omitempty"`
-	// LastOperation - The last operation result that occurred on this integration runtime.
+	// LastOperation - READ-ONLY; The last operation result that occurred on this integration runtime.
 	LastOperation *ManagedIntegrationRuntimeOperationResult `json:"lastOperation,omitempty"`
 }
 
@@ -64342,7 +64231,7 @@ type MultiplePipelineTrigger struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Trigger description.
 	Description *string `json:"description,omitempty"`
-	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	// RuntimeState - READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
 	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
@@ -64402,9 +64291,6 @@ func (mpt MultiplePipelineTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if mpt.Description != nil {
 		objectMap["description"] = mpt.Description
-	}
-	if mpt.RuntimeState != "" {
-		objectMap["runtimeState"] = mpt.RuntimeState
 	}
 	if mpt.Type != "" {
 		objectMap["type"] = mpt.Type
@@ -72959,13 +72845,13 @@ type PipelineResource struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Pipeline - Properties of the pipeline.
 	*Pipeline `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag identifies change in the resource.
+	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -72974,18 +72860,6 @@ func (pr PipelineResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pr.Pipeline != nil {
 		objectMap["properties"] = pr.Pipeline
-	}
-	if pr.ID != nil {
-		objectMap["id"] = pr.ID
-	}
-	if pr.Name != nil {
-		objectMap["name"] = pr.Name
-	}
-	if pr.Type != nil {
-		objectMap["type"] = pr.Type
-	}
-	if pr.Etag != nil {
-		objectMap["etag"] = pr.Etag
 	}
 	for k, v := range pr.AdditionalProperties {
 		objectMap[k] = v
@@ -73070,61 +72944,31 @@ type PipelineRun struct {
 	autorest.Response `json:"-"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// RunID - Identifier of a run.
+	// RunID - READ-ONLY; Identifier of a run.
 	RunID *string `json:"runId,omitempty"`
-	// PipelineName - The pipeline name.
+	// PipelineName - READ-ONLY; The pipeline name.
 	PipelineName *string `json:"pipelineName,omitempty"`
-	// Parameters - The full or partial list of parameter name, value pair used in the pipeline run.
+	// Parameters - READ-ONLY; The full or partial list of parameter name, value pair used in the pipeline run.
 	Parameters map[string]*string `json:"parameters"`
-	// InvokedBy - Entity that started the pipeline run.
+	// InvokedBy - READ-ONLY; Entity that started the pipeline run.
 	InvokedBy *PipelineRunInvokedBy `json:"invokedBy,omitempty"`
-	// LastUpdated - The last updated timestamp for the pipeline run event in ISO8601 format.
+	// LastUpdated - READ-ONLY; The last updated timestamp for the pipeline run event in ISO8601 format.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
-	// RunStart - The start time of a pipeline run in ISO8601 format.
+	// RunStart - READ-ONLY; The start time of a pipeline run in ISO8601 format.
 	RunStart *date.Time `json:"runStart,omitempty"`
-	// RunEnd - The end time of a pipeline run in ISO8601 format.
+	// RunEnd - READ-ONLY; The end time of a pipeline run in ISO8601 format.
 	RunEnd *date.Time `json:"runEnd,omitempty"`
-	// DurationInMs - The duration of a pipeline run.
+	// DurationInMs - READ-ONLY; The duration of a pipeline run.
 	DurationInMs *int32 `json:"durationInMs,omitempty"`
-	// Status - The status of a pipeline run.
+	// Status - READ-ONLY; The status of a pipeline run.
 	Status *string `json:"status,omitempty"`
-	// Message - The message from a pipeline run.
+	// Message - READ-ONLY; The message from a pipeline run.
 	Message *string `json:"message,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PipelineRun.
 func (pr PipelineRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if pr.RunID != nil {
-		objectMap["runId"] = pr.RunID
-	}
-	if pr.PipelineName != nil {
-		objectMap["pipelineName"] = pr.PipelineName
-	}
-	if pr.Parameters != nil {
-		objectMap["parameters"] = pr.Parameters
-	}
-	if pr.InvokedBy != nil {
-		objectMap["invokedBy"] = pr.InvokedBy
-	}
-	if pr.LastUpdated != nil {
-		objectMap["lastUpdated"] = pr.LastUpdated
-	}
-	if pr.RunStart != nil {
-		objectMap["runStart"] = pr.RunStart
-	}
-	if pr.RunEnd != nil {
-		objectMap["runEnd"] = pr.RunEnd
-	}
-	if pr.DurationInMs != nil {
-		objectMap["durationInMs"] = pr.DurationInMs
-	}
-	if pr.Status != nil {
-		objectMap["status"] = pr.Status
-	}
-	if pr.Message != nil {
-		objectMap["message"] = pr.Message
-	}
 	for k, v := range pr.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -73264,9 +73108,9 @@ type PipelineRunFilterParameters struct {
 
 // PipelineRunInvokedBy provides entity name and id that started the pipeline run.
 type PipelineRunInvokedBy struct {
-	// Name - Name of the entity that started the pipeline run.
+	// Name - READ-ONLY; Name of the entity that started the pipeline run.
 	Name *string `json:"name,omitempty"`
-	// ID - The ID of the entity that started the run.
+	// ID - READ-ONLY; The ID of the entity that started the run.
 	ID *string `json:"id,omitempty"`
 }
 
@@ -77739,11 +77583,11 @@ type RelationalTableDatasetTypeProperties struct {
 
 // Resource azure Data Factory top-level resource.
 type Resource struct {
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -77754,15 +77598,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -86054,7 +85889,7 @@ type ScheduleTrigger struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Trigger description.
 	Description *string `json:"description,omitempty"`
-	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	// RuntimeState - READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
 	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
@@ -86072,9 +85907,6 @@ func (st ScheduleTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if st.Description != nil {
 		objectMap["description"] = st.Description
-	}
-	if st.RuntimeState != "" {
-		objectMap["runtimeState"] = st.RuntimeState
 	}
 	if st.Type != "" {
 		objectMap["type"] = st.Type
@@ -86563,101 +86395,47 @@ func (shir *SelfHostedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 // SelfHostedIntegrationRuntimeNode properties of Self-hosted integration runtime node.
 type SelfHostedIntegrationRuntimeNode struct {
 	autorest.Response `json:"-"`
-	// NodeName - Name of the integration runtime node.
+	// NodeName - READ-ONLY; Name of the integration runtime node.
 	NodeName *string `json:"nodeName,omitempty"`
-	// MachineName - Machine name of the integration runtime node.
+	// MachineName - READ-ONLY; Machine name of the integration runtime node.
 	MachineName *string `json:"machineName,omitempty"`
-	// HostServiceURI - URI for the host machine of the integration runtime.
+	// HostServiceURI - READ-ONLY; URI for the host machine of the integration runtime.
 	HostServiceURI *string `json:"hostServiceUri,omitempty"`
-	// Status - Status of the integration runtime node. Possible values include: 'SelfHostedIntegrationRuntimeNodeStatusNeedRegistration', 'SelfHostedIntegrationRuntimeNodeStatusOnline', 'SelfHostedIntegrationRuntimeNodeStatusLimited', 'SelfHostedIntegrationRuntimeNodeStatusOffline', 'SelfHostedIntegrationRuntimeNodeStatusUpgrading', 'SelfHostedIntegrationRuntimeNodeStatusInitializing', 'SelfHostedIntegrationRuntimeNodeStatusInitializeFailed'
+	// Status - READ-ONLY; Status of the integration runtime node. Possible values include: 'SelfHostedIntegrationRuntimeNodeStatusNeedRegistration', 'SelfHostedIntegrationRuntimeNodeStatusOnline', 'SelfHostedIntegrationRuntimeNodeStatusLimited', 'SelfHostedIntegrationRuntimeNodeStatusOffline', 'SelfHostedIntegrationRuntimeNodeStatusUpgrading', 'SelfHostedIntegrationRuntimeNodeStatusInitializing', 'SelfHostedIntegrationRuntimeNodeStatusInitializeFailed'
 	Status SelfHostedIntegrationRuntimeNodeStatus `json:"status,omitempty"`
-	// Capabilities - The integration runtime capabilities dictionary
+	// Capabilities - READ-ONLY; The integration runtime capabilities dictionary
 	Capabilities map[string]*string `json:"capabilities"`
-	// VersionStatus - Status of the integration runtime node version.
+	// VersionStatus - READ-ONLY; Status of the integration runtime node version.
 	VersionStatus *string `json:"versionStatus,omitempty"`
-	// Version - Version of the integration runtime node.
+	// Version - READ-ONLY; Version of the integration runtime node.
 	Version *string `json:"version,omitempty"`
-	// RegisterTime - The time at which the integration runtime node was registered in ISO8601 format.
+	// RegisterTime - READ-ONLY; The time at which the integration runtime node was registered in ISO8601 format.
 	RegisterTime *date.Time `json:"registerTime,omitempty"`
-	// LastConnectTime - The most recent time at which the integration runtime was connected in ISO8601 format.
+	// LastConnectTime - READ-ONLY; The most recent time at which the integration runtime was connected in ISO8601 format.
 	LastConnectTime *date.Time `json:"lastConnectTime,omitempty"`
-	// ExpiryTime - The time at which the integration runtime will expire in ISO8601 format.
+	// ExpiryTime - READ-ONLY; The time at which the integration runtime will expire in ISO8601 format.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// LastStartTime - The time the node last started up.
+	// LastStartTime - READ-ONLY; The time the node last started up.
 	LastStartTime *date.Time `json:"lastStartTime,omitempty"`
-	// LastStopTime - The integration runtime node last stop time.
+	// LastStopTime - READ-ONLY; The integration runtime node last stop time.
 	LastStopTime *date.Time `json:"lastStopTime,omitempty"`
-	// LastUpdateResult - The result of the last integration runtime node update. Possible values include: 'Succeed', 'Fail'
+	// LastUpdateResult - READ-ONLY; The result of the last integration runtime node update. Possible values include: 'Succeed', 'Fail'
 	LastUpdateResult IntegrationRuntimeUpdateResult `json:"lastUpdateResult,omitempty"`
-	// LastStartUpdateTime - The last time for the integration runtime node update start.
+	// LastStartUpdateTime - READ-ONLY; The last time for the integration runtime node update start.
 	LastStartUpdateTime *date.Time `json:"lastStartUpdateTime,omitempty"`
-	// LastEndUpdateTime - The last time for the integration runtime node update end.
+	// LastEndUpdateTime - READ-ONLY; The last time for the integration runtime node update end.
 	LastEndUpdateTime *date.Time `json:"lastEndUpdateTime,omitempty"`
-	// IsActiveDispatcher - Indicates whether this node is the active dispatcher for integration runtime requests.
+	// IsActiveDispatcher - READ-ONLY; Indicates whether this node is the active dispatcher for integration runtime requests.
 	IsActiveDispatcher *bool `json:"isActiveDispatcher,omitempty"`
-	// ConcurrentJobsLimit - Maximum concurrent jobs on the integration runtime node.
+	// ConcurrentJobsLimit - READ-ONLY; Maximum concurrent jobs on the integration runtime node.
 	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
-	// MaxConcurrentJobs - The maximum concurrent jobs in this integration runtime.
+	// MaxConcurrentJobs - READ-ONLY; The maximum concurrent jobs in this integration runtime.
 	MaxConcurrentJobs *int32 `json:"maxConcurrentJobs,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeNode.
 func (shirn SelfHostedIntegrationRuntimeNode) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if shirn.NodeName != nil {
-		objectMap["nodeName"] = shirn.NodeName
-	}
-	if shirn.MachineName != nil {
-		objectMap["machineName"] = shirn.MachineName
-	}
-	if shirn.HostServiceURI != nil {
-		objectMap["hostServiceUri"] = shirn.HostServiceURI
-	}
-	if shirn.Status != "" {
-		objectMap["status"] = shirn.Status
-	}
-	if shirn.Capabilities != nil {
-		objectMap["capabilities"] = shirn.Capabilities
-	}
-	if shirn.VersionStatus != nil {
-		objectMap["versionStatus"] = shirn.VersionStatus
-	}
-	if shirn.Version != nil {
-		objectMap["version"] = shirn.Version
-	}
-	if shirn.RegisterTime != nil {
-		objectMap["registerTime"] = shirn.RegisterTime
-	}
-	if shirn.LastConnectTime != nil {
-		objectMap["lastConnectTime"] = shirn.LastConnectTime
-	}
-	if shirn.ExpiryTime != nil {
-		objectMap["expiryTime"] = shirn.ExpiryTime
-	}
-	if shirn.LastStartTime != nil {
-		objectMap["lastStartTime"] = shirn.LastStartTime
-	}
-	if shirn.LastStopTime != nil {
-		objectMap["lastStopTime"] = shirn.LastStopTime
-	}
-	if shirn.LastUpdateResult != "" {
-		objectMap["lastUpdateResult"] = shirn.LastUpdateResult
-	}
-	if shirn.LastStartUpdateTime != nil {
-		objectMap["lastStartUpdateTime"] = shirn.LastStartUpdateTime
-	}
-	if shirn.LastEndUpdateTime != nil {
-		objectMap["lastEndUpdateTime"] = shirn.LastEndUpdateTime
-	}
-	if shirn.IsActiveDispatcher != nil {
-		objectMap["isActiveDispatcher"] = shirn.IsActiveDispatcher
-	}
-	if shirn.ConcurrentJobsLimit != nil {
-		objectMap["concurrentJobsLimit"] = shirn.ConcurrentJobsLimit
-	}
-	if shirn.MaxConcurrentJobs != nil {
-		objectMap["maxConcurrentJobs"] = shirn.MaxConcurrentJobs
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -86667,9 +86445,9 @@ type SelfHostedIntegrationRuntimeStatus struct {
 	*SelfHostedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// DataFactoryName - The data factory name which the integration runtime belong to.
+	// DataFactoryName - READ-ONLY; The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - READ-ONLY; The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -86681,12 +86459,6 @@ func (shirs SelfHostedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if shirs.SelfHostedIntegrationRuntimeStatusTypeProperties != nil {
 		objectMap["typeProperties"] = shirs.SelfHostedIntegrationRuntimeStatusTypeProperties
-	}
-	if shirs.DataFactoryName != nil {
-		objectMap["dataFactoryName"] = shirs.DataFactoryName
-	}
-	if shirs.State != "" {
-		objectMap["state"] = shirs.State
 	}
 	if shirs.Type != "" {
 		objectMap["type"] = shirs.Type
@@ -86782,29 +86554,29 @@ func (shirs *SelfHostedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) erro
 
 // SelfHostedIntegrationRuntimeStatusTypeProperties self-hosted integration runtime status type properties.
 type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
-	// CreateTime - The time at which the integration runtime was created, in ISO8601 format.
+	// CreateTime - READ-ONLY; The time at which the integration runtime was created, in ISO8601 format.
 	CreateTime *date.Time `json:"createTime,omitempty"`
-	// TaskQueueID - The task queue id of the integration runtime.
+	// TaskQueueID - READ-ONLY; The task queue id of the integration runtime.
 	TaskQueueID *string `json:"taskQueueId,omitempty"`
-	// InternalChannelEncryption - It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration runtime nodes exist). Possible values include: 'NotSet', 'SslEncrypted', 'NotEncrypted'
+	// InternalChannelEncryption - READ-ONLY; It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration runtime nodes exist). Possible values include: 'NotSet', 'SslEncrypted', 'NotEncrypted'
 	InternalChannelEncryption IntegrationRuntimeInternalChannelEncryptionMode `json:"internalChannelEncryption,omitempty"`
-	// Version - Version of the integration runtime.
+	// Version - READ-ONLY; Version of the integration runtime.
 	Version *string `json:"version,omitempty"`
 	// Nodes - The list of nodes for this integration runtime.
 	Nodes *[]SelfHostedIntegrationRuntimeNode `json:"nodes,omitempty"`
-	// ScheduledUpdateDate - The date at which the integration runtime will be scheduled to update, in ISO8601 format.
+	// ScheduledUpdateDate - READ-ONLY; The date at which the integration runtime will be scheduled to update, in ISO8601 format.
 	ScheduledUpdateDate *date.Time `json:"scheduledUpdateDate,omitempty"`
-	// UpdateDelayOffset - The time in the date scheduled by service to update the integration runtime, e.g., PT03H is 3 hours
+	// UpdateDelayOffset - READ-ONLY; The time in the date scheduled by service to update the integration runtime, e.g., PT03H is 3 hours
 	UpdateDelayOffset *string `json:"updateDelayOffset,omitempty"`
-	// LocalTimeZoneOffset - The local time zone offset in hours.
+	// LocalTimeZoneOffset - READ-ONLY; The local time zone offset in hours.
 	LocalTimeZoneOffset *string `json:"localTimeZoneOffset,omitempty"`
-	// Capabilities - Object with additional information about integration runtime capabilities.
+	// Capabilities - READ-ONLY; Object with additional information about integration runtime capabilities.
 	Capabilities map[string]*string `json:"capabilities"`
-	// ServiceUrls - The URLs for the services used in integration runtime backend service.
+	// ServiceUrls - READ-ONLY; The URLs for the services used in integration runtime backend service.
 	ServiceUrls *[]string `json:"serviceUrls,omitempty"`
-	// AutoUpdate - Whether Self-hosted integration runtime auto update has been turned on. Possible values include: 'On', 'Off'
+	// AutoUpdate - READ-ONLY; Whether Self-hosted integration runtime auto update has been turned on. Possible values include: 'On', 'Off'
 	AutoUpdate IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
-	// VersionStatus - Status of the integration runtime version.
+	// VersionStatus - READ-ONLY; Status of the integration runtime version.
 	VersionStatus *string `json:"versionStatus,omitempty"`
 	// Links - The list of linked integration runtimes that are created to share with this integration runtime.
 	Links *[]LinkedIntegrationRuntime `json:"links,omitempty"`
@@ -86813,41 +86585,8 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
 func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if shirstp.CreateTime != nil {
-		objectMap["createTime"] = shirstp.CreateTime
-	}
-	if shirstp.TaskQueueID != nil {
-		objectMap["taskQueueId"] = shirstp.TaskQueueID
-	}
-	if shirstp.InternalChannelEncryption != "" {
-		objectMap["internalChannelEncryption"] = shirstp.InternalChannelEncryption
-	}
-	if shirstp.Version != nil {
-		objectMap["version"] = shirstp.Version
-	}
 	if shirstp.Nodes != nil {
 		objectMap["nodes"] = shirstp.Nodes
-	}
-	if shirstp.ScheduledUpdateDate != nil {
-		objectMap["scheduledUpdateDate"] = shirstp.ScheduledUpdateDate
-	}
-	if shirstp.UpdateDelayOffset != nil {
-		objectMap["updateDelayOffset"] = shirstp.UpdateDelayOffset
-	}
-	if shirstp.LocalTimeZoneOffset != nil {
-		objectMap["localTimeZoneOffset"] = shirstp.LocalTimeZoneOffset
-	}
-	if shirstp.Capabilities != nil {
-		objectMap["capabilities"] = shirstp.Capabilities
-	}
-	if shirstp.ServiceUrls != nil {
-		objectMap["serviceUrls"] = shirstp.ServiceUrls
-	}
-	if shirstp.AutoUpdate != "" {
-		objectMap["autoUpdate"] = shirstp.AutoUpdate
-	}
-	if shirstp.VersionStatus != nil {
-		objectMap["versionStatus"] = shirstp.VersionStatus
 	}
 	if shirstp.Links != nil {
 		objectMap["links"] = shirstp.Links
@@ -95614,13 +95353,13 @@ type StoredProcedureParameter struct {
 
 // SubResource azure Data Factory nested resource, which belongs to a factory.
 type SubResource struct {
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag identifies change in the resource.
+	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -97129,7 +96868,7 @@ type Trigger struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Trigger description.
 	Description *string `json:"description,omitempty"`
-	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	// RuntimeState - READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
 	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
@@ -97194,9 +96933,6 @@ func (t Trigger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if t.Description != nil {
 		objectMap["description"] = t.Description
-	}
-	if t.RuntimeState != "" {
-		objectMap["runtimeState"] = t.RuntimeState
 	}
 	if t.Type != "" {
 		objectMap["type"] = t.Type
@@ -97472,13 +97208,13 @@ type TriggerResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the trigger.
 	Properties BasicTrigger `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag identifies change in the resource.
+	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -97545,51 +97281,27 @@ func (tr *TriggerResource) UnmarshalJSON(body []byte) error {
 type TriggerRun struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// TriggerRunID - Trigger run id.
+	// TriggerRunID - READ-ONLY; Trigger run id.
 	TriggerRunID *string `json:"triggerRunId,omitempty"`
-	// TriggerName - Trigger name.
+	// TriggerName - READ-ONLY; Trigger name.
 	TriggerName *string `json:"triggerName,omitempty"`
-	// TriggerType - Trigger type.
+	// TriggerType - READ-ONLY; Trigger type.
 	TriggerType *string `json:"triggerType,omitempty"`
-	// TriggerRunTimestamp - Trigger run start time.
+	// TriggerRunTimestamp - READ-ONLY; Trigger run start time.
 	TriggerRunTimestamp *date.Time `json:"triggerRunTimestamp,omitempty"`
-	// Status - Trigger run status. Possible values include: 'TriggerRunStatusSucceeded', 'TriggerRunStatusFailed', 'TriggerRunStatusInprogress'
+	// Status - READ-ONLY; Trigger run status. Possible values include: 'TriggerRunStatusSucceeded', 'TriggerRunStatusFailed', 'TriggerRunStatusInprogress'
 	Status TriggerRunStatus `json:"status,omitempty"`
-	// Message - Trigger error message.
+	// Message - READ-ONLY; Trigger error message.
 	Message *string `json:"message,omitempty"`
-	// Properties - List of property name and value related to trigger run. Name, value pair depends on type of trigger.
+	// Properties - READ-ONLY; List of property name and value related to trigger run. Name, value pair depends on type of trigger.
 	Properties map[string]*string `json:"properties"`
-	// TriggeredPipelines - List of pipeline name and run Id triggered by the trigger run.
+	// TriggeredPipelines - READ-ONLY; List of pipeline name and run Id triggered by the trigger run.
 	TriggeredPipelines map[string]*string `json:"triggeredPipelines"`
 }
 
 // MarshalJSON is the custom marshaler for TriggerRun.
 func (tr TriggerRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.TriggerRunID != nil {
-		objectMap["triggerRunId"] = tr.TriggerRunID
-	}
-	if tr.TriggerName != nil {
-		objectMap["triggerName"] = tr.TriggerName
-	}
-	if tr.TriggerType != nil {
-		objectMap["triggerType"] = tr.TriggerType
-	}
-	if tr.TriggerRunTimestamp != nil {
-		objectMap["triggerRunTimestamp"] = tr.TriggerRunTimestamp
-	}
-	if tr.Status != "" {
-		objectMap["status"] = tr.Status
-	}
-	if tr.Message != nil {
-		objectMap["message"] = tr.Message
-	}
-	if tr.Properties != nil {
-		objectMap["properties"] = tr.Properties
-	}
-	if tr.TriggeredPipelines != nil {
-		objectMap["triggeredPipelines"] = tr.TriggeredPipelines
-	}
 	for k, v := range tr.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -97851,7 +97563,7 @@ type TriggersStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TriggersStartFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -97873,7 +97585,7 @@ type TriggersStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TriggersStopFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -97897,7 +97609,7 @@ type TumblingWindowTrigger struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Trigger description.
 	Description *string `json:"description,omitempty"`
-	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	// RuntimeState - READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
 	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
@@ -97915,9 +97627,6 @@ func (twt TumblingWindowTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if twt.Description != nil {
 		objectMap["description"] = twt.Description
-	}
-	if twt.RuntimeState != "" {
-		objectMap["runtimeState"] = twt.RuntimeState
 	}
 	if twt.Type != "" {
 		objectMap["type"] = twt.Type

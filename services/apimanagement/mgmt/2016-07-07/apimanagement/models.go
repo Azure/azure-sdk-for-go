@@ -431,7 +431,7 @@ type AdditionalRegion struct {
 	SkuType SkuType `json:"skuType,omitempty"`
 	// SkuUnitCount - The SKU Unit count at the location. The maximum SKU Unit count depends on the SkuType. Maximum allowed for Developer SKU is 1, for Standard SKU is 4, and for Premium SKU is 10, at a location.
 	SkuUnitCount *int32 `json:"skuUnitCount,omitempty"`
-	// StaticIPs - Static IP addresses of the location's virtual machines.
+	// StaticIPs - READ-ONLY; Static IP addresses of the location's virtual machines.
 	StaticIPs *[]string `json:"staticIPs,omitempty"`
 	// Vpnconfiguration - Virtual network configuration for the location.
 	Vpnconfiguration *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
@@ -588,7 +588,7 @@ func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APIC
 // APIContract API details.
 type APIContract struct {
 	autorest.Response `json:"-"`
-	// ID - API identifier path: /apis/{apiId}
+	// ID - READ-ONLY; API identifier path: /apis/{apiId}
 	ID *string `json:"id,omitempty"`
 	// Name - API name.
 	Name *string `json:"name,omitempty"`
@@ -933,7 +933,7 @@ type BackendContract struct {
 // authentication.
 type BackendResponse struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the backend within the current API Management service instance. The value is a valid relative URL in the format of /backends/{backendId} where {backendId} is a backend identifier.
+	// ID - READ-ONLY; Uniquely identifies the backend within the current API Management service instance. The value is a valid relative URL in the format of /backends/{backendId} where {backendId} is a backend identifier.
 	ID *string `json:"id,omitempty"`
 	// Host - Host attribute of the backend. Host is a pure hostname without a port or suffix, for example backend.contoso.com. Must not be empty.
 	Host *string `json:"host,omitempty"`
@@ -1100,7 +1100,7 @@ func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateC
 // CertificateContract certificate details.
 type CertificateContract struct {
 	autorest.Response `json:"-"`
-	// ID - Certificate identifier path: /certificates/{certificateId}
+	// ID - READ-ONLY; Certificate identifier path: /certificates/{certificateId}
 	ID *string `json:"id,omitempty"`
 	// Subject - Subject attribute of the certificate.
 	Subject *string `json:"subject,omitempty"`
@@ -1325,17 +1325,17 @@ func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (
 // GroupContract developer group.
 type GroupContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the group within the current API Management service instance. The value is a valid relative URL in the format of /groups/{groupId} where {groupId} is a group identifier.
+	// ID - READ-ONLY; Uniquely identifies the group within the current API Management service instance. The value is a valid relative URL in the format of /groups/{groupId} where {groupId} is a group identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - Group name.
 	Name *string `json:"name,omitempty"`
 	// Description - Group description. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
-	// BuiltIn - true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
+	// BuiltIn - READ-ONLY; true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
 	BuiltIn *bool `json:"builtIn,omitempty"`
-	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
+	// Type - READ-ONLY; Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupTypeContract `json:"type,omitempty"`
-	// ExternalID - For external groups, this property contains the id of the group from the external identity provider, e.g. Azure Active Directory; otherwise the value is null.
+	// ExternalID - READ-ONLY; For external groups, this property contains the id of the group from the external identity provider, e.g. Azure Active Directory; otherwise the value is null.
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
@@ -1600,7 +1600,7 @@ func (lcp LoggerCreateParameters) MarshalJSON() ([]byte, error) {
 // Hubs.
 type LoggerResponse struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the logger within the current API Management service instance. The value is a valid relative URL in the format of /loggers/{loggerId} where {loggerId} is a logger identifier.
+	// ID - READ-ONLY; Uniquely identifies the logger within the current API Management service instance. The value is a valid relative URL in the format of /loggers/{loggerId} where {loggerId} is a logger identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Logger type.
 	Type *string `json:"type,omitempty"`
@@ -1615,9 +1615,6 @@ type LoggerResponse struct {
 // MarshalJSON is the custom marshaler for LoggerResponse.
 func (lr LoggerResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if lr.ID != nil {
-		objectMap["id"] = lr.ID
-	}
 	if lr.Type != nil {
 		objectMap["type"] = lr.Type
 	}
@@ -1674,7 +1671,7 @@ type OAuth2AuthenticationSettingsContract struct {
 // OAuth2AuthorizationServerContract external OAuth authorization server settings.
 type OAuth2AuthorizationServerContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the authorization server within the current API Management service instance. The value is a valid relative URL in the format of /authorizationServers/{authsid} where {authsid} is an authorization server identifier.
+	// ID - READ-ONLY; Uniquely identifies the authorization server within the current API Management service instance. The value is a valid relative URL in the format of /authorizationServers/{authsid} where {authsid} is an authorization server identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - User-friendly authorization server name.
 	Name *string `json:"name,omitempty"`
@@ -2091,7 +2088,7 @@ func NewOperationCollectionPage(getNextPage func(context.Context, OperationColle
 // OperationContract api Operation details.
 type OperationContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the operation within the current API Management service instance. The value is a valid relative URL in the format of /apis/{aid}/operations/{id} where {aid} is an API identifier and {id} is an operation identifier.
+	// ID - READ-ONLY; Uniquely identifies the operation within the current API Management service instance. The value is a valid relative URL in the format of /apis/{aid}/operations/{id} where {aid} is an API identifier and {id} is an operation identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - Operation Name.
 	Name *string `json:"name,omitempty"`
@@ -2149,13 +2146,13 @@ type PatchParameters struct {
 
 // PolicySnippetContract policy snippet.
 type PolicySnippetContract struct {
-	// Name - Snippet name.
+	// Name - READ-ONLY; Snippet name.
 	Name *string `json:"name,omitempty"`
-	// Content - Snippet content.
+	// Content - READ-ONLY; Snippet content.
 	Content *string `json:"content,omitempty"`
-	// ToolTip - Snippet toolTip.
+	// ToolTip - READ-ONLY; Snippet toolTip.
 	ToolTip *string `json:"toolTip,omitempty"`
-	// Scope - Snippet scope. Possible values include: 'Tenant', 'Product', 'API', 'Operation', 'All'
+	// Scope - READ-ONLY; Snippet scope. Possible values include: 'Tenant', 'Product', 'API', 'Operation', 'All'
 	Scope PolicyScopeContract `json:"scope,omitempty"`
 }
 
@@ -2310,7 +2307,7 @@ func NewProductCollectionPage(getNextPage func(context.Context, ProductCollectio
 // ProductContract product profile.
 type ProductContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the product within the current API Management service instance. The value is a valid relative URL in the format of /products/{productId} where {productId} is a product identifier.
+	// ID - READ-ONLY; Uniquely identifies the product within the current API Management service instance. The value is a valid relative URL in the format of /products/{productId} where {productId} is a product identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - Product name.
 	Name *string `json:"name,omitempty"`
@@ -2497,7 +2494,7 @@ func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollect
 // PropertyContract property details.
 type PropertyContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the property within the current API Management service instance. The value is a valid relative URL in the format of /properties/{propId} where {propId} is a property identifier.
+	// ID - READ-ONLY; Uniquely identifies the property within the current API Management service instance. The value is a valid relative URL in the format of /properties/{propId} where {propId} is a property identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - Unique name of Property. It may contain only letters, digits, period, dash, and underscore characters.
 	Name *string `json:"name,omitempty"`
@@ -2746,9 +2743,9 @@ type ReportRecordContract struct {
 	Region *string `json:"region,omitempty"`
 	// Zip - Zip code to which this record data is related.
 	Zip *string `json:"zip,omitempty"`
-	// UserID - User identifier path. /users/{userId}
+	// UserID - READ-ONLY; User identifier path. /users/{userId}
 	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product identifier path. /products/{productId}
+	// ProductID - READ-ONLY; Product identifier path. /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
 	// APIID - API identifier path. /apis/{apiId}
 	APIID *string `json:"apiId,omitempty"`
@@ -3098,25 +3095,25 @@ type ServiceProperties struct {
 	PublisherEmail *string `json:"publisherEmail,omitempty"`
 	// PublisherName - Publisher name.
 	PublisherName *string `json:"publisherName,omitempty"`
-	// ProvisioningState - The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	// ProvisioningState - READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// TargetProvisioningState - The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
+	// TargetProvisioningState - READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
 	TargetProvisioningState *string `json:"targetProvisioningState,omitempty"`
-	// CreatedAtUtc - Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedAtUtc - READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedAtUtc *date.Time `json:"createdAtUtc,omitempty"`
-	// RuntimeURL - Proxy endpoint URL of the API Management service.
+	// RuntimeURL - READ-ONLY; Proxy endpoint URL of the API Management service.
 	RuntimeURL *string `json:"runtimeUrl,omitempty"`
-	// PortalURL - Publisher portal endpoint Url of the API Management service.
+	// PortalURL - READ-ONLY; Publisher portal endpoint Url of the API Management service.
 	PortalURL *string `json:"portalUrl,omitempty"`
-	// ManagementAPIURL - Management API endpoint URL of the API Management service.
+	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
-	// ScmURL - SCM endpoint URL of the API Management service.
+	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// AddresserEmail - Addresser email.
 	AddresserEmail *string `json:"addresserEmail,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// StaticIPs - Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
+	// StaticIPs - READ-ONLY; Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
 	StaticIPs *[]string `json:"staticIPs,omitempty"`
 	// Vpnconfiguration - Virtual network configuration of the API Management service.
 	Vpnconfiguration *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
@@ -3137,35 +3134,11 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	if sp.PublisherName != nil {
 		objectMap["publisherName"] = sp.PublisherName
 	}
-	if sp.ProvisioningState != nil {
-		objectMap["provisioningState"] = sp.ProvisioningState
-	}
-	if sp.TargetProvisioningState != nil {
-		objectMap["targetProvisioningState"] = sp.TargetProvisioningState
-	}
-	if sp.CreatedAtUtc != nil {
-		objectMap["createdAtUtc"] = sp.CreatedAtUtc
-	}
-	if sp.RuntimeURL != nil {
-		objectMap["runtimeUrl"] = sp.RuntimeURL
-	}
-	if sp.PortalURL != nil {
-		objectMap["portalUrl"] = sp.PortalURL
-	}
-	if sp.ManagementAPIURL != nil {
-		objectMap["managementApiUrl"] = sp.ManagementAPIURL
-	}
-	if sp.ScmURL != nil {
-		objectMap["scmUrl"] = sp.ScmURL
-	}
 	if sp.AddresserEmail != nil {
 		objectMap["addresserEmail"] = sp.AddresserEmail
 	}
 	if sp.HostnameConfigurations != nil {
 		objectMap["hostnameConfigurations"] = sp.HostnameConfigurations
-	}
-	if sp.StaticIPs != nil {
-		objectMap["staticIPs"] = sp.StaticIPs
 	}
 	if sp.Vpnconfiguration != nil {
 		objectMap["vpnconfiguration"] = sp.Vpnconfiguration
@@ -3185,13 +3158,13 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 // ServiceResource description of an API Management service resource.
 type ServiceResource struct {
 	autorest.Response `json:"-"`
-	// ID - The ID of the created API Management service.
+	// ID - READ-ONLY; The ID of the created API Management service.
 	ID *string `json:"id,omitempty"`
 	// Location - Datacenter location of the API Management service.
 	Location *string `json:"location,omitempty"`
-	// Name - Name of the API Management service.
+	// Name - READ-ONLY; Name of the API Management service.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type of the API Management service.
+	// Type - READ-ONLY; Resource type of the API Management service.
 	Type *string `json:"type,omitempty"`
 	// Etag - ETag of the resource.
 	Etag *string `json:"etag,omitempty"`
@@ -3206,17 +3179,8 @@ type ServiceResource struct {
 // MarshalJSON is the custom marshaler for ServiceResource.
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
 	}
 	if sr.Etag != nil {
 		objectMap["etag"] = sr.Etag
@@ -3243,7 +3207,7 @@ type ServicesBackupFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesBackupFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServicesBackupFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3280,7 +3244,7 @@ type ServicesManageDeploymentsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesManageDeploymentsFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServicesManageDeploymentsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3309,7 +3273,7 @@ type ServicesRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesRestoreFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServicesRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3338,7 +3302,7 @@ type ServicesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesUpdateFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServicesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3367,7 +3331,7 @@ type ServicesUpdateHostnameFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesUpdateHostnameFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServicesUpdateHostnameFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3562,7 +3526,7 @@ func NewSubscriptionCollectionPage(getNextPage func(context.Context, Subscriptio
 // SubscriptionContract subscription details.
 type SubscriptionContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the subscription within the current API Management service instance. The value is a valid relative URL in the format of /subscriptions/{sid} where {sid} is a subscription identifier.
+	// ID - READ-ONLY; Uniquely identifies the subscription within the current API Management service instance. The value is a valid relative URL in the format of /subscriptions/{sid} where {sid} is a subscription identifier.
 	ID *string `json:"id,omitempty"`
 	// UserID - The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{uid} where {uid} is a user identifier.
 	UserID *string `json:"userId,omitempty"`
@@ -3572,7 +3536,7 @@ type SubscriptionContract struct {
 	Name *string `json:"name,omitempty"`
 	// State - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated. Possible values include: 'Suspended', 'Active', 'Expired', 'Submitted', 'Rejected', 'Cancelled'
 	State SubscriptionStateContract `json:"state,omitempty"`
-	// CreatedDate - Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedDate - READ-ONLY; Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// StartDate - Subscription activation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	StartDate *date.Time `json:"startDate,omitempty"`
@@ -3644,7 +3608,7 @@ type TenantConfigurationDeployFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationDeployFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3673,7 +3637,7 @@ type TenantConfigurationSaveFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationSaveFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3721,7 +3685,7 @@ type TenantConfigurationValidateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationValidateFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3926,7 +3890,7 @@ type UserContract struct {
 	RegistrationDate *date.Time `json:"registrationDate,omitempty"`
 	// Note - Administrator's note about given user.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -3973,9 +3937,9 @@ type UserUpdateParameters struct {
 // VirtualNetworkConfiguration configuration of a virtual network to which API Management service is
 // deployed.
 type VirtualNetworkConfiguration struct {
-	// Vnetid - The virtual network ID. This is typically a GUID. Expect a null GUID by default.
+	// Vnetid - READ-ONLY; The virtual network ID. This is typically a GUID. Expect a null GUID by default.
 	Vnetid *string `json:"vnetid,omitempty"`
-	// Subnetname - The name of the subnet.
+	// Subnetname - READ-ONLY; The name of the subnet.
 	Subnetname *string `json:"subnetname,omitempty"`
 	// SubnetResourceID - The name of the subnet Resource ID. This has format /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/{virtual network name}/subnets/{subnet name}.
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`

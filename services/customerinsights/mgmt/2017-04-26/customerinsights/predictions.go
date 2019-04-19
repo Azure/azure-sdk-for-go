@@ -628,6 +628,16 @@ func (client PredictionsClient) ModelStatusPreparer(ctx context.Context, resourc
 		"api-version": APIVersion,
 	}
 
+	parameters.TenantID = nil
+	parameters.PredictionName = nil
+	parameters.PredictionGUIDID = nil
+	parameters.Message = nil
+	parameters.TrainingSetCount = nil
+	parameters.TestSetCount = nil
+	parameters.ValidationSetCount = nil
+	parameters.TrainingAccuracy = nil
+	parameters.SignalsUsed = nil
+	parameters.ModelVersion = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

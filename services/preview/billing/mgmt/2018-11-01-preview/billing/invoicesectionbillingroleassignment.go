@@ -92,6 +92,8 @@ func (client InvoiceSectionBillingRoleAssignmentClient) AddPreparer(ctx context.
 		"api-version": APIVersion,
 	}
 
+	parameters.PrincipalID = nil
+	parameters.BillingRoleDefinitionName = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

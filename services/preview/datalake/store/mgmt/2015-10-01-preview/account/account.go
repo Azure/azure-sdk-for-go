@@ -84,6 +84,8 @@ func (client Client) CreatePreparer(ctx context.Context, resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
+	parameters.Type = nil
+	parameters.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -172,6 +174,7 @@ func (client Client) CreateOrUpdateFirewallRulePreparer(ctx context.Context, res
 		"api-version": APIVersion,
 	}
 
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -1059,6 +1062,8 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 		"api-version": APIVersion,
 	}
 
+	parameters.Type = nil
+	parameters.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

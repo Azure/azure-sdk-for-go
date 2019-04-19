@@ -271,15 +271,15 @@ type Properties struct {
 	UserStorageAccountID *string `json:"userStorageAccountId,omitempty"`
 	// OwnerEmail - The email id of the owner for this workspace.
 	OwnerEmail *string `json:"ownerEmail,omitempty"`
-	// WorkspaceType - The type of this workspace. Possible values include: 'Production', 'Free', 'Anonymous', 'PaidStandard', 'PaidPremium'
+	// WorkspaceType - READ-ONLY; The type of this workspace. Possible values include: 'Production', 'Free', 'Anonymous', 'PaidStandard', 'PaidPremium'
 	WorkspaceType WorkspaceType `json:"workspaceType,omitempty"`
-	// WorkspaceState - The current state of workspace resource. Possible values include: 'Deleted', 'Enabled', 'Disabled', 'Migrated', 'Updated', 'Registered', 'Unregistered'
+	// WorkspaceState - READ-ONLY; The current state of workspace resource. Possible values include: 'Deleted', 'Enabled', 'Disabled', 'Migrated', 'Updated', 'Registered', 'Unregistered'
 	WorkspaceState State `json:"workspaceState,omitempty"`
-	// WorkspaceID - The immutable id associated with this workspace.
+	// WorkspaceID - READ-ONLY; The immutable id associated with this workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// CreationTime - The creation time for this workspace resource.
+	// CreationTime - READ-ONLY; The creation time for this workspace resource.
 	CreationTime *string `json:"creationTime,omitempty"`
-	// StudioEndpoint - The regional endpoint for the machine learning studio service which hosts this workspace.
+	// StudioEndpoint - READ-ONLY; The regional endpoint for the machine learning studio service which hosts this workspace.
 	StudioEndpoint *string `json:"studioEndpoint,omitempty"`
 	// KeyVaultIdentifierID - The key vault identifier used for encrypted workspaces.
 	KeyVaultIdentifierID *string `json:"keyVaultIdentifierId,omitempty"`
@@ -295,11 +295,11 @@ type PropertiesUpdateParameters struct {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -310,15 +310,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -386,11 +377,11 @@ type Workspace struct {
 	autorest.Response `json:"-"`
 	// Properties - The properties of the machine learning workspace.
 	*Properties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -403,15 +394,6 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.Properties != nil {
 		objectMap["properties"] = w.Properties
-	}
-	if w.ID != nil {
-		objectMap["id"] = w.ID
-	}
-	if w.Name != nil {
-		objectMap["name"] = w.Name
-	}
-	if w.Type != nil {
-		objectMap["type"] = w.Type
 	}
 	if w.Location != nil {
 		objectMap["location"] = w.Location

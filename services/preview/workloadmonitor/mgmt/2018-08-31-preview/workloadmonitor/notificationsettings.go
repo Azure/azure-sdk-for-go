@@ -331,6 +331,8 @@ func (client NotificationSettingsClient) UpdatePreparer(ctx context.Context, res
 		"api-version": APIVersion,
 	}
 
+	body.Etag = nil
+	body.NotificationSettingProperties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

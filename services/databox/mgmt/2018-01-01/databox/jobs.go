@@ -294,6 +294,9 @@ func (client JobsClient) CreatePreparer(ctx context.Context, resourceGroupName s
 		"api-version": APIVersion,
 	}
 
+	jobResource.Name = nil
+	jobResource.ID = nil
+	jobResource.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

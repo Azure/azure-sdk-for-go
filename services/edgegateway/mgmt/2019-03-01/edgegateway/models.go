@@ -753,31 +753,19 @@ type Address struct {
 // Alert alert on the data box edge/gateway device.
 type Alert struct {
 	autorest.Response `json:"-"`
-	// AlertProperties - Properties of alert.
+	// AlertProperties - READ-ONLY; Properties of alert.
 	*AlertProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Alert.
 func (a Alert) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if a.AlertProperties != nil {
-		objectMap["properties"] = a.AlertProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -834,20 +822,20 @@ func (a *Alert) UnmarshalJSON(body []byte) error {
 
 // AlertErrorDetails error details for the alert.
 type AlertErrorDetails struct {
-	// ErrorCode - Error code.
+	// ErrorCode - READ-ONLY; Error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorMessage - Error Message.
+	// ErrorMessage - READ-ONLY; Error Message.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// Occurrences - Number of occurrences.
+	// Occurrences - READ-ONLY; Number of occurrences.
 	Occurrences *int32 `json:"occurrences,omitempty"`
 }
 
 // AlertList collection of alerts.
 type AlertList struct {
 	autorest.Response `json:"-"`
-	// Value - The value.
+	// Value - READ-ONLY; The value.
 	Value *[]Alert `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -990,56 +978,35 @@ func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, e
 
 // AlertProperties properties of alert.
 type AlertProperties struct {
-	// Title - Alert title.
+	// Title - READ-ONLY; Alert title.
 	Title *string `json:"title,omitempty"`
-	// AlertType - Alert type.
+	// AlertType - READ-ONLY; Alert type.
 	AlertType *string `json:"alertType,omitempty"`
-	// AppearedAtDateTime - UTC time when the alert appeared.
+	// AppearedAtDateTime - READ-ONLY; UTC time when the alert appeared.
 	AppearedAtDateTime *date.Time `json:"appearedAtDateTime,omitempty"`
-	// Recommendation - Alert recommendation.
+	// Recommendation - READ-ONLY; Alert recommendation.
 	Recommendation *string `json:"recommendation,omitempty"`
-	// Severity - Severity of the alert. Possible values include: 'Informational', 'Warning', 'Critical'
+	// Severity - READ-ONLY; Severity of the alert. Possible values include: 'Informational', 'Warning', 'Critical'
 	Severity AlertSeverity `json:"severity,omitempty"`
-	// ErrorDetails - Error details of the alert.
+	// ErrorDetails - READ-ONLY; Error details of the alert.
 	ErrorDetails *AlertErrorDetails `json:"errorDetails,omitempty"`
-	// DetailedInformation - Alert details.
+	// DetailedInformation - READ-ONLY; Alert details.
 	DetailedInformation map[string]*string `json:"detailedInformation"`
 }
 
 // MarshalJSON is the custom marshaler for AlertProperties.
 func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ap.Title != nil {
-		objectMap["title"] = ap.Title
-	}
-	if ap.AlertType != nil {
-		objectMap["alertType"] = ap.AlertType
-	}
-	if ap.AppearedAtDateTime != nil {
-		objectMap["appearedAtDateTime"] = ap.AppearedAtDateTime
-	}
-	if ap.Recommendation != nil {
-		objectMap["recommendation"] = ap.Recommendation
-	}
-	if ap.Severity != "" {
-		objectMap["severity"] = ap.Severity
-	}
-	if ap.ErrorDetails != nil {
-		objectMap["errorDetails"] = ap.ErrorDetails
-	}
-	if ap.DetailedInformation != nil {
-		objectMap["detailedInformation"] = ap.DetailedInformation
-	}
 	return json.Marshal(objectMap)
 }
 
 // ARMBaseModel represents the base class for all object models.
 type ARMBaseModel struct {
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1074,11 +1041,11 @@ type BandwidthSchedule struct {
 	autorest.Response `json:"-"`
 	// BandwidthScheduleProperties - The properties of the bandwidth schedule.
 	*BandwidthScheduleProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1087,15 +1054,6 @@ func (bs BandwidthSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bs.BandwidthScheduleProperties != nil {
 		objectMap["properties"] = bs.BandwidthScheduleProperties
-	}
-	if bs.ID != nil {
-		objectMap["id"] = bs.ID
-	}
-	if bs.Name != nil {
-		objectMap["name"] = bs.Name
-	}
-	if bs.Type != nil {
-		objectMap["type"] = bs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1173,7 +1131,7 @@ type BandwidthSchedulesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BandwidthSchedulesCreateOrUpdateFuture) Result(client BandwidthSchedulesClient) (bs BandwidthSchedule, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1202,7 +1160,7 @@ type BandwidthSchedulesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BandwidthSchedulesDeleteFuture) Result(client BandwidthSchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.BandwidthSchedulesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1218,9 +1176,9 @@ func (future *BandwidthSchedulesDeleteFuture) Result(client BandwidthSchedulesCl
 // BandwidthSchedulesList the collection of bandwidth schedules.
 type BandwidthSchedulesList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of bandwidth schedules.
+	// Value - READ-ONLY; The list of bandwidth schedules.
 	Value *[]BandwidthSchedule `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1411,11 +1369,11 @@ type DataBoxEdgeDevice struct {
 	Etag *string `json:"etag,omitempty"`
 	// DataBoxEdgeDeviceProperties - The properties of the Data Box Edge/Gateway device.
 	*DataBoxEdgeDeviceProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1436,15 +1394,6 @@ func (dbed DataBoxEdgeDevice) MarshalJSON() ([]byte, error) {
 	}
 	if dbed.DataBoxEdgeDeviceProperties != nil {
 		objectMap["properties"] = dbed.DataBoxEdgeDeviceProperties
-	}
-	if dbed.ID != nil {
-		objectMap["id"] = dbed.ID
-	}
-	if dbed.Name != nil {
-		objectMap["name"] = dbed.Name
-	}
-	if dbed.Type != nil {
-		objectMap["type"] = dbed.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1541,11 +1490,11 @@ type DataBoxEdgeDeviceExtendedInfo struct {
 	autorest.Response `json:"-"`
 	// DataBoxEdgeDeviceExtendedInfoProperties - The extended info properties.
 	*DataBoxEdgeDeviceExtendedInfoProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1554,15 +1503,6 @@ func (dbedei DataBoxEdgeDeviceExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dbedei.DataBoxEdgeDeviceExtendedInfoProperties != nil {
 		objectMap["properties"] = dbedei.DataBoxEdgeDeviceExtendedInfoProperties
-	}
-	if dbedei.ID != nil {
-		objectMap["id"] = dbedei.ID
-	}
-	if dbedei.Name != nil {
-		objectMap["name"] = dbedei.Name
-	}
-	if dbedei.Type != nil {
-		objectMap["type"] = dbedei.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1625,16 +1565,16 @@ type DataBoxEdgeDeviceExtendedInfoProperties struct {
 	EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
 	// EncryptionKey - The public part of the encryption certificate. Client uses this to encrypt any secret.
 	EncryptionKey *string `json:"encryptionKey,omitempty"`
-	// ResourceKey - The Resource ID of the Resource.
+	// ResourceKey - READ-ONLY; The Resource ID of the Resource.
 	ResourceKey *string `json:"resourceKey,omitempty"`
 }
 
 // DataBoxEdgeDeviceList the collection of Data Box Edge/Gateway devices.
 type DataBoxEdgeDeviceList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of Data Box Edge/Gateway devices.
+	// Value - READ-ONLY; The list of Data Box Edge/Gateway devices.
 	Value *[]DataBoxEdgeDevice `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1794,29 +1734,29 @@ func (dbedp DataBoxEdgeDevicePatch) MarshalJSON() ([]byte, error) {
 type DataBoxEdgeDeviceProperties struct {
 	// DataBoxEdgeDeviceStatus - The status of the Data Box Edge/Gateway device. Possible values include: 'ReadyToSetup', 'Online', 'Offline', 'NeedsAttention', 'Disconnected', 'PartiallyDisconnected'
 	DataBoxEdgeDeviceStatus DataBoxEdgeDeviceStatus `json:"dataBoxEdgeDeviceStatus,omitempty"`
-	// SerialNumber - The Serial Number of Data Box Edge/Gateway device.
+	// SerialNumber - READ-ONLY; The Serial Number of Data Box Edge/Gateway device.
 	SerialNumber *string `json:"serialNumber,omitempty"`
 	// Description - The Description of the Data Box Edge/Gateway device.
 	Description *string `json:"description,omitempty"`
 	// ModelDescription - The description of the Data Box Edge/Gateway device model.
 	ModelDescription *string `json:"modelDescription,omitempty"`
-	// DeviceType - The type of the Data Box Edge/Gateway device. Possible values include: 'DeviceTypeDataBoxEdgeDevice'
+	// DeviceType - READ-ONLY; The type of the Data Box Edge/Gateway device. Possible values include: 'DeviceTypeDataBoxEdgeDevice'
 	DeviceType DeviceType `json:"deviceType,omitempty"`
 	// FriendlyName - The Data Box Edge/Gateway device name.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// Culture - The Data Box Edge/Gateway device culture.
+	// Culture - READ-ONLY; The Data Box Edge/Gateway device culture.
 	Culture *string `json:"culture,omitempty"`
-	// DeviceModel - The Data Box Edge/Gateway device model.
+	// DeviceModel - READ-ONLY; The Data Box Edge/Gateway device model.
 	DeviceModel *string `json:"deviceModel,omitempty"`
-	// DeviceSoftwareVersion - The Data Box Edge/Gateway device software version.
+	// DeviceSoftwareVersion - READ-ONLY; The Data Box Edge/Gateway device software version.
 	DeviceSoftwareVersion *string `json:"deviceSoftwareVersion,omitempty"`
-	// DeviceLocalCapacity - The Data Box Edge/Gateway device local capacity in MB.
+	// DeviceLocalCapacity - READ-ONLY; The Data Box Edge/Gateway device local capacity in MB.
 	DeviceLocalCapacity *int64 `json:"deviceLocalCapacity,omitempty"`
-	// TimeZone - The Data Box Edge/Gateway device timezone.
+	// TimeZone - READ-ONLY; The Data Box Edge/Gateway device timezone.
 	TimeZone *string `json:"timeZone,omitempty"`
-	// DeviceHcsVersion - The device software version number of the device (eg: 1.2.18105.6).
+	// DeviceHcsVersion - READ-ONLY; The device software version number of the device (eg: 1.2.18105.6).
 	DeviceHcsVersion *string `json:"deviceHcsVersion,omitempty"`
-	// ConfiguredRoleTypes - Type of compute roles configured.
+	// ConfiguredRoleTypes - READ-ONLY; Type of compute roles configured.
 	ConfiguredRoleTypes *[]RoleTypes `json:"configuredRoleTypes,omitempty"`
 }
 
@@ -1830,7 +1770,7 @@ type DevicesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesCreateOrUpdateFuture) Result(client DevicesClient) (dbed DataBoxEdgeDevice, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.DevicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1859,7 +1799,7 @@ type DevicesCreateOrUpdateSecuritySettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesCreateOrUpdateSecuritySettingsFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.DevicesCreateOrUpdateSecuritySettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1882,7 +1822,7 @@ type DevicesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1905,7 +1845,7 @@ type DevicesDownloadUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDownloadUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.DevicesDownloadUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1928,7 +1868,7 @@ type DevicesInstallUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesInstallUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.DevicesInstallUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1951,7 +1891,7 @@ type DevicesScanForUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesScanForUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.DevicesScanForUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1968,11 +1908,11 @@ func (future *DevicesScanForUpdatesFuture) Result(client DevicesClient) (ar auto
 type FileEventTrigger struct {
 	// FileTriggerProperties - File trigger properties.
 	*FileTriggerProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - Possible values include: 'KindTrigger', 'KindFileEvent', 'KindPeriodicTimerEvent'
 	Kind KindBasicTrigger `json:"kind,omitempty"`
@@ -1987,15 +1927,6 @@ func (fet FileEventTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if fet.Kind != "" {
 		objectMap["kind"] = fet.Kind
-	}
-	if fet.ID != nil {
-		objectMap["id"] = fet.ID
-	}
-	if fet.Name != nil {
-		objectMap["name"] = fet.Name
-	}
-	if fet.Type != nil {
-		objectMap["type"] = fet.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2110,11 +2041,11 @@ type IoTDeviceInfo struct {
 type IoTRole struct {
 	// IoTRoleProperties - Properties specific to IoT role.
 	*IoTRoleProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - Possible values include: 'KindRole', 'KindIOT'
 	Kind Kind `json:"kind,omitempty"`
@@ -2129,15 +2060,6 @@ func (itr IoTRole) MarshalJSON() ([]byte, error) {
 	}
 	if itr.Kind != "" {
 		objectMap["kind"] = itr.Kind
-	}
-	if itr.ID != nil {
-		objectMap["id"] = itr.ID
-	}
-	if itr.Name != nil {
-		objectMap["name"] = itr.Name
-	}
-	if itr.Type != nil {
-		objectMap["type"] = itr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2233,77 +2155,50 @@ type IoTRoleProperties struct {
 
 // Ipv4Config details related to the IPv4 address configuration.
 type Ipv4Config struct {
-	// IPAddress - The IPv4 address of the network adapter.
+	// IPAddress - READ-ONLY; The IPv4 address of the network adapter.
 	IPAddress *string `json:"ipAddress,omitempty"`
-	// Subnet - The IPv4 subnet of the network adapter.
+	// Subnet - READ-ONLY; The IPv4 subnet of the network adapter.
 	Subnet *string `json:"subnet,omitempty"`
-	// Gateway - The IPv4 gateway of the network adapter.
+	// Gateway - READ-ONLY; The IPv4 gateway of the network adapter.
 	Gateway *string `json:"gateway,omitempty"`
 }
 
 // Ipv6Config details related to the IPv6 address configuration.
 type Ipv6Config struct {
-	// IPAddress - The IPv6 address of the network adapter.
+	// IPAddress - READ-ONLY; The IPv6 address of the network adapter.
 	IPAddress *string `json:"ipAddress,omitempty"`
-	// PrefixLength - The IPv6 prefix of the network adapter.
+	// PrefixLength - READ-ONLY; The IPv6 prefix of the network adapter.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
-	// Gateway - The IPv6 gateway of the network adapter.
+	// Gateway - READ-ONLY; The IPv6 gateway of the network adapter.
 	Gateway *string `json:"gateway,omitempty"`
 }
 
 // Job a device job.
 type Job struct {
 	autorest.Response `json:"-"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
-	// Status - The current status of the job. Possible values include: 'JobStatusInvalid', 'JobStatusRunning', 'JobStatusSucceeded', 'JobStatusFailed', 'JobStatusCanceled', 'JobStatusPaused', 'JobStatusScheduled'
+	// Status - READ-ONLY; The current status of the job. Possible values include: 'JobStatusInvalid', 'JobStatusRunning', 'JobStatusSucceeded', 'JobStatusFailed', 'JobStatusCanceled', 'JobStatusPaused', 'JobStatusScheduled'
 	Status JobStatus `json:"status,omitempty"`
-	// StartTime - The UTC date and time at which the job started.
+	// StartTime - READ-ONLY; The UTC date and time at which the job started.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The UTC date and time at which the job completed.
+	// EndTime - READ-ONLY; The UTC date and time at which the job completed.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// PercentComplete - The percentage of the job that is complete.
+	// PercentComplete - READ-ONLY; The percentage of the job that is complete.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// Error - The error details.
+	// Error - READ-ONLY; The error details.
 	Error *JobErrorDetails `json:"error,omitempty"`
-	// JobProperties - The properties of the job.
+	// JobProperties - READ-ONLY; The properties of the job.
 	*JobProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Job.
 func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
-	}
-	if j.Status != "" {
-		objectMap["status"] = j.Status
-	}
-	if j.StartTime != nil {
-		objectMap["startTime"] = j.StartTime
-	}
-	if j.EndTime != nil {
-		objectMap["endTime"] = j.EndTime
-	}
-	if j.PercentComplete != nil {
-		objectMap["percentComplete"] = j.PercentComplete
-	}
-	if j.Error != nil {
-		objectMap["error"] = j.Error
-	}
-	if j.JobProperties != nil {
-		objectMap["properties"] = j.JobProperties
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -2405,39 +2300,39 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 
 // JobErrorDetails the job error information containing the list of job errors.
 type JobErrorDetails struct {
-	// ErrorDetails - The error details.
+	// ErrorDetails - READ-ONLY; The error details.
 	ErrorDetails *[]JobErrorItem `json:"errorDetails,omitempty"`
-	// Code - The code intended for programmatic access.
+	// Code - READ-ONLY; The code intended for programmatic access.
 	Code *string `json:"code,omitempty"`
-	// Message - The message that describes the error in detail.
+	// Message - READ-ONLY; The message that describes the error in detail.
 	Message *string `json:"message,omitempty"`
 }
 
 // JobErrorItem the job error items.
 type JobErrorItem struct {
-	// Recommendations - The recommended actions.
+	// Recommendations - READ-ONLY; The recommended actions.
 	Recommendations *[]string `json:"recommendations,omitempty"`
-	// Code - The code intended for programmatic access.
+	// Code - READ-ONLY; The code intended for programmatic access.
 	Code *string `json:"code,omitempty"`
-	// Message - The message that describes the error in detail.
+	// Message - READ-ONLY; The message that describes the error in detail.
 	Message *string `json:"message,omitempty"`
 }
 
 // JobProperties the properties for the job.
 type JobProperties struct {
-	// JobType - The type of the job. Possible values include: 'JobTypeInvalid', 'JobTypeScanForUpdates', 'JobTypeDownloadUpdates', 'JobTypeInstallUpdates', 'JobTypeRefreshShare'
+	// JobType - READ-ONLY; The type of the job. Possible values include: 'JobTypeInvalid', 'JobTypeScanForUpdates', 'JobTypeDownloadUpdates', 'JobTypeInstallUpdates', 'JobTypeRefreshShare'
 	JobType JobType `json:"jobType,omitempty"`
-	// CurrentStage - Current stage of the update operation. Possible values include: 'UpdateOperationStageUnknown', 'UpdateOperationStageInitial', 'UpdateOperationStageScanStarted', 'UpdateOperationStageScanComplete', 'UpdateOperationStageScanFailed', 'UpdateOperationStageDownloadStarted', 'UpdateOperationStageDownloadComplete', 'UpdateOperationStageDownloadFailed', 'UpdateOperationStageInstallStarted', 'UpdateOperationStageInstallComplete', 'UpdateOperationStageInstallFailed', 'UpdateOperationStageRebootInitiated', 'UpdateOperationStageSuccess', 'UpdateOperationStageFailure', 'UpdateOperationStageRescanStarted', 'UpdateOperationStageRescanComplete', 'UpdateOperationStageRescanFailed'
+	// CurrentStage - READ-ONLY; Current stage of the update operation. Possible values include: 'UpdateOperationStageUnknown', 'UpdateOperationStageInitial', 'UpdateOperationStageScanStarted', 'UpdateOperationStageScanComplete', 'UpdateOperationStageScanFailed', 'UpdateOperationStageDownloadStarted', 'UpdateOperationStageDownloadComplete', 'UpdateOperationStageDownloadFailed', 'UpdateOperationStageInstallStarted', 'UpdateOperationStageInstallComplete', 'UpdateOperationStageInstallFailed', 'UpdateOperationStageRebootInitiated', 'UpdateOperationStageSuccess', 'UpdateOperationStageFailure', 'UpdateOperationStageRescanStarted', 'UpdateOperationStageRescanComplete', 'UpdateOperationStageRescanFailed'
 	CurrentStage UpdateOperationStage `json:"currentStage,omitempty"`
-	// DownloadProgress - The download progress.
+	// DownloadProgress - READ-ONLY; The download progress.
 	DownloadProgress *UpdateDownloadProgress `json:"downloadProgress,omitempty"`
-	// InstallProgress - The install progress.
+	// InstallProgress - READ-ONLY; The install progress.
 	InstallProgress *UpdateInstallProgress `json:"installProgress,omitempty"`
-	// TotalRefreshErrors - Total number of errors encountered during the refresh process.
+	// TotalRefreshErrors - READ-ONLY; Total number of errors encountered during the refresh process.
 	TotalRefreshErrors *int32 `json:"totalRefreshErrors,omitempty"`
-	// ErrorManifestFile - Local share/remote container relative path to the error manifest file of the refresh.
+	// ErrorManifestFile - READ-ONLY; Local share/remote container relative path to the error manifest file of the refresh.
 	ErrorManifestFile *string `json:"errorManifestFile,omitempty"`
-	// ShareID - ARM ID of the share that was refreshed.
+	// ShareID - READ-ONLY; ARM ID of the share that was refreshed.
 	ShareID *string `json:"shareId,omitempty"`
 	// Folder - If only subfolders need to be refreshed, then the subfolder path inside the share. (The path is empty if there are no subfolders.)
 	Folder *string `json:"folder,omitempty"`
@@ -2483,84 +2378,72 @@ type MetricSpecificationV1 struct {
 type MountPointMap struct {
 	// ShareID - ID of the share mounted to the role VM.
 	ShareID *string `json:"shareId,omitempty"`
-	// RoleID - ID of the role to which share is mounted.
+	// RoleID - READ-ONLY; ID of the role to which share is mounted.
 	RoleID *string `json:"roleId,omitempty"`
-	// MountPoint - Mount point for the share.
+	// MountPoint - READ-ONLY; Mount point for the share.
 	MountPoint *string `json:"mountPoint,omitempty"`
-	// RoleType - Role type. Possible values include: 'IOT', 'ASA', 'Functions', 'Cognitive'
+	// RoleType - READ-ONLY; Role type. Possible values include: 'IOT', 'ASA', 'Functions', 'Cognitive'
 	RoleType RoleTypes `json:"roleType,omitempty"`
 }
 
 // NetworkAdapter represents the networkAdapter on a device.
 type NetworkAdapter struct {
-	// AdapterID - Instance ID of network adapter.
+	// AdapterID - READ-ONLY; Instance ID of network adapter.
 	AdapterID *string `json:"adapterId,omitempty"`
-	// AdapterPosition - Hardware position of network adapter.
+	// AdapterPosition - READ-ONLY; Hardware position of network adapter.
 	AdapterPosition *NetworkAdapterPosition `json:"adapterPosition,omitempty"`
-	// Index - Logical index of the adapter.
+	// Index - READ-ONLY; Logical index of the adapter.
 	Index *int32 `json:"index,omitempty"`
-	// NodeID - Node ID of the network adapter.
+	// NodeID - READ-ONLY; Node ID of the network adapter.
 	NodeID *string `json:"nodeId,omitempty"`
-	// NetworkAdapterName - Network adapter name.
+	// NetworkAdapterName - READ-ONLY; Network adapter name.
 	NetworkAdapterName *string `json:"networkAdapterName,omitempty"`
-	// Label - Hardware label for the adapter.
+	// Label - READ-ONLY; Hardware label for the adapter.
 	Label *string `json:"label,omitempty"`
-	// MacAddress - MAC address.
+	// MacAddress - READ-ONLY; MAC address.
 	MacAddress *string `json:"macAddress,omitempty"`
-	// LinkSpeed - Link speed.
+	// LinkSpeed - READ-ONLY; Link speed.
 	LinkSpeed *int64 `json:"linkSpeed,omitempty"`
-	// Status - Value indicating whether this adapter is valid. Possible values include: 'Inactive', 'Active'
+	// Status - READ-ONLY; Value indicating whether this adapter is valid. Possible values include: 'Inactive', 'Active'
 	Status NetworkAdapterStatus `json:"status,omitempty"`
 	// RdmaStatus - Value indicating whether this adapter is RDMA capable. Possible values include: 'Incapable', 'Capable'
 	RdmaStatus NetworkAdapterRDMAStatus `json:"rdmaStatus,omitempty"`
 	// DhcpStatus - Value indicating whether this adapter has DHCP enabled. Possible values include: 'NetworkAdapterDHCPStatusDisabled', 'NetworkAdapterDHCPStatusEnabled'
 	DhcpStatus NetworkAdapterDHCPStatus `json:"dhcpStatus,omitempty"`
-	// Ipv4Configuration - The IPv4 configuration of the network adapter.
+	// Ipv4Configuration - READ-ONLY; The IPv4 configuration of the network adapter.
 	Ipv4Configuration *Ipv4Config `json:"ipv4Configuration,omitempty"`
-	// Ipv6Configuration - The IPv6 configuration of the network adapter.
+	// Ipv6Configuration - READ-ONLY; The IPv6 configuration of the network adapter.
 	Ipv6Configuration *Ipv6Config `json:"ipv6Configuration,omitempty"`
-	// Ipv6LinkLocalAddress - The IPv6 local address.
+	// Ipv6LinkLocalAddress - READ-ONLY; The IPv6 local address.
 	Ipv6LinkLocalAddress *string `json:"ipv6LinkLocalAddress,omitempty"`
-	// DNSServers - The list of DNS Servers of the device.
+	// DNSServers - READ-ONLY; The list of DNS Servers of the device.
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 }
 
 // NetworkAdapterPosition the network adapter position.
 type NetworkAdapterPosition struct {
-	// NetworkGroup - The network group. Possible values include: 'NetworkGroupNone', 'NetworkGroupNonRDMA', 'NetworkGroupRDMA'
+	// NetworkGroup - READ-ONLY; The network group. Possible values include: 'NetworkGroupNone', 'NetworkGroupNonRDMA', 'NetworkGroupRDMA'
 	NetworkGroup NetworkGroup `json:"networkGroup,omitempty"`
-	// Port - The port.
+	// Port - READ-ONLY; The port.
 	Port *int32 `json:"port,omitempty"`
 }
 
 // NetworkSettings the network settings of a device.
 type NetworkSettings struct {
 	autorest.Response `json:"-"`
-	// NetworkSettingsProperties - The properties of network settings of a device.
+	// NetworkSettingsProperties - READ-ONLY; The properties of network settings of a device.
 	*NetworkSettingsProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NetworkSettings.
 func (ns NetworkSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ns.NetworkSettingsProperties != nil {
-		objectMap["properties"] = ns.NetworkSettingsProperties
-	}
-	if ns.ID != nil {
-		objectMap["id"] = ns.ID
-	}
-	if ns.Name != nil {
-		objectMap["name"] = ns.Name
-	}
-	if ns.Type != nil {
-		objectMap["type"] = ns.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -2617,7 +2500,7 @@ func (ns *NetworkSettings) UnmarshalJSON(body []byte) error {
 
 // NetworkSettingsProperties the properties of network settings.
 type NetworkSettingsProperties struct {
-	// NetworkAdapters - The network adapter list on the device.
+	// NetworkAdapters - READ-ONLY; The network adapter list on the device.
 	NetworkAdapters *[]NetworkAdapter `json:"networkAdapters,omitempty"`
 }
 
@@ -2871,11 +2754,11 @@ type Order struct {
 	autorest.Response `json:"-"`
 	// OrderProperties - The order properties.
 	*OrderProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2884,15 +2767,6 @@ func (o Order) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if o.OrderProperties != nil {
 		objectMap["properties"] = o.OrderProperties
-	}
-	if o.ID != nil {
-		objectMap["id"] = o.ID
-	}
-	if o.Name != nil {
-		objectMap["name"] = o.Name
-	}
-	if o.Type != nil {
-		objectMap["type"] = o.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2951,9 +2825,9 @@ func (o *Order) UnmarshalJSON(body []byte) error {
 // OrderList list of order entities.
 type OrderList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of orders.
+	// Value - READ-ONLY; The list of orders.
 	Value *[]Order `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3102,13 +2976,13 @@ type OrderProperties struct {
 	ShippingAddress *Address `json:"shippingAddress,omitempty"`
 	// CurrentStatus - Current status of the order.
 	CurrentStatus *OrderStatus `json:"currentStatus,omitempty"`
-	// OrderHistory - List of status changes in the order.
+	// OrderHistory - READ-ONLY; List of status changes in the order.
 	OrderHistory *[]OrderStatus `json:"orderHistory,omitempty"`
-	// SerialNumber - Serial number of the device.
+	// SerialNumber - READ-ONLY; Serial number of the device.
 	SerialNumber *string `json:"serialNumber,omitempty"`
-	// DeliveryTrackingInfo - Tracking information for the package delivered to the customer whether it has an original or a replacement device.
+	// DeliveryTrackingInfo - READ-ONLY; Tracking information for the package delivered to the customer whether it has an original or a replacement device.
 	DeliveryTrackingInfo *[]TrackingInfo `json:"deliveryTrackingInfo,omitempty"`
-	// ReturnTrackingInfo - Tracking information for the package returned from the customer whether it has an original or a replacement device.
+	// ReturnTrackingInfo - READ-ONLY; Tracking information for the package returned from the customer whether it has an original or a replacement device.
 	ReturnTrackingInfo *[]TrackingInfo `json:"returnTrackingInfo,omitempty"`
 }
 
@@ -3122,7 +2996,7 @@ type OrdersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *OrdersCreateOrUpdateFuture) Result(client OrdersClient) (o Order, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.OrdersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3150,7 +3024,7 @@ type OrdersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *OrdersDeleteFuture) Result(client OrdersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.OrdersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3167,7 +3041,7 @@ func (future *OrdersDeleteFuture) Result(client OrdersClient) (ar autorest.Respo
 type OrderStatus struct {
 	// Status - Status of the order as per the allowed status types. Possible values include: 'Untracked', 'AwaitingFulfilment', 'AwaitingPreparation', 'AwaitingShipment', 'Shipped', 'Arriving', 'Delivered', 'ReplacementRequested', 'LostDevice', 'Declined', 'ReturnInitiated', 'AwaitingReturnShipment', 'ShippedBack', 'CollectedAtMicrosoft'
 	Status OrderState `json:"status,omitempty"`
-	// UpdateDateTime - Time of status update.
+	// UpdateDateTime - READ-ONLY; Time of status update.
 	UpdateDateTime *date.Time `json:"updateDateTime,omitempty"`
 	// Comments - Comments related to this status change.
 	Comments *string `json:"comments,omitempty"`
@@ -3179,11 +3053,11 @@ type PeriodicTimerEventTrigger struct {
 	*PeriodicTimerProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindTrigger', 'KindFileEvent', 'KindPeriodicTimerEvent'
 	Kind KindBasicTrigger `json:"kind,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3196,15 +3070,6 @@ func (ptet PeriodicTimerEventTrigger) MarshalJSON() ([]byte, error) {
 	}
 	if ptet.Kind != "" {
 		objectMap["kind"] = ptet.Kind
-	}
-	if ptet.ID != nil {
-		objectMap["id"] = ptet.ID
-	}
-	if ptet.Name != nil {
-		objectMap["name"] = ptet.Name
-	}
-	if ptet.Type != nil {
-		objectMap["type"] = ptet.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3340,11 +3205,11 @@ type Role struct {
 	autorest.Response `json:"-"`
 	// Kind - Possible values include: 'KindRole', 'KindIOT'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3392,15 +3257,6 @@ func (r Role) MarshalJSON() ([]byte, error) {
 	if r.Kind != "" {
 		objectMap["kind"] = r.Kind
 	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -3422,9 +3278,9 @@ func (r Role) AsBasicRole() (BasicRole, bool) {
 // RoleList collection of all the roles on the Data Box Edge device.
 type RoleList struct {
 	autorest.Response `json:"-"`
-	// Value - The Value.
+	// Value - READ-ONLY; The Value.
 	Value *[]BasicRole `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3624,7 +3480,7 @@ type RolesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RolesCreateOrUpdateFuture) Result(client RolesClient) (rm RoleModel, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.RolesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3652,7 +3508,7 @@ type RolesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RolesDeleteFuture) Result(client RolesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.RolesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3675,11 +3531,11 @@ type RoleSinkInfo struct {
 type SecuritySettings struct {
 	// SecuritySettingsProperties - Properties of the security settings.
 	*SecuritySettingsProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3688,15 +3544,6 @@ func (ss SecuritySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ss.SecuritySettingsProperties != nil {
 		objectMap["properties"] = ss.SecuritySettingsProperties
-	}
-	if ss.ID != nil {
-		objectMap["id"] = ss.ID
-	}
-	if ss.Name != nil {
-		objectMap["name"] = ss.Name
-	}
-	if ss.Type != nil {
-		objectMap["type"] = ss.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3769,11 +3616,11 @@ type Share struct {
 	autorest.Response `json:"-"`
 	// ShareProperties - The share properties.
 	*ShareProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3782,15 +3629,6 @@ func (s Share) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.ShareProperties != nil {
 		objectMap["properties"] = s.ShareProperties
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3858,9 +3696,9 @@ type ShareAccessRight struct {
 // ShareList collection of all the shares on the Data Box Edge/Gateway device.
 type ShareList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of shares.
+	// Value - READ-ONLY; The list of shares.
 	Value *[]Share `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4019,7 +3857,7 @@ type ShareProperties struct {
 	ClientAccessRights *[]ClientAccessRight `json:"clientAccessRights,omitempty"`
 	// RefreshDetails - Details of the refresh job on this share.
 	RefreshDetails *RefreshDetails `json:"refreshDetails,omitempty"`
-	// ShareMappings - Share mount point to the role.
+	// ShareMappings - READ-ONLY; Share mount point to the role.
 	ShareMappings *[]MountPointMap `json:"shareMappings,omitempty"`
 	// DataPolicy - Data policy of the share. Possible values include: 'Cloud', 'Local'
 	DataPolicy DataPolicy `json:"dataPolicy,omitempty"`
@@ -4035,7 +3873,7 @@ type SharesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SharesCreateOrUpdateFuture) Result(client SharesClient) (s Share, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.SharesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4063,7 +3901,7 @@ type SharesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SharesDeleteFuture) Result(client SharesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.SharesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4086,7 +3924,7 @@ type SharesRefreshFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SharesRefreshFuture) Result(client SharesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.SharesRefreshFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4112,11 +3950,11 @@ type StorageAccountCredential struct {
 	autorest.Response `json:"-"`
 	// StorageAccountCredentialProperties - The storage account credential properties.
 	*StorageAccountCredentialProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4125,15 +3963,6 @@ func (sac StorageAccountCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sac.StorageAccountCredentialProperties != nil {
 		objectMap["properties"] = sac.StorageAccountCredentialProperties
-	}
-	if sac.ID != nil {
-		objectMap["id"] = sac.ID
-	}
-	if sac.Name != nil {
-		objectMap["name"] = sac.Name
-	}
-	if sac.Type != nil {
-		objectMap["type"] = sac.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4192,9 +4021,9 @@ func (sac *StorageAccountCredential) UnmarshalJSON(body []byte) error {
 // StorageAccountCredentialList the collection of storage account credentials.
 type StorageAccountCredentialList struct {
 	autorest.Response `json:"-"`
-	// Value - The value.
+	// Value - READ-ONLY; The value.
 	Value *[]StorageAccountCredential `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4364,7 +4193,7 @@ type StorageAccountCredentialsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageAccountCredentialsCreateOrUpdateFuture) Result(client StorageAccountCredentialsClient) (sac StorageAccountCredential, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.StorageAccountCredentialsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4393,7 +4222,7 @@ type StorageAccountCredentialsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageAccountCredentialsDeleteFuture) Result(client StorageAccountCredentialsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.StorageAccountCredentialsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4436,11 +4265,11 @@ type Trigger struct {
 	autorest.Response `json:"-"`
 	// Kind - Possible values include: 'KindTrigger', 'KindFileEvent', 'KindPeriodicTimerEvent'
 	Kind KindBasicTrigger `json:"kind,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4492,15 +4321,6 @@ func (t Trigger) MarshalJSON() ([]byte, error) {
 	if t.Kind != "" {
 		objectMap["kind"] = t.Kind
 	}
-	if t.ID != nil {
-		objectMap["id"] = t.ID
-	}
-	if t.Name != nil {
-		objectMap["name"] = t.Name
-	}
-	if t.Type != nil {
-		objectMap["type"] = t.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -4527,9 +4347,9 @@ func (t Trigger) AsBasicTrigger() (BasicTrigger, bool) {
 // TriggerList collection of all trigger on the data box edge device.
 type TriggerList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of triggers.
+	// Value - READ-ONLY; The list of triggers.
 	Value *[]BasicTrigger `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4729,7 +4549,7 @@ type TriggersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TriggersCreateOrUpdateFuture) Result(client TriggersClient) (tm TriggerModel, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.TriggersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4758,7 +4578,7 @@ type TriggersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TriggersDeleteFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.TriggersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4773,27 +4593,27 @@ func (future *TriggersDeleteFuture) Result(client TriggersClient) (ar autorest.R
 
 // UpdateDownloadProgress details about the download progress of update.
 type UpdateDownloadProgress struct {
-	// DownloadPhase - The download phase. Possible values include: 'Unknown', 'Initializing', 'Downloading', 'Verifying'
+	// DownloadPhase - READ-ONLY; The download phase. Possible values include: 'Unknown', 'Initializing', 'Downloading', 'Verifying'
 	DownloadPhase DownloadPhase `json:"downloadPhase,omitempty"`
-	// PercentComplete - Percentage of completion.
+	// PercentComplete - READ-ONLY; Percentage of completion.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// TotalBytesToDownload - Total bytes to download.
+	// TotalBytesToDownload - READ-ONLY; Total bytes to download.
 	TotalBytesToDownload *float64 `json:"totalBytesToDownload,omitempty"`
-	// TotalBytesDownloaded - Total bytes downloaded.
+	// TotalBytesDownloaded - READ-ONLY; Total bytes downloaded.
 	TotalBytesDownloaded *float64 `json:"totalBytesDownloaded,omitempty"`
-	// NumberOfUpdatesToDownload - Number of updates to download.
+	// NumberOfUpdatesToDownload - READ-ONLY; Number of updates to download.
 	NumberOfUpdatesToDownload *int32 `json:"numberOfUpdatesToDownload,omitempty"`
-	// NumberOfUpdatesDownloaded - Number of updates downloaded.
+	// NumberOfUpdatesDownloaded - READ-ONLY; Number of updates downloaded.
 	NumberOfUpdatesDownloaded *int32 `json:"numberOfUpdatesDownloaded,omitempty"`
 }
 
 // UpdateInstallProgress progress details during installation of updates.
 type UpdateInstallProgress struct {
-	// PercentComplete - Percentage completed.
+	// PercentComplete - READ-ONLY; Percentage completed.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// NumberOfUpdatesToInstall - Number of updates to install.
+	// NumberOfUpdatesToInstall - READ-ONLY; Number of updates to install.
 	NumberOfUpdatesToInstall *int32 `json:"numberOfUpdatesToInstall,omitempty"`
-	// NumberOfUpdatesInstalled - Number of updates installed.
+	// NumberOfUpdatesInstalled - READ-ONLY; Number of updates installed.
 	NumberOfUpdatesInstalled *int32 `json:"numberOfUpdatesInstalled,omitempty"`
 }
 
@@ -4802,11 +4622,11 @@ type UpdateSummary struct {
 	autorest.Response `json:"-"`
 	// UpdateSummaryProperties - The device update information summary.
 	*UpdateSummaryProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4815,15 +4635,6 @@ func (us UpdateSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if us.UpdateSummaryProperties != nil {
 		objectMap["properties"] = us.UpdateSummaryProperties
-	}
-	if us.ID != nil {
-		objectMap["id"] = us.ID
-	}
-	if us.Name != nil {
-		objectMap["name"] = us.Name
-	}
-	if us.Type != nil {
-		objectMap["type"] = us.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4889,31 +4700,31 @@ type UpdateSummaryProperties struct {
 	DeviceLastScannedDateTime *date.Time `json:"deviceLastScannedDateTime,omitempty"`
 	// LastCompletedScanJobDateTime - The time when the last scan job was completed (success/cancelled/failed) on the appliance.
 	LastCompletedScanJobDateTime *date.Time `json:"lastCompletedScanJobDateTime,omitempty"`
-	// LastCompletedDownloadJobDateTime - The time when the last Download job was completed (success/cancelled/failed) on the appliance.
+	// LastCompletedDownloadJobDateTime - READ-ONLY; The time when the last Download job was completed (success/cancelled/failed) on the appliance.
 	LastCompletedDownloadJobDateTime *date.Time `json:"lastCompletedDownloadJobDateTime,omitempty"`
-	// LastCompletedInstallJobDateTime - The time when the last Install job was completed (success/cancelled/failed) on the appliance.
+	// LastCompletedInstallJobDateTime - READ-ONLY; The time when the last Install job was completed (success/cancelled/failed) on the appliance.
 	LastCompletedInstallJobDateTime *date.Time `json:"lastCompletedInstallJobDateTime,omitempty"`
-	// TotalNumberOfUpdatesAvailable - The number of updates available for the current device version as per the last device scan.
+	// TotalNumberOfUpdatesAvailable - READ-ONLY; The number of updates available for the current device version as per the last device scan.
 	TotalNumberOfUpdatesAvailable *int32 `json:"totalNumberOfUpdatesAvailable,omitempty"`
-	// TotalNumberOfUpdatesPendingDownload - The total number of items pending download.
+	// TotalNumberOfUpdatesPendingDownload - READ-ONLY; The total number of items pending download.
 	TotalNumberOfUpdatesPendingDownload *int32 `json:"totalNumberOfUpdatesPendingDownload,omitempty"`
-	// TotalNumberOfUpdatesPendingInstall - The total number of items pending install.
+	// TotalNumberOfUpdatesPendingInstall - READ-ONLY; The total number of items pending install.
 	TotalNumberOfUpdatesPendingInstall *int32 `json:"totalNumberOfUpdatesPendingInstall,omitempty"`
-	// RebootBehavior - Indicates if updates are available and at least one of the updates needs a reboot. Possible values include: 'NeverReboots', 'RequiresReboot', 'RequestReboot'
+	// RebootBehavior - READ-ONLY; Indicates if updates are available and at least one of the updates needs a reboot. Possible values include: 'NeverReboots', 'RequiresReboot', 'RequestReboot'
 	RebootBehavior InstallRebootBehavior `json:"rebootBehavior,omitempty"`
-	// OngoingUpdateOperation - The current update operation. Possible values include: 'UpdateOperationNone', 'UpdateOperationScan', 'UpdateOperationDownload', 'UpdateOperationInstall'
+	// OngoingUpdateOperation - READ-ONLY; The current update operation. Possible values include: 'UpdateOperationNone', 'UpdateOperationScan', 'UpdateOperationDownload', 'UpdateOperationInstall'
 	OngoingUpdateOperation UpdateOperation `json:"ongoingUpdateOperation,omitempty"`
-	// InProgressDownloadJobID - The job ID of the download job in progress.
+	// InProgressDownloadJobID - READ-ONLY; The job ID of the download job in progress.
 	InProgressDownloadJobID *string `json:"inProgressDownloadJobId,omitempty"`
-	// InProgressInstallJobID - The job ID of the install job in progress.
+	// InProgressInstallJobID - READ-ONLY; The job ID of the install job in progress.
 	InProgressInstallJobID *string `json:"inProgressInstallJobId,omitempty"`
-	// InProgressDownloadJobStartedDateTime - The time when the currently running download (if any) started.
+	// InProgressDownloadJobStartedDateTime - READ-ONLY; The time when the currently running download (if any) started.
 	InProgressDownloadJobStartedDateTime *date.Time `json:"inProgressDownloadJobStartedDateTime,omitempty"`
-	// InProgressInstallJobStartedDateTime - The time when the currently running install (if any) started.
+	// InProgressInstallJobStartedDateTime - READ-ONLY; The time when the currently running install (if any) started.
 	InProgressInstallJobStartedDateTime *date.Time `json:"inProgressInstallJobStartedDateTime,omitempty"`
-	// UpdateTitles - The list of updates available for install.
+	// UpdateTitles - READ-ONLY; The list of updates available for install.
 	UpdateTitles *[]string `json:"updateTitles,omitempty"`
-	// TotalUpdateSizeInBytes - The total size of updates available for download in bytes.
+	// TotalUpdateSizeInBytes - READ-ONLY; The total size of updates available for download in bytes.
 	TotalUpdateSizeInBytes *float64 `json:"totalUpdateSizeInBytes,omitempty"`
 }
 
@@ -4980,11 +4791,11 @@ type User struct {
 	autorest.Response `json:"-"`
 	// UserProperties - The storage account credential properties.
 	*UserProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The object name.
+	// Name - READ-ONLY; The object name.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4993,15 +4804,6 @@ func (u User) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if u.UserProperties != nil {
 		objectMap["properties"] = u.UserProperties
-	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5068,9 +4870,9 @@ type UserAccessRight struct {
 // UserList collection of users.
 type UserList struct {
 	autorest.Response `json:"-"`
-	// Value - The list of users.
+	// Value - READ-ONLY; The list of users.
 	Value *[]User `json:"value,omitempty"`
-	// NextLink - Link to the next set of results.
+	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -5229,7 +5031,7 @@ type UsersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UsersCreateOrUpdateFuture) Result(client UsersClient) (u User, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.UsersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5257,7 +5059,7 @@ type UsersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UsersDeleteFuture) Result(client UsersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgegateway.UsersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return

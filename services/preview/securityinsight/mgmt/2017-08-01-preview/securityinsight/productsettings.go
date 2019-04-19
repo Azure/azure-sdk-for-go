@@ -206,6 +206,9 @@ func (client ProductSettingsClient) UpdatePreparer(ctx context.Context, resource
 		"api-version": APIVersion,
 	}
 
+	settings.ID = nil
+	settings.Type = nil
+	settings.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

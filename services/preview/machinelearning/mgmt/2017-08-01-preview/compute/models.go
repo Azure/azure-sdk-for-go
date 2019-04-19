@@ -240,7 +240,7 @@ func PossibleUpdatesAvailableValues() []UpdatesAvailable {
 
 // AcsClusterProperties information about the container service backing the cluster
 type AcsClusterProperties struct {
-	// ClusterFqdn - The FQDN of the cluster.
+	// ClusterFqdn - READ-ONLY; The FQDN of the cluster.
 	ClusterFqdn *string `json:"clusterFqdn,omitempty"`
 	// OrchestratorType - Type of orchestrator. It cannot be changed once the cluster is created. Possible values include: 'Kubernetes', 'None'
 	OrchestratorType OrchestratorType `json:"orchestratorType,omitempty"`
@@ -295,20 +295,20 @@ type AvailableOperations struct {
 // cluster.
 type CheckSystemServicesUpdatesAvailableResponse struct {
 	autorest.Response `json:"-"`
-	// UpdatesAvailable - Yes if updates are available for the system services, No if not. Possible values include: 'Yes', 'No'
+	// UpdatesAvailable - READ-ONLY; Yes if updates are available for the system services, No if not. Possible values include: 'Yes', 'No'
 	UpdatesAvailable UpdatesAvailable `json:"updatesAvailable,omitempty"`
 }
 
 // ContainerRegistryCredentials information about the Azure Container Registry which contains the images
 // deployed to the cluster.
 type ContainerRegistryCredentials struct {
-	// LoginServer - The ACR login server name. User name is the first part of the FQDN.
+	// LoginServer - READ-ONLY; The ACR login server name. User name is the first part of the FQDN.
 	LoginServer *string `json:"loginServer,omitempty"`
-	// Password - The ACR primary password.
+	// Password - READ-ONLY; The ACR primary password.
 	Password *string `json:"password,omitempty"`
-	// Password2 - The ACR secondary password.
+	// Password2 - READ-ONLY; The ACR secondary password.
 	Password2 *string `json:"password2,omitempty"`
-	// Username - The ACR login username.
+	// Username - READ-ONLY; The ACR login username.
 	Username *string `json:"username,omitempty"`
 }
 
@@ -321,11 +321,11 @@ type ContainerRegistryProperties struct {
 // ContainerServiceCredentials information about the Azure Container Registry which contains the images
 // deployed to the cluster.
 type ContainerServiceCredentials struct {
-	// AcsKubeConfig - The ACS kube config file.
+	// AcsKubeConfig - READ-ONLY; The ACS kube config file.
 	AcsKubeConfig *string `json:"acsKubeConfig,omitempty"`
-	// ServicePrincipalConfiguration - Service principal configuration used by Kubernetes.
+	// ServicePrincipalConfiguration - READ-ONLY; Service principal configuration used by Kubernetes.
 	ServicePrincipalConfiguration *ServicePrincipalProperties `json:"servicePrincipalConfiguration,omitempty"`
-	// ImagePullSecretName - The ACR image pull secret name which was created in Kubernetes.
+	// ImagePullSecretName - READ-ONLY; The ACR image pull secret name which was created in Kubernetes.
 	ImagePullSecretName *string `json:"imagePullSecretName,omitempty"`
 }
 
@@ -462,13 +462,13 @@ type OperationalizationCluster struct {
 	autorest.Response `json:"-"`
 	// OperationalizationClusterProperties - Properties of an operationalization cluster.
 	*OperationalizationClusterProperties `json:"properties,omitempty"`
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the resource.
+	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -480,17 +480,8 @@ func (oc OperationalizationCluster) MarshalJSON() ([]byte, error) {
 	if oc.OperationalizationClusterProperties != nil {
 		objectMap["properties"] = oc.OperationalizationClusterProperties
 	}
-	if oc.ID != nil {
-		objectMap["id"] = oc.ID
-	}
-	if oc.Name != nil {
-		objectMap["name"] = oc.Name
-	}
 	if oc.Location != nil {
 		objectMap["location"] = oc.Location
-	}
-	if oc.Type != nil {
-		objectMap["type"] = oc.Type
 	}
 	if oc.Tags != nil {
 		objectMap["tags"] = oc.Tags
@@ -588,13 +579,13 @@ type OperationalizationClusterCredentials struct {
 type OperationalizationClusterProperties struct {
 	// Description - The description of the cluster.
 	Description *string `json:"description,omitempty"`
-	// CreatedOn - The date and time when the cluster was created.
+	// CreatedOn - READ-ONLY; The date and time when the cluster was created.
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// ModifiedOn - The date and time when the cluster was last modified.
+	// ModifiedOn - READ-ONLY; The date and time when the cluster was last modified.
 	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
-	// ProvisioningState - The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState OperationStatus `json:"provisioningState,omitempty"`
-	// ProvisioningErrors - List of provisioning errors reported by the resource provider.
+	// ProvisioningErrors - READ-ONLY; List of provisioning errors reported by the resource provider.
 	ProvisioningErrors *[]ErrorResponseWrapper `json:"provisioningErrors,omitempty"`
 	// ClusterType - The cluster type. Possible values include: 'ACS', 'Local'
 	ClusterType ClusterType `json:"clusterType,omitempty"`
@@ -620,7 +611,7 @@ type OperationalizationClustersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *OperationalizationClustersCreateOrUpdateFuture) Result(client OperationalizationClustersClient) (oc OperationalizationCluster, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -649,7 +640,7 @@ type OperationalizationClustersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *OperationalizationClustersDeleteFuture) Result(client OperationalizationClustersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -672,7 +663,7 @@ type OperationalizationClustersUpdateSystemServicesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *OperationalizationClustersUpdateSystemServicesFuture) Result(client OperationalizationClustersClient) (ussr UpdateSystemServicesResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersUpdateSystemServicesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -856,13 +847,13 @@ func NewPaginatedOperationalizationClustersListPage(getNextPage func(context.Con
 
 // Resource azure resource
 type Resource struct {
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the resource.
+	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -871,17 +862,8 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags
@@ -943,11 +925,11 @@ type SslConfiguration struct {
 
 // StorageAccountCredentials access information for the storage account.
 type StorageAccountCredentials struct {
-	// ResourceID - The ARM resource ID of the storage account.
+	// ResourceID - READ-ONLY; The ARM resource ID of the storage account.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// PrimaryKey - The primary key of the storage account.
+	// PrimaryKey - READ-ONLY; The primary key of the storage account.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
-	// SecondaryKey - The secondary key of the storage account.
+	// SecondaryKey - READ-ONLY; The secondary key of the storage account.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -961,19 +943,19 @@ type StorageAccountProperties struct {
 type SystemService struct {
 	// SystemServiceType - The system service type. Possible values include: 'SystemServiceTypeNone', 'SystemServiceTypeScoringFrontEnd', 'SystemServiceTypeBatchFrontEnd'
 	SystemServiceType SystemServiceType `json:"systemServiceType,omitempty"`
-	// PublicIPAddress - The public IP address of the system service
+	// PublicIPAddress - READ-ONLY; The public IP address of the system service
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
-	// Version - The state of the system service
+	// Version - READ-ONLY; The state of the system service
 	Version *string `json:"version,omitempty"`
 }
 
 // UpdateSystemServicesResponse response of the update system services API
 type UpdateSystemServicesResponse struct {
 	autorest.Response `json:"-"`
-	// UpdateStatus - Update status. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// UpdateStatus - READ-ONLY; Update status. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	UpdateStatus OperationStatus `json:"updateStatus,omitempty"`
-	// UpdateStartedOn - The date and time when the last system services update was started.
+	// UpdateStartedOn - READ-ONLY; The date and time when the last system services update was started.
 	UpdateStartedOn *date.Time `json:"updateStartedOn,omitempty"`
-	// UpdateCompletedOn - The date and time when the last system services update completed.
+	// UpdateCompletedOn - READ-ONLY; The date and time when the last system services update completed.
 	UpdateCompletedOn *date.Time `json:"updateCompletedOn,omitempty"`
 }

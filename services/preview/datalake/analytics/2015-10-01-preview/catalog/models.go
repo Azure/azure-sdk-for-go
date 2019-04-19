@@ -162,7 +162,7 @@ type USQLAssemblyFileInfo struct {
 // USQLAssemblyList a Data Lake Analytics catalog U-SQL assembly CLR item list.
 type USQLAssemblyList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of assemblies in the database
+	// Value - READ-ONLY; the list of assemblies in the database
 	Value *[]USQLAssemblyClr `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -327,7 +327,7 @@ type USQLCredential struct {
 // USQLCredentialList a Data Lake Analytics catalog U-SQL credential item list.
 type USQLCredentialList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of credentials in the database
+	// Value - READ-ONLY; the list of credentials in the database
 	Value *[]USQLCredential `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -486,7 +486,7 @@ type USQLDatabase struct {
 // USQLDatabaseList a Data Lake Analytics catalog U-SQL database item list.
 type USQLDatabaseList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of databases
+	// Value - READ-ONLY; the list of databases
 	Value *[]USQLDatabase `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -673,7 +673,7 @@ type USQLExternalDataSource struct {
 // USQLExternalDataSourceList a Data Lake Analytics catalog U-SQL external datasource item list.
 type USQLExternalDataSourceList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of external data sources in the database
+	// Value - READ-ONLY; the list of external data sources in the database
 	Value *[]USQLExternalDataSource `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -863,7 +863,7 @@ type USQLProcedure struct {
 // USQLProcedureList a Data Lake Analytics catalog U-SQL procedure item list.
 type USQLProcedureList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of procedure in the database and schema combination
+	// Value - READ-ONLY; the list of procedure in the database and schema combination
 	Value *[]USQLProcedure `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -1024,7 +1024,7 @@ type USQLSchema struct {
 // USQLSchemaList a Data Lake Analytics catalog U-SQL schema item list.
 type USQLSchemaList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of schemas in the database
+	// Value - READ-ONLY; the list of schemas in the database
 	Value *[]USQLSchema `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -1224,7 +1224,7 @@ type USQLTableColumn struct {
 // USQLTableList a Data Lake Analytics catalog U-SQL table item list.
 type USQLTableList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of tables in the database and schema combination
+	// Value - READ-ONLY; the list of tables in the database and schema combination
 	Value *[]USQLTable `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -1395,7 +1395,7 @@ type USQLTablePartition struct {
 // USQLTablePartitionList a Data Lake Analytics catalog U-SQL table partition item list.
 type USQLTablePartitionList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table partitions in the database, schema and table combination
+	// Value - READ-ONLY; the list of table partitions in the database, schema and table combination
 	Value *[]USQLTablePartition `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -1578,7 +1578,7 @@ type USQLTableStatistics struct {
 // USQLTableStatisticsList a Data Lake Analytics catalog U-SQL table statistics item list.
 type USQLTableStatisticsList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table statistics in the database, schema and table combination
+	// Value - READ-ONLY; the list of table statistics in the database, schema and table combination
 	Value *[]USQLTableStatistics `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -1726,7 +1726,7 @@ func NewUSQLTableStatisticsListPage(getNextPage func(context.Context, USQLTableS
 // USQLTableType a Data Lake Analytics catalog U-SQL table type item.
 type USQLTableType struct {
 	autorest.Response `json:"-"`
-	// Columns - the type field information associated with this table type.
+	// Columns - READ-ONLY; the type field information associated with this table type.
 	Columns *[]TypeFieldInfo `json:"columns,omitempty"`
 	// DatabaseName - the name of the database.
 	DatabaseName *string `json:"databaseName,omitempty"`
@@ -1767,7 +1767,7 @@ type USQLTableType struct {
 // USQLTableTypeList a Data Lake Analytics catalog U-SQL table type item list.
 type USQLTableTypeList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table types in the database and schema combination
+	// Value - READ-ONLY; the list of table types in the database and schema combination
 	Value *[]USQLTableType `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -1932,7 +1932,7 @@ type USQLTableValuedFunction struct {
 // USQLTableValuedFunctionList a Data Lake Analytics catalog U-SQL table valued function item list.
 type USQLTableValuedFunctionList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table valued functions in the database and schema combination
+	// Value - READ-ONLY; the list of table valued functions in the database and schema combination
 	Value *[]USQLTableValuedFunction `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -2119,7 +2119,7 @@ type USQLType struct {
 // USQLTypeList a Data Lake Analytics catalog U-SQL type item list.
 type USQLTypeList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of types in the database and schema combination
+	// Value - READ-ONLY; the list of types in the database and schema combination
 	Value *[]USQLType `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -2284,7 +2284,7 @@ type USQLView struct {
 // USQLViewList a Data Lake Analytics catalog U-SQL view item list.
 type USQLViewList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of view in the database and schema combination
+	// Value - READ-ONLY; the list of view in the database and schema combination
 	Value *[]USQLView `json:"value,omitempty"`
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`

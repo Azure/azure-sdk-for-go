@@ -123,7 +123,7 @@ type CapacitiesCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CapacitiesCreateFuture) Result(client CapacitiesClient) (dc DedicatedCapacity, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -152,7 +152,7 @@ type CapacitiesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CapacitiesDeleteFuture) Result(client CapacitiesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -175,7 +175,7 @@ type CapacitiesResumeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CapacitiesResumeFuture) Result(client CapacitiesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesResumeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -198,7 +198,7 @@ type CapacitiesSuspendFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CapacitiesSuspendFuture) Result(client CapacitiesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesSuspendFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -221,7 +221,7 @@ type CapacitiesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CapacitiesUpdateFuture) Result(client CapacitiesClient) (dc DedicatedCapacity, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -271,11 +271,11 @@ type DedicatedCapacity struct {
 	autorest.Response `json:"-"`
 	// DedicatedCapacityProperties - Properties of the provision operation request.
 	*DedicatedCapacityProperties `json:"properties,omitempty"`
-	// ID - An identifier that represents the PowerBI Dedicated resource.
+	// ID - READ-ONLY; An identifier that represents the PowerBI Dedicated resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the PowerBI Dedicated resource.
+	// Name - READ-ONLY; The name of the PowerBI Dedicated resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the PowerBI Dedicated resource.
+	// Type - READ-ONLY; The type of the PowerBI Dedicated resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Location of the PowerBI Dedicated resource.
 	Location *string `json:"location,omitempty"`
@@ -290,15 +290,6 @@ func (dc DedicatedCapacity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dc.DedicatedCapacityProperties != nil {
 		objectMap["properties"] = dc.DedicatedCapacityProperties
-	}
-	if dc.ID != nil {
-		objectMap["id"] = dc.ID
-	}
-	if dc.Name != nil {
-		objectMap["name"] = dc.Name
-	}
-	if dc.Type != nil {
-		objectMap["type"] = dc.Type
 	}
 	if dc.Location != nil {
 		objectMap["location"] = dc.Location
@@ -405,9 +396,9 @@ type DedicatedCapacityMutableProperties struct {
 
 // DedicatedCapacityProperties properties of Dedicated Capacity resource.
 type DedicatedCapacityProperties struct {
-	// State - The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning. Possible values include: 'StateDeleting', 'StateSucceeded', 'StateFailed', 'StatePaused', 'StateSuspended', 'StateProvisioning', 'StateUpdating', 'StateSuspending', 'StatePausing', 'StateResuming', 'StatePreparing', 'StateScaling'
+	// State - READ-ONLY; The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning. Possible values include: 'StateDeleting', 'StateSucceeded', 'StateFailed', 'StatePaused', 'StateSuspended', 'StateProvisioning', 'StateUpdating', 'StateSuspending', 'StatePausing', 'StateResuming', 'StatePreparing', 'StateScaling'
 	State State `json:"state,omitempty"`
-	// ProvisioningState - The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Deleting', 'Succeeded', 'Failed', 'Paused', 'Suspended', 'Provisioning', 'Updating', 'Suspending', 'Pausing', 'Resuming', 'Preparing', 'Scaling'
+	// ProvisioningState - READ-ONLY; The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Deleting', 'Succeeded', 'Failed', 'Paused', 'Suspended', 'Provisioning', 'Updating', 'Suspending', 'Pausing', 'Resuming', 'Preparing', 'Scaling'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Administration - A collection of Dedicated capacity administrators
 	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
@@ -490,7 +481,7 @@ type ErrorResponse struct {
 
 // Operation capacities REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -498,11 +489,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.PowerBIDedicated.
+	// Provider - READ-ONLY; Service provider: Microsoft.PowerBIDedicated.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: capacity, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: capacity, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: create, update, delete, etc.
+	// Operation - READ-ONLY; Operation type: create, update, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -510,9 +501,9 @@ type OperationDisplay struct {
 // the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of capacities supported by the Microsoft.PowerBIDedicated resource provider.
+	// Value - READ-ONLY; List of capacities supported by the Microsoft.PowerBIDedicated resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -655,11 +646,11 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // Resource represents an instance of an PowerBI Dedicated resource.
 type Resource struct {
-	// ID - An identifier that represents the PowerBI Dedicated resource.
+	// ID - READ-ONLY; An identifier that represents the PowerBI Dedicated resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the PowerBI Dedicated resource.
+	// Name - READ-ONLY; The name of the PowerBI Dedicated resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the PowerBI Dedicated resource.
+	// Type - READ-ONLY; The type of the PowerBI Dedicated resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Location of the PowerBI Dedicated resource.
 	Location *string `json:"location,omitempty"`
@@ -672,15 +663,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

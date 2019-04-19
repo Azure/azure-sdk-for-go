@@ -84,6 +84,10 @@ func (client DdosProtectionPlansClient) CreateOrUpdatePreparer(ctx context.Conte
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
+	parameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

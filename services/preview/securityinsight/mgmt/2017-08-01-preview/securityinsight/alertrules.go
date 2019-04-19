@@ -110,6 +110,9 @@ func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		"api-version": APIVersion,
 	}
 
+	alertRule.ID = nil
+	alertRule.Type = nil
+	alertRule.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

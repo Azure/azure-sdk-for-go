@@ -453,7 +453,7 @@ type Event struct {
 	EventType *string `json:"eventType,omitempty"`
 	// EventTime - The time (in UTC) the event was generated.
 	EventTime *date.Time `json:"eventTime,omitempty"`
-	// MetadataVersion - The schema version of the event metadata.
+	// MetadataVersion - READ-ONLY; The schema version of the event metadata.
 	MetadataVersion *string `json:"metadataVersion,omitempty"`
 	// DataVersion - The schema version of the data object.
 	DataVersion *string `json:"dataVersion,omitempty"`
@@ -623,9 +623,9 @@ type MapsGeofenceResultEventData struct {
 type MediaJobCanceledEventData struct {
 	// Outputs - Gets the Job outputs.
 	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -636,12 +636,6 @@ func (mjced MediaJobCanceledEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mjced.Outputs != nil {
 		objectMap["outputs"] = mjced.Outputs
-	}
-	if mjced.PreviousState != "" {
-		objectMap["previousState"] = mjced.PreviousState
-	}
-	if mjced.State != "" {
-		objectMap["state"] = mjced.State
 	}
 	if mjced.CorrelationData != nil {
 		objectMap["correlationData"] = mjced.CorrelationData
@@ -701,9 +695,9 @@ func (mjced *MediaJobCanceledEventData) UnmarshalJSON(body []byte) error {
 
 // MediaJobCancelingEventData job canceling event data
 type MediaJobCancelingEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -712,12 +706,6 @@ type MediaJobCancelingEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobCancelingEventData.
 func (mjced MediaJobCancelingEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjced.PreviousState != "" {
-		objectMap["previousState"] = mjced.PreviousState
-	}
-	if mjced.State != "" {
-		objectMap["state"] = mjced.State
-	}
 	if mjced.CorrelationData != nil {
 		objectMap["correlationData"] = mjced.CorrelationData
 	}
@@ -726,23 +714,23 @@ func (mjced MediaJobCancelingEventData) MarshalJSON() ([]byte, error) {
 
 // MediaJobError details of JobOutput errors.
 type MediaJobError struct {
-	// Code - Error code describing the error. Possible values include: 'ServiceError', 'ServiceTransientError', 'DownloadNotAccessible', 'DownloadTransientError', 'UploadNotAccessible', 'UploadTransientError', 'ConfigurationUnsupported', 'ContentMalformed', 'ContentUnsupported'
+	// Code - READ-ONLY; Error code describing the error. Possible values include: 'ServiceError', 'ServiceTransientError', 'DownloadNotAccessible', 'DownloadTransientError', 'UploadNotAccessible', 'UploadTransientError', 'ConfigurationUnsupported', 'ContentMalformed', 'ContentUnsupported'
 	Code MediaJobErrorCode `json:"code,omitempty"`
-	// Message - A human-readable language-dependent representation of the error.
+	// Message - READ-ONLY; A human-readable language-dependent representation of the error.
 	Message *string `json:"message,omitempty"`
-	// Category - Helps with categorization of errors. Possible values include: 'Service', 'Download', 'Upload', 'Configuration', 'Content'
+	// Category - READ-ONLY; Helps with categorization of errors. Possible values include: 'Service', 'Download', 'Upload', 'Configuration', 'Content'
 	Category MediaJobErrorCategory `json:"category,omitempty"`
-	// Retry - Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure Portal. Possible values include: 'DoNotRetry', 'MayRetry'
+	// Retry - READ-ONLY; Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure Portal. Possible values include: 'DoNotRetry', 'MayRetry'
 	Retry MediaJobRetry `json:"retry,omitempty"`
-	// Details - An array of details about specific errors that led to this reported error.
+	// Details - READ-ONLY; An array of details about specific errors that led to this reported error.
 	Details *[]MediaJobErrorDetail `json:"details,omitempty"`
 }
 
 // MediaJobErrorDetail details of JobOutput errors.
 type MediaJobErrorDetail struct {
-	// Code - Code describing the error detail.
+	// Code - READ-ONLY; Code describing the error detail.
 	Code *string `json:"code,omitempty"`
-	// Message - A human-readable representation of the error.
+	// Message - READ-ONLY; A human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -750,9 +738,9 @@ type MediaJobErrorDetail struct {
 type MediaJobErroredEventData struct {
 	// Outputs - Gets the Job outputs.
 	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -763,12 +751,6 @@ func (mjeed MediaJobErroredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mjeed.Outputs != nil {
 		objectMap["outputs"] = mjeed.Outputs
-	}
-	if mjeed.PreviousState != "" {
-		objectMap["previousState"] = mjeed.PreviousState
-	}
-	if mjeed.State != "" {
-		objectMap["state"] = mjeed.State
 	}
 	if mjeed.CorrelationData != nil {
 		objectMap["correlationData"] = mjeed.CorrelationData
@@ -830,9 +812,9 @@ func (mjeed *MediaJobErroredEventData) UnmarshalJSON(body []byte) error {
 type MediaJobFinishedEventData struct {
 	// Outputs - Gets the Job outputs.
 	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -843,12 +825,6 @@ func (mjfed MediaJobFinishedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mjfed.Outputs != nil {
 		objectMap["outputs"] = mjfed.Outputs
-	}
-	if mjfed.PreviousState != "" {
-		objectMap["previousState"] = mjfed.PreviousState
-	}
-	if mjfed.State != "" {
-		objectMap["state"] = mjfed.State
 	}
 	if mjfed.CorrelationData != nil {
 		objectMap["correlationData"] = mjfed.CorrelationData
@@ -1058,7 +1034,7 @@ func (mjoa MediaJobOutputAsset) AsBasicMediaJobOutput() (BasicMediaJobOutput, bo
 
 // MediaJobOutputCanceledEventData job output canceled event data
 type MediaJobOutputCanceledEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1069,9 +1045,6 @@ type MediaJobOutputCanceledEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputCanceledEventData.
 func (mjoced MediaJobOutputCanceledEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjoced.PreviousState != "" {
-		objectMap["previousState"] = mjoced.PreviousState
-	}
 	objectMap["output"] = mjoced.Output
 	if mjoced.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoced.JobCorrelationData
@@ -1122,7 +1095,7 @@ func (mjoced *MediaJobOutputCanceledEventData) UnmarshalJSON(body []byte) error 
 
 // MediaJobOutputCancelingEventData job output canceling event data
 type MediaJobOutputCancelingEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1133,9 +1106,6 @@ type MediaJobOutputCancelingEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputCancelingEventData.
 func (mjoced MediaJobOutputCancelingEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjoced.PreviousState != "" {
-		objectMap["previousState"] = mjoced.PreviousState
-	}
 	objectMap["output"] = mjoced.Output
 	if mjoced.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoced.JobCorrelationData
@@ -1186,7 +1156,7 @@ func (mjoced *MediaJobOutputCancelingEventData) UnmarshalJSON(body []byte) error
 
 // MediaJobOutputErroredEventData job output error event data
 type MediaJobOutputErroredEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1197,9 +1167,6 @@ type MediaJobOutputErroredEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputErroredEventData.
 func (mjoeed MediaJobOutputErroredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjoeed.PreviousState != "" {
-		objectMap["previousState"] = mjoeed.PreviousState
-	}
 	objectMap["output"] = mjoeed.Output
 	if mjoeed.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoeed.JobCorrelationData
@@ -1250,7 +1217,7 @@ func (mjoeed *MediaJobOutputErroredEventData) UnmarshalJSON(body []byte) error {
 
 // MediaJobOutputFinishedEventData job output finished event data
 type MediaJobOutputFinishedEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1261,9 +1228,6 @@ type MediaJobOutputFinishedEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputFinishedEventData.
 func (mjofed MediaJobOutputFinishedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjofed.PreviousState != "" {
-		objectMap["previousState"] = mjofed.PreviousState
-	}
 	objectMap["output"] = mjofed.Output
 	if mjofed.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjofed.JobCorrelationData
@@ -1314,7 +1278,7 @@ func (mjofed *MediaJobOutputFinishedEventData) UnmarshalJSON(body []byte) error 
 
 // MediaJobOutputProcessingEventData job output processing event data
 type MediaJobOutputProcessingEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1325,9 +1289,6 @@ type MediaJobOutputProcessingEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputProcessingEventData.
 func (mjoped MediaJobOutputProcessingEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjoped.PreviousState != "" {
-		objectMap["previousState"] = mjoped.PreviousState
-	}
 	objectMap["output"] = mjoped.Output
 	if mjoped.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoped.JobCorrelationData
@@ -1403,7 +1364,7 @@ func (mjoped MediaJobOutputProgressEventData) MarshalJSON() ([]byte, error) {
 
 // MediaJobOutputScheduledEventData job output scheduled event data
 type MediaJobOutputScheduledEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1414,9 +1375,6 @@ type MediaJobOutputScheduledEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputScheduledEventData.
 func (mjosed MediaJobOutputScheduledEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjosed.PreviousState != "" {
-		objectMap["previousState"] = mjosed.PreviousState
-	}
 	objectMap["output"] = mjosed.Output
 	if mjosed.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjosed.JobCorrelationData
@@ -1468,7 +1426,7 @@ func (mjosed *MediaJobOutputScheduledEventData) UnmarshalJSON(body []byte) error
 // MediaJobOutputStateChangeEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Media.JobOutputStateChange event.
 type MediaJobOutputStateChangeEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
 	Output BasicMediaJobOutput `json:"output,omitempty"`
@@ -1479,9 +1437,6 @@ type MediaJobOutputStateChangeEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobOutputStateChangeEventData.
 func (mjosced MediaJobOutputStateChangeEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjosced.PreviousState != "" {
-		objectMap["previousState"] = mjosced.PreviousState
-	}
 	objectMap["output"] = mjosced.Output
 	if mjosced.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjosced.JobCorrelationData
@@ -1532,9 +1487,9 @@ func (mjosced *MediaJobOutputStateChangeEventData) UnmarshalJSON(body []byte) er
 
 // MediaJobProcessingEventData job processing event data
 type MediaJobProcessingEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -1543,12 +1498,6 @@ type MediaJobProcessingEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobProcessingEventData.
 func (mjped MediaJobProcessingEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjped.PreviousState != "" {
-		objectMap["previousState"] = mjped.PreviousState
-	}
-	if mjped.State != "" {
-		objectMap["state"] = mjped.State
-	}
 	if mjped.CorrelationData != nil {
 		objectMap["correlationData"] = mjped.CorrelationData
 	}
@@ -1557,9 +1506,9 @@ func (mjped MediaJobProcessingEventData) MarshalJSON() ([]byte, error) {
 
 // MediaJobScheduledEventData job scheduled event data
 type MediaJobScheduledEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -1568,12 +1517,6 @@ type MediaJobScheduledEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobScheduledEventData.
 func (mjsed MediaJobScheduledEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjsed.PreviousState != "" {
-		objectMap["previousState"] = mjsed.PreviousState
-	}
-	if mjsed.State != "" {
-		objectMap["state"] = mjsed.State
-	}
 	if mjsed.CorrelationData != nil {
 		objectMap["correlationData"] = mjsed.CorrelationData
 	}
@@ -1583,9 +1526,9 @@ func (mjsed MediaJobScheduledEventData) MarshalJSON() ([]byte, error) {
 // MediaJobStateChangeEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Media.JobStateChange event.
 type MediaJobStateChangeEventData struct {
-	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// PreviousState - READ-ONLY; The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
-	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	// State - READ-ONLY; The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
 	// CorrelationData - Gets the Job correlation data.
 	CorrelationData map[string]*string `json:"correlationData"`
@@ -1594,12 +1537,6 @@ type MediaJobStateChangeEventData struct {
 // MarshalJSON is the custom marshaler for MediaJobStateChangeEventData.
 func (mjsced MediaJobStateChangeEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mjsced.PreviousState != "" {
-		objectMap["previousState"] = mjsced.PreviousState
-	}
-	if mjsced.State != "" {
-		objectMap["state"] = mjsced.State
-	}
 	if mjsced.CorrelationData != nil {
 		objectMap["correlationData"] = mjsced.CorrelationData
 	}
@@ -1608,155 +1545,155 @@ func (mjsced MediaJobStateChangeEventData) MarshalJSON() ([]byte, error) {
 
 // MediaLiveEventConnectionRejectedEventData encoder connection rejected event data.
 type MediaLiveEventConnectionRejectedEventData struct {
-	// IngestURL - Gets the ingest URL provided by the live event.
+	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
-	// StreamID - Gets the stream Id.
+	// StreamID - READ-ONLY; Gets the stream Id.
 	StreamID *string `json:"streamId,omitempty"`
-	// EncoderIP - Gets the remote IP.
+	// EncoderIP - READ-ONLY; Gets the remote IP.
 	EncoderIP *string `json:"encoderIp,omitempty"`
-	// EncoderPort - Gets the remote port.
+	// EncoderPort - READ-ONLY; Gets the remote port.
 	EncoderPort *string `json:"encoderPort,omitempty"`
-	// ResultCode - Gets the result code.
+	// ResultCode - READ-ONLY; Gets the result code.
 	ResultCode *string `json:"resultCode,omitempty"`
 }
 
 // MediaLiveEventEncoderConnectedEventData encoder connect event data.
 type MediaLiveEventEncoderConnectedEventData struct {
-	// IngestURL - Gets the ingest URL provided by the live event.
+	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
-	// StreamID - Gets the stream Id.
+	// StreamID - READ-ONLY; Gets the stream Id.
 	StreamID *string `json:"streamId,omitempty"`
-	// EncoderIP - Gets the remote IP.
+	// EncoderIP - READ-ONLY; Gets the remote IP.
 	EncoderIP *string `json:"encoderIp,omitempty"`
-	// EncoderPort - Gets the remote port.
+	// EncoderPort - READ-ONLY; Gets the remote port.
 	EncoderPort *string `json:"encoderPort,omitempty"`
 }
 
 // MediaLiveEventEncoderDisconnectedEventData encoder disconnected event data.
 type MediaLiveEventEncoderDisconnectedEventData struct {
-	// IngestURL - Gets the ingest URL provided by the live event.
+	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
-	// StreamID - Gets the stream Id.
+	// StreamID - READ-ONLY; Gets the stream Id.
 	StreamID *string `json:"streamId,omitempty"`
-	// EncoderIP - Gets the remote IP.
+	// EncoderIP - READ-ONLY; Gets the remote IP.
 	EncoderIP *string `json:"encoderIp,omitempty"`
-	// EncoderPort - Gets the remote port.
+	// EncoderPort - READ-ONLY; Gets the remote port.
 	EncoderPort *string `json:"encoderPort,omitempty"`
-	// ResultCode - Gets the result code.
+	// ResultCode - READ-ONLY; Gets the result code.
 	ResultCode *string `json:"resultCode,omitempty"`
 }
 
 // MediaLiveEventIncomingDataChunkDroppedEventData ingest fragment dropped event data.
 type MediaLiveEventIncomingDataChunkDroppedEventData struct {
-	// Timestamp - Gets the timestamp of the data chunk dropped.
+	// Timestamp - READ-ONLY; Gets the timestamp of the data chunk dropped.
 	Timestamp *string `json:"timestamp,omitempty"`
-	// TrackType - Gets the type of the track (Audio / Video).
+	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`
-	// Bitrate - Gets the bitrate of the track.
+	// Bitrate - READ-ONLY; Gets the bitrate of the track.
 	Bitrate *int64 `json:"bitrate,omitempty"`
-	// Timescale - Gets the timescale of the Timestamp.
+	// Timescale - READ-ONLY; Gets the timescale of the Timestamp.
 	Timescale *string `json:"timescale,omitempty"`
-	// ResultCode - Gets the result code for fragment drop operation.
+	// ResultCode - READ-ONLY; Gets the result code for fragment drop operation.
 	ResultCode *string `json:"resultCode,omitempty"`
-	// TrackName - Gets the name of the track for which fragment is dropped.
+	// TrackName - READ-ONLY; Gets the name of the track for which fragment is dropped.
 	TrackName *string `json:"trackName,omitempty"`
 }
 
 // MediaLiveEventIncomingStreamReceivedEventData encoder connect event data.
 type MediaLiveEventIncomingStreamReceivedEventData struct {
-	// IngestURL - Gets the ingest URL provided by the live event.
+	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
 	IngestURL *string `json:"ingestUrl,omitempty"`
-	// TrackType - Gets the type of the track (Audio / Video).
+	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`
-	// TrackName - Gets the track name.
+	// TrackName - READ-ONLY; Gets the track name.
 	TrackName *string `json:"trackName,omitempty"`
-	// Bitrate - Gets the bitrate of the track.
+	// Bitrate - READ-ONLY; Gets the bitrate of the track.
 	Bitrate *int64 `json:"bitrate,omitempty"`
-	// EncoderIP - Gets the remote IP.
+	// EncoderIP - READ-ONLY; Gets the remote IP.
 	EncoderIP *string `json:"encoderIp,omitempty"`
-	// EncoderPort - Gets the remote port.
+	// EncoderPort - READ-ONLY; Gets the remote port.
 	EncoderPort *string `json:"encoderPort,omitempty"`
-	// Timestamp - Gets the first timestamp of the data chunk received.
+	// Timestamp - READ-ONLY; Gets the first timestamp of the data chunk received.
 	Timestamp *string `json:"timestamp,omitempty"`
-	// Duration - Gets the duration of the first data chunk.
+	// Duration - READ-ONLY; Gets the duration of the first data chunk.
 	Duration *string `json:"duration,omitempty"`
-	// Timescale - Gets the timescale in which timestamp is represented.
+	// Timescale - READ-ONLY; Gets the timescale in which timestamp is represented.
 	Timescale *string `json:"timescale,omitempty"`
 }
 
 // MediaLiveEventIncomingStreamsOutOfSyncEventData incoming streams out of sync event data.
 type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
-	// MinLastTimestamp - Gets the minimum last timestamp received.
+	// MinLastTimestamp - READ-ONLY; Gets the minimum last timestamp received.
 	MinLastTimestamp *string `json:"minLastTimestamp,omitempty"`
-	// TypeOfStreamWithMinLastTimestamp - Gets the type of stream with minimum last timestamp.
+	// TypeOfStreamWithMinLastTimestamp - READ-ONLY; Gets the type of stream with minimum last timestamp.
 	TypeOfStreamWithMinLastTimestamp *string `json:"typeOfStreamWithMinLastTimestamp,omitempty"`
-	// MaxLastTimestamp - Gets the maximum timestamp among all the tracks (audio or video).
+	// MaxLastTimestamp - READ-ONLY; Gets the maximum timestamp among all the tracks (audio or video).
 	MaxLastTimestamp *string `json:"maxLastTimestamp,omitempty"`
-	// TypeOfStreamWithMaxLastTimestamp - Gets the type of stream with maximum last timestamp.
+	// TypeOfStreamWithMaxLastTimestamp - READ-ONLY; Gets the type of stream with maximum last timestamp.
 	TypeOfStreamWithMaxLastTimestamp *string `json:"typeOfStreamWithMaxLastTimestamp,omitempty"`
-	// TimescaleOfMinLastTimestamp - Gets the timescale in which "MinLastTimestamp" is represented.
+	// TimescaleOfMinLastTimestamp - READ-ONLY; Gets the timescale in which "MinLastTimestamp" is represented.
 	TimescaleOfMinLastTimestamp *string `json:"timescaleOfMinLastTimestamp,omitempty"`
-	// TimescaleOfMaxLastTimestamp - Gets the timescale in which "MaxLastTimestamp" is represented.
+	// TimescaleOfMaxLastTimestamp - READ-ONLY; Gets the timescale in which "MaxLastTimestamp" is represented.
 	TimescaleOfMaxLastTimestamp *string `json:"timescaleOfMaxLastTimestamp,omitempty"`
 }
 
 // MediaLiveEventIncomingVideoStreamsOutOfSyncEventData incoming video stream out of synch event data.
 type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
-	// FirstTimestamp - Gets the first timestamp received for one of the quality levels.
+	// FirstTimestamp - READ-ONLY; Gets the first timestamp received for one of the quality levels.
 	FirstTimestamp *string `json:"firstTimestamp,omitempty"`
-	// FirstDuration - Gets the duration of the data chunk with first timestamp.
+	// FirstDuration - READ-ONLY; Gets the duration of the data chunk with first timestamp.
 	FirstDuration *string `json:"firstDuration,omitempty"`
-	// SecondTimestamp - Gets the timestamp received for some other quality levels.
+	// SecondTimestamp - READ-ONLY; Gets the timestamp received for some other quality levels.
 	SecondTimestamp *string `json:"secondTimestamp,omitempty"`
-	// SecondDuration - Gets the duration of the data chunk with second timestamp.
+	// SecondDuration - READ-ONLY; Gets the duration of the data chunk with second timestamp.
 	SecondDuration *string `json:"secondDuration,omitempty"`
-	// Timescale - Gets the timescale in which both the timestamps and durations are represented.
+	// Timescale - READ-ONLY; Gets the timescale in which both the timestamps and durations are represented.
 	Timescale *string `json:"timescale,omitempty"`
 }
 
 // MediaLiveEventIngestHeartbeatEventData ingest fragment dropped event data.
 type MediaLiveEventIngestHeartbeatEventData struct {
-	// TrackType - Gets the type of the track (Audio / Video).
+	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`
-	// TrackName - Gets the track name.
+	// TrackName - READ-ONLY; Gets the track name.
 	TrackName *string `json:"trackName,omitempty"`
-	// Bitrate - Gets the bitrate of the track.
+	// Bitrate - READ-ONLY; Gets the bitrate of the track.
 	Bitrate *int64 `json:"bitrate,omitempty"`
-	// IncomingBitrate - Gets the incoming bitrate.
+	// IncomingBitrate - READ-ONLY; Gets the incoming bitrate.
 	IncomingBitrate *int64 `json:"incomingBitrate,omitempty"`
-	// LastTimestamp - Gets the last timestamp.
+	// LastTimestamp - READ-ONLY; Gets the last timestamp.
 	LastTimestamp *string `json:"lastTimestamp,omitempty"`
-	// Timescale - Gets the timescale of the last timestamp.
+	// Timescale - READ-ONLY; Gets the timescale of the last timestamp.
 	Timescale *string `json:"timescale,omitempty"`
-	// OverlapCount - Gets the fragment Overlap count.
+	// OverlapCount - READ-ONLY; Gets the fragment Overlap count.
 	OverlapCount *int64 `json:"overlapCount,omitempty"`
-	// DiscontinuityCount - Gets the fragment Discontinuity count.
+	// DiscontinuityCount - READ-ONLY; Gets the fragment Discontinuity count.
 	DiscontinuityCount *int64 `json:"discontinuityCount,omitempty"`
-	// NonincreasingCount - Gets Non increasing count.
+	// NonincreasingCount - READ-ONLY; Gets Non increasing count.
 	NonincreasingCount *int64 `json:"nonincreasingCount,omitempty"`
-	// UnexpectedBitrate - Gets a value indicating whether unexpected bitrate is present or not.
+	// UnexpectedBitrate - READ-ONLY; Gets a value indicating whether unexpected bitrate is present or not.
 	UnexpectedBitrate *bool `json:"unexpectedBitrate,omitempty"`
-	// State - Gets the state of the live event.
+	// State - READ-ONLY; Gets the state of the live event.
 	State *string `json:"state,omitempty"`
-	// Healthy - Gets a value indicating whether preview is healthy or not.
+	// Healthy - READ-ONLY; Gets a value indicating whether preview is healthy or not.
 	Healthy *bool `json:"healthy,omitempty"`
 }
 
 // MediaLiveEventTrackDiscontinuityDetectedEventData ingest track discontinuity detected event data.
 type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
-	// TrackType - Gets the type of the track (Audio / Video).
+	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
 	TrackType *string `json:"trackType,omitempty"`
-	// TrackName - Gets the track name.
+	// TrackName - READ-ONLY; Gets the track name.
 	TrackName *string `json:"trackName,omitempty"`
-	// Bitrate - Gets the bitrate.
+	// Bitrate - READ-ONLY; Gets the bitrate.
 	Bitrate *int64 `json:"bitrate,omitempty"`
-	// PreviousTimestamp - Gets the timestamp of the previous fragment.
+	// PreviousTimestamp - READ-ONLY; Gets the timestamp of the previous fragment.
 	PreviousTimestamp *string `json:"previousTimestamp,omitempty"`
-	// NewTimestamp - Gets the timestamp of the current fragment.
+	// NewTimestamp - READ-ONLY; Gets the timestamp of the current fragment.
 	NewTimestamp *string `json:"newTimestamp,omitempty"`
-	// Timescale - Gets the timescale in which both timestamps and discontinuity gap are represented.
+	// Timescale - READ-ONLY; Gets the timescale in which both timestamps and discontinuity gap are represented.
 	Timescale *string `json:"timescale,omitempty"`
-	// DiscontinuityGap - Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
+	// DiscontinuityGap - READ-ONLY; Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
 	DiscontinuityGap *string `json:"discontinuityGap,omitempty"`
 }
 
@@ -2093,16 +2030,16 @@ type StorageBlobDeletedEventData struct {
 // SubscriptionDeletedEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.EventGrid.SubscriptionDeletedEvent.
 type SubscriptionDeletedEventData struct {
-	// EventSubscriptionID - The Azure resource ID of the deleted event subscription.
+	// EventSubscriptionID - READ-ONLY; The Azure resource ID of the deleted event subscription.
 	EventSubscriptionID *string `json:"eventSubscriptionId,omitempty"`
 }
 
 // SubscriptionValidationEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.EventGrid.SubscriptionValidationEvent.
 type SubscriptionValidationEventData struct {
-	// ValidationCode - The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation handshake, the subscriber must either respond with this validation code as part of the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
+	// ValidationCode - READ-ONLY; The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation handshake, the subscriber must either respond with this validation code as part of the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
 	ValidationCode *string `json:"validationCode,omitempty"`
-	// ValidationURL - The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview). To complete the validation handshake, the subscriber must either respond with the validationCode as part of the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
+	// ValidationURL - READ-ONLY; The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview). To complete the validation handshake, the subscriber must either respond with the validationCode as part of the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
 	ValidationURL *string `json:"validationUrl,omitempty"`
 }
 

@@ -50,7 +50,7 @@ type CloudErrorBody struct {
 // DeleteOperationResult the result of the request or operation.
 type DeleteOperationResult struct {
 	autorest.Response `json:"-"`
-	// OperationResult - The result of the operation or request.
+	// OperationResult - READ-ONLY; The result of the operation or request.
 	OperationResult *bool `json:"boolean,omitempty"`
 }
 
@@ -172,11 +172,11 @@ type EndpointProperties struct {
 type GeographicHierarchy struct {
 	autorest.Response              `json:"-"`
 	*GeographicHierarchyProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -189,15 +189,6 @@ func (gh GeographicHierarchy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gh.GeographicHierarchyProperties != nil {
 		objectMap["properties"] = gh.GeographicHierarchyProperties
-	}
-	if gh.ID != nil {
-		objectMap["id"] = gh.ID
-	}
-	if gh.Name != nil {
-		objectMap["name"] = gh.Name
-	}
-	if gh.Type != nil {
-		objectMap["type"] = gh.Type
 	}
 	if gh.Location != nil {
 		objectMap["location"] = gh.Location
@@ -315,11 +306,11 @@ type NameAvailability struct {
 type Profile struct {
 	autorest.Response  `json:"-"`
 	*ProfileProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -332,15 +323,6 @@ func (p Profile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.ProfileProperties != nil {
 		objectMap["properties"] = p.ProfileProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	if p.Location != nil {
 		objectMap["location"] = p.Location
@@ -454,11 +436,11 @@ type Region struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -469,15 +451,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

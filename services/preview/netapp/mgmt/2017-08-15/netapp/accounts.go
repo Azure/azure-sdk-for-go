@@ -96,6 +96,9 @@ func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Ac
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -442,6 +445,9 @@ func (client AccountsClient) UpdatePreparer(ctx context.Context, body AccountPat
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

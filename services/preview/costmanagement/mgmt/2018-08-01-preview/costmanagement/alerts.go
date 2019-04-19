@@ -1376,6 +1376,9 @@ func (client AlertsClient) UpdateBillingAccountAlertStatusPreparer(ctx context.C
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -1457,6 +1460,9 @@ func (client AlertsClient) UpdateDepartmentsAlertStatusPreparer(ctx context.Cont
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -1538,6 +1544,9 @@ func (client AlertsClient) UpdateEnrollmentAccountAlertStatusPreparer(ctx contex
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -1617,6 +1626,9 @@ func (client AlertsClient) UpdateManagementGroupAlertStatusPreparer(ctx context.
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -1697,6 +1709,9 @@ func (client AlertsClient) UpdateResourceGroupNameAlertStatusPreparer(ctx contex
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -1775,6 +1790,9 @@ func (client AlertsClient) UpdateSubscriptionAlertStatusPreparer(ctx context.Con
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

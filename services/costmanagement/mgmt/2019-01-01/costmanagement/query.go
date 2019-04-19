@@ -43,10 +43,9 @@ func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClien
 
 // UsageByScope query the usage data for scope defined.
 // Parameters:
-// scope - the scope associated with query and export operations. This includes
-// '/subscriptions/{subscriptionId}/' for subscription scope,
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+// scope - the scope associated with query operations. This includes '/subscriptions/{subscriptionId}/' for
+// subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'

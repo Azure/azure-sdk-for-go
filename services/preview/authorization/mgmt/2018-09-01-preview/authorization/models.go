@@ -299,11 +299,11 @@ type ClassicAdministratorProperties struct {
 // DenyAssignment deny Assignment
 type DenyAssignment struct {
 	autorest.Response `json:"-"`
-	// ID - The deny assignment ID.
+	// ID - READ-ONLY; The deny assignment ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The deny assignment name.
+	// Name - READ-ONLY; The deny assignment name.
 	Name *string `json:"name,omitempty"`
-	// Type - The deny assignment type.
+	// Type - READ-ONLY; The deny assignment type.
 	Type *string `json:"type,omitempty"`
 	// DenyAssignmentProperties - Deny assignment properties.
 	*DenyAssignmentProperties `json:"properties,omitempty"`
@@ -312,15 +312,6 @@ type DenyAssignment struct {
 // MarshalJSON is the custom marshaler for DenyAssignment.
 func (da DenyAssignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if da.ID != nil {
-		objectMap["id"] = da.ID
-	}
-	if da.Name != nil {
-		objectMap["name"] = da.Name
-	}
-	if da.Type != nil {
-		objectMap["type"] = da.Type
-	}
 	if da.DenyAssignmentProperties != nil {
 		objectMap["properties"] = da.DenyAssignmentProperties
 	}
@@ -726,9 +717,9 @@ func NewPermissionGetResultPage(getNextPage func(context.Context, PermissionGetR
 
 // Principal deny assignment principal.
 type Principal struct {
-	// ID - Object ID of the Azure AD principal (user, group, or service principal) to which the deny assignment applies. An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	// ID - READ-ONLY; Object ID of the Azure AD principal (user, group, or service principal) to which the deny assignment applies. An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of object represented by principal id (user, group, or service principal). An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	// Type - READ-ONLY; Type of object represented by principal id (user, group, or service principal). An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -925,11 +916,11 @@ type ResourceType struct {
 // RoleAssignment role Assignments
 type RoleAssignment struct {
 	autorest.Response `json:"-"`
-	// ID - The role assignment ID.
+	// ID - READ-ONLY; The role assignment ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The role assignment name.
+	// Name - READ-ONLY; The role assignment name.
 	Name *string `json:"name,omitempty"`
-	// Type - The role assignment type.
+	// Type - READ-ONLY; The role assignment type.
 	Type *string `json:"type,omitempty"`
 	// RoleAssignmentPropertiesWithScope - Role assignment properties.
 	*RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
@@ -938,15 +929,6 @@ type RoleAssignment struct {
 // MarshalJSON is the custom marshaler for RoleAssignment.
 func (ra RoleAssignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ra.ID != nil {
-		objectMap["id"] = ra.ID
-	}
-	if ra.Name != nil {
-		objectMap["name"] = ra.Name
-	}
-	if ra.Type != nil {
-		objectMap["type"] = ra.Type
-	}
 	if ra.RoleAssignmentPropertiesWithScope != nil {
 		objectMap["properties"] = ra.RoleAssignmentPropertiesWithScope
 	}
@@ -1226,11 +1208,11 @@ type RoleAssignmentPropertiesWithScope struct {
 // RoleDefinition role definition.
 type RoleDefinition struct {
 	autorest.Response `json:"-"`
-	// ID - The role definition ID.
+	// ID - READ-ONLY; The role definition ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The role definition name.
+	// Name - READ-ONLY; The role definition name.
 	Name *string `json:"name,omitempty"`
-	// Type - The role definition type.
+	// Type - READ-ONLY; The role definition type.
 	Type *string `json:"type,omitempty"`
 	// RoleDefinitionProperties - Role definition properties.
 	*RoleDefinitionProperties `json:"properties,omitempty"`
@@ -1239,15 +1221,6 @@ type RoleDefinition struct {
 // MarshalJSON is the custom marshaler for RoleDefinition.
 func (rd RoleDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rd.ID != nil {
-		objectMap["id"] = rd.ID
-	}
-	if rd.Name != nil {
-		objectMap["name"] = rd.Name
-	}
-	if rd.Type != nil {
-		objectMap["type"] = rd.Type
-	}
 	if rd.RoleDefinitionProperties != nil {
 		objectMap["properties"] = rd.RoleDefinitionProperties
 	}

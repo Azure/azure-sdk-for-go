@@ -265,11 +265,11 @@ type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 
 // ErrorResponse error details.
 type ErrorResponse struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// Details - The error details.
+	// Details - READ-ONLY; The error details.
 	Details *string `json:"details,omitempty"`
 }
 

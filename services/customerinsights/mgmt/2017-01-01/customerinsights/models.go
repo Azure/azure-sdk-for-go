@@ -397,7 +397,7 @@ func (ap AssignmentPrincipal) MarshalJSON() ([]byte, error) {
 // AuthorizationPolicy the authorization policy.
 type AuthorizationPolicy struct {
 	autorest.Response `json:"-"`
-	// PolicyName - Name of the policy.
+	// PolicyName - READ-ONLY; Name of the policy.
 	PolicyName *string `json:"policyName,omitempty"`
 	// Permissions - The permissions associated with the policy.
 	Permissions *[]PermissionTypes `json:"permissions,omitempty"`
@@ -558,11 +558,11 @@ func NewAuthorizationPolicyListResultPage(getNextPage func(context.Context, Auth
 type AuthorizationPolicyResourceFormat struct {
 	autorest.Response    `json:"-"`
 	*AuthorizationPolicy `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -571,15 +571,6 @@ func (aprf AuthorizationPolicyResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aprf.AuthorizationPolicy != nil {
 		objectMap["properties"] = aprf.AuthorizationPolicy
-	}
-	if aprf.ID != nil {
-		objectMap["id"] = aprf.ID
-	}
-	if aprf.Name != nil {
-		objectMap["name"] = aprf.Name
-	}
-	if aprf.Type != nil {
-		objectMap["type"] = aprf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -643,7 +634,7 @@ type AzureBlobConnectorProperties struct {
 
 // Connector properties of connector.
 type Connector struct {
-	// ConnectorID - ID of the connector.
+	// ConnectorID - READ-ONLY; ID of the connector.
 	ConnectorID *int32 `json:"connectorId,omitempty"`
 	// ConnectorName - Name of the connector.
 	ConnectorName *string `json:"connectorName,omitempty"`
@@ -655,13 +646,13 @@ type Connector struct {
 	Description *string `json:"description,omitempty"`
 	// ConnectorProperties - The connector properties.
 	ConnectorProperties map[string]interface{} `json:"connectorProperties"`
-	// Created - The created time.
+	// Created - READ-ONLY; The created time.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The last modified time.
+	// LastModified - READ-ONLY; The last modified time.
 	LastModified *date.Time `json:"lastModified,omitempty"`
-	// State - State of connector. Possible values include: 'ConnectorStatesCreating', 'ConnectorStatesCreated', 'ConnectorStatesReady', 'ConnectorStatesExpiring', 'ConnectorStatesDeleting', 'ConnectorStatesFailed'
+	// State - READ-ONLY; State of connector. Possible values include: 'ConnectorStatesCreating', 'ConnectorStatesCreated', 'ConnectorStatesReady', 'ConnectorStatesExpiring', 'ConnectorStatesDeleting', 'ConnectorStatesFailed'
 	State ConnectorStates `json:"state,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 	// IsInternal - If this is an internal connector.
 	IsInternal *bool `json:"isInternal,omitempty"`
@@ -670,9 +661,6 @@ type Connector struct {
 // MarshalJSON is the custom marshaler for Connector.
 func (c Connector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if c.ConnectorID != nil {
-		objectMap["connectorId"] = c.ConnectorID
-	}
 	if c.ConnectorName != nil {
 		objectMap["connectorName"] = c.ConnectorName
 	}
@@ -687,18 +675,6 @@ func (c Connector) MarshalJSON() ([]byte, error) {
 	}
 	if c.ConnectorProperties != nil {
 		objectMap["connectorProperties"] = c.ConnectorProperties
-	}
-	if c.Created != nil {
-		objectMap["created"] = c.Created
-	}
-	if c.LastModified != nil {
-		objectMap["lastModified"] = c.LastModified
-	}
-	if c.State != "" {
-		objectMap["state"] = c.State
-	}
-	if c.TenantID != nil {
-		objectMap["tenantId"] = c.TenantID
 	}
 	if c.IsInternal != nil {
 		objectMap["isInternal"] = c.IsInternal
@@ -854,35 +830,35 @@ func NewConnectorListResultPage(getNextPage func(context.Context, ConnectorListR
 
 // ConnectorMapping the connector mapping definition.
 type ConnectorMapping struct {
-	// ConnectorName - The connector name.
+	// ConnectorName - READ-ONLY; The connector name.
 	ConnectorName *string `json:"connectorName,omitempty"`
 	// ConnectorType - Type of connector. Possible values include: 'None', 'CRM', 'AzureBlob', 'Salesforce', 'ExchangeOnline', 'Outbound'
 	ConnectorType ConnectorTypes `json:"connectorType,omitempty"`
-	// Created - The created time.
+	// Created - READ-ONLY; The created time.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The last modified time.
+	// LastModified - READ-ONLY; The last modified time.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	// EntityType - Defines which entity type the file should map to. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
 	// EntityTypeName - The mapping entity name.
 	EntityTypeName *string `json:"entityTypeName,omitempty"`
-	// ConnectorMappingName - The connector mapping name
+	// ConnectorMappingName - READ-ONLY; The connector mapping name
 	ConnectorMappingName *string `json:"connectorMappingName,omitempty"`
 	// DisplayName - Display name for the connector mapping.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - The description of the connector mapping.
 	Description *string `json:"description,omitempty"`
-	// DataFormatID - The DataFormat ID.
+	// DataFormatID - READ-ONLY; The DataFormat ID.
 	DataFormatID *string `json:"dataFormatId,omitempty"`
 	// MappingProperties - The properties of the mapping.
 	MappingProperties *ConnectorMappingProperties `json:"mappingProperties,omitempty"`
-	// NextRunTime - The next run time based on customer's settings.
+	// NextRunTime - READ-ONLY; The next run time based on customer's settings.
 	NextRunTime *date.Time `json:"nextRunTime,omitempty"`
-	// RunID - The RunId.
+	// RunID - READ-ONLY; The RunId.
 	RunID *string `json:"runId,omitempty"`
-	// State - State of connector mapping. Possible values include: 'Creating', 'Created', 'Failed', 'Ready', 'Running', 'Stopped', 'Expiring'
+	// State - READ-ONLY; State of connector mapping. Possible values include: 'Creating', 'Created', 'Failed', 'Ready', 'Running', 'Stopped', 'Expiring'
 	State ConnectorMappingStates `json:"state,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
@@ -1097,11 +1073,11 @@ type ConnectorMappingProperties struct {
 type ConnectorMappingResourceFormat struct {
 	autorest.Response `json:"-"`
 	*ConnectorMapping `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1110,15 +1086,6 @@ func (cmrf ConnectorMappingResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cmrf.ConnectorMapping != nil {
 		objectMap["properties"] = cmrf.ConnectorMapping
-	}
-	if cmrf.ID != nil {
-		objectMap["id"] = cmrf.ID
-	}
-	if cmrf.Name != nil {
-		objectMap["name"] = cmrf.Name
-	}
-	if cmrf.Type != nil {
-		objectMap["type"] = cmrf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1190,11 +1157,11 @@ type ConnectorMappingStructure struct {
 type ConnectorResourceFormat struct {
 	autorest.Response `json:"-"`
 	*Connector        `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1203,15 +1170,6 @@ func (crf ConnectorResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if crf.Connector != nil {
 		objectMap["properties"] = crf.Connector
-	}
-	if crf.ID != nil {
-		objectMap["id"] = crf.ID
-	}
-	if crf.Name != nil {
-		objectMap["name"] = crf.Name
-	}
-	if crf.Type != nil {
-		objectMap["type"] = crf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1277,7 +1235,7 @@ type ConnectorsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ConnectorsCreateOrUpdateFuture) Result(client ConnectorsClient) (crf ConnectorResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1306,7 +1264,7 @@ type ConnectorsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ConnectorsDeleteFuture) Result(client ConnectorsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1346,15 +1304,15 @@ type CrmConnectorProperties struct {
 // DataSource data Source is a way for us to know the source of instances. A single type can have data
 // coming in from multiple places. In activities we use this to determine precedence rules.
 type DataSource struct {
-	// Name - The data source name
+	// Name - READ-ONLY; The data source name
 	Name *string `json:"name,omitempty"`
-	// DataSourceType - The data source type. Possible values include: 'DataSourceTypeConnector', 'DataSourceTypeLinkInteraction', 'DataSourceTypeSystemDefault'
+	// DataSourceType - READ-ONLY; The data source type. Possible values include: 'DataSourceTypeConnector', 'DataSourceTypeLinkInteraction', 'DataSourceTypeSystemDefault'
 	DataSourceType DataSourceType `json:"dataSourceType,omitempty"`
-	// Status - The data source status. Possible values include: 'StatusNone', 'StatusActive', 'StatusDeleted'
+	// Status - READ-ONLY; The data source status. Possible values include: 'StatusNone', 'StatusActive', 'StatusDeleted'
 	Status Status `json:"status,omitempty"`
-	// ID - The data source ID.
+	// ID - READ-ONLY; The data source ID.
 	ID *int32 `json:"id,omitempty"`
-	// DataSourceReferenceID - The data source reference id.
+	// DataSourceReferenceID - READ-ONLY; The data source reference id.
 	DataSourceReferenceID *string `json:"dataSourceReferenceId,omitempty"`
 }
 
@@ -1416,9 +1374,9 @@ type EnrichingKpi struct {
 	EntityType EntityTypes `json:"entityType,omitempty"`
 	// EntityTypeName - The mapping entity name.
 	EntityTypeName *string `json:"entityTypeName,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
-	// KpiName - The KPI name.
+	// KpiName - READ-ONLY; The KPI name.
 	KpiName *string `json:"kpiName,omitempty"`
 	// DisplayName - Localized display name for the KPI.
 	DisplayName map[string]*string `json:"displayName"`
@@ -1438,11 +1396,11 @@ type EnrichingKpi struct {
 	Filter *string `json:"filter,omitempty"`
 	// GroupBy - the group by properties for the KPI.
 	GroupBy *[]string `json:"groupBy,omitempty"`
-	// GroupByMetadata - The KPI GroupByMetadata.
+	// GroupByMetadata - READ-ONLY; The KPI GroupByMetadata.
 	GroupByMetadata *[]KpiGroupByMetadata `json:"groupByMetadata,omitempty"`
-	// ParticipantProfilesMetadata - The participant profiles.
+	// ParticipantProfilesMetadata - READ-ONLY; The participant profiles.
 	ParticipantProfilesMetadata *[]KpiParticipantProfilesMetadata `json:"participantProfilesMetadata,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// ThresHolds - The KPI thresholds.
 	ThresHolds *KpiThresholds `json:"thresHolds,omitempty"`
@@ -1460,12 +1418,6 @@ func (ek EnrichingKpi) MarshalJSON() ([]byte, error) {
 	}
 	if ek.EntityTypeName != nil {
 		objectMap["entityTypeName"] = ek.EntityTypeName
-	}
-	if ek.TenantID != nil {
-		objectMap["tenantId"] = ek.TenantID
-	}
-	if ek.KpiName != nil {
-		objectMap["kpiName"] = ek.KpiName
 	}
 	if ek.DisplayName != nil {
 		objectMap["displayName"] = ek.DisplayName
@@ -1494,15 +1446,6 @@ func (ek EnrichingKpi) MarshalJSON() ([]byte, error) {
 	if ek.GroupBy != nil {
 		objectMap["groupBy"] = ek.GroupBy
 	}
-	if ek.GroupByMetadata != nil {
-		objectMap["groupByMetadata"] = ek.GroupByMetadata
-	}
-	if ek.ParticipantProfilesMetadata != nil {
-		objectMap["participantProfilesMetadata"] = ek.ParticipantProfilesMetadata
-	}
-	if ek.ProvisioningState != "" {
-		objectMap["provisioningState"] = ek.ProvisioningState
-	}
 	if ek.ThresHolds != nil {
 		objectMap["thresHolds"] = ek.ThresHolds
 	}
@@ -1525,13 +1468,13 @@ type EntityTypeDefinition struct {
 	Fields *[]PropertyDefinition `json:"fields,omitempty"`
 	// InstancesCount - The instance count.
 	InstancesCount *int32 `json:"instancesCount,omitempty"`
-	// LastChangedUtc - The last changed time for the type definition.
+	// LastChangedUtc - READ-ONLY; The last changed time for the type definition.
 	LastChangedUtc *date.Time `json:"lastChangedUtc,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// SchemaItemTypeLink - The schema org link. This helps ACI identify and suggest semantic models.
 	SchemaItemTypeLink *string `json:"schemaItemTypeLink,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 	// TimestampFieldName - The timestamp property name. Represents the time when the interaction or profile update happened.
 	TimestampFieldName *string `json:"timestampFieldName,omitempty"`
@@ -1568,17 +1511,8 @@ func (etd EntityTypeDefinition) MarshalJSON() ([]byte, error) {
 	if etd.InstancesCount != nil {
 		objectMap["instancesCount"] = etd.InstancesCount
 	}
-	if etd.LastChangedUtc != nil {
-		objectMap["lastChangedUtc"] = etd.LastChangedUtc
-	}
-	if etd.ProvisioningState != "" {
-		objectMap["provisioningState"] = etd.ProvisioningState
-	}
 	if etd.SchemaItemTypeLink != nil {
 		objectMap["schemaItemTypeLink"] = etd.SchemaItemTypeLink
-	}
-	if etd.TenantID != nil {
-		objectMap["tenantId"] = etd.TenantID
 	}
 	if etd.TimestampFieldName != nil {
 		objectMap["timestampFieldName"] = etd.TimestampFieldName
@@ -1624,11 +1558,11 @@ type GetImageUploadURLInput struct {
 type Hub struct {
 	autorest.Response    `json:"-"`
 	*HubPropertiesFormat `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1641,15 +1575,6 @@ func (h Hub) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if h.HubPropertiesFormat != nil {
 		objectMap["properties"] = h.HubPropertiesFormat
-	}
-	if h.ID != nil {
-		objectMap["id"] = h.ID
-	}
-	if h.Name != nil {
-		objectMap["name"] = h.Name
-	}
-	if h.Type != nil {
-		objectMap["type"] = h.Type
 	}
 	if h.Location != nil {
 		objectMap["location"] = h.Location
@@ -1887,11 +1812,11 @@ func NewHubListResultPage(getNextPage func(context.Context, HubListResult) (HubL
 
 // HubPropertiesFormat properties of hub.
 type HubPropertiesFormat struct {
-	// APIEndpoint - API endpoint URL of the hub.
+	// APIEndpoint - READ-ONLY; API endpoint URL of the hub.
 	APIEndpoint *string `json:"apiEndpoint,omitempty"`
-	// WebEndpoint - Web endpoint URL of the hub.
+	// WebEndpoint - READ-ONLY; Web endpoint URL of the hub.
 	WebEndpoint *string `json:"webEndpoint,omitempty"`
-	// ProvisioningState - Provisioning state of the hub.
+	// ProvisioningState - READ-ONLY; Provisioning state of the hub.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// TenantFeatures - The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
 	TenantFeatures *int32 `json:"tenantFeatures,omitempty"`
@@ -1908,7 +1833,7 @@ type HubsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HubsDeleteFuture) Result(client HubsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2082,11 +2007,11 @@ func NewInteractionListResultPage(getNextPage func(context.Context, InteractionL
 type InteractionResourceFormat struct {
 	autorest.Response          `json:"-"`
 	*InteractionTypeDefinition `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2095,15 +2020,6 @@ func (irf InteractionResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if irf.InteractionTypeDefinition != nil {
 		objectMap["properties"] = irf.InteractionTypeDefinition
-	}
-	if irf.ID != nil {
-		objectMap["id"] = irf.ID
-	}
-	if irf.Name != nil {
-		objectMap["name"] = irf.Name
-	}
-	if irf.Type != nil {
-		objectMap["type"] = irf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2169,7 +2085,7 @@ type InteractionsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *InteractionsCreateOrUpdateFuture) Result(client InteractionsClient) (irf InteractionResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2196,7 +2112,7 @@ type InteractionTypeDefinition struct {
 	ParticipantProfiles *[]Participant `json:"participantProfiles,omitempty"`
 	// PrimaryParticipantProfilePropertyName - The primary participant property name for an interaction ,This is used to logically represent the agent of the interaction, Specify the participant name here from ParticipantName.
 	PrimaryParticipantProfilePropertyName *string `json:"primaryParticipantProfilePropertyName,omitempty"`
-	// DataSourcePrecedenceRules - This is specific to interactions modeled as activities. Data sources are used to determine where data is stored and also in precedence rules.
+	// DataSourcePrecedenceRules - READ-ONLY; This is specific to interactions modeled as activities. Data sources are used to determine where data is stored and also in precedence rules.
 	DataSourcePrecedenceRules *[]DataSourcePrecedence `json:"dataSourcePrecedenceRules,omitempty"`
 	// DataSource - Default data source is specifically used in cases where data source is not specified in an instance.
 	*DataSource `json:"defaultDataSource,omitempty"`
@@ -2210,13 +2126,13 @@ type InteractionTypeDefinition struct {
 	Fields *[]PropertyDefinition `json:"fields,omitempty"`
 	// InstancesCount - The instance count.
 	InstancesCount *int32 `json:"instancesCount,omitempty"`
-	// LastChangedUtc - The last changed time for the type definition.
+	// LastChangedUtc - READ-ONLY; The last changed time for the type definition.
 	LastChangedUtc *date.Time `json:"lastChangedUtc,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// SchemaItemTypeLink - The schema org link. This helps ACI identify and suggest semantic models.
 	SchemaItemTypeLink *string `json:"schemaItemTypeLink,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 	// TimestampFieldName - The timestamp property name. Represents the time when the interaction or profile update happened.
 	TimestampFieldName *string `json:"timestampFieldName,omitempty"`
@@ -2250,9 +2166,6 @@ func (itd InteractionTypeDefinition) MarshalJSON() ([]byte, error) {
 	if itd.PrimaryParticipantProfilePropertyName != nil {
 		objectMap["primaryParticipantProfilePropertyName"] = itd.PrimaryParticipantProfilePropertyName
 	}
-	if itd.DataSourcePrecedenceRules != nil {
-		objectMap["dataSourcePrecedenceRules"] = itd.DataSourcePrecedenceRules
-	}
 	if itd.DataSource != nil {
 		objectMap["defaultDataSource"] = itd.DataSource
 	}
@@ -2271,17 +2184,8 @@ func (itd InteractionTypeDefinition) MarshalJSON() ([]byte, error) {
 	if itd.InstancesCount != nil {
 		objectMap["instancesCount"] = itd.InstancesCount
 	}
-	if itd.LastChangedUtc != nil {
-		objectMap["lastChangedUtc"] = itd.LastChangedUtc
-	}
-	if itd.ProvisioningState != "" {
-		objectMap["provisioningState"] = itd.ProvisioningState
-	}
 	if itd.SchemaItemTypeLink != nil {
 		objectMap["schemaItemTypeLink"] = itd.SchemaItemTypeLink
-	}
-	if itd.TenantID != nil {
-		objectMap["tenantId"] = itd.TenantID
 	}
 	if itd.TimestampFieldName != nil {
 		objectMap["timestampFieldName"] = itd.TimestampFieldName
@@ -2553,7 +2457,7 @@ type KpiCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *KpiCreateOrUpdateFuture) Result(client KpiClient) (krf KpiResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2578,9 +2482,9 @@ type KpiDefinition struct {
 	EntityType EntityTypes `json:"entityType,omitempty"`
 	// EntityTypeName - The mapping entity name.
 	EntityTypeName *string `json:"entityTypeName,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
-	// KpiName - The KPI name.
+	// KpiName - READ-ONLY; The KPI name.
 	KpiName *string `json:"kpiName,omitempty"`
 	// DisplayName - Localized display name for the KPI.
 	DisplayName map[string]*string `json:"displayName"`
@@ -2600,11 +2504,11 @@ type KpiDefinition struct {
 	Filter *string `json:"filter,omitempty"`
 	// GroupBy - the group by properties for the KPI.
 	GroupBy *[]string `json:"groupBy,omitempty"`
-	// GroupByMetadata - The KPI GroupByMetadata.
+	// GroupByMetadata - READ-ONLY; The KPI GroupByMetadata.
 	GroupByMetadata *[]KpiGroupByMetadata `json:"groupByMetadata,omitempty"`
-	// ParticipantProfilesMetadata - The participant profiles.
+	// ParticipantProfilesMetadata - READ-ONLY; The participant profiles.
 	ParticipantProfilesMetadata *[]KpiParticipantProfilesMetadata `json:"participantProfilesMetadata,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// ThresHolds - The KPI thresholds.
 	ThresHolds *KpiThresholds `json:"thresHolds,omitempty"`
@@ -2622,12 +2526,6 @@ func (kd KpiDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if kd.EntityTypeName != nil {
 		objectMap["entityTypeName"] = kd.EntityTypeName
-	}
-	if kd.TenantID != nil {
-		objectMap["tenantId"] = kd.TenantID
-	}
-	if kd.KpiName != nil {
-		objectMap["kpiName"] = kd.KpiName
 	}
 	if kd.DisplayName != nil {
 		objectMap["displayName"] = kd.DisplayName
@@ -2656,15 +2554,6 @@ func (kd KpiDefinition) MarshalJSON() ([]byte, error) {
 	if kd.GroupBy != nil {
 		objectMap["groupBy"] = kd.GroupBy
 	}
-	if kd.GroupByMetadata != nil {
-		objectMap["groupByMetadata"] = kd.GroupByMetadata
-	}
-	if kd.ParticipantProfilesMetadata != nil {
-		objectMap["participantProfilesMetadata"] = kd.ParticipantProfilesMetadata
-	}
-	if kd.ProvisioningState != "" {
-		objectMap["provisioningState"] = kd.ProvisioningState
-	}
 	if kd.ThresHolds != nil {
 		objectMap["thresHolds"] = kd.ThresHolds
 	}
@@ -2686,7 +2575,7 @@ type KpiDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *KpiDeleteFuture) Result(client KpiClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2888,11 +2777,11 @@ type KpiParticipantProfilesMetadata struct {
 type KpiResourceFormat struct {
 	autorest.Response `json:"-"`
 	*KpiDefinition    `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2901,15 +2790,6 @@ func (krf KpiResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if krf.KpiDefinition != nil {
 		objectMap["properties"] = krf.KpiDefinition
-	}
-	if krf.ID != nil {
-		objectMap["id"] = krf.ID
-	}
-	if krf.Name != nil {
-		objectMap["name"] = krf.Name
-	}
-	if krf.Type != nil {
-		objectMap["type"] = krf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2977,9 +2857,9 @@ type KpiThresholds struct {
 
 // LinkDefinition the definition of Link.
 type LinkDefinition struct {
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
-	// LinkName - The link name.
+	// LinkName - READ-ONLY; The link name.
 	LinkName *string `json:"linkName,omitempty"`
 	// SourceInteractionType - Name of the source Interaction Type.
 	SourceInteractionType *string `json:"sourceInteractionType,omitempty"`
@@ -2993,7 +2873,7 @@ type LinkDefinition struct {
 	Mappings *[]TypePropertiesMapping `json:"mappings,omitempty"`
 	// ParticipantPropertyReferences - The properties that represent the participating profile.
 	ParticipantPropertyReferences *[]ParticipantPropertyReference `json:"participantPropertyReferences,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// ReferenceOnly - Indicating whether the link is reference only link. This flag is ignored if the Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or update profiles.
 	ReferenceOnly *bool `json:"referenceOnly,omitempty"`
@@ -3004,12 +2884,6 @@ type LinkDefinition struct {
 // MarshalJSON is the custom marshaler for LinkDefinition.
 func (ld LinkDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ld.TenantID != nil {
-		objectMap["tenantId"] = ld.TenantID
-	}
-	if ld.LinkName != nil {
-		objectMap["linkName"] = ld.LinkName
-	}
 	if ld.SourceInteractionType != nil {
 		objectMap["sourceInteractionType"] = ld.SourceInteractionType
 	}
@@ -3027,9 +2901,6 @@ func (ld LinkDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if ld.ParticipantPropertyReferences != nil {
 		objectMap["participantPropertyReferences"] = ld.ParticipantPropertyReferences
-	}
-	if ld.ProvisioningState != "" {
-		objectMap["provisioningState"] = ld.ProvisioningState
 	}
 	if ld.ReferenceOnly != nil {
 		objectMap["referenceOnly"] = ld.ReferenceOnly
@@ -3190,11 +3061,11 @@ func NewLinkListResultPage(getNextPage func(context.Context, LinkListResult) (Li
 type LinkResourceFormat struct {
 	autorest.Response `json:"-"`
 	*LinkDefinition   `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3203,15 +3074,6 @@ func (lrf LinkResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lrf.LinkDefinition != nil {
 		objectMap["properties"] = lrf.LinkDefinition
-	}
-	if lrf.ID != nil {
-		objectMap["id"] = lrf.ID
-	}
-	if lrf.Name != nil {
-		objectMap["name"] = lrf.Name
-	}
-	if lrf.Type != nil {
-		objectMap["type"] = lrf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3277,7 +3139,7 @@ type LinksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LinksCreateOrUpdateFuture) Result(client LinksClient) (lrf LinkResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3349,7 +3211,7 @@ func (mdb MetadataDefinitionBase) MarshalJSON() ([]byte, error) {
 
 // Operation a Customer Insights REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -3357,11 +3219,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.CustomerInsights
+	// Provider - READ-ONLY; Service provider: Microsoft.CustomerInsights
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -3369,9 +3231,9 @@ type OperationDisplay struct {
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Customer Insights operations supported by the Microsoft.CustomerInsights resource provider.
+	// Value - READ-ONLY; List of Customer Insights operations supported by the Microsoft.CustomerInsights resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3730,11 +3592,11 @@ func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResul
 type ProfileResourceFormat struct {
 	autorest.Response      `json:"-"`
 	*ProfileTypeDefinition `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3743,15 +3605,6 @@ func (prf ProfileResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if prf.ProfileTypeDefinition != nil {
 		objectMap["properties"] = prf.ProfileTypeDefinition
-	}
-	if prf.ID != nil {
-		objectMap["id"] = prf.ID
-	}
-	if prf.Name != nil {
-		objectMap["name"] = prf.Name
-	}
-	if prf.Type != nil {
-		objectMap["type"] = prf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3817,7 +3670,7 @@ type ProfilesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ProfilesCreateOrUpdateFuture) Result(client ProfilesClient) (prf ProfileResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3846,7 +3699,7 @@ type ProfilesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3871,13 +3724,13 @@ type ProfileTypeDefinition struct {
 	Fields *[]PropertyDefinition `json:"fields,omitempty"`
 	// InstancesCount - The instance count.
 	InstancesCount *int32 `json:"instancesCount,omitempty"`
-	// LastChangedUtc - The last changed time for the type definition.
+	// LastChangedUtc - READ-ONLY; The last changed time for the type definition.
 	LastChangedUtc *date.Time `json:"lastChangedUtc,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// SchemaItemTypeLink - The schema org link. This helps ACI identify and suggest semantic models.
 	SchemaItemTypeLink *string `json:"schemaItemTypeLink,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 	// TimestampFieldName - The timestamp property name. Represents the time when the interaction or profile update happened.
 	TimestampFieldName *string `json:"timestampFieldName,omitempty"`
@@ -3917,17 +3770,8 @@ func (ptd ProfileTypeDefinition) MarshalJSON() ([]byte, error) {
 	if ptd.InstancesCount != nil {
 		objectMap["instancesCount"] = ptd.InstancesCount
 	}
-	if ptd.LastChangedUtc != nil {
-		objectMap["lastChangedUtc"] = ptd.LastChangedUtc
-	}
-	if ptd.ProvisioningState != "" {
-		objectMap["provisioningState"] = ptd.ProvisioningState
-	}
 	if ptd.SchemaItemTypeLink != nil {
 		objectMap["schemaItemTypeLink"] = ptd.SchemaItemTypeLink
-	}
-	if ptd.TenantID != nil {
-		objectMap["tenantId"] = ptd.TenantID
 	}
 	if ptd.TimestampFieldName != nil {
 		objectMap["timestampFieldName"] = ptd.TimestampFieldName
@@ -3991,17 +3835,17 @@ type PropertyDefinition struct {
 	MaxLength *int32 `json:"maxLength,omitempty"`
 	// IsAvailableInGraph - Whether property is available in graph or not.
 	IsAvailableInGraph *bool `json:"isAvailableInGraph,omitempty"`
-	// DataSourcePrecedenceRules - This is specific to interactions modeled as activities. Data sources are used to determine where data is stored and also in precedence rules.
+	// DataSourcePrecedenceRules - READ-ONLY; This is specific to interactions modeled as activities. Data sources are used to determine where data is stored and also in precedence rules.
 	DataSourcePrecedenceRules *[]DataSourcePrecedence `json:"dataSourcePrecedenceRules,omitempty"`
 }
 
 // ProxyResource common properties of proxy resource.
 type ProxyResource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4021,15 +3865,15 @@ type RelationshipDefinition struct {
 	LookupMappings *[]RelationshipTypeMapping `json:"lookupMappings,omitempty"`
 	// ProfileType - Profile type.
 	ProfileType *string `json:"profileType,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
-	// RelationshipName - The Relationship name.
+	// RelationshipName - READ-ONLY; The Relationship name.
 	RelationshipName *string `json:"relationshipName,omitempty"`
 	// RelatedProfileType - Related profile being referenced.
 	RelatedProfileType *string `json:"relatedProfileType,omitempty"`
-	// RelationshipGUIDID - The relationship guid id.
+	// RelationshipGUIDID - READ-ONLY; The relationship guid id.
 	RelationshipGUIDID *string `json:"relationshipGuidId,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
@@ -4057,20 +3901,8 @@ func (rd RelationshipDefinition) MarshalJSON() ([]byte, error) {
 	if rd.ProfileType != nil {
 		objectMap["profileType"] = rd.ProfileType
 	}
-	if rd.ProvisioningState != "" {
-		objectMap["provisioningState"] = rd.ProvisioningState
-	}
-	if rd.RelationshipName != nil {
-		objectMap["relationshipName"] = rd.RelationshipName
-	}
 	if rd.RelatedProfileType != nil {
 		objectMap["relatedProfileType"] = rd.RelatedProfileType
-	}
-	if rd.RelationshipGUIDID != nil {
-		objectMap["relationshipGuidId"] = rd.RelationshipGUIDID
-	}
-	if rd.TenantID != nil {
-		objectMap["tenantId"] = rd.TenantID
 	}
 	return json.Marshal(objectMap)
 }
@@ -4083,21 +3915,21 @@ type RelationshipLinkDefinition struct {
 	Description map[string]*string `json:"description"`
 	// InteractionType - The InteractionType associated with the Relationship Link.
 	InteractionType *string `json:"interactionType,omitempty"`
-	// LinkName - The name of the Relationship Link.
+	// LinkName - READ-ONLY; The name of the Relationship Link.
 	LinkName *string `json:"linkName,omitempty"`
 	// Mappings - The mappings between Interaction and Relationship fields.
 	Mappings *[]RelationshipLinkFieldMapping `json:"mappings,omitempty"`
 	// ProfilePropertyReferences - The property references for the Profile of the Relationship.
 	ProfilePropertyReferences *[]ParticipantPropertyReference `json:"profilePropertyReferences,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// RelatedProfilePropertyReferences - The property references for the Related Profile of the Relationship.
 	RelatedProfilePropertyReferences *[]ParticipantPropertyReference `json:"relatedProfilePropertyReferences,omitempty"`
 	// RelationshipName - The Relationship associated with the Link.
 	RelationshipName *string `json:"relationshipName,omitempty"`
-	// RelationshipGUIDID - The relationship guid id.
+	// RelationshipGUIDID - READ-ONLY; The relationship guid id.
 	RelationshipGUIDID *string `json:"relationshipGuidId,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
@@ -4113,29 +3945,17 @@ func (rld RelationshipLinkDefinition) MarshalJSON() ([]byte, error) {
 	if rld.InteractionType != nil {
 		objectMap["interactionType"] = rld.InteractionType
 	}
-	if rld.LinkName != nil {
-		objectMap["linkName"] = rld.LinkName
-	}
 	if rld.Mappings != nil {
 		objectMap["mappings"] = rld.Mappings
 	}
 	if rld.ProfilePropertyReferences != nil {
 		objectMap["profilePropertyReferences"] = rld.ProfilePropertyReferences
 	}
-	if rld.ProvisioningState != "" {
-		objectMap["provisioningState"] = rld.ProvisioningState
-	}
 	if rld.RelatedProfilePropertyReferences != nil {
 		objectMap["relatedProfilePropertyReferences"] = rld.RelatedProfilePropertyReferences
 	}
 	if rld.RelationshipName != nil {
 		objectMap["relationshipName"] = rld.RelationshipName
-	}
-	if rld.RelationshipGUIDID != nil {
-		objectMap["relationshipGuidId"] = rld.RelationshipGUIDID
-	}
-	if rld.TenantID != nil {
-		objectMap["tenantId"] = rld.TenantID
 	}
 	return json.Marshal(objectMap)
 }
@@ -4301,11 +4121,11 @@ func NewRelationshipLinkListResultPage(getNextPage func(context.Context, Relatio
 type RelationshipLinkResourceFormat struct {
 	autorest.Response           `json:"-"`
 	*RelationshipLinkDefinition `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4314,15 +4134,6 @@ func (rlrf RelationshipLinkResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rlrf.RelationshipLinkDefinition != nil {
 		objectMap["properties"] = rlrf.RelationshipLinkDefinition
-	}
-	if rlrf.ID != nil {
-		objectMap["id"] = rlrf.ID
-	}
-	if rlrf.Name != nil {
-		objectMap["name"] = rlrf.Name
-	}
-	if rlrf.Type != nil {
-		objectMap["type"] = rlrf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4388,7 +4199,7 @@ type RelationshipLinksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RelationshipLinksCreateOrUpdateFuture) Result(client RelationshipLinksClient) (rlrf RelationshipLinkResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4417,7 +4228,7 @@ type RelationshipLinksDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RelationshipLinksDeleteFuture) Result(client RelationshipLinksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4581,11 +4392,11 @@ func NewRelationshipListResultPage(getNextPage func(context.Context, Relationshi
 type RelationshipResourceFormat struct {
 	autorest.Response       `json:"-"`
 	*RelationshipDefinition `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4594,15 +4405,6 @@ func (rrf RelationshipResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rrf.RelationshipDefinition != nil {
 		objectMap["properties"] = rrf.RelationshipDefinition
-	}
-	if rrf.ID != nil {
-		objectMap["id"] = rrf.ID
-	}
-	if rrf.Name != nil {
-		objectMap["name"] = rrf.Name
-	}
-	if rrf.Type != nil {
-		objectMap["type"] = rrf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4668,7 +4470,7 @@ type RelationshipsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RelationshipsCreateOrUpdateFuture) Result(client RelationshipsClient) (rrf RelationshipResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4697,7 +4499,7 @@ type RelationshipsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RelationshipsDeleteFuture) Result(client RelationshipsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4712,15 +4514,15 @@ func (future *RelationshipsDeleteFuture) Result(client RelationshipsClient) (ar 
 
 // RelationshipsLookup the definition of suggested relationship for the type.
 type RelationshipsLookup struct {
-	// ProfileName - The relationship profile.
+	// ProfileName - READ-ONLY; The relationship profile.
 	ProfileName *string `json:"profileName,omitempty"`
-	// ProfilePropertyReferences - The property references for the profile type.
+	// ProfilePropertyReferences - READ-ONLY; The property references for the profile type.
 	ProfilePropertyReferences *[]ParticipantPropertyReference `json:"profilePropertyReferences,omitempty"`
-	// RelatedProfileName - The related profile.
+	// RelatedProfileName - READ-ONLY; The related profile.
 	RelatedProfileName *string `json:"relatedProfileName,omitempty"`
-	// RelatedProfilePropertyReferences - The property references for the related profile type.
+	// RelatedProfilePropertyReferences - READ-ONLY; The property references for the related profile type.
 	RelatedProfilePropertyReferences *[]ParticipantPropertyReference `json:"relatedProfilePropertyReferences,omitempty"`
-	// ExistingRelationshipName - The name of existing Relationship.
+	// ExistingRelationshipName - READ-ONLY; The name of existing Relationship.
 	ExistingRelationshipName *string `json:"existingRelationshipName,omitempty"`
 }
 
@@ -4740,11 +4542,11 @@ type RelationshipTypeMapping struct {
 
 // Resource common properties of Azure resource.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -4755,15 +4557,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -4791,15 +4584,15 @@ type Role struct {
 
 // RoleAssignment the Role Assignment definition.
 type RoleAssignment struct {
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
-	// AssignmentName - The name of the metadata object.
+	// AssignmentName - READ-ONLY; The name of the metadata object.
 	AssignmentName *string `json:"assignmentName,omitempty"`
 	// DisplayName - Localized display names for the metadata.
 	DisplayName map[string]*string `json:"displayName"`
 	// Description - Localized description for the metadata.
 	Description map[string]*string `json:"description"`
-	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
 	// Role - Type of roles. Possible values include: 'Admin', 'Reader', 'ManageAdmin', 'ManageReader', 'DataAdmin', 'DataReader'
 	Role RoleTypes `json:"role,omitempty"`
@@ -4836,20 +4629,11 @@ type RoleAssignment struct {
 // MarshalJSON is the custom marshaler for RoleAssignment.
 func (ra RoleAssignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ra.TenantID != nil {
-		objectMap["tenantId"] = ra.TenantID
-	}
-	if ra.AssignmentName != nil {
-		objectMap["assignmentName"] = ra.AssignmentName
-	}
 	if ra.DisplayName != nil {
 		objectMap["displayName"] = ra.DisplayName
 	}
 	if ra.Description != nil {
 		objectMap["description"] = ra.Description
-	}
-	if ra.ProvisioningState != "" {
-		objectMap["provisioningState"] = ra.ProvisioningState
 	}
 	if ra.Role != "" {
 		objectMap["role"] = ra.Role
@@ -5050,11 +4834,11 @@ func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssig
 type RoleAssignmentResourceFormat struct {
 	autorest.Response `json:"-"`
 	*RoleAssignment   `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5063,15 +4847,6 @@ func (rarf RoleAssignmentResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rarf.RoleAssignment != nil {
 		objectMap["properties"] = rarf.RoleAssignment
-	}
-	if rarf.ID != nil {
-		objectMap["id"] = rarf.ID
-	}
-	if rarf.Name != nil {
-		objectMap["name"] = rarf.Name
-	}
-	if rarf.Type != nil {
-		objectMap["type"] = rarf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5137,7 +4912,7 @@ type RoleAssignmentsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RoleAssignmentsCreateOrUpdateFuture) Result(client RoleAssignmentsClient) (rarf RoleAssignmentResourceFormat, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5305,11 +5080,11 @@ func NewRoleListResultPage(getNextPage func(context.Context, RoleListResult) (Ro
 // RoleResourceFormat the role resource format.
 type RoleResourceFormat struct {
 	*Role `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5318,15 +5093,6 @@ func (rrf RoleResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rrf.Role != nil {
 		objectMap["properties"] = rrf.Role
-	}
-	if rrf.ID != nil {
-		objectMap["id"] = rrf.ID
-	}
-	if rrf.Name != nil {
-		objectMap["name"] = rrf.Name
-	}
-	if rrf.Type != nil {
-		objectMap["type"] = rrf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5443,9 +5209,9 @@ func (si StrongID) MarshalJSON() ([]byte, error) {
 // SuggestRelationshipLinksResponse the response of suggest relationship links operation.
 type SuggestRelationshipLinksResponse struct {
 	autorest.Response `json:"-"`
-	// InteractionName - The interaction name.
+	// InteractionName - READ-ONLY; The interaction name.
 	InteractionName *string `json:"interactionName,omitempty"`
-	// SuggestedRelationships - Suggested relationships for the type.
+	// SuggestedRelationships - READ-ONLY; Suggested relationships for the type.
 	SuggestedRelationships *[]RelationshipsLookup `json:"suggestedRelationships,omitempty"`
 }
 
@@ -5463,45 +5229,33 @@ type TypePropertiesMapping struct {
 
 // View the view in Customer 360 web application.
 type View struct {
-	// ViewName - Name of the view.
+	// ViewName - READ-ONLY; Name of the view.
 	ViewName *string `json:"viewName,omitempty"`
 	// UserID - the user ID.
 	UserID *string `json:"userId,omitempty"`
-	// TenantID - the hub name.
+	// TenantID - READ-ONLY; the hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 	// DisplayName - Localized display name for the view.
 	DisplayName map[string]*string `json:"displayName"`
 	// Definition - View definition.
 	Definition *string `json:"definition,omitempty"`
-	// Changed - Date time when view was last modified.
+	// Changed - READ-ONLY; Date time when view was last modified.
 	Changed *date.Time `json:"changed,omitempty"`
-	// Created - Date time when view was created.
+	// Created - READ-ONLY; Date time when view was created.
 	Created *date.Time `json:"created,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for View.
 func (vVar View) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vVar.ViewName != nil {
-		objectMap["viewName"] = vVar.ViewName
-	}
 	if vVar.UserID != nil {
 		objectMap["userId"] = vVar.UserID
-	}
-	if vVar.TenantID != nil {
-		objectMap["tenantId"] = vVar.TenantID
 	}
 	if vVar.DisplayName != nil {
 		objectMap["displayName"] = vVar.DisplayName
 	}
 	if vVar.Definition != nil {
 		objectMap["definition"] = vVar.Definition
-	}
-	if vVar.Changed != nil {
-		objectMap["changed"] = vVar.Changed
-	}
-	if vVar.Created != nil {
-		objectMap["created"] = vVar.Created
 	}
 	return json.Marshal(objectMap)
 }
@@ -5656,11 +5410,11 @@ func NewViewListResultPage(getNextPage func(context.Context, ViewListResult) (Vi
 type ViewResourceFormat struct {
 	autorest.Response `json:"-"`
 	*View             `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5669,15 +5423,6 @@ func (vrf ViewResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vrf.View != nil {
 		objectMap["properties"] = vrf.View
-	}
-	if vrf.ID != nil {
-		objectMap["id"] = vrf.ID
-	}
-	if vrf.Name != nil {
-		objectMap["name"] = vrf.Name
-	}
-	if vrf.Type != nil {
-		objectMap["type"] = vrf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5735,7 +5480,7 @@ func (vrf *ViewResourceFormat) UnmarshalJSON(body []byte) error {
 
 // WidgetType definition of WidgetType.
 type WidgetType struct {
-	// WidgetTypeName - Name of the widget type.
+	// WidgetTypeName - READ-ONLY; Name of the widget type.
 	WidgetTypeName *string `json:"widgetTypeName,omitempty"`
 	// Definition - Definition for widget type.
 	Definition *string `json:"definition,omitempty"`
@@ -5745,22 +5490,19 @@ type WidgetType struct {
 	DisplayName map[string]*string `json:"displayName"`
 	// ImageURL - The image URL.
 	ImageURL *string `json:"imageUrl,omitempty"`
-	// TenantID - The hub name.
+	// TenantID - READ-ONLY; The hub name.
 	TenantID *string `json:"tenantId,omitempty"`
 	// WidgetVersion - The widget version.
 	WidgetVersion *string `json:"widgetVersion,omitempty"`
-	// Changed - Date time when widget type was last modified.
+	// Changed - READ-ONLY; Date time when widget type was last modified.
 	Changed *date.Time `json:"changed,omitempty"`
-	// Created - Date time when widget type was created.
+	// Created - READ-ONLY; Date time when widget type was created.
 	Created *date.Time `json:"created,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WidgetType.
 func (wt WidgetType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wt.WidgetTypeName != nil {
-		objectMap["widgetTypeName"] = wt.WidgetTypeName
-	}
 	if wt.Definition != nil {
 		objectMap["definition"] = wt.Definition
 	}
@@ -5773,17 +5515,8 @@ func (wt WidgetType) MarshalJSON() ([]byte, error) {
 	if wt.ImageURL != nil {
 		objectMap["imageUrl"] = wt.ImageURL
 	}
-	if wt.TenantID != nil {
-		objectMap["tenantId"] = wt.TenantID
-	}
 	if wt.WidgetVersion != nil {
 		objectMap["widgetVersion"] = wt.WidgetVersion
-	}
-	if wt.Changed != nil {
-		objectMap["changed"] = wt.Changed
-	}
-	if wt.Created != nil {
-		objectMap["created"] = wt.Created
 	}
 	return json.Marshal(objectMap)
 }
@@ -5938,11 +5671,11 @@ func NewWidgetTypeListResultPage(getNextPage func(context.Context, WidgetTypeLis
 type WidgetTypeResourceFormat struct {
 	autorest.Response `json:"-"`
 	*WidgetType       `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5951,15 +5684,6 @@ func (wtrf WidgetTypeResourceFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wtrf.WidgetType != nil {
 		objectMap["properties"] = wtrf.WidgetType
-	}
-	if wtrf.ID != nil {
-		objectMap["id"] = wtrf.ID
-	}
-	if wtrf.Name != nil {
-		objectMap["name"] = wtrf.Name
-	}
-	if wtrf.Type != nil {
-		objectMap["type"] = wtrf.Type
 	}
 	return json.Marshal(objectMap)
 }

@@ -5466,37 +5466,37 @@ type DeletedSiteProperties struct {
 	DeletedTimestamp *date.Time `json:"deletedTimestamp,omitempty"`
 	// Name - Name of web app
 	Name *string `json:"name,omitempty"`
-	// State - State of the web app
+	// State - READ-ONLY; State of the web app
 	State *string `json:"state,omitempty"`
-	// HostNames - Hostnames associated with web app
+	// HostNames - READ-ONLY; Hostnames associated with web app
 	HostNames *[]string `json:"hostNames,omitempty"`
-	// RepositorySiteName - Name of repository site
+	// RepositorySiteName - READ-ONLY; Name of repository site
 	RepositorySiteName *string `json:"repositorySiteName,omitempty"`
-	// UsageState - State indicating whether web app has exceeded its quota usage. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
+	// UsageState - READ-ONLY; State indicating whether web app has exceeded its quota usage. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
 	UsageState UsageState `json:"usageState,omitempty"`
 	// Enabled - True if the site is enabled; otherwise, false. Setting this  value to false disables the site (takes the site off line).
 	Enabled *bool `json:"enabled,omitempty"`
-	// EnabledHostNames - Hostnames for the web app that are enabled. Hostnames need to be assigned and enabled. If some hostnames are assigned but not enabled
+	// EnabledHostNames - READ-ONLY; Hostnames for the web app that are enabled. Hostnames need to be assigned and enabled. If some hostnames are assigned but not enabled
 	//             the app is not served on those hostnames
 	EnabledHostNames *[]string `json:"enabledHostNames,omitempty"`
-	// AvailabilityState - Management information availability state for the web app. Possible values are Normal or Limited.
+	// AvailabilityState - READ-ONLY; Management information availability state for the web app. Possible values are Normal or Limited.
 	//             Normal means that the site is running correctly and that management information for the site is available.
 	//             Limited means that only partial management information for the site is available and that detailed site information is unavailable. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'
 	AvailabilityState SiteAvailabilityState `json:"availabilityState,omitempty"`
 	// HostNameSslStates - Hostname SSL states are  used to manage the SSL bindings for site's hostnames.
 	HostNameSslStates *[]HostNameSslState `json:"hostNameSslStates,omitempty"`
 	ServerFarmID      *string             `json:"serverFarmId,omitempty"`
-	// LastModifiedTimeUtc - Last time web app was modified in UTC
+	// LastModifiedTimeUtc - READ-ONLY; Last time web app was modified in UTC
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of web app
 	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
-	// TrafficManagerHostNames - Read-only list of Azure Traffic manager hostnames associated with web app
+	// TrafficManagerHostNames - READ-ONLY; Read-only list of Azure Traffic manager hostnames associated with web app
 	TrafficManagerHostNames *[]string `json:"trafficManagerHostNames,omitempty"`
-	// PremiumAppDeployed - If set indicates whether web app is deployed as a premium app
+	// PremiumAppDeployed - READ-ONLY; If set indicates whether web app is deployed as a premium app
 	PremiumAppDeployed *bool `json:"premiumAppDeployed,omitempty"`
 	// ScmSiteAlsoStopped - If set indicates whether to stop SCM (KUDU) site when the web app is stopped. Default is false.
 	ScmSiteAlsoStopped *bool `json:"scmSiteAlsoStopped,omitempty"`
-	// TargetSwapSlot - Read-only property that specifies which slot this app will swap into
+	// TargetSwapSlot - READ-ONLY; Read-only property that specifies which slot this app will swap into
 	TargetSwapSlot *string `json:"targetSwapSlot,omitempty"`
 	// HostingEnvironmentProfile - Specification for the hosting environment (App Service Environment) to use for the web app
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
@@ -5510,7 +5510,7 @@ type DeletedSiteProperties struct {
 	// HostNamesDisabled - Specifies if the public hostnames are disabled the web app.
 	//             If set to true the app is only accessible via API Management process
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
-	// OutboundIPAddresses - List of comma separated IP addresses that this web app uses for outbound connections. Those can be used when configuring firewall rules for databases accessed by this web app.
+	// OutboundIPAddresses - READ-ONLY; List of comma separated IP addresses that this web app uses for outbound connections. Those can be used when configuring firewall rules for databases accessed by this web app.
 	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty"`
 	// ContainerSize - Size of a function container
 	ContainerSize *int32 `json:"containerSize,omitempty"`
@@ -5520,11 +5520,11 @@ type DeletedSiteProperties struct {
 	// CloningInfo - This is only valid for web app creation. If specified, web app is cloned from
 	//             a source web app
 	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
-	// ResourceGroup - Resource group web app belongs to
+	// ResourceGroup - READ-ONLY; Resource group web app belongs to
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// IsDefaultContainer - Site is a default container
+	// IsDefaultContainer - READ-ONLY; Site is a default container
 	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty"`
-	// DefaultHostName - Default hostname of the web app
+	// DefaultHostName - READ-ONLY; Default hostname of the web app
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 }
 
@@ -7286,7 +7286,7 @@ type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (he HostingEnvironment, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7315,7 +7315,7 @@ type HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture) Result(client HostingEnvironmentsClient) (wp WorkerPool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7344,7 +7344,7 @@ type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) Result(client HostingEnvironmentsClient) (wp WorkerPool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7373,7 +7373,7 @@ type HostingEnvironmentsDeleteHostingEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsDeleteHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (so SetObject, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsDeleteHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7417,7 +7417,7 @@ type HostingEnvironmentsResumeHostingEnvironmentAllFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsResumeHostingEnvironmentAllFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsResumeHostingEnvironmentAllFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7446,7 +7446,7 @@ type HostingEnvironmentsResumeHostingEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsResumeHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsResumeHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7475,7 +7475,7 @@ type HostingEnvironmentsSuspendHostingEnvironmentAllFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsSuspendHostingEnvironmentAllFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsSuspendHostingEnvironmentAllFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7504,7 +7504,7 @@ type HostingEnvironmentsSuspendHostingEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HostingEnvironmentsSuspendHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsSuspendHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7858,7 +7858,9 @@ type IPSecurityRestriction struct {
 
 // KeyValuePairStringString ...
 type KeyValuePairStringString struct {
-	Key   *string `json:"key,omitempty"`
+	// Key - READ-ONLY
+	Key *string `json:"key,omitempty"`
+	// Value - READ-ONLY
 	Value *string `json:"value,omitempty"`
 }
 
@@ -8349,7 +8351,7 @@ type ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture str
 // If the operation has not completed it will return an error.
 func (future *ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture) Result(client ManagedHostingEnvironmentsClient) (he HostingEnvironment, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8378,7 +8380,7 @@ type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture) Result(client ManagedHostingEnvironmentsClient) (so SetObject, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -10400,7 +10402,7 @@ type ServerFarmsCreateOrUpdateServerFarmFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerFarmsCreateOrUpdateServerFarmFuture) Result(client ServerFarmsClient) (sfwrs ServerFarmWithRichSku, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsCreateOrUpdateServerFarmFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -10561,9 +10563,9 @@ type ServerFarmWithRichSkuProperties struct {
 	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service Plan
 	WorkerTierName *string `json:"workerTierName,omitempty"`
-	// Status - App Service Plan Status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending'
+	// Status - READ-ONLY; App Service Plan Status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending'
 	Status StatusOptions `json:"status,omitempty"`
-	// Subscription - App Service Plan Subscription
+	// Subscription - READ-ONLY; App Service Plan Subscription
 	Subscription *string `json:"subscription,omitempty"`
 	// AdminSiteName - App Service Plan administration site
 	AdminSiteName *string `json:"adminSiteName,omitempty"`
@@ -10571,14 +10573,14 @@ type ServerFarmWithRichSkuProperties struct {
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 	// MaximumNumberOfWorkers - Maximum number of instances that can be assigned to this App Service Plan
 	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty"`
-	// GeoRegion - Geographical location for the App Service Plan
+	// GeoRegion - READ-ONLY; Geographical location for the App Service Plan
 	GeoRegion *string `json:"geoRegion,omitempty"`
 	// PerSiteScaling - If True apps assigned to this App Service Plan can be scaled independently
 	//             If False apps assigned to this App Service Plan will scale to all instances of the plan
 	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
-	// NumberOfSites - Number of web apps assigned to this App Service Plan
+	// NumberOfSites - READ-ONLY; Number of web apps assigned to this App Service Plan
 	NumberOfSites *int32 `json:"numberOfSites,omitempty"`
-	// ResourceGroup - Resource group of the server farm
+	// ResourceGroup - READ-ONLY; Resource group of the server farm
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - Enables creation of a Linux App Service Plan
 	Reserved *bool `json:"reserved,omitempty"`
@@ -11611,37 +11613,37 @@ type SiteLogsConfigProperties struct {
 type SiteProperties struct {
 	// Name - Name of web app
 	Name *string `json:"name,omitempty"`
-	// State - State of the web app
+	// State - READ-ONLY; State of the web app
 	State *string `json:"state,omitempty"`
-	// HostNames - Hostnames associated with web app
+	// HostNames - READ-ONLY; Hostnames associated with web app
 	HostNames *[]string `json:"hostNames,omitempty"`
-	// RepositorySiteName - Name of repository site
+	// RepositorySiteName - READ-ONLY; Name of repository site
 	RepositorySiteName *string `json:"repositorySiteName,omitempty"`
-	// UsageState - State indicating whether web app has exceeded its quota usage. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
+	// UsageState - READ-ONLY; State indicating whether web app has exceeded its quota usage. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
 	UsageState UsageState `json:"usageState,omitempty"`
 	// Enabled - True if the site is enabled; otherwise, false. Setting this  value to false disables the site (takes the site off line).
 	Enabled *bool `json:"enabled,omitempty"`
-	// EnabledHostNames - Hostnames for the web app that are enabled. Hostnames need to be assigned and enabled. If some hostnames are assigned but not enabled
+	// EnabledHostNames - READ-ONLY; Hostnames for the web app that are enabled. Hostnames need to be assigned and enabled. If some hostnames are assigned but not enabled
 	//             the app is not served on those hostnames
 	EnabledHostNames *[]string `json:"enabledHostNames,omitempty"`
-	// AvailabilityState - Management information availability state for the web app. Possible values are Normal or Limited.
+	// AvailabilityState - READ-ONLY; Management information availability state for the web app. Possible values are Normal or Limited.
 	//             Normal means that the site is running correctly and that management information for the site is available.
 	//             Limited means that only partial management information for the site is available and that detailed site information is unavailable. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'
 	AvailabilityState SiteAvailabilityState `json:"availabilityState,omitempty"`
 	// HostNameSslStates - Hostname SSL states are  used to manage the SSL bindings for site's hostnames.
 	HostNameSslStates *[]HostNameSslState `json:"hostNameSslStates,omitempty"`
 	ServerFarmID      *string             `json:"serverFarmId,omitempty"`
-	// LastModifiedTimeUtc - Last time web app was modified in UTC
+	// LastModifiedTimeUtc - READ-ONLY; Last time web app was modified in UTC
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of web app
 	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
-	// TrafficManagerHostNames - Read-only list of Azure Traffic manager hostnames associated with web app
+	// TrafficManagerHostNames - READ-ONLY; Read-only list of Azure Traffic manager hostnames associated with web app
 	TrafficManagerHostNames *[]string `json:"trafficManagerHostNames,omitempty"`
-	// PremiumAppDeployed - If set indicates whether web app is deployed as a premium app
+	// PremiumAppDeployed - READ-ONLY; If set indicates whether web app is deployed as a premium app
 	PremiumAppDeployed *bool `json:"premiumAppDeployed,omitempty"`
 	// ScmSiteAlsoStopped - If set indicates whether to stop SCM (KUDU) site when the web app is stopped. Default is false.
 	ScmSiteAlsoStopped *bool `json:"scmSiteAlsoStopped,omitempty"`
-	// TargetSwapSlot - Read-only property that specifies which slot this app will swap into
+	// TargetSwapSlot - READ-ONLY; Read-only property that specifies which slot this app will swap into
 	TargetSwapSlot *string `json:"targetSwapSlot,omitempty"`
 	// HostingEnvironmentProfile - Specification for the hosting environment (App Service Environment) to use for the web app
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
@@ -11655,7 +11657,7 @@ type SiteProperties struct {
 	// HostNamesDisabled - Specifies if the public hostnames are disabled the web app.
 	//             If set to true the app is only accessible via API Management process
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
-	// OutboundIPAddresses - List of comma separated IP addresses that this web app uses for outbound connections. Those can be used when configuring firewall rules for databases accessed by this web app.
+	// OutboundIPAddresses - READ-ONLY; List of comma separated IP addresses that this web app uses for outbound connections. Those can be used when configuring firewall rules for databases accessed by this web app.
 	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty"`
 	// ContainerSize - Size of a function container
 	ContainerSize *int32 `json:"containerSize,omitempty"`
@@ -11665,11 +11667,11 @@ type SiteProperties struct {
 	// CloningInfo - This is only valid for web app creation. If specified, web app is cloned from
 	//             a source web app
 	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
-	// ResourceGroup - Resource group web app belongs to
+	// ResourceGroup - READ-ONLY; Resource group web app belongs to
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// IsDefaultContainer - Site is a default container
+	// IsDefaultContainer - READ-ONLY; Site is a default container
 	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty"`
-	// DefaultHostName - Default hostname of the web app
+	// DefaultHostName - READ-ONLY; Default hostname of the web app
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 }
 
@@ -11690,7 +11692,7 @@ type SitesCreateOrUpdateSiteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesCreateOrUpdateSiteFuture) Result(client SitesClient) (s Site, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11719,7 +11721,7 @@ type SitesCreateOrUpdateSiteSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesCreateOrUpdateSiteSlotFuture) Result(client SitesClient) (s Site, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesCreateOrUpdateSiteSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11748,7 +11750,7 @@ type SitesListSitePublishingCredentialsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesListSitePublishingCredentialsFuture) Result(client SitesClient) (u User, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11777,7 +11779,7 @@ type SitesListSitePublishingCredentialsSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesListSitePublishingCredentialsSlotFuture) Result(client SitesClient) (u User, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesListSitePublishingCredentialsSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11943,7 +11945,7 @@ type SitesRecoverSiteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesRecoverSiteFuture) Result(client SitesClient) (s Site, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11972,7 +11974,7 @@ type SitesRecoverSiteSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesRecoverSiteSlotFuture) Result(client SitesClient) (s Site, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesRecoverSiteSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12001,7 +12003,7 @@ type SitesRestoreSiteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesRestoreSiteFuture) Result(client SitesClient) (rr RestoreResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12030,7 +12032,7 @@ type SitesRestoreSiteSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesRestoreSiteSlotFuture) Result(client SitesClient) (rr RestoreResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesRestoreSiteSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12059,7 +12061,7 @@ type SitesSwapSlotsSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesSwapSlotsSlotFuture) Result(client SitesClient) (so SetObject, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesSwapSlotsSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12088,7 +12090,7 @@ type SitesSwapSlotWithProductionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SitesSwapSlotWithProductionFuture) Result(client SitesClient) (so SetObject, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesSwapSlotWithProductionFuture", "Result", future.Response(), "Polling failure")
 		return

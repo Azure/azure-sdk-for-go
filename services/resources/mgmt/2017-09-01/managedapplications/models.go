@@ -123,11 +123,11 @@ type Application struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -155,15 +155,6 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	}
 	if a.Identity != nil {
 		objectMap["identity"] = a.Identity
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
@@ -309,11 +300,11 @@ type ApplicationDefinition struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -335,15 +326,6 @@ func (ad ApplicationDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if ad.Identity != nil {
 		objectMap["identity"] = ad.Identity
-	}
-	if ad.ID != nil {
-		objectMap["id"] = ad.ID
-	}
-	if ad.Name != nil {
-		objectMap["name"] = ad.Name
-	}
-	if ad.Type != nil {
-		objectMap["type"] = ad.Type
 	}
 	if ad.Location != nil {
 		objectMap["location"] = ad.Location
@@ -629,7 +611,7 @@ type ApplicationDefinitionsCreateOrUpdateByIDFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationDefinitionsCreateOrUpdateByIDFuture) Result(client ApplicationDefinitionsClient) (ad ApplicationDefinition, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -658,7 +640,7 @@ type ApplicationDefinitionsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationDefinitionsCreateOrUpdateFuture) Result(client ApplicationDefinitionsClient) (ad ApplicationDefinition, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -687,7 +669,7 @@ type ApplicationDefinitionsDeleteByIDFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationDefinitionsDeleteByIDFuture) Result(client ApplicationDefinitionsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -710,7 +692,7 @@ type ApplicationDefinitionsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationDefinitionsDeleteFuture) Result(client ApplicationDefinitionsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -883,11 +865,11 @@ type ApplicationPatchable struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -915,15 +897,6 @@ func (ap ApplicationPatchable) MarshalJSON() ([]byte, error) {
 	}
 	if ap.Identity != nil {
 		objectMap["identity"] = ap.Identity
-	}
-	if ap.ID != nil {
-		objectMap["id"] = ap.ID
-	}
-	if ap.Name != nil {
-		objectMap["name"] = ap.Name
-	}
-	if ap.Type != nil {
-		objectMap["type"] = ap.Type
 	}
 	if ap.Location != nil {
 		objectMap["location"] = ap.Location
@@ -1056,9 +1029,9 @@ type ApplicationProperties struct {
 	ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
 	// Parameters - Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
 	Parameters interface{} `json:"parameters,omitempty"`
-	// Outputs - Name and value pairs that define the managed application outputs.
+	// Outputs - READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// ProvisioningState - The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// UIDefinitionURI - The blob URI where the UI definition file is located.
 	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
@@ -1072,9 +1045,9 @@ type ApplicationPropertiesPatchable struct {
 	ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
 	// Parameters - Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
 	Parameters interface{} `json:"parameters,omitempty"`
-	// Outputs - Name and value pairs that define the managed application outputs.
+	// Outputs - READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// ProvisioningState - The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// UIDefinitionURI - The blob URI where the UI definition file is located.
 	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
@@ -1098,7 +1071,7 @@ type ApplicationsCreateOrUpdateByIDFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationsCreateOrUpdateByIDFuture) Result(client ApplicationsClient) (a Application, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1127,7 +1100,7 @@ type ApplicationsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationsCreateOrUpdateFuture) Result(client ApplicationsClient) (a Application, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1156,7 +1129,7 @@ type ApplicationsDeleteByIDFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationsDeleteByIDFuture) Result(client ApplicationsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1179,7 +1152,7 @@ type ApplicationsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1211,11 +1184,11 @@ type GenericResource struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1235,15 +1208,6 @@ func (gr GenericResource) MarshalJSON() ([]byte, error) {
 	if gr.Identity != nil {
 		objectMap["identity"] = gr.Identity
 	}
-	if gr.ID != nil {
-		objectMap["id"] = gr.ID
-	}
-	if gr.Name != nil {
-		objectMap["name"] = gr.Name
-	}
-	if gr.Type != nil {
-		objectMap["type"] = gr.Type
-	}
 	if gr.Location != nil {
 		objectMap["location"] = gr.Location
 	}
@@ -1255,9 +1219,9 @@ func (gr GenericResource) MarshalJSON() ([]byte, error) {
 
 // Identity identity for the resource.
 type Identity struct {
-	// PrincipalID - The principal ID of resource identity.
+	// PrincipalID - READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - The tenant ID of resource.
+	// TenantID - READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
@@ -1293,11 +1257,11 @@ type PlanPatchable struct {
 
 // Resource resource information.
 type Resource struct {
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1308,15 +1272,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

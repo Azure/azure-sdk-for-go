@@ -316,11 +316,11 @@ type AccessPolicyMutableProperties struct {
 type AccessPolicyResource struct {
 	autorest.Response               `json:"-"`
 	*AccessPolicyResourceProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -329,15 +329,6 @@ func (apr AccessPolicyResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if apr.AccessPolicyResourceProperties != nil {
 		objectMap["properties"] = apr.AccessPolicyResourceProperties
-	}
-	if apr.ID != nil {
-		objectMap["id"] = apr.ID
-	}
-	if apr.Name != nil {
-		objectMap["name"] = apr.Name
-	}
-	if apr.Type != nil {
-		objectMap["type"] = apr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -450,7 +441,7 @@ type AzureEventSourceProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -642,11 +633,11 @@ type EnvironmentResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -707,15 +698,6 @@ func (er EnvironmentResource) MarshalJSON() ([]byte, error) {
 	if er.Tags != nil {
 		objectMap["tags"] = er.Tags
 	}
-	if er.ID != nil {
-		objectMap["id"] = er.ID
-	}
-	if er.Name != nil {
-		objectMap["name"] = er.Name
-	}
-	if er.Type != nil {
-		objectMap["type"] = er.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -758,15 +740,15 @@ func (erm *EnvironmentResourceModel) UnmarshalJSON(body []byte) error {
 
 // EnvironmentResourceProperties properties of the environment.
 type EnvironmentResourceProperties struct {
-	// DataAccessID - An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
+	// DataAccessID - READ-ONLY; An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessID *uuid.UUID `json:"dataAccessId,omitempty"`
-	// DataAccessFqdn - The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
+	// DataAccessFqdn - READ-ONLY; The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessFqdn *string `json:"dataAccessFqdn,omitempty"`
 	// Status - An object that represents the status of the environment, and its internal state in the Time Series Insights service.
 	Status *EnvironmentStatus `json:"status,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -780,7 +762,7 @@ type EnvironmentsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsCreateOrUpdateFuture) Result(client EnvironmentsClient) (erm EnvironmentResourceModel, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -824,7 +806,7 @@ type EnvironmentsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsUpdateFuture) Result(client EnvironmentsClient) (erm EnvironmentResourceModel, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -874,7 +856,7 @@ type EventHubEventSourceCommonProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -999,7 +981,7 @@ type EventHubEventSourceCreationProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -1021,11 +1003,11 @@ type EventHubEventSourceResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIotHub'
 	Kind KindBasicEventSourceResource `json:"kind,omitempty"`
@@ -1046,15 +1028,6 @@ func (ehesr EventHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	}
 	if ehesr.Tags != nil {
 		objectMap["tags"] = ehesr.Tags
-	}
-	if ehesr.ID != nil {
-		objectMap["id"] = ehesr.ID
-	}
-	if ehesr.Name != nil {
-		objectMap["name"] = ehesr.Name
-	}
-	if ehesr.Type != nil {
-		objectMap["type"] = ehesr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1173,7 +1146,7 @@ type EventHubEventSourceResourceProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -1237,7 +1210,7 @@ type EventSourceCommonProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -1394,11 +1367,11 @@ type EventSourceResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1455,15 +1428,6 @@ func (esr EventSourceResource) MarshalJSON() ([]byte, error) {
 	}
 	if esr.Tags != nil {
 		objectMap["tags"] = esr.Tags
-	}
-	if esr.ID != nil {
-		objectMap["id"] = esr.ID
-	}
-	if esr.Name != nil {
-		objectMap["name"] = esr.Name
-	}
-	if esr.Type != nil {
-		objectMap["type"] = esr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1542,7 +1506,7 @@ type IoTHubEventSourceCommonProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -1665,7 +1629,7 @@ type IoTHubEventSourceCreationProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -1689,11 +1653,11 @@ type IoTHubEventSourceResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1712,15 +1676,6 @@ func (ithesr IoTHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	}
 	if ithesr.Tags != nil {
 		objectMap["tags"] = ithesr.Tags
-	}
-	if ithesr.ID != nil {
-		objectMap["id"] = ithesr.ID
-	}
-	if ithesr.Name != nil {
-		objectMap["name"] = ithesr.Name
-	}
-	if ithesr.Type != nil {
-		objectMap["type"] = ithesr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1837,7 +1792,7 @@ type IoTHubEventSourceResourceProperties struct {
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -2059,11 +2014,11 @@ type LongTermEnvironmentResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2085,15 +2040,6 @@ func (lter LongTermEnvironmentResource) MarshalJSON() ([]byte, error) {
 	}
 	if lter.Tags != nil {
 		objectMap["tags"] = lter.Tags
-	}
-	if lter.ID != nil {
-		objectMap["id"] = lter.ID
-	}
-	if lter.Name != nil {
-		objectMap["name"] = lter.Name
-	}
-	if lter.Type != nil {
-		objectMap["type"] = lter.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2207,15 +2153,15 @@ func (lter *LongTermEnvironmentResource) UnmarshalJSON(body []byte) error {
 
 // LongTermEnvironmentResourceProperties properties of the long-term environment.
 type LongTermEnvironmentResourceProperties struct {
-	// DataAccessID - An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
+	// DataAccessID - READ-ONLY; An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessID *uuid.UUID `json:"dataAccessId,omitempty"`
-	// DataAccessFqdn - The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
+	// DataAccessFqdn - READ-ONLY; The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessFqdn *string `json:"dataAccessFqdn,omitempty"`
 	// Status - An object that represents the status of the environment, and its internal state in the Time Series Insights service.
 	Status *EnvironmentStatus `json:"status,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// TimeSeriesIDProperties - The list of event properties which will be used to define the environment's time series id.
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
@@ -2304,21 +2250,21 @@ type LongTermStorageConfigurationOutput struct {
 
 // Operation a Time Series Insights REST API operation
 type Operation struct {
-	// Name - The name of the operation being performed on this particular object.
+	// Name - READ-ONLY; The name of the operation being performed on this particular object.
 	Name *string `json:"name,omitempty"`
-	// Display - Contains the localized display information for this particular operation / action.
+	// Display - READ-ONLY; Contains the localized display information for this particular operation / action.
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
 // OperationDisplay contains the localized display information for this particular operation / action.
 type OperationDisplay struct {
-	// Provider - The localized friendly form of the resource provider name.
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The localized friendly form of the resource type related to this action/operation.
+	// Resource - READ-ONLY; The localized friendly form of the resource type related to this action/operation.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The localized friendly name for the operation.
+	// Operation - READ-ONLY; The localized friendly name for the operation.
 	Operation *string `json:"operation,omitempty"`
-	// Description - The localized friendly description for the operation.
+	// Description - READ-ONLY; The localized friendly description for the operation.
 	Description *string `json:"description,omitempty"`
 }
 
@@ -2326,9 +2272,9 @@ type OperationDisplay struct {
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Time Series Insights operations supported by the Microsoft.TimeSeriesInsights resource provider.
+	// Value - READ-ONLY; List of Time Series Insights operations supported by the Microsoft.TimeSeriesInsights resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2570,11 +2516,11 @@ type ReferenceDataSetResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2589,15 +2535,6 @@ func (rdsr ReferenceDataSetResource) MarshalJSON() ([]byte, error) {
 	}
 	if rdsr.Tags != nil {
 		objectMap["tags"] = rdsr.Tags
-	}
-	if rdsr.ID != nil {
-		objectMap["id"] = rdsr.ID
-	}
-	if rdsr.Name != nil {
-		objectMap["name"] = rdsr.Name
-	}
-	if rdsr.Type != nil {
-		objectMap["type"] = rdsr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2679,7 +2616,7 @@ type ReferenceDataSetResourceProperties struct {
 	DataStringComparisonBehavior DataStringComparisonBehavior `json:"dataStringComparisonBehavior,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -2700,11 +2637,11 @@ func (rdsup ReferenceDataSetUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // Resource time Series Insights resource
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2712,7 +2649,7 @@ type Resource struct {
 type ResourceProperties struct {
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -2875,11 +2812,11 @@ type StandardEnvironmentResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2901,15 +2838,6 @@ func (ser StandardEnvironmentResource) MarshalJSON() ([]byte, error) {
 	}
 	if ser.Tags != nil {
 		objectMap["tags"] = ser.Tags
-	}
-	if ser.ID != nil {
-		objectMap["id"] = ser.ID
-	}
-	if ser.Name != nil {
-		objectMap["name"] = ser.Name
-	}
-	if ser.Type != nil {
-		objectMap["type"] = ser.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3029,15 +2957,15 @@ type StandardEnvironmentResourceProperties struct {
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
 	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment.
 	PartitionKeyProperties *[]TimeSeriesIDProperty `json:"partitionKeyProperties,omitempty"`
-	// DataAccessID - An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
+	// DataAccessID - READ-ONLY; An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessID *uuid.UUID `json:"dataAccessId,omitempty"`
-	// DataAccessFqdn - The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
+	// DataAccessFqdn - READ-ONLY; The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessFqdn *string `json:"dataAccessFqdn,omitempty"`
 	// Status - An object that represents the status of the environment, and its internal state in the Time Series Insights service.
 	Status *EnvironmentStatus `json:"status,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - The time the resource was created.
+	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -3124,11 +3052,11 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3140,15 +3068,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

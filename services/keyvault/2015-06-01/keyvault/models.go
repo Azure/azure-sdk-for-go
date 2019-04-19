@@ -184,16 +184,16 @@ type Attributes struct {
 	NotBefore *date.UnixTime `json:"nbf,omitempty"`
 	// Expires - Expiry date in UTC
 	Expires *date.UnixTime `json:"exp,omitempty"`
-	// Created - Creation time in UTC
+	// Created - READ-ONLY; Creation time in UTC
 	Created *date.UnixTime `json:"created,omitempty"`
-	// Updated - Last updated time in UTC
+	// Updated - READ-ONLY; Last updated time in UTC
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
 // BackupKeyResult the backup key result, containing the backup blob
 type BackupKeyResult struct {
 	autorest.Response `json:"-"`
-	// Value - The backup blob containing the backed up key (a URL-encoded base64 string)
+	// Value - READ-ONLY; The backup blob containing the backed up key (a URL-encoded base64 string)
 	Value *string `json:"value,omitempty"`
 }
 
@@ -205,24 +205,24 @@ type CertificateAttributes struct {
 	NotBefore *date.UnixTime `json:"nbf,omitempty"`
 	// Expires - Expiry date in UTC
 	Expires *date.UnixTime `json:"exp,omitempty"`
-	// Created - Creation time in UTC
+	// Created - READ-ONLY; Creation time in UTC
 	Created *date.UnixTime `json:"created,omitempty"`
-	// Updated - Last updated time in UTC
+	// Updated - READ-ONLY; Last updated time in UTC
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
 // CertificateBundle a certificate bundle consists of a certificate (X509) plus its attributes.
 type CertificateBundle struct {
 	autorest.Response `json:"-"`
-	// ID - The certificate id
+	// ID - READ-ONLY; The certificate id
 	ID *string `json:"id,omitempty"`
-	// Kid - The key id
+	// Kid - READ-ONLY; The key id
 	Kid *string `json:"kid,omitempty"`
-	// Sid - The secret id
+	// Sid - READ-ONLY; The secret id
 	Sid *string `json:"sid,omitempty"`
-	// X509Thumbprint - Thumbprint of the certificate. (a URL-encoded base64 string)
+	// X509Thumbprint - READ-ONLY; Thumbprint of the certificate. (a URL-encoded base64 string)
 	X509Thumbprint *string `json:"x5t,omitempty"`
-	// Policy - The management policy.
+	// Policy - READ-ONLY; The management policy.
 	Policy *CertificatePolicy `json:"policy,omitempty"`
 	// Cer - CER contents of x509 certificate.
 	Cer *[]byte `json:"cer,omitempty"`
@@ -237,21 +237,6 @@ type CertificateBundle struct {
 // MarshalJSON is the custom marshaler for CertificateBundle.
 func (cb CertificateBundle) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cb.ID != nil {
-		objectMap["id"] = cb.ID
-	}
-	if cb.Kid != nil {
-		objectMap["kid"] = cb.Kid
-	}
-	if cb.Sid != nil {
-		objectMap["sid"] = cb.Sid
-	}
-	if cb.X509Thumbprint != nil {
-		objectMap["x5t"] = cb.X509Thumbprint
-	}
-	if cb.Policy != nil {
-		objectMap["policy"] = cb.Policy
-	}
 	if cb.Cer != nil {
 		objectMap["cer"] = cb.Cer
 	}
@@ -338,9 +323,9 @@ type CertificateIssuerItem struct {
 // CertificateIssuerListResult the certificate issuer list result
 type CertificateIssuerListResult struct {
 	autorest.Response `json:"-"`
-	// Value - A response message containing a list of certificate issuers in the vault along with a link to the next page of certificate issuers
+	// Value - READ-ONLY; A response message containing a list of certificate issuers in the vault along with a link to the next page of certificate issuers
 	Value *[]CertificateIssuerItem `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of certificate issuers.
+	// NextLink - READ-ONLY; The URL to get the next set of certificate issuers.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -539,9 +524,9 @@ func (ci CertificateItem) MarshalJSON() ([]byte, error) {
 // CertificateListResult the certificate list result
 type CertificateListResult struct {
 	autorest.Response `json:"-"`
-	// Value - A response message containing a list of certificates in the vault along with a link to the next page of certificates
+	// Value - READ-ONLY; A response message containing a list of certificates in the vault along with a link to the next page of certificates
 	Value *[]CertificateItem `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of certificates.
+	// NextLink - READ-ONLY; The URL to get the next set of certificates.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -710,7 +695,7 @@ func (cmp CertificateMergeParameters) MarshalJSON() ([]byte, error) {
 // CertificateOperation a certificate operation is returned in case of async requests.
 type CertificateOperation struct {
 	autorest.Response `json:"-"`
-	// ID - The certificate id
+	// ID - READ-ONLY; The certificate id
 	ID *string `json:"id,omitempty"`
 	// IssuerParameters - Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
@@ -739,7 +724,7 @@ type CertificateOperationUpdateParameter struct {
 // CertificatePolicy management policy for a certificate.
 type CertificatePolicy struct {
 	autorest.Response `json:"-"`
-	// ID - The certificate id
+	// ID - READ-ONLY; The certificate id
 	ID *string `json:"id,omitempty"`
 	// KeyProperties - Properties of the key backing a certificate.
 	KeyProperties *KeyProperties `json:"key_props,omitempty"`
@@ -793,7 +778,7 @@ type Contact struct {
 // Contacts the contacts for the vault certificates.
 type Contacts struct {
 	autorest.Response `json:"-"`
-	// ID - Identifier for the contacts collection.
+	// ID - READ-ONLY; Identifier for the contacts collection.
 	ID *string `json:"id,omitempty"`
 	// ContactList - The contact list for the vault certificates.
 	ContactList *[]Contact `json:"contacts,omitempty"`
@@ -801,14 +786,15 @@ type Contacts struct {
 
 // Error the key vault server error
 type Error struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
 }
 
 // ErrorType the key vault error exception
 type ErrorType struct {
+	// Error - READ-ONLY
 	Error *Error `json:"error,omitempty"`
 }
 
@@ -816,16 +802,16 @@ type ErrorType struct {
 type IssuerAttributes struct {
 	// Enabled - Determines whether the issuer is enabled
 	Enabled *bool `json:"enabled,omitempty"`
-	// Created - Creation time in UTC
+	// Created - READ-ONLY; Creation time in UTC
 	Created *date.UnixTime `json:"created,omitempty"`
-	// Updated - Last updated time in UTC
+	// Updated - READ-ONLY; Last updated time in UTC
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
 // IssuerBundle the issuer for Key Vault certificate
 type IssuerBundle struct {
 	autorest.Response `json:"-"`
-	// ID - Identifier for the issuer object.
+	// ID - READ-ONLY; Identifier for the issuer object.
 	ID *string `json:"id,omitempty"`
 	// Provider - The issuer provider.
 	Provider *string `json:"provider,omitempty"`
@@ -890,9 +876,9 @@ type KeyAttributes struct {
 	NotBefore *date.UnixTime `json:"nbf,omitempty"`
 	// Expires - Expiry date in UTC
 	Expires *date.UnixTime `json:"exp,omitempty"`
-	// Created - Creation time in UTC
+	// Created - READ-ONLY; Creation time in UTC
 	Created *date.UnixTime `json:"created,omitempty"`
-	// Updated - Last updated time in UTC
+	// Updated - READ-ONLY; Last updated time in UTC
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
@@ -905,7 +891,7 @@ type KeyBundle struct {
 	Attributes *KeyAttributes `json:"attributes,omitempty"`
 	// Tags - Application-specific metadata in the form of key-value pairs
 	Tags map[string]*string `json:"tags"`
-	// Managed - True if the key's lifetime is managed by key vault i.e. if this is a key backing a certificate, then managed will be true.
+	// Managed - READ-ONLY; True if the key's lifetime is managed by key vault i.e. if this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty"`
 }
 
@@ -920,9 +906,6 @@ func (kb KeyBundle) MarshalJSON() ([]byte, error) {
 	}
 	if kb.Tags != nil {
 		objectMap["tags"] = kb.Tags
-	}
-	if kb.Managed != nil {
-		objectMap["managed"] = kb.Managed
 	}
 	return json.Marshal(objectMap)
 }
@@ -998,7 +981,7 @@ type KeyItem struct {
 	Attributes *KeyAttributes `json:"attributes,omitempty"`
 	// Tags - Application-specific metadata in the form of key-value pairs
 	Tags map[string]*string `json:"tags"`
-	// Managed - True if the key's lifetime is managed by key vault i.e. if this is a key backing a certificate, then managed will be true.
+	// Managed - READ-ONLY; True if the key's lifetime is managed by key vault i.e. if this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty"`
 }
 
@@ -1014,18 +997,15 @@ func (ki KeyItem) MarshalJSON() ([]byte, error) {
 	if ki.Tags != nil {
 		objectMap["tags"] = ki.Tags
 	}
-	if ki.Managed != nil {
-		objectMap["managed"] = ki.Managed
-	}
 	return json.Marshal(objectMap)
 }
 
 // KeyListResult the key list result
 type KeyListResult struct {
 	autorest.Response `json:"-"`
-	// Value - A response message containing a list of keys in the vault along with a link to the next page of keys
+	// Value - READ-ONLY; A response message containing a list of keys in the vault along with a link to the next page of keys
 	Value *[]KeyItem `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of keys.
+	// NextLink - READ-ONLY; The URL to get the next set of keys.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1169,9 +1149,9 @@ func NewKeyListResultPage(getNextPage func(context.Context, KeyListResult) (KeyL
 // KeyOperationResult the key operation result
 type KeyOperationResult struct {
 	autorest.Response `json:"-"`
-	// Kid - Key identifier
+	// Kid - READ-ONLY; Key identifier
 	Kid *string `json:"kid,omitempty"`
-	// Result - a URL-encoded base64 string
+	// Result - READ-ONLY; a URL-encoded base64 string
 	Result *string `json:"value,omitempty"`
 }
 
@@ -1246,7 +1226,7 @@ type KeyVerifyParameters struct {
 // KeyVerifyResult the key verify result
 type KeyVerifyResult struct {
 	autorest.Response `json:"-"`
-	// Value - true if the signature is verified, false otherwise.
+	// Value - READ-ONLY; true if the signature is verified, false otherwise.
 	Value *bool `json:"value,omitempty"`
 }
 
@@ -1269,7 +1249,7 @@ type OrganizationDetails struct {
 
 // PendingCertificateSigningRequestResult the pending certificate signing request result
 type PendingCertificateSigningRequestResult struct {
-	// Value - The pending certificate signing request as Base64 encoded string.
+	// Value - READ-ONLY; The pending certificate signing request as Base64 encoded string.
 	Value *string `json:"value,omitempty"`
 }
 
@@ -1281,9 +1261,9 @@ type SecretAttributes struct {
 	NotBefore *date.UnixTime `json:"nbf,omitempty"`
 	// Expires - Expiry date in UTC
 	Expires *date.UnixTime `json:"exp,omitempty"`
-	// Created - Creation time in UTC
+	// Created - READ-ONLY; Creation time in UTC
 	Created *date.UnixTime `json:"created,omitempty"`
-	// Updated - Last updated time in UTC
+	// Updated - READ-ONLY; Last updated time in UTC
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
@@ -1300,9 +1280,9 @@ type SecretBundle struct {
 	Attributes *SecretAttributes `json:"attributes,omitempty"`
 	// Tags - Application-specific metadata in the form of key-value pairs
 	Tags map[string]*string `json:"tags"`
-	// Kid - If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
+	// Kid - READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
 	Kid *string `json:"kid,omitempty"`
-	// Managed - True if the secret's lifetime is managed by key vault i.e. if this is a secret backing a certificate, then managed will be true.
+	// Managed - READ-ONLY; True if the secret's lifetime is managed by key vault i.e. if this is a secret backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty"`
 }
 
@@ -1324,12 +1304,6 @@ func (sb SecretBundle) MarshalJSON() ([]byte, error) {
 	if sb.Tags != nil {
 		objectMap["tags"] = sb.Tags
 	}
-	if sb.Kid != nil {
-		objectMap["kid"] = sb.Kid
-	}
-	if sb.Managed != nil {
-		objectMap["managed"] = sb.Managed
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1343,7 +1317,7 @@ type SecretItem struct {
 	Tags map[string]*string `json:"tags"`
 	// ContentType - Type of the secret value such as a password
 	ContentType *string `json:"contentType,omitempty"`
-	// Managed - True if the secret's lifetime is managed by key vault i.e. if this is a key backing a certificate, then managed will be true.
+	// Managed - READ-ONLY; True if the secret's lifetime is managed by key vault i.e. if this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty"`
 }
 
@@ -1362,18 +1336,15 @@ func (si SecretItem) MarshalJSON() ([]byte, error) {
 	if si.ContentType != nil {
 		objectMap["contentType"] = si.ContentType
 	}
-	if si.Managed != nil {
-		objectMap["managed"] = si.Managed
-	}
 	return json.Marshal(objectMap)
 }
 
 // SecretListResult the secret list result
 type SecretListResult struct {
 	autorest.Response `json:"-"`
-	// Value - A response message containing a list of secrets in the vault along with a link to the next page of secrets
+	// Value - READ-ONLY; A response message containing a list of secrets in the vault along with a link to the next page of secrets
 	Value *[]SecretItem `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of secrets.
+	// NextLink - READ-ONLY; The URL to get the next set of secrets.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

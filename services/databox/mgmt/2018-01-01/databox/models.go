@@ -328,9 +328,9 @@ func PossibleStageStatusValues() []StageStatus {
 
 // AccountCopyLogDetails copy log details for a storage account of a DataBox job
 type AccountCopyLogDetails struct {
-	// AccountName - Destination account name.
+	// AccountName - READ-ONLY; Destination account name.
 	AccountName *string `json:"accountName,omitempty"`
-	// CopyLogLink - Link for copy logs.
+	// CopyLogLink - READ-ONLY; Link for copy logs.
 	CopyLogLink *string `json:"copyLogLink,omitempty"`
 	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
@@ -340,12 +340,6 @@ type AccountCopyLogDetails struct {
 func (acld AccountCopyLogDetails) MarshalJSON() ([]byte, error) {
 	acld.CopyLogDetailsType = CopyLogDetailsTypeDataBox
 	objectMap := make(map[string]interface{})
-	if acld.AccountName != nil {
-		objectMap["accountName"] = acld.AccountName
-	}
-	if acld.CopyLogLink != nil {
-		objectMap["copyLogLink"] = acld.CopyLogLink
-	}
 	if acld.CopyLogDetailsType != "" {
 		objectMap["copyLogDetailsType"] = acld.CopyLogDetailsType
 	}
@@ -379,27 +373,24 @@ func (acld AccountCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, 
 
 // AccountCredentialDetails credential details of the account.
 type AccountCredentialDetails struct {
-	// AccountName - Name of the account.
+	// AccountName - READ-ONLY; Name of the account.
 	AccountName *string `json:"accountName,omitempty"`
-	// AccountConnectionString - Connection string of the account endpoint to use the account as a storage endpoint on the device.
+	// AccountConnectionString - READ-ONLY; Connection string of the account endpoint to use the account as a storage endpoint on the device.
 	AccountConnectionString *string `json:"accountConnectionString,omitempty"`
-	// ShareCredentialDetails - Per share level unencrypted access credentials.
+	// ShareCredentialDetails - READ-ONLY; Per share level unencrypted access credentials.
 	ShareCredentialDetails *[]ShareCredentialDetails `json:"shareCredentialDetails,omitempty"`
 }
 
 // AddressValidationOutput output of the address validation api.
 type AddressValidationOutput struct {
 	autorest.Response `json:"-"`
-	// AddressValidationProperties - The address validation properties.
+	// AddressValidationProperties - READ-ONLY; The address validation properties.
 	*AddressValidationProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AddressValidationOutput.
 func (avo AddressValidationOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if avo.AddressValidationProperties != nil {
-		objectMap["properties"] = avo.AddressValidationProperties
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -429,27 +420,27 @@ func (avo *AddressValidationOutput) UnmarshalJSON(body []byte) error {
 
 // AddressValidationProperties the address validation output.
 type AddressValidationProperties struct {
-	// ValidationStatus - The address validation status. Possible values include: 'Valid', 'Invalid', 'Ambiguous'
+	// ValidationStatus - READ-ONLY; The address validation status. Possible values include: 'Valid', 'Invalid', 'Ambiguous'
 	ValidationStatus AddressValidationStatus `json:"validationStatus,omitempty"`
-	// AlternateAddresses - List of alternate addresses.
+	// AlternateAddresses - READ-ONLY; List of alternate addresses.
 	AlternateAddresses *[]ShippingAddress `json:"alternateAddresses,omitempty"`
 }
 
 // ApplianceNetworkConfiguration the Network Adapter configuration of a DataBox.
 type ApplianceNetworkConfiguration struct {
-	// Name - Name of the network.
+	// Name - READ-ONLY; Name of the network.
 	Name *string `json:"name,omitempty"`
-	// MacAddress - Mac Address.
+	// MacAddress - READ-ONLY; Mac Address.
 	MacAddress *string `json:"macAddress,omitempty"`
 }
 
 // ArmBaseObject base class for all objects under resource.
 type ArmBaseObject struct {
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -468,7 +459,7 @@ type AvailableSkuRequest struct {
 // AvailableSkusResult the available skus operation response.
 type AvailableSkusResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of available skus.
+	// Value - READ-ONLY; List of available skus.
 	Value *[]SkuInformation `json:"value,omitempty"`
 	// NextLink - Link for the next set of skus.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -729,17 +720,17 @@ func (cld CopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, bool) {
 
 // CopyProgress copy progress.
 type CopyProgress struct {
-	// StorageAccountName - Name of the storage account where the data needs to be uploaded.
+	// StorageAccountName - READ-ONLY; Name of the storage account where the data needs to be uploaded.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
-	// AccountID - Id of the account where the data needs to be uploaded.
+	// AccountID - READ-ONLY; Id of the account where the data needs to be uploaded.
 	AccountID *string `json:"accountId,omitempty"`
-	// BytesSentToCloud - Amount of data uploaded by the job as of now.
+	// BytesSentToCloud - READ-ONLY; Amount of data uploaded by the job as of now.
 	BytesSentToCloud *int64 `json:"bytesSentToCloud,omitempty"`
-	// TotalBytesToProcess - Total amount of data to be processed by the job.
+	// TotalBytesToProcess - READ-ONLY; Total amount of data to be processed by the job.
 	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty"`
-	// FilesProcessed - Number of files processed by the job as of now.
+	// FilesProcessed - READ-ONLY; Number of files processed by the job as of now.
 	FilesProcessed *int64 `json:"filesProcessed,omitempty"`
-	// TotalFilesToProcess - Total number of files to be processed by the job.
+	// TotalFilesToProcess - READ-ONLY; Total number of files to be processed by the job.
 	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty"`
 }
 
@@ -931,19 +922,19 @@ func (dsad DestinationStorageAccountDetails) AsBasicDestinationAccountDetails() 
 
 // DestinationToServiceLocationMap map of destination location to service location
 type DestinationToServiceLocationMap struct {
-	// DestinationLocation - Location of the destination.
+	// DestinationLocation - READ-ONLY; Location of the destination.
 	DestinationLocation *string `json:"destinationLocation,omitempty"`
-	// ServiceLocation - Location of the service.
+	// ServiceLocation - READ-ONLY; Location of the service.
 	ServiceLocation *string `json:"serviceLocation,omitempty"`
 }
 
 // DiskCopyLogDetails copy Log Details for a disk
 type DiskCopyLogDetails struct {
-	// DiskSerialNumber - Disk Serial Number.
+	// DiskSerialNumber - READ-ONLY; Disk Serial Number.
 	DiskSerialNumber *string `json:"diskSerialNumber,omitempty"`
-	// ErrorLogLink - Link for copy error logs.
+	// ErrorLogLink - READ-ONLY; Link for copy error logs.
 	ErrorLogLink *string `json:"errorLogLink,omitempty"`
-	// VerboseLogLink - Link for copy verbose logs.
+	// VerboseLogLink - READ-ONLY; Link for copy verbose logs.
 	VerboseLogLink *string `json:"verboseLogLink,omitempty"`
 	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
@@ -953,15 +944,6 @@ type DiskCopyLogDetails struct {
 func (dcld DiskCopyLogDetails) MarshalJSON() ([]byte, error) {
 	dcld.CopyLogDetailsType = CopyLogDetailsTypeDataBoxDisk
 	objectMap := make(map[string]interface{})
-	if dcld.DiskSerialNumber != nil {
-		objectMap["diskSerialNumber"] = dcld.DiskSerialNumber
-	}
-	if dcld.ErrorLogLink != nil {
-		objectMap["errorLogLink"] = dcld.ErrorLogLink
-	}
-	if dcld.VerboseLogLink != nil {
-		objectMap["verboseLogLink"] = dcld.VerboseLogLink
-	}
 	if dcld.CopyLogDetailsType != "" {
 		objectMap["copyLogDetailsType"] = dcld.CopyLogDetailsType
 	}
@@ -995,13 +977,13 @@ func (dcld DiskCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, boo
 
 // DiskCopyProgress dataBox Disk Copy Progress
 type DiskCopyProgress struct {
-	// SerialNumber - The serial number of the disk
+	// SerialNumber - READ-ONLY; The serial number of the disk
 	SerialNumber *string `json:"serialNumber,omitempty"`
-	// BytesCopied - Bytes copied during the copy of disk.
+	// BytesCopied - READ-ONLY; Bytes copied during the copy of disk.
 	BytesCopied *int64 `json:"bytesCopied,omitempty"`
-	// PercentComplete - Indicates the percentage completed for the copy of the disk.
+	// PercentComplete - READ-ONLY; Indicates the percentage completed for the copy of the disk.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// Status - The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned'
+	// Status - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned'
 	Status CopyStatus `json:"status,omitempty"`
 }
 
@@ -1009,35 +991,35 @@ type DiskCopyProgress struct {
 type DiskJobDetails struct {
 	// PreferredDisks - User preference on what size disks are needed for the job. The map is from the disk size in TB to the count. Eg. {2,5} means 5 disks of 2 TB size. Key is string but will be checked against an int.
 	PreferredDisks map[string]*int32 `json:"preferredDisks"`
-	// CopyProgress - Copy progress per disk.
+	// CopyProgress - READ-ONLY; Copy progress per disk.
 	CopyProgress *[]DiskCopyProgress `json:"copyProgress,omitempty"`
-	// DisksAndSizeDetails - Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks are shipped to the customer.
+	// DisksAndSizeDetails - READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks are shipped to the customer.
 	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails"`
 	// Passkey - User entered passkey for DataBox Disk job.
 	Passkey *string `json:"passkey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobStages - List of stages that run in the job.
+	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// DeliveryPackage - Delivery package shipping details.
+	// DeliveryPackage - READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
-	// ReturnPackage - Return package shipping details.
+	// ReturnPackage - READ-ONLY; Return package shipping details.
 	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
 	// DestinationAccountDetails - Destination account details.
 	DestinationAccountDetails *[]BasicDestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
-	// ErrorDetails - Error details for failure. This is optional.
+	// ErrorDetails - READ-ONLY; Error details for failure. This is optional.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 	// Preferences - Preferences for the order.
 	Preferences *Preferences `json:"preferences,omitempty"`
-	// CopyLogDetails - List of copy log details.
+	// CopyLogDetails - READ-ONLY; List of copy log details.
 	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
-	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	// ReverseShipmentLabelSasKey - READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
-	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
@@ -1050,20 +1032,11 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 	if djd.PreferredDisks != nil {
 		objectMap["preferredDisks"] = djd.PreferredDisks
 	}
-	if djd.CopyProgress != nil {
-		objectMap["copyProgress"] = djd.CopyProgress
-	}
-	if djd.DisksAndSizeDetails != nil {
-		objectMap["disksAndSizeDetails"] = djd.DisksAndSizeDetails
-	}
 	if djd.Passkey != nil {
 		objectMap["passkey"] = djd.Passkey
 	}
 	if djd.ExpectedDataSizeInTeraBytes != nil {
 		objectMap["expectedDataSizeInTeraBytes"] = djd.ExpectedDataSizeInTeraBytes
-	}
-	if djd.JobStages != nil {
-		objectMap["jobStages"] = djd.JobStages
 	}
 	if djd.ContactDetails != nil {
 		objectMap["contactDetails"] = djd.ContactDetails
@@ -1071,29 +1044,11 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 	if djd.ShippingAddress != nil {
 		objectMap["shippingAddress"] = djd.ShippingAddress
 	}
-	if djd.DeliveryPackage != nil {
-		objectMap["deliveryPackage"] = djd.DeliveryPackage
-	}
-	if djd.ReturnPackage != nil {
-		objectMap["returnPackage"] = djd.ReturnPackage
-	}
 	if djd.DestinationAccountDetails != nil {
 		objectMap["destinationAccountDetails"] = djd.DestinationAccountDetails
 	}
-	if djd.ErrorDetails != nil {
-		objectMap["errorDetails"] = djd.ErrorDetails
-	}
 	if djd.Preferences != nil {
 		objectMap["preferences"] = djd.Preferences
-	}
-	if djd.CopyLogDetails != nil {
-		objectMap["copyLogDetails"] = djd.CopyLogDetails
-	}
-	if djd.ReverseShipmentLabelSasKey != nil {
-		objectMap["reverseShipmentLabelSasKey"] = djd.ReverseShipmentLabelSasKey
-	}
-	if djd.ChainOfCustodySasKey != nil {
-		objectMap["chainOfCustodySasKey"] = djd.ChainOfCustodySasKey
 	}
 	if djd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = djd.JobDetailsType
@@ -1294,11 +1249,11 @@ func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
 
 // DiskJobSecrets the secrets related to disk job.
 type DiskJobSecrets struct {
-	// DiskSecrets - Contains the list of secrets object for that device.
+	// DiskSecrets - READ-ONLY; Contains the list of secrets object for that device.
 	DiskSecrets *[]DiskSecret `json:"diskSecrets,omitempty"`
-	// PassKey - PassKey for the disk Job.
+	// PassKey - READ-ONLY; PassKey for the disk Job.
 	PassKey *string `json:"passKey,omitempty"`
-	// IsPasskeyUserDefined - Whether passkey was provided by user.
+	// IsPasskeyUserDefined - READ-ONLY; Whether passkey was provided by user.
 	IsPasskeyUserDefined *bool `json:"isPasskeyUserDefined,omitempty"`
 	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
@@ -1308,15 +1263,6 @@ type DiskJobSecrets struct {
 func (djs DiskJobSecrets) MarshalJSON() ([]byte, error) {
 	djs.JobSecretsType = JobSecretsTypeDataBoxDisk
 	objectMap := make(map[string]interface{})
-	if djs.DiskSecrets != nil {
-		objectMap["diskSecrets"] = djs.DiskSecrets
-	}
-	if djs.PassKey != nil {
-		objectMap["passKey"] = djs.PassKey
-	}
-	if djs.IsPasskeyUserDefined != nil {
-		objectMap["isPasskeyUserDefined"] = djs.IsPasskeyUserDefined
-	}
 	if djs.JobSecretsType != "" {
 		objectMap["jobSecretsType"] = djs.JobSecretsType
 	}
@@ -1350,25 +1296,25 @@ func (djs DiskJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // DiskSecret contains all the secrets of a Disk.
 type DiskSecret struct {
-	// DiskSerialNumber - Serial number of the assigned disk.
+	// DiskSerialNumber - READ-ONLY; Serial number of the assigned disk.
 	DiskSerialNumber *string `json:"diskSerialNumber,omitempty"`
-	// BitLockerKey - Bit Locker key of the disk which can be used to unlock the disk to copy data.
+	// BitLockerKey - READ-ONLY; Bit Locker key of the disk which can be used to unlock the disk to copy data.
 	BitLockerKey *string `json:"bitLockerKey,omitempty"`
 }
 
 // Error top level error for the job.
 type Error struct {
-	// Code - Error code that can be used to programmatically identify the error.
+	// Code - READ-ONLY; Error code that can be used to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
-	// Message - Describes the error in detail and provides debugging information.
+	// Message - READ-ONLY; Describes the error in detail and provides debugging information.
 	Message *string `json:"message,omitempty"`
 }
 
 // HeavyAccountCopyLogDetails copy log details for a storage account for DataBoxHeavy
 type HeavyAccountCopyLogDetails struct {
-	// AccountName - Destination account name.
+	// AccountName - READ-ONLY; Destination account name.
 	AccountName *string `json:"accountName,omitempty"`
-	// CopyLogLink - Link for copy logs.
+	// CopyLogLink - READ-ONLY; Link for copy logs.
 	CopyLogLink *[]string `json:"copyLogLink,omitempty"`
 	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
@@ -1378,12 +1324,6 @@ type HeavyAccountCopyLogDetails struct {
 func (hacld HeavyAccountCopyLogDetails) MarshalJSON() ([]byte, error) {
 	hacld.CopyLogDetailsType = CopyLogDetailsTypeDataBoxHeavy
 	objectMap := make(map[string]interface{})
-	if hacld.AccountName != nil {
-		objectMap["accountName"] = hacld.AccountName
-	}
-	if hacld.CopyLogLink != nil {
-		objectMap["copyLogLink"] = hacld.CopyLogLink
-	}
 	if hacld.CopyLogDetailsType != "" {
 		objectMap["copyLogDetailsType"] = hacld.CopyLogDetailsType
 	}
@@ -1417,31 +1357,31 @@ func (hacld HeavyAccountCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDet
 
 // HeavyJobDetails dataBoxHeavy Device Job Details
 type HeavyJobDetails struct {
-	// CopyProgress - Copy progress per account.
+	// CopyProgress - READ-ONLY; Copy progress per account.
 	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobStages - List of stages that run in the job.
+	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// DeliveryPackage - Delivery package shipping details.
+	// DeliveryPackage - READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
-	// ReturnPackage - Return package shipping details.
+	// ReturnPackage - READ-ONLY; Return package shipping details.
 	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
 	// DestinationAccountDetails - Destination account details.
 	DestinationAccountDetails *[]BasicDestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
-	// ErrorDetails - Error details for failure. This is optional.
+	// ErrorDetails - READ-ONLY; Error details for failure. This is optional.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 	// Preferences - Preferences for the order.
 	Preferences *Preferences `json:"preferences,omitempty"`
-	// CopyLogDetails - List of copy log details.
+	// CopyLogDetails - READ-ONLY; List of copy log details.
 	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
-	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	// ReverseShipmentLabelSasKey - READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
-	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
@@ -1451,14 +1391,8 @@ type HeavyJobDetails struct {
 func (hjd HeavyJobDetails) MarshalJSON() ([]byte, error) {
 	hjd.JobDetailsType = JobDetailsTypeDataBoxHeavy
 	objectMap := make(map[string]interface{})
-	if hjd.CopyProgress != nil {
-		objectMap["copyProgress"] = hjd.CopyProgress
-	}
 	if hjd.ExpectedDataSizeInTeraBytes != nil {
 		objectMap["expectedDataSizeInTeraBytes"] = hjd.ExpectedDataSizeInTeraBytes
-	}
-	if hjd.JobStages != nil {
-		objectMap["jobStages"] = hjd.JobStages
 	}
 	if hjd.ContactDetails != nil {
 		objectMap["contactDetails"] = hjd.ContactDetails
@@ -1466,29 +1400,11 @@ func (hjd HeavyJobDetails) MarshalJSON() ([]byte, error) {
 	if hjd.ShippingAddress != nil {
 		objectMap["shippingAddress"] = hjd.ShippingAddress
 	}
-	if hjd.DeliveryPackage != nil {
-		objectMap["deliveryPackage"] = hjd.DeliveryPackage
-	}
-	if hjd.ReturnPackage != nil {
-		objectMap["returnPackage"] = hjd.ReturnPackage
-	}
 	if hjd.DestinationAccountDetails != nil {
 		objectMap["destinationAccountDetails"] = hjd.DestinationAccountDetails
 	}
-	if hjd.ErrorDetails != nil {
-		objectMap["errorDetails"] = hjd.ErrorDetails
-	}
 	if hjd.Preferences != nil {
 		objectMap["preferences"] = hjd.Preferences
-	}
-	if hjd.CopyLogDetails != nil {
-		objectMap["copyLogDetails"] = hjd.CopyLogDetails
-	}
-	if hjd.ReverseShipmentLabelSasKey != nil {
-		objectMap["reverseShipmentLabelSasKey"] = hjd.ReverseShipmentLabelSasKey
-	}
-	if hjd.ChainOfCustodySasKey != nil {
-		objectMap["chainOfCustodySasKey"] = hjd.ChainOfCustodySasKey
 	}
 	if hjd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = hjd.JobDetailsType
@@ -1662,7 +1578,7 @@ func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 
 // HeavyJobSecrets the secrets related to a DataBoxHeavy job.
 type HeavyJobSecrets struct {
-	// CabinetPodSecrets - Contains the list of secret objects for a DataBoxHeavy job.
+	// CabinetPodSecrets - READ-ONLY; Contains the list of secret objects for a DataBoxHeavy job.
 	CabinetPodSecrets *[]HeavySecret `json:"cabinetPodSecrets,omitempty"`
 	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsTypeEnum `json:"jobSecretsType,omitempty"`
@@ -1672,9 +1588,6 @@ type HeavyJobSecrets struct {
 func (hjs HeavyJobSecrets) MarshalJSON() ([]byte, error) {
 	hjs.JobSecretsType = JobSecretsTypeDataBoxHeavy
 	objectMap := make(map[string]interface{})
-	if hjs.CabinetPodSecrets != nil {
-		objectMap["cabinetPodSecrets"] = hjs.CabinetPodSecrets
-	}
 	if hjs.JobSecretsType != "" {
 		objectMap["jobSecretsType"] = hjs.JobSecretsType
 	}
@@ -1708,15 +1621,15 @@ func (hjs HeavyJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // HeavySecret the secrets related to a DataBoxHeavy.
 type HeavySecret struct {
-	// DeviceSerialNumber - Serial number of the assigned device.
+	// DeviceSerialNumber - READ-ONLY; Serial number of the assigned device.
 	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
-	// DevicePassword - Password for out of the box experience on device.
+	// DevicePassword - READ-ONLY; Password for out of the box experience on device.
 	DevicePassword *string `json:"devicePassword,omitempty"`
-	// NetworkConfigurations - Network configuration of the appliance.
+	// NetworkConfigurations - READ-ONLY; Network configuration of the appliance.
 	NetworkConfigurations *[]ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty"`
-	// EncodedValidationCertPubKey - The base 64 encoded public key to authenticate with the device
+	// EncodedValidationCertPubKey - READ-ONLY; The base 64 encoded public key to authenticate with the device
 	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty"`
-	// AccountCredentialDetails - Per account level access credentials.
+	// AccountCredentialDetails - READ-ONLY; Per account level access credentials.
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
 }
 
@@ -1732,27 +1645,27 @@ type BasicJobDetails interface {
 type JobDetails struct {
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobStages - List of stages that run in the job.
+	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// DeliveryPackage - Delivery package shipping details.
+	// DeliveryPackage - READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
-	// ReturnPackage - Return package shipping details.
+	// ReturnPackage - READ-ONLY; Return package shipping details.
 	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
 	// DestinationAccountDetails - Destination account details.
 	DestinationAccountDetails *[]BasicDestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
-	// ErrorDetails - Error details for failure. This is optional.
+	// ErrorDetails - READ-ONLY; Error details for failure. This is optional.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 	// Preferences - Preferences for the order.
 	Preferences *Preferences `json:"preferences,omitempty"`
-	// CopyLogDetails - List of copy log details.
+	// CopyLogDetails - READ-ONLY; List of copy log details.
 	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
-	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	// ReverseShipmentLabelSasKey - READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
-	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
@@ -1810,38 +1723,17 @@ func (jd JobDetails) MarshalJSON() ([]byte, error) {
 	if jd.ExpectedDataSizeInTeraBytes != nil {
 		objectMap["expectedDataSizeInTeraBytes"] = jd.ExpectedDataSizeInTeraBytes
 	}
-	if jd.JobStages != nil {
-		objectMap["jobStages"] = jd.JobStages
-	}
 	if jd.ContactDetails != nil {
 		objectMap["contactDetails"] = jd.ContactDetails
 	}
 	if jd.ShippingAddress != nil {
 		objectMap["shippingAddress"] = jd.ShippingAddress
 	}
-	if jd.DeliveryPackage != nil {
-		objectMap["deliveryPackage"] = jd.DeliveryPackage
-	}
-	if jd.ReturnPackage != nil {
-		objectMap["returnPackage"] = jd.ReturnPackage
-	}
 	if jd.DestinationAccountDetails != nil {
 		objectMap["destinationAccountDetails"] = jd.DestinationAccountDetails
 	}
-	if jd.ErrorDetails != nil {
-		objectMap["errorDetails"] = jd.ErrorDetails
-	}
 	if jd.Preferences != nil {
 		objectMap["preferences"] = jd.Preferences
-	}
-	if jd.CopyLogDetails != nil {
-		objectMap["copyLogDetails"] = jd.CopyLogDetails
-	}
-	if jd.ReverseShipmentLabelSasKey != nil {
-		objectMap["reverseShipmentLabelSasKey"] = jd.ReverseShipmentLabelSasKey
-	}
-	if jd.ChainOfCustodySasKey != nil {
-		objectMap["chainOfCustodySasKey"] = jd.ChainOfCustodySasKey
 	}
 	if jd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = jd.JobDetailsType
@@ -2006,31 +1898,31 @@ func (jd *JobDetails) UnmarshalJSON(body []byte) error {
 
 // JobDetailsType dataBox Job Details
 type JobDetailsType struct {
-	// CopyProgress - Copy progress per storage account.
+	// CopyProgress - READ-ONLY; Copy progress per storage account.
 	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobStages - List of stages that run in the job.
+	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// DeliveryPackage - Delivery package shipping details.
+	// DeliveryPackage - READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
-	// ReturnPackage - Return package shipping details.
+	// ReturnPackage - READ-ONLY; Return package shipping details.
 	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
 	// DestinationAccountDetails - Destination account details.
 	DestinationAccountDetails *[]BasicDestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
-	// ErrorDetails - Error details for failure. This is optional.
+	// ErrorDetails - READ-ONLY; Error details for failure. This is optional.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 	// Preferences - Preferences for the order.
 	Preferences *Preferences `json:"preferences,omitempty"`
-	// CopyLogDetails - List of copy log details.
+	// CopyLogDetails - READ-ONLY; List of copy log details.
 	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
-	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	// ReverseShipmentLabelSasKey - READ-ONLY; Shared access key to download the return shipment label
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
-	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
@@ -2040,14 +1932,8 @@ type JobDetailsType struct {
 func (jdt JobDetailsType) MarshalJSON() ([]byte, error) {
 	jdt.JobDetailsType = JobDetailsTypeDataBox
 	objectMap := make(map[string]interface{})
-	if jdt.CopyProgress != nil {
-		objectMap["copyProgress"] = jdt.CopyProgress
-	}
 	if jdt.ExpectedDataSizeInTeraBytes != nil {
 		objectMap["expectedDataSizeInTeraBytes"] = jdt.ExpectedDataSizeInTeraBytes
-	}
-	if jdt.JobStages != nil {
-		objectMap["jobStages"] = jdt.JobStages
 	}
 	if jdt.ContactDetails != nil {
 		objectMap["contactDetails"] = jdt.ContactDetails
@@ -2055,29 +1941,11 @@ func (jdt JobDetailsType) MarshalJSON() ([]byte, error) {
 	if jdt.ShippingAddress != nil {
 		objectMap["shippingAddress"] = jdt.ShippingAddress
 	}
-	if jdt.DeliveryPackage != nil {
-		objectMap["deliveryPackage"] = jdt.DeliveryPackage
-	}
-	if jdt.ReturnPackage != nil {
-		objectMap["returnPackage"] = jdt.ReturnPackage
-	}
 	if jdt.DestinationAccountDetails != nil {
 		objectMap["destinationAccountDetails"] = jdt.DestinationAccountDetails
 	}
-	if jdt.ErrorDetails != nil {
-		objectMap["errorDetails"] = jdt.ErrorDetails
-	}
 	if jdt.Preferences != nil {
 		objectMap["preferences"] = jdt.Preferences
-	}
-	if jdt.CopyLogDetails != nil {
-		objectMap["copyLogDetails"] = jdt.CopyLogDetails
-	}
-	if jdt.ReverseShipmentLabelSasKey != nil {
-		objectMap["reverseShipmentLabelSasKey"] = jdt.ReverseShipmentLabelSasKey
-	}
-	if jdt.ChainOfCustodySasKey != nil {
-		objectMap["chainOfCustodySasKey"] = jdt.ChainOfCustodySasKey
 	}
 	if jdt.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = jdt.JobDetailsType
@@ -2251,33 +2119,33 @@ func (jdt *JobDetailsType) UnmarshalJSON(body []byte) error {
 
 // JobErrorDetails job Error Details for providing the information and recommended action.
 type JobErrorDetails struct {
-	// ErrorMessage - Message for the error.
+	// ErrorMessage - READ-ONLY; Message for the error.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// ErrorCode - Code for the error.
+	// ErrorCode - READ-ONLY; Code for the error.
 	ErrorCode *int32 `json:"errorCode,omitempty"`
-	// RecommendedAction - Recommended action for the error.
+	// RecommendedAction - READ-ONLY; Recommended action for the error.
 	RecommendedAction *string `json:"recommendedAction,omitempty"`
-	// ExceptionMessage - Contains the non localized exception message
+	// ExceptionMessage - READ-ONLY; Contains the non localized exception message
 	ExceptionMessage *string `json:"exceptionMessage,omitempty"`
 }
 
 // JobProperties job Properties
 type JobProperties struct {
-	// IsCancellable - Describes whether the job is cancellable or not.
+	// IsCancellable - READ-ONLY; Describes whether the job is cancellable or not.
 	IsCancellable *bool `json:"isCancellable,omitempty"`
-	// IsDeletable - Describes whether the job is deletable or not.
+	// IsDeletable - READ-ONLY; Describes whether the job is deletable or not.
 	IsDeletable *bool `json:"isDeletable,omitempty"`
-	// IsShippingAddressEditable - Describes whether the shipping address is editable or not.
+	// IsShippingAddressEditable - READ-ONLY; Describes whether the shipping address is editable or not.
 	IsShippingAddressEditable *bool `json:"isShippingAddressEditable,omitempty"`
-	// Status - Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
+	// Status - READ-ONLY; Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
 	Status StageName `json:"status,omitempty"`
-	// StartTime - Time at which the job was started in UTC ISO 8601 format.
+	// StartTime - READ-ONLY; Time at which the job was started in UTC ISO 8601 format.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// Error - Top level error for the job.
+	// Error - READ-ONLY; Top level error for the job.
 	Error *Error `json:"error,omitempty"`
 	// Details - Details of a job run. This field will only be sent for expand details filter.
 	Details BasicJobDetails `json:"details,omitempty"`
-	// CancellationReason - Reason for cancellation.
+	// CancellationReason - READ-ONLY; Reason for cancellation.
 	CancellationReason *string `json:"cancellationReason,omitempty"`
 }
 
@@ -2372,11 +2240,11 @@ type JobResource struct {
 	autorest.Response `json:"-"`
 	// JobProperties - Properties of a job.
 	*JobProperties `json:"properties,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East US, Southeast Asia, etc.). The region of a resource cannot be changed once it is created, but if an identical region is specified on update the request will succeed.
 	Location *string `json:"location,omitempty"`
@@ -2391,15 +2259,6 @@ func (jr JobResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if jr.JobProperties != nil {
 		objectMap["properties"] = jr.JobProperties
-	}
-	if jr.Name != nil {
-		objectMap["name"] = jr.Name
-	}
-	if jr.ID != nil {
-		objectMap["id"] = jr.ID
-	}
-	if jr.Type != nil {
-		objectMap["type"] = jr.Type
 	}
 	if jr.Location != nil {
 		objectMap["location"] = jr.Location
@@ -2699,7 +2558,7 @@ type JobsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsCreateFuture) Result(client JobsClient) (jr JobResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2727,7 +2586,7 @@ type JobsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2882,17 +2741,17 @@ func (jst JobSecretsType) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // JobStages job stages.
 type JobStages struct {
-	// StageName - Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
+	// StageName - READ-ONLY; Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
 	StageName StageName `json:"stageName,omitempty"`
-	// DisplayName - Display name of the job stage.
+	// DisplayName - READ-ONLY; Display name of the job stage.
 	DisplayName *string `json:"displayName,omitempty"`
-	// StageStatus - Status of the job stage. Possible values include: 'StageStatusNone', 'StageStatusInProgress', 'StageStatusSucceeded', 'StageStatusFailed', 'StageStatusCancelled', 'StageStatusCancelling', 'StageStatusSucceededWithErrors'
+	// StageStatus - READ-ONLY; Status of the job stage. Possible values include: 'StageStatusNone', 'StageStatusInProgress', 'StageStatusSucceeded', 'StageStatusFailed', 'StageStatusCancelled', 'StageStatusCancelling', 'StageStatusSucceededWithErrors'
 	StageStatus StageStatus `json:"stageStatus,omitempty"`
-	// StageTime - Time for the job stage in UTC ISO 8601 format.
+	// StageTime - READ-ONLY; Time for the job stage in UTC ISO 8601 format.
 	StageTime *date.Time `json:"stageTime,omitempty"`
-	// JobStageDetails - Job Stage Details
+	// JobStageDetails - READ-ONLY; Job Stage Details
 	JobStageDetails interface{} `json:"jobStageDetails,omitempty"`
-	// ErrorDetails - Error details for the stage.
+	// ErrorDetails - READ-ONLY; Error details for the stage.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 }
 
@@ -2905,7 +2764,7 @@ type JobsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsUpdateFuture) Result(client JobsClient) (jr JobResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2934,13 +2793,13 @@ type NotificationPreference struct {
 
 // Operation operation entity.
 type Operation struct {
-	// Name - Name of the operation. Format: {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}
+	// Name - READ-ONLY; Name of the operation. Format: {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}
 	Name *string `json:"name,omitempty"`
-	// Display - Operation display values.
+	// Display - READ-ONLY; Operation display values.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Properties - Operation properties.
+	// Properties - READ-ONLY; Operation properties.
 	Properties interface{} `json:"properties,omitempty"`
-	// Origin - Origin of the operation. Can be : user|system|user,system
+	// Origin - READ-ONLY; Origin of the operation. Can be : user|system|user,system
 	Origin *string `json:"origin,omitempty"`
 }
 
@@ -2959,7 +2818,7 @@ type OperationDisplay struct {
 // OperationList operation Collection.
 type OperationList struct {
 	autorest.Response `json:"-"`
-	// Value - List of operations.
+	// Value - READ-ONLY; List of operations.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - Link for the next set of operations.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -3104,11 +2963,11 @@ func NewOperationListPage(getNextPage func(context.Context, OperationList) (Oper
 
 // PackageShippingDetails shipping details.
 type PackageShippingDetails struct {
-	// CarrierName - Name of the carrier.
+	// CarrierName - READ-ONLY; Name of the carrier.
 	CarrierName *string `json:"carrierName,omitempty"`
-	// TrackingID - Tracking Id of shipment.
+	// TrackingID - READ-ONLY; Tracking Id of shipment.
 	TrackingID *string `json:"trackingId,omitempty"`
-	// TrackingURL - Url where shipment can be tracked.
+	// TrackingURL - READ-ONLY; Url where shipment can be tracked.
 	TrackingURL *string `json:"trackingUrl,omitempty"`
 }
 
@@ -3144,29 +3003,29 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 
 // Secret the secrets related to a DataBox.
 type Secret struct {
-	// DeviceSerialNumber - Serial number of the assigned device.
+	// DeviceSerialNumber - READ-ONLY; Serial number of the assigned device.
 	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
-	// DevicePassword - Password for out of the box experience on device.
+	// DevicePassword - READ-ONLY; Password for out of the box experience on device.
 	DevicePassword *string `json:"devicePassword,omitempty"`
-	// NetworkConfigurations - Network configuration of the appliance.
+	// NetworkConfigurations - READ-ONLY; Network configuration of the appliance.
 	NetworkConfigurations *[]ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty"`
-	// EncodedValidationCertPubKey - The base 64 encoded public key to authenticate with the device
+	// EncodedValidationCertPubKey - READ-ONLY; The base 64 encoded public key to authenticate with the device
 	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty"`
-	// AccountCredentialDetails - Per account level access credentials.
+	// AccountCredentialDetails - READ-ONLY; Per account level access credentials.
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
 }
 
 // ShareCredentialDetails credential details of the shares in account.
 type ShareCredentialDetails struct {
-	// ShareName - Name of the share.
+	// ShareName - READ-ONLY; Name of the share.
 	ShareName *string `json:"shareName,omitempty"`
-	// ShareType - Type of the share. Possible values include: 'UnknownType', 'HCS', 'BlockBlob', 'PageBlob', 'AzureFile', 'ManagedDisk'
+	// ShareType - READ-ONLY; Type of the share. Possible values include: 'UnknownType', 'HCS', 'BlockBlob', 'PageBlob', 'AzureFile', 'ManagedDisk'
 	ShareType ShareDestinationFormatType `json:"shareType,omitempty"`
-	// UserName - User name for the share.
+	// UserName - READ-ONLY; User name for the share.
 	UserName *string `json:"userName,omitempty"`
-	// Password - Password for the share.
+	// Password - READ-ONLY; Password for the share.
 	Password *string `json:"password,omitempty"`
-	// SupportedAccessProtocols - Access protocols supported on the device.
+	// SupportedAccessProtocols - READ-ONLY; Access protocols supported on the device.
 	SupportedAccessProtocols *[]AccessProtocol `json:"supportedAccessProtocols,omitempty"`
 }
 
@@ -3183,9 +3042,9 @@ type ShipmentPickUpRequest struct {
 // ShipmentPickUpResponse shipment pick up response.
 type ShipmentPickUpResponse struct {
 	autorest.Response `json:"-"`
-	// ConfirmationNumber - Confirmation number for the pick up request.
+	// ConfirmationNumber - READ-ONLY; Confirmation number for the pick up request.
 	ConfirmationNumber *string `json:"confirmationNumber,omitempty"`
-	// ReadyByTime - Time by which shipment should be ready for pick up, this is in local time of pick up area.
+	// ReadyByTime - READ-ONLY; Time by which shipment should be ready for pick up, this is in local time of pick up area.
 	ReadyByTime *date.Time `json:"readyByTime,omitempty"`
 }
 
@@ -3225,42 +3084,33 @@ type Sku struct {
 
 // SkuCapacity capacity of the sku.
 type SkuCapacity struct {
-	// Usable - Usable capacity in TB.
+	// Usable - READ-ONLY; Usable capacity in TB.
 	Usable *string `json:"usable,omitempty"`
-	// Maximum - Maximum capacity in TB.
+	// Maximum - READ-ONLY; Maximum capacity in TB.
 	Maximum *string `json:"maximum,omitempty"`
 }
 
 // SkuCost describes metadata for retrieving price info.
 type SkuCost struct {
-	// MeterID - Meter id of the Sku.
+	// MeterID - READ-ONLY; Meter id of the Sku.
 	MeterID *string `json:"meterId,omitempty"`
-	// MeterType - The type of the meter.
+	// MeterType - READ-ONLY; The type of the meter.
 	MeterType *string `json:"meterType,omitempty"`
 }
 
 // SkuInformation information of the sku.
 type SkuInformation struct {
-	// Sku - The Sku.
+	// Sku - READ-ONLY; The Sku.
 	Sku *Sku `json:"sku,omitempty"`
-	// Enabled - The sku is enabled or not.
+	// Enabled - READ-ONLY; The sku is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
-	// SkuProperties - Properties of the sku.
+	// SkuProperties - READ-ONLY; Properties of the sku.
 	*SkuProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SkuInformation.
 func (si SkuInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if si.Sku != nil {
-		objectMap["sku"] = si.Sku
-	}
-	if si.Enabled != nil {
-		objectMap["enabled"] = si.Enabled
-	}
-	if si.SkuProperties != nil {
-		objectMap["properties"] = si.SkuProperties
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -3308,27 +3158,27 @@ func (si *SkuInformation) UnmarshalJSON(body []byte) error {
 
 // SkuProperties properties of the sku.
 type SkuProperties struct {
-	// DestinationToServiceLocationMap - The map of destination location to service location.
+	// DestinationToServiceLocationMap - READ-ONLY; The map of destination location to service location.
 	DestinationToServiceLocationMap *[]DestinationToServiceLocationMap `json:"destinationToServiceLocationMap,omitempty"`
-	// Capacity - Capacity of the Sku.
+	// Capacity - READ-ONLY; Capacity of the Sku.
 	Capacity *SkuCapacity `json:"capacity,omitempty"`
-	// Costs - Cost of the Sku.
+	// Costs - READ-ONLY; Cost of the Sku.
 	Costs *[]SkuCost `json:"costs,omitempty"`
-	// APIVersions - Api versions that support this Sku.
+	// APIVersions - READ-ONLY; Api versions that support this Sku.
 	APIVersions *[]string `json:"apiVersions,omitempty"`
-	// DisabledReason - Reason why the Sku is disabled. Possible values include: 'SkuDisabledReasonNone', 'SkuDisabledReasonCountry', 'SkuDisabledReasonRegion', 'SkuDisabledReasonFeature', 'SkuDisabledReasonOfferType', 'SkuDisabledReasonNoSubscriptionInfo'
+	// DisabledReason - READ-ONLY; Reason why the Sku is disabled. Possible values include: 'SkuDisabledReasonNone', 'SkuDisabledReasonCountry', 'SkuDisabledReasonRegion', 'SkuDisabledReasonFeature', 'SkuDisabledReasonOfferType', 'SkuDisabledReasonNoSubscriptionInfo'
 	DisabledReason SkuDisabledReason `json:"disabledReason,omitempty"`
-	// DisabledReasonMessage - Message for why the Sku is disabled.
+	// DisabledReasonMessage - READ-ONLY; Message for why the Sku is disabled.
 	DisabledReasonMessage *string `json:"disabledReasonMessage,omitempty"`
-	// RequiredFeature - Required feature to access the sku.
+	// RequiredFeature - READ-ONLY; Required feature to access the sku.
 	RequiredFeature *string `json:"requiredFeature,omitempty"`
 }
 
 // UnencryptedCredentials unencrypted credentials for accessing device.
 type UnencryptedCredentials struct {
-	// JobName - Name of the job.
+	// JobName - READ-ONLY; Name of the job.
 	JobName *string `json:"jobName,omitempty"`
-	// JobSecrets - Secrets related to this job.
+	// JobSecrets - READ-ONLY; Secrets related to this job.
 	JobSecrets BasicJobSecrets `json:"jobSecrets,omitempty"`
 }
 

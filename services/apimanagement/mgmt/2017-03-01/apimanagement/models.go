@@ -615,20 +615,20 @@ type AdditionalLocation struct {
 	Location *string `json:"location,omitempty"`
 	// Sku - SKU properties of the API Management service.
 	Sku *ServiceSkuProperties `json:"sku,omitempty"`
-	// StaticIps - Static IP addresses of the location's virtual machines.
+	// StaticIps - READ-ONLY; Static IP addresses of the location's virtual machines.
 	StaticIps *[]string `json:"staticIps,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration for the location.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
-	// GatewayRegionalURL - Gateway URL of the API Management service in the Region.
+	// GatewayRegionalURL - READ-ONLY; Gateway URL of the API Management service in the Region.
 	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty"`
 }
 
 // APICollection paged Api list representation.
 type APICollection struct {
 	autorest.Response `json:"-"`
-	// Value - Page values.
+	// Value - READ-ONLY; Page values.
 	Value *[]APIContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -774,11 +774,11 @@ type APIContract struct {
 	autorest.Response `json:"-"`
 	// APIContractProperties - Api entity contract properties.
 	*APIContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -787,15 +787,6 @@ func (ac APIContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ac.APIContractProperties != nil {
 		objectMap["properties"] = ac.APIContractProperties
-	}
-	if ac.ID != nil {
-		objectMap["id"] = ac.ID
-	}
-	if ac.Name != nil {
-		objectMap["name"] = ac.Name
-	}
-	if ac.Type != nil {
-		objectMap["type"] = ac.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -874,9 +865,9 @@ type APIContractProperties struct {
 	APIRevision *string `json:"apiRevision,omitempty"`
 	// APIVersion - Indicates the Version identifier of the API if the API is versioned
 	APIVersion *string `json:"apiVersion,omitempty"`
-	// IsCurrent - Indicates if API revision is current api revision.
+	// IsCurrent - READ-ONLY; Indicates if API revision is current api revision.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
-	// IsOnline - Indicates if API revision is accessible via the gateway.
+	// IsOnline - READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
@@ -904,9 +895,9 @@ type APIContractUpdateProperties struct {
 	APIRevision *string `json:"apiRevision,omitempty"`
 	// APIVersion - Indicates the Version identifier of the API if the API is versioned
 	APIVersion *string `json:"apiVersion,omitempty"`
-	// IsCurrent - Indicates if API revision is current api revision.
+	// IsCurrent - READ-ONLY; Indicates if API revision is current api revision.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
-	// IsOnline - Indicates if API revision is accessible via the gateway.
+	// IsOnline - READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
@@ -980,9 +971,9 @@ type APICreateOrUpdateProperties struct {
 	APIRevision *string `json:"apiRevision,omitempty"`
 	// APIVersion - Indicates the Version identifier of the API if the API is versioned
 	APIVersion *string `json:"apiVersion,omitempty"`
-	// IsCurrent - Indicates if API revision is current api revision.
+	// IsCurrent - READ-ONLY; Indicates if API revision is current api revision.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
-	// IsOnline - Indicates if API revision is accessible via the gateway.
+	// IsOnline - READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
@@ -1010,9 +1001,9 @@ type APIEntityBaseContract struct {
 	APIRevision *string `json:"apiRevision,omitempty"`
 	// APIVersion - Indicates the Version identifier of the API if the API is versioned
 	APIVersion *string `json:"apiVersion,omitempty"`
-	// IsCurrent - Indicates if API revision is current api revision.
+	// IsCurrent - READ-ONLY; Indicates if API revision is current api revision.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
-	// IsOnline - Indicates if API revision is accessible via the gateway.
+	// IsOnline - READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
@@ -1027,11 +1018,11 @@ type APIExportResult struct {
 
 // ApimResource the Resource definition.
 type ApimResource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource is set to Microsoft.ApiManagement.
+	// Type - READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -1040,15 +1031,6 @@ type ApimResource struct {
 // MarshalJSON is the custom marshaler for ApimResource.
 func (ar ApimResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
-	}
 	if ar.Tags != nil {
 		objectMap["tags"] = ar.Tags
 	}
@@ -1058,9 +1040,9 @@ func (ar ApimResource) MarshalJSON() ([]byte, error) {
 // APIReleaseCollection paged Api Revision list representation.
 type APIReleaseCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Page values.
+	// Value - READ-ONLY; Page values.
 	Value *[]APIReleaseContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1206,11 +1188,11 @@ type APIReleaseContract struct {
 	autorest.Response `json:"-"`
 	// APIReleaseContractProperties - Properties of the Api Release Contract.
 	*APIReleaseContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1219,15 +1201,6 @@ func (arc APIReleaseContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if arc.APIReleaseContractProperties != nil {
 		objectMap["properties"] = arc.APIReleaseContractProperties
-	}
-	if arc.ID != nil {
-		objectMap["id"] = arc.ID
-	}
-	if arc.Name != nil {
-		objectMap["name"] = arc.Name
-	}
-	if arc.Type != nil {
-		objectMap["type"] = arc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1287,9 +1260,9 @@ func (arc *APIReleaseContract) UnmarshalJSON(body []byte) error {
 type APIReleaseContractProperties struct {
 	// APIID - Identifier of the API the release belongs to.
 	APIID *string `json:"apiId,omitempty"`
-	// CreatedDateTime - The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// CreatedDateTime - READ-ONLY; The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	CreatedDateTime *date.Time `json:"createdDateTime,omitempty"`
-	// UpdatedDateTime - The time the API release was updated.
+	// UpdatedDateTime - READ-ONLY; The time the API release was updated.
 	UpdatedDateTime *date.Time `json:"updatedDateTime,omitempty"`
 	// Notes - Release Notes
 	Notes *string `json:"notes,omitempty"`
@@ -1445,11 +1418,11 @@ func NewAPIRevisionCollectionPage(getNextPage func(context.Context, APIRevisionC
 type APIRevisionContract struct {
 	// APIRevisionContractProperties - Properties of the Api Revision Contract.
 	*APIRevisionContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1458,15 +1431,6 @@ func (arc APIRevisionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if arc.APIRevisionContractProperties != nil {
 		objectMap["properties"] = arc.APIRevisionContractProperties
-	}
-	if arc.ID != nil {
-		objectMap["id"] = arc.ID
-	}
-	if arc.Name != nil {
-		objectMap["name"] = arc.Name
-	}
-	if arc.Type != nil {
-		objectMap["type"] = arc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1524,21 +1488,21 @@ func (arc *APIRevisionContract) UnmarshalJSON(body []byte) error {
 
 // APIRevisionContractProperties summary of revision metadata.
 type APIRevisionContractProperties struct {
-	// APIID - Identifier of the API Revision.
+	// APIID - READ-ONLY; Identifier of the API Revision.
 	APIID *string `json:"apiId,omitempty"`
-	// APIRevision - Revision number of API.
+	// APIRevision - READ-ONLY; Revision number of API.
 	APIRevision *string `json:"apiRevision,omitempty"`
-	// CreatedDateTime - The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// CreatedDateTime - READ-ONLY; The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	CreatedDateTime *date.Time `json:"createdDateTime,omitempty"`
-	// UpdatedDateTime - The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// UpdatedDateTime - READ-ONLY; The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	UpdatedDateTime *date.Time `json:"updatedDateTime,omitempty"`
-	// Description - Description of the API Revision.
+	// Description - READ-ONLY; Description of the API Revision.
 	Description *string `json:"description,omitempty"`
-	// PrivateURL - Gateway URL for accessing the non-current API Revision.
+	// PrivateURL - READ-ONLY; Gateway URL for accessing the non-current API Revision.
 	PrivateURL *string `json:"privateUrl,omitempty"`
-	// IsOnline - Indicates if API revision is the current api revision.
+	// IsOnline - READ-ONLY; Indicates if API revision is the current api revision.
 	IsOnline *bool `json:"isOnline,omitempty"`
-	// IsCurrent - Indicates if API revision is accessible via the gateway.
+	// IsCurrent - READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 }
 
@@ -1744,11 +1708,11 @@ func NewAPIVersionSetCollectionPage(getNextPage func(context.Context, APIVersion
 type APIVersionSetContract struct {
 	autorest.Response                `json:"-"`
 	*APIVersionSetContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1757,15 +1721,6 @@ func (avsc APIVersionSetContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if avsc.APIVersionSetContractProperties != nil {
 		objectMap["properties"] = avsc.APIVersionSetContractProperties
-	}
-	if avsc.ID != nil {
-		objectMap["id"] = avsc.ID
-	}
-	if avsc.Name != nil {
-		objectMap["name"] = avsc.Name
-	}
-	if avsc.Type != nil {
-		objectMap["type"] = avsc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2058,11 +2013,11 @@ type AuthorizationServerContract struct {
 	autorest.Response `json:"-"`
 	// AuthorizationServerContractProperties - Properties of the External OAuth authorization server Contract.
 	*AuthorizationServerContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2071,15 +2026,6 @@ func (asc AuthorizationServerContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if asc.AuthorizationServerContractProperties != nil {
 		objectMap["properties"] = asc.AuthorizationServerContractProperties
-	}
-	if asc.ID != nil {
-		objectMap["id"] = asc.ID
-	}
-	if asc.Name != nil {
-		objectMap["name"] = asc.Name
-	}
-	if asc.Type != nil {
-		objectMap["type"] = asc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2201,11 +2147,11 @@ type AuthorizationServerContractProperties struct {
 type AuthorizationServerUpdateContract struct {
 	// AuthorizationServerUpdateContractProperties - Properties of the External OAuth authorization server update Contract.
 	*AuthorizationServerUpdateContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2214,15 +2160,6 @@ func (asuc AuthorizationServerUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if asuc.AuthorizationServerUpdateContractProperties != nil {
 		objectMap["properties"] = asuc.AuthorizationServerUpdateContractProperties
-	}
-	if asuc.ID != nil {
-		objectMap["id"] = asuc.ID
-	}
-	if asuc.Name != nil {
-		objectMap["name"] = asuc.Name
-	}
-	if asuc.Type != nil {
-		objectMap["type"] = asuc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2492,11 +2429,11 @@ type BackendContract struct {
 	autorest.Response `json:"-"`
 	// BackendContractProperties - Backend entity contract properties.
 	*BackendContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2505,15 +2442,6 @@ func (bc BackendContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bc.BackendContractProperties != nil {
 		objectMap["properties"] = bc.BackendContractProperties
-	}
-	if bc.ID != nil {
-		objectMap["id"] = bc.ID
-	}
-	if bc.Name != nil {
-		objectMap["name"] = bc.Name
-	}
-	if bc.Type != nil {
-		objectMap["type"] = bc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2641,11 +2569,11 @@ type BackendProxyContract struct {
 type BackendReconnectContract struct {
 	// BackendReconnectProperties - Reconnect request properties.
 	*BackendReconnectProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2654,15 +2582,6 @@ func (brc BackendReconnectContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if brc.BackendReconnectProperties != nil {
 		objectMap["properties"] = brc.BackendReconnectProperties
-	}
-	if brc.ID != nil {
-		objectMap["id"] = brc.ID
-	}
-	if brc.Name != nil {
-		objectMap["name"] = brc.Name
-	}
-	if brc.Type != nil {
-		objectMap["type"] = brc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2962,7 +2881,7 @@ type CertificateConfiguration struct {
 	CertificatePassword *string `json:"certificatePassword,omitempty"`
 	// StoreName - The local certificate store location. Only Root and CertificateAuthority are valid locations. Possible values include: 'CertificateAuthority', 'Root'
 	StoreName StoreName `json:"storeName,omitempty"`
-	// Certificate - Certificate information.
+	// Certificate - READ-ONLY; Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
@@ -2971,11 +2890,11 @@ type CertificateContract struct {
 	autorest.Response `json:"-"`
 	// CertificateContractProperties - Certificate properties details.
 	*CertificateContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2984,15 +2903,6 @@ func (cc CertificateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cc.CertificateContractProperties != nil {
 		objectMap["properties"] = cc.CertificateContractProperties
-	}
-	if cc.ID != nil {
-		objectMap["id"] = cc.ID
-	}
-	if cc.Name != nil {
-		objectMap["name"] = cc.Name
-	}
-	if cc.Type != nil {
-		objectMap["type"] = cc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3289,11 +3199,11 @@ type DiagnosticContract struct {
 	autorest.Response `json:"-"`
 	// DiagnosticContractProperties - Diagnostic entity contract properties.
 	*DiagnosticContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3302,15 +3212,6 @@ func (dc DiagnosticContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dc.DiagnosticContractProperties != nil {
 		objectMap["properties"] = dc.DiagnosticContractProperties
-	}
-	if dc.ID != nil {
-		objectMap["id"] = dc.ID
-	}
-	if dc.Name != nil {
-		objectMap["name"] = dc.Name
-	}
-	if dc.Type != nil {
-		objectMap["type"] = dc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3523,11 +3424,11 @@ type EmailTemplateContract struct {
 	autorest.Response `json:"-"`
 	// EmailTemplateContractProperties - Email Template entity contract properties.
 	*EmailTemplateContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3536,15 +3437,6 @@ func (etc EmailTemplateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if etc.EmailTemplateContractProperties != nil {
 		objectMap["properties"] = etc.EmailTemplateContractProperties
-	}
-	if etc.ID != nil {
-		objectMap["id"] = etc.ID
-	}
-	if etc.Name != nil {
-		objectMap["name"] = etc.Name
-	}
-	if etc.Type != nil {
-		objectMap["type"] = etc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3610,7 +3502,7 @@ type EmailTemplateContractProperties struct {
 	Title *string `json:"title,omitempty"`
 	// Description - Description of the Email Template.
 	Description *string `json:"description,omitempty"`
-	// IsDefault - Whether the template is the default template provided by Api Management or has been edited.
+	// IsDefault - READ-ONLY; Whether the template is the default template provided by Api Management or has been edited.
 	IsDefault *bool `json:"isDefault,omitempty"`
 	// Parameters - Email Template Parameter values.
 	Parameters *[]EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
@@ -3857,11 +3749,11 @@ type GroupContract struct {
 	autorest.Response `json:"-"`
 	// GroupContractProperties - Group entity contract properties.
 	*GroupContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3870,15 +3762,6 @@ func (gc GroupContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gc.GroupContractProperties != nil {
 		objectMap["properties"] = gc.GroupContractProperties
-	}
-	if gc.ID != nil {
-		objectMap["id"] = gc.ID
-	}
-	if gc.Name != nil {
-		objectMap["name"] = gc.Name
-	}
-	if gc.Type != nil {
-		objectMap["type"] = gc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3940,7 +3823,7 @@ type GroupContractProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - Group description. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
-	// BuiltIn - true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
+	// BuiltIn - READ-ONLY; true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
 	BuiltIn *bool `json:"builtIn,omitempty"`
 	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupType `json:"type,omitempty"`
@@ -4066,7 +3949,7 @@ type HostnameConfiguration struct {
 	DefaultSslBinding *bool `json:"defaultSslBinding,omitempty"`
 	// NegotiateClientCertificate - Specify true to always negotiate client certificate on the hostname. Default Value is false.
 	NegotiateClientCertificate *bool `json:"negotiateClientCertificate,omitempty"`
-	// Certificate - Certificate information.
+	// Certificate - READ-ONLY; Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
@@ -4101,11 +3984,11 @@ type IdentityProviderContract struct {
 	autorest.Response `json:"-"`
 	// IdentityProviderContractProperties - Identity Provider contract properties.
 	*IdentityProviderContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4114,15 +3997,6 @@ func (ipc IdentityProviderContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ipc.IdentityProviderContractProperties != nil {
 		objectMap["properties"] = ipc.IdentityProviderContractProperties
-	}
-	if ipc.ID != nil {
-		objectMap["id"] = ipc.ID
-	}
-	if ipc.Name != nil {
-		objectMap["name"] = ipc.Name
-	}
-	if ipc.Type != nil {
-		objectMap["type"] = ipc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4271,9 +4145,9 @@ type IdentityProviderUpdateProperties struct {
 // IssueAttachmentCollection paged Issue Attachment list representation.
 type IssueAttachmentCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Issue Attachment values.
+	// Value - READ-ONLY; Issue Attachment values.
 	Value *[]IssueAttachmentContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4420,11 +4294,11 @@ type IssueAttachmentContract struct {
 	autorest.Response `json:"-"`
 	// IssueAttachmentContractProperties - Properties of the Issue Attachment.
 	*IssueAttachmentContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4433,15 +4307,6 @@ func (iac IssueAttachmentContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if iac.IssueAttachmentContractProperties != nil {
 		objectMap["properties"] = iac.IssueAttachmentContractProperties
-	}
-	if iac.ID != nil {
-		objectMap["id"] = iac.ID
-	}
-	if iac.Name != nil {
-		objectMap["name"] = iac.Name
-	}
-	if iac.Type != nil {
-		objectMap["type"] = iac.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4510,9 +4375,9 @@ type IssueAttachmentContractProperties struct {
 // IssueCollection paged Issue list representation.
 type IssueCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Issue values.
+	// Value - READ-ONLY; Issue values.
 	Value *[]IssueContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4656,9 +4521,9 @@ func NewIssueCollectionPage(getNextPage func(context.Context, IssueCollection) (
 // IssueCommentCollection paged Issue Comment list representation.
 type IssueCommentCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Issue Comment values.
+	// Value - READ-ONLY; Issue Comment values.
 	Value *[]IssueCommentContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4804,11 +4669,11 @@ type IssueCommentContract struct {
 	autorest.Response `json:"-"`
 	// IssueCommentContractProperties - Properties of the Issue Comment.
 	*IssueCommentContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4817,15 +4682,6 @@ func (icc IssueCommentContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if icc.IssueCommentContractProperties != nil {
 		objectMap["properties"] = icc.IssueCommentContractProperties
-	}
-	if icc.ID != nil {
-		objectMap["id"] = icc.ID
-	}
-	if icc.Name != nil {
-		objectMap["name"] = icc.Name
-	}
-	if icc.Type != nil {
-		objectMap["type"] = icc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4896,11 +4752,11 @@ type IssueContract struct {
 	autorest.Response `json:"-"`
 	// IssueContractProperties - Properties of the Issue.
 	*IssueContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4909,15 +4765,6 @@ func (ic IssueContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ic.IssueContractProperties != nil {
 		objectMap["properties"] = ic.IssueContractProperties
-	}
-	if ic.ID != nil {
-		objectMap["id"] = ic.ID
-	}
-	if ic.Name != nil {
-		objectMap["name"] = ic.Name
-	}
-	if ic.Type != nil {
-		objectMap["type"] = ic.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5142,11 +4989,11 @@ type LoggerContract struct {
 	autorest.Response `json:"-"`
 	// LoggerContractProperties - Logger entity contract properties.
 	*LoggerContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5155,15 +5002,6 @@ func (lc LoggerContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lc.LoggerContractProperties != nil {
 		objectMap["properties"] = lc.LoggerContractProperties
-	}
-	if lc.ID != nil {
-		objectMap["id"] = lc.ID
-	}
-	if lc.Name != nil {
-		objectMap["name"] = lc.Name
-	}
-	if lc.Type != nil {
-		objectMap["type"] = lc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5549,11 +5387,11 @@ type NotificationContract struct {
 	autorest.Response `json:"-"`
 	// NotificationContractProperties - Notification entity contract properties.
 	*NotificationContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5562,15 +5400,6 @@ func (nc NotificationContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if nc.NotificationContractProperties != nil {
 		objectMap["properties"] = nc.NotificationContractProperties
-	}
-	if nc.ID != nil {
-		objectMap["id"] = nc.ID
-	}
-	if nc.Name != nil {
-		objectMap["name"] = nc.Name
-	}
-	if nc.Type != nil {
-		objectMap["type"] = nc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5796,11 +5625,11 @@ type OpenidConnectProviderContract struct {
 	autorest.Response `json:"-"`
 	// OpenidConnectProviderContractProperties - OpenId Connect Provider contract properties.
 	*OpenidConnectProviderContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5809,15 +5638,6 @@ func (ocpc OpenidConnectProviderContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ocpc.OpenidConnectProviderContractProperties != nil {
 		objectMap["properties"] = ocpc.OpenidConnectProviderContractProperties
-	}
-	if ocpc.ID != nil {
-		objectMap["id"] = ocpc.ID
-	}
-	if ocpc.Name != nil {
-		objectMap["name"] = ocpc.Name
-	}
-	if ocpc.Type != nil {
-		objectMap["type"] = ocpc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5956,9 +5776,9 @@ type Operation struct {
 // OperationCollection paged Operation list representation.
 type OperationCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Page values.
+	// Value - READ-ONLY; Page values.
 	Value *[]OperationContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6104,11 +5924,11 @@ type OperationContract struct {
 	autorest.Response `json:"-"`
 	// OperationContractProperties - Properties of the Operation Contract.
 	*OperationContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6117,15 +5937,6 @@ func (oc OperationContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if oc.OperationContractProperties != nil {
 		objectMap["properties"] = oc.OperationContractProperties
-	}
-	if oc.ID != nil {
-		objectMap["id"] = oc.ID
-	}
-	if oc.Name != nil {
-		objectMap["name"] = oc.Name
-	}
-	if oc.Type != nil {
-		objectMap["type"] = oc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6231,11 +6042,11 @@ type OperationEntityBaseContract struct {
 type OperationEntityContract struct {
 	// OperationEntityContractProperties - Operation entity contract properties.
 	*OperationEntityContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6244,15 +6055,6 @@ func (oec OperationEntityContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if oec.OperationEntityContractProperties != nil {
 		objectMap["properties"] = oec.OperationEntityContractProperties
-	}
-	if oec.ID != nil {
-		objectMap["id"] = oec.ID
-	}
-	if oec.Name != nil {
-		objectMap["name"] = oec.Name
-	}
-	if oec.Type != nil {
-		objectMap["type"] = oec.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6310,19 +6112,19 @@ func (oec *OperationEntityContract) UnmarshalJSON(body []byte) error {
 
 // OperationEntityContractProperties operation Entity contract Properties.
 type OperationEntityContractProperties struct {
-	// DisplayName - Operation name.
+	// DisplayName - READ-ONLY; Operation name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// APIName - Api Name.
+	// APIName - READ-ONLY; Api Name.
 	APIName *string `json:"apiName,omitempty"`
-	// APIRevision - Api Revision.
+	// APIRevision - READ-ONLY; Api Revision.
 	APIRevision *string `json:"apiRevision,omitempty"`
-	// APIVersion - Api Version.
+	// APIVersion - READ-ONLY; Api Version.
 	APIVersion *string `json:"apiVersion,omitempty"`
-	// Description - Operation Description.
+	// Description - READ-ONLY; Operation Description.
 	Description *string `json:"description,omitempty"`
-	// Method - A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
+	// Method - READ-ONLY; A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
 	Method *string `json:"method,omitempty"`
-	// URLTemplate - Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
+	// URLTemplate - READ-ONLY; Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
 	URLTemplate *string `json:"urlTemplate,omitempty"`
 }
 
@@ -6488,7 +6290,7 @@ type OperationResultContract struct {
 	ResultInfo *string `json:"resultInfo,omitempty"`
 	// Error - Error Body Contract
 	Error *ErrorResponse `json:"error,omitempty"`
-	// ActionLog - This property if only provided as part of the TenantConfiguration_Validate operation. It contains the log the entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy operation.
+	// ActionLog - READ-ONLY; This property if only provided as part of the TenantConfiguration_Validate operation. It contains the log the entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy operation.
 	ActionLog *[]OperationResultLogItemContract `json:"actionLog,omitempty"`
 }
 
@@ -6591,11 +6393,11 @@ type PolicyContract struct {
 	autorest.Response `json:"-"`
 	// PolicyContractProperties - Properties of the Policy.
 	*PolicyContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6604,15 +6406,6 @@ func (pc PolicyContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pc.PolicyContractProperties != nil {
 		objectMap["properties"] = pc.PolicyContractProperties
-	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6676,13 +6469,13 @@ type PolicyContractProperties struct {
 
 // PolicySnippetContract policy snippet.
 type PolicySnippetContract struct {
-	// Name - Snippet name.
+	// Name - READ-ONLY; Snippet name.
 	Name *string `json:"name,omitempty"`
-	// Content - Snippet content.
+	// Content - READ-ONLY; Snippet content.
 	Content *string `json:"content,omitempty"`
-	// ToolTip - Snippet toolTip.
+	// ToolTip - READ-ONLY; Snippet toolTip.
 	ToolTip *string `json:"toolTip,omitempty"`
-	// Scope - Binary OR value of the Snippet scope.
+	// Scope - READ-ONLY; Binary OR value of the Snippet scope.
 	Scope *int32 `json:"scope,omitempty"`
 }
 
@@ -6698,11 +6491,11 @@ type PortalDelegationSettings struct {
 	autorest.Response `json:"-"`
 	// PortalDelegationSettingsProperties - Delegation settings contract properties.
 	*PortalDelegationSettingsProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6711,15 +6504,6 @@ func (pds PortalDelegationSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pds.PortalDelegationSettingsProperties != nil {
 		objectMap["properties"] = pds.PortalDelegationSettingsProperties
-	}
-	if pds.ID != nil {
-		objectMap["id"] = pds.ID
-	}
-	if pds.Name != nil {
-		objectMap["name"] = pds.Name
-	}
-	if pds.Type != nil {
-		objectMap["type"] = pds.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6798,11 +6582,11 @@ type PortalSigninSettings struct {
 	autorest.Response `json:"-"`
 	// PortalSigninSettingProperties - Sign-in settings contract properties.
 	*PortalSigninSettingProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6811,15 +6595,6 @@ func (pss PortalSigninSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pss.PortalSigninSettingProperties != nil {
 		objectMap["properties"] = pss.PortalSigninSettingProperties
-	}
-	if pss.ID != nil {
-		objectMap["id"] = pss.ID
-	}
-	if pss.Name != nil {
-		objectMap["name"] = pss.Name
-	}
-	if pss.Type != nil {
-		objectMap["type"] = pss.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6880,11 +6655,11 @@ type PortalSignupSettings struct {
 	autorest.Response `json:"-"`
 	// PortalSignupSettingsProperties - Sign-up settings contract properties.
 	*PortalSignupSettingsProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6893,15 +6668,6 @@ func (pss PortalSignupSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pss.PortalSignupSettingsProperties != nil {
 		objectMap["properties"] = pss.PortalSignupSettingsProperties
-	}
-	if pss.ID != nil {
-		objectMap["id"] = pss.ID
-	}
-	if pss.Name != nil {
-		objectMap["name"] = pss.Name
-	}
-	if pss.Type != nil {
-		objectMap["type"] = pss.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7116,11 +6882,11 @@ type ProductContract struct {
 	autorest.Response `json:"-"`
 	// ProductContractProperties - Product entity contract properties.
 	*ProductContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7129,15 +6895,6 @@ func (pc ProductContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pc.ProductContractProperties != nil {
 		objectMap["properties"] = pc.ProductContractProperties
-	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7435,11 +7192,11 @@ type PropertyContract struct {
 	autorest.Response `json:"-"`
 	// PropertyContractProperties - Property entity contract properties.
 	*PropertyContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7448,15 +7205,6 @@ func (pc PropertyContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pc.PropertyContractProperties != nil {
 		objectMap["properties"] = pc.PropertyContractProperties
-	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7670,11 +7418,11 @@ type RecipientEmailContract struct {
 	autorest.Response `json:"-"`
 	// RecipientEmailContractProperties - Recipient Email contract properties.
 	*RecipientEmailContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7683,15 +7431,6 @@ func (rec RecipientEmailContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rec.RecipientEmailContractProperties != nil {
 		objectMap["properties"] = rec.RecipientEmailContractProperties
-	}
-	if rec.ID != nil {
-		objectMap["id"] = rec.ID
-	}
-	if rec.Name != nil {
-		objectMap["name"] = rec.Name
-	}
-	if rec.Type != nil {
-		objectMap["type"] = rec.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7775,11 +7514,11 @@ type RecipientUserContract struct {
 	autorest.Response `json:"-"`
 	// RecipientUsersContractProperties - Recipient User entity contract properties.
 	*RecipientUsersContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7788,15 +7527,6 @@ func (ruc RecipientUserContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ruc.RecipientUsersContractProperties != nil {
 		objectMap["properties"] = ruc.RecipientUsersContractProperties
-	}
-	if ruc.ID != nil {
-		objectMap["id"] = ruc.ID
-	}
-	if ruc.Name != nil {
-		objectMap["name"] = ruc.Name
-	}
-	if ruc.Type != nil {
-		objectMap["type"] = ruc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7860,7 +7590,7 @@ type RecipientUsersContractProperties struct {
 
 // RegionContract region profile.
 type RegionContract struct {
-	// Name - Region name.
+	// Name - READ-ONLY; Region name.
 	Name *string `json:"name,omitempty"`
 	// IsMasterRegion - whether Region is the master region.
 	IsMasterRegion *bool `json:"isMasterRegion,omitempty"`
@@ -8047,9 +7777,9 @@ type ReportRecordContract struct {
 	Region *string `json:"region,omitempty"`
 	// Zip - Zip code to which this record data is related.
 	Zip *string `json:"zip,omitempty"`
-	// UserID - User identifier path. /users/{userId}
+	// UserID - READ-ONLY; User identifier path. /users/{userId}
 	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product identifier path. /products/{productId}
+	// ProductID - READ-ONLY; Product identifier path. /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
 	// APIID - API identifier path. /apis/{apiId}
 	APIID *string `json:"apiId,omitempty"`
@@ -8130,9 +7860,9 @@ type RequestReportRecordContract struct {
 	APIID *string `json:"apiId,omitempty"`
 	// OperationID - Operation identifier path. /apis/{apiId}/operations/{operationId}
 	OperationID *string `json:"operationId,omitempty"`
-	// ProductID - Product identifier path. /products/{productId}
+	// ProductID - READ-ONLY; Product identifier path. /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
-	// UserID - User identifier path. /users/{userId}
+	// UserID - READ-ONLY; User identifier path. /users/{userId}
 	UserID *string `json:"userId,omitempty"`
 	// Method - The HTTP method associated with this request..
 	Method *string `json:"method,omitempty"`
@@ -8166,11 +7896,11 @@ type RequestReportRecordContract struct {
 
 // Resource the Resource definition.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8197,9 +7927,9 @@ type SaveConfigurationParameter struct {
 // SchemaCollection the response of the list schema operation.
 type SchemaCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Api Schema Contract value.
+	// Value - READ-ONLY; Api Schema Contract value.
 	Value *[]SchemaContract `json:"value,omitempty"`
-	// NextLink - Next page link if any.
+	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8345,11 +8075,11 @@ type SchemaContract struct {
 	autorest.Response `json:"-"`
 	// SchemaContractProperties - Properties of the Schema.
 	*SchemaContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8358,15 +8088,6 @@ func (sc SchemaContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sc.SchemaContractProperties != nil {
 		objectMap["properties"] = sc.SchemaContractProperties
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8498,7 +8219,7 @@ type ServiceApplyNetworkConfigurationUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceApplyNetworkConfigurationUpdatesFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServiceApplyNetworkConfigurationUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8527,7 +8248,7 @@ type ServiceBackupFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceBackupFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServiceBackupFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8563,25 +8284,25 @@ type ServiceBackupRestoreParameters struct {
 type ServiceBaseProperties struct {
 	// NotificationSenderEmail - Email address from which the notification will be sent.
 	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
-	// ProvisioningState - The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	// ProvisioningState - READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// TargetProvisioningState - The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
+	// TargetProvisioningState - READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
 	TargetProvisioningState *string `json:"targetProvisioningState,omitempty"`
-	// CreatedAtUtc - Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedAtUtc - READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedAtUtc *date.Time `json:"createdAtUtc,omitempty"`
-	// GatewayURL - Gateway URL of the API Management service.
+	// GatewayURL - READ-ONLY; Gateway URL of the API Management service.
 	GatewayURL *string `json:"gatewayUrl,omitempty"`
-	// GatewayRegionalURL - Gateway URL of the API Management service in the Default Region.
+	// GatewayRegionalURL - READ-ONLY; Gateway URL of the API Management service in the Default Region.
 	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty"`
-	// PortalURL - Publisher portal endpoint Url of the API Management service.
+	// PortalURL - READ-ONLY; Publisher portal endpoint Url of the API Management service.
 	PortalURL *string `json:"portalUrl,omitempty"`
-	// ManagementAPIURL - Management API endpoint URL of the API Management service.
+	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
-	// ScmURL - SCM endpoint URL of the API Management service.
+	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// StaticIps - Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
+	// StaticIps - READ-ONLY; Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
 	StaticIps *[]string `json:"staticIps,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
@@ -8601,35 +8322,8 @@ func (sbp ServiceBaseProperties) MarshalJSON() ([]byte, error) {
 	if sbp.NotificationSenderEmail != nil {
 		objectMap["notificationSenderEmail"] = sbp.NotificationSenderEmail
 	}
-	if sbp.ProvisioningState != nil {
-		objectMap["provisioningState"] = sbp.ProvisioningState
-	}
-	if sbp.TargetProvisioningState != nil {
-		objectMap["targetProvisioningState"] = sbp.TargetProvisioningState
-	}
-	if sbp.CreatedAtUtc != nil {
-		objectMap["createdAtUtc"] = sbp.CreatedAtUtc
-	}
-	if sbp.GatewayURL != nil {
-		objectMap["gatewayUrl"] = sbp.GatewayURL
-	}
-	if sbp.GatewayRegionalURL != nil {
-		objectMap["gatewayRegionalUrl"] = sbp.GatewayRegionalURL
-	}
-	if sbp.PortalURL != nil {
-		objectMap["portalUrl"] = sbp.PortalURL
-	}
-	if sbp.ManagementAPIURL != nil {
-		objectMap["managementApiUrl"] = sbp.ManagementAPIURL
-	}
-	if sbp.ScmURL != nil {
-		objectMap["scmUrl"] = sbp.ScmURL
-	}
 	if sbp.HostnameConfigurations != nil {
 		objectMap["hostnameConfigurations"] = sbp.HostnameConfigurations
-	}
-	if sbp.StaticIps != nil {
-		objectMap["staticIps"] = sbp.StaticIps
 	}
 	if sbp.VirtualNetworkConfiguration != nil {
 		objectMap["virtualNetworkConfiguration"] = sbp.VirtualNetworkConfiguration
@@ -8665,7 +8359,7 @@ type ServiceCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServiceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8695,9 +8389,9 @@ type ServiceGetSsoTokenResult struct {
 type ServiceIdentity struct {
 	// Type - The identity type. Currently the only supported type is 'SystemAssigned'.
 	Type *string `json:"type,omitempty"`
-	// PrincipalID - The principal id of the identity.
+	// PrincipalID - READ-ONLY; The principal id of the identity.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// TenantID - The client tenant id of the identity.
+	// TenantID - READ-ONLY; The client tenant id of the identity.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
@@ -8850,9 +8544,9 @@ func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResul
 // ServiceNameAvailabilityResult response of the CheckNameAvailability operation.
 type ServiceNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - True if the name is available and can be used to create a new API Management service; otherwise false.
+	// NameAvailable - READ-ONLY; True if the name is available and can be used to create a new API Management service; otherwise false.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Message - If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can select a valid name. If reason == AlreadyExists, explain that <resourceName> is already in use, and direct them to select a different name.
+	// Message - READ-ONLY; If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements so that the user can select a valid name. If reason == AlreadyExists, explain that <resourceName> is already in use, and direct them to select a different name.
 	Message *string `json:"message,omitempty"`
 	// Reason - Invalid indicates the name provided does not match the resource provider’s naming requirements (incorrect length, unsupported characters, etc.)  AlreadyExists indicates that the name is already in use and is therefore unavailable. Possible values include: 'Valid', 'Invalid', 'AlreadyExists'
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
@@ -8866,25 +8560,25 @@ type ServiceProperties struct {
 	PublisherName *string `json:"publisherName,omitempty"`
 	// NotificationSenderEmail - Email address from which the notification will be sent.
 	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
-	// ProvisioningState - The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	// ProvisioningState - READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// TargetProvisioningState - The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
+	// TargetProvisioningState - READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
 	TargetProvisioningState *string `json:"targetProvisioningState,omitempty"`
-	// CreatedAtUtc - Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedAtUtc - READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedAtUtc *date.Time `json:"createdAtUtc,omitempty"`
-	// GatewayURL - Gateway URL of the API Management service.
+	// GatewayURL - READ-ONLY; Gateway URL of the API Management service.
 	GatewayURL *string `json:"gatewayUrl,omitempty"`
-	// GatewayRegionalURL - Gateway URL of the API Management service in the Default Region.
+	// GatewayRegionalURL - READ-ONLY; Gateway URL of the API Management service in the Default Region.
 	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty"`
-	// PortalURL - Publisher portal endpoint Url of the API Management service.
+	// PortalURL - READ-ONLY; Publisher portal endpoint Url of the API Management service.
 	PortalURL *string `json:"portalUrl,omitempty"`
-	// ManagementAPIURL - Management API endpoint URL of the API Management service.
+	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
-	// ScmURL - SCM endpoint URL of the API Management service.
+	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// StaticIps - Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
+	// StaticIps - READ-ONLY; Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
 	StaticIps *[]string `json:"staticIps,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
@@ -8910,35 +8604,8 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	if sp.NotificationSenderEmail != nil {
 		objectMap["notificationSenderEmail"] = sp.NotificationSenderEmail
 	}
-	if sp.ProvisioningState != nil {
-		objectMap["provisioningState"] = sp.ProvisioningState
-	}
-	if sp.TargetProvisioningState != nil {
-		objectMap["targetProvisioningState"] = sp.TargetProvisioningState
-	}
-	if sp.CreatedAtUtc != nil {
-		objectMap["createdAtUtc"] = sp.CreatedAtUtc
-	}
-	if sp.GatewayURL != nil {
-		objectMap["gatewayUrl"] = sp.GatewayURL
-	}
-	if sp.GatewayRegionalURL != nil {
-		objectMap["gatewayRegionalUrl"] = sp.GatewayRegionalURL
-	}
-	if sp.PortalURL != nil {
-		objectMap["portalUrl"] = sp.PortalURL
-	}
-	if sp.ManagementAPIURL != nil {
-		objectMap["managementApiUrl"] = sp.ManagementAPIURL
-	}
-	if sp.ScmURL != nil {
-		objectMap["scmUrl"] = sp.ScmURL
-	}
 	if sp.HostnameConfigurations != nil {
 		objectMap["hostnameConfigurations"] = sp.HostnameConfigurations
-	}
-	if sp.StaticIps != nil {
-		objectMap["staticIps"] = sp.StaticIps
 	}
 	if sp.VirtualNetworkConfiguration != nil {
 		objectMap["virtualNetworkConfiguration"] = sp.VirtualNetworkConfiguration
@@ -8969,13 +8636,13 @@ type ServiceResource struct {
 	Identity *ServiceIdentity `json:"identity,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Etag - ETag of the resource.
+	// Etag - READ-ONLY; ETag of the resource.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource is set to Microsoft.ApiManagement.
+	// Type - READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -8995,18 +8662,6 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
-	}
-	if sr.Etag != nil {
-		objectMap["etag"] = sr.Etag
-	}
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
 	}
 	if sr.Tags != nil {
 		objectMap["tags"] = sr.Tags
@@ -9120,7 +8775,7 @@ type ServiceRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceRestoreFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServiceRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9157,7 +8812,7 @@ type ServiceUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceUpdateFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9186,7 +8841,7 @@ type ServiceUpdateHostnameFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceUpdateHostnameFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateHostnameFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9221,13 +8876,13 @@ type ServiceUpdateParameters struct {
 	Sku *ServiceSkuProperties `json:"sku,omitempty"`
 	// Identity - Managed service identity of the Api Management service.
 	Identity *ServiceIdentity `json:"identity,omitempty"`
-	// Etag - ETag of the resource.
+	// Etag - READ-ONLY; ETag of the resource.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource is set to Microsoft.ApiManagement.
+	// Type - READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -9244,18 +8899,6 @@ func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if sup.Identity != nil {
 		objectMap["identity"] = sup.Identity
-	}
-	if sup.Etag != nil {
-		objectMap["etag"] = sup.Etag
-	}
-	if sup.ID != nil {
-		objectMap["id"] = sup.ID
-	}
-	if sup.Name != nil {
-		objectMap["name"] = sup.Name
-	}
-	if sup.Type != nil {
-		objectMap["type"] = sup.Type
 	}
 	if sup.Tags != nil {
 		objectMap["tags"] = sup.Tags
@@ -9358,25 +9001,25 @@ type ServiceUpdateProperties struct {
 	PublisherName *string `json:"publisherName,omitempty"`
 	// NotificationSenderEmail - Email address from which the notification will be sent.
 	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
-	// ProvisioningState - The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+	// ProvisioningState - READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// TargetProvisioningState - The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
+	// TargetProvisioningState - READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started on the service.
 	TargetProvisioningState *string `json:"targetProvisioningState,omitempty"`
-	// CreatedAtUtc - Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedAtUtc - READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedAtUtc *date.Time `json:"createdAtUtc,omitempty"`
-	// GatewayURL - Gateway URL of the API Management service.
+	// GatewayURL - READ-ONLY; Gateway URL of the API Management service.
 	GatewayURL *string `json:"gatewayUrl,omitempty"`
-	// GatewayRegionalURL - Gateway URL of the API Management service in the Default Region.
+	// GatewayRegionalURL - READ-ONLY; Gateway URL of the API Management service in the Default Region.
 	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty"`
-	// PortalURL - Publisher portal endpoint Url of the API Management service.
+	// PortalURL - READ-ONLY; Publisher portal endpoint Url of the API Management service.
 	PortalURL *string `json:"portalUrl,omitempty"`
-	// ManagementAPIURL - Management API endpoint URL of the API Management service.
+	// ManagementAPIURL - READ-ONLY; Management API endpoint URL of the API Management service.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
-	// ScmURL - SCM endpoint URL of the API Management service.
+	// ScmURL - READ-ONLY; SCM endpoint URL of the API Management service.
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// StaticIps - Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
+	// StaticIps - READ-ONLY; Static IP addresses of the API Management service virtual machines. Available only for Standard and Premium SKU.
 	StaticIps *[]string `json:"staticIps,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
@@ -9402,35 +9045,8 @@ func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	if sup.NotificationSenderEmail != nil {
 		objectMap["notificationSenderEmail"] = sup.NotificationSenderEmail
 	}
-	if sup.ProvisioningState != nil {
-		objectMap["provisioningState"] = sup.ProvisioningState
-	}
-	if sup.TargetProvisioningState != nil {
-		objectMap["targetProvisioningState"] = sup.TargetProvisioningState
-	}
-	if sup.CreatedAtUtc != nil {
-		objectMap["createdAtUtc"] = sup.CreatedAtUtc
-	}
-	if sup.GatewayURL != nil {
-		objectMap["gatewayUrl"] = sup.GatewayURL
-	}
-	if sup.GatewayRegionalURL != nil {
-		objectMap["gatewayRegionalUrl"] = sup.GatewayRegionalURL
-	}
-	if sup.PortalURL != nil {
-		objectMap["portalUrl"] = sup.PortalURL
-	}
-	if sup.ManagementAPIURL != nil {
-		objectMap["managementApiUrl"] = sup.ManagementAPIURL
-	}
-	if sup.ScmURL != nil {
-		objectMap["scmUrl"] = sup.ScmURL
-	}
 	if sup.HostnameConfigurations != nil {
 		objectMap["hostnameConfigurations"] = sup.HostnameConfigurations
-	}
-	if sup.StaticIps != nil {
-		objectMap["staticIps"] = sup.StaticIps
 	}
 	if sup.VirtualNetworkConfiguration != nil {
 		objectMap["virtualNetworkConfiguration"] = sup.VirtualNetworkConfiguration
@@ -9612,11 +9228,11 @@ type SubscriptionContract struct {
 	autorest.Response `json:"-"`
 	// SubscriptionContractProperties - Subscription contract properties.
 	*SubscriptionContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9625,15 +9241,6 @@ func (sc SubscriptionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sc.SubscriptionContractProperties != nil {
 		objectMap["properties"] = sc.SubscriptionContractProperties
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9699,7 +9306,7 @@ type SubscriptionContractProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// State - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated. Possible values include: 'Suspended', 'Active', 'Expired', 'Submitted', 'Rejected', 'Cancelled'
 	State SubscriptionState `json:"state,omitempty"`
-	// CreatedDate - Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedDate - READ-ONLY; Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// StartDate - Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	StartDate *date.Time `json:"startDate,omitempty"`
@@ -9996,11 +9603,11 @@ type TagContract struct {
 	autorest.Response `json:"-"`
 	// TagContractProperties - Tag entity contract properties.
 	*TagContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10009,15 +9616,6 @@ func (tc TagContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if tc.TagContractProperties != nil {
 		objectMap["properties"] = tc.TagContractProperties
-	}
-	if tc.ID != nil {
-		objectMap["id"] = tc.ID
-	}
-	if tc.Name != nil {
-		objectMap["name"] = tc.Name
-	}
-	if tc.Type != nil {
-		objectMap["type"] = tc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10279,11 +9877,11 @@ type TagDescriptionContract struct {
 	autorest.Response `json:"-"`
 	// TagDescriptionContractProperties - TagDescription entity contract properties.
 	*TagDescriptionContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10292,15 +9890,6 @@ func (tdc TagDescriptionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if tdc.TagDescriptionContractProperties != nil {
 		objectMap["properties"] = tdc.TagDescriptionContractProperties
-	}
-	if tdc.ID != nil {
-		objectMap["id"] = tdc.ID
-	}
-	if tdc.Name != nil {
-		objectMap["name"] = tdc.Name
-	}
-	if tdc.Type != nil {
-		objectMap["type"] = tdc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10557,11 +10146,11 @@ func NewTagResourceCollectionPage(getNextPage func(context.Context, TagResourceC
 type TagResourceContract struct {
 	// TagResourceContractProperties - TagResource entity contract properties.
 	*TagResourceContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10570,15 +10159,6 @@ func (trc TagResourceContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if trc.TagResourceContractProperties != nil {
 		objectMap["properties"] = trc.TagResourceContractProperties
-	}
-	if trc.ID != nil {
-		objectMap["id"] = trc.ID
-	}
-	if trc.Name != nil {
-		objectMap["name"] = trc.Name
-	}
-	if trc.Type != nil {
-		objectMap["type"] = trc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10656,7 +10236,7 @@ type TenantConfigurationDeployFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationDeployFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -10685,7 +10265,7 @@ type TenantConfigurationSaveFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationSaveFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -10733,7 +10313,7 @@ type TenantConfigurationValidateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationValidateFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -10921,11 +10501,11 @@ type UserContract struct {
 	autorest.Response `json:"-"`
 	// UserContractProperties - User entity contract properties.
 	*UserContractProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource.
+	// Type - READ-ONLY; Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10934,15 +10514,6 @@ func (uc UserContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if uc.UserContractProperties != nil {
 		objectMap["properties"] = uc.UserContractProperties
-	}
-	if uc.ID != nil {
-		objectMap["id"] = uc.ID
-	}
-	if uc.Name != nil {
-		objectMap["name"] = uc.Name
-	}
-	if uc.Type != nil {
-		objectMap["type"] = uc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11008,13 +10579,13 @@ type UserContractProperties struct {
 	Email *string `json:"email,omitempty"`
 	// RegistrationDate - Date of user registration. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	RegistrationDate *date.Time `json:"registrationDate,omitempty"`
-	// Groups - Collection of groups user is part of.
+	// Groups - READ-ONLY; Collection of groups user is part of.
 	Groups *[]GroupContract `json:"groups,omitempty"`
 	// State - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of subscribed products. Default state is Active. Possible values include: 'UserStateActive', 'UserStateBlocked', 'UserStatePending', 'UserStateDeleted'
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -11034,7 +10605,7 @@ type UserCreateParameterProperties struct {
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -11083,7 +10654,7 @@ type UserEntityBaseParameters struct {
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -11174,16 +10745,16 @@ type UserUpdateParametersProperties struct {
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
 // VirtualNetworkConfiguration configuration of a virtual network to which API Management service is
 // deployed.
 type VirtualNetworkConfiguration struct {
-	// Vnetid - The virtual network ID. This is typically a GUID. Expect a null GUID by default.
+	// Vnetid - READ-ONLY; The virtual network ID. This is typically a GUID. Expect a null GUID by default.
 	Vnetid *string `json:"vnetid,omitempty"`
-	// Subnetname - The name of the subnet.
+	// Subnetname - READ-ONLY; The name of the subnet.
 	Subnetname *string `json:"subnetname,omitempty"`
 	// SubnetResourceID - The full resource ID of a subnet in a virtual network to deploy the API Management service in.
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`

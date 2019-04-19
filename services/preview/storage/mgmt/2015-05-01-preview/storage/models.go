@@ -141,11 +141,11 @@ func PossibleUsageUnitValues() []UsageUnit {
 type Account struct {
 	autorest.Response  `json:"-"`
 	*AccountProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -158,15 +158,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AccountProperties != nil {
 		objectMap["properties"] = a.AccountProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
@@ -255,11 +246,11 @@ type AccountCheckNameAvailabilityParameters struct {
 // AccountCreateParameters the parameters to provide for the account.
 type AccountCreateParameters struct {
 	*AccountPropertiesCreateParameters `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -272,15 +263,6 @@ func (acp AccountCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if acp.AccountPropertiesCreateParameters != nil {
 		objectMap["properties"] = acp.AccountPropertiesCreateParameters
-	}
-	if acp.ID != nil {
-		objectMap["id"] = acp.ID
-	}
-	if acp.Name != nil {
-		objectMap["name"] = acp.Name
-	}
-	if acp.Type != nil {
-		objectMap["type"] = acp.Type
 	}
 	if acp.Location != nil {
 		objectMap["location"] = acp.Location
@@ -571,7 +553,7 @@ type AccountsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -593,11 +575,11 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 // AccountUpdateParameters the parameters to update on the account.
 type AccountUpdateParameters struct {
 	*AccountPropertiesUpdateParameters `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -610,15 +592,6 @@ func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aup.AccountPropertiesUpdateParameters != nil {
 		objectMap["properties"] = aup.AccountPropertiesUpdateParameters
-	}
-	if aup.ID != nil {
-		objectMap["id"] = aup.ID
-	}
-	if aup.Name != nil {
-		objectMap["name"] = aup.Name
-	}
-	if aup.Type != nil {
-		objectMap["type"] = aup.Type
 	}
 	if aup.Location != nil {
 		objectMap["location"] = aup.Location
@@ -729,11 +702,11 @@ type Endpoints struct {
 
 // Resource ...
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -744,15 +717,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

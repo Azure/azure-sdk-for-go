@@ -1646,7 +1646,7 @@ type EmailTemplateContract struct {
 	Title *string `json:"title,omitempty"`
 	// Description - Description of the Email Template.
 	Description *string `json:"description,omitempty"`
-	// IsDefault - Whether the template is the default template provided by Api Management or has been edited.
+	// IsDefault - READ-ONLY; Whether the template is the default template provided by Api Management or has been edited.
 	IsDefault *bool `json:"isDefault,omitempty"`
 	// Parameters - Email Template Parameter values.
 	Parameters *[]EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
@@ -1662,7 +1662,7 @@ type EmailTemplateContractProperties struct {
 	Title *string `json:"title,omitempty"`
 	// Description - Description of the Email Template.
 	Description *string `json:"description,omitempty"`
-	// IsDefault - Whether the template is the default template provided by Api Management or has been edited.
+	// IsDefault - READ-ONLY; Whether the template is the default template provided by Api Management or has been edited.
 	IsDefault *bool `json:"isDefault,omitempty"`
 	// Parameters - Email Template Parameter values.
 	Parameters *[]EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
@@ -1876,7 +1876,7 @@ type GroupContract struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Group description. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
-	// BuiltIn - true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
+	// BuiltIn - READ-ONLY; true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
 	BuiltIn *bool `json:"builtIn,omitempty"`
 	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupType `json:"type,omitempty"`
@@ -1890,7 +1890,7 @@ type GroupContractProperties struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Group description. Can contain HTML formatting tags.
 	Description *string `json:"description,omitempty"`
-	// BuiltIn - true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
+	// BuiltIn - READ-ONLY; true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
 	BuiltIn *bool `json:"builtIn,omitempty"`
 	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupType `json:"type,omitempty"`
@@ -2680,7 +2680,7 @@ type OperationResultContract struct {
 	ResultInfo *string `json:"resultInfo,omitempty"`
 	// Error - Error Body Contract
 	Error *ErrorResponse `json:"error,omitempty"`
-	// ActionLog - This property if only provided as part of the TenantConfiguration_Validate operation. It contains the log the entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy operation.
+	// ActionLog - READ-ONLY; This property if only provided as part of the TenantConfiguration_Validate operation. It contains the log the entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy operation.
 	ActionLog *[]OperationResultLogItemContract `json:"actionLog,omitempty"`
 }
 
@@ -2752,13 +2752,13 @@ type PolicyContract struct {
 
 // PolicySnippetContract policy snippet.
 type PolicySnippetContract struct {
-	// Name - Snippet name.
+	// Name - READ-ONLY; Snippet name.
 	Name *string `json:"name,omitempty"`
-	// Content - Snippet content.
+	// Content - READ-ONLY; Snippet content.
 	Content *string `json:"content,omitempty"`
-	// ToolTip - Snippet toolTip.
+	// ToolTip - READ-ONLY; Snippet toolTip.
 	ToolTip *string `json:"toolTip,omitempty"`
-	// Scope - Binary OR value of the Snippet scope.
+	// Scope - READ-ONLY; Binary OR value of the Snippet scope.
 	Scope *int32 `json:"scope,omitempty"`
 }
 
@@ -3289,7 +3289,7 @@ type QuotaCounterValueContractProperties struct {
 
 // RegionContract region profile.
 type RegionContract struct {
-	// Name - Region name.
+	// Name - READ-ONLY; Region name.
 	Name *string `json:"name,omitempty"`
 	// IsMasterRegion - whether Region is the master region.
 	IsMasterRegion *bool `json:"isMasterRegion,omitempty"`
@@ -3476,9 +3476,9 @@ type ReportRecordContract struct {
 	Region *string `json:"region,omitempty"`
 	// Zip - Zip code to which this record data is related.
 	Zip *string `json:"zip,omitempty"`
-	// UserID - User identifier path. /users/{userId}
+	// UserID - READ-ONLY; User identifier path. /users/{userId}
 	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product identifier path. /products/{productId}
+	// ProductID - READ-ONLY; Product identifier path. /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
 	// APIID - API identifier path. /apis/{apiId}
 	APIID *string `json:"apiId,omitempty"`
@@ -3559,9 +3559,9 @@ type RequestReportRecordContract struct {
 	APIID *string `json:"apiId,omitempty"`
 	// OperationID - Operation identifier path. /apis/{apiId}/operations/{operationId}
 	OperationID *string `json:"operationId,omitempty"`
-	// ProductID - Product identifier path. /products/{productId}
+	// ProductID - READ-ONLY; Product identifier path. /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
-	// UserID - User identifier path. /users/{userId}
+	// UserID - READ-ONLY; User identifier path. /users/{userId}
 	UserID *string `json:"userId,omitempty"`
 	// Method - The HTTP method associated with this request..
 	Method *string `json:"method,omitempty"`
@@ -3992,7 +3992,7 @@ type SubscriptionContract struct {
 	Name *string `json:"name,omitempty"`
 	// State - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated. Possible values include: 'Suspended', 'Active', 'Expired', 'Submitted', 'Rejected', 'Cancelled'
 	State SubscriptionState `json:"state,omitempty"`
-	// CreatedDate - Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedDate - READ-ONLY; Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// StartDate - Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	StartDate *date.Time `json:"startDate,omitempty"`
@@ -4020,7 +4020,7 @@ type SubscriptionContractProperties struct {
 	Name *string `json:"name,omitempty"`
 	// State - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated. Possible values include: 'Suspended', 'Active', 'Expired', 'Submitted', 'Rejected', 'Cancelled'
 	State SubscriptionState `json:"state,omitempty"`
-	// CreatedDate - Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+	// CreatedDate - READ-ONLY; Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// StartDate - Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	StartDate *date.Time `json:"startDate,omitempty"`
@@ -4098,7 +4098,7 @@ type TenantConfigurationDeployFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationDeployFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4127,7 +4127,7 @@ type TenantConfigurationSaveFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationSaveFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4175,7 +4175,7 @@ type TenantConfigurationValidateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationValidateFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4373,13 +4373,13 @@ type UserContract struct {
 	Email *string `json:"email,omitempty"`
 	// RegistrationDate - Date of user registration. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	RegistrationDate *date.Time `json:"registrationDate,omitempty"`
-	// Groups - Collection of groups user is part of.
+	// Groups - READ-ONLY; Collection of groups user is part of.
 	Groups *[]GroupContract `json:"groups,omitempty"`
 	// State - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of subscribed products. Default state is Active. Possible values include: 'UserStateActive', 'UserStateBlocked'
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -4393,13 +4393,13 @@ type UserContractProperties struct {
 	Email *string `json:"email,omitempty"`
 	// RegistrationDate - Date of user registration. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	RegistrationDate *date.Time `json:"registrationDate,omitempty"`
-	// Groups - Collection of groups user is part of.
+	// Groups - READ-ONLY; Collection of groups user is part of.
 	Groups *[]GroupContract `json:"groups,omitempty"`
 	// State - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of subscribed products. Default state is Active. Possible values include: 'UserStateActive', 'UserStateBlocked'
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -4417,7 +4417,7 @@ type UserCreateParameters struct {
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -4427,7 +4427,7 @@ type UserEntityBaseParameters struct {
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
@@ -4479,7 +4479,7 @@ type UserUpdateParameters struct {
 	State UserState `json:"state,omitempty"`
 	// Note - Optional note about a user set by the administrator.
 	Note *string `json:"note,omitempty"`
-	// Identities - Collection of user identities.
+	// Identities - READ-ONLY; Collection of user identities.
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 

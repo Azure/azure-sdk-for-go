@@ -368,11 +368,11 @@ type APIErrorBase struct {
 type AvailabilitySet struct {
 	autorest.Response          `json:"-"`
 	*AvailabilitySetProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -385,15 +385,6 @@ func (as AvailabilitySet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if as.AvailabilitySetProperties != nil {
 		objectMap["properties"] = as.AvailabilitySetProperties
-	}
-	if as.ID != nil {
-		objectMap["id"] = as.ID
-	}
-	if as.Name != nil {
-		objectMap["name"] = as.Name
-	}
-	if as.Type != nil {
-		objectMap["type"] = as.Type
 	}
 	if as.Location != nil {
 		objectMap["location"] = as.Location
@@ -627,7 +618,7 @@ type AvailabilitySetProperties struct {
 	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 	// VirtualMachines - A list of references to all virtual machines in the availability set.
 	VirtualMachines *[]SubResource `json:"virtualMachines,omitempty"`
-	// Statuses - The resource status information.
+	// Statuses - READ-ONLY; The resource status information.
 	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
 }
 
@@ -643,9 +634,9 @@ type BootDiagnostics struct {
 
 // BootDiagnosticsInstanceView the instance view of a virtual machine boot diagnostics.
 type BootDiagnosticsInstanceView struct {
-	// ConsoleScreenshotBlobURI - The console screenshot blob URI.
+	// ConsoleScreenshotBlobURI - READ-ONLY; The console screenshot blob URI.
 	ConsoleScreenshotBlobURI *string `json:"consoleScreenshotBlobUri,omitempty"`
-	// SerialConsoleLogBlobURI - The Linux serial console log blob Uri.
+	// SerialConsoleLogBlobURI - READ-ONLY; The Linux serial console log blob Uri.
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
 }
 
@@ -669,7 +660,7 @@ type DataDisk struct {
 
 // DataDiskImage contains the data disk images information.
 type DataDiskImage struct {
-	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
+	// Lun - READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty"`
 }
 
@@ -1000,15 +991,15 @@ type NetworkProfile struct {
 // OperationStatusResponse operation status response
 type OperationStatusResponse struct {
 	autorest.Response `json:"-"`
-	// Name - Operation ID
+	// Name - READ-ONLY; Operation ID
 	Name *string `json:"name,omitempty"`
-	// Status - Operation status
+	// Status - READ-ONLY; Operation status
 	Status *string `json:"status,omitempty"`
-	// StartTime - Start time of the operation
+	// StartTime - READ-ONLY; Start time of the operation
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the operation
+	// EndTime - READ-ONLY; End time of the operation
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Error - Api error
+	// Error - READ-ONLY; Api error
 	Error *APIError `json:"error,omitempty"`
 }
 
@@ -1086,11 +1077,11 @@ type PurchasePlan struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1101,15 +1092,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -1230,13 +1212,13 @@ type VirtualMachine struct {
 	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 	Plan                      *Plan `json:"plan,omitempty"`
 	*VirtualMachineProperties `json:"properties,omitempty"`
-	// Resources - The virtual machine child extension resources.
+	// Resources - READ-ONLY; The virtual machine child extension resources.
 	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1252,18 +1234,6 @@ func (VM VirtualMachine) MarshalJSON() ([]byte, error) {
 	}
 	if VM.VirtualMachineProperties != nil {
 		objectMap["properties"] = VM.VirtualMachineProperties
-	}
-	if VM.Resources != nil {
-		objectMap["resources"] = VM.Resources
-	}
-	if VM.ID != nil {
-		objectMap["id"] = VM.ID
-	}
-	if VM.Name != nil {
-		objectMap["name"] = VM.Name
-	}
-	if VM.Type != nil {
-		objectMap["type"] = VM.Type
 	}
 	if VM.Location != nil {
 		objectMap["location"] = VM.Location
@@ -1444,11 +1414,11 @@ type VirtualMachineCaptureResultProperties struct {
 type VirtualMachineExtension struct {
 	autorest.Response                  `json:"-"`
 	*VirtualMachineExtensionProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1461,15 +1431,6 @@ func (vme VirtualMachineExtension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vme.VirtualMachineExtensionProperties != nil {
 		objectMap["properties"] = vme.VirtualMachineExtensionProperties
-	}
-	if vme.ID != nil {
-		objectMap["id"] = vme.ID
-	}
-	if vme.Name != nil {
-		objectMap["name"] = vme.Name
-	}
-	if vme.Type != nil {
-		objectMap["type"] = vme.Type
 	}
 	if vme.Location != nil {
 		objectMap["location"] = vme.Location
@@ -1563,11 +1524,11 @@ type VirtualMachineExtensionHandlerInstanceView struct {
 type VirtualMachineExtensionImage struct {
 	autorest.Response                       `json:"-"`
 	*VirtualMachineExtensionImageProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1580,15 +1541,6 @@ func (vmei VirtualMachineExtensionImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vmei.VirtualMachineExtensionImageProperties != nil {
 		objectMap["properties"] = vmei.VirtualMachineExtensionImageProperties
-	}
-	if vmei.ID != nil {
-		objectMap["id"] = vmei.ID
-	}
-	if vmei.Name != nil {
-		objectMap["name"] = vmei.Name
-	}
-	if vmei.Type != nil {
-		objectMap["type"] = vmei.Type
 	}
 	if vmei.Location != nil {
 		objectMap["location"] = vmei.Location
@@ -1712,7 +1664,7 @@ type VirtualMachineExtensionProperties struct {
 	Settings interface{} `json:"settings,omitempty"`
 	// ProtectedSettings - The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
 	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
-	// ProvisioningState - The provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// InstanceView - The virtual machine extension instance view.
 	InstanceView *VirtualMachineExtensionInstanceView `json:"instanceView,omitempty"`
@@ -1728,7 +1680,7 @@ type VirtualMachineExtensionsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineExtensionsCreateOrUpdateFuture) Result(client VirtualMachineExtensionsClient) (vme VirtualMachineExtension, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1757,7 +1709,7 @@ type VirtualMachineExtensionsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineExtensionsDeleteFuture) Result(client VirtualMachineExtensionsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1786,7 +1738,7 @@ type VirtualMachineExtensionsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineExtensionsUpdateFuture) Result(client VirtualMachineExtensionsClient) (vme VirtualMachineExtension, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2187,9 +2139,9 @@ type VirtualMachineProperties struct {
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 	// AvailabilitySet - Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes to maximize availability. For more information about availability sets, see [Manage the availability of virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). <br><br> For more information on Azure planned maintenance, see [Planned maintenance for virtual machines in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability set.
 	AvailabilitySet *SubResource `json:"availabilitySet,omitempty"`
-	// ProvisioningState - The provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// InstanceView - The virtual machine instance view.
+	// InstanceView - READ-ONLY; The virtual machine instance view.
 	InstanceView *VirtualMachineInstanceView `json:"instanceView,omitempty"`
 	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. <br><br> Possible values are: <br><br> Windows_Client <br><br> Windows_Server <br><br> If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Minimum api-version: 2015-06-15
 	LicenseType *string `json:"licenseType,omitempty"`
@@ -2201,11 +2153,11 @@ type VirtualMachineScaleSet struct {
 	// Sku - The virtual machine scale set sku.
 	Sku                               *Sku `json:"sku,omitempty"`
 	*VirtualMachineScaleSetProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -2221,15 +2173,6 @@ func (vmss VirtualMachineScaleSet) MarshalJSON() ([]byte, error) {
 	}
 	if vmss.VirtualMachineScaleSetProperties != nil {
 		objectMap["properties"] = vmss.VirtualMachineScaleSetProperties
-	}
-	if vmss.ID != nil {
-		objectMap["id"] = vmss.ID
-	}
-	if vmss.Name != nil {
-		objectMap["name"] = vmss.Name
-	}
-	if vmss.Type != nil {
-		objectMap["type"] = vmss.Type
 	}
 	if vmss.Location != nil {
 		objectMap["location"] = vmss.Location
@@ -2405,16 +2348,16 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	Settings interface{} `json:"settings,omitempty"`
 	// ProtectedSettings - Json formatted protected settings for the extension.
 	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
-	// ProvisioningState - The provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // VirtualMachineScaleSetInstanceView the instance view of a virtual machine scale set.
 type VirtualMachineScaleSetInstanceView struct {
 	autorest.Response `json:"-"`
-	// VirtualMachine - The instance view status summary for the virtual machine scale set.
+	// VirtualMachine - READ-ONLY; The instance view status summary for the virtual machine scale set.
 	VirtualMachine *VirtualMachineScaleSetInstanceViewStatusesSummary `json:"virtualMachine,omitempty"`
-	// Extensions - The extensions information.
+	// Extensions - READ-ONLY; The extensions information.
 	Extensions *[]VirtualMachineScaleSetVMExtensionsSummary `json:"extensions,omitempty"`
 	// Statuses - The resource status information.
 	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
@@ -2423,7 +2366,7 @@ type VirtualMachineScaleSetInstanceView struct {
 // VirtualMachineScaleSetInstanceViewStatusesSummary instance view statuses summary for virtual machines of
 // a virtual machine scale set.
 type VirtualMachineScaleSetInstanceViewStatusesSummary struct {
-	// StatusesSummary - The extensions information.
+	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
 }
 
@@ -2655,7 +2598,7 @@ func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, V
 // VirtualMachineScaleSetListSkusResult the Virtual Machine Scale Set List Skus operation response.
 type VirtualMachineScaleSetListSkusResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of skus available for the virtual machine scale set.
+	// Value - READ-ONLY; The list of skus available for the virtual machine scale set.
 	Value *[]VirtualMachineScaleSetSku `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of skus available for the virtual machine scale set. Call ListNext() with this to fetch the next page of skus available for the virtual machine scale set.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -3084,7 +3027,7 @@ type VirtualMachineScaleSetsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetsClient) (vmss VirtualMachineScaleSet, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3113,7 +3056,7 @@ type VirtualMachineScaleSetsDeallocateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsDeallocateFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeallocateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3142,7 +3085,7 @@ type VirtualMachineScaleSetsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsDeleteFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3171,7 +3114,7 @@ type VirtualMachineScaleSetsDeleteInstancesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsDeleteInstancesFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteInstancesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3192,23 +3135,23 @@ func (future *VirtualMachineScaleSetsDeleteInstancesFuture) Result(client Virtua
 
 // VirtualMachineScaleSetSku describes an available virtual machine scale set sku.
 type VirtualMachineScaleSetSku struct {
-	// ResourceType - The type of resource the sku applies to.
+	// ResourceType - READ-ONLY; The type of resource the sku applies to.
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Sku - The Sku.
+	// Sku - READ-ONLY; The Sku.
 	Sku *Sku `json:"sku,omitempty"`
-	// Capacity - Specifies the number of virtual machines in the scale set.
+	// Capacity - READ-ONLY; Specifies the number of virtual machines in the scale set.
 	Capacity *VirtualMachineScaleSetSkuCapacity `json:"capacity,omitempty"`
 }
 
 // VirtualMachineScaleSetSkuCapacity describes scaling information of a sku.
 type VirtualMachineScaleSetSkuCapacity struct {
-	// Minimum - The minimum capacity.
+	// Minimum - READ-ONLY; The minimum capacity.
 	Minimum *int64 `json:"minimum,omitempty"`
-	// Maximum - The maximum capacity that can be set.
+	// Maximum - READ-ONLY; The maximum capacity that can be set.
 	Maximum *int64 `json:"maximum,omitempty"`
-	// DefaultCapacity - The default capacity.
+	// DefaultCapacity - READ-ONLY; The default capacity.
 	DefaultCapacity *int64 `json:"defaultCapacity,omitempty"`
-	// ScaleType - The scale type applicable to the sku. Possible values include: 'VirtualMachineScaleSetSkuScaleTypeAutomatic', 'VirtualMachineScaleSetSkuScaleTypeNone'
+	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'VirtualMachineScaleSetSkuScaleTypeAutomatic', 'VirtualMachineScaleSetSkuScaleTypeNone'
 	ScaleType VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
 }
 
@@ -3222,7 +3165,7 @@ type VirtualMachineScaleSetsPowerOffFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsPowerOffFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPowerOffFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3251,7 +3194,7 @@ type VirtualMachineScaleSetsReimageFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsReimageFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3280,7 +3223,7 @@ type VirtualMachineScaleSetsRestartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRestartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3309,7 +3252,7 @@ type VirtualMachineScaleSetsStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsStartFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3346,7 +3289,7 @@ type VirtualMachineScaleSetsUpdateInstancesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetsUpdateInstancesFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsUpdateInstancesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3368,20 +3311,20 @@ func (future *VirtualMachineScaleSetsUpdateInstancesFuture) Result(client Virtua
 // VirtualMachineScaleSetVM describes a virtual machine scale set virtual machine.
 type VirtualMachineScaleSetVM struct {
 	autorest.Response `json:"-"`
-	// InstanceID - The virtual machine instance ID.
+	// InstanceID - READ-ONLY; The virtual machine instance ID.
 	InstanceID *string `json:"instanceId,omitempty"`
-	// Sku - The virtual machine SKU.
+	// Sku - READ-ONLY; The virtual machine SKU.
 	Sku                                 *Sku `json:"sku,omitempty"`
 	*VirtualMachineScaleSetVMProperties `json:"properties,omitempty"`
 	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 	Plan *Plan `json:"plan,omitempty"`
-	// Resources - The virtual machine child extension resources.
+	// Resources - READ-ONLY; The virtual machine child extension resources.
 	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -3392,29 +3335,11 @@ type VirtualMachineScaleSetVM struct {
 // MarshalJSON is the custom marshaler for VirtualMachineScaleSetVM.
 func (vmssv VirtualMachineScaleSetVM) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vmssv.InstanceID != nil {
-		objectMap["instanceId"] = vmssv.InstanceID
-	}
-	if vmssv.Sku != nil {
-		objectMap["sku"] = vmssv.Sku
-	}
 	if vmssv.VirtualMachineScaleSetVMProperties != nil {
 		objectMap["properties"] = vmssv.VirtualMachineScaleSetVMProperties
 	}
 	if vmssv.Plan != nil {
 		objectMap["plan"] = vmssv.Plan
-	}
-	if vmssv.Resources != nil {
-		objectMap["resources"] = vmssv.Resources
-	}
-	if vmssv.ID != nil {
-		objectMap["id"] = vmssv.ID
-	}
-	if vmssv.Name != nil {
-		objectMap["name"] = vmssv.Name
-	}
-	if vmssv.Type != nil {
-		objectMap["type"] = vmssv.Type
 	}
 	if vmssv.Location != nil {
 		objectMap["location"] = vmssv.Location
@@ -3533,9 +3458,9 @@ func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
 // VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine
 // scale set.
 type VirtualMachineScaleSetVMExtensionsSummary struct {
-	// Name - The extension name.
+	// Name - READ-ONLY; The extension name.
 	Name *string `json:"name,omitempty"`
-	// StatusesSummary - The extensions information.
+	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
 }
 
@@ -3736,9 +3661,9 @@ type VirtualMachineScaleSetVMProfile struct {
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual
 // machine.
 type VirtualMachineScaleSetVMProperties struct {
-	// LatestModelApplied - Specifies whether the latest model has been applied to the virtual machine.
+	// LatestModelApplied - READ-ONLY; Specifies whether the latest model has been applied to the virtual machine.
 	LatestModelApplied *bool `json:"latestModelApplied,omitempty"`
-	// InstanceView - The virtual machine instance view.
+	// InstanceView - READ-ONLY; The virtual machine instance view.
 	InstanceView *VirtualMachineScaleSetVMInstanceView `json:"instanceView,omitempty"`
 	// HardwareProfile - Specifies the hardware settings for the virtual machine.
 	HardwareProfile *HardwareProfile `json:"hardwareProfile,omitempty"`
@@ -3768,7 +3693,7 @@ type VirtualMachineScaleSetVMsDeallocateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetVMsDeallocateFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3797,7 +3722,7 @@ type VirtualMachineScaleSetVMsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3826,7 +3751,7 @@ type VirtualMachineScaleSetVMsPowerOffFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetVMsPowerOffFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3855,7 +3780,7 @@ type VirtualMachineScaleSetVMsReimageFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetVMsReimageFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3884,7 +3809,7 @@ type VirtualMachineScaleSetVMsRestartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetVMsRestartFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3913,7 +3838,7 @@ type VirtualMachineScaleSetVMsStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineScaleSetVMsStartFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3942,7 +3867,7 @@ type VirtualMachinesCaptureFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesCaptureFuture) Result(client VirtualMachinesClient) (vmcr VirtualMachineCaptureResult, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCaptureFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3971,7 +3896,7 @@ type VirtualMachinesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesCreateOrUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4000,7 +3925,7 @@ type VirtualMachinesDeallocateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesDeallocateFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeallocateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4029,7 +3954,7 @@ type VirtualMachinesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4081,7 +4006,7 @@ type VirtualMachinesPowerOffFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesPowerOffFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPowerOffFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4110,7 +4035,7 @@ type VirtualMachinesRedeployFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesRedeployFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRedeployFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4139,7 +4064,7 @@ type VirtualMachinesRestartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesRestartFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRestartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4168,7 +4093,7 @@ type VirtualMachinesStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4190,9 +4115,9 @@ func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (
 // VirtualMachineStatusCodeCount the status code and count of the virtual machine scale set instance view
 // status summary.
 type VirtualMachineStatusCodeCount struct {
-	// Code - The instance view status code.
+	// Code - READ-ONLY; The instance view status code.
 	Code *string `json:"code,omitempty"`
-	// Count - The number of instances having a particular status code.
+	// Count - READ-ONLY; The number of instances having a particular status code.
 	Count *int32 `json:"count,omitempty"`
 }
 

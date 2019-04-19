@@ -89,6 +89,8 @@ func (client AccountBillingRoleAssignmentClient) AddPreparer(ctx context.Context
 		"api-version": APIVersion,
 	}
 
+	parameters.PrincipalID = nil
+	parameters.BillingRoleDefinitionName = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

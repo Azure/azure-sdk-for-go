@@ -176,11 +176,11 @@ func (c *Container) UnmarshalJSON(body []byte) error {
 type ContainerGroup struct {
 	autorest.Response         `json:"-"`
 	*ContainerGroupProperties `json:"properties,omitempty"`
-	// ID - The resource id.
+	// ID - READ-ONLY; The resource id.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -193,15 +193,6 @@ func (cg ContainerGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cg.ContainerGroupProperties != nil {
 		objectMap["properties"] = cg.ContainerGroupProperties
-	}
-	if cg.ID != nil {
-		objectMap["id"] = cg.ID
-	}
-	if cg.Name != nil {
-		objectMap["name"] = cg.Name
-	}
-	if cg.Type != nil {
-		objectMap["type"] = cg.Type
 	}
 	if cg.Location != nil {
 		objectMap["location"] = cg.Location
@@ -429,7 +420,7 @@ func NewContainerGroupListResultPage(getNextPage func(context.Context, Container
 
 // ContainerGroupProperties ...
 type ContainerGroupProperties struct {
-	// ProvisioningState - The provisioning state of the container group. This only appears in the response.
+	// ProvisioningState - READ-ONLY; The provisioning state of the container group. This only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Containers - The containers within the container group.
 	Containers *[]Container `json:"containers,omitempty"`
@@ -447,15 +438,15 @@ type ContainerGroupProperties struct {
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// Volumes - The list of volumes that can be mounted by containers in this container group.
 	Volumes *[]Volume `json:"volumes,omitempty"`
-	// InstanceView - The instance view of the container group. Only valid in response.
+	// InstanceView - READ-ONLY; The instance view of the container group. Only valid in response.
 	InstanceView *ContainerGroupPropertiesInstanceView `json:"instanceView,omitempty"`
 }
 
 // ContainerGroupPropertiesInstanceView the instance view of the container group. Only valid in response.
 type ContainerGroupPropertiesInstanceView struct {
-	// Events - The events of this container group.
+	// Events - READ-ONLY; The events of this container group.
 	Events *[]Event `json:"events,omitempty"`
-	// State - The state of the container group. Only valid in response.
+	// State - READ-ONLY; The state of the container group. Only valid in response.
 	State *string `json:"state,omitempty"`
 }
 
@@ -477,7 +468,7 @@ type ContainerProperties struct {
 	Ports *[]ContainerPort `json:"ports,omitempty"`
 	// EnvironmentVariables - The environment variables to set in the container instance.
 	EnvironmentVariables *[]EnvironmentVariable `json:"environmentVariables,omitempty"`
-	// InstanceView - The instance view of the container instance. Only valid in response.
+	// InstanceView - READ-ONLY; The instance view of the container instance. Only valid in response.
 	InstanceView *ContainerPropertiesInstanceView `json:"instanceView,omitempty"`
 	// Resources - The resource requirements of the container instance.
 	Resources *ResourceRequirements `json:"resources,omitempty"`
@@ -487,13 +478,13 @@ type ContainerProperties struct {
 
 // ContainerPropertiesInstanceView the instance view of the container instance. Only valid in response.
 type ContainerPropertiesInstanceView struct {
-	// RestartCount - The number of times that the container instance has been restarted.
+	// RestartCount - READ-ONLY; The number of times that the container instance has been restarted.
 	RestartCount *int32 `json:"restartCount,omitempty"`
-	// CurrentState - Current container instance state.
+	// CurrentState - READ-ONLY; Current container instance state.
 	CurrentState *ContainerState `json:"currentState,omitempty"`
-	// PreviousState - Previous container instance state.
+	// PreviousState - READ-ONLY; Previous container instance state.
 	PreviousState *ContainerState `json:"previousState,omitempty"`
-	// Events - The events of the container instance.
+	// Events - READ-ONLY; The events of the container instance.
 	Events *[]Event `json:"events,omitempty"`
 }
 
@@ -614,11 +605,11 @@ type Port struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - The resource id.
+	// ID - READ-ONLY; The resource id.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -629,15 +620,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -673,27 +655,28 @@ type ResourceRequirements struct {
 
 // Usage a single usage result
 type Usage struct {
-	// Unit - Unit of the usage result
+	// Unit - READ-ONLY; Unit of the usage result
 	Unit *string `json:"unit,omitempty"`
-	// CurrentValue - The current usage of the resource
+	// CurrentValue - READ-ONLY; The current usage of the resource
 	CurrentValue *int32 `json:"currentValue,omitempty"`
-	// Limit - The maximum permitted usage of the resource.
+	// Limit - READ-ONLY; The maximum permitted usage of the resource.
 	Limit *int32 `json:"limit,omitempty"`
-	// Name - The name object of the resource
+	// Name - READ-ONLY; The name object of the resource
 	Name *UsageName `json:"name,omitempty"`
 }
 
 // UsageListResult the response containing the usage data
 type UsageListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]Usage `json:"value,omitempty"`
+	// Value - READ-ONLY
+	Value *[]Usage `json:"value,omitempty"`
 }
 
 // UsageName the name object of the resource
 type UsageName struct {
-	// Value - The name of the resource
+	// Value - READ-ONLY; The name of the resource
 	Value *string `json:"value,omitempty"`
-	// LocalizedValue - The localized name of the resource
+	// LocalizedValue - READ-ONLY; The localized name of the resource
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 

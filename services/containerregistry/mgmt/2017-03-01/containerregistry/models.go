@@ -256,7 +256,7 @@ type RegistriesCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RegistriesCreateFuture) Result(client RegistriesClient) (r Registry, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -282,11 +282,11 @@ type Registry struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// RegistryProperties - The properties of the container registry.
 	*RegistryProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -302,15 +302,6 @@ func (r Registry) MarshalJSON() ([]byte, error) {
 	}
 	if r.RegistryProperties != nil {
 		objectMap["properties"] = r.RegistryProperties
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
@@ -664,11 +655,11 @@ type RegistryPassword struct {
 
 // RegistryProperties the properties of a container registry.
 type RegistryProperties struct {
-	// LoginServer - The URL that can be used to log into the container registry.
+	// LoginServer - READ-ONLY; The URL that can be used to log into the container registry.
 	LoginServer *string `json:"loginServer,omitempty"`
-	// CreationDate - The creation date of the container registry in ISO8601 format.
+	// CreationDate - READ-ONLY; The creation date of the container registry in ISO8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - The provisioning state of the container registry at the time the operation was called. Possible values include: 'Creating', 'Succeeded'
+	// ProvisioningState - READ-ONLY; The provisioning state of the container registry at the time the operation was called. Possible values include: 'Creating', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// AdminUserEnabled - The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
@@ -747,11 +738,11 @@ func (rup *RegistryUpdateParameters) UnmarshalJSON(body []byte) error {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -762,15 +753,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -784,7 +766,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type Sku struct {
 	// Name - The SKU name of the container registry. Required for registry creation. Allowed value: Basic.
 	Name *string `json:"name,omitempty"`
-	// Tier - The SKU tier based on the SKU name. Possible values include: 'Basic'
+	// Tier - READ-ONLY; The SKU tier based on the SKU name. Possible values include: 'Basic'
 	Tier SkuTier `json:"tier,omitempty"`
 }
 

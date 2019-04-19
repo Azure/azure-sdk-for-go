@@ -150,11 +150,11 @@ type PrivateZone struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	// Type - READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -172,15 +172,6 @@ func (pz PrivateZone) MarshalJSON() ([]byte, error) {
 	}
 	if pz.Location != nil {
 		objectMap["location"] = pz.Location
-	}
-	if pz.ID != nil {
-		objectMap["id"] = pz.ID
-	}
-	if pz.Name != nil {
-		objectMap["name"] = pz.Name
-	}
-	if pz.Type != nil {
-		objectMap["type"] = pz.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -268,7 +259,7 @@ type PrivateZoneListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Information about the Private DNS zones.
 	Value *[]PrivateZone `json:"value,omitempty"`
-	// NextLink - The continuation token for the next page of results.
+	// NextLink - READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -411,19 +402,19 @@ func NewPrivateZoneListResultPage(getNextPage func(context.Context, PrivateZoneL
 
 // PrivateZoneProperties represents the properties of the Private DNS zone.
 type PrivateZoneProperties struct {
-	// MaxNumberOfRecordSets - The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+	// MaxNumberOfRecordSets - READ-ONLY; The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty"`
-	// NumberOfRecordSets - The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+	// NumberOfRecordSets - READ-ONLY; The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty"`
-	// MaxNumberOfVirtualNetworkLinks - The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+	// MaxNumberOfVirtualNetworkLinks - READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	MaxNumberOfVirtualNetworkLinks *int64 `json:"maxNumberOfVirtualNetworkLinks,omitempty"`
-	// NumberOfVirtualNetworkLinks - The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+	// NumberOfVirtualNetworkLinks - READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	NumberOfVirtualNetworkLinks *int64 `json:"numberOfVirtualNetworkLinks,omitempty"`
-	// MaxNumberOfVirtualNetworkLinksWithRegistration - The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set this value will be ignored.
+	// MaxNumberOfVirtualNetworkLinksWithRegistration - READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set this value will be ignored.
 	MaxNumberOfVirtualNetworkLinksWithRegistration *int64 `json:"maxNumberOfVirtualNetworkLinksWithRegistration,omitempty"`
-	// NumberOfVirtualNetworkLinksWithRegistration - The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set this value will be ignored.
+	// NumberOfVirtualNetworkLinksWithRegistration - READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This is a read-only property and any attempt to set this value will be ignored.
 	NumberOfVirtualNetworkLinksWithRegistration *int64 `json:"numberOfVirtualNetworkLinksWithRegistration,omitempty"`
-	// ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -437,7 +428,7 @@ type PrivateZonesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PrivateZonesCreateOrUpdateFuture) Result(client PrivateZonesClient) (pz PrivateZone, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -466,7 +457,7 @@ type PrivateZonesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PrivateZonesDeleteFuture) Result(client PrivateZonesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -489,7 +480,7 @@ type PrivateZonesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PrivateZonesUpdateFuture) Result(client PrivateZonesClient) (pz PrivateZone, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -510,11 +501,11 @@ func (future *PrivateZonesUpdateFuture) Result(client PrivateZonesClient) (pz Pr
 
 // ProxyResource the resource model definition for an ARM proxy resource.
 type ProxyResource struct {
-	// ID - Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	// Type - READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -532,11 +523,11 @@ type RecordSet struct {
 	Etag *string `json:"etag,omitempty"`
 	// RecordSetProperties - The properties of the record set.
 	*RecordSetProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	// Type - READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -548,15 +539,6 @@ func (rs RecordSet) MarshalJSON() ([]byte, error) {
 	}
 	if rs.RecordSetProperties != nil {
 		objectMap["properties"] = rs.RecordSetProperties
-	}
-	if rs.ID != nil {
-		objectMap["id"] = rs.ID
-	}
-	if rs.Name != nil {
-		objectMap["name"] = rs.Name
-	}
-	if rs.Type != nil {
-		objectMap["type"] = rs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -626,7 +608,7 @@ type RecordSetListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Information about the record sets in the response.
 	Value *[]RecordSet `json:"value,omitempty"`
-	// NextLink - The continuation token for the next page of results.
+	// NextLink - READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -773,9 +755,9 @@ type RecordSetProperties struct {
 	Metadata map[string]*string `json:"metadata"`
 	// TTL - The TTL (time-to-live) of the records in the record set.
 	TTL *int64 `json:"ttl,omitempty"`
-	// Fqdn - Fully qualified domain name of the record set.
+	// Fqdn - READ-ONLY; Fully qualified domain name of the record set.
 	Fqdn *string `json:"fqdn,omitempty"`
-	// IsAutoRegistered - Is the record set auto-registered in the Private DNS zone through a virtual network link?
+	// IsAutoRegistered - READ-ONLY; Is the record set auto-registered in the Private DNS zone through a virtual network link?
 	IsAutoRegistered *bool `json:"isAutoRegistered,omitempty"`
 	// ARecords - The list of A records in the record set.
 	ARecords *[]ARecord `json:"aRecords,omitempty"`
@@ -803,12 +785,6 @@ func (rsp RecordSetProperties) MarshalJSON() ([]byte, error) {
 	}
 	if rsp.TTL != nil {
 		objectMap["ttl"] = rsp.TTL
-	}
-	if rsp.Fqdn != nil {
-		objectMap["fqdn"] = rsp.Fqdn
-	}
-	if rsp.IsAutoRegistered != nil {
-		objectMap["isAutoRegistered"] = rsp.IsAutoRegistered
 	}
 	if rsp.ARecords != nil {
 		objectMap["aRecords"] = rsp.ARecords
@@ -839,11 +815,11 @@ func (rsp RecordSetProperties) MarshalJSON() ([]byte, error) {
 
 // Resource the core properties of ARM resources
 type Resource struct {
-	// ID - Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	// Type - READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -889,11 +865,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	// Type - READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -905,15 +881,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -935,11 +902,11 @@ type VirtualNetworkLink struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	// Type - READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -957,15 +924,6 @@ func (vnl VirtualNetworkLink) MarshalJSON() ([]byte, error) {
 	}
 	if vnl.Location != nil {
 		objectMap["location"] = vnl.Location
-	}
-	if vnl.ID != nil {
-		objectMap["id"] = vnl.ID
-	}
-	if vnl.Name != nil {
-		objectMap["name"] = vnl.Name
-	}
-	if vnl.Type != nil {
-		objectMap["type"] = vnl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1053,7 +1011,7 @@ type VirtualNetworkLinkListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Information about the virtual network links to the Private DNS zones.
 	Value *[]VirtualNetworkLink `json:"value,omitempty"`
-	// NextLink - The continuation token for the next page of results.
+	// NextLink - READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1200,9 +1158,9 @@ type VirtualNetworkLinkProperties struct {
 	VirtualNetwork *SubResource `json:"virtualNetwork,omitempty"`
 	// RegistrationEnabled - Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?
 	RegistrationEnabled *bool `json:"registrationEnabled,omitempty"`
-	// VirtualNetworkLinkState - The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only property and any attempt to set this value will be ignored. Possible values include: 'InProgress', 'Completed'
+	// VirtualNetworkLinkState - READ-ONLY; The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only property and any attempt to set this value will be ignored. Possible values include: 'InProgress', 'Completed'
 	VirtualNetworkLinkState VirtualNetworkLinkState `json:"virtualNetworkLinkState,omitempty"`
-	// ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1216,7 +1174,7 @@ type VirtualNetworkLinksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkLinksCreateOrUpdateFuture) Result(client VirtualNetworkLinksClient) (vnl VirtualNetworkLink, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1245,7 +1203,7 @@ type VirtualNetworkLinksDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkLinksDeleteFuture) Result(client VirtualNetworkLinksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1268,7 +1226,7 @@ type VirtualNetworkLinksUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkLinksUpdateFuture) Result(client VirtualNetworkLinksClient) (vnl VirtualNetworkLink, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksUpdateFuture", "Result", future.Response(), "Polling failure")
 		return

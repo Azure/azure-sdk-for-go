@@ -345,11 +345,11 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 type AADDataConnector struct {
 	// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
 	*AADDataConnectorProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
@@ -363,15 +363,6 @@ func (adc AADDataConnector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if adc.AADDataConnectorProperties != nil {
 		objectMap["properties"] = adc.AADDataConnectorProperties
-	}
-	if adc.ID != nil {
-		objectMap["id"] = adc.ID
-	}
-	if adc.Type != nil {
-		objectMap["type"] = adc.Type
-	}
-	if adc.Name != nil {
-		objectMap["name"] = adc.Name
 	}
 	if adc.Etag != nil {
 		objectMap["etag"] = adc.Etag
@@ -498,11 +489,11 @@ type AADDataConnectorProperties struct {
 type AccountEntity struct {
 	// AccountEntityProperties - Account entity properties
 	*AccountEntityProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
 	Kind KindBasicEntity `json:"kind,omitempty"`
@@ -514,15 +505,6 @@ func (ae AccountEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ae.AccountEntityProperties != nil {
 		objectMap["properties"] = ae.AccountEntityProperties
-	}
-	if ae.ID != nil {
-		objectMap["id"] = ae.ID
-	}
-	if ae.Type != nil {
-		objectMap["type"] = ae.Type
-	}
-	if ae.Name != nil {
-		objectMap["name"] = ae.Name
 	}
 	if ae.Kind != "" {
 		objectMap["kind"] = ae.Kind
@@ -617,23 +599,23 @@ func (ae *AccountEntity) UnmarshalJSON(body []byte) error {
 
 // AccountEntityProperties account entity property bag.
 type AccountEntityProperties struct {
-	// AccountName - The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
+	// AccountName - READ-ONLY; The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
 	AccountName *string `json:"accountName,omitempty"`
-	// NtDomain - The NetBIOS domain name as it appears in the alert format – domain\username. Examples: NT AUTHORITY.
+	// NtDomain - READ-ONLY; The NetBIOS domain name as it appears in the alert format – domain\username. Examples: NT AUTHORITY.
 	NtDomain *string `json:"ntDomain,omitempty"`
-	// UpnSuffix - The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
+	// UpnSuffix - READ-ONLY; The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
 	UpnSuffix *string `json:"upnSuffix,omitempty"`
-	// Sid - The account security identifier, e.g. S-1-5-18.
+	// Sid - READ-ONLY; The account security identifier, e.g. S-1-5-18.
 	Sid *string `json:"sid,omitempty"`
-	// AadTenantID - The Azure Active Directory tenant id.
+	// AadTenantID - READ-ONLY; The Azure Active Directory tenant id.
 	AadTenantID *string `json:"aadTenantId,omitempty"`
-	// AadUserID - The Azure Active Directory user id.
+	// AadUserID - READ-ONLY; The Azure Active Directory user id.
 	AadUserID *string `json:"aadUserId,omitempty"`
-	// Puid - The Azure Active Directory Passport User ID.
+	// Puid - READ-ONLY; The Azure Active Directory Passport User ID.
 	Puid *string `json:"puid,omitempty"`
-	// IsDomainJoined - Determines whether this is a domain account.
+	// IsDomainJoined - READ-ONLY; Determines whether this is a domain account.
 	IsDomainJoined *bool `json:"isDomainJoined,omitempty"`
-	// ObjectGUID - The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned by active directory.
+	// ObjectGUID - READ-ONLY; The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned by active directory.
 	ObjectGUID *uuid.UUID `json:"objectGuid,omitempty"`
 }
 
@@ -644,11 +626,11 @@ type Action struct {
 	Etag *string `json:"etag,omitempty"`
 	// ActionProperties - Action properties
 	*ActionProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 }
 
@@ -660,15 +642,6 @@ func (a Action) MarshalJSON() ([]byte, error) {
 	}
 	if a.ActionProperties != nil {
 		objectMap["properties"] = a.ActionProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -742,7 +715,7 @@ type ActionProperties struct {
 // ActionsList list all the actions.
 type ActionsList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of actions.
+	// NextLink - READ-ONLY; URL to fetch the next set of actions.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of actions.
 	Value *[]Action `json:"value,omitempty"`
@@ -893,11 +866,11 @@ type BasicAggregations interface {
 // Aggregations the aggregation.
 type Aggregations struct {
 	autorest.Response `json:"-"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindAggregations'
 	Kind KindBasicAggregations `json:"kind,omitempty"`
@@ -940,15 +913,6 @@ func unmarshalBasicAggregationsArray(body []byte) ([]BasicAggregations, error) {
 func (a Aggregations) MarshalJSON() ([]byte, error) {
 	a.Kind = KindAggregations
 	objectMap := make(map[string]interface{})
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
 	if a.Kind != "" {
 		objectMap["kind"] = a.Kind
 	}
@@ -997,11 +961,11 @@ type BasicAlertRule interface {
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the alert rule.
 	Etag *string `json:"etag,omitempty"`
@@ -1050,15 +1014,6 @@ func unmarshalBasicAlertRuleArray(body []byte) ([]BasicAlertRule, error) {
 func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	ar.Kind = KindAlertRule
 	objectMap := make(map[string]interface{})
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
 	if ar.Etag != nil {
 		objectMap["etag"] = ar.Etag
 	}
@@ -1109,7 +1064,7 @@ func (arm *AlertRuleModel) UnmarshalJSON(body []byte) error {
 // AlertRulesList list all the alert rules.
 type AlertRulesList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of alert rules.
+	// NextLink - READ-ONLY; URL to fetch the next set of alert rules.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of alert rules.
 	Value *[]BasicAlertRule `json:"value,omitempty"`
@@ -1300,11 +1255,11 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 type ASCDataConnector struct {
 	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 	*ASCDataConnectorProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
@@ -1318,15 +1273,6 @@ func (adc ASCDataConnector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if adc.ASCDataConnectorProperties != nil {
 		objectMap["properties"] = adc.ASCDataConnectorProperties
-	}
-	if adc.ID != nil {
-		objectMap["id"] = adc.ID
-	}
-	if adc.Type != nil {
-		objectMap["type"] = adc.Type
-	}
-	if adc.Name != nil {
-		objectMap["name"] = adc.Name
 	}
 	if adc.Etag != nil {
 		objectMap["etag"] = adc.Etag
@@ -1456,11 +1402,11 @@ type Bookmark struct {
 	Etag *string `json:"etag,omitempty"`
 	// BookmarkProperties - Bookmark properties
 	*BookmarkProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1472,15 +1418,6 @@ func (b Bookmark) MarshalJSON() ([]byte, error) {
 	}
 	if b.BookmarkProperties != nil {
 		objectMap["properties"] = b.BookmarkProperties
-	}
-	if b.ID != nil {
-		objectMap["id"] = b.ID
-	}
-	if b.Type != nil {
-		objectMap["type"] = b.Type
-	}
-	if b.Name != nil {
-		objectMap["name"] = b.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1548,7 +1485,7 @@ func (b *Bookmark) UnmarshalJSON(body []byte) error {
 // BookmarkList list all the bookmarks.
 type BookmarkList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of cases.
+	// NextLink - READ-ONLY; URL to fetch the next set of cases.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of bookmarks.
 	Value *[]Bookmark `json:"value,omitempty"`
@@ -1718,11 +1655,11 @@ type Case struct {
 	Etag *string `json:"etag,omitempty"`
 	// CaseProperties - Case properties
 	*CaseProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1734,15 +1671,6 @@ func (c Case) MarshalJSON() ([]byte, error) {
 	}
 	if c.CaseProperties != nil {
 		objectMap["properties"] = c.CaseProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1810,7 +1738,7 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 // CaseList list all the cases.
 type CaseList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of cases.
+	// NextLink - READ-ONLY; URL to fetch the next set of cases.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of cases.
 	Value *[]Case `json:"value,omitempty"`
@@ -2020,9 +1948,9 @@ func (ce *CloudError) UnmarshalJSON(body []byte) error {
 
 // CloudErrorBody error details.
 type CloudErrorBody struct {
-	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
-	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	// Message - READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -2039,11 +1967,11 @@ type BasicDataConnector interface {
 // DataConnector data connector.
 type DataConnector struct {
 	autorest.Response `json:"-"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
@@ -2108,15 +2036,6 @@ func unmarshalBasicDataConnectorArray(body []byte) ([]BasicDataConnector, error)
 func (dc DataConnector) MarshalJSON() ([]byte, error) {
 	dc.Kind = KindDataConnector
 	objectMap := make(map[string]interface{})
-	if dc.ID != nil {
-		objectMap["id"] = dc.ID
-	}
-	if dc.Type != nil {
-		objectMap["type"] = dc.Type
-	}
-	if dc.Name != nil {
-		objectMap["name"] = dc.Name
-	}
 	if dc.Etag != nil {
 		objectMap["etag"] = dc.Etag
 	}
@@ -2176,7 +2095,7 @@ type DataConnectorKind1 struct {
 // DataConnectorList list all the data connectors.
 type DataConnectorList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of data connectors.
+	// NextLink - READ-ONLY; URL to fetch the next set of data connectors.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of data connectors.
 	Value *[]BasicDataConnector `json:"value,omitempty"`
@@ -2391,11 +2310,11 @@ type BasicEntity interface {
 // Entity specific entity.
 type Entity struct {
 	autorest.Response `json:"-"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
 	Kind KindBasicEntity `json:"kind,omitempty"`
@@ -2450,15 +2369,6 @@ func unmarshalBasicEntityArray(body []byte) ([]BasicEntity, error) {
 func (e Entity) MarshalJSON() ([]byte, error) {
 	e.Kind = KindEntity
 	objectMap := make(map[string]interface{})
-	if e.ID != nil {
-		objectMap["id"] = e.ID
-	}
-	if e.Type != nil {
-		objectMap["type"] = e.Type
-	}
-	if e.Name != nil {
-		objectMap["name"] = e.Name
-	}
 	if e.Kind != "" {
 		objectMap["kind"] = e.Kind
 	}
@@ -2499,7 +2409,7 @@ type EntityKind1 struct {
 // EntityList list of all the entities.
 type EntityList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of entities.
+	// NextLink - READ-ONLY; URL to fetch the next set of entities.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of entities.
 	Value *[]BasicEntity `json:"value,omitempty"`
@@ -2695,11 +2605,11 @@ func (em *EntityModel) UnmarshalJSON(body []byte) error {
 type FileEntity struct {
 	// FileEntityProperties - File entity properties
 	*FileEntityProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
 	Kind KindBasicEntity `json:"kind,omitempty"`
@@ -2711,15 +2621,6 @@ func (fe FileEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if fe.FileEntityProperties != nil {
 		objectMap["properties"] = fe.FileEntityProperties
-	}
-	if fe.ID != nil {
-		objectMap["id"] = fe.ID
-	}
-	if fe.Type != nil {
-		objectMap["type"] = fe.Type
-	}
-	if fe.Name != nil {
-		objectMap["name"] = fe.Name
 	}
 	if fe.Kind != "" {
 		objectMap["kind"] = fe.Kind
@@ -2814,9 +2715,9 @@ func (fe *FileEntity) UnmarshalJSON(body []byte) error {
 
 // FileEntityProperties file entity property bag.
 type FileEntityProperties struct {
-	// Directory - The full path to the file.
+	// Directory - READ-ONLY; The full path to the file.
 	Directory *string `json:"directory,omitempty"`
-	// FileName - The file name without path (some alerts might not include path).
+	// FileName - READ-ONLY; The file name without path (some alerts might not include path).
 	FileName *string `json:"fileName,omitempty"`
 }
 
@@ -2824,11 +2725,11 @@ type FileEntityProperties struct {
 type HostEntity struct {
 	// HostEntityProperties - Host entity properties
 	*HostEntityProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile'
 	Kind KindBasicEntity `json:"kind,omitempty"`
@@ -2840,15 +2741,6 @@ func (he HostEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if he.HostEntityProperties != nil {
 		objectMap["properties"] = he.HostEntityProperties
-	}
-	if he.ID != nil {
-		objectMap["id"] = he.ID
-	}
-	if he.Type != nil {
-		objectMap["type"] = he.Type
-	}
-	if he.Name != nil {
-		objectMap["name"] = he.Name
 	}
 	if he.Kind != "" {
 		objectMap["kind"] = he.Kind
@@ -2943,23 +2835,23 @@ func (he *HostEntity) UnmarshalJSON(body []byte) error {
 
 // HostEntityProperties host entity property bag.
 type HostEntityProperties struct {
-	// DNSDomain - The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
+	// DNSDomain - READ-ONLY; The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
 	DNSDomain *string `json:"dnsDomain,omitempty"`
-	// NtDomain - The NT domain that this host belongs to.
+	// NtDomain - READ-ONLY; The NT domain that this host belongs to.
 	NtDomain *string `json:"ntDomain,omitempty"`
-	// HostName - The hostname without the domain suffix.
+	// HostName - READ-ONLY; The hostname without the domain suffix.
 	HostName *string `json:"hostName,omitempty"`
-	// NetBiosName - The host name (pre-windows2000).
+	// NetBiosName - READ-ONLY; The host name (pre-windows2000).
 	NetBiosName *string `json:"netBiosName,omitempty"`
-	// AzureID - The azure resource id of the VM.
+	// AzureID - READ-ONLY; The azure resource id of the VM.
 	AzureID *string `json:"azureID,omitempty"`
-	// OmsAgentID - The OMS agent id, if the host has OMS agent installed.
+	// OmsAgentID - READ-ONLY; The OMS agent id, if the host has OMS agent installed.
 	OmsAgentID *string `json:"omsAgentID,omitempty"`
 	// OsFamily - The operating system type. Possible values include: 'Linux', 'Windows', 'Android', 'IOS'
 	OsFamily OSFamily `json:"osFamily,omitempty"`
-	// OsVersion - A free text representation of the operating system. This field is meant to hold specific versions the are more fine grained than OSFamily or future values not supported by OSFamily enumeration
+	// OsVersion - READ-ONLY; A free text representation of the operating system. This field is meant to hold specific versions the are more fine grained than OSFamily or future values not supported by OSFamily enumeration
 	OsVersion *string `json:"osVersion,omitempty"`
-	// IsDomainJoined - Determines whether this host belongs to a domain.
+	// IsDomainJoined - READ-ONLY; Determines whether this host belongs to a domain.
 	IsDomainJoined *bool `json:"isDomainJoined,omitempty"`
 }
 
@@ -2967,11 +2859,11 @@ type HostEntityProperties struct {
 type MCASDataConnector struct {
 	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
 	*MCASDataConnectorProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
@@ -2985,15 +2877,6 @@ func (mdc MCASDataConnector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mdc.MCASDataConnectorProperties != nil {
 		objectMap["properties"] = mdc.MCASDataConnectorProperties
-	}
-	if mdc.ID != nil {
-		objectMap["id"] = mdc.ID
-	}
-	if mdc.Type != nil {
-		objectMap["type"] = mdc.Type
-	}
-	if mdc.Name != nil {
-		objectMap["name"] = mdc.Name
 	}
 	if mdc.Etag != nil {
 		objectMap["etag"] = mdc.Etag
@@ -3121,11 +3004,11 @@ type OfficeConsent struct {
 	autorest.Response `json:"-"`
 	// OfficeConsentProperties - Office consent properties
 	*OfficeConsentProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 }
 
@@ -3134,15 +3017,6 @@ func (oc OfficeConsent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if oc.OfficeConsentProperties != nil {
 		objectMap["properties"] = oc.OfficeConsentProperties
-	}
-	if oc.ID != nil {
-		objectMap["id"] = oc.ID
-	}
-	if oc.Type != nil {
-		objectMap["type"] = oc.Type
-	}
-	if oc.Name != nil {
-		objectMap["name"] = oc.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -3201,7 +3075,7 @@ func (oc *OfficeConsent) UnmarshalJSON(body []byte) error {
 // OfficeConsentList list of all the office365 consents.
 type OfficeConsentList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of office consents.
+	// NextLink - READ-ONLY; URL to fetch the next set of office consents.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of the consents.
 	Value *[]OfficeConsent `json:"value,omitempty"`
@@ -3348,7 +3222,7 @@ func NewOfficeConsentListPage(getNextPage func(context.Context, OfficeConsentLis
 type OfficeConsentProperties struct {
 	// TenantID - The tenantId of the Office365 with the consent.
 	TenantID *string `json:"tenantId,omitempty"`
-	// TenantName - The tenant name of the Office365 with the consent.
+	// TenantName - READ-ONLY; The tenant name of the Office365 with the consent.
 	TenantName *string `json:"tenantName,omitempty"`
 }
 
@@ -3356,11 +3230,11 @@ type OfficeConsentProperties struct {
 type OfficeDataConnector struct {
 	// OfficeDataConnectorProperties - Office data connector properties.
 	*OfficeDataConnectorProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
@@ -3374,15 +3248,6 @@ func (odc OfficeDataConnector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if odc.OfficeDataConnectorProperties != nil {
 		objectMap["properties"] = odc.OfficeDataConnectorProperties
-	}
-	if odc.ID != nil {
-		objectMap["id"] = odc.ID
-	}
-	if odc.Type != nil {
-		objectMap["type"] = odc.Type
-	}
-	if odc.Name != nil {
-		objectMap["name"] = odc.Name
 	}
 	if odc.Etag != nil {
 		objectMap["etag"] = odc.Etag
@@ -3693,11 +3558,11 @@ func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (Op
 
 // Resource an azure resource object
 type Resource struct {
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 }
 
@@ -3705,11 +3570,11 @@ type Resource struct {
 type ScheduledAlertRule struct {
 	// ScheduledAlertRuleProperties - Scheduled alert rule properties
 	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the alert rule.
 	Etag *string `json:"etag,omitempty"`
@@ -3723,15 +3588,6 @@ func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sar.ScheduledAlertRuleProperties != nil {
 		objectMap["properties"] = sar.ScheduledAlertRuleProperties
-	}
-	if sar.ID != nil {
-		objectMap["id"] = sar.ID
-	}
-	if sar.Type != nil {
-		objectMap["type"] = sar.Type
-	}
-	if sar.Name != nil {
-		objectMap["name"] = sar.Name
 	}
 	if sar.Etag != nil {
 		objectMap["etag"] = sar.Etag
@@ -3850,7 +3706,7 @@ type ScheduledAlertRuleProperties struct {
 	SuppressionEnabled *bool `json:"suppressionEnabled,omitempty"`
 	// SuppressionDuration - The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
-	// LastModifiedUtc - The last time that this alert has been modified.
+	// LastModifiedUtc - READ-ONLY; The last time that this alert has been modified.
 	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
 }
 
@@ -3864,11 +3720,11 @@ type BasicSettings interface {
 // Settings the Setting.
 type Settings struct {
 	autorest.Response `json:"-"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
@@ -3919,15 +3775,6 @@ func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
 func (s Settings) MarshalJSON() ([]byte, error) {
 	s.Kind = KindSettings
 	objectMap := make(map[string]interface{})
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
 	if s.Kind != "" {
 		objectMap["kind"] = s.Kind
 	}
@@ -3981,11 +3828,11 @@ func (sm *SettingsModel) UnmarshalJSON(body []byte) error {
 type TIDataConnector struct {
 	// TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
@@ -3999,15 +3846,6 @@ func (tdc TIDataConnector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if tdc.TIDataConnectorProperties != nil {
 		objectMap["properties"] = tdc.TIDataConnectorProperties
-	}
-	if tdc.ID != nil {
-		objectMap["id"] = tdc.ID
-	}
-	if tdc.Type != nil {
-		objectMap["type"] = tdc.Type
-	}
-	if tdc.Name != nil {
-		objectMap["name"] = tdc.Name
 	}
 	if tdc.Etag != nil {
 		objectMap["etag"] = tdc.Etag
@@ -4146,11 +3984,11 @@ type TIDataConnectorProperties struct {
 type ToggleSettings struct {
 	// ToggleSettingsProperties - toggle properties
 	*ToggleSettingsProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
@@ -4162,15 +4000,6 @@ func (ts ToggleSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ts.ToggleSettingsProperties != nil {
 		objectMap["properties"] = ts.ToggleSettingsProperties
-	}
-	if ts.ID != nil {
-		objectMap["id"] = ts.ID
-	}
-	if ts.Type != nil {
-		objectMap["type"] = ts.Type
-	}
-	if ts.Name != nil {
-		objectMap["name"] = ts.Name
 	}
 	if ts.Kind != "" {
 		objectMap["kind"] = ts.Kind
@@ -4268,11 +4097,11 @@ type ToggleSettingsProperties struct {
 type UebaSettings struct {
 	// UebaSettingsProperties - User and Entity Behavior Analytics settings properties
 	*UebaSettingsProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
@@ -4284,15 +4113,6 @@ func (us UebaSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if us.UebaSettingsProperties != nil {
 		objectMap["properties"] = us.UebaSettingsProperties
-	}
-	if us.ID != nil {
-		objectMap["id"] = us.ID
-	}
-	if us.Type != nil {
-		objectMap["type"] = us.Type
-	}
-	if us.Name != nil {
-		objectMap["name"] = us.Name
 	}
 	if us.Kind != "" {
 		objectMap["kind"] = us.Kind
@@ -4384,9 +4204,9 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 type UebaSettingsProperties struct {
 	// IsEnabled - Determines whether User and Entity Behavior Analytics is enabled for this workspace.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// StatusInMcas - Determines whether User and Entity Behavior Analytics is enabled from MCAS (Microsoft Cloud App Security). Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
+	// StatusInMcas - READ-ONLY; Determines whether User and Entity Behavior Analytics is enabled from MCAS (Microsoft Cloud App Security). Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
 	StatusInMcas StatusInMcas `json:"statusInMcas,omitempty"`
-	// AtpLicenseStatus - Determines whether the tenant has ATP (Advanced Threat Protection) license.
+	// AtpLicenseStatus - READ-ONLY; Determines whether the tenant has ATP (Advanced Threat Protection) license.
 	AtpLicenseStatus *bool `json:"atpLicenseStatus,omitempty"`
 }
 

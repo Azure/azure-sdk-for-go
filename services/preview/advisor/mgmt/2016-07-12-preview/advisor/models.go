@@ -313,11 +313,11 @@ func (rp RecommendationProperties) MarshalJSON() ([]byte, error) {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -328,15 +328,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -605,11 +596,11 @@ type SuppressionContract struct {
 	SuppressionID *string `json:"suppressionId,omitempty"`
 	// TTL - The duration for which the suppression is valid.
 	TTL *string `json:"ttl,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -625,15 +616,6 @@ func (sc SuppressionContract) MarshalJSON() ([]byte, error) {
 	}
 	if sc.TTL != nil {
 		objectMap["ttl"] = sc.TTL
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
 	}
 	if sc.Location != nil {
 		objectMap["location"] = sc.Location

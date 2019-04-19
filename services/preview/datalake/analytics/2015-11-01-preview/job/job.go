@@ -94,6 +94,14 @@ func (client Client) BuildPreparer(ctx context.Context, accountName string, para
 		"api-version": APIVersion,
 	}
 
+	parameters.ErrorMessage = nil
+	parameters.SubmitTime = nil
+	parameters.StartTime = nil
+	parameters.EndTime = nil
+	parameters.State = nil
+	parameters.Result = nil
+	parameters.StateAuditRecords = nil
+	parameters.HierarchyQueueNode = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
@@ -264,6 +272,14 @@ func (client Client) CreatePreparer(ctx context.Context, accountName string, job
 		"api-version": APIVersion,
 	}
 
+	parameters.ErrorMessage = nil
+	parameters.SubmitTime = nil
+	parameters.StartTime = nil
+	parameters.EndTime = nil
+	parameters.State = nil
+	parameters.Result = nil
+	parameters.StateAuditRecords = nil
+	parameters.HierarchyQueueNode = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

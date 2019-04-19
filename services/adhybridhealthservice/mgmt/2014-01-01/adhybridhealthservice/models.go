@@ -2272,9 +2272,9 @@ type Operation struct {
 // Health.
 type OperationListResponse struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - List of operations supported by the Microsoft.ADHybridHealthService resource provider.
+	// Value - READ-ONLY; List of operations supported by the Microsoft.ADHybridHealthService resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 	// TotalCount - The total count of operations.
 	TotalCount *int32 `json:"totalCount,omitempty"`

@@ -306,11 +306,11 @@ type AvailabilityGroupListener struct {
 	autorest.Response `json:"-"`
 	// AvailabilityGroupListenerProperties - Resource properties.
 	*AvailabilityGroupListenerProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -319,15 +319,6 @@ func (agl AvailabilityGroupListener) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if agl.AvailabilityGroupListenerProperties != nil {
 		objectMap["properties"] = agl.AvailabilityGroupListenerProperties
-	}
-	if agl.ID != nil {
-		objectMap["id"] = agl.ID
-	}
-	if agl.Name != nil {
-		objectMap["name"] = agl.Name
-	}
-	if agl.Type != nil {
-		objectMap["type"] = agl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -386,9 +377,9 @@ func (agl *AvailabilityGroupListener) UnmarshalJSON(body []byte) error {
 // AvailabilityGroupListenerListResult a list of availability group listeners.
 type AvailabilityGroupListenerListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]AvailabilityGroupListener `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -532,7 +523,7 @@ func NewAvailabilityGroupListenerListResultPage(getNextPage func(context.Context
 
 // AvailabilityGroupListenerProperties the properties of an availability group listener.
 type AvailabilityGroupListenerProperties struct {
-	// ProvisioningState - Provisioning state to track the async operation status.
+	// ProvisioningState - READ-ONLY; Provisioning state to track the async operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityGroupName - Name of the availability group.
 	AvailabilityGroupName *string `json:"availabilityGroupName,omitempty"`
@@ -554,7 +545,7 @@ type AvailabilityGroupListenersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AvailabilityGroupListenersCreateOrUpdateFuture) Result(client AvailabilityGroupListenersClient) (agl AvailabilityGroupListener, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.AvailabilityGroupListenersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -583,7 +574,7 @@ type AvailabilityGroupListenersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AvailabilityGroupListenersDeleteFuture) Result(client AvailabilityGroupListenersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.AvailabilityGroupListenersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -605,11 +596,11 @@ type Group struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -624,15 +615,6 @@ func (g Group) MarshalJSON() ([]byte, error) {
 	}
 	if g.Tags != nil {
 		objectMap["tags"] = g.Tags
-	}
-	if g.ID != nil {
-		objectMap["id"] = g.ID
-	}
-	if g.Name != nil {
-		objectMap["name"] = g.Name
-	}
-	if g.Type != nil {
-		objectMap["type"] = g.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -709,9 +691,9 @@ func (g *Group) UnmarshalJSON(body []byte) error {
 // GroupListResult a list of SQL virtual machine groups.
 type GroupListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]Group `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -854,17 +836,17 @@ func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (
 
 // GroupProperties the properties of a SQL virtual machine group.
 type GroupProperties struct {
-	// ProvisioningState - Provisioning state to track the async operation status.
+	// ProvisioningState - READ-ONLY; Provisioning state to track the async operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
 	// SQLImageSku - SQL image sku. Possible values include: 'SQLVMGroupImageSkuDeveloper', 'SQLVMGroupImageSkuEnterprise'
 	SQLImageSku SQLVMGroupImageSku `json:"sqlImageSku,omitempty"`
-	// ScaleType - Scale type. Possible values include: 'HA'
+	// ScaleType - READ-ONLY; Scale type. Possible values include: 'HA'
 	ScaleType ScaleType `json:"scaleType,omitempty"`
-	// ClusterManagerType - Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type. Possible values include: 'WSFC'
+	// ClusterManagerType - READ-ONLY; Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type. Possible values include: 'WSFC'
 	ClusterManagerType ClusterManagerType `json:"clusterManagerType,omitempty"`
-	// ClusterConfiguration - Cluster type. Possible values include: 'Domainful'
+	// ClusterConfiguration - READ-ONLY; Cluster type. Possible values include: 'Domainful'
 	ClusterConfiguration ClusterConfiguration `json:"clusterConfiguration,omitempty"`
 	// WsfcDomainProfile - Cluster Active Directory domain profile.
 	WsfcDomainProfile *WsfcDomainProfile `json:"wsfcDomainProfile,omitempty"`
@@ -880,7 +862,7 @@ type GroupsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GroupsCreateOrUpdateFuture) Result(client GroupsClient) (g Group, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -908,7 +890,7 @@ type GroupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GroupsDeleteFuture) Result(client GroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -930,7 +912,7 @@ type GroupsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GroupsUpdateFuture) Result(client GroupsClient) (g Group, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -982,9 +964,9 @@ type KeyVaultCredentialSettings struct {
 // ListResult a list of SQL virtual machines.
 type ListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SQLVirtualMachine `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1141,52 +1123,40 @@ type LoadBalancerConfiguration struct {
 
 // Operation SQL REST API operation definition.
 type Operation struct {
-	// Name - The name of the operation being performed on this particular object.
+	// Name - READ-ONLY; The name of the operation being performed on this particular object.
 	Name *string `json:"name,omitempty"`
-	// Display - The localized display information for this particular operation / action.
+	// Display - READ-ONLY; The localized display information for this particular operation / action.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - The intended executor of the operation. Possible values include: 'User', 'System'
+	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'User', 'System'
 	Origin OperationOrigin `json:"origin,omitempty"`
-	// Properties - Additional descriptions for the operation.
+	// Properties - READ-ONLY; Additional descriptions for the operation.
 	Properties map[string]interface{} `json:"properties"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if o.Name != nil {
-		objectMap["name"] = o.Name
-	}
-	if o.Display != nil {
-		objectMap["display"] = o.Display
-	}
-	if o.Origin != "" {
-		objectMap["origin"] = o.Origin
-	}
-	if o.Properties != nil {
-		objectMap["properties"] = o.Properties
-	}
 	return json.Marshal(objectMap)
 }
 
 // OperationDisplay display metadata associated with the operation.
 type OperationDisplay struct {
-	// Provider - The localized friendly form of the resource provider name.
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The localized friendly form of the resource type related to this action/operation.
+	// Resource - READ-ONLY; The localized friendly form of the resource type related to this action/operation.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The localized friendly name for the operation.
+	// Operation - READ-ONLY; The localized friendly name for the operation.
 	Operation *string `json:"operation,omitempty"`
-	// Description - The localized friendly description for the operation.
+	// Description - READ-ONLY; The localized friendly description for the operation.
 	Description *string `json:"description,omitempty"`
 }
 
 // OperationListResult result of the request to list SQL operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1339,13 +1309,13 @@ type PrivateIPAddress struct {
 type Properties struct {
 	// VirtualMachineResourceID - ARM Resource id of underlying virtual machine created from SQL marketplace image.
 	VirtualMachineResourceID *string `json:"virtualMachineResourceId,omitempty"`
-	// ProvisioningState - Provisioning state to track the async operation status.
+	// ProvisioningState - READ-ONLY; Provisioning state to track the async operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// SQLImageOffer - SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
+	// SQLImageOffer - READ-ONLY; SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
 	// SQLServerLicenseType - SQL Server license type. Possible values include: 'PAYG', 'AHUB'
 	SQLServerLicenseType SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
-	// SQLImageSku - SQL image sku. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
+	// SQLImageSku - READ-ONLY; SQL image sku. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
 	SQLImageSku SQLImageSku `json:"sqlImageSku,omitempty"`
 	// SQLVirtualMachineGroupResourceID - ARM resource id of the SQL virtual machine group this SQL virtual machine is or will be part of.
 	SQLVirtualMachineGroupResourceID *string `json:"sqlVirtualMachineGroupResourceId,omitempty"`
@@ -1363,31 +1333,31 @@ type Properties struct {
 
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // Resource ARM resource.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // ResourceIdentity azure Active Directory identity configuration for a resource.
 type ResourceIdentity struct {
-	// PrincipalID - The Azure Active Directory principal id.
+	// PrincipalID - READ-ONLY; The Azure Active Directory principal id.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
 	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'SystemAssigned'
 	Type IdentityType `json:"type,omitempty"`
-	// TenantID - The Azure Active Directory tenant id.
+	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
@@ -1436,11 +1406,11 @@ type SQLVirtualMachine struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1458,15 +1428,6 @@ func (svm SQLVirtualMachine) MarshalJSON() ([]byte, error) {
 	}
 	if svm.Tags != nil {
 		objectMap["tags"] = svm.Tags
-	}
-	if svm.ID != nil {
-		objectMap["id"] = svm.ID
-	}
-	if svm.Name != nil {
-		objectMap["name"] = svm.Name
-	}
-	if svm.Type != nil {
-		objectMap["type"] = svm.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1559,7 +1520,7 @@ type SQLVirtualMachinesCreateOrUpdateFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *SQLVirtualMachinesCreateOrUpdateFutureType) Result(client SQLVirtualMachinesClient) (svm SQLVirtualMachine, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -1588,7 +1549,7 @@ type SQLVirtualMachinesDeleteFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *SQLVirtualMachinesDeleteFutureType) Result(client SQLVirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesDeleteFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -1611,7 +1572,7 @@ type SQLVirtualMachinesUpdateFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *SQLVirtualMachinesUpdateFutureType) Result(client SQLVirtualMachinesClient) (svm SQLVirtualMachine, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -1642,11 +1603,11 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1658,15 +1619,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

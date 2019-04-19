@@ -167,11 +167,11 @@ type Artifact struct {
 	autorest.Response `json:"-"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -227,15 +227,6 @@ func (a Artifact) MarshalJSON() ([]byte, error) {
 	if a.Kind != "" {
 		objectMap["kind"] = a.Kind
 	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -269,7 +260,7 @@ type ArtifactList struct {
 	autorest.Response `json:"-"`
 	// Value - List of blueprint artifacts.
 	Value *[]BasicArtifact `json:"value,omitempty"`
-	// NextLink - Link to the next page of results.
+	// NextLink - READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -474,11 +465,11 @@ type Assignment struct {
 	*AssignmentProperties `json:"properties,omitempty"`
 	// Location - The location of this blueprint assignment.
 	Location *string `json:"location,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -493,15 +484,6 @@ func (a Assignment) MarshalJSON() ([]byte, error) {
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -605,11 +587,11 @@ type AssignmentDeploymentJobResult struct {
 type AssignmentJobCreatedResource struct {
 	// Properties - Additional properties in a dictionary.
 	Properties map[string]*string `json:"properties"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -619,15 +601,6 @@ func (ajcr AssignmentJobCreatedResource) MarshalJSON() ([]byte, error) {
 	if ajcr.Properties != nil {
 		objectMap["properties"] = ajcr.Properties
 	}
-	if ajcr.ID != nil {
-		objectMap["id"] = ajcr.ID
-	}
-	if ajcr.Type != nil {
-		objectMap["type"] = ajcr.Type
-	}
-	if ajcr.Name != nil {
-		objectMap["name"] = ajcr.Name
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -636,7 +609,7 @@ type AssignmentList struct {
 	autorest.Response `json:"-"`
 	// Value - List of blueprint assignments.
 	Value *[]Assignment `json:"value,omitempty"`
-	// NextLink - Link to the next page of results.
+	// NextLink - READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -790,11 +763,11 @@ type AssignmentOperation struct {
 	autorest.Response `json:"-"`
 	// AssignmentOperationProperties - Properties for AssignmentOperation.
 	*AssignmentOperationProperties `json:"properties,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -803,15 +776,6 @@ func (ao AssignmentOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ao.AssignmentOperationProperties != nil {
 		objectMap["properties"] = ao.AssignmentOperationProperties
-	}
-	if ao.ID != nil {
-		objectMap["id"] = ao.ID
-	}
-	if ao.Type != nil {
-		objectMap["type"] = ao.Type
-	}
-	if ao.Name != nil {
-		objectMap["name"] = ao.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -872,7 +836,7 @@ type AssignmentOperationList struct {
 	autorest.Response `json:"-"`
 	// Value - List of AssignmentOperation.
 	Value *[]AssignmentOperation `json:"value,omitempty"`
-	// NextLink - Link to the next page of results.
+	// NextLink - READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1037,11 +1001,11 @@ type AssignmentProperties struct {
 	Parameters map[string]*ParameterValueBase `json:"parameters"`
 	// ResourceGroups - Names and locations of resource group placeholders.
 	ResourceGroups map[string]*ResourceGroupValue `json:"resourceGroups"`
-	// Status - Status of blueprint assignment. This field is readonly.
+	// Status - READ-ONLY; Status of blueprint assignment. This field is readonly.
 	Status *AssignmentStatus `json:"status,omitempty"`
 	// Locks - Defines how resources deployed by a blueprint assignment are locked.
 	Locks *AssignmentLockSettings `json:"locks,omitempty"`
-	// ProvisioningState - State of the blueprint assignment. Possible values include: 'Creating', 'Validating', 'Waiting', 'Deploying', 'Cancelling', 'Locking', 'Succeeded', 'Failed', 'Canceled', 'Deleting'
+	// ProvisioningState - READ-ONLY; State of the blueprint assignment. Possible values include: 'Creating', 'Validating', 'Waiting', 'Deploying', 'Cancelling', 'Locking', 'Succeeded', 'Failed', 'Canceled', 'Deleting'
 	ProvisioningState AssignmentProvisioningState `json:"provisioningState,omitempty"`
 	// DisplayName - One-liner string explain this resource.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -1061,14 +1025,8 @@ func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
 	if ap.ResourceGroups != nil {
 		objectMap["resourceGroups"] = ap.ResourceGroups
 	}
-	if ap.Status != nil {
-		objectMap["status"] = ap.Status
-	}
 	if ap.Locks != nil {
 		objectMap["locks"] = ap.Locks
-	}
-	if ap.ProvisioningState != "" {
-		objectMap["provisioningState"] = ap.ProvisioningState
 	}
 	if ap.DisplayName != nil {
 		objectMap["displayName"] = ap.DisplayName
@@ -1081,19 +1039,19 @@ func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
 
 // AssignmentStatus the status of a blueprint assignment. This field is readonly.
 type AssignmentStatus struct {
-	// TimeCreated - Creation time of this blueprint definition.
+	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *string `json:"timeCreated,omitempty"`
-	// LastModified - Last modified time of this blueprint definition.
+	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
 	LastModified *string `json:"lastModified,omitempty"`
 }
 
 // AzureResourceBase common properties for all Azure resources.
 type AzureResourceBase struct {
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1116,7 +1074,7 @@ type List struct {
 	autorest.Response `json:"-"`
 	// Value - List of blueprint definitions.
 	Value *[]Model `json:"value,omitempty"`
-	// NextLink - Link to the next page of results.
+	// NextLink - READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1292,11 +1250,11 @@ type Model struct {
 	autorest.Response `json:"-"`
 	// Properties - Detailed properties for blueprint definition.
 	*Properties `json:"properties,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1305,15 +1263,6 @@ func (mVar Model) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mVar.Properties != nil {
 		objectMap["properties"] = mVar.Properties
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1480,11 +1429,11 @@ type PolicyAssignmentArtifact struct {
 	*PolicyAssignmentArtifactProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1497,15 +1446,6 @@ func (paa PolicyAssignmentArtifact) MarshalJSON() ([]byte, error) {
 	}
 	if paa.Kind != "" {
 		objectMap["kind"] = paa.Kind
-	}
-	if paa.ID != nil {
-		objectMap["id"] = paa.ID
-	}
-	if paa.Type != nil {
-		objectMap["type"] = paa.Type
-	}
-	if paa.Name != nil {
-		objectMap["name"] = paa.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1641,7 +1581,7 @@ type Properties struct {
 	Versions interface{} `json:"versions,omitempty"`
 	// Layout - Layout view of the blueprint definition for UI reference.
 	Layout interface{} `json:"layout,omitempty"`
-	// Status - Status of the blueprint. This field is readonly.
+	// Status - READ-ONLY; Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
 	// TargetScope - The scope where this blueprint definition can be assigned. Possible values include: 'Subscription', 'ManagementGroup'
 	TargetScope TargetScope `json:"targetScope,omitempty"`
@@ -1663,9 +1603,6 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	}
 	if p.Layout != nil {
 		objectMap["layout"] = p.Layout
-	}
-	if p.Status != nil {
-		objectMap["status"] = p.Status
 	}
 	if p.TargetScope != "" {
 		objectMap["targetScope"] = p.TargetScope
@@ -1690,11 +1627,11 @@ type PublishedBlueprint struct {
 	autorest.Response `json:"-"`
 	// PublishedBlueprintProperties - Detailed properties for published blueprint.
 	*PublishedBlueprintProperties `json:"properties,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1703,15 +1640,6 @@ func (pb PublishedBlueprint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pb.PublishedBlueprintProperties != nil {
 		objectMap["properties"] = pb.PublishedBlueprintProperties
-	}
-	if pb.ID != nil {
-		objectMap["id"] = pb.ID
-	}
-	if pb.Type != nil {
-		objectMap["type"] = pb.Type
-	}
-	if pb.Name != nil {
-		objectMap["name"] = pb.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1772,7 +1700,7 @@ type PublishedBlueprintList struct {
 	autorest.Response `json:"-"`
 	// Value - List of published blueprint definitions.
 	Value *[]PublishedBlueprint `json:"value,omitempty"`
-	// NextLink - Link to the next page of results.
+	// NextLink - READ-ONLY; Link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1919,7 +1847,7 @@ type PublishedBlueprintProperties struct {
 	BlueprintName *string `json:"blueprintName,omitempty"`
 	// ChangeNotes - Version-specific change notes.
 	ChangeNotes *string `json:"changeNotes,omitempty"`
-	// Status - Status of the blueprint. This field is readonly.
+	// Status - READ-ONLY; Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
 	// TargetScope - The scope where this blueprint definition can be assigned. Possible values include: 'Subscription', 'ManagementGroup'
 	TargetScope TargetScope `json:"targetScope,omitempty"`
@@ -1941,9 +1869,6 @@ func (pbp PublishedBlueprintProperties) MarshalJSON() ([]byte, error) {
 	}
 	if pbp.ChangeNotes != nil {
 		objectMap["changeNotes"] = pbp.ChangeNotes
-	}
-	if pbp.Status != nil {
-		objectMap["status"] = pbp.Status
 	}
 	if pbp.TargetScope != "" {
 		objectMap["targetScope"] = pbp.TargetScope
@@ -2102,9 +2027,9 @@ type ResourceProviderOperationList struct {
 
 // ResourceStatusBase shared status properties between all blueprint resources.
 type ResourceStatusBase struct {
-	// TimeCreated - Creation time of this blueprint definition.
+	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *string `json:"timeCreated,omitempty"`
-	// LastModified - Last modified time of this blueprint definition.
+	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
 	LastModified *string `json:"lastModified,omitempty"`
 }
 
@@ -2114,11 +2039,11 @@ type RoleAssignmentArtifact struct {
 	*RoleAssignmentArtifactProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -2131,15 +2056,6 @@ func (raa RoleAssignmentArtifact) MarshalJSON() ([]byte, error) {
 	}
 	if raa.Kind != "" {
 		objectMap["kind"] = raa.Kind
-	}
-	if raa.ID != nil {
-		objectMap["id"] = raa.ID
-	}
-	if raa.Type != nil {
-		objectMap["type"] = raa.Type
-	}
-	if raa.Name != nil {
-		objectMap["name"] = raa.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -2265,7 +2181,7 @@ type SecretValueReference struct {
 
 // SharedBlueprintProperties shared Schema for both blueprintProperties and publishedBlueprintProperties.
 type SharedBlueprintProperties struct {
-	// Status - Status of the blueprint. This field is readonly.
+	// Status - READ-ONLY; Status of the blueprint. This field is readonly.
 	Status *Status `json:"status,omitempty"`
 	// TargetScope - The scope where this blueprint definition can be assigned. Possible values include: 'Subscription', 'ManagementGroup'
 	TargetScope TargetScope `json:"targetScope,omitempty"`
@@ -2282,9 +2198,6 @@ type SharedBlueprintProperties struct {
 // MarshalJSON is the custom marshaler for SharedBlueprintProperties.
 func (sbp SharedBlueprintProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sbp.Status != nil {
-		objectMap["status"] = sbp.Status
-	}
 	if sbp.TargetScope != "" {
 		objectMap["targetScope"] = sbp.TargetScope
 	}
@@ -2305,9 +2218,9 @@ func (sbp SharedBlueprintProperties) MarshalJSON() ([]byte, error) {
 
 // Status the status of the blueprint. This field is readonly.
 type Status struct {
-	// TimeCreated - Creation time of this blueprint definition.
+	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
 	TimeCreated *string `json:"timeCreated,omitempty"`
-	// LastModified - Last modified time of this blueprint definition.
+	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
 	LastModified *string `json:"lastModified,omitempty"`
 }
 
@@ -2317,11 +2230,11 @@ type TemplateArtifact struct {
 	*TemplateArtifactProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -2334,15 +2247,6 @@ func (ta TemplateArtifact) MarshalJSON() ([]byte, error) {
 	}
 	if ta.Kind != "" {
 		objectMap["kind"] = ta.Kind
-	}
-	if ta.ID != nil {
-		objectMap["id"] = ta.ID
-	}
-	if ta.Type != nil {
-		objectMap["type"] = ta.Type
-	}
-	if ta.Name != nil {
-		objectMap["name"] = ta.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -2476,11 +2380,11 @@ func (tap TemplateArtifactProperties) MarshalJSON() ([]byte, error) {
 type TrackedResource struct {
 	// Location - The location of this blueprint assignment.
 	Location *string `json:"location,omitempty"`
-	// ID - String Id used to locate any resource on Azure.
+	// ID - READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of this resource.
+	// Type - READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of this resource.
+	// Name - READ-ONLY; Name of this resource.
 	Name *string `json:"name,omitempty"`
 }
 

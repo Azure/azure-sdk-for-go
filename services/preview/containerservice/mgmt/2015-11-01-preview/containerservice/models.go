@@ -18,6 +18,7 @@ package containerservice
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -159,7 +160,7 @@ type AgentPoolProfile struct {
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create FQDN for this agent pool
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FQDN for the agent pool
+	// Fqdn - READ-ONLY; FQDN for the agent pool
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
@@ -167,11 +168,11 @@ type AgentPoolProfile struct {
 type ContainerService struct {
 	autorest.Response `json:"-"`
 	*Properties       `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -184,15 +185,6 @@ func (cs ContainerService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cs.Properties != nil {
 		objectMap["properties"] = cs.Properties
-	}
-	if cs.ID != nil {
-		objectMap["id"] = cs.ID
-	}
-	if cs.Name != nil {
-		objectMap["name"] = cs.Name
-	}
-	if cs.Type != nil {
-		objectMap["type"] = cs.Type
 	}
 	if cs.Location != nil {
 		objectMap["location"] = cs.Location
@@ -282,7 +274,7 @@ type CreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateOrUpdateFuture) Result(client Client) (cs ContainerService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -310,7 +302,7 @@ type DeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -350,7 +342,7 @@ type MasterProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create FQDN for master
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FQDN for the master
+	// Fqdn - READ-ONLY; FQDN for the master
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
@@ -362,7 +354,7 @@ type OrchestratorProfile struct {
 
 // Properties properties of container service
 type Properties struct {
-	// ProvisioningState - Gets the provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; Gets the provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OrchestratorProfile - Properties of orchestrator
 	OrchestratorProfile *OrchestratorProfile `json:"orchestratorProfile,omitempty"`
@@ -380,11 +372,11 @@ type Properties struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -395,15 +387,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -429,7 +412,7 @@ type SSHPublicKey struct {
 type VMDiagnostics struct {
 	// Enabled - Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
 	Enabled *bool `json:"enabled,omitempty"`
-	// StorageURI - Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
+	// StorageURI - READ-ONLY; Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 

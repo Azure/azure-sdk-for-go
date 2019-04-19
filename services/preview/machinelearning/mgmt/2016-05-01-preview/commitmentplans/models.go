@@ -79,21 +79,21 @@ func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
 
 // CatalogSku details of a commitment plan SKU.
 type CatalogSku struct {
-	// ResourceType - Resource type name
+	// ResourceType - READ-ONLY; Resource type name
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Name - SKU name
+	// Name - READ-ONLY; SKU name
 	Name *string `json:"name,omitempty"`
-	// Tier - SKU tier
+	// Tier - READ-ONLY; SKU tier
 	Tier *string `json:"tier,omitempty"`
-	// Locations - Regions where the SKU is available.
+	// Locations - READ-ONLY; Regions where the SKU is available.
 	Locations *[]string `json:"locations,omitempty"`
-	// Capacity - SKU scaling information
+	// Capacity - READ-ONLY; SKU scaling information
 	Capacity *SkuCapacity `json:"capacity,omitempty"`
-	// Capabilities - The capability information for the specified SKU.
+	// Capabilities - READ-ONLY; The capability information for the specified SKU.
 	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
-	// Costs - The cost information for the specified SKU.
+	// Costs - READ-ONLY; The cost information for the specified SKU.
 	Costs *[]SkuCost `json:"costs,omitempty"`
-	// Restrictions - Restrictions which would prevent a SKU from being used. This is empty if there are no restrictions.
+	// Restrictions - READ-ONLY; Restrictions which would prevent a SKU from being used. This is empty if there are no restrictions.
 	Restrictions *[]SkuRestrictions `json:"restrictions,omitempty"`
 }
 
@@ -105,13 +105,13 @@ type CommitmentAssociation struct {
 	Etag *string `json:"etag,omitempty"`
 	// Properties - The properties of the commitment association resource.
 	Properties *CommitmentAssociationProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - User-defined tags for the resource.
 	Tags map[string]*string `json:"tags"`
@@ -126,17 +126,8 @@ func (ca CommitmentAssociation) MarshalJSON() ([]byte, error) {
 	if ca.Properties != nil {
 		objectMap["properties"] = ca.Properties
 	}
-	if ca.ID != nil {
-		objectMap["id"] = ca.ID
-	}
-	if ca.Name != nil {
-		objectMap["name"] = ca.Name
-	}
 	if ca.Location != nil {
 		objectMap["location"] = ca.Location
-	}
-	if ca.Type != nil {
-		objectMap["type"] = ca.Type
 	}
 	if ca.Tags != nil {
 		objectMap["tags"] = ca.Tags
@@ -293,11 +284,11 @@ func NewCommitmentAssociationListResultPage(getNextPage func(context.Context, Co
 
 // CommitmentAssociationProperties properties of an Azure ML commitment association.
 type CommitmentAssociationProperties struct {
-	// AssociatedResourceID - The ID of the resource this association points to, such as the ARM ID of an Azure ML web service.
+	// AssociatedResourceID - READ-ONLY; The ID of the resource this association points to, such as the ARM ID of an Azure ML web service.
 	AssociatedResourceID *string `json:"associatedResourceId,omitempty"`
-	// CommitmentPlanID - The ARM ID of the parent Azure ML commitment plan.
+	// CommitmentPlanID - READ-ONLY; The ARM ID of the parent Azure ML commitment plan.
 	CommitmentPlanID *string `json:"commitmentPlanId,omitempty"`
-	// CreationDate - The date at which this commitment association was created, in ISO 8601 format.
+	// CreationDate - READ-ONLY; The date at which this commitment association was created, in ISO 8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 }
 
@@ -306,17 +297,17 @@ type CommitmentPlan struct {
 	autorest.Response `json:"-"`
 	// Etag - An entity tag used to enforce optimistic concurrency.
 	Etag *string `json:"etag,omitempty"`
-	// Properties - The commitment plan properties.
+	// Properties - READ-ONLY; The commitment plan properties.
 	Properties *Properties `json:"properties,omitempty"`
 	// Sku - The commitment plan SKU.
 	Sku *ResourceSku `json:"sku,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - User-defined tags for the resource.
 	Tags map[string]*string `json:"tags"`
@@ -328,23 +319,11 @@ func (cp CommitmentPlan) MarshalJSON() ([]byte, error) {
 	if cp.Etag != nil {
 		objectMap["etag"] = cp.Etag
 	}
-	if cp.Properties != nil {
-		objectMap["properties"] = cp.Properties
-	}
 	if cp.Sku != nil {
 		objectMap["sku"] = cp.Sku
 	}
-	if cp.ID != nil {
-		objectMap["id"] = cp.ID
-	}
-	if cp.Name != nil {
-		objectMap["name"] = cp.Name
-	}
 	if cp.Location != nil {
 		objectMap["location"] = cp.Location
-	}
-	if cp.Type != nil {
-		objectMap["type"] = cp.Type
 	}
 	if cp.Tags != nil {
 		objectMap["tags"] = cp.Tags
@@ -507,19 +486,19 @@ type MoveCommitmentAssociationRequest struct {
 
 // OperationDisplayInfo the API operation info.
 type OperationDisplayInfo struct {
-	// Description - The description of the operation.
+	// Description - READ-ONLY; The description of the operation.
 	Description *string `json:"description,omitempty"`
-	// Operation - The action that users can perform, based on their permission level.
+	// Operation - READ-ONLY; The action that users can perform, based on their permission level.
 	Operation *string `json:"operation,omitempty"`
-	// Provider - The service provider.
+	// Provider - READ-ONLY; The service provider.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The resource on which the operation is performed.
+	// Resource - READ-ONLY; The resource on which the operation is performed.
 	Resource *string `json:"resource,omitempty"`
 }
 
 // OperationEntity an API operation.
 type OperationEntity struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The API operation info.
 	Display *OperationDisplayInfo `json:"display,omitempty"`
@@ -528,7 +507,7 @@ type OperationEntity struct {
 // OperationEntityListResult the list of REST API operations.
 type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of operations.
+	// Value - READ-ONLY; The list of operations.
 	Value *[]OperationEntity `json:"value,omitempty"`
 }
 
@@ -554,13 +533,13 @@ func (pp PatchPayload) MarshalJSON() ([]byte, error) {
 
 // PlanQuantity represents the quantity a commitment plan provides of a metered resource.
 type PlanQuantity struct {
-	// Allowance - The quantity added to the commitment plan at an interval specified by its allowance frequency.
+	// Allowance - READ-ONLY; The quantity added to the commitment plan at an interval specified by its allowance frequency.
 	Allowance *float64 `json:"allowance,omitempty"`
-	// Amount - The quantity available to the plan the last time usage was calculated.
+	// Amount - READ-ONLY; The quantity available to the plan the last time usage was calculated.
 	Amount *float64 `json:"amount,omitempty"`
-	// IncludedQuantityMeter - The Azure meter for usage against included quantities.
+	// IncludedQuantityMeter - READ-ONLY; The Azure meter for usage against included quantities.
 	IncludedQuantityMeter *string `json:"includedQuantityMeter,omitempty"`
-	// OverageMeter - The Azure meter for usage which exceeds included quantities.
+	// OverageMeter - READ-ONLY; The Azure meter for usage which exceeds included quantities.
 	OverageMeter *string `json:"overageMeter,omitempty"`
 }
 
@@ -758,73 +737,43 @@ func NewPlanUsageHistoryListResultPage(getNextPage func(context.Context, PlanUsa
 
 // Properties properties of an Azure ML commitment plan.
 type Properties struct {
-	// ChargeForOverage - Indicates whether usage beyond the commitment plan's included quantities will be charged.
+	// ChargeForOverage - READ-ONLY; Indicates whether usage beyond the commitment plan's included quantities will be charged.
 	ChargeForOverage *bool `json:"chargeForOverage,omitempty"`
-	// ChargeForPlan - Indicates whether the commitment plan will incur a charge.
+	// ChargeForPlan - READ-ONLY; Indicates whether the commitment plan will incur a charge.
 	ChargeForPlan *bool `json:"chargeForPlan,omitempty"`
-	// CreationDate - The date at which this commitment plan was created, in ISO 8601 format.
+	// CreationDate - READ-ONLY; The date at which this commitment plan was created, in ISO 8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// IncludedQuantities - The included resource quantities this plan gives you.
+	// IncludedQuantities - READ-ONLY; The included resource quantities this plan gives you.
 	IncludedQuantities map[string]*PlanQuantity `json:"includedQuantities"`
-	// MaxAssociationLimit - The maximum number of commitment associations that can be children of this commitment plan.
+	// MaxAssociationLimit - READ-ONLY; The maximum number of commitment associations that can be children of this commitment plan.
 	MaxAssociationLimit *int32 `json:"maxAssociationLimit,omitempty"`
-	// MaxCapacityLimit - The maximum scale-out capacity for this commitment plan.
+	// MaxCapacityLimit - READ-ONLY; The maximum scale-out capacity for this commitment plan.
 	MaxCapacityLimit *int32 `json:"maxCapacityLimit,omitempty"`
-	// MinCapacityLimit - The minimum scale-out capacity for this commitment plan.
+	// MinCapacityLimit - READ-ONLY; The minimum scale-out capacity for this commitment plan.
 	MinCapacityLimit *int32 `json:"minCapacityLimit,omitempty"`
-	// PlanMeter - The Azure meter which will be used to charge for this commitment plan.
+	// PlanMeter - READ-ONLY; The Azure meter which will be used to charge for this commitment plan.
 	PlanMeter *string `json:"planMeter,omitempty"`
-	// RefillFrequencyInDays - The frequency at which this commitment plan's included quantities are refilled.
+	// RefillFrequencyInDays - READ-ONLY; The frequency at which this commitment plan's included quantities are refilled.
 	RefillFrequencyInDays *int32 `json:"refillFrequencyInDays,omitempty"`
-	// SuspendPlanOnOverage - Indicates whether this commitment plan will be moved into a suspended state if usage goes beyond the commitment plan's included quantities.
+	// SuspendPlanOnOverage - READ-ONLY; Indicates whether this commitment plan will be moved into a suspended state if usage goes beyond the commitment plan's included quantities.
 	SuspendPlanOnOverage *bool `json:"suspendPlanOnOverage,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Properties.
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if p.ChargeForOverage != nil {
-		objectMap["chargeForOverage"] = p.ChargeForOverage
-	}
-	if p.ChargeForPlan != nil {
-		objectMap["chargeForPlan"] = p.ChargeForPlan
-	}
-	if p.CreationDate != nil {
-		objectMap["creationDate"] = p.CreationDate
-	}
-	if p.IncludedQuantities != nil {
-		objectMap["includedQuantities"] = p.IncludedQuantities
-	}
-	if p.MaxAssociationLimit != nil {
-		objectMap["maxAssociationLimit"] = p.MaxAssociationLimit
-	}
-	if p.MaxCapacityLimit != nil {
-		objectMap["maxCapacityLimit"] = p.MaxCapacityLimit
-	}
-	if p.MinCapacityLimit != nil {
-		objectMap["minCapacityLimit"] = p.MinCapacityLimit
-	}
-	if p.PlanMeter != nil {
-		objectMap["planMeter"] = p.PlanMeter
-	}
-	if p.RefillFrequencyInDays != nil {
-		objectMap["refillFrequencyInDays"] = p.RefillFrequencyInDays
-	}
-	if p.SuspendPlanOnOverage != nil {
-		objectMap["suspendPlanOnOverage"] = p.SuspendPlanOnOverage
-	}
 	return json.Marshal(objectMap)
 }
 
 // Resource common properties of an ARM resource.
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - User-defined tags for the resource.
 	Tags map[string]*string `json:"tags"`
@@ -833,17 +782,8 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags
@@ -863,46 +803,47 @@ type ResourceSku struct {
 
 // SkuCapability describes The SKU capabilities object.
 type SkuCapability struct {
-	// Name - The capability name.
+	// Name - READ-ONLY; The capability name.
 	Name *string `json:"name,omitempty"`
-	// Value - The capability value.
+	// Value - READ-ONLY; The capability value.
 	Value *string `json:"value,omitempty"`
 }
 
 // SkuCapacity describes scaling information of a SKU.
 type SkuCapacity struct {
-	// Minimum - The minimum capacity.
+	// Minimum - READ-ONLY; The minimum capacity.
 	Minimum *int64 `json:"minimum,omitempty"`
-	// Maximum - The maximum capacity that can be set.
+	// Maximum - READ-ONLY; The maximum capacity that can be set.
 	Maximum *int64 `json:"maximum,omitempty"`
-	// Default - The default capacity.
+	// Default - READ-ONLY; The default capacity.
 	Default *int64 `json:"default,omitempty"`
-	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
+	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
 	ScaleType SkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
 // SkuCost describes metadata for SKU cost info.
 type SkuCost struct {
-	// MeterID - The meter used for this part of a SKU's cost.
+	// MeterID - READ-ONLY; The meter used for this part of a SKU's cost.
 	MeterID *string `json:"meterID,omitempty"`
-	// Quantity - The multiplier for the meter ID.
+	// Quantity - READ-ONLY; The multiplier for the meter ID.
 	Quantity *int64 `json:"quantity,omitempty"`
-	// ExtendedUnit - The overall duration represented by the quantity.
+	// ExtendedUnit - READ-ONLY; The overall duration represented by the quantity.
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
 // SkuListResult the list of commitment plan SKUs.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]CatalogSku `json:"value,omitempty"`
+	// Value - READ-ONLY
+	Value *[]CatalogSku `json:"value,omitempty"`
 }
 
 // SkuRestrictions describes restrictions which would prevent a SKU from being used.
 type SkuRestrictions struct {
-	// Type - The type of restrictions. Possible values include: 'Location', 'Zone'
+	// Type - READ-ONLY; The type of restrictions. Possible values include: 'Location', 'Zone'
 	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
-	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// Values - READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
 	Values *[]string `json:"values,omitempty"`
-	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }

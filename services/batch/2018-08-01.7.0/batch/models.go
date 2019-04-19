@@ -2019,7 +2019,7 @@ type CloudServiceConfiguration struct {
 	OsFamily *string `json:"osFamily,omitempty"`
 	// TargetOSVersion - The default value is * which specifies the latest operating system version for the specified OS family.
 	TargetOSVersion *string `json:"targetOSVersion,omitempty"`
-	// CurrentOSVersion - This may differ from targetOSVersion if the pool state is Upgrading. In this case some virtual machines may be on the targetOSVersion and some may be on the currentOSVersion during the upgrade process. Once all virtual machines have upgraded, currentOSVersion is updated to be the same as targetOSVersion.
+	// CurrentOSVersion - READ-ONLY; This may differ from targetOSVersion if the pool state is Upgrading. In this case some virtual machines may be on the targetOSVersion and some may be on the currentOSVersion during the upgrade process. Once all virtual machines have upgraded, currentOSVersion is updated to be the same as targetOSVersion.
 	CurrentOSVersion *string `json:"currentOSVersion,omitempty"`
 }
 

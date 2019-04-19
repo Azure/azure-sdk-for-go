@@ -992,9 +992,9 @@ type QueryFailure struct {
 
 // QueryFailureError error definition.
 type QueryFailureError struct {
-	// Code - Service specific error code which serves as the substatus for the HTTP error code.
+	// Code - READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Description of the error.
+	// Message - READ-ONLY; Description of the error.
 	Message *string `json:"message,omitempty"`
 }
 

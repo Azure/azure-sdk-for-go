@@ -110,6 +110,9 @@ func (client DataConnectorsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		"api-version": APIVersion,
 	}
 
+	dataConnector.ID = nil
+	dataConnector.Type = nil
+	dataConnector.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

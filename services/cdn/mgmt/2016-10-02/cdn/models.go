@@ -247,11 +247,11 @@ type CidrIPAddress struct {
 type CustomDomain struct {
 	autorest.Response       `json:"-"`
 	*CustomDomainProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -264,15 +264,6 @@ func (cd CustomDomain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cd.CustomDomainProperties != nil {
 		objectMap["properties"] = cd.CustomDomainProperties
-	}
-	if cd.ID != nil {
-		objectMap["id"] = cd.ID
-	}
-	if cd.Name != nil {
-		objectMap["name"] = cd.Name
-	}
-	if cd.Type != nil {
-		objectMap["type"] = cd.Type
 	}
 	if cd.Location != nil {
 		objectMap["location"] = cd.Location
@@ -541,13 +532,13 @@ func (cdp *CustomDomainParameters) UnmarshalJSON(body []byte) error {
 type CustomDomainProperties struct {
 	// HostName - The host name of the custom domain. Must be a domain name.
 	HostName *string `json:"hostName,omitempty"`
-	// ResourceState - Resource status of the custom domain. Possible values include: 'Creating', 'Active', 'Deleting'
+	// ResourceState - READ-ONLY; Resource status of the custom domain. Possible values include: 'Creating', 'Active', 'Deleting'
 	ResourceState CustomDomainResourceState `json:"resourceState,omitempty"`
-	// CustomHTTPSProvisioningState - Provisioning state of Custom Https of the custom domain. Possible values include: 'Enabling', 'Enabled', 'Disabling', 'Disabled', 'Failed'
+	// CustomHTTPSProvisioningState - READ-ONLY; Provisioning state of Custom Https of the custom domain. Possible values include: 'Enabling', 'Enabled', 'Disabling', 'Disabled', 'Failed'
 	CustomHTTPSProvisioningState CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty"`
 	// ValidationData - Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
 	ValidationData *string `json:"validationData,omitempty"`
-	// ProvisioningState - Provisioning status of the custom domain.
+	// ProvisioningState - READ-ONLY; Provisioning status of the custom domain.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -568,7 +559,7 @@ type CustomDomainsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CustomDomainsCreateFuture) Result(client CustomDomainsClient) (cd CustomDomain, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -597,7 +588,7 @@ type CustomDomainsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CustomDomainsDeleteFuture) Result(client CustomDomainsClient) (cd CustomDomain, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -681,11 +672,11 @@ type DeepCreatedOriginProperties struct {
 // EdgeNode edge node of CDN service.
 type EdgeNode struct {
 	*EdgeNodeProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -698,15 +689,6 @@ func (en EdgeNode) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if en.EdgeNodeProperties != nil {
 		objectMap["properties"] = en.EdgeNodeProperties
-	}
-	if en.ID != nil {
-		objectMap["id"] = en.ID
-	}
-	if en.Name != nil {
-		objectMap["name"] = en.Name
-	}
-	if en.Type != nil {
-		objectMap["type"] = en.Type
 	}
 	if en.Location != nil {
 		objectMap["location"] = en.Location
@@ -945,11 +927,11 @@ func NewEdgenodeResultPage(getNextPage func(context.Context, EdgenodeResult) (Ed
 type Endpoint struct {
 	autorest.Response   `json:"-"`
 	*EndpointProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -962,15 +944,6 @@ func (e Endpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if e.EndpointProperties != nil {
 		objectMap["properties"] = e.EndpointProperties
-	}
-	if e.ID != nil {
-		objectMap["id"] = e.ID
-	}
-	if e.Name != nil {
-		objectMap["name"] = e.Name
-	}
-	if e.Type != nil {
-		objectMap["type"] = e.Type
 	}
 	if e.Location != nil {
 		objectMap["location"] = e.Location
@@ -1199,13 +1172,13 @@ func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListRes
 
 // EndpointProperties the JSON object that contains the properties required to create an endpoint.
 type EndpointProperties struct {
-	// HostName - The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
+	// HostName - READ-ONLY; The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
 	HostName *string `json:"hostName,omitempty"`
 	// Origins - The source of the content being delivered via CDN.
 	Origins *[]DeepCreatedOrigin `json:"origins,omitempty"`
-	// ResourceState - Resource status of the endpoint. Possible values include: 'EndpointResourceStateCreating', 'EndpointResourceStateDeleting', 'EndpointResourceStateRunning', 'EndpointResourceStateStarting', 'EndpointResourceStateStopped', 'EndpointResourceStateStopping'
+	// ResourceState - READ-ONLY; Resource status of the endpoint. Possible values include: 'EndpointResourceStateCreating', 'EndpointResourceStateDeleting', 'EndpointResourceStateRunning', 'EndpointResourceStateStarting', 'EndpointResourceStateStopped', 'EndpointResourceStateStopping'
 	ResourceState EndpointResourceState `json:"resourceState,omitempty"`
-	// ProvisioningState - Provisioning status of the endpoint.
+	// ProvisioningState - READ-ONLY; Provisioning status of the endpoint.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OriginHostHeader - The host header CDN sends along with content requests to origin. The default value is the host name of the origin.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
@@ -1260,7 +1233,7 @@ type EndpointsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsCreateFuture) Result(client EndpointsClient) (e Endpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1289,7 +1262,7 @@ type EndpointsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsDeleteFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1312,7 +1285,7 @@ type EndpointsLoadContentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsLoadContentFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsLoadContentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1335,7 +1308,7 @@ type EndpointsPurgeContentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsPurgeContentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1358,7 +1331,7 @@ type EndpointsStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsStartFuture) Result(client EndpointsClient) (e Endpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1387,7 +1360,7 @@ type EndpointsStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsStopFuture) Result(client EndpointsClient) (e Endpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1416,7 +1389,7 @@ type EndpointsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsUpdateFuture) Result(client EndpointsClient) (e Endpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1693,11 +1666,11 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 type Origin struct {
 	autorest.Response `json:"-"`
 	*OriginProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1710,15 +1683,6 @@ func (o Origin) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if o.OriginProperties != nil {
 		objectMap["properties"] = o.OriginProperties
-	}
-	if o.ID != nil {
-		objectMap["id"] = o.ID
-	}
-	if o.Name != nil {
-		objectMap["name"] = o.Name
-	}
-	if o.Type != nil {
-		objectMap["type"] = o.Type
 	}
 	if o.Location != nil {
 		objectMap["location"] = o.Location
@@ -1953,9 +1917,9 @@ type OriginProperties struct {
 	HTTPPort *int32 `json:"httpPort,omitempty"`
 	// HTTPSPort - The value of the https port. Must be between 1 and 65535.
 	HTTPSPort *int32 `json:"httpsPort,omitempty"`
-	// ResourceState - Resource status of the origin. Possible values include: 'OriginResourceStateCreating', 'OriginResourceStateActive', 'OriginResourceStateDeleting'
+	// ResourceState - READ-ONLY; Resource status of the origin. Possible values include: 'OriginResourceStateCreating', 'OriginResourceStateActive', 'OriginResourceStateDeleting'
 	ResourceState OriginResourceState `json:"resourceState,omitempty"`
-	// ProvisioningState - Provisioning status of the origin.
+	// ProvisioningState - READ-ONLY; Provisioning status of the origin.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -1979,7 +1943,7 @@ type OriginsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *OriginsUpdateFuture) Result(client OriginsClient) (o Origin, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.OriginsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2044,11 +2008,11 @@ type Profile struct {
 	// Sku - The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 	Sku                *Sku `json:"sku,omitempty"`
 	*ProfileProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2064,15 +2028,6 @@ func (p Profile) MarshalJSON() ([]byte, error) {
 	}
 	if p.ProfileProperties != nil {
 		objectMap["properties"] = p.ProfileProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	if p.Location != nil {
 		objectMap["location"] = p.Location
@@ -2310,9 +2265,9 @@ func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResul
 
 // ProfileProperties the JSON object that contains the properties required to create a profile.
 type ProfileProperties struct {
-	// ResourceState - Resource status of the profile. Possible values include: 'ProfileResourceStateCreating', 'ProfileResourceStateActive', 'ProfileResourceStateDeleting', 'ProfileResourceStateDisabled'
+	// ResourceState - READ-ONLY; Resource status of the profile. Possible values include: 'ProfileResourceStateCreating', 'ProfileResourceStateActive', 'ProfileResourceStateDeleting', 'ProfileResourceStateDisabled'
 	ResourceState ProfileResourceState `json:"resourceState,omitempty"`
-	// ProvisioningState - Provisioning status of the profile.
+	// ProvisioningState - READ-ONLY; Provisioning status of the profile.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -2326,7 +2281,7 @@ type ProfilesCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2355,7 +2310,7 @@ type ProfilesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2378,7 +2333,7 @@ type ProfilesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ProfilesUpdateFuture) Result(client ProfilesClient) (p Profile, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2420,11 +2375,11 @@ type PurgeParameters struct {
 
 // Resource the Resource definition.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2435,15 +2390,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

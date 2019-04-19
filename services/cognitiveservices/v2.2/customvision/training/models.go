@@ -187,67 +187,71 @@ type BoundingBox struct {
 // Domain ...
 type Domain struct {
 	autorest.Response `json:"-"`
-	ID                *uuid.UUID `json:"id,omitempty"`
-	Name              *string    `json:"name,omitempty"`
-	// Type - Possible values include: 'Classification', 'ObjectDetection'
-	Type       DomainType `json:"type,omitempty"`
-	Exportable *bool      `json:"exportable,omitempty"`
-	Enabled    *bool      `json:"enabled,omitempty"`
+	// ID - READ-ONLY
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Name - READ-ONLY
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Possible values include: 'Classification', 'ObjectDetection'
+	Type DomainType `json:"type,omitempty"`
+	// Exportable - READ-ONLY
+	Exportable *bool `json:"exportable,omitempty"`
+	// Enabled - READ-ONLY
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // Export ...
 type Export struct {
 	autorest.Response `json:"-"`
-	// Platform - Platform of the export. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+	// Platform - READ-ONLY; Platform of the export. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
 	Platform ExportPlatformModel `json:"platform,omitempty"`
-	// Status - Status of the export. Possible values include: 'Exporting', 'Failed', 'Done'
+	// Status - READ-ONLY; Status of the export. Possible values include: 'Exporting', 'Failed', 'Done'
 	Status ExportStatusModel `json:"status,omitempty"`
-	// DownloadURI - URI used to download the model.
+	// DownloadURI - READ-ONLY; URI used to download the model.
 	DownloadURI *string `json:"downloadUri,omitempty"`
-	// Flavor - Flavor of the export. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12'
+	// Flavor - READ-ONLY; Flavor of the export. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12'
 	Flavor ExportFlavorModel `json:"flavor,omitempty"`
-	// NewerVersionAvailable - Indicates an updated version of the export package is available and should be re-exported for the latest changes.
+	// NewerVersionAvailable - READ-ONLY; Indicates an updated version of the export package is available and should be re-exported for the latest changes.
 	NewerVersionAvailable *bool `json:"newerVersionAvailable,omitempty"`
 }
 
 // Image image model to be sent as JSON.
 type Image struct {
-	// ID - Id of the image.
+	// ID - READ-ONLY; Id of the image.
 	ID *uuid.UUID `json:"id,omitempty"`
-	// Created - Date the image was created.
+	// Created - READ-ONLY; Date the image was created.
 	Created *date.Time `json:"created,omitempty"`
-	// Width - Width of the image.
+	// Width - READ-ONLY; Width of the image.
 	Width *int32 `json:"width,omitempty"`
-	// Height - Height of the image.
+	// Height - READ-ONLY; Height of the image.
 	Height *int32 `json:"height,omitempty"`
-	// ResizedImageURI - The URI to the (resized) image used for training.
+	// ResizedImageURI - READ-ONLY; The URI to the (resized) image used for training.
 	ResizedImageURI *string `json:"resizedImageUri,omitempty"`
-	// ThumbnailURI - The URI to the thumbnail of the original image.
+	// ThumbnailURI - READ-ONLY; The URI to the thumbnail of the original image.
 	ThumbnailURI *string `json:"thumbnailUri,omitempty"`
-	// OriginalImageURI - The URI to the original uploaded image.
+	// OriginalImageURI - READ-ONLY; The URI to the original uploaded image.
 	OriginalImageURI *string `json:"originalImageUri,omitempty"`
-	// Tags - Tags associated with this image.
+	// Tags - READ-ONLY; Tags associated with this image.
 	Tags *[]ImageTag `json:"tags,omitempty"`
-	// Regions - Regions associated with this image.
+	// Regions - READ-ONLY; Regions associated with this image.
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
 // ImageCreateResult ...
 type ImageCreateResult struct {
-	// SourceURL - Source URL of the image.
+	// SourceURL - READ-ONLY; Source URL of the image.
 	SourceURL *string `json:"sourceUrl,omitempty"`
-	// Status - Status of the image creation. Possible values include: 'OK', 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed', 'ErrorUnknown', 'ErrorNegativeAndRegularTagOnSameImage'
+	// Status - READ-ONLY; Status of the image creation. Possible values include: 'OK', 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed', 'ErrorUnknown', 'ErrorNegativeAndRegularTagOnSameImage'
 	Status ImageCreateStatus `json:"status,omitempty"`
-	// Image - The image.
+	// Image - READ-ONLY; The image.
 	Image *Image `json:"image,omitempty"`
 }
 
 // ImageCreateSummary ...
 type ImageCreateSummary struct {
 	autorest.Response `json:"-"`
-	// IsBatchSuccessful - True if all of the images in the batch were created successfully, otherwise false.
+	// IsBatchSuccessful - READ-ONLY; True if all of the images in the batch were created successfully, otherwise false.
 	IsBatchSuccessful *bool `json:"isBatchSuccessful,omitempty"`
-	// Images - List of the image creation results.
+	// Images - READ-ONLY; List of the image creation results.
 	Images *[]ImageCreateResult `json:"images,omitempty"`
 }
 
@@ -280,32 +284,49 @@ type ImageIDCreateEntry struct {
 
 // ImagePerformance image performance model.
 type ImagePerformance struct {
-	Predictions  *[]Prediction  `json:"predictions,omitempty"`
-	ID           *uuid.UUID     `json:"id,omitempty"`
-	Created      *date.Time     `json:"created,omitempty"`
-	Width        *int32         `json:"width,omitempty"`
-	Height       *int32         `json:"height,omitempty"`
-	ImageURI     *string        `json:"imageUri,omitempty"`
-	ThumbnailURI *string        `json:"thumbnailUri,omitempty"`
-	Tags         *[]ImageTag    `json:"tags,omitempty"`
-	Regions      *[]ImageRegion `json:"regions,omitempty"`
+	// Predictions - READ-ONLY
+	Predictions *[]Prediction `json:"predictions,omitempty"`
+	// ID - READ-ONLY
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Created - READ-ONLY
+	Created *date.Time `json:"created,omitempty"`
+	// Width - READ-ONLY
+	Width *int32 `json:"width,omitempty"`
+	// Height - READ-ONLY
+	Height *int32 `json:"height,omitempty"`
+	// ImageURI - READ-ONLY
+	ImageURI *string `json:"imageUri,omitempty"`
+	// ThumbnailURI - READ-ONLY
+	ThumbnailURI *string `json:"thumbnailUri,omitempty"`
+	// Tags - READ-ONLY
+	Tags *[]ImageTag `json:"tags,omitempty"`
+	// Regions - READ-ONLY
+	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
 // ImagePrediction ...
 type ImagePrediction struct {
 	autorest.Response `json:"-"`
-	ID                *uuid.UUID    `json:"id,omitempty"`
-	Project           *uuid.UUID    `json:"project,omitempty"`
-	Iteration         *uuid.UUID    `json:"iteration,omitempty"`
-	Created           *date.Time    `json:"created,omitempty"`
-	Predictions       *[]Prediction `json:"predictions,omitempty"`
+	// ID - READ-ONLY
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Project - READ-ONLY
+	Project *uuid.UUID `json:"project,omitempty"`
+	// Iteration - READ-ONLY
+	Iteration *uuid.UUID `json:"iteration,omitempty"`
+	// Created - READ-ONLY
+	Created *date.Time `json:"created,omitempty"`
+	// Predictions - READ-ONLY
+	Predictions *[]Prediction `json:"predictions,omitempty"`
 }
 
 // ImageRegion ...
 type ImageRegion struct {
+	// RegionID - READ-ONLY
 	RegionID *uuid.UUID `json:"regionId,omitempty"`
-	TagName  *string    `json:"tagName,omitempty"`
-	Created  *date.Time `json:"created,omitempty"`
+	// TagName - READ-ONLY
+	TagName *string `json:"tagName,omitempty"`
+	// Created - READ-ONLY
+	Created *date.Time `json:"created,omitempty"`
 	// TagID - Id of the tag associated with this region.
 	TagID  *uuid.UUID `json:"tagId,omitempty"`
 	Left   *float64   `json:"left,omitempty"`
@@ -333,10 +354,14 @@ type ImageRegionCreateEntry struct {
 
 // ImageRegionCreateResult ...
 type ImageRegionCreateResult struct {
-	ImageID  *uuid.UUID `json:"imageId,omitempty"`
+	// ImageID - READ-ONLY
+	ImageID *uuid.UUID `json:"imageId,omitempty"`
+	// RegionID - READ-ONLY
 	RegionID *uuid.UUID `json:"regionId,omitempty"`
-	TagName  *string    `json:"tagName,omitempty"`
-	Created  *date.Time `json:"created,omitempty"`
+	// TagName - READ-ONLY
+	TagName *string `json:"tagName,omitempty"`
+	// Created - READ-ONLY
+	Created *date.Time `json:"created,omitempty"`
 	// TagID - Id of the tag associated with this region.
 	TagID  *uuid.UUID `json:"tagId,omitempty"`
 	Left   *float64   `json:"left,omitempty"`
@@ -356,15 +381,21 @@ type ImageRegionCreateSummary struct {
 // ImageRegionProposal ...
 type ImageRegionProposal struct {
 	autorest.Response `json:"-"`
-	ProjectID         *uuid.UUID        `json:"projectId,omitempty"`
-	ImageID           *uuid.UUID        `json:"imageId,omitempty"`
-	Proposals         *[]RegionProposal `json:"proposals,omitempty"`
+	// ProjectID - READ-ONLY
+	ProjectID *uuid.UUID `json:"projectId,omitempty"`
+	// ImageID - READ-ONLY
+	ImageID *uuid.UUID `json:"imageId,omitempty"`
+	// Proposals - READ-ONLY
+	Proposals *[]RegionProposal `json:"proposals,omitempty"`
 }
 
 // ImageTag ...
 type ImageTag struct {
-	TagID   *uuid.UUID `json:"tagId,omitempty"`
-	TagName *string    `json:"tagName,omitempty"`
+	// TagID - READ-ONLY
+	TagID *uuid.UUID `json:"tagId,omitempty"`
+	// TagName - READ-ONLY
+	TagName *string `json:"tagName,omitempty"`
+	// Created - READ-ONLY
 	Created *date.Time `json:"created,omitempty"`
 }
 
@@ -417,44 +448,44 @@ type Int32 struct {
 // Iteration iteration model to be sent over JSON.
 type Iteration struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the id of the iteration.
+	// ID - READ-ONLY; Gets the id of the iteration.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Gets or sets the name of the iteration.
 	Name *string `json:"name,omitempty"`
 	// IsDefault - Gets or sets a value indicating whether the iteration is the default iteration for the project.
 	IsDefault *bool `json:"isDefault,omitempty"`
-	// Status - Gets the current iteration status.
+	// Status - READ-ONLY; Gets the current iteration status.
 	Status *string `json:"status,omitempty"`
-	// Created - Gets the time this iteration was completed.
+	// Created - READ-ONLY; Gets the time this iteration was completed.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - Gets the time this iteration was last modified.
+	// LastModified - READ-ONLY; Gets the time this iteration was last modified.
 	LastModified *date.Time `json:"lastModified,omitempty"`
-	// TrainedAt - Gets the time this iteration was last modified.
+	// TrainedAt - READ-ONLY; Gets the time this iteration was last modified.
 	TrainedAt *date.Time `json:"trainedAt,omitempty"`
-	// ProjectID - Gets The project id. of the iteration.
+	// ProjectID - READ-ONLY; Gets The project id. of the iteration.
 	ProjectID *uuid.UUID `json:"projectId,omitempty"`
-	// Exportable - Whether the iteration can be exported to another format for download.
+	// Exportable - READ-ONLY; Whether the iteration can be exported to another format for download.
 	Exportable *bool `json:"exportable,omitempty"`
-	// DomainID - Get or sets a guid of the domain the iteration has been trained on.
+	// DomainID - READ-ONLY; Get or sets a guid of the domain the iteration has been trained on.
 	DomainID *uuid.UUID `json:"domainId,omitempty"`
-	// ClassificationType - Gets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'
+	// ClassificationType - READ-ONLY; Gets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'
 	ClassificationType Classifier `json:"classificationType,omitempty"`
 }
 
 // IterationPerformance represents the detailed performance data for a trained iteration.
 type IterationPerformance struct {
 	autorest.Response `json:"-"`
-	// PerTagPerformance - Gets the per-tag performance details for this iteration.
+	// PerTagPerformance - READ-ONLY; Gets the per-tag performance details for this iteration.
 	PerTagPerformance *[]TagPerformance `json:"perTagPerformance,omitempty"`
-	// Precision - Gets the precision.
+	// Precision - READ-ONLY; Gets the precision.
 	Precision *float64 `json:"precision,omitempty"`
-	// PrecisionStdDeviation - Gets the standard deviation for the precision.
+	// PrecisionStdDeviation - READ-ONLY; Gets the standard deviation for the precision.
 	PrecisionStdDeviation *float64 `json:"precisionStdDeviation,omitempty"`
-	// Recall - Gets the recall.
+	// Recall - READ-ONLY; Gets the recall.
 	Recall *float64 `json:"recall,omitempty"`
-	// RecallStdDeviation - Gets the standard deviation for the recall.
+	// RecallStdDeviation - READ-ONLY; Gets the standard deviation for the recall.
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
-	// AveragePrecision - Gets the average precision when applicable.
+	// AveragePrecision - READ-ONLY; Gets the average precision when applicable.
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
 }
 
@@ -502,24 +533,33 @@ type ListTag struct {
 
 // Prediction ...
 type Prediction struct {
-	Probability *float64     `json:"probability,omitempty"`
-	TagID       *uuid.UUID   `json:"tagId,omitempty"`
-	TagName     *string      `json:"tagName,omitempty"`
+	// Probability - READ-ONLY
+	Probability *float64 `json:"probability,omitempty"`
+	// TagID - READ-ONLY
+	TagID *uuid.UUID `json:"tagId,omitempty"`
+	// TagName - READ-ONLY
+	TagName *string `json:"tagName,omitempty"`
+	// BoundingBox - READ-ONLY
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
 // PredictionQueryResult ...
 type PredictionQueryResult struct {
 	autorest.Response `json:"-"`
-	Token             *PredictionQueryToken    `json:"token,omitempty"`
-	Results           *[]StoredImagePrediction `json:"results,omitempty"`
+	// Token - READ-ONLY
+	Token *PredictionQueryToken `json:"token,omitempty"`
+	// Results - READ-ONLY
+	Results *[]StoredImagePrediction `json:"results,omitempty"`
 }
 
 // PredictionQueryTag ...
 type PredictionQueryTag struct {
-	ID           *uuid.UUID `json:"id,omitempty"`
-	MinThreshold *float64   `json:"minThreshold,omitempty"`
-	MaxThreshold *float64   `json:"maxThreshold,omitempty"`
+	// ID - READ-ONLY
+	ID *uuid.UUID `json:"id,omitempty"`
+	// MinThreshold - READ-ONLY
+	MinThreshold *float64 `json:"minThreshold,omitempty"`
+	// MaxThreshold - READ-ONLY
+	MaxThreshold *float64 `json:"maxThreshold,omitempty"`
 }
 
 // PredictionQueryToken ...
@@ -539,7 +579,7 @@ type PredictionQueryToken struct {
 // Project represents a project.
 type Project struct {
 	autorest.Response `json:"-"`
-	// ID - Gets The project id.
+	// ID - READ-ONLY; Gets The project id.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Gets or sets the name of the project.
 	Name *string `json:"name,omitempty"`
@@ -547,11 +587,11 @@ type Project struct {
 	Description *string `json:"description,omitempty"`
 	// Settings - Gets or sets the project settings.
 	Settings *ProjectSettings `json:"settings,omitempty"`
-	// Created - Gets the date this project was created.
+	// Created - READ-ONLY; Gets the date this project was created.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - Gets the date this project was last modified.
+	// LastModified - READ-ONLY; Gets the date this project was last modified.
 	LastModified *date.Time `json:"lastModified,omitempty"`
-	// ThumbnailURI - Gets the thumbnail url representing the project.
+	// ThumbnailURI - READ-ONLY; Gets the thumbnail url representing the project.
 	ThumbnailURI *string `json:"thumbnailUri,omitempty"`
 }
 
@@ -575,31 +615,38 @@ type Region struct {
 
 // RegionProposal ...
 type RegionProposal struct {
-	Confidence  *float64     `json:"confidence,omitempty"`
+	// Confidence - READ-ONLY
+	Confidence *float64 `json:"confidence,omitempty"`
+	// BoundingBox - READ-ONLY
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
 // StoredImagePrediction result of an image classification request.
 type StoredImagePrediction struct {
-	// ResizedImageURI - The URI to the (resized) prediction image.
+	// ResizedImageURI - READ-ONLY; The URI to the (resized) prediction image.
 	ResizedImageURI *string `json:"resizedImageUri,omitempty"`
-	// ThumbnailURI - The URI to the thumbnail of the original prediction image.
+	// ThumbnailURI - READ-ONLY; The URI to the thumbnail of the original prediction image.
 	ThumbnailURI *string `json:"thumbnailUri,omitempty"`
-	// OriginalImageURI - The URI to the original prediction image.
+	// OriginalImageURI - READ-ONLY; The URI to the original prediction image.
 	OriginalImageURI *string `json:"originalImageUri,omitempty"`
-	// Domain - Domain used for the prediction.
-	Domain      *uuid.UUID    `json:"domain,omitempty"`
-	ID          *uuid.UUID    `json:"id,omitempty"`
-	Project     *uuid.UUID    `json:"project,omitempty"`
-	Iteration   *uuid.UUID    `json:"iteration,omitempty"`
-	Created     *date.Time    `json:"created,omitempty"`
+	// Domain - READ-ONLY; Domain used for the prediction.
+	Domain *uuid.UUID `json:"domain,omitempty"`
+	// ID - READ-ONLY
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Project - READ-ONLY
+	Project *uuid.UUID `json:"project,omitempty"`
+	// Iteration - READ-ONLY
+	Iteration *uuid.UUID `json:"iteration,omitempty"`
+	// Created - READ-ONLY
+	Created *date.Time `json:"created,omitempty"`
+	// Predictions - READ-ONLY
 	Predictions *[]Prediction `json:"predictions,omitempty"`
 }
 
 // Tag represents a Tag.
 type Tag struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the Tag ID.
+	// ID - READ-ONLY; Gets the Tag ID.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Gets or sets the name of the tag.
 	Name *string `json:"name,omitempty"`
@@ -607,22 +654,24 @@ type Tag struct {
 	Description *string `json:"description,omitempty"`
 	// Type - Gets or sets the type of the tag. Possible values include: 'Regular', 'Negative'
 	Type TagType `json:"type,omitempty"`
-	// ImageCount - Gets the number of images with this tag.
+	// ImageCount - READ-ONLY; Gets the number of images with this tag.
 	ImageCount *int32 `json:"imageCount,omitempty"`
 }
 
 // TagPerformance represents performance data for a particular tag in a trained iteration.
 type TagPerformance struct {
-	ID   *uuid.UUID `json:"id,omitempty"`
-	Name *string    `json:"name,omitempty"`
-	// Precision - Gets the precision.
+	// ID - READ-ONLY
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Name - READ-ONLY
+	Name *string `json:"name,omitempty"`
+	// Precision - READ-ONLY; Gets the precision.
 	Precision *float64 `json:"precision,omitempty"`
-	// PrecisionStdDeviation - Gets the standard deviation for the precision.
+	// PrecisionStdDeviation - READ-ONLY; Gets the standard deviation for the precision.
 	PrecisionStdDeviation *float64 `json:"precisionStdDeviation,omitempty"`
-	// Recall - Gets the recall.
+	// Recall - READ-ONLY; Gets the recall.
 	Recall *float64 `json:"recall,omitempty"`
-	// RecallStdDeviation - Gets the standard deviation for the recall.
+	// RecallStdDeviation - READ-ONLY; Gets the standard deviation for the recall.
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
-	// AveragePrecision - Gets the average precision when applicable.
+	// AveragePrecision - READ-ONLY; Gets the average precision when applicable.
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
 }

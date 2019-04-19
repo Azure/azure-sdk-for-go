@@ -177,6 +177,8 @@ func (client TasksClient) CommandPreparer(ctx context.Context, groupName string,
 		"api-version": APIVersion,
 	}
 
+	parameters.Errors = nil
+	parameters.State = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

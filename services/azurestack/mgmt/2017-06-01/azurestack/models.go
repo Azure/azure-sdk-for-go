@@ -107,11 +107,11 @@ type CustomerSubscription struct {
 	autorest.Response `json:"-"`
 	// CustomerSubscriptionProperties - Customer subscription properties.
 	*CustomerSubscriptionProperties `json:"properties,omitempty"`
-	// ID - ID of the resource.
+	// ID - READ-ONLY; ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource.
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of Resource.
+	// Type - READ-ONLY; Type of Resource.
 	Type *string `json:"type,omitempty"`
 	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
@@ -122,15 +122,6 @@ func (cs CustomerSubscription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cs.CustomerSubscriptionProperties != nil {
 		objectMap["properties"] = cs.CustomerSubscriptionProperties
-	}
-	if cs.ID != nil {
-		objectMap["id"] = cs.ID
-	}
-	if cs.Name != nil {
-		objectMap["name"] = cs.Name
-	}
-	if cs.Type != nil {
-		objectMap["type"] = cs.Type
 	}
 	if cs.Etag != nil {
 		objectMap["etag"] = cs.Etag
@@ -352,9 +343,9 @@ type CustomerSubscriptionProperties struct {
 
 // DataDiskImage data disk image.
 type DataDiskImage struct {
-	// Lun - The LUN.
+	// Lun - READ-ONLY; The LUN.
 	Lun *int32 `json:"lun,omitempty"`
-	// SourceBlobSasURI - SAS key for source blob.
+	// SourceBlobSasURI - READ-ONLY; SAS key for source blob.
 	SourceBlobSasURI *string `json:"sourceBlobSasUri,omitempty"`
 }
 
@@ -372,11 +363,11 @@ type Display struct {
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
 }
 
@@ -390,26 +381,17 @@ type ErrorResponse struct {
 // ExtendedProduct extended description about the product required for installing it into Azure Stack.
 type ExtendedProduct struct {
 	autorest.Response `json:"-"`
-	// GalleryPackageBlobSasURI - The URI to the .azpkg file that provides information required for showing product in the gallery.
+	// GalleryPackageBlobSasURI - READ-ONLY; The URI to the .azpkg file that provides information required for showing product in the gallery.
 	GalleryPackageBlobSasURI *string `json:"galleryPackageBlobSasUri,omitempty"`
-	// ProductKind - Specifies the kind of the product (virtualMachine or virtualMachineExtension).
+	// ProductKind - READ-ONLY; Specifies the kind of the product (virtualMachine or virtualMachineExtension).
 	ProductKind *string `json:"productKind,omitempty"`
-	// ExtendedProductProperties - Specifies additional properties describing the product.
+	// ExtendedProductProperties - READ-ONLY; Specifies additional properties describing the product.
 	*ExtendedProductProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ExtendedProduct.
 func (ep ExtendedProduct) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ep.GalleryPackageBlobSasURI != nil {
-		objectMap["galleryPackageBlobSasUri"] = ep.GalleryPackageBlobSasURI
-	}
-	if ep.ProductKind != nil {
-		objectMap["productKind"] = ep.ProductKind
-	}
-	if ep.ExtendedProductProperties != nil {
-		objectMap["properties"] = ep.ExtendedProductProperties
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -457,56 +439,29 @@ func (ep *ExtendedProduct) UnmarshalJSON(body []byte) error {
 
 // ExtendedProductProperties product information.
 type ExtendedProductProperties struct {
-	// ComputeRole - Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
+	// ComputeRole - READ-ONLY; Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
 	ComputeRole ComputeRole `json:"computeRole,omitempty"`
-	// IsSystemExtension - Specifies if product is a Virtual Machine Extension.
+	// IsSystemExtension - READ-ONLY; Specifies if product is a Virtual Machine Extension.
 	IsSystemExtension *bool `json:"isSystemExtension,omitempty"`
-	// URI - Specifies a download location where content can be downloaded from.
+	// URI - READ-ONLY; Specifies a download location where content can be downloaded from.
 	*URI `json:"sourceBlob,omitempty"`
-	// SupportMultipleExtensions - Indicates if specified product supports multiple extensions.
+	// SupportMultipleExtensions - READ-ONLY; Indicates if specified product supports multiple extensions.
 	SupportMultipleExtensions *bool `json:"supportMultipleExtensions,omitempty"`
-	// Version - Specifies product version.
+	// Version - READ-ONLY; Specifies product version.
 	Version *string `json:"version,omitempty"`
-	// VMOsType - Specifies operating system used by the product. Possible values include: 'OperatingSystemNone', 'OperatingSystemWindows', 'OperatingSystemLinux'
+	// VMOsType - READ-ONLY; Specifies operating system used by the product. Possible values include: 'OperatingSystemNone', 'OperatingSystemWindows', 'OperatingSystemLinux'
 	VMOsType OperatingSystem `json:"vmOsType,omitempty"`
-	// VMScaleSetEnabled - Indicates if virtual machine Scale Set is enabled in the specified product.
+	// VMScaleSetEnabled - READ-ONLY; Indicates if virtual machine Scale Set is enabled in the specified product.
 	VMScaleSetEnabled *bool `json:"vmScaleSetEnabled,omitempty"`
-	// OsDiskImage - OS disk image used by product.
+	// OsDiskImage - READ-ONLY; OS disk image used by product.
 	OsDiskImage *OsDiskImage `json:"osDiskImage,omitempty"`
-	// DataDiskImages - List of attached data disks.
+	// DataDiskImages - READ-ONLY; List of attached data disks.
 	DataDiskImages *[]DataDiskImage `json:"dataDiskImages,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ExtendedProductProperties.
 func (epp ExtendedProductProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if epp.ComputeRole != "" {
-		objectMap["computeRole"] = epp.ComputeRole
-	}
-	if epp.IsSystemExtension != nil {
-		objectMap["isSystemExtension"] = epp.IsSystemExtension
-	}
-	if epp.URI != nil {
-		objectMap["sourceBlob"] = epp.URI
-	}
-	if epp.SupportMultipleExtensions != nil {
-		objectMap["supportMultipleExtensions"] = epp.SupportMultipleExtensions
-	}
-	if epp.Version != nil {
-		objectMap["version"] = epp.Version
-	}
-	if epp.VMOsType != "" {
-		objectMap["vmOsType"] = epp.VMOsType
-	}
-	if epp.VMScaleSetEnabled != nil {
-		objectMap["vmScaleSetEnabled"] = epp.VMScaleSetEnabled
-	}
-	if epp.OsDiskImage != nil {
-		objectMap["osDiskImage"] = epp.OsDiskImage
-	}
-	if epp.DataDiskImages != nil {
-		objectMap["dataDiskImages"] = epp.DataDiskImages
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -778,9 +733,9 @@ func NewOperationListPage(getNextPage func(context.Context, OperationList) (Oper
 
 // OsDiskImage OS disk image.
 type OsDiskImage struct {
-	// OperatingSystem - OS operating system type. Possible values include: 'OperatingSystemNone', 'OperatingSystemWindows', 'OperatingSystemLinux'
+	// OperatingSystem - READ-ONLY; OS operating system type. Possible values include: 'OperatingSystemNone', 'OperatingSystemWindows', 'OperatingSystemLinux'
 	OperatingSystem OperatingSystem `json:"operatingSystem,omitempty"`
-	// SourceBlobSasURI - SAS key for source blob.
+	// SourceBlobSasURI - READ-ONLY; SAS key for source blob.
 	SourceBlobSasURI *string `json:"sourceBlobSasUri,omitempty"`
 }
 
@@ -789,11 +744,11 @@ type Product struct {
 	autorest.Response `json:"-"`
 	// ProductNestedProperties - Properties of the product resource.
 	*ProductNestedProperties `json:"properties,omitempty"`
-	// ID - ID of the resource.
+	// ID - READ-ONLY; ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource.
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of Resource.
+	// Type - READ-ONLY; Type of Resource.
 	Type *string `json:"type,omitempty"`
 	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
@@ -804,15 +759,6 @@ func (p Product) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.ProductNestedProperties != nil {
 		objectMap["properties"] = p.ProductNestedProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	if p.Etag != nil {
 		objectMap["etag"] = p.Etag
@@ -1083,11 +1029,11 @@ type Registration struct {
 	autorest.Response `json:"-"`
 	// RegistrationProperties - Registration resource.
 	*RegistrationProperties `json:"properties,omitempty"`
-	// ID - ID of the resource.
+	// ID - READ-ONLY; ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource.
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of Resource.
+	// Type - READ-ONLY; Type of Resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1102,15 +1048,6 @@ func (r Registration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if r.RegistrationProperties != nil {
 		objectMap["properties"] = r.RegistrationProperties
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
@@ -1419,11 +1356,11 @@ type RegistrationProperties struct {
 
 // Resource base resource object.
 type Resource struct {
-	// ID - ID of the resource.
+	// ID - READ-ONLY; ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource.
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of Resource.
+	// Type - READ-ONLY; Type of Resource.
 	Type *string `json:"type,omitempty"`
 	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
@@ -1431,11 +1368,11 @@ type Resource struct {
 
 // TrackedResource base resource object.
 type TrackedResource struct {
-	// ID - ID of the resource.
+	// ID - READ-ONLY; ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource.
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of Resource.
+	// Type - READ-ONLY; Type of Resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1448,15 +1385,6 @@ type TrackedResource struct {
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
 	}
@@ -1471,52 +1399,31 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 
 // URI the URI.
 type URI struct {
-	// URI - The URI.
+	// URI - READ-ONLY; The URI.
 	URI *string `json:"uri,omitempty"`
 }
 
 // VirtualMachineExtensionProductProperties product information.
 type VirtualMachineExtensionProductProperties struct {
-	// ComputeRole - Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
+	// ComputeRole - READ-ONLY; Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
 	ComputeRole ComputeRole `json:"computeRole,omitempty"`
-	// IsSystemExtension - Specifies if product is a Virtual Machine Extension.
+	// IsSystemExtension - READ-ONLY; Specifies if product is a Virtual Machine Extension.
 	IsSystemExtension *bool `json:"isSystemExtension,omitempty"`
-	// URI - Specifies a download location where content can be downloaded from.
+	// URI - READ-ONLY; Specifies a download location where content can be downloaded from.
 	*URI `json:"sourceBlob,omitempty"`
-	// SupportMultipleExtensions - Indicates if specified product supports multiple extensions.
+	// SupportMultipleExtensions - READ-ONLY; Indicates if specified product supports multiple extensions.
 	SupportMultipleExtensions *bool `json:"supportMultipleExtensions,omitempty"`
-	// Version - Specifies product version.
+	// Version - READ-ONLY; Specifies product version.
 	Version *string `json:"version,omitempty"`
-	// VMOsType - Specifies operating system used by the product. Possible values include: 'OperatingSystemNone', 'OperatingSystemWindows', 'OperatingSystemLinux'
+	// VMOsType - READ-ONLY; Specifies operating system used by the product. Possible values include: 'OperatingSystemNone', 'OperatingSystemWindows', 'OperatingSystemLinux'
 	VMOsType OperatingSystem `json:"vmOsType,omitempty"`
-	// VMScaleSetEnabled - Indicates if virtual machine Scale Set is enabled in the specified product.
+	// VMScaleSetEnabled - READ-ONLY; Indicates if virtual machine Scale Set is enabled in the specified product.
 	VMScaleSetEnabled *bool `json:"vmScaleSetEnabled,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualMachineExtensionProductProperties.
 func (vmepp VirtualMachineExtensionProductProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vmepp.ComputeRole != "" {
-		objectMap["computeRole"] = vmepp.ComputeRole
-	}
-	if vmepp.IsSystemExtension != nil {
-		objectMap["isSystemExtension"] = vmepp.IsSystemExtension
-	}
-	if vmepp.URI != nil {
-		objectMap["sourceBlob"] = vmepp.URI
-	}
-	if vmepp.SupportMultipleExtensions != nil {
-		objectMap["supportMultipleExtensions"] = vmepp.SupportMultipleExtensions
-	}
-	if vmepp.Version != nil {
-		objectMap["version"] = vmepp.Version
-	}
-	if vmepp.VMOsType != "" {
-		objectMap["vmOsType"] = vmepp.VMOsType
-	}
-	if vmepp.VMScaleSetEnabled != nil {
-		objectMap["vmScaleSetEnabled"] = vmepp.VMScaleSetEnabled
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1600,10 +1507,10 @@ func (vmepp *VirtualMachineExtensionProductProperties) UnmarshalJSON(body []byte
 
 // VirtualMachineProductProperties product information.
 type VirtualMachineProductProperties struct {
-	// Version - Specifies product version.
+	// Version - READ-ONLY; Specifies product version.
 	Version *string `json:"version,omitempty"`
-	// OsDiskImage - OS disk image used by product.
+	// OsDiskImage - READ-ONLY; OS disk image used by product.
 	OsDiskImage *OsDiskImage `json:"osDiskImage,omitempty"`
-	// DataDiskImages - List of attached data disks.
+	// DataDiskImages - READ-ONLY; List of attached data disks.
 	DataDiskImages *[]DataDiskImage `json:"dataDiskImages,omitempty"`
 }

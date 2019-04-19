@@ -92,6 +92,8 @@ func (client WorkflowAccessKeysClient) CreateOrUpdatePreparer(ctx context.Contex
 		"api-version": APIVersion,
 	}
 
+	workflowAccesskey.Name = nil
+	workflowAccesskey.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

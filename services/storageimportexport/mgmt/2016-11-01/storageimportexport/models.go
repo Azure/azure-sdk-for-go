@@ -263,11 +263,11 @@ type JobDetails struct {
 // JobResponse contains the job information.
 type JobResponse struct {
 	autorest.Response `json:"-"`
-	// ID - Specifies the resource identifier of the job.
+	// ID - READ-ONLY; Specifies the resource identifier of the job.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the job.
+	// Name - READ-ONLY; Specifies the name of the job.
 	Name *string `json:"name,omitempty"`
-	// Type - Specifies the type of the job resource.
+	// Type - READ-ONLY; Specifies the type of the job resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Specifies the Azure location where the job is created.
 	Location *string `json:"location,omitempty"`

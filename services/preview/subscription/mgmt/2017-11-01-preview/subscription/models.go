@@ -33,11 +33,11 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mg
 // Definition the subscription definition used to create the subscription.
 type Definition struct {
 	autorest.Response `json:"-"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// DefinitionProperties - the subscription definition properties
 	*DefinitionProperties `json:"properties,omitempty"`
@@ -46,15 +46,6 @@ type Definition struct {
 // MarshalJSON is the custom marshaler for Definition.
 func (d Definition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
-	}
 	if d.DefinitionProperties != nil {
 		objectMap["properties"] = d.DefinitionProperties
 	}
@@ -260,7 +251,7 @@ func NewDefinitionListPage(getNextPage func(context.Context, DefinitionList) (De
 
 // DefinitionProperties the subscription definition properties.
 type DefinitionProperties struct {
-	// SubscriptionID - The ID of the subscription.
+	// SubscriptionID - READ-ONLY; The ID of the subscription.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 	// SubscriptionDisplayName - The display name of the subscription.
 	SubscriptionDisplayName *string `json:"subscriptionDisplayName,omitempty"`
@@ -280,7 +271,7 @@ type DefinitionsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DefinitionsCreateFuture) Result(client DefinitionsClient) (d Definition, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return

@@ -126,6 +126,13 @@ const (
 	Swarm      OrchestratorTypes = original.Swarm
 )
 
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None           ResourceIdentityType = original.None
+	SystemAssigned ResourceIdentityType = original.SystemAssigned
+)
+
 type StorageProfileTypes = original.StorageProfileTypes
 
 const (
@@ -344,6 +351,7 @@ type ManagedClusterAccessProfile = original.ManagedClusterAccessProfile
 type ManagedClusterAddonProfile = original.ManagedClusterAddonProfile
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
+type ManagedClusterIdentity = original.ManagedClusterIdentity
 type ManagedClusterListResult = original.ManagedClusterListResult
 type ManagedClusterListResultIterator = original.ManagedClusterListResultIterator
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
@@ -484,6 +492,9 @@ func PossibleOpenShiftContainerServiceVMSizeValues() []OpenShiftContainerService
 }
 func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 	return original.PossibleOrchestratorTypesValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleStorageProfileTypesValues() []StorageProfileTypes {
 	return original.PossibleStorageProfileTypesValues()

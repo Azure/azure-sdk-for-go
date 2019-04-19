@@ -1637,7 +1637,7 @@ type ManagedClusterIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - The tenant id of the system assigned identity which is used by master components.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The type of identity used for the managed cluster. Type 'SystemAssigned' will use an implicityly created identity in master components and an auto-created user assigned identity in MC_ resource group in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead. Possible values include: 'SystemAssigned', 'None'
+	// Type - The type of identity used for the managed cluster. Type 'SystemAssigned' will use an implicitly created identity in master components and an auto-created user assigned identity in MC_ resource group in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead. Possible values include: 'SystemAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 

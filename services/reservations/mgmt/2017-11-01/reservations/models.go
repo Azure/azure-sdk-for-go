@@ -382,11 +382,11 @@ type AppliedReservationList struct {
 // AppliedReservations ...
 type AppliedReservations struct {
 	autorest.Response `json:"-"`
-	// ID - Identifier of the applied reservations
+	// ID - READ-ONLY; Identifier of the applied reservations
 	ID *string `json:"id,omitempty"`
-	// Name - Name of resource
+	// Name - READ-ONLY; Name of resource
 	Name *string `json:"name,omitempty"`
-	// Type - Type of resource. "Microsoft.Capacity/AppliedReservations"
+	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/AppliedReservations"
 	Type                           *string `json:"type,omitempty"`
 	*AppliedReservationsProperties `json:"properties,omitempty"`
 }
@@ -394,15 +394,6 @@ type AppliedReservations struct {
 // MarshalJSON is the custom marshaler for AppliedReservations.
 func (ar AppliedReservations) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
-	}
 	if ar.AppliedReservationsProperties != nil {
 		objectMap["properties"] = ar.AppliedReservationsProperties
 	}
@@ -467,18 +458,21 @@ type AppliedReservationsProperties struct {
 
 // Catalog ...
 type Catalog struct {
-	// ResourceType - The type of resource the SKU applies to.
+	// ResourceType - READ-ONLY; The type of resource the SKU applies to.
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Name - The name of SKU
+	// Name - READ-ONLY; The name of SKU
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of this SKU
+	// Tier - READ-ONLY; The tier of this SKU
 	Tier *string `json:"tier,omitempty"`
-	// Size - The size of this SKU
+	// Size - READ-ONLY; The size of this SKU
 	Size *string `json:"size,omitempty"`
-	// Terms - Available reservation terms for this resource
-	Terms        *[]string         `json:"terms,omitempty"`
-	Locations    *[]string         `json:"locations,omitempty"`
-	Capabilities *[]SkuCapability  `json:"capabilities,omitempty"`
+	// Terms - READ-ONLY; Available reservation terms for this resource
+	Terms *[]string `json:"terms,omitempty"`
+	// Locations - READ-ONLY
+	Locations *[]string `json:"locations,omitempty"`
+	// Capabilities - READ-ONLY
+	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
+	// Restrictions - READ-ONLY
 	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
 }
 
@@ -1039,12 +1033,12 @@ type OrderProperties struct {
 type OrderResponse struct {
 	autorest.Response `json:"-"`
 	Etag              *int32 `json:"etag,omitempty"`
-	// ID - Identifier of the reservation
+	// ID - READ-ONLY; Identifier of the reservation
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the reservation
+	// Name - READ-ONLY; Name of the reservation
 	Name             *string `json:"name,omitempty"`
 	*OrderProperties `json:"properties,omitempty"`
-	// Type - Type of resource. "Microsoft.Capacity/reservations"
+	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/reservations"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1054,17 +1048,8 @@ func (or OrderResponse) MarshalJSON() ([]byte, error) {
 	if or.Etag != nil {
 		objectMap["etag"] = or.Etag
 	}
-	if or.ID != nil {
-		objectMap["id"] = or.ID
-	}
-	if or.Name != nil {
-		objectMap["name"] = or.Name
-	}
 	if or.OrderProperties != nil {
 		objectMap["properties"] = or.OrderProperties
-	}
-	if or.Type != nil {
-		objectMap["type"] = or.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1187,7 +1172,7 @@ type Properties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// EffectiveDateTime - DateTime of the Reservation starting when this version is effective from.
 	EffectiveDateTime *date.Time `json:"effectiveDateTime,omitempty"`
-	// LastUpdatedDateTime - DateTime of the last time the Reservation was updated.
+	// LastUpdatedDateTime - READ-ONLY; DateTime of the last time the Reservation was updated.
 	LastUpdatedDateTime *date.Time `json:"lastUpdatedDateTime,omitempty"`
 	// ExpiryDate - This is the date when the Reservation will expire.
 	ExpiryDate         *date.Date           `json:"expiryDate,omitempty"`
@@ -1206,7 +1191,7 @@ type ReservationMergeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ReservationMergeFuture) Result(client Client) (lr ListResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.ReservationMergeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1235,7 +1220,7 @@ type ReservationUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ReservationUpdateFuture) Result(client Client) (r Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.ReservationUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1260,15 +1245,15 @@ type Response struct {
 	// Location - Possible values include: 'Westus', 'Eastus', 'Eastus2', 'Northcentralus', 'Westus2', 'Southcentralus', 'Centralus', 'Westeurope', 'Northeurope', 'Eastasia', 'Southeastasia', 'Japaneast', 'Japanwest', 'Brazilsouth', 'Australiaeast', 'Australiasoutheast', 'Southindia', 'Westindia', 'Centralindia', 'Canadacentral', 'Canadaeast', 'Uksouth', 'Westcentralus', 'Ukwest'
 	Location Location `json:"location,omitempty"`
 	Etag     *int32   `json:"etag,omitempty"`
-	// ID - Identifier of the reservation
+	// ID - READ-ONLY; Identifier of the reservation
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the reservation
+	// Name - READ-ONLY; Name of the reservation
 	Name *string `json:"name,omitempty"`
 	// Kind - Resource Provider type to be reserved. Possible values include: 'MicrosoftCompute'
 	Kind       Kind        `json:"kind,omitempty"`
 	Sku        *SkuName    `json:"sku,omitempty"`
 	Properties *Properties `json:"properties,omitempty"`
-	// Type - Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
+	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1304,7 +1289,7 @@ type SplitFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SplitFuture) Result(client Client) (lr ListResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.SplitFuture", "Result", future.Response(), "Polling failure")
 		return

@@ -99,11 +99,11 @@ func PossibleTimeGrainTypeValues() []TimeGrainType {
 type Budget struct {
 	autorest.Response `json:"-"`
 	*BudgetProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
@@ -114,15 +114,6 @@ func (b Budget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if b.BudgetProperties != nil {
 		objectMap["properties"] = b.BudgetProperties
-	}
-	if b.ID != nil {
-		objectMap["id"] = b.ID
-	}
-	if b.Name != nil {
-		objectMap["name"] = b.Name
-	}
-	if b.Type != nil {
-		objectMap["type"] = b.Type
 	}
 	if b.ETag != nil {
 		objectMap["eTag"] = b.ETag
@@ -202,7 +193,7 @@ type BudgetProperties struct {
 	TimePeriod *BudgetTimePeriod `json:"timePeriod,omitempty"`
 	// Filters - May be used to filter budgets by resource group, resource, or meter.
 	Filters *Filters `json:"filters,omitempty"`
-	// CurrentSpend - The current amount of cost which is being tracked for a budget.
+	// CurrentSpend - READ-ONLY; The current amount of cost which is being tracked for a budget.
 	CurrentSpend *CurrentSpend `json:"currentSpend,omitempty"`
 	// Notifications - Dictionary of notifications associated with the budget. Budget can have up to five notifications.
 	Notifications map[string]*Notification `json:"notifications"`
@@ -226,9 +217,6 @@ func (bp BudgetProperties) MarshalJSON() ([]byte, error) {
 	if bp.Filters != nil {
 		objectMap["filters"] = bp.Filters
 	}
-	if bp.CurrentSpend != nil {
-		objectMap["currentSpend"] = bp.CurrentSpend
-	}
 	if bp.Notifications != nil {
 		objectMap["notifications"] = bp.Notifications
 	}
@@ -239,9 +227,9 @@ func (bp BudgetProperties) MarshalJSON() ([]byte, error) {
 // provided.
 type BudgetsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of budgets.
+	// Value - READ-ONLY; The list of budgets.
 	Value *[]Budget `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -392,17 +380,17 @@ type BudgetTimePeriod struct {
 
 // CurrentSpend the current amount of cost which is being tracked for a budget.
 type CurrentSpend struct {
-	// Amount - The total amount of cost which is being tracked by the budget.
+	// Amount - READ-ONLY; The total amount of cost which is being tracked by the budget.
 	Amount *decimal.Decimal `json:"amount,omitempty"`
-	// Unit - The unit of measure for the budget amount.
+	// Unit - READ-ONLY; The unit of measure for the budget amount.
 	Unit *string `json:"unit,omitempty"`
 }
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -426,13 +414,13 @@ type Filters struct {
 // Marketplace an marketplace resource.
 type Marketplace struct {
 	*MarketplaceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -441,18 +429,6 @@ func (mVar Marketplace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mVar.MarketplaceProperties != nil {
 		objectMap["properties"] = mVar.MarketplaceProperties
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
-	}
-	if mVar.Tags != nil {
-		objectMap["tags"] = mVar.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -519,53 +495,53 @@ func (mVar *Marketplace) UnmarshalJSON(body []byte) error {
 
 // MarketplaceProperties the properties of the marketplace usage detail.
 type MarketplaceProperties struct {
-	// BillingPeriodID - The id of the billing period resource that the usage belongs to.
+	// BillingPeriodID - READ-ONLY; The id of the billing period resource that the usage belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// UsageStart - The start of the date time range covered by the usage detail.
+	// UsageStart - READ-ONLY; The start of the date time range covered by the usage detail.
 	UsageStart *date.Time `json:"usageStart,omitempty"`
-	// UsageEnd - The end of the date time range covered by the usage detail.
+	// UsageEnd - READ-ONLY; The end of the date time range covered by the usage detail.
 	UsageEnd *date.Time `json:"usageEnd,omitempty"`
-	// ResourceRate - The marketplace resource rate.
+	// ResourceRate - READ-ONLY; The marketplace resource rate.
 	ResourceRate *decimal.Decimal `json:"resourceRate,omitempty"`
-	// OfferName - The type of offer.
+	// OfferName - READ-ONLY; The type of offer.
 	OfferName *string `json:"offerName,omitempty"`
-	// ResourceGroup - The name of resource group.
+	// ResourceGroup - READ-ONLY; The name of resource group.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// OrderNumber - The order number.
+	// OrderNumber - READ-ONLY; The order number.
 	OrderNumber *string `json:"orderNumber,omitempty"`
-	// InstanceName - The name of the resource instance that the usage is about.
+	// InstanceName - READ-ONLY; The name of the resource instance that the usage is about.
 	InstanceName *string `json:"instanceName,omitempty"`
-	// InstanceID - The uri of the resource instance that the usage is about.
+	// InstanceID - READ-ONLY; The uri of the resource instance that the usage is about.
 	InstanceID *string `json:"instanceId,omitempty"`
-	// Currency - The ISO currency in which the meter is charged, for example, USD.
+	// Currency - READ-ONLY; The ISO currency in which the meter is charged, for example, USD.
 	Currency *string `json:"currency,omitempty"`
-	// ConsumedQuantity - The quantity of usage.
+	// ConsumedQuantity - READ-ONLY; The quantity of usage.
 	ConsumedQuantity *decimal.Decimal `json:"consumedQuantity,omitempty"`
-	// UnitOfMeasure - The unit of measure.
+	// UnitOfMeasure - READ-ONLY; The unit of measure.
 	UnitOfMeasure *string `json:"unitOfMeasure,omitempty"`
-	// PretaxCost - The amount of cost before tax.
+	// PretaxCost - READ-ONLY; The amount of cost before tax.
 	PretaxCost *decimal.Decimal `json:"pretaxCost,omitempty"`
-	// IsEstimated - The estimated usage is subject to change.
+	// IsEstimated - READ-ONLY; The estimated usage is subject to change.
 	IsEstimated *bool `json:"isEstimated,omitempty"`
-	// MeterID - The meter id.
+	// MeterID - READ-ONLY; The meter id.
 	MeterID *string `json:"meterId,omitempty"`
-	// SubscriptionGUID - Subscription guid.
+	// SubscriptionGUID - READ-ONLY; Subscription guid.
 	SubscriptionGUID *string `json:"subscriptionGuid,omitempty"`
-	// SubscriptionName - Subscription name.
+	// SubscriptionName - READ-ONLY; Subscription name.
 	SubscriptionName *string `json:"subscriptionName,omitempty"`
-	// AccountName - Account name.
+	// AccountName - READ-ONLY; Account name.
 	AccountName *string `json:"accountName,omitempty"`
-	// DepartmentName - Department name.
+	// DepartmentName - READ-ONLY; Department name.
 	DepartmentName *string `json:"departmentName,omitempty"`
-	// ConsumedService - Consumed service name.
+	// ConsumedService - READ-ONLY; Consumed service name.
 	ConsumedService *string `json:"consumedService,omitempty"`
-	// CostCenter - The cost center of this department if it is a department and a costcenter exists
+	// CostCenter - READ-ONLY; The cost center of this department if it is a department and a costcenter exists
 	CostCenter *string `json:"costCenter,omitempty"`
-	// AdditionalProperties - Additional details of this usage item. By default this is not populated, unless it's specified in $expand.
+	// AdditionalProperties - READ-ONLY; Additional details of this usage item. By default this is not populated, unless it's specified in $expand.
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
-	// PublisherName - The name of publisher.
+	// PublisherName - READ-ONLY; The name of publisher.
 	PublisherName *string `json:"publisherName,omitempty"`
-	// PlanName - The name of plan.
+	// PlanName - READ-ONLY; The name of plan.
 	PlanName *string `json:"planName,omitempty"`
 }
 
@@ -573,9 +549,9 @@ type MarketplaceProperties struct {
 // reverse chronological order by billing period.
 type MarketplacesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of marketplaces.
+	// Value - READ-ONLY; The list of marketplaces.
 	Value *[]Marketplace `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -718,19 +694,19 @@ func NewMarketplacesListResultPage(getNextPage func(context.Context, Marketplace
 
 // MeterDetails the properties of the meter detail.
 type MeterDetails struct {
-	// MeterName - The name of the meter, within the given meter category
+	// MeterName - READ-ONLY; The name of the meter, within the given meter category
 	MeterName *string `json:"meterName,omitempty"`
-	// MeterCategory - The category of the meter, for example, 'Cloud services', 'Networking', etc..
+	// MeterCategory - READ-ONLY; The category of the meter, for example, 'Cloud services', 'Networking', etc..
 	MeterCategory *string `json:"meterCategory,omitempty"`
-	// MeterSubCategory - The subcategory of the meter, for example, 'A6 Cloud services', 'ExpressRoute (IXP)', etc..
+	// MeterSubCategory - READ-ONLY; The subcategory of the meter, for example, 'A6 Cloud services', 'ExpressRoute (IXP)', etc..
 	MeterSubCategory *string `json:"meterSubCategory,omitempty"`
-	// Unit - The unit in which the meter consumption is charged, for example, 'Hours', 'GB', etc.
+	// Unit - READ-ONLY; The unit in which the meter consumption is charged, for example, 'Hours', 'GB', etc.
 	Unit *string `json:"unit,omitempty"`
-	// MeterLocation - The location in which the Azure service is available.
+	// MeterLocation - READ-ONLY; The location in which the Azure service is available.
 	MeterLocation *string `json:"meterLocation,omitempty"`
-	// TotalIncludedQuantity - The total included quantity associated with the offer.
+	// TotalIncludedQuantity - READ-ONLY; The total included quantity associated with the offer.
 	TotalIncludedQuantity *decimal.Decimal `json:"totalIncludedQuantity,omitempty"`
-	// PretaxStandardRate - The pretax listing price.
+	// PretaxStandardRate - READ-ONLY; The pretax listing price.
 	PretaxStandardRate *decimal.Decimal `json:"pretaxStandardRate,omitempty"`
 }
 
@@ -752,7 +728,7 @@ type Notification struct {
 
 // Operation a Consumption REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -760,11 +736,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Consumption.
+	// Provider - READ-ONLY; Service provider: Microsoft.Consumption.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: UsageDetail, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: UsageDetail, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -772,9 +748,9 @@ type OperationDisplay struct {
 // link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of consumption operations supported by the Microsoft.Consumption resource provider.
+	// Value - READ-ONLY; List of consumption operations supported by the Microsoft.Consumption resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -917,29 +893,29 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // PriceSheetModel price sheet result. It contains the pricesheet associated with billing period
 type PriceSheetModel struct {
-	// Pricesheets - Price sheet
+	// Pricesheets - READ-ONLY; Price sheet
 	Pricesheets *[]PriceSheetProperties `json:"pricesheets,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // PriceSheetProperties the properties of the price sheet.
 type PriceSheetProperties struct {
-	// BillingPeriodID - The id of the billing period resource that the usage belongs to.
+	// BillingPeriodID - READ-ONLY; The id of the billing period resource that the usage belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// MeterID - The meter id
+	// MeterID - READ-ONLY; The meter id
 	MeterID *string `json:"meterId,omitempty"`
-	// MeterDetails - The details about the meter. By default this is not populated, unless it's specified in $expand.
+	// MeterDetails - READ-ONLY; The details about the meter. By default this is not populated, unless it's specified in $expand.
 	MeterDetails *MeterDetails `json:"meterDetails,omitempty"`
-	// UnitOfMeasure - Unit of measure
+	// UnitOfMeasure - READ-ONLY; Unit of measure
 	UnitOfMeasure *string `json:"unitOfMeasure,omitempty"`
-	// IncludedQuantity - Included quality for an offer
+	// IncludedQuantity - READ-ONLY; Included quality for an offer
 	IncludedQuantity *decimal.Decimal `json:"includedQuantity,omitempty"`
-	// PartNumber - Part Number
+	// PartNumber - READ-ONLY; Part Number
 	PartNumber *string `json:"partNumber,omitempty"`
-	// UnitPrice - Unit Price
+	// UnitPrice - READ-ONLY; Unit Price
 	UnitPrice *decimal.Decimal `json:"unitPrice,omitempty"`
-	// CurrencyCode - Currency Code
+	// CurrencyCode - READ-ONLY; Currency Code
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 }
 
@@ -947,13 +923,13 @@ type PriceSheetProperties struct {
 type PriceSheetResult struct {
 	autorest.Response `json:"-"`
 	*PriceSheetModel  `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -962,18 +938,6 @@ func (psr PriceSheetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if psr.PriceSheetModel != nil {
 		objectMap["properties"] = psr.PriceSheetModel
-	}
-	if psr.ID != nil {
-		objectMap["id"] = psr.ID
-	}
-	if psr.Name != nil {
-		objectMap["name"] = psr.Name
-	}
-	if psr.Type != nil {
-		objectMap["type"] = psr.Type
-	}
-	if psr.Tags != nil {
-		objectMap["tags"] = psr.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1040,11 +1004,11 @@ func (psr *PriceSheetResult) UnmarshalJSON(body []byte) error {
 
 // ProxyResource the Resource model definition.
 type ProxyResource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
@@ -1053,13 +1017,13 @@ type ProxyResource struct {
 // ReservationDetails reservation details resource.
 type ReservationDetails struct {
 	*ReservationDetailsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1068,18 +1032,6 @@ func (rd ReservationDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rd.ReservationDetailsProperties != nil {
 		objectMap["properties"] = rd.ReservationDetailsProperties
-	}
-	if rd.ID != nil {
-		objectMap["id"] = rd.ID
-	}
-	if rd.Name != nil {
-		objectMap["name"] = rd.Name
-	}
-	if rd.Type != nil {
-		objectMap["type"] = rd.Type
-	}
-	if rd.Tags != nil {
-		objectMap["tags"] = rd.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1147,9 +1099,9 @@ func (rd *ReservationDetails) UnmarshalJSON(body []byte) error {
 // ReservationDetailsListResult result of listing reservation details.
 type ReservationDetailsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of reservation details.
+	// Value - READ-ONLY; The list of reservation details.
 	Value *[]ReservationDetails `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1292,34 +1244,34 @@ func NewReservationDetailsListResultPage(getNextPage func(context.Context, Reser
 
 // ReservationDetailsProperties the properties of the reservation details.
 type ReservationDetailsProperties struct {
-	// ReservationOrderID - The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
+	// ReservationOrderID - READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
-	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
+	// ReservationID - READ-ONLY; The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
 	ReservationID *string `json:"reservationId,omitempty"`
-	// SkuName - This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
+	// SkuName - READ-ONLY; This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
 	SkuName *string `json:"skuName,omitempty"`
-	// ReservedHours - This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days.
+	// ReservedHours - READ-ONLY; This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days.
 	ReservedHours *decimal.Decimal `json:"reservedHours,omitempty"`
-	// UsageDate - The date on which consumption occurred.
+	// UsageDate - READ-ONLY; The date on which consumption occurred.
 	UsageDate *date.Time `json:"usageDate,omitempty"`
-	// UsedHours - This is the total hours used by the instance.
+	// UsedHours - READ-ONLY; This is the total hours used by the instance.
 	UsedHours *decimal.Decimal `json:"usedHours,omitempty"`
-	// InstanceID - This identifier is the name of the resource or the fully qualified Resource ID.
+	// InstanceID - READ-ONLY; This identifier is the name of the resource or the fully qualified Resource ID.
 	InstanceID *string `json:"instanceId,omitempty"`
-	// TotalReservedQuantity - This is the total count of instances that are reserved for the reservationId.
+	// TotalReservedQuantity - READ-ONLY; This is the total count of instances that are reserved for the reservationId.
 	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
 }
 
 // ReservationSummaries reservation summaries resource.
 type ReservationSummaries struct {
 	*ReservationSummariesProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1328,18 +1280,6 @@ func (rs ReservationSummaries) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rs.ReservationSummariesProperties != nil {
 		objectMap["properties"] = rs.ReservationSummariesProperties
-	}
-	if rs.ID != nil {
-		objectMap["id"] = rs.ID
-	}
-	if rs.Name != nil {
-		objectMap["name"] = rs.Name
-	}
-	if rs.Type != nil {
-		objectMap["type"] = rs.Type
-	}
-	if rs.Tags != nil {
-		objectMap["tags"] = rs.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1407,9 +1347,9 @@ func (rs *ReservationSummaries) UnmarshalJSON(body []byte) error {
 // ReservationSummariesListResult result of listing reservation summaries.
 type ReservationSummariesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of reservation summaries.
+	// Value - READ-ONLY; The list of reservation summaries.
 	Value *[]ReservationSummaries `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1553,66 +1493,54 @@ func NewReservationSummariesListResultPage(getNextPage func(context.Context, Res
 
 // ReservationSummariesProperties the properties of the reservation summaries.
 type ReservationSummariesProperties struct {
-	// ReservationOrderID - The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
+	// ReservationOrderID - READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
-	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
+	// ReservationID - READ-ONLY; The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
 	ReservationID *string `json:"reservationId,omitempty"`
-	// SkuName - This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
+	// SkuName - READ-ONLY; This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
 	SkuName *string `json:"skuName,omitempty"`
-	// ReservedHours - This is the total hours reserved. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days
+	// ReservedHours - READ-ONLY; This is the total hours reserved. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days
 	ReservedHours *decimal.Decimal `json:"reservedHours,omitempty"`
-	// UsageDate - Data corresponding to the utilization record. If the grain of data is monthly, it will be first day of month.
+	// UsageDate - READ-ONLY; Data corresponding to the utilization record. If the grain of data is monthly, it will be first day of month.
 	UsageDate *date.Time `json:"usageDate,omitempty"`
-	// UsedHours - Total used hours by the reservation
+	// UsedHours - READ-ONLY; Total used hours by the reservation
 	UsedHours *decimal.Decimal `json:"usedHours,omitempty"`
-	// MinUtilizationPercentage - This is the minimum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 10%, this field will return 10% for that day
+	// MinUtilizationPercentage - READ-ONLY; This is the minimum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 10%, this field will return 10% for that day
 	MinUtilizationPercentage *decimal.Decimal `json:"minUtilizationPercentage,omitempty"`
-	// AvgUtilizationPercentage - This is average utilization for the entire time range. (day or month depending on the grain)
+	// AvgUtilizationPercentage - READ-ONLY; This is average utilization for the entire time range. (day or month depending on the grain)
 	AvgUtilizationPercentage *decimal.Decimal `json:"avgUtilizationPercentage,omitempty"`
-	// MaxUtilizationPercentage - This is the maximum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 100%, this field will return 100% for that day.
+	// MaxUtilizationPercentage - READ-ONLY; This is the maximum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour 4 and 5, utilization was 100%, this field will return 100% for that day.
 	MaxUtilizationPercentage *decimal.Decimal `json:"maxUtilizationPercentage,omitempty"`
 }
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }
 
 // UsageDetail an usage detail resource.
 type UsageDetail struct {
 	*UsageDetailProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1621,18 +1549,6 @@ func (ud UsageDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ud.UsageDetailProperties != nil {
 		objectMap["properties"] = ud.UsageDetailProperties
-	}
-	if ud.ID != nil {
-		objectMap["id"] = ud.ID
-	}
-	if ud.Name != nil {
-		objectMap["name"] = ud.Name
-	}
-	if ud.Type != nil {
-		objectMap["type"] = ud.Type
-	}
-	if ud.Tags != nil {
-		objectMap["tags"] = ud.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1699,49 +1615,49 @@ func (ud *UsageDetail) UnmarshalJSON(body []byte) error {
 
 // UsageDetailProperties the properties of the usage detail.
 type UsageDetailProperties struct {
-	// BillingPeriodID - The id of the billing period resource that the usage belongs to.
+	// BillingPeriodID - READ-ONLY; The id of the billing period resource that the usage belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// InvoiceID - The id of the invoice resource that the usage belongs to.
+	// InvoiceID - READ-ONLY; The id of the invoice resource that the usage belongs to.
 	InvoiceID *string `json:"invoiceId,omitempty"`
-	// UsageStart - The start of the date time range covered by the usage detail.
+	// UsageStart - READ-ONLY; The start of the date time range covered by the usage detail.
 	UsageStart *date.Time `json:"usageStart,omitempty"`
-	// UsageEnd - The end of the date time range covered by the usage detail.
+	// UsageEnd - READ-ONLY; The end of the date time range covered by the usage detail.
 	UsageEnd *date.Time `json:"usageEnd,omitempty"`
-	// InstanceName - The name of the resource instance that the usage is about.
+	// InstanceName - READ-ONLY; The name of the resource instance that the usage is about.
 	InstanceName *string `json:"instanceName,omitempty"`
-	// InstanceID - The uri of the resource instance that the usage is about.
+	// InstanceID - READ-ONLY; The uri of the resource instance that the usage is about.
 	InstanceID *string `json:"instanceId,omitempty"`
-	// InstanceLocation - The location of the resource instance that the usage is about.
+	// InstanceLocation - READ-ONLY; The location of the resource instance that the usage is about.
 	InstanceLocation *string `json:"instanceLocation,omitempty"`
-	// Currency - The ISO currency in which the meter is charged, for example, USD.
+	// Currency - READ-ONLY; The ISO currency in which the meter is charged, for example, USD.
 	Currency *string `json:"currency,omitempty"`
-	// UsageQuantity - The quantity of usage.
+	// UsageQuantity - READ-ONLY; The quantity of usage.
 	UsageQuantity *decimal.Decimal `json:"usageQuantity,omitempty"`
-	// BillableQuantity - The billable usage quantity.
+	// BillableQuantity - READ-ONLY; The billable usage quantity.
 	BillableQuantity *decimal.Decimal `json:"billableQuantity,omitempty"`
-	// PretaxCost - The amount of cost before tax.
+	// PretaxCost - READ-ONLY; The amount of cost before tax.
 	PretaxCost *decimal.Decimal `json:"pretaxCost,omitempty"`
-	// IsEstimated - The estimated usage is subject to change.
+	// IsEstimated - READ-ONLY; The estimated usage is subject to change.
 	IsEstimated *bool `json:"isEstimated,omitempty"`
-	// MeterID - The meter id.
+	// MeterID - READ-ONLY; The meter id.
 	MeterID *string `json:"meterId,omitempty"`
-	// MeterDetails - The details about the meter. By default this is not populated, unless it's specified in $expand.
+	// MeterDetails - READ-ONLY; The details about the meter. By default this is not populated, unless it's specified in $expand.
 	MeterDetails *MeterDetails `json:"meterDetails,omitempty"`
-	// SubscriptionGUID - Subscription guid.
+	// SubscriptionGUID - READ-ONLY; Subscription guid.
 	SubscriptionGUID *string `json:"subscriptionGuid,omitempty"`
-	// SubscriptionName - Subscription name.
+	// SubscriptionName - READ-ONLY; Subscription name.
 	SubscriptionName *string `json:"subscriptionName,omitempty"`
-	// AccountName - Account name.
+	// AccountName - READ-ONLY; Account name.
 	AccountName *string `json:"accountName,omitempty"`
-	// DepartmentName - Department name.
+	// DepartmentName - READ-ONLY; Department name.
 	DepartmentName *string `json:"departmentName,omitempty"`
-	// Product - Product name.
+	// Product - READ-ONLY; Product name.
 	Product *string `json:"product,omitempty"`
-	// ConsumedService - Consumed service name.
+	// ConsumedService - READ-ONLY; Consumed service name.
 	ConsumedService *string `json:"consumedService,omitempty"`
-	// CostCenter - The cost center of this department if it is a department and a costcenter exists
+	// CostCenter - READ-ONLY; The cost center of this department if it is a department and a costcenter exists
 	CostCenter *string `json:"costCenter,omitempty"`
-	// AdditionalProperties - Additional details of this usage item. By default this is not populated, unless it's specified in $expand.
+	// AdditionalProperties - READ-ONLY; Additional details of this usage item. By default this is not populated, unless it's specified in $expand.
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
 }
 
@@ -1749,9 +1665,9 @@ type UsageDetailProperties struct {
 // reverse chronological order by billing period.
 type UsageDetailsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of usage details.
+	// Value - READ-ONLY; The list of usage details.
 	Value *[]UsageDetail `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

@@ -112,7 +112,7 @@ func BuildProfile(packageList ListDefinition, name, outputLocation string, outpu
 				}
 				aliasPath = filepath.Join(outputLocation, aliasPath)
 				if _, err := os.Stat(aliasPath); os.IsNotExist(err) {
-					err = os.MkdirAll(aliasPath, os.ModeDir)
+					err = os.MkdirAll(aliasPath, os.ModeDir|0755)
 					if err != nil {
 						errLog.Fatalf("failed to create alias directory: %v", err)
 					}
@@ -182,7 +182,7 @@ func updateAliasPackageUserAgent(ap *AliasPackage, profileName string) {
 func writeAliasPackage(ap *AliasPackage, outputPath string, outputLog, errLog *log.Logger) {
 	files := token.NewFileSet()
 
-	err := os.MkdirAll(path.Dir(outputPath), os.ModePerm|os.ModeDir)
+	err := os.MkdirAll(path.Dir(outputPath), 0755|os.ModeDir)
 	if err != nil {
 		errLog.Fatalf("error creating directory: %v", err)
 	}

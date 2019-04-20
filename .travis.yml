@@ -10,6 +10,7 @@ branches:
   only:
   - master
   - latest
+  - release/v21
 
 env:
   global:

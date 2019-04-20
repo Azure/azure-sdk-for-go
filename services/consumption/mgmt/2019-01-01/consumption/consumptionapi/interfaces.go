@@ -30,6 +30,13 @@ type UsageDetailsClientAPI interface {
 
 var _ UsageDetailsClientAPI = (*consumption.UsageDetailsClient)(nil)
 
+// UsageDetailsListClientAPI contains the set of methods on the UsageDetailsListClient type.
+type UsageDetailsListClientAPI interface {
+	Download(ctx context.Context, scope string) (result consumption.UsageDetailsListDownloadFuture, err error)
+}
+
+var _ UsageDetailsListClientAPI = (*consumption.UsageDetailsListClient)(nil)
+
 // MarketplacesClientAPI contains the set of methods on the MarketplacesClient type.
 type MarketplacesClientAPI interface {
 	List(ctx context.Context, scope string, filter string, top *int32, skiptoken string) (result consumption.MarketplacesListResultPage, err error)

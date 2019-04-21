@@ -179,6 +179,39 @@ func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// Contains ...
+	Contains Operator = "Contains"
+	// EndsWith ...
+	EndsWith Operator = "EndsWith"
+	// Equals ...
+	Equals Operator = "Equals"
+	// EqualsIgnoreCase ...
+	EqualsIgnoreCase Operator = "EqualsIgnoreCase"
+	// GreaterThan ...
+	GreaterThan Operator = "GreaterThan"
+	// GreaterThanOrEqualTo ...
+	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
+	// LesserThan ...
+	LesserThan Operator = "LesserThan"
+	// LesserThanOrEqualTo ...
+	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
+	// NotEquals ...
+	NotEquals Operator = "NotEquals"
+	// NotEqualsIgnoreCase ...
+	NotEqualsIgnoreCase Operator = "NotEqualsIgnoreCase"
+	// StartsWith ...
+	StartsWith Operator = "StartsWith"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{Contains, EndsWith, Equals, EqualsIgnoreCase, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, NotEqualsIgnoreCase, StartsWith}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -192,6 +225,33 @@ const (
 // PossiblePricingTierValues returns an array of possible values for the PricingTier const type.
 func PossiblePricingTierValues() []PricingTier {
 	return []PricingTier{Free, Standard}
+}
+
+// PropertyType enumerates the values for property type.
+type PropertyType string
+
+const (
+	// SystemBoolean ...
+	SystemBoolean PropertyType = "System.Boolean"
+	// SystemByte ...
+	SystemByte PropertyType = "System.Byte"
+	// SystemChar ...
+	SystemChar PropertyType = "System.Char"
+	// SystemDouble ...
+	SystemDouble PropertyType = "System.Double"
+	// SystemInt16 ...
+	SystemInt16 PropertyType = "System.Int16"
+	// SystemInt32 ...
+	SystemInt32 PropertyType = "System.Int32"
+	// SystemSingle ...
+	SystemSingle PropertyType = "System.Single"
+	// SystemString ...
+	SystemString PropertyType = "System.String"
+)
+
+// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
+func PossiblePropertyTypeValues() []PropertyType {
+	return []PropertyType{SystemBoolean, SystemByte, SystemChar, SystemDouble, SystemInt16, SystemInt32, SystemSingle, SystemString}
 }
 
 // Protocol enumerates the values for protocol.
@@ -4595,6 +4655,236 @@ func (page OperationListPage) Values() []Operation {
 // Creates a new instance of the OperationListPage type.
 func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
 	return OperationListPage{fn: getNextPage}
+}
+
+// PlaybookConfiguration the playbook configuration resource.
+type PlaybookConfiguration struct {
+	autorest.Response `json:"-"`
+	// PlaybookConfigurationProperties - Playbook configuration data
+	*PlaybookConfigurationProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfiguration.
+func (pc PlaybookConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.PlaybookConfigurationProperties != nil {
+		objectMap["properties"] = pc.PlaybookConfigurationProperties
+	}
+	if pc.ID != nil {
+		objectMap["id"] = pc.ID
+	}
+	if pc.Name != nil {
+		objectMap["name"] = pc.Name
+	}
+	if pc.Type != nil {
+		objectMap["type"] = pc.Type
+	}
+	if pc.Location != nil {
+		objectMap["location"] = pc.Location
+	}
+	if pc.Kind != nil {
+		objectMap["kind"] = pc.Kind
+	}
+	if pc.Etag != nil {
+		objectMap["etag"] = pc.Etag
+	}
+	if pc.Tags != nil {
+		objectMap["tags"] = pc.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfiguration struct.
+func (pc *PlaybookConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var playbookConfigurationProperties PlaybookConfigurationProperties
+				err = json.Unmarshal(*v, &playbookConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				pc.PlaybookConfigurationProperties = &playbookConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pc.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				pc.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pc.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pc.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// PlaybookConfigurationAction the action that should be triggered.
+type PlaybookConfigurationAction struct {
+	// ResourceID - The triggered resource id.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// ResourceProviderNamespace - The resource provider name.
+	ResourceProviderNamespace *string `json:"resourceProviderNamespace,omitempty"`
+	// URI - The uri that should be triggered by an Http GET request.
+	URI *string `json:"uri,omitempty"`
+}
+
+// PlaybookConfigurationList list of playbook configurations response.
+type PlaybookConfigurationList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of playbook configurations under the given scope.
+	Value *[]PlaybookConfiguration `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PlaybookConfigurationMetadata the metadata of the playbook configuration resource.
+type PlaybookConfigurationMetadata struct {
+	// CreatedDateTimeUtc - The playbook configuration creation date.
+	CreatedDateTimeUtc *date.Time `json:"createdDateTimeUtc,omitempty"`
+	// CreatedBy - The AAD object ID of the entity that created the playbook configuration.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastUpdatedDateTimeUtc - The playbook configuration last updated date.
+	LastUpdatedDateTimeUtc *date.Time `json:"lastUpdatedDateTimeUtc,omitempty"`
+	// LastUpdatedBy - The AAD object ID of the entity that last updated the playbook configuration.
+	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
+}
+
+// PlaybookConfigurationProperties the playbook configuration data.
+type PlaybookConfigurationProperties struct {
+	// Description - The playbook configuration description.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Indicates whether the playbook configuration is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Metadata - The metadata of the playbook configuration resource.
+	Metadata *PlaybookConfigurationMetadata `json:"metadata,omitempty"`
+	// Scopes - A collection of the subscription's resources  scopes on which the playbook configurations logic is applied.
+	Scopes *[]PlaybookConfigurationScope `json:"scopes,omitempty"`
+	// Sources - A collection of the source event types which evaluate the playbook configuration set of rules.
+	Sources *[]PlaybookConfigurationSource `json:"sources,omitempty"`
+	// Actions - A collection of the actions which are triggered if all the configured rule set evaluation is true.
+	Actions *[]PlaybookConfigurationAction `json:"actions,omitempty"`
+}
+
+// PlaybookConfigurationRuleSet a rule set which evaluates all its rules upon an event interception.
+type PlaybookConfigurationRuleSet struct {
+	Rules *[]PlaybookConfigurationTriggeringRule `json:"rules,omitempty"`
+}
+
+// PlaybookConfigurationScope the subscription's resources scope
+type PlaybookConfigurationScope struct {
+	// Description - The resources scope description.
+	Description *string `json:"description,omitempty"`
+	// ScopePath - The resources scope path.
+	ScopePath *string `json:"scopePath,omitempty"`
+}
+
+// PlaybookConfigurationSource the source event types which evaluate the playbook configuration set of
+// rules. For example - security alerts and recommended tasks.
+type PlaybookConfigurationSource struct {
+	// EventSource - A valid event source type.
+	EventSource *string `json:"eventSource,omitempty"`
+	// RuleSets - A set of rules which evaluate upon event interception.
+	RuleSets *[]PlaybookConfigurationRuleSet `json:"ruleSets,omitempty"`
+}
+
+// PlaybookConfigurationTriggeringRule a logic rule which evaluates upon event interception. The rule is
+// configured by comparing the specified expected value, in an expected property within the event model, by
+// the specified operator.
+type PlaybookConfigurationTriggeringRule struct {
+	// PropertyJPath - The JPath of the entity model property that should be checked.
+	PropertyJPath *string `json:"propertyJPath,omitempty"`
+	// PropertyType - The data type of the compared operands. Possible values include: 'SystemString', 'SystemBoolean', 'SystemByte', 'SystemInt16', 'SystemInt32', 'SystemSingle', 'SystemDouble', 'SystemChar'
+	PropertyType PropertyType `json:"propertyType,omitempty"`
+	// ExpectedValue - The expected value.
+	ExpectedValue *string `json:"expectedValue,omitempty"`
+	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'EqualsIgnoreCase', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'NotEqualsIgnoreCase', 'Contains', 'StartsWith', 'EndsWith'
+	Operator Operator `json:"operator,omitempty"`
+}
+
+// PlaybookConfigurationValidationStatus the playbook configuration model state property bag.
+type PlaybookConfigurationValidationStatus struct {
+	autorest.Response `json:"-"`
+	// IsValid - Indicates whether the model is valid or not.
+	IsValid *bool `json:"isValid,omitempty"`
+	// Message - The validation message.
+	Message *string `json:"message,omitempty"`
 }
 
 // Pricing pricing tier will be applied for the scope based on the resource ID

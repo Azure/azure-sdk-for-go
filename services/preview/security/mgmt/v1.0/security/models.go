@@ -3374,6 +3374,14 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
 }
 
+// ETag entity tag is used for comparing two or more entities from the same requested resource. ETags may
+// be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency
+// control.
+type ETag struct {
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+}
+
 // BasicExternalSecuritySolution represents a security solution external to Azure Security Center which sends
 // information to an OMS workspace and whose data is displayed by Azure Security Center.
 type BasicExternalSecuritySolution interface {
@@ -5762,6 +5770,21 @@ func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (Settin
 	return SettingsListPage{fn: getNextPage}
 }
 
+// Tags a list of key value pairs that describe the resource.
+type Tags struct {
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Tags.
+func (t Tags) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // Task security task that we recommend to do in order to strengthen security
 type Task struct {
 	autorest.Response `json:"-"`
@@ -6372,6 +6395,51 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// TrackedResource describes an Azure tracked resource.
+type TrackedResource struct {
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.ID != nil {
+		objectMap["id"] = tr.ID
+	}
+	if tr.Name != nil {
+		objectMap["name"] = tr.Name
+	}
+	if tr.Type != nil {
+		objectMap["type"] = tr.Type
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	if tr.Kind != nil {
+		objectMap["kind"] = tr.Kind
+	}
+	if tr.Etag != nil {
+		objectMap["etag"] = tr.Etag
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

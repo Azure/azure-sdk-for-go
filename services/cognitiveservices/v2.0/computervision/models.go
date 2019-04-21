@@ -229,7 +229,7 @@ type AdultInfo struct {
 // AreaOfInterestResult result of AreaOfInterest operation.
 type AreaOfInterestResult struct {
 	autorest.Response `json:"-"`
-	// AreaOfInterest - A bounding box for an area of interest inside an image.
+	// AreaOfInterest - READ-ONLY; A bounding box for an area of interest inside an image.
 	AreaOfInterest *BoundingRect `json:"areaOfInterest,omitempty"`
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
@@ -301,17 +301,17 @@ type ColorInfo struct {
 
 // DetectedBrand a brand detected in an image.
 type DetectedBrand struct {
-	// Name - Label for the brand.
+	// Name - READ-ONLY; Label for the brand.
 	Name *string `json:"name,omitempty"`
-	// Confidence - Confidence score of having observed the brand in the image, as a value ranging from 0 to 1.
+	// Confidence - READ-ONLY; Confidence score of having observed the brand in the image, as a value ranging from 0 to 1.
 	Confidence *float64 `json:"confidence,omitempty"`
-	// Rectangle - Approximate location of the detected brand.
+	// Rectangle - READ-ONLY; Approximate location of the detected brand.
 	Rectangle *BoundingRect `json:"rectangle,omitempty"`
 }
 
 // DetectedObject an object detected in an image.
 type DetectedObject struct {
-	// Rectangle - Approximate location of the detected object.
+	// Rectangle - READ-ONLY; Approximate location of the detected object.
 	Rectangle *BoundingRect `json:"rectangle,omitempty"`
 	// Object - Label for the object.
 	Object *string `json:"object,omitempty"`
@@ -325,7 +325,7 @@ type DetectedObject struct {
 // DetectResult result of a DetectImage call.
 type DetectResult struct {
 	autorest.Response `json:"-"`
-	// Objects - An array of detected objects.
+	// Objects - READ-ONLY; An array of detected objects.
 	Objects *[]DetectedObject `json:"objects,omitempty"`
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
@@ -536,7 +536,7 @@ type LandmarksModel struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// Line json object representing a recognized text line.
+// Line an object representing a recognized text line.
 type Line struct {
 	// BoundingBox - Bounding box of a recognized line.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
@@ -549,7 +549,7 @@ type Line struct {
 // ListModelsResult result of the List Domain Models operation.
 type ListModelsResult struct {
 	autorest.Response `json:"-"`
-	// ModelsProperty - An array of supported models.
+	// ModelsProperty - READ-ONLY; An array of supported models.
 	ModelsProperty *[]ModelDescription `json:"models,omitempty"`
 }
 
@@ -620,7 +620,7 @@ type ReadOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the read operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
 	Status TextOperationStatusCodes `json:"status,omitempty"`
-	// RecognitionResults - A array of text recognition result of the read operation.
+	// RecognitionResults - An array of text recognition result of the read operation.
 	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
 }
 
@@ -643,7 +643,7 @@ type TextOperationResult struct {
 	RecognitionResult *TextRecognitionResult `json:"recognitionResult,omitempty"`
 }
 
-// TextRecognitionResult json object representing a recognized text region
+// TextRecognitionResult an object representing a recognized text region
 type TextRecognitionResult struct {
 	// Page - The 1-based page number of the recognition result.
 	Page *int32 `json:"page,omitempty"`
@@ -653,13 +653,13 @@ type TextRecognitionResult struct {
 	Width *float64 `json:"width,omitempty"`
 	// Height - The height of the image in pixels or the PDF in inches.
 	Height *float64 `json:"height,omitempty"`
-	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'Pixel', 'Inch'
+	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is 'pixel'. For PDF, the unit is 'inch'. Possible values include: 'Pixel', 'Inch'
 	Unit TextRecognitionResultDimensionUnit `json:"unit,omitempty"`
 	// Lines - A list of recognized text lines.
 	Lines *[]Line `json:"lines,omitempty"`
 }
 
-// Word json object representing a recognized word.
+// Word an object representing a recognized word.
 type Word struct {
 	// BoundingBox - Bounding box of a recognized word.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`

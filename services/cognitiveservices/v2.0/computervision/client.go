@@ -541,8 +541,7 @@ func (client BaseClient) BatchReadFileResponder(resp *http.Response) (result aut
 // contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​
 // Parameters:
 // imageParameter - an image stream.
-// mode - type of text to recognize.
-func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (result autorest.Response, err error) {
+func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFileInStream")
 		defer func() {
@@ -553,7 +552,7 @@ func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParamet
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter, mode)
+	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFileInStream", nil, "Failure preparing request")
 		return
@@ -575,13 +574,9 @@ func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParamet
 }
 
 // BatchReadFileInStreamPreparer prepares the BatchReadFileInStream request.
-func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (*http.Request, error) {
+func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
-	}
-
-	queryParameters := map[string]interface{}{
-		"mode": autorest.Encode("query", mode),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -589,8 +584,7 @@ func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imag
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/read/core/asyncBatchAnalyze"),
-		autorest.WithFile(imageParameter),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithFile(imageParameter))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v19.2.0`
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|                 compute |       2019-03-01      |
+
 ## `v19.1.1`
 
 ### Updated Services

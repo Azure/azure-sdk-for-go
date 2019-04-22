@@ -40,13 +40,13 @@ func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyCli
 	return PolicyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetByBillingProfile the policy for a given billingAccountName and billingProfileName.
+// GetByBillingProfileName the policy for a given billing account name and billing profile name.
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
-func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result Policy, err error) {
+func (client PolicyClient) GetByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result Policy, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.GetByBillingProfile")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.GetByBillingProfileName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -55,29 +55,29 @@ func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByBillingProfilePreparer(ctx, billingAccountName, billingProfileName)
+	req, err := client.GetByBillingProfileNamePreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfileName", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetByBillingProfileSender(req)
+	resp, err := client.GetByBillingProfileNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfileName", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetByBillingProfileResponder(resp)
+	result, err = client.GetByBillingProfileNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfileName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetByBillingProfilePreparer prepares the GetByBillingProfile request.
-func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
+// GetByBillingProfileNamePreparer prepares the GetByBillingProfileName request.
+func (client PolicyClient) GetByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -96,16 +96,16 @@ func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, bill
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetByBillingProfileSender sends the GetByBillingProfile request. The method will close the
+// GetByBillingProfileNameSender sends the GetByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
-func (client PolicyClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
+func (client PolicyClient) GetByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetByBillingProfileResponder handles the response to the GetByBillingProfile request. The method always
+// GetByBillingProfileNameResponder handles the response to the GetByBillingProfileName request. The method always
 // closes the http.Response Body.
-func (client PolicyClient) GetByBillingProfileResponder(resp *http.Response) (result Policy, err error) {
+func (client PolicyClient) GetByBillingProfileNameResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

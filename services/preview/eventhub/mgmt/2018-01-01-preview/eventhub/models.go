@@ -104,6 +104,13 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{SkuTierBasic, SkuTierStandard}
 }
 
+// AvailableClustersList the response of the List Available Clusters operation.
+type AvailableClustersList struct {
+	autorest.Response `json:"-"`
+	// Value - The count of readily available and pre-provisioned Event Hubs Clusters per region.
+	Value *[]map[string]*int32 `json:"value,omitempty"`
+}
+
 // Cluster single Event Hubs Cluster resource in List or Get operations.
 type Cluster struct {
 	autorest.Response `json:"-"`
@@ -1367,21 +1374,6 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-}
-
-// SetInt32 ...
-type SetInt32 struct {
-	autorest.Response `json:"-"`
-	Value             map[string]*int32 `json:"value"`
-}
-
-// MarshalJSON is the custom marshaler for SetInt32.
-func (si3 SetInt32) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if si3.Value != nil {
-		objectMap["value"] = si3.Value
-	}
-	return json.Marshal(objectMap)
 }
 
 // Sku SKU parameters supplied to the create namespace operation

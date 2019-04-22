@@ -63,6 +63,7 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type AvailableClustersList = original.AvailableClustersList
 type BaseClient = original.BaseClient
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult
@@ -102,7 +103,6 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
-type SetInt32 = original.SetInt32
 type Sku = original.Sku
 type Subnet = original.Subnet
 type TrackedResource = original.TrackedResource

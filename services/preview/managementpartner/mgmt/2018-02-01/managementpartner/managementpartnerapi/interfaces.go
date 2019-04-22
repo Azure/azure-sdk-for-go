@@ -39,3 +39,10 @@ type OperationClientAPI interface {
 }
 
 var _ OperationClientAPI = (*managementpartner.OperationClient)(nil)
+
+// PartnersClientAPI contains the set of methods on the PartnersClient type.
+type PartnersClientAPI interface {
+	Get(ctx context.Context) (result managementpartner.PartnerResponse, err error)
+}
+
+var _ PartnersClientAPI = (*managementpartner.PartnersClient)(nil)

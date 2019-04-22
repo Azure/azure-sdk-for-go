@@ -31,12 +31,12 @@ type AccountsClientAPI interface {
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)
 
-// AvailableBalanceClientAPI contains the set of methods on the AvailableBalanceClient type.
-type AvailableBalanceClientAPI interface {
+// AvailableBalancesClientAPI contains the set of methods on the AvailableBalancesClient type.
+type AvailableBalancesClientAPI interface {
 	GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.AvailableBalance, err error)
 }
 
-var _ AvailableBalanceClientAPI = (*billing.AvailableBalanceClient)(nil)
+var _ AvailableBalancesClientAPI = (*billing.AvailableBalancesClient)(nil)
 
 // PaymentMethodsClientAPI contains the set of methods on the PaymentMethodsClient type.
 type PaymentMethodsClientAPI interface {
@@ -131,13 +131,13 @@ type TransactionsClientAPI interface {
 
 var _ TransactionsClientAPI = (*billing.TransactionsClient)(nil)
 
-// PolicyClientAPI contains the set of methods on the PolicyClient type.
-type PolicyClientAPI interface {
+// PoliciesClientAPI contains the set of methods on the PoliciesClient type.
+type PoliciesClientAPI interface {
 	GetByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.Policy, err error)
 	Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters billing.Policy) (result billing.Policy, err error)
 }
 
-var _ PolicyClientAPI = (*billing.PolicyClient)(nil)
+var _ PoliciesClientAPI = (*billing.PoliciesClient)(nil)
 
 // PropertyClientAPI contains the set of methods on the PropertyClient type.
 type PropertyClientAPI interface {
@@ -188,8 +188,8 @@ type ProfileBillingPermissionsClientAPI interface {
 
 var _ ProfileBillingPermissionsClientAPI = (*billing.ProfileBillingPermissionsClient)(nil)
 
-// RoleDefinitionClientAPI contains the set of methods on the RoleDefinitionClient type.
-type RoleDefinitionClientAPI interface {
+// RoleDefinitionsClientAPI contains the set of methods on the RoleDefinitionsClient type.
+type RoleDefinitionsClientAPI interface {
 	GetByBillingAccountName(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (result billing.RoleDefinition, err error)
 	GetByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleDefinitionName string) (result billing.RoleDefinition, err error)
 	GetByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (result billing.RoleDefinition, err error)
@@ -198,10 +198,10 @@ type RoleDefinitionClientAPI interface {
 	ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string) (result billing.RoleDefinitionListResult, err error)
 }
 
-var _ RoleDefinitionClientAPI = (*billing.RoleDefinitionClient)(nil)
+var _ RoleDefinitionsClientAPI = (*billing.RoleDefinitionsClient)(nil)
 
-// RoleAssignmentClientAPI contains the set of methods on the RoleAssignmentClient type.
-type RoleAssignmentClientAPI interface {
+// RoleAssignmentsClientAPI contains the set of methods on the RoleAssignmentsClient type.
+type RoleAssignmentsClientAPI interface {
 	AddByBillingAccountName(ctx context.Context, billingAccountName string, parameters billing.RoleAssignmentPayload) (result billing.RoleAssignmentListResult, err error)
 	AddByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string, parameters billing.RoleAssignmentPayload) (result billing.RoleAssignmentListResult, err error)
 	AddByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, parameters billing.RoleAssignmentPayload) (result billing.RoleAssignmentListResult, err error)
@@ -216,7 +216,7 @@ type RoleAssignmentClientAPI interface {
 	ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string) (result billing.RoleAssignmentListResult, err error)
 }
 
-var _ RoleAssignmentClientAPI = (*billing.RoleAssignmentClient)(nil)
+var _ RoleAssignmentsClientAPI = (*billing.RoleAssignmentsClient)(nil)
 
 // AgreementsClientAPI contains the set of methods on the AgreementsClient type.
 type AgreementsClientAPI interface {

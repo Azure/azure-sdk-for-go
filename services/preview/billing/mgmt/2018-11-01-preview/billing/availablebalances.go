@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// AvailableBalanceClient is the billing client provides access to billing resources for Azure subscriptions.
-type AvailableBalanceClient struct {
+// AvailableBalancesClient is the billing client provides access to billing resources for Azure subscriptions.
+type AvailableBalancesClient struct {
 	BaseClient
 }
 
-// NewAvailableBalanceClient creates an instance of the AvailableBalanceClient client.
-func NewAvailableBalanceClient(subscriptionID string) AvailableBalanceClient {
-	return NewAvailableBalanceClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAvailableBalancesClient creates an instance of the AvailableBalancesClient client.
+func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
+	return NewAvailableBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAvailableBalanceClientWithBaseURI creates an instance of the AvailableBalanceClient client.
-func NewAvailableBalanceClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalanceClient {
-	return AvailableBalanceClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAvailableBalancesClientWithBaseURI creates an instance of the AvailableBalancesClient client.
+func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
+	return AvailableBalancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetByBillingProfile the latest available credit balance for a given billingAccountName and billingProfileName.
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
-func (client AvailableBalanceClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result AvailableBalance, err error) {
+func (client AvailableBalancesClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result AvailableBalance, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AvailableBalanceClient.GetByBillingProfile")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AvailableBalancesClient.GetByBillingProfile")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -57,27 +57,27 @@ func (client AvailableBalanceClient) GetByBillingProfile(ctx context.Context, bi
 	}
 	req, err := client.GetByBillingProfilePreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AvailableBalanceClient", "GetByBillingProfile", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AvailableBalancesClient", "GetByBillingProfile", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetByBillingProfileSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AvailableBalanceClient", "GetByBillingProfile", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AvailableBalancesClient", "GetByBillingProfile", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetByBillingProfileResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AvailableBalanceClient", "GetByBillingProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AvailableBalancesClient", "GetByBillingProfile", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetByBillingProfilePreparer prepares the GetByBillingProfile request.
-func (client AvailableBalanceClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
+func (client AvailableBalancesClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -98,14 +98,14 @@ func (client AvailableBalanceClient) GetByBillingProfilePreparer(ctx context.Con
 
 // GetByBillingProfileSender sends the GetByBillingProfile request. The method will close the
 // http.Response Body if it receives an error.
-func (client AvailableBalanceClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
+func (client AvailableBalancesClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingProfileResponder handles the response to the GetByBillingProfile request. The method always
 // closes the http.Response Body.
-func (client AvailableBalanceClient) GetByBillingProfileResponder(resp *http.Response) (result AvailableBalance, err error) {
+func (client AvailableBalancesClient) GetByBillingProfileResponder(resp *http.Response) (result AvailableBalance, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -40,7 +40,7 @@ func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) Price
 	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Download get pricesheet for invoice id (invoiceName).
+// Download download price sheet for an invoice.
 // Parameters:
 // billingAccountName - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.

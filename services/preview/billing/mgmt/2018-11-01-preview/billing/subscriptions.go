@@ -382,7 +382,7 @@ func (client SubscriptionsClient) ListByInvoiceSectionNameResponder(resp *http.R
 	return
 }
 
-// Transfer transfers the modern subscription from one invoice section to another within a billing account.
+// Transfer transfers the subscription from one invoice section to another within a billing account.
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.

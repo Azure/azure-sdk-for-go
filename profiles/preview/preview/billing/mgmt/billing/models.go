@@ -162,8 +162,8 @@ type AgreementProperties = original.AgreementProperties
 type AgreementsClient = original.AgreementsClient
 type Amount = original.Amount
 type AvailableBalance = original.AvailableBalance
-type AvailableBalanceClient = original.AvailableBalanceClient
 type AvailableBalanceProperties = original.AvailableBalanceProperties
+type AvailableBalancesClient = original.AvailableBalancesClient
 type BaseClient = original.BaseClient
 type Department = original.Department
 type DepartmentListResult = original.DepartmentListResult
@@ -213,8 +213,8 @@ type PaymentProperties = original.PaymentProperties
 type Permissions = original.Permissions
 type PermissionsClient = original.PermissionsClient
 type PermissionsListResult = original.PermissionsListResult
+type PoliciesClient = original.PoliciesClient
 type Policy = original.Policy
-type PolicyClient = original.PolicyClient
 type PolicyProperties = original.PolicyProperties
 type PriceSheetClient = original.PriceSheetClient
 type PriceSheetDownloadFuture = original.PriceSheetDownloadFuture
@@ -242,14 +242,14 @@ type RecipientTransferProperties = original.RecipientTransferProperties
 type RecipientTransfersClient = original.RecipientTransfersClient
 type Resource = original.Resource
 type RoleAssignment = original.RoleAssignment
-type RoleAssignmentClient = original.RoleAssignmentClient
 type RoleAssignmentListResult = original.RoleAssignmentListResult
 type RoleAssignmentPayload = original.RoleAssignmentPayload
 type RoleAssignmentProperties = original.RoleAssignmentProperties
+type RoleAssignmentsClient = original.RoleAssignmentsClient
 type RoleDefinition = original.RoleDefinition
-type RoleDefinitionClient = original.RoleDefinitionClient
 type RoleDefinitionListResult = original.RoleDefinitionListResult
 type RoleDefinitionProperties = original.RoleDefinitionProperties
+type RoleDefinitionsClient = original.RoleDefinitionsClient
 type SubscriptionProperties = original.SubscriptionProperties
 type SubscriptionSummary = original.SubscriptionSummary
 type SubscriptionsClient = original.SubscriptionsClient
@@ -293,11 +293,11 @@ func NewAgreementsClient(subscriptionID string) AgreementsClient {
 func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAvailableBalanceClient(subscriptionID string) AvailableBalanceClient {
-	return original.NewAvailableBalanceClient(subscriptionID)
+func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
+	return original.NewAvailableBalancesClient(subscriptionID)
 }
-func NewAvailableBalanceClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalanceClient {
-	return original.NewAvailableBalanceClientWithBaseURI(baseURI, subscriptionID)
+func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
+	return original.NewAvailableBalancesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDepartmentsClient(subscriptionID string) DepartmentsClient {
 	return original.NewDepartmentsClient(subscriptionID)
@@ -353,11 +353,11 @@ func NewPermissionsClient(subscriptionID string) PermissionsClient {
 func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicyClient(subscriptionID string) PolicyClient {
-	return original.NewPolicyClient(subscriptionID)
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
 }
-func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
-	return original.NewPolicyClientWithBaseURI(baseURI, subscriptionID)
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
 	return original.NewPriceSheetClient(subscriptionID)
@@ -407,17 +407,17 @@ func NewRecipientTransfersClient(subscriptionID string) RecipientTransfersClient
 func NewRecipientTransfersClientWithBaseURI(baseURI string, subscriptionID string) RecipientTransfersClient {
 	return original.NewRecipientTransfersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRoleAssignmentClient(subscriptionID string) RoleAssignmentClient {
-	return original.NewRoleAssignmentClient(subscriptionID)
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
 }
-func NewRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentClient {
-	return original.NewRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRoleDefinitionClient(subscriptionID string) RoleDefinitionClient {
-	return original.NewRoleDefinitionClient(subscriptionID)
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID)
 }
-func NewRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionClient {
-	return original.NewRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
 	return original.NewSubscriptionsClient(subscriptionID)

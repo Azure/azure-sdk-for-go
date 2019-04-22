@@ -40,7 +40,7 @@ func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) Invoice
 	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get the invoice by id.
+// Get get the invoice by name.
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.

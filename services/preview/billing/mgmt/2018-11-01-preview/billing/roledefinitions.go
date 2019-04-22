@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// RoleDefinitionClient is the billing client provides access to billing resources for Azure subscriptions.
-type RoleDefinitionClient struct {
+// RoleDefinitionsClient is the billing client provides access to billing resources for Azure subscriptions.
+type RoleDefinitionsClient struct {
 	BaseClient
 }
 
-// NewRoleDefinitionClient creates an instance of the RoleDefinitionClient client.
-func NewRoleDefinitionClient(subscriptionID string) RoleDefinitionClient {
-	return NewRoleDefinitionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewRoleDefinitionsClient creates an instance of the RoleDefinitionsClient client.
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return NewRoleDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRoleDefinitionClientWithBaseURI creates an instance of the RoleDefinitionClient client.
-func NewRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionClient {
-	return RoleDefinitionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewRoleDefinitionsClientWithBaseURI creates an instance of the RoleDefinitionsClient client.
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return RoleDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetByBillingAccountName gets the role definition for a role
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingRoleDefinitionName - role definition id.
-func (client RoleDefinitionClient) GetByBillingAccountName(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
+func (client RoleDefinitionsClient) GetByBillingAccountName(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionClient.GetByBillingAccountName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionsClient.GetByBillingAccountName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -57,27 +57,27 @@ func (client RoleDefinitionClient) GetByBillingAccountName(ctx context.Context, 
 	}
 	req, err := client.GetByBillingAccountNamePreparer(ctx, billingAccountName, billingRoleDefinitionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByBillingAccountName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingAccountName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetByBillingAccountNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByBillingAccountName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingAccountName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetByBillingAccountNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByBillingAccountName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingAccountName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetByBillingAccountNamePreparer prepares the GetByBillingAccountName request.
-func (client RoleDefinitionClient) GetByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (*http.Request, error) {
+func (client RoleDefinitionsClient) GetByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, billingRoleDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":        autorest.Encode("path", billingAccountName),
 		"billingRoleDefinitionName": autorest.Encode("path", billingRoleDefinitionName),
@@ -98,14 +98,14 @@ func (client RoleDefinitionClient) GetByBillingAccountNamePreparer(ctx context.C
 
 // GetByBillingAccountNameSender sends the GetByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
-func (client RoleDefinitionClient) GetByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+func (client RoleDefinitionsClient) GetByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingAccountNameResponder handles the response to the GetByBillingAccountName request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionClient) GetByBillingAccountNameResponder(resp *http.Response) (result RoleDefinition, err error) {
+func (client RoleDefinitionsClient) GetByBillingAccountNameResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -121,9 +121,9 @@ func (client RoleDefinitionClient) GetByBillingAccountNameResponder(resp *http.R
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
 // billingRoleDefinitionName - role definition id.
-func (client RoleDefinitionClient) GetByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
+func (client RoleDefinitionsClient) GetByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionClient.GetByBillingProfileName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionsClient.GetByBillingProfileName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -134,27 +134,27 @@ func (client RoleDefinitionClient) GetByBillingProfileName(ctx context.Context, 
 	}
 	req, err := client.GetByBillingProfileNamePreparer(ctx, billingAccountName, billingProfileName, billingRoleDefinitionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByBillingProfileName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingProfileName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetByBillingProfileNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByBillingProfileName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingProfileName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetByBillingProfileNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByBillingProfileName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByBillingProfileName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetByBillingProfileNamePreparer prepares the GetByBillingProfileName request.
-func (client RoleDefinitionClient) GetByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleDefinitionName string) (*http.Request, error) {
+func (client RoleDefinitionsClient) GetByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string, billingRoleDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":        autorest.Encode("path", billingAccountName),
 		"billingProfileName":        autorest.Encode("path", billingProfileName),
@@ -176,14 +176,14 @@ func (client RoleDefinitionClient) GetByBillingProfileNamePreparer(ctx context.C
 
 // GetByBillingProfileNameSender sends the GetByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
-func (client RoleDefinitionClient) GetByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
+func (client RoleDefinitionsClient) GetByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByBillingProfileNameResponder handles the response to the GetByBillingProfileName request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionClient) GetByBillingProfileNameResponder(resp *http.Response) (result RoleDefinition, err error) {
+func (client RoleDefinitionsClient) GetByBillingProfileNameResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -199,9 +199,9 @@ func (client RoleDefinitionClient) GetByBillingProfileNameResponder(resp *http.R
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
 // billingRoleDefinitionName - role definition id.
-func (client RoleDefinitionClient) GetByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
+func (client RoleDefinitionsClient) GetByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (result RoleDefinition, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionClient.GetByInvoiceSectionName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionsClient.GetByInvoiceSectionName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -212,27 +212,27 @@ func (client RoleDefinitionClient) GetByInvoiceSectionName(ctx context.Context, 
 	}
 	req, err := client.GetByInvoiceSectionNamePreparer(ctx, billingAccountName, invoiceSectionName, billingRoleDefinitionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByInvoiceSectionName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByInvoiceSectionName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetByInvoiceSectionNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByInvoiceSectionName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByInvoiceSectionName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetByInvoiceSectionNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "GetByInvoiceSectionName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "GetByInvoiceSectionName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetByInvoiceSectionNamePreparer prepares the GetByInvoiceSectionName request.
-func (client RoleDefinitionClient) GetByInvoiceSectionNamePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (*http.Request, error) {
+func (client RoleDefinitionsClient) GetByInvoiceSectionNamePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingRoleDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":        autorest.Encode("path", billingAccountName),
 		"billingRoleDefinitionName": autorest.Encode("path", billingRoleDefinitionName),
@@ -254,14 +254,14 @@ func (client RoleDefinitionClient) GetByInvoiceSectionNamePreparer(ctx context.C
 
 // GetByInvoiceSectionNameSender sends the GetByInvoiceSectionName request. The method will close the
 // http.Response Body if it receives an error.
-func (client RoleDefinitionClient) GetByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
+func (client RoleDefinitionsClient) GetByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetByInvoiceSectionNameResponder handles the response to the GetByInvoiceSectionName request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionClient) GetByInvoiceSectionNameResponder(resp *http.Response) (result RoleDefinition, err error) {
+func (client RoleDefinitionsClient) GetByInvoiceSectionNameResponder(resp *http.Response) (result RoleDefinition, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -275,9 +275,9 @@ func (client RoleDefinitionClient) GetByInvoiceSectionNameResponder(resp *http.R
 // ListByBillingAccountName lists the role definition for a billing account
 // Parameters:
 // billingAccountName - billing Account Id.
-func (client RoleDefinitionClient) ListByBillingAccountName(ctx context.Context, billingAccountName string) (result RoleDefinitionListResult, err error) {
+func (client RoleDefinitionsClient) ListByBillingAccountName(ctx context.Context, billingAccountName string) (result RoleDefinitionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionClient.ListByBillingAccountName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionsClient.ListByBillingAccountName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -288,27 +288,27 @@ func (client RoleDefinitionClient) ListByBillingAccountName(ctx context.Context,
 	}
 	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByBillingAccountName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingAccountName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByBillingAccountNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByBillingAccountName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingAccountName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByBillingAccountNamePreparer prepares the ListByBillingAccountName request.
-func (client RoleDefinitionClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
+func (client RoleDefinitionsClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
@@ -328,14 +328,14 @@ func (client RoleDefinitionClient) ListByBillingAccountNamePreparer(ctx context.
 
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
-func (client RoleDefinitionClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+func (client RoleDefinitionsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionClient) ListByBillingAccountNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
+func (client RoleDefinitionsClient) ListByBillingAccountNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -350,9 +350,9 @@ func (client RoleDefinitionClient) ListByBillingAccountNameResponder(resp *http.
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
-func (client RoleDefinitionClient) ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result RoleDefinitionListResult, err error) {
+func (client RoleDefinitionsClient) ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result RoleDefinitionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionClient.ListByBillingProfileName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionsClient.ListByBillingProfileName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -363,27 +363,27 @@ func (client RoleDefinitionClient) ListByBillingProfileName(ctx context.Context,
 	}
 	req, err := client.ListByBillingProfileNamePreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByBillingProfileName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingProfileName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByBillingProfileNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByBillingProfileName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingProfileName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByBillingProfileName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByBillingProfileNamePreparer prepares the ListByBillingProfileName request.
-func (client RoleDefinitionClient) ListByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
+func (client RoleDefinitionsClient) ListByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -404,14 +404,14 @@ func (client RoleDefinitionClient) ListByBillingProfileNamePreparer(ctx context.
 
 // ListByBillingProfileNameSender sends the ListByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
-func (client RoleDefinitionClient) ListByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
+func (client RoleDefinitionsClient) ListByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingProfileNameResponder handles the response to the ListByBillingProfileName request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionClient) ListByBillingProfileNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
+func (client RoleDefinitionsClient) ListByBillingProfileNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -426,9 +426,9 @@ func (client RoleDefinitionClient) ListByBillingProfileNameResponder(resp *http.
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-func (client RoleDefinitionClient) ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string) (result RoleDefinitionListResult, err error) {
+func (client RoleDefinitionsClient) ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string) (result RoleDefinitionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionClient.ListByInvoiceSectionName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionsClient.ListByInvoiceSectionName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -439,27 +439,27 @@ func (client RoleDefinitionClient) ListByInvoiceSectionName(ctx context.Context,
 	}
 	req, err := client.ListByInvoiceSectionNamePreparer(ctx, billingAccountName, invoiceSectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByInvoiceSectionName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByInvoiceSectionName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByInvoiceSectionNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByInvoiceSectionName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByInvoiceSectionName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.RoleDefinitionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByInvoiceSectionNamePreparer prepares the ListByInvoiceSectionName request.
-func (client RoleDefinitionClient) ListByInvoiceSectionNamePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
+func (client RoleDefinitionsClient) ListByInvoiceSectionNamePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
@@ -480,14 +480,14 @@ func (client RoleDefinitionClient) ListByInvoiceSectionNamePreparer(ctx context.
 
 // ListByInvoiceSectionNameSender sends the ListByInvoiceSectionName request. The method will close the
 // http.Response Body if it receives an error.
-func (client RoleDefinitionClient) ListByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
+func (client RoleDefinitionsClient) ListByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByInvoiceSectionNameResponder handles the response to the ListByInvoiceSectionName request. The method always
 // closes the http.Response Body.
-func (client RoleDefinitionClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
+func (client RoleDefinitionsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result RoleDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -184,7 +184,7 @@ func (client TransfersClient) GetResponder(resp *http.Response) (result Transfer
 	return
 }
 
-// Initiate initiates the request to transfer the modern or legacy subscriptions or RIs to modern.
+// Initiate initiates the request to transfer the legacy subscriptions or RIs.
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.

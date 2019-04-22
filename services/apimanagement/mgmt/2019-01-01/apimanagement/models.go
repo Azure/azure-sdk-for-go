@@ -450,6 +450,27 @@ func PossiblePolicyContentFormatValues() []PolicyContentFormat {
 	return []PolicyContentFormat{Rawxml, RawxmlLink, XML, XMLLink}
 }
 
+// PolicyExportFormat enumerates the values for policy export format.
+type PolicyExportFormat string
+
+const (
+	// PolicyExportFormatRawxml The contents are inline and Content type is a non XML encoded policy document.
+	PolicyExportFormatRawxml PolicyExportFormat = "rawxml"
+	// PolicyExportFormatRawxmlLink The policy document is not Xml encoded and is hosted on a http endpoint
+	// accessible from the API Management service.
+	PolicyExportFormatRawxmlLink PolicyExportFormat = "rawxml-link"
+	// PolicyExportFormatXML The contents are inline and Content type is an XML document.
+	PolicyExportFormatXML PolicyExportFormat = "xml"
+	// PolicyExportFormatXMLLink The policy XML document is hosted on a http endpoint accessible from the API
+	// Management service.
+	PolicyExportFormatXMLLink PolicyExportFormat = "xml-link"
+)
+
+// PossiblePolicyExportFormatValues returns an array of possible values for the PolicyExportFormat const type.
+func PossiblePolicyExportFormatValues() []PolicyExportFormat {
+	return []PolicyExportFormat{PolicyExportFormatRawxml, PolicyExportFormatRawxmlLink, PolicyExportFormatXML, PolicyExportFormatXMLLink}
+}
+
 // PolicyScopeContract enumerates the values for policy scope contract.
 type PolicyScopeContract string
 

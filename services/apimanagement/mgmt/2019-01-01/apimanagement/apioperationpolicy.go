@@ -362,7 +362,8 @@ func (client APIOperationPolicyClient) GetResponder(resp *http.Response) (result
 // revision has ;rev=n as a suffix where n is the revision number.
 // operationID - operation identifier within an API. Must be unique in the current API Management service
 // instance.
-func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result autorest.Response, err error) {
+// formatParameter - policy Export Format.
+func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter PolicyExportFormat) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIOperationPolicyClient.GetEntityTag")
 		defer func() {
@@ -389,7 +390,7 @@ func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourc
 		return result, validation.NewError("apimanagement.APIOperationPolicyClient", "GetEntityTag", err.Error())
 	}
 
-	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, apiid, operationID)
+	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, apiid, operationID, formatParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "GetEntityTag", nil, "Failure preparing request")
 		return
@@ -411,7 +412,7 @@ func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourc
 }
 
 // GetEntityTagPreparer prepares the GetEntityTag request.
-func (client APIOperationPolicyClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (*http.Request, error) {
+func (client APIOperationPolicyClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter PolicyExportFormat) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"operationId":       autorest.Encode("path", operationID),
@@ -424,6 +425,11 @@ func (client APIOperationPolicyClient) GetEntityTagPreparer(ctx context.Context,
 	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(formatParameter)) > 0 {
+		queryParameters["format"] = autorest.Encode("query", formatParameter)
+	} else {
+		queryParameters["format"] = autorest.Encode("query", "xml")
 	}
 
 	preparer := autorest.CreatePreparer(

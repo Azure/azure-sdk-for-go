@@ -22,7 +22,7 @@ package virtualmachineimagebuilder
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-02-01-preview/virtualmachineimagebuilder"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder"
 )
 
 const (
@@ -32,17 +32,18 @@ const (
 type ProvisioningErrorCode = original.ProvisioningErrorCode
 
 const (
-	BadCustomizerType         ProvisioningErrorCode = original.BadCustomizerType
-	BadDistributeType         ProvisioningErrorCode = original.BadDistributeType
-	BadISOSource              ProvisioningErrorCode = original.BadISOSource
-	BadManagedImageSource     ProvisioningErrorCode = original.BadManagedImageSource
-	BadPIRSource              ProvisioningErrorCode = original.BadPIRSource
-	BadSharedImageDistribute  ProvisioningErrorCode = original.BadSharedImageDistribute
-	BadSourceType             ProvisioningErrorCode = original.BadSourceType
-	NoCustomizerScript        ProvisioningErrorCode = original.NoCustomizerScript
-	Other                     ProvisioningErrorCode = original.Other
-	ServerError               ProvisioningErrorCode = original.ServerError
-	UnsupportedCustomizerType ProvisioningErrorCode = original.UnsupportedCustomizerType
+	BadCustomizerType           ProvisioningErrorCode = original.BadCustomizerType
+	BadDistributeType           ProvisioningErrorCode = original.BadDistributeType
+	BadISOSource                ProvisioningErrorCode = original.BadISOSource
+	BadManagedImageSource       ProvisioningErrorCode = original.BadManagedImageSource
+	BadPIRSource                ProvisioningErrorCode = original.BadPIRSource
+	BadSharedImageDistribute    ProvisioningErrorCode = original.BadSharedImageDistribute
+	BadSharedImageVersionSource ProvisioningErrorCode = original.BadSharedImageVersionSource
+	BadSourceType               ProvisioningErrorCode = original.BadSourceType
+	NoCustomizerScript          ProvisioningErrorCode = original.NoCustomizerScript
+	Other                       ProvisioningErrorCode = original.Other
+	ServerError                 ProvisioningErrorCode = original.ServerError
+	UnsupportedCustomizerType   ProvisioningErrorCode = original.UnsupportedCustomizerType
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -52,6 +53,7 @@ const (
 	Deleting  ProvisioningState = original.Deleting
 	Failed    ProvisioningState = original.Failed
 	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type ProvisioningState1 = original.ProvisioningState1
@@ -61,6 +63,14 @@ const (
 	ProvisioningState1Deleting  ProvisioningState1 = original.ProvisioningState1Deleting
 	ProvisioningState1Failed    ProvisioningState1 = original.ProvisioningState1Failed
 	ProvisioningState1Succeeded ProvisioningState1 = original.ProvisioningState1Succeeded
+	ProvisioningState1Updating  ProvisioningState1 = original.ProvisioningState1Updating
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None         ResourceIdentityType = original.None
+	UserAssigned ResourceIdentityType = original.UserAssigned
 )
 
 type RunState = original.RunState
@@ -88,11 +98,13 @@ const (
 	TypeISO                 Type = original.TypeISO
 	TypeManagedImage        Type = original.TypeManagedImage
 	TypePlatformImage       Type = original.TypePlatformImage
+	TypeSharedImageVersion  Type = original.TypeSharedImageVersion
 )
 
 type TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizer
 
 const (
+	TypeFile                    TypeBasicImageTemplateCustomizer = original.TypeFile
 	TypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = original.TypeImageTemplateCustomizer
 	TypePowerShell              TypeBasicImageTemplateCustomizer = original.TypePowerShell
 	TypeShell                   TypeBasicImageTemplateCustomizer = original.TypeShell
@@ -117,6 +129,9 @@ type BasicImageTemplateSource = original.BasicImageTemplateSource
 type ImageTemplate = original.ImageTemplate
 type ImageTemplateCustomizer = original.ImageTemplateCustomizer
 type ImageTemplateDistributor = original.ImageTemplateDistributor
+type ImageTemplateFileCustomizer = original.ImageTemplateFileCustomizer
+type ImageTemplateIdentity = original.ImageTemplateIdentity
+type ImageTemplateIdentityUserAssignedIdentitiesValue = original.ImageTemplateIdentityUserAssignedIdentitiesValue
 type ImageTemplateIsoSource = original.ImageTemplateIsoSource
 type ImageTemplateLastRunStatus = original.ImageTemplateLastRunStatus
 type ImageTemplateListResult = original.ImageTemplateListResult
@@ -129,6 +144,7 @@ type ImageTemplatePowerShellCustomizer = original.ImageTemplatePowerShellCustomi
 type ImageTemplateProperties = original.ImageTemplateProperties
 type ImageTemplateRestartCustomizer = original.ImageTemplateRestartCustomizer
 type ImageTemplateSharedImageDistributor = original.ImageTemplateSharedImageDistributor
+type ImageTemplateSharedImageVersionSource = original.ImageTemplateSharedImageVersionSource
 type ImageTemplateShellCustomizer = original.ImageTemplateShellCustomizer
 type ImageTemplateSource = original.ImageTemplateSource
 type ImageTemplateUpdateParameters = original.ImageTemplateUpdateParameters
@@ -152,6 +168,7 @@ type VirtualMachineImageTemplatesClient = original.VirtualMachineImageTemplatesC
 type VirtualMachineImageTemplatesCreateOrUpdateFuture = original.VirtualMachineImageTemplatesCreateOrUpdateFuture
 type VirtualMachineImageTemplatesDeleteFuture = original.VirtualMachineImageTemplatesDeleteFuture
 type VirtualMachineImageTemplatesRunFuture = original.VirtualMachineImageTemplatesRunFuture
+type VirtualMachineImageTemplatesUpdateFuture = original.VirtualMachineImageTemplatesUpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -197,6 +214,9 @@ func PossibleProvisioningState1Values() []ProvisioningState1 {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRunStateValues() []RunState {
 	return original.PossibleRunStateValues()

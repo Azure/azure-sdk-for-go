@@ -463,7 +463,8 @@ func (client BaseClient) AnalyzeImageInStreamResponder(resp *http.Response) (res
 // use for your 'GetReadOperationResult' operation to access OCR results.​
 // Parameters:
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
-func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL) (result autorest.Response, err error) {
+// mode - type of text to recognize.
+func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFile")
 		defer func() {
@@ -480,7 +481,7 @@ func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL) (
 		return result, validation.NewError("computervision.BaseClient", "BatchReadFile", err.Error())
 	}
 
-	req, err := client.BatchReadFilePreparer(ctx, imageURL)
+	req, err := client.BatchReadFilePreparer(ctx, imageURL, mode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", nil, "Failure preparing request")
 		return
@@ -502,9 +503,13 @@ func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL) (
 }
 
 // BatchReadFilePreparer prepares the BatchReadFile request.
-func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL ImageURL) (*http.Request, error) {
+func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{
+		"mode": autorest.Encode("query", mode),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -512,7 +517,8 @@ func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL Ima
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/read/core/asyncBatchAnalyze"),
-		autorest.WithJSON(imageURL))
+		autorest.WithJSON(imageURL),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -541,7 +547,8 @@ func (client BaseClient) BatchReadFileResponder(resp *http.Response) (result aut
 // contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​
 // Parameters:
 // imageParameter - an image stream.
-func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error) {
+// mode - type of text to recognize.
+func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFileInStream")
 		defer func() {
@@ -552,7 +559,7 @@ func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParamet
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter)
+	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter, mode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFileInStream", nil, "Failure preparing request")
 		return
@@ -574,9 +581,13 @@ func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParamet
 }
 
 // BatchReadFileInStreamPreparer prepares the BatchReadFileInStream request.
-func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
+func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{
+		"mode": autorest.Encode("query", mode),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -584,7 +595,8 @@ func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imag
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/read/core/asyncBatchAnalyze"),
-		autorest.WithFile(imageParameter))
+		autorest.WithFile(imageParameter),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -1676,19 +1676,20 @@ type PaymentProperties struct {
 	Date *date.Time `json:"date,omitempty"`
 }
 
-// Permissions the set of allowed action and not allowed actions a caller has on a billing account
-type Permissions struct {
-	// Actions - READ-ONLY; The set of actions that the caller is allowed to do
-	Actions *[]string `json:"actions,omitempty"`
-	// NotActions - READ-ONLY; The set of actions the caller is not allowed to do
-	NotActions *[]string `json:"notActions,omitempty"`
-}
-
 // PermissionsListResult result of list billingPermissions a caller has on a billing account.
 type PermissionsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list OF billingPermissions a caller has on a billing account.
-	Value *[]Permissions `json:"value,omitempty"`
+	Value *[]PermissionsProperties `json:"value,omitempty"`
+}
+
+// PermissionsProperties the set of allowed action and not allowed actions a caller has on a billing
+// account
+type PermissionsProperties struct {
+	// Actions - READ-ONLY; The set of actions that the caller is allowed to do
+	Actions *[]string `json:"actions,omitempty"`
+	// NotActions - READ-ONLY; The set of actions the caller is not allowed to do
+	NotActions *[]string `json:"notActions,omitempty"`
 }
 
 // Policy the Policy.

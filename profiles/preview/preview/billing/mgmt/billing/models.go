@@ -210,9 +210,9 @@ type PaymentMethodsListResult = original.PaymentMethodsListResult
 type PaymentMethodsListResultIterator = original.PaymentMethodsListResultIterator
 type PaymentMethodsListResultPage = original.PaymentMethodsListResultPage
 type PaymentProperties = original.PaymentProperties
-type Permissions = original.Permissions
 type PermissionsClient = original.PermissionsClient
 type PermissionsListResult = original.PermissionsListResult
+type PermissionsProperties = original.PermissionsProperties
 type PoliciesClient = original.PoliciesClient
 type Policy = original.Policy
 type PolicyProperties = original.PolicyProperties
@@ -226,7 +226,6 @@ type ProductsListResult = original.ProductsListResult
 type ProductsListResultIterator = original.ProductsListResultIterator
 type ProductsListResultPage = original.ProductsListResultPage
 type Profile = original.Profile
-type ProfileBillingPermissionsClient = original.ProfileBillingPermissionsClient
 type ProfileListResult = original.ProfileListResult
 type ProfileProperties = original.ProfileProperties
 type ProfilesClient = original.ProfilesClient
@@ -376,12 +375,6 @@ func NewProductsListResultIterator(page ProductsListResultPage) ProductsListResu
 }
 func NewProductsListResultPage(getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
 	return original.NewProductsListResultPage(getNextPage)
-}
-func NewProfileBillingPermissionsClient(subscriptionID string) ProfileBillingPermissionsClient {
-	return original.NewProfileBillingPermissionsClient(subscriptionID)
-}
-func NewProfileBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingPermissionsClient {
-	return original.NewProfileBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)

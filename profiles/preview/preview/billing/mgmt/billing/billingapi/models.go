@@ -34,7 +34,6 @@ type PermissionsClientAPI = original.PermissionsClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
 type PriceSheetClientAPI = original.PriceSheetClientAPI
 type ProductsClientAPI = original.ProductsClientAPI
-type ProfileBillingPermissionsClientAPI = original.ProfileBillingPermissionsClientAPI
 type ProfilesClientAPI = original.ProfilesClientAPI
 type PropertyClientAPI = original.PropertyClientAPI
 type RecipientTransfersClientAPI = original.RecipientTransfersClientAPI

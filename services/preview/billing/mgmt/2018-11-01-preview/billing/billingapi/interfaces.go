@@ -176,17 +176,11 @@ var _ OperationsClientAPI = (*billing.OperationsClient)(nil)
 // PermissionsClientAPI contains the set of methods on the PermissionsClient type.
 type PermissionsClientAPI interface {
 	ListByBillingAccount(ctx context.Context, billingAccountName string) (result billing.PermissionsListResult, err error)
+	ListByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.PermissionsListResult, err error)
 	ListByInvoiceSections(ctx context.Context, billingAccountName string, invoiceSectionName string) (result billing.PermissionsListResult, err error)
 }
 
 var _ PermissionsClientAPI = (*billing.PermissionsClient)(nil)
-
-// ProfileBillingPermissionsClientAPI contains the set of methods on the ProfileBillingPermissionsClient type.
-type ProfileBillingPermissionsClientAPI interface {
-	List(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.PermissionsListResult, err error)
-}
-
-var _ ProfileBillingPermissionsClientAPI = (*billing.ProfileBillingPermissionsClient)(nil)
 
 // RoleDefinitionsClientAPI contains the set of methods on the RoleDefinitionsClient type.
 type RoleDefinitionsClientAPI interface {

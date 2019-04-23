@@ -166,11 +166,11 @@ type DomainService struct {
 	autorest.Response `json:"-"`
 	// DomainServiceProperties - Domain service properties
 	*DomainServiceProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -185,15 +185,6 @@ func (ds DomainService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ds.DomainServiceProperties != nil {
 		objectMap["properties"] = ds.DomainServiceProperties
-	}
-	if ds.ID != nil {
-		objectMap["id"] = ds.ID
-	}
-	if ds.Name != nil {
-		objectMap["name"] = ds.Name
-	}
-	if ds.Type != nil {
-		objectMap["type"] = ds.Type
 	}
 	if ds.Location != nil {
 		objectMap["location"] = ds.Location
@@ -290,7 +281,7 @@ type DomainServiceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - the list of domain services.
 	Value *[]DomainService `json:"value,omitempty"`
-	// NextLink - The continuation token for the next page of results.
+	// NextLink - READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -433,21 +424,21 @@ func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServ
 
 // DomainServiceProperties properties of the Domain Service.
 type DomainServiceProperties struct {
-	// TenantID - Azure Active Directory tenant id
+	// TenantID - READ-ONLY; Azure Active Directory tenant id
 	TenantID *string `json:"tenantId,omitempty"`
 	// DomainName - The name of the Azure domain that the user would like to deploy Domain Services to.
 	DomainName *string `json:"domainName,omitempty"`
-	// VnetSiteID - Virtual network site id
+	// VnetSiteID - READ-ONLY; Virtual network site id
 	VnetSiteID *string `json:"vnetSiteId,omitempty"`
 	// SubnetID - The name of the virtual network that Domain Services will be deployed on. The id of the subnet that Domain Services will be deployed on. /virtualNetwork/vnetName/subnets/subnetName.
 	SubnetID *string `json:"subnetId,omitempty"`
 	// LdapsSettings - Secure LDAP Settings
 	LdapsSettings *LdapsSettings `json:"ldapsSettings,omitempty"`
-	// HealthLastEvaluated - Last domain evaluation run DateTime
+	// HealthLastEvaluated - READ-ONLY; Last domain evaluation run DateTime
 	HealthLastEvaluated *date.Time `json:"healthLastEvaluated,omitempty"`
-	// HealthMonitors - List of Domain Health Monitors
+	// HealthMonitors - READ-ONLY; List of Domain Health Monitors
 	HealthMonitors *[]HealthMonitor `json:"healthMonitors,omitempty"`
-	// HealthAlerts - List of Domain Health Alerts
+	// HealthAlerts - READ-ONLY; List of Domain Health Alerts
 	HealthAlerts *[]HealthAlert `json:"healthAlerts,omitempty"`
 	// NotificationSettings - Notification Settings
 	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
@@ -455,11 +446,11 @@ type DomainServiceProperties struct {
 	DomainSecuritySettings *DomainSecuritySettings `json:"domainSecuritySettings,omitempty"`
 	// FilteredSync - Enabled or Disabled flag to turn on Group-based filtered sync. Possible values include: 'FilteredSyncEnabled', 'FilteredSyncDisabled'
 	FilteredSync FilteredSync `json:"filteredSync,omitempty"`
-	// DomainControllerIPAddress - List of Domain Controller IP Address
+	// DomainControllerIPAddress - READ-ONLY; List of Domain Controller IP Address
 	DomainControllerIPAddress *[]string `json:"domainControllerIpAddress,omitempty"`
-	// ServiceStatus - Status of Domain Service instance
+	// ServiceStatus - READ-ONLY; Status of Domain Service instance
 	ServiceStatus *string `json:"serviceStatus,omitempty"`
-	// ProvisioningState - the current deployment or provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; the current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -473,7 +464,7 @@ type DomainServicesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DomainServicesCreateOrUpdateFuture) Result(client DomainServicesClient) (ds DomainService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -502,7 +493,7 @@ type DomainServicesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DomainServicesDeleteFuture) Result(client DomainServicesClient) (ds DomainService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -531,7 +522,7 @@ type DomainServicesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DomainServicesUpdateFuture) Result(client DomainServicesClient) (ds DomainService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -552,29 +543,29 @@ func (future *DomainServicesUpdateFuture) Result(client DomainServicesClient) (d
 
 // HealthAlert health Alert Description
 type HealthAlert struct {
-	// ID - Health Alert Id
+	// ID - READ-ONLY; Health Alert Id
 	ID *string `json:"id,omitempty"`
-	// Name - Health Alert Name
+	// Name - READ-ONLY; Health Alert Name
 	Name *string `json:"name,omitempty"`
-	// Issue - Health Alert Issue
+	// Issue - READ-ONLY; Health Alert Issue
 	Issue *string `json:"issue,omitempty"`
-	// Severity - Health Alert Severity
+	// Severity - READ-ONLY; Health Alert Severity
 	Severity *string `json:"severity,omitempty"`
-	// Raised - Health Alert Raised DateTime
+	// Raised - READ-ONLY; Health Alert Raised DateTime
 	Raised *date.Time `json:"raised,omitempty"`
-	// LastDetected - Health Alert Last Detected DateTime
+	// LastDetected - READ-ONLY; Health Alert Last Detected DateTime
 	LastDetected *date.Time `json:"lastDetected,omitempty"`
-	// ResolutionURI - Health Alert TSG Link
+	// ResolutionURI - READ-ONLY; Health Alert TSG Link
 	ResolutionURI *string `json:"resolutionUri,omitempty"`
 }
 
 // HealthMonitor health Monitor Description
 type HealthMonitor struct {
-	// ID - Health Monitor Id
+	// ID - READ-ONLY; Health Monitor Id
 	ID *string `json:"id,omitempty"`
-	// Name - Health Monitor Name
+	// Name - READ-ONLY; Health Monitor Name
 	Name *string `json:"name,omitempty"`
-	// Details - Health Monitor Details
+	// Details - READ-ONLY; Health Monitor Details
 	Details *string `json:"details,omitempty"`
 }
 
@@ -586,15 +577,15 @@ type LdapsSettings struct {
 	PfxCertificate *string `json:"pfxCertificate,omitempty"`
 	// PfxCertificatePassword - The password to decrypt the provided Secure LDAP certificate pfx file.
 	PfxCertificatePassword *string `json:"pfxCertificatePassword,omitempty"`
-	// PublicCertificate - Public certificate used to configure secure ldap.
+	// PublicCertificate - READ-ONLY; Public certificate used to configure secure ldap.
 	PublicCertificate *string `json:"publicCertificate,omitempty"`
-	// CertificateThumbprint - Thumbprint of configure ldaps certificate.
+	// CertificateThumbprint - READ-ONLY; Thumbprint of configure ldaps certificate.
 	CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
-	// CertificateNotAfter - NotAfter DateTime of configure ldaps certificate.
+	// CertificateNotAfter - READ-ONLY; NotAfter DateTime of configure ldaps certificate.
 	CertificateNotAfter *date.Time `json:"certificateNotAfter,omitempty"`
 	// ExternalAccess - A flag to determine whether or not Secure LDAP access over the internet is enabled or disabled. Possible values include: 'Enabled', 'Disabled'
 	ExternalAccess ExternalAccess `json:"externalAccess,omitempty"`
-	// ExternalAccessIPAddress - External access ip address.
+	// ExternalAccessIPAddress - READ-ONLY; External access ip address.
 	ExternalAccessIPAddress *string `json:"externalAccessIpAddress,omitempty"`
 }
 
@@ -635,7 +626,7 @@ type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of operations.
 	Value *[]OperationEntity `json:"value,omitempty"`
-	// NextLink - The continuation token for the next page of results.
+	// NextLink - READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -778,11 +769,11 @@ func NewOperationEntityListResultPage(getNextPage func(context.Context, Operatio
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -795,15 +786,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

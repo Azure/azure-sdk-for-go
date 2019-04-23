@@ -289,7 +289,7 @@ type Definition struct {
 	autorest.Response `json:"-"`
 	// DefinitionProperties - The policy definition properties.
 	*DefinitionProperties `json:"properties,omitempty"`
-	// ID - The ID of the policy definition.
+	// ID - READ-ONLY; The ID of the policy definition.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the policy definition. If you do not specify a value for name, the value is inferred from the name value in the request URI.
 	Name *string `json:"name,omitempty"`
@@ -300,9 +300,6 @@ func (d Definition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DefinitionProperties != nil {
 		objectMap["properties"] = d.DefinitionProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
 	}
 	if d.Name != nil {
 		objectMap["name"] = d.Name

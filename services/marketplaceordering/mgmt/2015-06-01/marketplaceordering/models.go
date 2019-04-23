@@ -55,11 +55,11 @@ type AgreementTerms struct {
 	autorest.Response `json:"-"`
 	// AgreementProperties - Represents the properties of the resource.
 	*AgreementProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -68,15 +68,6 @@ func (at AgreementTerms) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if at.AgreementProperties != nil {
 		objectMap["properties"] = at.AgreementProperties
-	}
-	if at.ID != nil {
-		objectMap["id"] = at.ID
-	}
-	if at.Name != nil {
-		objectMap["name"] = at.Name
-	}
-	if at.Type != nil {
-		objectMap["type"] = at.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -141,9 +132,9 @@ type ErrorResponse struct {
 
 // ErrorResponseError the details of the error.
 type ErrorResponseError struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -177,7 +168,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Microsoft.MarketplaceOrdering operations supported by the Microsoft.MarketplaceOrdering resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -320,10 +311,10 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // Resource ARM resource.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }

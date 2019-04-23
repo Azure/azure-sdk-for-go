@@ -311,7 +311,7 @@ type CreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateOrUpdateFuture) Result(client Client) (ws WebService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -660,7 +660,7 @@ type PatchFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PatchFuture) Result(client Client) (ws WebService, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -691,17 +691,17 @@ type Properties struct {
 	Title *string `json:"title,omitempty"`
 	// Description - The description of the web service.
 	Description *string `json:"description,omitempty"`
-	// CreatedOn - Read Only: The date and time when the web service was created.
+	// CreatedOn - READ-ONLY; Read Only: The date and time when the web service was created.
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// ModifiedOn - Read Only: The date and time when the web service was last modified.
+	// ModifiedOn - READ-ONLY; Read Only: The date and time when the web service was last modified.
 	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
-	// ProvisioningState - Read Only: The provision state of the web service. Valid values are Unknown, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Provisioning', 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; Read Only: The provision state of the web service. Valid values are Unknown, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Provisioning', 'Succeeded', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Keys - Contains the web service provisioning keys. If you do not specify provisioning keys, the Azure Machine Learning system generates them for you. Note: The keys are not returned from calls to GET operations.
 	Keys *Keys `json:"keys,omitempty"`
 	// ReadOnly - When set to true, indicates that the web service is read-only and can no longer be updated or patched, only removed. Default, is false. Note: Once set to true, you cannot change its value.
 	ReadOnly *bool `json:"readOnly,omitempty"`
-	// SwaggerLocation - Read Only: Contains the URI of the swagger spec associated with this web service.
+	// SwaggerLocation - READ-ONLY; Read Only: Contains the URI of the swagger spec associated with this web service.
 	SwaggerLocation *string `json:"swaggerLocation,omitempty"`
 	// ExposeSampleData - When set to true, sample data is included in the web service's swagger definition. The default value is true.
 	ExposeSampleData *bool `json:"exposeSampleData,omitempty"`
@@ -776,23 +776,11 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	if p.Description != nil {
 		objectMap["description"] = p.Description
 	}
-	if p.CreatedOn != nil {
-		objectMap["createdOn"] = p.CreatedOn
-	}
-	if p.ModifiedOn != nil {
-		objectMap["modifiedOn"] = p.ModifiedOn
-	}
-	if p.ProvisioningState != "" {
-		objectMap["provisioningState"] = p.ProvisioningState
-	}
 	if p.Keys != nil {
 		objectMap["keys"] = p.Keys
 	}
 	if p.ReadOnly != nil {
 		objectMap["readOnly"] = p.ReadOnly
-	}
-	if p.SwaggerLocation != nil {
-		objectMap["swaggerLocation"] = p.SwaggerLocation
 	}
 	if p.ExposeSampleData != nil {
 		objectMap["exposeSampleData"] = p.ExposeSampleData
@@ -856,17 +844,17 @@ type PropertiesForGraph struct {
 	Title *string `json:"title,omitempty"`
 	// Description - The description of the web service.
 	Description *string `json:"description,omitempty"`
-	// CreatedOn - Read Only: The date and time when the web service was created.
+	// CreatedOn - READ-ONLY; Read Only: The date and time when the web service was created.
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// ModifiedOn - Read Only: The date and time when the web service was last modified.
+	// ModifiedOn - READ-ONLY; Read Only: The date and time when the web service was last modified.
 	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
-	// ProvisioningState - Read Only: The provision state of the web service. Valid values are Unknown, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Provisioning', 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; Read Only: The provision state of the web service. Valid values are Unknown, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Provisioning', 'Succeeded', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Keys - Contains the web service provisioning keys. If you do not specify provisioning keys, the Azure Machine Learning system generates them for you. Note: The keys are not returned from calls to GET operations.
 	Keys *Keys `json:"keys,omitempty"`
 	// ReadOnly - When set to true, indicates that the web service is read-only and can no longer be updated or patched, only removed. Default, is false. Note: Once set to true, you cannot change its value.
 	ReadOnly *bool `json:"readOnly,omitempty"`
-	// SwaggerLocation - Read Only: Contains the URI of the swagger spec associated with this web service.
+	// SwaggerLocation - READ-ONLY; Read Only: Contains the URI of the swagger spec associated with this web service.
 	SwaggerLocation *string `json:"swaggerLocation,omitempty"`
 	// ExposeSampleData - When set to true, sample data is included in the web service's swagger definition. The default value is true.
 	ExposeSampleData *bool `json:"exposeSampleData,omitempty"`
@@ -907,23 +895,11 @@ func (pfg PropertiesForGraph) MarshalJSON() ([]byte, error) {
 	if pfg.Description != nil {
 		objectMap["description"] = pfg.Description
 	}
-	if pfg.CreatedOn != nil {
-		objectMap["createdOn"] = pfg.CreatedOn
-	}
-	if pfg.ModifiedOn != nil {
-		objectMap["modifiedOn"] = pfg.ModifiedOn
-	}
-	if pfg.ProvisioningState != "" {
-		objectMap["provisioningState"] = pfg.ProvisioningState
-	}
 	if pfg.Keys != nil {
 		objectMap["keys"] = pfg.Keys
 	}
 	if pfg.ReadOnly != nil {
 		objectMap["readOnly"] = pfg.ReadOnly
-	}
-	if pfg.SwaggerLocation != nil {
-		objectMap["swaggerLocation"] = pfg.SwaggerLocation
 	}
 	if pfg.ExposeSampleData != nil {
 		objectMap["exposeSampleData"] = pfg.ExposeSampleData
@@ -994,7 +970,7 @@ type RemoveFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RemoveFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.RemoveFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1009,13 +985,13 @@ func (future *RemoveFuture) Result(client Client) (ar autorest.Response, err err
 
 // Resource ...
 type Resource struct {
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -1024,17 +1000,11 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
 	if r.Name != nil {
 		objectMap["name"] = r.Name
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags
@@ -1122,13 +1092,13 @@ type WebService struct {
 	autorest.Response `json:"-"`
 	// Properties - Contains the property payload that describes the web service.
 	Properties BasicProperties `json:"properties,omitempty"`
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -1138,17 +1108,11 @@ type WebService struct {
 func (ws WebService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = ws.Properties
-	if ws.ID != nil {
-		objectMap["id"] = ws.ID
-	}
 	if ws.Name != nil {
 		objectMap["name"] = ws.Name
 	}
 	if ws.Location != nil {
 		objectMap["location"] = ws.Location
-	}
-	if ws.Type != nil {
-		objectMap["type"] = ws.Type
 	}
 	if ws.Tags != nil {
 		objectMap["tags"] = ws.Tags

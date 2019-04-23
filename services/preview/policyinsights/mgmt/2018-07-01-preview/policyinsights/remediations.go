@@ -398,6 +398,9 @@ func (client RemediationsClient) CreateOrUpdateAtManagementGroupPreparer(ctx con
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Type = nil
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -477,6 +480,9 @@ func (client RemediationsClient) CreateOrUpdateAtResourcePreparer(ctx context.Co
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Type = nil
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -558,6 +564,9 @@ func (client RemediationsClient) CreateOrUpdateAtResourceGroupPreparer(ctx conte
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Type = nil
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -637,6 +646,9 @@ func (client RemediationsClient) CreateOrUpdateAtSubscriptionPreparer(ctx contex
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Type = nil
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

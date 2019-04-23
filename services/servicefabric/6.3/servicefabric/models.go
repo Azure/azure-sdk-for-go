@@ -6179,15 +6179,15 @@ type ApplicationProperties struct {
 	DebugParams *string `json:"debugParams,omitempty"`
 	// Services - describes the services in the application.
 	Services *[]ServiceResourceDescription `json:"services,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
-	// Status - Status of the application resource. Possible values include: 'ApplicationResourceStatusInvalid', 'ApplicationResourceStatusReady', 'ApplicationResourceStatusUpgrading', 'ApplicationResourceStatusCreating', 'ApplicationResourceStatusDeleting', 'ApplicationResourceStatusFailed'
+	// Status - READ-ONLY; Status of the application resource. Possible values include: 'ApplicationResourceStatusInvalid', 'ApplicationResourceStatusReady', 'ApplicationResourceStatusUpgrading', 'ApplicationResourceStatusCreating', 'ApplicationResourceStatusDeleting', 'ApplicationResourceStatusFailed'
 	Status ApplicationResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the application deployment.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the application deployment.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// ServiceNames - Names of the services in the application.
+	// ServiceNames - READ-ONLY; Names of the services in the application.
 	ServiceNames *[]string `json:"serviceNames,omitempty"`
 	// Diagnostics - Describes the diagnostics definition and usage for an application resource.
 	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
@@ -19237,7 +19237,7 @@ type ContainerCodePackageProperties struct {
 	Resources *ResourceRequirements `json:"resources,omitempty"`
 	// VolumeRefs - The volumes to be attached to the container.
 	VolumeRefs *[]ContainerVolume `json:"volumeRefs,omitempty"`
-	// InstanceView - Runtime information of a container instance.
+	// InstanceView - READ-ONLY; Runtime information of a container instance.
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`
 	// Diagnostics - Reference to sinks in DiagnosticsDescription.
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
@@ -47252,7 +47252,7 @@ type ServiceResourceProperties struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica etc. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// Status - Represents the status of the service. Possible values include: 'ServiceResourceStatusUnknown', 'ServiceResourceStatusActive', 'ServiceResourceStatusUpgrading', 'ServiceResourceStatusDeleting', 'ServiceResourceStatusCreating', 'ServiceResourceStatusFailed'
+	// Status - READ-ONLY; Represents the status of the service. Possible values include: 'ServiceResourceStatusUnknown', 'ServiceResourceStatusActive', 'ServiceResourceStatusUpgrading', 'ServiceResourceStatusDeleting', 'ServiceResourceStatusCreating', 'ServiceResourceStatusFailed'
 	Status ServiceResourceStatus `json:"status,omitempty"`
 	// OsType - The Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`

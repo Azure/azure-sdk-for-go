@@ -150,22 +150,6 @@
   version = "v0.1.0"
 
 [[projects]]
-  digest = "1:c78066b952f7960f7bffeb04d176e1e8d2579bd1e65067fc29f043706f11c4f3"
-  name = "github.com/marstr/collection"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "43f1d00df9bf332cbf8d26c3eecd6c348e92f7b3"
-  version = "v1.0.1"
-
-[[projects]]
-  digest = "1:4e878df5f4e9fd625bf9c9aac77ef7cbfa4a74c01265505527c23470c0e40300"
-  name = "github.com/marstr/guid"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "8bd9a64bf37eb297b492a4101fb28e80ac0b290f"
-  version = "v1.1.0"
-
-[[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
@@ -249,7 +233,7 @@
     "pkcs12/internal/rc2",
   ]
   pruneopts = "UT"
-  revision = "f416ebab96af27ca70b6e5c23d6a0747530da626"
+  revision = "d864b10871cd4370fe574816b489c819c675ccc7"
 
 [[projects]]
   branch = "master"
@@ -265,23 +249,23 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "1da14a5a36f220ea3f03470682b737b1dfd5de22"
+  revision = "afe8014c977f78fe2406743d9d32c8bd44d0542b"
 
 [[projects]]
   branch = "master"
-  digest = "1:75515eedc0dc2cb0b40372008b616fa2841d831c63eedd403285ff286c593295"
+  digest = "1:382bb5a7fb4034db3b6a2d19e5a4a6bcf52f4750530603c01ca18a172fa3089b"
   name = "golang.org/x/sync"
   packages = ["semaphore"]
   pruneopts = "UT"
-  revision = "56d357773e8497dfd526f0727e187720d1093757"
+  revision = "112230192c580c3556b8cee6403af37a4fc5f28c"
 
 [[projects]]
   branch = "master"
-  digest = "1:28d862f4f9bf2d1976d1d320481bff661b7565eb876d4df2a981f79e7f40e4cd"
+  digest = "1:55565b142e38b7d00c39ce9a86fc70bbfa37c4f2f00d8ff2343f433c351db8e3"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "12500544f89f9420afe9529ba8940bf72d294972"
+  revision = "953cdadca894cdc07be76fc99f95b40c28f06623"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -308,7 +292,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:be1ab6d2b333b1d487c01f1328aef9dc76cee4ff4f780775a552d2a1653f0207"
+  digest = "1:93f3f17886abf8d17ff07ece88d6e1974226f5638d216041bd2234ca03ef848c"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -324,7 +308,7 @@
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "7e40e1726ee0fcf776fcf00f033ef7ed114ca1c4"
+  revision = "cb2dda6eabdf9160e66ca7293897f984154a7f8b"
 
 [[projects]]
   digest = "1:5f003878aabe31d7f6b842d4de32b41c46c214bb629bb485387dbcce1edf5643"
@@ -344,10 +328,10 @@
     "protobuf/field_mask",
   ]
   pruneopts = "UT"
-  revision = "d1146b9035b912113a38af3b138eb2af567b2c67"
+  revision = "e7d98fc518a78c9f8b5ee77be7b0b317475d89e1"
 
 [[projects]]
-  digest = "1:31d87f39886fb38a2b6c097ff3b9f985d6960772170d64a68246f7790e955746"
+  digest = "1:707c3a5d10ed430ea767d73df122d9eb3dfb6312bbacc9f2e39204390686d1d0"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -384,8 +368,8 @@
     "tap",
   ]
   pruneopts = "UT"
-  revision = "236199dd5f8031d698fb64091194aecd1c3895b2"
-  version = "v1.20.0"
+  revision = "25c4f928eaa6d96443009bd842389fb4fa48664e"
+  version = "v1.20.1"
 
 [[projects]]
   branch = "v1"
@@ -418,8 +402,6 @@
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",
-    "github.com/marstr/collection",
-    "github.com/marstr/guid",
     "github.com/pkg/errors",
     "github.com/satori/go.uuid",
     "github.com/shopspring/decimal",

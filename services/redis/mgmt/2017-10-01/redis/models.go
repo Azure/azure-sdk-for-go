@@ -142,9 +142,9 @@ func PossibleSkuNameValues() []SkuName {
 // AccessKeys redis cache access keys.
 type AccessKeys struct {
 	autorest.Response `json:"-"`
-	// PrimaryKey - The current primary key that clients can use to authenticate with Redis cache.
+	// PrimaryKey - READ-ONLY; The current primary key that clients can use to authenticate with Redis cache.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
-	// SecondaryKey - The current secondary key that clients can use to authenticate with Redis cache.
+	// SecondaryKey - READ-ONLY; The current secondary key that clients can use to authenticate with Redis cache.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -195,7 +195,7 @@ type CreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateFuture) Result(client Client) (rt ResourceType, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.CreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -349,7 +349,7 @@ type DeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -371,7 +371,7 @@ type ExportDataFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExportDataFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.ExportDataFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -400,11 +400,11 @@ type FirewallRule struct {
 	autorest.Response `json:"-"`
 	// FirewallRuleProperties - redis cache firewall rule properties
 	*FirewallRuleProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -413,15 +413,6 @@ func (fr FirewallRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if fr.FirewallRuleProperties != nil {
 		objectMap["properties"] = fr.FirewallRuleProperties
-	}
-	if fr.ID != nil {
-		objectMap["id"] = fr.ID
-	}
-	if fr.Name != nil {
-		objectMap["name"] = fr.Name
-	}
-	if fr.Type != nil {
-		objectMap["type"] = fr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -521,7 +512,7 @@ type FirewallRuleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Results of the list firewall rules operation.
 	Value *[]FirewallRule `json:"value,omitempty"`
-	// NextLink - Link for next set of locations.
+	// NextLink - READ-ONLY; Link for next set of locations.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -673,7 +664,7 @@ type FirewallRuleProperties struct {
 // ForceRebootResponse response to force reboot for Redis cache.
 type ForceRebootResponse struct {
 	autorest.Response `json:"-"`
-	// Message - Status message
+	// Message - READ-ONLY; Status message
 	Message *string `json:"message,omitempty"`
 }
 
@@ -686,7 +677,7 @@ type ImportDataFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ImportDataFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.ImportDataFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -709,7 +700,7 @@ type ImportRDBParameters struct {
 
 // LinkedServer linked server Id
 type LinkedServer struct {
-	// ID - Linked server Id.
+	// ID - READ-ONLY; Linked server Id.
 	ID *string `json:"id,omitempty"`
 }
 
@@ -723,7 +714,7 @@ type LinkedServerCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LinkedServerCreateFuture) Result(client LinkedServerClient) (lswp LinkedServerWithProperties, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -793,7 +784,7 @@ type LinkedServerCreateProperties struct {
 
 // LinkedServerProperties properties of a linked server to be returned in get/put response
 type LinkedServerProperties struct {
-	// ProvisioningState - Terminal state of the link between primary and secondary redis cache.
+	// ProvisioningState - READ-ONLY; Terminal state of the link between primary and secondary redis cache.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// LinkedRedisCacheID - Fully qualified resourceId of the linked redis cache.
 	LinkedRedisCacheID *string `json:"linkedRedisCacheId,omitempty"`
@@ -808,11 +799,11 @@ type LinkedServerWithProperties struct {
 	autorest.Response `json:"-"`
 	// LinkedServerProperties - Properties of the linked server.
 	*LinkedServerProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -821,15 +812,6 @@ func (lswp LinkedServerWithProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lswp.LinkedServerProperties != nil {
 		objectMap["properties"] = lswp.LinkedServerProperties
-	}
-	if lswp.ID != nil {
-		objectMap["id"] = lswp.ID
-	}
-	if lswp.Name != nil {
-		objectMap["name"] = lswp.Name
-	}
-	if lswp.Type != nil {
-		objectMap["type"] = lswp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -890,7 +872,7 @@ type LinkedServerWithPropertiesList struct {
 	autorest.Response `json:"-"`
 	// Value - List of linked servers (with properties) of a Redis cache.
 	Value *[]LinkedServerWithProperties `json:"value,omitempty"`
-	// NextLink - Link for next set.
+	// NextLink - READ-ONLY; Link for next set.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1037,7 +1019,7 @@ type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Redis cache instances.
 	Value *[]ResourceType `json:"value,omitempty"`
-	// NextLink - Link for next set of locations.
+	// NextLink - READ-ONLY; Link for next set of locations.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1183,7 +1165,7 @@ type NotificationListResponse struct {
 	autorest.Response `json:"-"`
 	// Value - List of all notifications.
 	Value *[]UpgradeNotification `json:"value,omitempty"`
-	// NextLink - Link for next set of notifications.
+	// NextLink - READ-ONLY; Link for next set of notifications.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1213,7 +1195,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1359,11 +1341,11 @@ type PatchSchedule struct {
 	autorest.Response `json:"-"`
 	// ScheduleEntries - List of patch schedules for a Redis cache.
 	*ScheduleEntries `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1372,15 +1354,6 @@ func (ps PatchSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ps.ScheduleEntries != nil {
 		objectMap["properties"] = ps.ScheduleEntries
-	}
-	if ps.ID != nil {
-		objectMap["id"] = ps.ID
-	}
-	if ps.Name != nil {
-		objectMap["name"] = ps.Name
-	}
-	if ps.Type != nil {
-		objectMap["type"] = ps.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1441,7 +1414,7 @@ type PatchScheduleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Results of the list patch schedules operation.
 	Value *[]PatchSchedule `json:"value,omitempty"`
-	// NextLink - Link for next page of results.
+	// NextLink - READ-ONLY; Link for next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1584,19 +1557,19 @@ func NewPatchScheduleListResultPage(getNextPage func(context.Context, PatchSched
 
 // Properties properties of the redis cache.
 type Properties struct {
-	// RedisVersion - Redis version.
+	// RedisVersion - READ-ONLY; Redis version.
 	RedisVersion *string `json:"redisVersion,omitempty"`
-	// ProvisioningState - Redis instance provisioning status.
+	// ProvisioningState - READ-ONLY; Redis instance provisioning status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// HostName - Redis host name.
+	// HostName - READ-ONLY; Redis host name.
 	HostName *string `json:"hostName,omitempty"`
-	// Port - Redis non-SSL port.
+	// Port - READ-ONLY; Redis non-SSL port.
 	Port *int32 `json:"port,omitempty"`
-	// SslPort - Redis SSL port.
+	// SslPort - READ-ONLY; Redis SSL port.
 	SslPort *int32 `json:"sslPort,omitempty"`
-	// AccessKeys - The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
+	// AccessKeys - READ-ONLY; The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
 	AccessKeys *AccessKeys `json:"accessKeys,omitempty"`
-	// LinkedServers - List of the linked servers associated with the cache
+	// LinkedServers - READ-ONLY; List of the linked servers associated with the cache
 	LinkedServers *[]LinkedServer `json:"linkedServers,omitempty"`
 	// Sku - The SKU of the Redis cache to deploy.
 	Sku *Sku `json:"sku,omitempty"`
@@ -1617,27 +1590,6 @@ type Properties struct {
 // MarshalJSON is the custom marshaler for Properties.
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if p.RedisVersion != nil {
-		objectMap["redisVersion"] = p.RedisVersion
-	}
-	if p.ProvisioningState != nil {
-		objectMap["provisioningState"] = p.ProvisioningState
-	}
-	if p.HostName != nil {
-		objectMap["hostName"] = p.HostName
-	}
-	if p.Port != nil {
-		objectMap["port"] = p.Port
-	}
-	if p.SslPort != nil {
-		objectMap["sslPort"] = p.SslPort
-	}
-	if p.AccessKeys != nil {
-		objectMap["accessKeys"] = p.AccessKeys
-	}
-	if p.LinkedServers != nil {
-		objectMap["linkedServers"] = p.LinkedServers
-	}
 	if p.Sku != nil {
 		objectMap["sku"] = p.Sku
 	}
@@ -1665,11 +1617,11 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1689,11 +1641,11 @@ type RegenerateKeyParameters struct {
 
 // Resource the Resource definition.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1708,11 +1660,11 @@ type ResourceType struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1730,15 +1682,6 @@ func (rt ResourceType) MarshalJSON() ([]byte, error) {
 	}
 	if rt.Location != nil {
 		objectMap["location"] = rt.Location
-	}
-	if rt.ID != nil {
-		objectMap["id"] = rt.ID
-	}
-	if rt.Name != nil {
-		objectMap["name"] = rt.Name
-	}
-	if rt.Type != nil {
-		objectMap["type"] = rt.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1853,11 +1796,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1869,15 +1812,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1972,25 +1906,16 @@ func (up UpdateProperties) MarshalJSON() ([]byte, error) {
 
 // UpgradeNotification properties of upgrade notification.
 type UpgradeNotification struct {
-	// Name - Name of upgrade notification.
+	// Name - READ-ONLY; Name of upgrade notification.
 	Name *string `json:"name,omitempty"`
-	// Timestamp - Timestamp when upgrade notification occurred.
+	// Timestamp - READ-ONLY; Timestamp when upgrade notification occurred.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// UpsellNotification - Details about this upgrade notification
+	// UpsellNotification - READ-ONLY; Details about this upgrade notification
 	UpsellNotification map[string]*string `json:"upsellNotification"`
 }
 
 // MarshalJSON is the custom marshaler for UpgradeNotification.
 func (un UpgradeNotification) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if un.Name != nil {
-		objectMap["name"] = un.Name
-	}
-	if un.Timestamp != nil {
-		objectMap["timestamp"] = un.Timestamp
-	}
-	if un.UpsellNotification != nil {
-		objectMap["upsellNotification"] = un.UpsellNotification
-	}
 	return json.Marshal(objectMap)
 }

@@ -114,7 +114,7 @@ type ACLStatus struct {
 	Owner *string `json:"owner,omitempty"`
 	// Permission - The octal representation of the unnamed user, mask and other permissions.
 	Permission *int32 `json:"permission,omitempty"`
-	// StickyBit - the indicator of whether the sticky bit is on or off.
+	// StickyBit - READ-ONLY; the indicator of whether the sticky bit is on or off.
 	StickyBit *bool `json:"stickyBit,omitempty"`
 }
 
@@ -128,9 +128,9 @@ type ACLStatusResult struct {
 // AdlsAccessControlException a WebHDFS exception thrown indicating that access is denied due to
 // insufficient permissions. Thrown when a 403 error response code is returned (forbidden).
 type AdlsAccessControlException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -140,12 +140,6 @@ type AdlsAccessControlException struct {
 func (aace AdlsAccessControlException) MarshalJSON() ([]byte, error) {
 	aace.Exception = ExceptionAccessControlException
 	objectMap := make(map[string]interface{})
-	if aace.JavaClassName != nil {
-		objectMap["javaClassName"] = aace.JavaClassName
-	}
-	if aace.Message != nil {
-		objectMap["message"] = aace.Message
-	}
 	if aace.Exception != "" {
 		objectMap["exception"] = aace.Exception
 	}
@@ -210,9 +204,9 @@ func (aace AdlsAccessControlException) AsBasicAdlsRemoteException() (BasicAdlsRe
 // AdlsBadOffsetException a WebHDFS exception thrown indicating the append or read is from a bad offset.
 // Thrown when a 400 error response code is returned for append and open operations (Bad request).
 type AdlsBadOffsetException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -222,12 +216,6 @@ type AdlsBadOffsetException struct {
 func (aboe AdlsBadOffsetException) MarshalJSON() ([]byte, error) {
 	aboe.Exception = ExceptionBadOffsetException
 	objectMap := make(map[string]interface{})
-	if aboe.JavaClassName != nil {
-		objectMap["javaClassName"] = aboe.JavaClassName
-	}
-	if aboe.Message != nil {
-		objectMap["message"] = aboe.Message
-	}
 	if aboe.Exception != "" {
 		objectMap["exception"] = aboe.Exception
 	}
@@ -291,7 +279,7 @@ func (aboe AdlsBadOffsetException) AsBasicAdlsRemoteException() (BasicAdlsRemote
 
 // AdlsError data Lake Store filesystem error containing a specific WebHDFS exception.
 type AdlsError struct {
-	// RemoteException - the object representing the actual WebHDFS exception being returned.
+	// RemoteException - READ-ONLY; the object representing the actual WebHDFS exception being returned.
 	RemoteException BasicAdlsRemoteException `json:"RemoteException,omitempty"`
 }
 
@@ -321,9 +309,9 @@ func (ae *AdlsError) UnmarshalJSON(body []byte) error {
 // AdlsFileAlreadyExistsException a WebHDFS exception thrown indicating the file or folder already exists.
 // Thrown when a 403 error response code is returned (forbidden).
 type AdlsFileAlreadyExistsException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -333,12 +321,6 @@ type AdlsFileAlreadyExistsException struct {
 func (afaee AdlsFileAlreadyExistsException) MarshalJSON() ([]byte, error) {
 	afaee.Exception = ExceptionFileAlreadyExistsException
 	objectMap := make(map[string]interface{})
-	if afaee.JavaClassName != nil {
-		objectMap["javaClassName"] = afaee.JavaClassName
-	}
-	if afaee.Message != nil {
-		objectMap["message"] = afaee.Message
-	}
 	if afaee.Exception != "" {
 		objectMap["exception"] = afaee.Exception
 	}
@@ -403,9 +385,9 @@ func (afaee AdlsFileAlreadyExistsException) AsBasicAdlsRemoteException() (BasicA
 // AdlsFileNotFoundException a WebHDFS exception thrown indicating the file or folder could not be found.
 // Thrown when a 404 error response code is returned (not found).
 type AdlsFileNotFoundException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -415,12 +397,6 @@ type AdlsFileNotFoundException struct {
 func (afnfe AdlsFileNotFoundException) MarshalJSON() ([]byte, error) {
 	afnfe.Exception = ExceptionFileNotFoundException
 	objectMap := make(map[string]interface{})
-	if afnfe.JavaClassName != nil {
-		objectMap["javaClassName"] = afnfe.JavaClassName
-	}
-	if afnfe.Message != nil {
-		objectMap["message"] = afnfe.Message
-	}
 	if afnfe.Exception != "" {
 		objectMap["exception"] = afnfe.Exception
 	}
@@ -485,9 +461,9 @@ func (afnfe AdlsFileNotFoundException) AsBasicAdlsRemoteException() (BasicAdlsRe
 // AdlsIllegalArgumentException a WebHDFS exception thrown indicating that one more arguments is incorrect.
 // Thrown when a 400 error response code is returned (bad request).
 type AdlsIllegalArgumentException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -497,12 +473,6 @@ type AdlsIllegalArgumentException struct {
 func (aiae AdlsIllegalArgumentException) MarshalJSON() ([]byte, error) {
 	aiae.Exception = ExceptionIllegalArgumentException
 	objectMap := make(map[string]interface{})
-	if aiae.JavaClassName != nil {
-		objectMap["javaClassName"] = aiae.JavaClassName
-	}
-	if aiae.Message != nil {
-		objectMap["message"] = aiae.Message
-	}
 	if aiae.Exception != "" {
 		objectMap["exception"] = aiae.Exception
 	}
@@ -567,9 +537,9 @@ func (aiae AdlsIllegalArgumentException) AsBasicAdlsRemoteException() (BasicAdls
 // AdlsIOException a WebHDFS exception thrown indicating there was an IO (read or write) error. Thrown when
 // a 403 error response code is returned (forbidden).
 type AdlsIOException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -579,12 +549,6 @@ type AdlsIOException struct {
 func (aie AdlsIOException) MarshalJSON() ([]byte, error) {
 	aie.Exception = ExceptionIOException
 	objectMap := make(map[string]interface{})
-	if aie.JavaClassName != nil {
-		objectMap["javaClassName"] = aie.JavaClassName
-	}
-	if aie.Message != nil {
-		objectMap["message"] = aie.Message
-	}
 	if aie.Exception != "" {
 		objectMap["exception"] = aie.Exception
 	}
@@ -663,9 +627,9 @@ type BasicAdlsRemoteException interface {
 // AdlsRemoteException data Lake Store filesystem exception based on the WebHDFS definition for
 // RemoteExceptions.
 type AdlsRemoteException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -744,12 +708,6 @@ func unmarshalBasicAdlsRemoteExceptionArray(body []byte) ([]BasicAdlsRemoteExcep
 func (are AdlsRemoteException) MarshalJSON() ([]byte, error) {
 	are.Exception = ExceptionAdlsRemoteException
 	objectMap := make(map[string]interface{})
-	if are.JavaClassName != nil {
-		objectMap["javaClassName"] = are.JavaClassName
-	}
-	if are.Message != nil {
-		objectMap["message"] = are.Message
-	}
 	if are.Exception != "" {
 		objectMap["exception"] = are.Exception
 	}
@@ -814,9 +772,9 @@ func (are AdlsRemoteException) AsBasicAdlsRemoteException() (BasicAdlsRemoteExce
 // AdlsRuntimeException a WebHDFS exception thrown when an unexpected error occurs during an operation.
 // Thrown when a 500 error response code is returned (Internal server error).
 type AdlsRuntimeException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -826,12 +784,6 @@ type AdlsRuntimeException struct {
 func (are AdlsRuntimeException) MarshalJSON() ([]byte, error) {
 	are.Exception = ExceptionRuntimeException
 	objectMap := make(map[string]interface{})
-	if are.JavaClassName != nil {
-		objectMap["javaClassName"] = are.JavaClassName
-	}
-	if are.Message != nil {
-		objectMap["message"] = are.Message
-	}
 	if are.Exception != "" {
 		objectMap["exception"] = are.Exception
 	}
@@ -896,9 +848,9 @@ func (are AdlsRuntimeException) AsBasicAdlsRemoteException() (BasicAdlsRemoteExc
 // AdlsSecurityException a WebHDFS exception thrown indicating that access is denied. Thrown when a 401
 // error response code is returned (Unauthorized).
 type AdlsSecurityException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -908,12 +860,6 @@ type AdlsSecurityException struct {
 func (ase AdlsSecurityException) MarshalJSON() ([]byte, error) {
 	ase.Exception = ExceptionSecurityException
 	objectMap := make(map[string]interface{})
-	if ase.JavaClassName != nil {
-		objectMap["javaClassName"] = ase.JavaClassName
-	}
-	if ase.Message != nil {
-		objectMap["message"] = ase.Message
-	}
 	if ase.Exception != "" {
 		objectMap["exception"] = ase.Exception
 	}
@@ -978,9 +924,9 @@ func (ase AdlsSecurityException) AsBasicAdlsRemoteException() (BasicAdlsRemoteEx
 // AdlsUnsupportedOperationException a WebHDFS exception thrown indicating that the requested operation is
 // not supported. Thrown when a 400 error response code is returned (bad request).
 type AdlsUnsupportedOperationException struct {
-	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
+	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
-	// Message - the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
+	// Message - READ-ONLY; the message associated with the exception that was thrown, such as 'Invalid value for webhdfs parameter "permission":...'.
 	Message *string `json:"message,omitempty"`
 	// Exception - Possible values include: 'ExceptionAdlsRemoteException', 'ExceptionIllegalArgumentException', 'ExceptionUnsupportedOperationException', 'ExceptionSecurityException', 'ExceptionIOException', 'ExceptionFileNotFoundException', 'ExceptionFileAlreadyExistsException', 'ExceptionBadOffsetException', 'ExceptionRuntimeException', 'ExceptionAccessControlException'
 	Exception Exception `json:"exception,omitempty"`
@@ -990,12 +936,6 @@ type AdlsUnsupportedOperationException struct {
 func (auoe AdlsUnsupportedOperationException) MarshalJSON() ([]byte, error) {
 	auoe.Exception = ExceptionUnsupportedOperationException
 	objectMap := make(map[string]interface{})
-	if auoe.JavaClassName != nil {
-		objectMap["javaClassName"] = auoe.JavaClassName
-	}
-	if auoe.Message != nil {
-		objectMap["message"] = auoe.Message
-	}
 	if auoe.Exception != "" {
 		objectMap["exception"] = auoe.Exception
 	}
@@ -1059,73 +999,73 @@ func (auoe AdlsUnsupportedOperationException) AsBasicAdlsRemoteException() (Basi
 
 // ContentSummary data Lake Store content summary information
 type ContentSummary struct {
-	// DirectoryCount - the number of directories.
+	// DirectoryCount - READ-ONLY; the number of directories.
 	DirectoryCount *int64 `json:"directoryCount,omitempty"`
-	// FileCount - the number of files.
+	// FileCount - READ-ONLY; the number of files.
 	FileCount *int64 `json:"fileCount,omitempty"`
-	// Length - the number of bytes used by the content.
+	// Length - READ-ONLY; the number of bytes used by the content.
 	Length *int64 `json:"length,omitempty"`
-	// SpaceConsumed - the disk space consumed by the content.
+	// SpaceConsumed - READ-ONLY; the disk space consumed by the content.
 	SpaceConsumed *int64 `json:"spaceConsumed,omitempty"`
 }
 
 // ContentSummaryResult data Lake Store filesystem content summary information response.
 type ContentSummaryResult struct {
 	autorest.Response `json:"-"`
-	// ContentSummary - the content summary for the specified path
+	// ContentSummary - READ-ONLY; the content summary for the specified path
 	ContentSummary *ContentSummary `json:"ContentSummary,omitempty"`
 }
 
 // FileOperationResult the result of the request or operation.
 type FileOperationResult struct {
 	autorest.Response `json:"-"`
-	// OperationResult - the result of the operation or request.
+	// OperationResult - READ-ONLY; the result of the operation or request.
 	OperationResult *bool `json:"boolean,omitempty"`
 }
 
 // FileStatuses data Lake Store file status list information.
 type FileStatuses struct {
-	// FileStatus - the object containing the list of properties of the files.
+	// FileStatus - READ-ONLY; the object containing the list of properties of the files.
 	FileStatus *[]FileStatusProperties `json:"FileStatus,omitempty"`
 }
 
 // FileStatusesResult data Lake Store filesystem file status list information response.
 type FileStatusesResult struct {
 	autorest.Response `json:"-"`
-	// FileStatuses - the object representing the list of file statuses.
+	// FileStatuses - READ-ONLY; the object representing the list of file statuses.
 	FileStatuses *FileStatuses `json:"FileStatuses,omitempty"`
 }
 
 // FileStatusProperties data Lake Store file or directory information.
 type FileStatusProperties struct {
-	// AccessTime - the last access time as ticks since the epoch.
+	// AccessTime - READ-ONLY; the last access time as ticks since the epoch.
 	AccessTime *int64 `json:"accessTime,omitempty"`
-	// BlockSize - the block size for the file.
+	// BlockSize - READ-ONLY; the block size for the file.
 	BlockSize *int64 `json:"blockSize,omitempty"`
-	// ChildrenNum - the number of children in the directory.
+	// ChildrenNum - READ-ONLY; the number of children in the directory.
 	ChildrenNum *int64 `json:"childrenNum,omitempty"`
-	// ExpirationTime - Gets the expiration time, if any, as ticks since the epoch. If this is set to 0 or DateTime.MaxValue there is no expiration.
+	// ExpirationTime - READ-ONLY; Gets the expiration time, if any, as ticks since the epoch. If this is set to 0 or DateTime.MaxValue there is no expiration.
 	ExpirationTime *int64 `json:"expirationTime,omitempty"`
-	// Group - the group owner.
+	// Group - READ-ONLY; the group owner.
 	Group *string `json:"group,omitempty"`
-	// Length - the number of bytes in a file.
+	// Length - READ-ONLY; the number of bytes in a file.
 	Length *int64 `json:"length,omitempty"`
-	// ModificationTime - the modification time as ticks since the epoch.
+	// ModificationTime - READ-ONLY; the modification time as ticks since the epoch.
 	ModificationTime *int64 `json:"modificationTime,omitempty"`
-	// Owner - the user who is the owner.
+	// Owner - READ-ONLY; the user who is the owner.
 	Owner *string `json:"owner,omitempty"`
-	// PathSuffix - the path suffix.
+	// PathSuffix - READ-ONLY; the path suffix.
 	PathSuffix *string `json:"pathSuffix,omitempty"`
-	// Permission - the permission represented as an string.
+	// Permission - READ-ONLY; the permission represented as an string.
 	Permission *string `json:"permission,omitempty"`
-	// Type - the type of the path object. Possible values include: 'FILE', 'DIRECTORY'
+	// Type - READ-ONLY; the type of the path object. Possible values include: 'FILE', 'DIRECTORY'
 	Type FileType `json:"type,omitempty"`
 }
 
 // FileStatusResult data Lake Store filesystem file status information response.
 type FileStatusResult struct {
 	autorest.Response `json:"-"`
-	// FileStatus - the file status object associated with the specified path.
+	// FileStatus - READ-ONLY; the file status object associated with the specified path.
 	FileStatus *FileStatusProperties `json:"FileStatus,omitempty"`
 }
 

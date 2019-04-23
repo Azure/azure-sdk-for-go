@@ -74,7 +74,7 @@ type Authorization struct {
 
 // ErrorResponse error response.
 type ErrorResponse struct {
-	// Error - Error response indicates Azure Resource Manager is not able to process the incoming request. The reason is provided in the error message.
+	// Error - READ-ONLY; Error response indicates Azure Resource Manager is not able to process the incoming request. The reason is provided in the error message.
 	Error *ErrorResponseError `json:"error,omitempty"`
 }
 
@@ -89,9 +89,9 @@ type ErrorResponseError struct {
 
 // Operation object that describes a single Microsoft.ManagedServices operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
-	// Display - The object that represents the operation.
+	// Display - READ-ONLY; The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
@@ -110,7 +110,7 @@ type OperationDisplay struct {
 // OperationList list of the operations.
 type OperationList struct {
 	autorest.Response `json:"-"`
-	// Value - List of Microsoft.ManagedServices operations.
+	// Value - READ-ONLY; List of Microsoft.ManagedServices operations.
 	Value *[]Operation `json:"value,omitempty"`
 }
 
@@ -131,20 +131,20 @@ type RegistrationAssignment struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of a registration assignment.
 	Properties *RegistrationAssignmentProperties `json:"properties,omitempty"`
-	// ID - The fully qualified path of the registration assignment.
+	// ID - READ-ONLY; The fully qualified path of the registration assignment.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the resource.
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of the registration assignment.
+	// Name - READ-ONLY; Name of the registration assignment.
 	Name *string `json:"name,omitempty"`
 }
 
 // RegistrationAssignmentList list of registration assignments.
 type RegistrationAssignmentList struct {
 	autorest.Response `json:"-"`
-	// Value - List of registration assignments.
+	// Value - READ-ONLY; List of registration assignments.
 	Value *[]RegistrationAssignment `json:"value,omitempty"`
-	// NextLink - Link to next page of registration assignments.
+	// NextLink - READ-ONLY; Link to next page of registration assignments.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -290,9 +290,9 @@ func NewRegistrationAssignmentListPage(getNextPage func(context.Context, Registr
 type RegistrationAssignmentProperties struct {
 	// RegistrationDefinitionID - Fully qualified path of the registration definition.
 	RegistrationDefinitionID *string `json:"registrationDefinitionId,omitempty"`
-	// ProvisioningState - Current state of the registration assignment. Possible values include: 'NotSpecified', 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	// ProvisioningState - READ-ONLY; Current state of the registration assignment. Possible values include: 'NotSpecified', 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// RegistrationDefinition - Registration definition inside registration assignment.
+	// RegistrationDefinition - READ-ONLY; Registration definition inside registration assignment.
 	RegistrationDefinition *RegistrationAssignmentPropertiesRegistrationDefinition `json:"registrationDefinition,omitempty"`
 }
 
@@ -303,11 +303,11 @@ type RegistrationAssignmentPropertiesRegistrationDefinition struct {
 	Properties *RegistrationAssignmentPropertiesRegistrationDefinitionProperties `json:"properties,omitempty"`
 	// Plan - Plan details for the managed services.
 	Plan *Plan `json:"plan,omitempty"`
-	// ID - Fully qualified path of the registration definition.
+	// ID - READ-ONLY; Fully qualified path of the registration definition.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the resource (Microsoft.ManagedServices/registrationDefinitions).
+	// Type - READ-ONLY; Type of the resource (Microsoft.ManagedServices/registrationDefinitions).
 	Type *string `json:"type,omitempty"`
-	// Name - Name of the registration definition.
+	// Name - READ-ONLY; Name of the registration definition.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -339,20 +339,20 @@ type RegistrationDefinition struct {
 	Properties *RegistrationDefinitionProperties `json:"properties,omitempty"`
 	// Plan - Plan details for the managed services.
 	Plan *Plan `json:"plan,omitempty"`
-	// ID - Fully qualified path of the registration definition.
+	// ID - READ-ONLY; Fully qualified path of the registration definition.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the resource.
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Name - Name of the registration definition.
+	// Name - READ-ONLY; Name of the registration definition.
 	Name *string `json:"name,omitempty"`
 }
 
 // RegistrationDefinitionList list of registration definitions.
 type RegistrationDefinitionList struct {
 	autorest.Response `json:"-"`
-	// Value - List of registration definitions.
+	// Value - READ-ONLY; List of registration definitions.
 	Value *[]RegistrationDefinition `json:"value,omitempty"`
-	// NextLink - Link to next page of registration definitions.
+	// NextLink - READ-ONLY; Link to next page of registration definitions.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -504,8 +504,8 @@ type RegistrationDefinitionProperties struct {
 	RegistrationDefinitionName *string `json:"registrationDefinitionName,omitempty"`
 	// ManagedByTenantID - Id of the managedBy tenant.
 	ManagedByTenantID *string `json:"managedByTenantId,omitempty"`
-	// ProvisioningState - Current state of the registration definition. Possible values include: 'NotSpecified', 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	// ProvisioningState - READ-ONLY; Current state of the registration definition. Possible values include: 'NotSpecified', 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// ManagedByTenantName - Name of the managedBy tenant.
+	// ManagedByTenantName - READ-ONLY; Name of the managedBy tenant.
 	ManagedByTenantName *string `json:"managedByTenantName,omitempty"`
 }

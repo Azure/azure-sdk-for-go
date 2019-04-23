@@ -681,11 +681,11 @@ type Account struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -703,15 +703,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1034,11 +1025,11 @@ type AccountProperties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// LastModifiedBy - Gets or sets the last modified by.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// State - Gets status of account. Possible values include: 'Ok', 'Unavailable', 'Suspended'
+	// State - READ-ONLY; Gets status of account. Possible values include: 'Ok', 'Unavailable', 'Suspended'
 	State AccountState `json:"state,omitempty"`
-	// CreationTime - Gets the creation time.
+	// CreationTime - READ-ONLY; Gets the creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - Gets the last modified time.
+	// LastModifiedTime - READ-ONLY; Gets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
@@ -1136,7 +1127,7 @@ type Activity struct {
 	autorest.Response `json:"-"`
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets the name of the activity.
+	// Name - READ-ONLY; Gets the name of the activity.
 	Name *string `json:"name,omitempty"`
 	// ActivityProperties - Gets or sets the properties of the activity.
 	*ActivityProperties `json:"properties,omitempty"`
@@ -1147,9 +1138,6 @@ func (a Activity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.ID != nil {
 		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
 	}
 	if a.ActivityProperties != nil {
 		objectMap["properties"] = a.ActivityProperties
@@ -1467,11 +1455,11 @@ type Certificate struct {
 	autorest.Response `json:"-"`
 	// CertificateProperties - Gets or sets the properties of the certificate.
 	*CertificateProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1480,15 +1468,6 @@ func (c Certificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.CertificateProperties != nil {
 		objectMap["properties"] = c.CertificateProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1758,15 +1737,15 @@ func NewCertificateListResultPage(getNextPage func(context.Context, CertificateL
 
 // CertificateProperties properties of the certificate.
 type CertificateProperties struct {
-	// Thumbprint - Gets the thumbprint of the certificate.
+	// Thumbprint - READ-ONLY; Gets the thumbprint of the certificate.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// ExpiryTime - Gets the expiry time of the certificate.
+	// ExpiryTime - READ-ONLY; Gets the expiry time of the certificate.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// IsExportable - Gets the is exportable flag of the certificate.
+	// IsExportable - READ-ONLY; Gets the is exportable flag of the certificate.
 	IsExportable *bool `json:"isExportable,omitempty"`
-	// CreationTime - Gets the creation time.
+	// CreationTime - READ-ONLY; Gets the creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - Gets the last modified time.
+	// LastModifiedTime - READ-ONLY; Gets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
@@ -1845,11 +1824,11 @@ type Connection struct {
 	autorest.Response `json:"-"`
 	// ConnectionProperties - Gets or sets the properties of the connection.
 	*ConnectionProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1858,15 +1837,6 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ConnectionProperties != nil {
 		objectMap["properties"] = c.ConnectionProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2150,11 +2120,11 @@ func NewConnectionListResultPage(getNextPage func(context.Context, ConnectionLis
 type ConnectionProperties struct {
 	// ConnectionType - Gets or sets the connectionType of the connection.
 	ConnectionType *ConnectionTypeAssociationProperty `json:"connectionType,omitempty"`
-	// FieldDefinitionValues - Gets the field definition values of the connection.
+	// FieldDefinitionValues - READ-ONLY; Gets the field definition values of the connection.
 	FieldDefinitionValues map[string]*string `json:"fieldDefinitionValues"`
-	// CreationTime - Gets the creation time.
+	// CreationTime - READ-ONLY; Gets the creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - Gets the last modified time.
+	// LastModifiedTime - READ-ONLY; Gets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
@@ -2166,15 +2136,6 @@ func (cp ConnectionProperties) MarshalJSON() ([]byte, error) {
 	if cp.ConnectionType != nil {
 		objectMap["connectionType"] = cp.ConnectionType
 	}
-	if cp.FieldDefinitionValues != nil {
-		objectMap["fieldDefinitionValues"] = cp.FieldDefinitionValues
-	}
-	if cp.CreationTime != nil {
-		objectMap["creationTime"] = cp.CreationTime
-	}
-	if cp.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = cp.LastModifiedTime
-	}
 	if cp.Description != nil {
 		objectMap["description"] = cp.Description
 	}
@@ -2184,11 +2145,11 @@ func (cp ConnectionProperties) MarshalJSON() ([]byte, error) {
 // ConnectionType definition of the connection type.
 type ConnectionType struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the id of the resource.
+	// ID - READ-ONLY; Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets the name of the connection type.
+	// Name - READ-ONLY; Gets the name of the connection type.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// ConnectionTypeProperties - Gets or sets the properties of the connection type.
 	*ConnectionTypeProperties `json:"properties,omitempty"`
@@ -2197,15 +2158,6 @@ type ConnectionType struct {
 // MarshalJSON is the custom marshaler for ConnectionType.
 func (ct ConnectionType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ct.ID != nil {
-		objectMap["id"] = ct.ID
-	}
-	if ct.Name != nil {
-		objectMap["name"] = ct.Name
-	}
-	if ct.Type != nil {
-		objectMap["type"] = ct.Type
-	}
 	if ct.ConnectionTypeProperties != nil {
 		objectMap["properties"] = ct.ConnectionTypeProperties
 	}
@@ -2493,9 +2445,9 @@ func NewConnectionTypeListResultPage(getNextPage func(context.Context, Connectio
 type ConnectionTypeProperties struct {
 	// IsGlobal - Gets or sets a Boolean value to indicate if the connection type is global.
 	IsGlobal *bool `json:"isGlobal,omitempty"`
-	// FieldDefinitions - Gets the field definitions of the connection type.
+	// FieldDefinitions - READ-ONLY; Gets the field definitions of the connection type.
 	FieldDefinitions map[string]*FieldDefinition `json:"fieldDefinitions"`
-	// CreationTime - Gets the creation time.
+	// CreationTime - READ-ONLY; Gets the creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
@@ -2508,12 +2460,6 @@ func (ctp ConnectionTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ctp.IsGlobal != nil {
 		objectMap["isGlobal"] = ctp.IsGlobal
-	}
-	if ctp.FieldDefinitions != nil {
-		objectMap["fieldDefinitions"] = ctp.FieldDefinitions
-	}
-	if ctp.CreationTime != nil {
-		objectMap["creationTime"] = ctp.CreationTime
 	}
 	if ctp.LastModifiedTime != nil {
 		objectMap["lastModifiedTime"] = ctp.LastModifiedTime
@@ -2632,11 +2578,11 @@ type Credential struct {
 	autorest.Response `json:"-"`
 	// CredentialProperties - Gets or sets the properties of the credential.
 	*CredentialProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2645,15 +2591,6 @@ func (c Credential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.CredentialProperties != nil {
 		objectMap["properties"] = c.CredentialProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2920,11 +2857,11 @@ func NewCredentialListResultPage(getNextPage func(context.Context, CredentialLis
 
 // CredentialProperties definition of the credential properties
 type CredentialProperties struct {
-	// UserName - Gets the user name of the credential.
+	// UserName - READ-ONLY; Gets the user name of the credential.
 	UserName *string `json:"userName,omitempty"`
-	// CreationTime - Gets the creation time.
+	// CreationTime - READ-ONLY; Gets the creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - Gets the last modified time.
+	// LastModifiedTime - READ-ONLY; Gets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
@@ -2998,11 +2935,11 @@ type DscCompilationJob struct {
 	autorest.Response `json:"-"`
 	// DscCompilationJobProperties - Gets or sets the properties of the Dsc Compilation job.
 	*DscCompilationJobProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3011,15 +2948,6 @@ func (dcj DscCompilationJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dcj.DscCompilationJobProperties != nil {
 		objectMap["properties"] = dcj.DscCompilationJobProperties
-	}
-	if dcj.ID != nil {
-		objectMap["id"] = dcj.ID
-	}
-	if dcj.Name != nil {
-		objectMap["name"] = dcj.Name
-	}
-	if dcj.Type != nil {
-		objectMap["type"] = dcj.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3085,7 +3013,7 @@ type DscCompilationJobCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DscCompilationJobCreateFuture) Result(client DscCompilationJobClient) (dcj DscCompilationJob, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3360,11 +3288,11 @@ func NewDscCompilationJobListResultPage(getNextPage func(context.Context, DscCom
 type DscCompilationJobProperties struct {
 	// Configuration - Gets or sets the configuration.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
-	// StartedBy - Gets the compilation job started by.
+	// StartedBy - READ-ONLY; Gets the compilation job started by.
 	StartedBy *string `json:"startedBy,omitempty"`
-	// JobID - Gets the id of the job.
+	// JobID - READ-ONLY; Gets the id of the job.
 	JobID *uuid.UUID `json:"jobId,omitempty"`
-	// CreationTime - Gets the creation time of the job.
+	// CreationTime - READ-ONLY; Gets the creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ProvisioningState - The current provisioning state of the job. Possible values include: 'JobProvisioningStateFailed', 'JobProvisioningStateSucceeded', 'JobProvisioningStateSuspended', 'JobProvisioningStateProcessing'
 	ProvisioningState JobProvisioningState `json:"provisioningState,omitempty"`
@@ -3374,15 +3302,15 @@ type DscCompilationJobProperties struct {
 	Status JobStatus `json:"status,omitempty"`
 	// StatusDetails - Gets or sets the status details of the job.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// StartTime - Gets the start time of the job.
+	// StartTime - READ-ONLY; Gets the start time of the job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the end time of the job.
+	// EndTime - READ-ONLY; Gets the end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Exception - Gets the exception of the job.
+	// Exception - READ-ONLY; Gets the exception of the job.
 	Exception *string `json:"exception,omitempty"`
-	// LastModifiedTime - Gets the last modified time of the job.
+	// LastModifiedTime - READ-ONLY; Gets the last modified time of the job.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastStatusModifiedTime - Gets the last status modified time of the job.
+	// LastStatusModifiedTime - READ-ONLY; Gets the last status modified time of the job.
 	LastStatusModifiedTime *date.Time `json:"lastStatusModifiedTime,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
 	Parameters map[string]*string `json:"parameters"`
@@ -3393,15 +3321,6 @@ func (dcjp DscCompilationJobProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dcjp.Configuration != nil {
 		objectMap["configuration"] = dcjp.Configuration
-	}
-	if dcjp.StartedBy != nil {
-		objectMap["startedBy"] = dcjp.StartedBy
-	}
-	if dcjp.JobID != nil {
-		objectMap["jobId"] = dcjp.JobID
-	}
-	if dcjp.CreationTime != nil {
-		objectMap["creationTime"] = dcjp.CreationTime
 	}
 	if dcjp.ProvisioningState != "" {
 		objectMap["provisioningState"] = dcjp.ProvisioningState
@@ -3414,21 +3333,6 @@ func (dcjp DscCompilationJobProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dcjp.StatusDetails != nil {
 		objectMap["statusDetails"] = dcjp.StatusDetails
-	}
-	if dcjp.StartTime != nil {
-		objectMap["startTime"] = dcjp.StartTime
-	}
-	if dcjp.EndTime != nil {
-		objectMap["endTime"] = dcjp.EndTime
-	}
-	if dcjp.Exception != nil {
-		objectMap["exception"] = dcjp.Exception
-	}
-	if dcjp.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = dcjp.LastModifiedTime
-	}
-	if dcjp.LastStatusModifiedTime != nil {
-		objectMap["lastStatusModifiedTime"] = dcjp.LastStatusModifiedTime
 	}
 	if dcjp.Parameters != nil {
 		objectMap["parameters"] = dcjp.Parameters
@@ -3447,11 +3351,11 @@ type DscConfiguration struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3469,15 +3373,6 @@ func (dc DscConfiguration) MarshalJSON() ([]byte, error) {
 	}
 	if dc.Location != nil {
 		objectMap["location"] = dc.Location
-	}
-	if dc.ID != nil {
-		objectMap["id"] = dc.ID
-	}
-	if dc.Name != nil {
-		objectMap["name"] = dc.Name
-	}
-	if dc.Type != nil {
-		objectMap["type"] = dc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3994,11 +3889,11 @@ type DscNode struct {
 	autorest.Response `json:"-"`
 	// DscNodeProperties - The properties of a DscNode.
 	*DscNodeProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4007,15 +3902,6 @@ func (dn DscNode) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dn.DscNodeProperties != nil {
 		objectMap["properties"] = dn.DscNodeProperties
-	}
-	if dn.ID != nil {
-		objectMap["id"] = dn.ID
-	}
-	if dn.Name != nil {
-		objectMap["name"] = dn.Name
-	}
-	if dn.Type != nil {
-		objectMap["type"] = dn.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4076,11 +3962,11 @@ type DscNodeConfiguration struct {
 	autorest.Response `json:"-"`
 	// DscNodeConfigurationProperties - Gets or sets the configuration properties.
 	*DscNodeConfigurationProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4089,15 +3975,6 @@ func (dnc DscNodeConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dnc.DscNodeConfigurationProperties != nil {
 		objectMap["properties"] = dnc.DscNodeConfigurationProperties
-	}
-	if dnc.ID != nil {
-		objectMap["id"] = dnc.ID
-	}
-	if dnc.Name != nil {
-		objectMap["name"] = dnc.Name
-	}
-	if dnc.Type != nil {
-		objectMap["type"] = dnc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4169,7 +4046,7 @@ type DscNodeConfigurationCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DscNodeConfigurationCreateOrUpdateFuture) Result(client DscNodeConfigurationClient) (dnc DscNodeConfiguration, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5237,11 +5114,11 @@ type Job struct {
 	autorest.Response `json:"-"`
 	// JobProperties - The properties of the job.
 	*JobProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5250,15 +5127,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if j.JobProperties != nil {
 		objectMap["properties"] = j.JobProperties
-	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5318,11 +5186,11 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 type JobCollectionItem struct {
 	// JobCollectionItemProperties - Job properties.
 	*JobCollectionItemProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5331,15 +5199,6 @@ func (jci JobCollectionItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if jci.JobCollectionItemProperties != nil {
 		objectMap["properties"] = jci.JobCollectionItemProperties
-	}
-	if jci.ID != nil {
-		objectMap["id"] = jci.ID
-	}
-	if jci.Name != nil {
-		objectMap["name"] = jci.Name
-	}
-	if jci.Type != nil {
-		objectMap["type"] = jci.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5397,21 +5256,21 @@ func (jci *JobCollectionItem) UnmarshalJSON(body []byte) error {
 
 // JobCollectionItemProperties job collection item properties.
 type JobCollectionItemProperties struct {
-	// Runbook - The runbook association.
+	// Runbook - READ-ONLY; The runbook association.
 	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
-	// JobID - The id of the job.
+	// JobID - READ-ONLY; The id of the job.
 	JobID *uuid.UUID `json:"jobId,omitempty"`
-	// CreationTime - The creation time of the job.
+	// CreationTime - READ-ONLY; The creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Status - The status of the job. Possible values include: 'JobStatusNew', 'JobStatusActivating', 'JobStatusRunning', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusStopped', 'JobStatusBlocked', 'JobStatusSuspended', 'JobStatusDisconnected', 'JobStatusSuspending', 'JobStatusStopping', 'JobStatusResuming', 'JobStatusRemoving'
+	// Status - READ-ONLY; The status of the job. Possible values include: 'JobStatusNew', 'JobStatusActivating', 'JobStatusRunning', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusStopped', 'JobStatusBlocked', 'JobStatusSuspended', 'JobStatusDisconnected', 'JobStatusSuspending', 'JobStatusStopping', 'JobStatusResuming', 'JobStatusRemoving'
 	Status JobStatus `json:"status,omitempty"`
-	// StartTime - The start time of the job.
+	// StartTime - READ-ONLY; The start time of the job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time of the job.
+	// EndTime - READ-ONLY; The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// LastModifiedTime - The last modified time of the job.
+	// LastModifiedTime - READ-ONLY; The last modified time of the job.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// ProvisioningState - The provisioning state of a resource.
+	// ProvisioningState - READ-ONLY; The provisioning state of a resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// RunOn - Specifies the runOn group name where the job was executed.
 	RunOn *string `json:"runOn,omitempty"`
@@ -5486,7 +5345,7 @@ type JobListResultV2 struct {
 	autorest.Response `json:"-"`
 	// Value - List of jobs.
 	Value *[]JobCollectionItem `json:"value,omitempty"`
-	// NextLink - The  link to the next page.
+	// NextLink - READ-ONLY; The  link to the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -5629,7 +5488,7 @@ func NewJobListResultV2Page(getNextPage func(context.Context, JobListResultV2) (
 
 // JobNavigation software update configuration machine run job navigation properties.
 type JobNavigation struct {
-	// ID - Id of the job associated with the software update configuration run
+	// ID - READ-ONLY; Id of the job associated with the software update configuration run
 	ID *string `json:"id,omitempty"`
 }
 
@@ -5716,11 +5575,11 @@ func (jp JobProperties) MarshalJSON() ([]byte, error) {
 // JobSchedule definition of the job schedule.
 type JobSchedule struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the id of the resource.
+	// ID - READ-ONLY; Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets the name of the variable.
+	// Name - READ-ONLY; Gets the name of the variable.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// JobScheduleProperties - Gets or sets the properties of the job schedule.
 	*JobScheduleProperties `json:"properties,omitempty"`
@@ -5729,15 +5588,6 @@ type JobSchedule struct {
 // MarshalJSON is the custom marshaler for JobSchedule.
 func (js JobSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if js.ID != nil {
-		objectMap["id"] = js.ID
-	}
-	if js.Name != nil {
-		objectMap["name"] = js.Name
-	}
-	if js.Type != nil {
-		objectMap["type"] = js.Type
-	}
 	if js.JobScheduleProperties != nil {
 		objectMap["properties"] = js.JobScheduleProperties
 	}
@@ -6287,11 +6137,11 @@ func (jsp JobStreamProperties) MarshalJSON() ([]byte, error) {
 
 // Key automation key which is used to register a DSC Node
 type Key struct {
-	// KeyName - Automation key name. Possible values include: 'KeyNamePrimary', 'KeyNameSecondary'
+	// KeyName - READ-ONLY; Automation key name. Possible values include: 'KeyNamePrimary', 'KeyNameSecondary'
 	KeyName KeyName `json:"KeyName,omitempty"`
-	// Permissions - Automation key permissions. Possible values include: 'Read', 'Full'
+	// Permissions - READ-ONLY; Automation key permissions. Possible values include: 'Read', 'Full'
 	Permissions KeyPermissions `json:"Permissions,omitempty"`
-	// Value - Value of the Automation Key used for registration.
+	// Value - READ-ONLY; Value of the Automation Key used for registration.
 	Value *string `json:"Value,omitempty"`
 }
 
@@ -6305,7 +6155,7 @@ type KeyListResult struct {
 // LinkedWorkspace definition of the linked workspace.
 type LinkedWorkspace struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the id of the linked workspace.
+	// ID - READ-ONLY; Gets the id of the linked workspace.
 	ID *string `json:"id,omitempty"`
 }
 
@@ -6332,11 +6182,11 @@ type Module struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6354,15 +6204,6 @@ func (mVar Module) MarshalJSON() ([]byte, error) {
 	}
 	if mVar.Location != nil {
 		objectMap["location"] = mVar.Location
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6856,11 +6697,11 @@ type OperationListResult struct {
 
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6946,11 +6787,11 @@ type ReadCloser struct {
 
 // Resource the core properties of ARM resources
 type Resource struct {
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6971,11 +6812,11 @@ type Runbook struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6993,15 +6834,6 @@ func (r Runbook) MarshalJSON() ([]byte, error) {
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7263,7 +7095,7 @@ type RunbookDraftReplaceContentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (rc ReadCloser, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7543,7 +7375,7 @@ type RunbookPublishFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RunbookPublishFuture) Result(client RunbookClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookPublishFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7654,11 +7486,11 @@ type Schedule struct {
 	autorest.Response `json:"-"`
 	// ScheduleProperties - Gets or sets the properties of the schedule.
 	*ScheduleProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7667,15 +7499,6 @@ func (s Schedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.ScheduleProperties != nil {
 		objectMap["properties"] = s.ScheduleProperties
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7958,7 +7781,7 @@ func NewScheduleListResultPage(getNextPage func(context.Context, ScheduleListRes
 type ScheduleProperties struct {
 	// StartTime - Gets or sets the start time of the schedule.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// StartTimeOffsetMinutes - Gets the start time's offset in minutes.
+	// StartTimeOffsetMinutes - READ-ONLY; Gets the start time's offset in minutes.
 	StartTimeOffsetMinutes *float64 `json:"startTimeOffsetMinutes,omitempty"`
 	// ExpiryTime - Gets or sets the end time of the schedule.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
@@ -8084,11 +7907,11 @@ type SoftareUpdateConfigurationRunTasks struct {
 // SoftwareUpdateConfiguration software update configuration properties.
 type SoftwareUpdateConfiguration struct {
 	autorest.Response `json:"-"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// SoftwareUpdateConfigurationProperties - Software update configuration properties.
 	*SoftwareUpdateConfigurationProperties `json:"properties,omitempty"`
@@ -8097,15 +7920,6 @@ type SoftwareUpdateConfiguration struct {
 // MarshalJSON is the custom marshaler for SoftwareUpdateConfiguration.
 func (suc SoftwareUpdateConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if suc.Name != nil {
-		objectMap["name"] = suc.Name
-	}
-	if suc.ID != nil {
-		objectMap["id"] = suc.ID
-	}
-	if suc.Type != nil {
-		objectMap["type"] = suc.Type
-	}
 	if suc.SoftwareUpdateConfigurationProperties != nil {
 		objectMap["properties"] = suc.SoftwareUpdateConfigurationProperties
 	}
@@ -8165,9 +7979,9 @@ func (suc *SoftwareUpdateConfiguration) UnmarshalJSON(body []byte) error {
 
 // SoftwareUpdateConfigurationCollectionItem software update configuration collection item properties.
 type SoftwareUpdateConfigurationCollectionItem struct {
-	// Name - Name of the software update configuration.
+	// Name - READ-ONLY; Name of the software update configuration.
 	Name *string `json:"name,omitempty"`
-	// ID - Resource Id of the software update configuration
+	// ID - READ-ONLY; Resource Id of the software update configuration
 	ID *string `json:"id,omitempty"`
 	// SoftwareUpdateConfigurationCollectionItemProperties - Software update configuration properties.
 	*SoftwareUpdateConfigurationCollectionItemProperties `json:"properties,omitempty"`
@@ -8176,12 +7990,6 @@ type SoftwareUpdateConfigurationCollectionItem struct {
 // MarshalJSON is the custom marshaler for SoftwareUpdateConfigurationCollectionItem.
 func (succi SoftwareUpdateConfigurationCollectionItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if succi.Name != nil {
-		objectMap["name"] = succi.Name
-	}
-	if succi.ID != nil {
-		objectMap["id"] = succi.ID
-	}
 	if succi.SoftwareUpdateConfigurationCollectionItemProperties != nil {
 		objectMap["properties"] = succi.SoftwareUpdateConfigurationCollectionItemProperties
 	}
@@ -8239,11 +8047,11 @@ type SoftwareUpdateConfigurationCollectionItemProperties struct {
 	Frequency ScheduleFrequency `json:"frequency,omitempty"`
 	// StartTime - the start time of the update.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// CreationTime - Creation time of the software update configuration, which only appears in the response.
+	// CreationTime - READ-ONLY; Creation time of the software update configuration, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - Last time software update configuration was modified, which only appears in the response.
+	// LastModifiedTime - READ-ONLY; Last time software update configuration was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
+	// ProvisioningState - READ-ONLY; Provisioning state for the software update configuration, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// NextRun - ext run time of the update.
 	NextRun *date.Time `json:"nextRun,omitempty"`
@@ -8259,9 +8067,9 @@ type SoftwareUpdateConfigurationListResult struct {
 // SoftwareUpdateConfigurationMachineRun software update configuration machine run model.
 type SoftwareUpdateConfigurationMachineRun struct {
 	autorest.Response `json:"-"`
-	// Name - Name of the software update configuration machine run
+	// Name - READ-ONLY; Name of the software update configuration machine run
 	Name *string `json:"name,omitempty"`
-	// ID - Resource Id of the software update configuration machine run
+	// ID - READ-ONLY; Resource Id of the software update configuration machine run
 	ID *string `json:"id,omitempty"`
 	// UpdateConfigurationMachineRunProperties - Software update configuration machine run properties.
 	*UpdateConfigurationMachineRunProperties `json:"properties,omitempty"`
@@ -8270,12 +8078,6 @@ type SoftwareUpdateConfigurationMachineRun struct {
 // MarshalJSON is the custom marshaler for SoftwareUpdateConfigurationMachineRun.
 func (sucmr SoftwareUpdateConfigurationMachineRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sucmr.Name != nil {
-		objectMap["name"] = sucmr.Name
-	}
-	if sucmr.ID != nil {
-		objectMap["id"] = sucmr.ID
-	}
 	if sucmr.UpdateConfigurationMachineRunProperties != nil {
 		objectMap["properties"] = sucmr.UpdateConfigurationMachineRunProperties
 	}
@@ -8340,17 +8142,17 @@ type SoftwareUpdateConfigurationProperties struct {
 	UpdateConfiguration *UpdateConfiguration `json:"updateConfiguration,omitempty"`
 	// ScheduleInfo - Schedule information for the Software update configuration
 	ScheduleInfo *ScheduleProperties `json:"scheduleInfo,omitempty"`
-	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
+	// ProvisioningState - READ-ONLY; Provisioning state for the software update configuration, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Error - Details of provisioning error
 	Error *ErrorResponse `json:"error,omitempty"`
-	// CreationTime - Creation time of the resource, which only appears in the response.
+	// CreationTime - READ-ONLY; Creation time of the resource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - CreatedBy property, which only appears in the response.
+	// CreatedBy - READ-ONLY; CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// LastModifiedTime - Last time resource was modified, which only appears in the response.
+	// LastModifiedTime - READ-ONLY; Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - READ-ONLY; LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// Tasks - Tasks information for the Software update configuration.
 	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
@@ -8359,9 +8161,9 @@ type SoftwareUpdateConfigurationProperties struct {
 // SoftwareUpdateConfigurationRun software update configuration Run properties.
 type SoftwareUpdateConfigurationRun struct {
 	autorest.Response `json:"-"`
-	// Name - Name of the software update configuration run.
+	// Name - READ-ONLY; Name of the software update configuration run.
 	Name *string `json:"name,omitempty"`
-	// ID - Resource Id of the software update configuration run
+	// ID - READ-ONLY; Resource Id of the software update configuration run
 	ID *string `json:"id,omitempty"`
 	// SoftwareUpdateConfigurationRunProperties - Software update configuration Run properties.
 	*SoftwareUpdateConfigurationRunProperties `json:"properties,omitempty"`
@@ -8370,12 +8172,6 @@ type SoftwareUpdateConfigurationRun struct {
 // MarshalJSON is the custom marshaler for SoftwareUpdateConfigurationRun.
 func (sucr SoftwareUpdateConfigurationRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sucr.Name != nil {
-		objectMap["name"] = sucr.Name
-	}
-	if sucr.ID != nil {
-		objectMap["id"] = sucr.ID
-	}
 	if sucr.SoftwareUpdateConfigurationRunProperties != nil {
 		objectMap["properties"] = sucr.SoftwareUpdateConfigurationRunProperties
 	}
@@ -8437,27 +8233,27 @@ type SoftwareUpdateConfigurationRunListResult struct {
 type SoftwareUpdateConfigurationRunProperties struct {
 	// SoftwareUpdateConfiguration - software update configuration triggered this run
 	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
-	// Status - Status of the software update configuration run.
+	// Status - READ-ONLY; Status of the software update configuration run.
 	Status *string `json:"status,omitempty"`
-	// ConfiguredDuration - Configured duration for the software update configuration run.
+	// ConfiguredDuration - READ-ONLY; Configured duration for the software update configuration run.
 	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
-	// OsType - Operating system target of the software update configuration triggered this run
+	// OsType - READ-ONLY; Operating system target of the software update configuration triggered this run
 	OsType *string `json:"osType,omitempty"`
-	// StartTime - Start time of the software update configuration run.
+	// StartTime - READ-ONLY; Start time of the software update configuration run.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the software update configuration run.
+	// EndTime - READ-ONLY; End time of the software update configuration run.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ComputerCount - Number of computers in the software update configuration run.
+	// ComputerCount - READ-ONLY; Number of computers in the software update configuration run.
 	ComputerCount *int32 `json:"computerCount,omitempty"`
-	// FailedCount - Number of computers with failed status.
+	// FailedCount - READ-ONLY; Number of computers with failed status.
 	FailedCount *int32 `json:"failedCount,omitempty"`
-	// CreationTime - Creation time of the resource, which only appears in the response.
+	// CreationTime - READ-ONLY; Creation time of the resource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - CreatedBy property, which only appears in the response.
+	// CreatedBy - READ-ONLY; CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// LastModifiedTime - Last time resource was modified, which only appears in the response.
+	// LastModifiedTime - READ-ONLY; Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - READ-ONLY; LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// Tasks - Software update configuration tasks triggered in this run
 	Tasks *SoftareUpdateConfigurationRunTasks `json:"tasks,omitempty"`
@@ -8476,11 +8272,11 @@ type SourceControl struct {
 	autorest.Response `json:"-"`
 	// SourceControlProperties - The properties of the source control.
 	*SourceControlProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8489,15 +8285,6 @@ func (sc SourceControl) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sc.SourceControlProperties != nil {
 		objectMap["properties"] = sc.SourceControlProperties
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8794,11 +8581,11 @@ type SourceControlSecurityTokenProperties struct {
 // SourceControlSyncJob definition of the source control sync job.
 type SourceControlSyncJob struct {
 	autorest.Response `json:"-"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// ID - Resource id.
+	// ID - READ-ONLY; Resource id.
 	ID *string `json:"id,omitempty"`
 	// SourceControlSyncJobProperties - The properties of the source control sync job.
 	*SourceControlSyncJobProperties `json:"properties,omitempty"`
@@ -8807,15 +8594,6 @@ type SourceControlSyncJob struct {
 // MarshalJSON is the custom marshaler for SourceControlSyncJob.
 func (scsj SourceControlSyncJob) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scsj.Name != nil {
-		objectMap["name"] = scsj.Name
-	}
-	if scsj.Type != nil {
-		objectMap["type"] = scsj.Type
-	}
-	if scsj.ID != nil {
-		objectMap["id"] = scsj.ID
-	}
 	if scsj.SourceControlSyncJobProperties != nil {
 		objectMap["properties"] = scsj.SourceControlSyncJobProperties
 	}
@@ -8931,13 +8709,13 @@ func (scsjbi *SourceControlSyncJobByID) UnmarshalJSON(body []byte) error {
 type SourceControlSyncJobByIDProperties struct {
 	// SourceControlSyncJobID - The source control sync job id.
 	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
-	// CreationTime - The creation time of the job.
+	// CreationTime - READ-ONLY; The creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ProvisioningState - The provisioning state of the job. Possible values include: 'Completed', 'Failed', 'Running'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// StartTime - The start time of the job.
+	// StartTime - READ-ONLY; The start time of the job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time of the job.
+	// EndTime - READ-ONLY; The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
@@ -9142,13 +8920,13 @@ func NewSourceControlSyncJobListResultPage(getNextPage func(context.Context, Sou
 type SourceControlSyncJobProperties struct {
 	// SourceControlSyncJobID - The source control sync job id.
 	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
-	// CreationTime - The creation time of the job.
+	// CreationTime - READ-ONLY; The creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ProvisioningState - The provisioning state of the job. Possible values include: 'Completed', 'Failed', 'Running'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// StartTime - The start time of the job.
+	// StartTime - READ-ONLY; The start time of the job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time of the job.
+	// EndTime - READ-ONLY; The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
@@ -9156,7 +8934,7 @@ type SourceControlSyncJobProperties struct {
 
 // SourceControlSyncJobStream definition of the source control sync job stream.
 type SourceControlSyncJobStream struct {
-	// ID - Resource id.
+	// ID - READ-ONLY; Resource id.
 	ID *string `json:"id,omitempty"`
 	// SourceControlSyncJobStreamProperties - The properties of the source control sync job stream.
 	*SourceControlSyncJobStreamProperties `json:"properties,omitempty"`
@@ -9165,9 +8943,6 @@ type SourceControlSyncJobStream struct {
 // MarshalJSON is the custom marshaler for SourceControlSyncJobStream.
 func (scsjs SourceControlSyncJobStream) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scsjs.ID != nil {
-		objectMap["id"] = scsjs.ID
-	}
 	if scsjs.SourceControlSyncJobStreamProperties != nil {
 		objectMap["properties"] = scsjs.SourceControlSyncJobStreamProperties
 	}
@@ -9210,7 +8985,7 @@ func (scsjs *SourceControlSyncJobStream) UnmarshalJSON(body []byte) error {
 // SourceControlSyncJobStreamByID definition of the source control sync job stream by id.
 type SourceControlSyncJobStreamByID struct {
 	autorest.Response `json:"-"`
-	// ID - Resource id.
+	// ID - READ-ONLY; Resource id.
 	ID *string `json:"id,omitempty"`
 	// SourceControlSyncJobStreamByIDProperties - The properties of the source control sync job stream.
 	*SourceControlSyncJobStreamByIDProperties `json:"properties,omitempty"`
@@ -9219,9 +8994,6 @@ type SourceControlSyncJobStreamByID struct {
 // MarshalJSON is the custom marshaler for SourceControlSyncJobStreamByID.
 func (scsjsbi SourceControlSyncJobStreamByID) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scsjsbi.ID != nil {
-		objectMap["id"] = scsjsbi.ID
-	}
 	if scsjsbi.SourceControlSyncJobStreamByIDProperties != nil {
 		objectMap["properties"] = scsjsbi.SourceControlSyncJobStreamByIDProperties
 	}
@@ -9267,7 +9039,7 @@ type SourceControlSyncJobStreamByIDProperties struct {
 	SourceControlSyncJobStreamID *string `json:"sourceControlSyncJobStreamId,omitempty"`
 	// Summary - The summary of the sync job stream.
 	Summary *string `json:"summary,omitempty"`
-	// Time - The time of the sync job stream.
+	// Time - READ-ONLY; The time of the sync job stream.
 	Time *date.Time `json:"time,omitempty"`
 	// StreamType - The type of the sync job stream. Possible values include: 'StreamTypeError', 'StreamTypeOutput'
 	StreamType StreamType `json:"streamType,omitempty"`
@@ -9285,9 +9057,6 @@ func (scsjsbip SourceControlSyncJobStreamByIDProperties) MarshalJSON() ([]byte, 
 	}
 	if scsjsbip.Summary != nil {
 		objectMap["summary"] = scsjsbip.Summary
-	}
-	if scsjsbip.Time != nil {
-		objectMap["time"] = scsjsbip.Time
 	}
 	if scsjsbip.StreamType != "" {
 		objectMap["streamType"] = scsjsbip.StreamType
@@ -9307,7 +9076,7 @@ type SourceControlSyncJobStreamProperties struct {
 	SourceControlSyncJobStreamID *string `json:"sourceControlSyncJobStreamId,omitempty"`
 	// Summary - The summary of the sync job stream.
 	Summary *string `json:"summary,omitempty"`
-	// Time - The time of the sync job stream.
+	// Time - READ-ONLY; The time of the sync job stream.
 	Time *date.Time `json:"time,omitempty"`
 	// StreamType - The type of the sync job stream. Possible values include: 'StreamTypeError', 'StreamTypeOutput'
 	StreamType StreamType `json:"streamType,omitempty"`
@@ -9319,7 +9088,7 @@ type SourceControlSyncJobStreamsListBySyncJob struct {
 	autorest.Response `json:"-"`
 	// Value - The list of source control sync job streams.
 	Value *[]SourceControlSyncJobStream `json:"value,omitempty"`
-	// NextLink - The next link.
+	// NextLink - READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -9518,15 +9287,15 @@ type SourceControlUpdateProperties struct {
 
 // Statistics definition of the statistic.
 type Statistics struct {
-	// CounterProperty - Gets the property value of the statistic.
+	// CounterProperty - READ-ONLY; Gets the property value of the statistic.
 	CounterProperty *string `json:"counterProperty,omitempty"`
-	// CounterValue - Gets the value of the statistic.
+	// CounterValue - READ-ONLY; Gets the value of the statistic.
 	CounterValue *int64 `json:"counterValue,omitempty"`
-	// StartTime - Gets the startTime of the statistic.
+	// StartTime - READ-ONLY; Gets the startTime of the statistic.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the endTime of the statistic.
+	// EndTime - READ-ONLY; Gets the endTime of the statistic.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ID - Gets the id.
+	// ID - READ-ONLY; Gets the id.
 	ID *string `json:"id,omitempty"`
 }
 
@@ -9683,11 +9452,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9699,15 +9468,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9747,35 +9507,35 @@ type UpdateConfiguration struct {
 
 // UpdateConfigurationMachineRunProperties software update configuration machine run properties.
 type UpdateConfigurationMachineRunProperties struct {
-	// TargetComputer - name of the updated computer
+	// TargetComputer - READ-ONLY; name of the updated computer
 	TargetComputer *string `json:"targetComputer,omitempty"`
-	// TargetComputerType - type of the updated computer.
+	// TargetComputerType - READ-ONLY; type of the updated computer.
 	TargetComputerType *string `json:"targetComputerType,omitempty"`
 	// SoftwareUpdateConfiguration - software update configuration triggered this run
 	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
-	// Status - Status of the software update configuration machine run.
+	// Status - READ-ONLY; Status of the software update configuration machine run.
 	Status *string `json:"status,omitempty"`
-	// OsType - Operating system target of the software update configuration triggered this run
+	// OsType - READ-ONLY; Operating system target of the software update configuration triggered this run
 	OsType *string `json:"osType,omitempty"`
-	// CorrelationID - correlation id of the software update configuration machine run
+	// CorrelationID - READ-ONLY; correlation id of the software update configuration machine run
 	CorrelationID *uuid.UUID `json:"correlationId,omitempty"`
-	// SourceComputerID - source computer id of the software update configuration machine run
+	// SourceComputerID - READ-ONLY; source computer id of the software update configuration machine run
 	SourceComputerID *uuid.UUID `json:"sourceComputerId,omitempty"`
-	// StartTime - Start time of the software update configuration machine run.
+	// StartTime - READ-ONLY; Start time of the software update configuration machine run.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the software update configuration machine run.
+	// EndTime - READ-ONLY; End time of the software update configuration machine run.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ConfiguredDuration - configured duration for the software update configuration run.
+	// ConfiguredDuration - READ-ONLY; configured duration for the software update configuration run.
 	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
 	// Job - Job associated with the software update configuration machine run
 	Job *JobNavigation `json:"job,omitempty"`
-	// CreationTime - Creation time of the resource, which only appears in the response.
+	// CreationTime - READ-ONLY; Creation time of the resource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - createdBy property, which only appears in the response.
+	// CreatedBy - READ-ONLY; createdBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// LastModifiedTime - Last time resource was modified, which only appears in the response.
+	// LastModifiedTime - READ-ONLY; Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - READ-ONLY; lastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// Error - Details of provisioning error
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -9783,7 +9543,7 @@ type UpdateConfigurationMachineRunProperties struct {
 
 // UpdateConfigurationNavigation software update configuration Run Navigation model.
 type UpdateConfigurationNavigation struct {
-	// Name - Name of the software update configuration triggered the software update configuration run
+	// Name - READ-ONLY; Name of the software update configuration triggered the software update configuration run
 	Name *string `json:"name,omitempty"`
 }
 
@@ -9823,11 +9583,11 @@ type Variable struct {
 	autorest.Response `json:"-"`
 	// VariableProperties - Gets or sets the properties of the variable.
 	*VariableProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9836,15 +9596,6 @@ func (vVar Variable) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vVar.VariableProperties != nil {
 		objectMap["properties"] = vVar.VariableProperties
-	}
-	if vVar.ID != nil {
-		objectMap["id"] = vVar.ID
-	}
-	if vVar.Name != nil {
-		objectMap["name"] = vVar.Name
-	}
-	if vVar.Type != nil {
-		objectMap["type"] = vVar.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10195,11 +9946,11 @@ type Watcher struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10217,15 +9968,6 @@ func (w Watcher) MarshalJSON() ([]byte, error) {
 	}
 	if w.Location != nil {
 		objectMap["location"] = w.Location
-	}
-	if w.ID != nil {
-		objectMap["id"] = w.ID
-	}
-	if w.Name != nil {
-		objectMap["name"] = w.Name
-	}
-	if w.Type != nil {
-		objectMap["type"] = w.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10464,13 +10206,13 @@ type WatcherProperties struct {
 	ScriptParameters map[string]*string `json:"scriptParameters"`
 	// ScriptRunOn - Gets or sets the name of the hybrid worker group the watcher will run on.
 	ScriptRunOn *string `json:"scriptRunOn,omitempty"`
-	// Status - Gets the current status of the watcher.
+	// Status - READ-ONLY; Gets the current status of the watcher.
 	Status *string `json:"status,omitempty"`
-	// CreationTime - Gets or sets the creation time.
+	// CreationTime - READ-ONLY; Gets or sets the creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - Gets or sets the last modified time.
+	// LastModifiedTime - READ-ONLY; Gets or sets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - Details of the user who last modified the watcher.
+	// LastModifiedBy - READ-ONLY; Details of the user who last modified the watcher.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
@@ -10490,18 +10232,6 @@ func (wp WatcherProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.ScriptRunOn != nil {
 		objectMap["scriptRunOn"] = wp.ScriptRunOn
-	}
-	if wp.Status != nil {
-		objectMap["status"] = wp.Status
-	}
-	if wp.CreationTime != nil {
-		objectMap["creationTime"] = wp.CreationTime
-	}
-	if wp.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = wp.LastModifiedTime
-	}
-	if wp.LastModifiedBy != nil {
-		objectMap["lastModifiedBy"] = wp.LastModifiedBy
 	}
 	if wp.Description != nil {
 		objectMap["description"] = wp.Description
@@ -10573,11 +10303,11 @@ type Webhook struct {
 	autorest.Response `json:"-"`
 	// WebhookProperties - Gets or sets the webhook properties.
 	*WebhookProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10586,15 +10316,6 @@ func (w Webhook) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.WebhookProperties != nil {
 		objectMap["properties"] = w.WebhookProperties
-	}
-	if w.ID != nil {
-		objectMap["id"] = w.ID
-	}
-	if w.Name != nil {
-		objectMap["name"] = w.Name
-	}
-	if w.Type != nil {
-		objectMap["type"] = w.Type
 	}
 	return json.Marshal(objectMap)
 }

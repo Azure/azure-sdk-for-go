@@ -116,6 +116,9 @@ func (client AssessmentsClient) CreatePreparer(ctx context.Context, resourceGrou
 		"api-version": APIVersion,
 	}
 
+	assessment.ID = nil
+	assessment.Name = nil
+	assessment.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

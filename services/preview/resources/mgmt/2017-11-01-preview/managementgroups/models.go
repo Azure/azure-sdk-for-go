@@ -91,11 +91,11 @@ type ErrorResponse struct {
 
 // Info the management group resource.
 type Info struct {
-	// ID - The fully qualified ID for the management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+	// ID - READ-ONLY; The fully qualified ID for the management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource. For example, /providers/Microsoft.Management/managementGroups
+	// Type - READ-ONLY; The type of the resource. For example, /providers/Microsoft.Management/managementGroups
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the management group. For example, 00000000-0000-0000-0000-000000000000
+	// Name - READ-ONLY; The name of the management group. For example, 00000000-0000-0000-0000-000000000000
 	Name            *string `json:"name,omitempty"`
 	*InfoProperties `json:"properties,omitempty"`
 }
@@ -103,15 +103,6 @@ type Info struct {
 // MarshalJSON is the custom marshaler for Info.
 func (i Info) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
-	if i.Type != nil {
-		objectMap["type"] = i.Type
-	}
-	if i.Name != nil {
-		objectMap["name"] = i.Name
-	}
 	if i.InfoProperties != nil {
 		objectMap["properties"] = i.InfoProperties
 	}
@@ -182,7 +173,7 @@ type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of management groups.
 	Value *[]Info `json:"value,omitempty"`
-	// NextLink - The URL to use for getting the next set of results.
+	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -326,11 +317,11 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 // ManagementGroup the management group details.
 type ManagementGroup struct {
 	autorest.Response `json:"-"`
-	// ID - The fully qualified ID for the management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+	// ID - READ-ONLY; The fully qualified ID for the management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource.  For example, /providers/Microsoft.Management/managementGroups
+	// Type - READ-ONLY; The type of the resource.  For example, /providers/Microsoft.Management/managementGroups
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the management group. For example, 00000000-0000-0000-0000-000000000000
+	// Name - READ-ONLY; The name of the management group. For example, 00000000-0000-0000-0000-000000000000
 	Name        *string `json:"name,omitempty"`
 	*Properties `json:"properties,omitempty"`
 }
@@ -338,15 +329,6 @@ type ManagementGroup struct {
 // MarshalJSON is the custom marshaler for ManagementGroup.
 func (mg ManagementGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mg.ID != nil {
-		objectMap["id"] = mg.ID
-	}
-	if mg.Type != nil {
-		objectMap["type"] = mg.Type
-	}
-	if mg.Name != nil {
-		objectMap["name"] = mg.Name
-	}
 	if mg.Properties != nil {
 		objectMap["properties"] = mg.Properties
 	}
@@ -406,7 +388,7 @@ func (mg *ManagementGroup) UnmarshalJSON(body []byte) error {
 
 // Operation operation supported by the Microsoft.Management resource provider.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -414,22 +396,22 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - The name of the provider.
+	// Provider - READ-ONLY; The name of the provider.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The resource on which the operation is performed.
+	// Resource - READ-ONLY; The resource on which the operation is performed.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The operation that can be performed.
+	// Operation - READ-ONLY; The operation that can be performed.
 	Operation *string `json:"operation,omitempty"`
-	// Description - Operation description.
+	// Description - READ-ONLY; Operation description.
 	Description *string `json:"description,omitempty"`
 }
 
 // OperationListResult describes the result of the request to list Microsoft.Management operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of operations supported by the Microsoft.Management resource provider.
+	// Value - READ-ONLY; List of operations supported by the Microsoft.Management resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

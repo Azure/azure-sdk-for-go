@@ -68,11 +68,11 @@ type Assignment struct {
 	autorest.Response `json:"-"`
 	// AssignmentProperties - Properties for the policy assignment.
 	*AssignmentProperties `json:"properties,omitempty"`
-	// ID - The ID of the policy assignment.
+	// ID - READ-ONLY; The ID of the policy assignment.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the policy assignment.
+	// Type - READ-ONLY; The type of the policy assignment.
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the policy assignment.
+	// Name - READ-ONLY; The name of the policy assignment.
 	Name *string `json:"name,omitempty"`
 	// Sku - The policy sku.
 	Sku *Sku `json:"sku,omitempty"`
@@ -83,15 +83,6 @@ func (a Assignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AssignmentProperties != nil {
 		objectMap["properties"] = a.AssignmentProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
 	}
 	if a.Sku != nil {
 		objectMap["sku"] = a.Sku
@@ -328,9 +319,9 @@ type Definition struct {
 	autorest.Response `json:"-"`
 	// DefinitionProperties - The policy definition properties.
 	*DefinitionProperties `json:"properties,omitempty"`
-	// ID - The ID of the policy definition.
+	// ID - READ-ONLY; The ID of the policy definition.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the policy definition.
+	// Name - READ-ONLY; The name of the policy definition.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -339,12 +330,6 @@ func (d Definition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DefinitionProperties != nil {
 		objectMap["properties"] = d.DefinitionProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -579,11 +564,11 @@ type SetDefinition struct {
 	autorest.Response `json:"-"`
 	// SetDefinitionProperties - The policy definition properties.
 	*SetDefinitionProperties `json:"properties,omitempty"`
-	// ID - The ID of the policy set definition.
+	// ID - READ-ONLY; The ID of the policy set definition.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the policy set definition.
+	// Name - READ-ONLY; The name of the policy set definition.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource (Microsoft.Authorization/policySetDefinitions).
+	// Type - READ-ONLY; The type of the resource (Microsoft.Authorization/policySetDefinitions).
 	Type *string `json:"type,omitempty"`
 }
 
@@ -592,15 +577,6 @@ func (sd SetDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sd.SetDefinitionProperties != nil {
 		objectMap["properties"] = sd.SetDefinitionProperties
-	}
-	if sd.ID != nil {
-		objectMap["id"] = sd.ID
-	}
-	if sd.Name != nil {
-		objectMap["name"] = sd.Name
-	}
-	if sd.Type != nil {
-		objectMap["type"] = sd.Type
 	}
 	return json.Marshal(objectMap)
 }

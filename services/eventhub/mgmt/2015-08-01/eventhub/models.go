@@ -197,7 +197,7 @@ type CheckNameAvailabilityResult struct {
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
 	// Reason - The reason for unavailability of a Namespace. Possible values include: 'None', 'InvalidName', 'SubscriptionIsDisabled', 'NameInUse', 'NameInLockdown', 'TooManyNamespaceInCurrentSubscription'
 	Reason UnavailableReason `json:"reason,omitempty"`
-	// Message - The detailed info regarding the reason associated with the Namespace.
+	// Message - READ-ONLY; The detailed info regarding the reason associated with the Namespace.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -430,11 +430,11 @@ func NewConsumerGroupListResultPage(getNextPage func(context.Context, ConsumerGr
 
 // ConsumerGroupProperties properties supplied to the Create Or Update Consumer Group operation.
 type ConsumerGroupProperties struct {
-	// CreatedAt - Exact time the message was created.
+	// CreatedAt - READ-ONLY; Exact time the message was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// EventHubPath - The path of the Event Hub.
+	// EventHubPath - READ-ONLY; The path of the Event Hub.
 	EventHubPath *string `json:"eventHubPath,omitempty"`
-	// UpdatedAt - The exact time the message was updated.
+	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 	// UserMetadata - The user metadata.
 	UserMetadata *string `json:"userMetadata,omitempty"`
@@ -444,13 +444,13 @@ type ConsumerGroupProperties struct {
 type ConsumerGroupResource struct {
 	autorest.Response        `json:"-"`
 	*ConsumerGroupProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -460,17 +460,8 @@ func (cgr ConsumerGroupResource) MarshalJSON() ([]byte, error) {
 	if cgr.ConsumerGroupProperties != nil {
 		objectMap["properties"] = cgr.ConsumerGroupProperties
 	}
-	if cgr.ID != nil {
-		objectMap["id"] = cgr.ID
-	}
-	if cgr.Name != nil {
-		objectMap["name"] = cgr.Name
-	}
 	if cgr.Location != nil {
 		objectMap["location"] = cgr.Location
-	}
-	if cgr.Type != nil {
-		objectMap["type"] = cgr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -998,7 +989,7 @@ type NamespaceProperties struct {
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 	// ServiceBusEndpoint - Endpoint you can use to perform Service Bus operations.
 	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
-	// MetricID - Identifier for Azure Insights metrics
+	// MetricID - READ-ONLY; Identifier for Azure Insights metrics
 	MetricID *string `json:"metricId,omitempty"`
 	// Enabled - Specifies whether this instance is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -1011,13 +1002,13 @@ type NamespaceResource struct {
 	*NamespaceProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1033,17 +1024,8 @@ func (nr NamespaceResource) MarshalJSON() ([]byte, error) {
 	if nr.Tags != nil {
 		objectMap["tags"] = nr.Tags
 	}
-	if nr.ID != nil {
-		objectMap["id"] = nr.ID
-	}
-	if nr.Name != nil {
-		objectMap["name"] = nr.Name
-	}
 	if nr.Location != nil {
 		objectMap["location"] = nr.Location
-	}
-	if nr.Type != nil {
-		objectMap["type"] = nr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1136,7 +1118,7 @@ type NamespacesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (nr NamespaceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.NamespacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1165,7 +1147,7 @@ type NamespacesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.NamespacesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1200,7 +1182,7 @@ func (nup NamespaceUpdateParameter) MarshalJSON() ([]byte, error) {
 
 // Operation a Event Hub REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -1208,11 +1190,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.EventHub
+	// Provider - READ-ONLY; Service provider: Microsoft.EventHub
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -1220,9 +1202,9 @@ type OperationDisplay struct {
 // and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Event Hub operations supported by the Microsoft.EventHub resource provider.
+	// Value - READ-ONLY; List of Event Hub operations supported by the Microsoft.EventHub resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1365,17 +1347,17 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // Properties properties supplied to the Create Or Update Event Hub operation.
 type Properties struct {
-	// CreatedAt - Exact time the Event Hub was created.
+	// CreatedAt - READ-ONLY; Exact time the Event Hub was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// MessageRetentionInDays - Number of days to retain the events for this Event Hub.
 	MessageRetentionInDays *int64 `json:"messageRetentionInDays,omitempty"`
 	// PartitionCount - Number of partitions created for the Event Hub.
 	PartitionCount *int64 `json:"partitionCount,omitempty"`
-	// PartitionIds - Current number of shards on the Event Hub.
+	// PartitionIds - READ-ONLY; Current number of shards on the Event Hub.
 	PartitionIds *[]string `json:"partitionIds,omitempty"`
 	// Status - Enumerates the possible values for the status of the Event Hub. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'
 	Status EntityStatus `json:"status,omitempty"`
-	// UpdatedAt - The exact time the message was updated.
+	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 }
 
@@ -1387,28 +1369,28 @@ type RegenerateKeysParameters struct {
 
 // Resource the Resource definition
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
 // ResourceListKeys namespace/EventHub Connection String
 type ResourceListKeys struct {
 	autorest.Response `json:"-"`
-	// PrimaryConnectionString - Primary connection string of the created Namespace AuthorizationRule.
+	// PrimaryConnectionString - READ-ONLY; Primary connection string of the created Namespace AuthorizationRule.
 	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
-	// SecondaryConnectionString - Secondary connection string of the created Namespace AuthorizationRule.
+	// SecondaryConnectionString - READ-ONLY; Secondary connection string of the created Namespace AuthorizationRule.
 	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
-	// PrimaryKey - A base64-encoded 256-bit primary key for signing and validating the SAS token.
+	// PrimaryKey - READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
-	// SecondaryKey - A base64-encoded 256-bit primary key for signing and validating the SAS token.
+	// SecondaryKey - READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
-	// KeyName - A string that describes the AuthorizationRule.
+	// KeyName - READ-ONLY; A string that describes the AuthorizationRule.
 	KeyName *string `json:"keyName,omitempty"`
 }
 
@@ -1416,13 +1398,13 @@ type ResourceListKeys struct {
 type ResourceType struct {
 	autorest.Response `json:"-"`
 	*Properties       `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1432,17 +1414,8 @@ func (rt ResourceType) MarshalJSON() ([]byte, error) {
 	if rt.Properties != nil {
 		objectMap["properties"] = rt.Properties
 	}
-	if rt.ID != nil {
-		objectMap["id"] = rt.ID
-	}
-	if rt.Name != nil {
-		objectMap["name"] = rt.Name
-	}
 	if rt.Location != nil {
 		objectMap["location"] = rt.Location
-	}
-	if rt.Type != nil {
-		objectMap["type"] = rt.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1733,13 +1706,13 @@ type SharedAccessAuthorizationRuleProperties struct {
 type SharedAccessAuthorizationRuleResource struct {
 	autorest.Response                        `json:"-"`
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1749,17 +1722,8 @@ func (saarr SharedAccessAuthorizationRuleResource) MarshalJSON() ([]byte, error)
 	if saarr.SharedAccessAuthorizationRuleProperties != nil {
 		objectMap["properties"] = saarr.SharedAccessAuthorizationRuleProperties
 	}
-	if saarr.ID != nil {
-		objectMap["id"] = saarr.ID
-	}
-	if saarr.Name != nil {
-		objectMap["name"] = saarr.Name
-	}
 	if saarr.Location != nil {
 		objectMap["location"] = saarr.Location
-	}
-	if saarr.Type != nil {
-		objectMap["type"] = saarr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1838,13 +1802,13 @@ type Sku struct {
 type TrackedResource struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1854,17 +1818,8 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

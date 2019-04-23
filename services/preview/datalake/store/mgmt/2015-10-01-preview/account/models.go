@@ -158,9 +158,10 @@ func PossibleOperationStatusValues() []OperationStatus {
 // asynchronous operation failed, the response body includes the HTTP status code for the failed request
 // and error information regarding the failure.
 type AzureAsyncOperationResult struct {
-	// Status - the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
+	// Status - READ-ONLY; the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
 	Status OperationStatus `json:"status,omitempty"`
-	Error  *Error          `json:"error,omitempty"`
+	// Error - READ-ONLY
+	Error *Error `json:"error,omitempty"`
 }
 
 // CreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -172,7 +173,7 @@ type CreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateFuture) Result(client Client) (dlsa DataLakeStoreAccount, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.CreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -198,9 +199,9 @@ type DataLakeStoreAccount struct {
 	Location *string `json:"location,omitempty"`
 	// Name - the account name.
 	Name *string `json:"name,omitempty"`
-	// Type - the namespace and type of the account.
+	// Type - READ-ONLY; the namespace and type of the account.
 	Type *string `json:"type,omitempty"`
-	// ID - the account subscription ID.
+	// ID - READ-ONLY; the account subscription ID.
 	ID *string `json:"id,omitempty"`
 	// Identity - The Key vault encryption identity, if any.
 	Identity *EncryptionIdentity `json:"identity,omitempty"`
@@ -219,12 +220,6 @@ func (dlsa DataLakeStoreAccount) MarshalJSON() ([]byte, error) {
 	if dlsa.Name != nil {
 		objectMap["name"] = dlsa.Name
 	}
-	if dlsa.Type != nil {
-		objectMap["type"] = dlsa.Type
-	}
-	if dlsa.ID != nil {
-		objectMap["id"] = dlsa.ID
-	}
 	if dlsa.Identity != nil {
 		objectMap["identity"] = dlsa.Identity
 	}
@@ -240,11 +235,11 @@ func (dlsa DataLakeStoreAccount) MarshalJSON() ([]byte, error) {
 // DataLakeStoreAccountListResult data Lake Store account list information response.
 type DataLakeStoreAccountListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the results of the list operation
+	// Value - READ-ONLY; the results of the list operation
 	Value *[]DataLakeStoreAccount `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Count - the total count of results that are available, but might not be returned in the current page.
+	// Count - READ-ONLY; the total count of results that are available, but might not be returned in the current page.
 	Count *int64 `json:"count,omitempty"`
 }
 
@@ -388,19 +383,19 @@ func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, Dat
 
 // DataLakeStoreAccountProperties data Lake Store account properties information
 type DataLakeStoreAccountProperties struct {
-	// ProvisioningState - the status of the Data Lake Store account while being provisioned. Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'
+	// ProvisioningState - READ-ONLY; the status of the Data Lake Store account while being provisioned. Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'
 	ProvisioningState DataLakeStoreAccountStatus `json:"provisioningState,omitempty"`
-	// State - the status of the Data Lake Store account after provisioning has completed. Possible values include: 'Active', 'Suspended'
+	// State - READ-ONLY; the status of the Data Lake Store account after provisioning has completed. Possible values include: 'Active', 'Suspended'
 	State DataLakeStoreAccountState `json:"state,omitempty"`
-	// CreationTime - the account creation time.
+	// CreationTime - READ-ONLY; the account creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// EncryptionState - The current state of encryption for this Data Lake store account. Possible values include: 'Enabled', 'Disabled'
 	EncryptionState EncryptionState `json:"encryptionState,omitempty"`
-	// EncryptionProvisioningState - The current state of encryption provisioning for this Data Lake store account. Possible values include: 'EncryptionProvisioningStateCreating', 'EncryptionProvisioningStateSucceeded'
+	// EncryptionProvisioningState - READ-ONLY; The current state of encryption provisioning for this Data Lake store account. Possible values include: 'EncryptionProvisioningStateCreating', 'EncryptionProvisioningStateSucceeded'
 	EncryptionProvisioningState EncryptionProvisioningState `json:"encryptionProvisioningState,omitempty"`
 	// EncryptionConfig - The Key vault encryption configuration.
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
-	// LastModifiedTime - the account last modified time.
+	// LastModifiedTime - READ-ONLY; the account last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Endpoint - the gateway host.
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -411,11 +406,11 @@ type DataLakeStoreAccountProperties struct {
 // DataLakeStoreFirewallRuleListResult data Lake Store firewall rule list information.
 type DataLakeStoreFirewallRuleListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the results of the list operation
+	// Value - READ-ONLY; the results of the list operation
 	Value *[]FirewallRule `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Count - the total count of results that are available, but might not be returned in the current page.
+	// Count - READ-ONLY; the total count of results that are available, but might not be returned in the current page.
 	Count *int64 `json:"count,omitempty"`
 }
 
@@ -566,7 +561,7 @@ type DeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -591,33 +586,33 @@ type EncryptionConfig struct {
 type EncryptionIdentity struct {
 	// Type - The type of encryption being used. Currently the only supported type is 'SystemAssigned'. Possible values include: 'SystemAssigned'
 	Type EncryptionIdentityType `json:"type,omitempty"`
-	// PrincipalID - The principal identifier associated with the encryption.
+	// PrincipalID - READ-ONLY; The principal identifier associated with the encryption.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// TenantID - The tenant identifier associated with the encryption.
+	// TenantID - READ-ONLY; The tenant identifier associated with the encryption.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
 // Error data Lake Store error information
 type Error struct {
-	// Code - the HTTP status code or error code associated with this error
+	// Code - READ-ONLY; the HTTP status code or error code associated with this error
 	Code *string `json:"code,omitempty"`
-	// Message - the error message to display.
+	// Message - READ-ONLY; the error message to display.
 	Message *string `json:"message,omitempty"`
-	// Target - the target of the error.
+	// Target - READ-ONLY; the target of the error.
 	Target *string `json:"target,omitempty"`
-	// Details - the list of error details
+	// Details - READ-ONLY; the list of error details
 	Details *[]ErrorDetails `json:"details,omitempty"`
-	// InnerError - the inner exceptions or errors, if any
+	// InnerError - READ-ONLY; the inner exceptions or errors, if any
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
 // ErrorDetails data Lake Store error details information
 type ErrorDetails struct {
-	// Code - the HTTP status code or error code associated with this error
+	// Code - READ-ONLY; the HTTP status code or error code associated with this error
 	Code *string `json:"code,omitempty"`
-	// Message - the error message localized based on Accept-Language
+	// Message - READ-ONLY; the error message localized based on Accept-Language
 	Message *string `json:"message,omitempty"`
-	// Target - the target of the particular error (for example, the name of the property in error).
+	// Target - READ-ONLY; the target of the particular error (for example, the name of the property in error).
 	Target *string `json:"target,omitempty"`
 }
 
@@ -626,7 +621,7 @@ type FirewallRule struct {
 	autorest.Response `json:"-"`
 	// Name - the firewall rule's name.
 	Name *string `json:"name,omitempty"`
-	// Type - the namespace and type of the firewall Rule.
+	// Type - READ-ONLY; the namespace and type of the firewall Rule.
 	Type *string `json:"type,omitempty"`
 	// ID - the firewall rule's subscription ID.
 	ID *string `json:"id,omitempty"`
@@ -646,9 +641,9 @@ type FirewallRuleProperties struct {
 
 // InnerError data Lake Store inner error information
 type InnerError struct {
-	// Trace - the stack trace for the error
+	// Trace - READ-ONLY; the stack trace for the error
 	Trace *string `json:"trace,omitempty"`
-	// Context - the context for the error message
+	// Context - READ-ONLY; the context for the error message
 	Context *string `json:"context,omitempty"`
 }
 
@@ -671,7 +666,7 @@ type UpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UpdateFuture) Result(client Client) (dlsa DataLakeStoreAccount, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.UpdateFuture", "Result", future.Response(), "Polling failure")
 		return

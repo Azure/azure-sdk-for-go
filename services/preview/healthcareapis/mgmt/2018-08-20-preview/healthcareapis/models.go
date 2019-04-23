@@ -111,11 +111,11 @@ type ErrorDetails struct {
 
 // ErrorDetailsInternal error details.
 type ErrorDetailsInternal struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
 }
 
@@ -131,9 +131,9 @@ type MoveResourcesParameters struct {
 
 // Operation service REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{read | write | action | delete}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name *string `json:"name,omitempty"`
-	// Origin - Default value is 'user,system'.
+	// Origin - READ-ONLY; Default value is 'user,system'.
 	Origin *string `json:"origin,omitempty"`
 	// Display - The information displayed about the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -141,13 +141,13 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.HealthcareApis
+	// Provider - READ-ONLY; Service provider: Microsoft.HealthcareApis
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource Type: Services
+	// Resource - READ-ONLY; Resource Type: Services
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Name of the operation
+	// Operation - READ-ONLY; Name of the operation
 	Operation *string `json:"operation,omitempty"`
-	// Description - Friendly description for the operation,
+	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
 }
 
@@ -157,7 +157,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of service description objects.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - A list of service operations supported by the Microsoft.HealthcareApis resource provider.
+	// Value - READ-ONLY; A list of service operations supported by the Microsoft.HealthcareApis resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 }
 
@@ -300,13 +300,13 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // OperationResultsDescription the properties indicating the operation result of an operation on a service.
 type OperationResultsDescription struct {
-	// ID - The ID of the operation returned.
+	// ID - READ-ONLY; The ID of the operation returned.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the operation result.
+	// Name - READ-ONLY; The name of the operation result.
 	Name *string `json:"name,omitempty"`
-	// Status - The status of the operation being performed. Possible values include: 'Canceled', 'Succeeded', 'Failed', 'Requested', 'Running'
+	// Status - READ-ONLY; The status of the operation being performed. Possible values include: 'Canceled', 'Succeeded', 'Failed', 'Requested', 'Running'
 	Status OperationResultStatus `json:"status,omitempty"`
-	// StartTime - The time that the operation was started.
+	// StartTime - READ-ONLY; The time that the operation was started.
 	StartTime *string `json:"startTime,omitempty"`
 	// Properties - Additional properties of the operation result.
 	Properties interface{} `json:"properties,omitempty"`
@@ -314,11 +314,11 @@ type OperationResultsDescription struct {
 
 // Resource the common properties of a service.
 type Resource struct {
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Kind - The kind of the service. Valid values are: fhir.
 	Kind *string `json:"kind,omitempty"`
@@ -333,15 +333,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Kind != nil {
 		objectMap["kind"] = r.Kind
 	}
@@ -379,7 +370,7 @@ type ServicesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (sd ServicesDescription, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -408,7 +399,7 @@ type ServicesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesDeleteFuture) Result(client ServicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -426,11 +417,11 @@ type ServicesDescription struct {
 	autorest.Response `json:"-"`
 	// Properties - The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Kind - The kind of the service. Valid values are: fhir.
 	Kind *string `json:"kind,omitempty"`
@@ -447,15 +438,6 @@ func (sd ServicesDescription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sd.Properties != nil {
 		objectMap["properties"] = sd.Properties
-	}
-	if sd.ID != nil {
-		objectMap["id"] = sd.ID
-	}
-	if sd.Name != nil {
-		objectMap["name"] = sd.Name
-	}
-	if sd.Type != nil {
-		objectMap["type"] = sd.Type
 	}
 	if sd.Kind != nil {
 		objectMap["kind"] = sd.Kind
@@ -622,9 +604,9 @@ func NewServicesDescriptionListResultPage(getNextPage func(context.Context, Serv
 // ServicesNameAvailabilityInfo the properties indicating whether a given service name is available.
 type ServicesNameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
+	// NameAvailable - READ-ONLY; The value which indicates whether the provided name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason ServiceNameUnavailabilityReason `json:"reason,omitempty"`
 	// Message - The detailed reason message.
 	Message *string `json:"message,omitempty"`
@@ -647,7 +629,7 @@ func (spd ServicesPatchDescription) MarshalJSON() ([]byte, error) {
 
 // ServicesProperties the properties of a service instance.
 type ServicesProperties struct {
-	// ProvisioningState - The provisioning state. Possible values include: 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateCreating', 'ProvisioningStateAccepted', 'ProvisioningStateVerifying', 'ProvisioningStateUpdating', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateDeprovisioned'
+	// ProvisioningState - READ-ONLY; The provisioning state. Possible values include: 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateCreating', 'ProvisioningStateAccepted', 'ProvisioningStateVerifying', 'ProvisioningStateUpdating', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateDeprovisioned'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// AccessPolicies - The access policies of the service instance.
 	AccessPolicies *[]ServiceAccessPolicyEntry `json:"accessPolicies,omitempty"`
@@ -665,7 +647,7 @@ type ServicesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesUpdateFuture) Result(client ServicesClient) (sd ServicesDescription, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return

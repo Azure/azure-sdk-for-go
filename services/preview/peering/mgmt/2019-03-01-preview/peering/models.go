@@ -251,17 +251,17 @@ type BgpSession struct {
 	SessionPrefixV4 *string `json:"sessionPrefixV4,omitempty"`
 	// SessionPrefixV6 - The IPv6 prefix that contains both ends' IPv6 addresses.
 	SessionPrefixV6 *string `json:"sessionPrefixV6,omitempty"`
-	// MicrosoftSessionIPv4Address - The IPv4 session address on Microsoft's end.
+	// MicrosoftSessionIPv4Address - READ-ONLY; The IPv4 session address on Microsoft's end.
 	MicrosoftSessionIPv4Address *string `json:"microsoftSessionIPv4Address,omitempty"`
-	// MicrosoftSessionIPv6Address - The IPv6 session address on Microsoft's end.
+	// MicrosoftSessionIPv6Address - READ-ONLY; The IPv6 session address on Microsoft's end.
 	MicrosoftSessionIPv6Address *string `json:"microsoftSessionIPv6Address,omitempty"`
 	// PeerSessionIPv4Address - The IPv4 session address on peer's end.
 	PeerSessionIPv4Address *string `json:"peerSessionIPv4Address,omitempty"`
 	// PeerSessionIPv6Address - The IPv6 session address on peer's end.
 	PeerSessionIPv6Address *string `json:"peerSessionIPv6Address,omitempty"`
-	// SessionStateV4 - The state of the IPv4 session. Possible values include: 'SessionStateV4None', 'SessionStateV4Idle', 'SessionStateV4Connect', 'SessionStateV4Active', 'SessionStateV4OpenSent', 'SessionStateV4OpenConfirm', 'SessionStateV4Established', 'SessionStateV4PendingAdd', 'SessionStateV4PendingUpdate', 'SessionStateV4PendingRemove'
+	// SessionStateV4 - READ-ONLY; The state of the IPv4 session. Possible values include: 'SessionStateV4None', 'SessionStateV4Idle', 'SessionStateV4Connect', 'SessionStateV4Active', 'SessionStateV4OpenSent', 'SessionStateV4OpenConfirm', 'SessionStateV4Established', 'SessionStateV4PendingAdd', 'SessionStateV4PendingUpdate', 'SessionStateV4PendingRemove'
 	SessionStateV4 SessionStateV4 `json:"sessionStateV4,omitempty"`
-	// SessionStateV6 - The state of the IPv6 session. Possible values include: 'SessionStateV6None', 'SessionStateV6Idle', 'SessionStateV6Connect', 'SessionStateV6Active', 'SessionStateV6OpenSent', 'SessionStateV6OpenConfirm', 'SessionStateV6Established', 'SessionStateV6PendingAdd', 'SessionStateV6PendingUpdate', 'SessionStateV6PendingRemove'
+	// SessionStateV6 - READ-ONLY; The state of the IPv6 session. Possible values include: 'SessionStateV6None', 'SessionStateV6Idle', 'SessionStateV6Connect', 'SessionStateV6Active', 'SessionStateV6OpenSent', 'SessionStateV6OpenConfirm', 'SessionStateV6Established', 'SessionStateV6PendingAdd', 'SessionStateV6PendingUpdate', 'SessionStateV6PendingRemove'
 	SessionStateV6 SessionStateV6 `json:"sessionStateV6,omitempty"`
 	// MaxPrefixesAdvertisedV4 - The maximum number of prefixes advertised over the IPv4 session.
 	MaxPrefixesAdvertisedV4 *int32 `json:"maxPrefixesAdvertisedV4,omitempty"`
@@ -287,7 +287,7 @@ type DirectConnection struct {
 	ProvisionedBandwidthInMbps *int32 `json:"provisionedBandwidthInMbps,omitempty"`
 	// PeeringDBFacilityID - The PeeringDB.com ID of the facility at which the connection has to be set up.
 	PeeringDBFacilityID *int32 `json:"peeringDBFacilityId,omitempty"`
-	// ConnectionState - The state of the connection. Possible values include: 'None', 'PendingApproval', 'Approved', 'ProvisioningStarted', 'ProvisioningFailed', 'ProvisioningCompleted', 'Validating', 'Active'
+	// ConnectionState - READ-ONLY; The state of the connection. Possible values include: 'None', 'PendingApproval', 'Approved', 'ProvisioningStarted', 'ProvisioningFailed', 'ProvisioningCompleted', 'Validating', 'Active'
 	ConnectionState ConnectionState `json:"connectionState,omitempty"`
 	// BgpSession - The BGP session associated with the connection.
 	BgpSession *BgpSession `json:"bgpSession,omitempty"`
@@ -305,9 +305,9 @@ type DirectPeeringFacility struct {
 
 // ErrorResponse the error response that indicates why an operation has failed.
 type ErrorResponse struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -315,7 +315,7 @@ type ErrorResponse struct {
 type ExchangeConnection struct {
 	// PeeringDBFacilityID - The PeeringDB.com ID of the facility at which the connection has to be set up.
 	PeeringDBFacilityID *int32 `json:"peeringDBFacilityId,omitempty"`
-	// ConnectionState - The state of the connection. Possible values include: 'None', 'PendingApproval', 'Approved', 'ProvisioningStarted', 'ProvisioningFailed', 'ProvisioningCompleted', 'Validating', 'Active'
+	// ConnectionState - READ-ONLY; The state of the connection. Possible values include: 'None', 'PendingApproval', 'Approved', 'ProvisioningStarted', 'ProvisioningFailed', 'ProvisioningCompleted', 'Validating', 'Active'
 	ConnectionState ConnectionState `json:"connectionState,omitempty"`
 	// BgpSession - The BGP session associated with the connection.
 	BgpSession *BgpSession `json:"bgpSession,omitempty"`
@@ -493,11 +493,11 @@ type Location struct {
 	Kind Kind `json:"kind,omitempty"`
 	// LocationProperties - The properties that define a peering location.
 	*LocationProperties `json:"properties,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -509,15 +509,6 @@ func (l Location) MarshalJSON() ([]byte, error) {
 	}
 	if l.LocationProperties != nil {
 		objectMap["properties"] = l.LocationProperties
-	}
-	if l.Name != nil {
-		objectMap["name"] = l.Name
-	}
-	if l.ID != nil {
-		objectMap["id"] = l.ID
-	}
-	if l.Type != nil {
-		objectMap["type"] = l.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -770,11 +761,11 @@ type Model struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -795,15 +786,6 @@ func (mVar Model) MarshalJSON() ([]byte, error) {
 	}
 	if mVar.Tags != nil {
 		objectMap["tags"] = mVar.Tags
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -897,23 +879,23 @@ func (mVar *Model) UnmarshalJSON(body []byte) error {
 
 // Operation the peering API operation.
 type Operation struct {
-	// Name - The name of the operation.
+	// Name - READ-ONLY; The name of the operation.
 	Name *string `json:"name,omitempty"`
-	// Display - The information related to the operation.
+	// Display - READ-ONLY; The information related to the operation.
 	Display *OperationDisplayInfo `json:"display,omitempty"`
-	// IsDataAction - The flag that indicates whether the operation applies to data plane.
+	// IsDataAction - READ-ONLY; The flag that indicates whether the operation applies to data plane.
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
 // OperationDisplayInfo the information related to the operation.
 type OperationDisplayInfo struct {
-	// Provider - The name of the resource provider.
+	// Provider - READ-ONLY; The name of the resource provider.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The type of the resource.
+	// Resource - READ-ONLY; The type of the resource.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The name of the operation.
+	// Operation - READ-ONLY; The name of the operation.
 	Operation *string `json:"operation,omitempty"`
-	// Description - The description of the operation.
+	// Description - READ-ONLY; The description of the operation.
 	Description *string `json:"description,omitempty"`
 }
 
@@ -1068,11 +1050,11 @@ type PeerAsn struct {
 	autorest.Response `json:"-"`
 	// PeerAsnProperties - The properties that define a peer's ASN.
 	*PeerAsnProperties `json:"properties,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1081,15 +1063,6 @@ func (pa PeerAsn) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pa.PeerAsnProperties != nil {
 		objectMap["properties"] = pa.PeerAsnProperties
-	}
-	if pa.Name != nil {
-		objectMap["name"] = pa.Name
-	}
-	if pa.ID != nil {
-		objectMap["id"] = pa.ID
-	}
-	if pa.Type != nil {
-		objectMap["type"] = pa.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1311,7 +1284,7 @@ type Properties struct {
 	Exchange *PropertiesExchange `json:"exchange,omitempty"`
 	// PeeringLocation - The location of the peering.
 	PeeringLocation *string `json:"peeringLocation,omitempty"`
-	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1335,11 +1308,11 @@ type PropertiesExchange struct {
 
 // Resource the ARM resource class.
 type Resource struct {
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 

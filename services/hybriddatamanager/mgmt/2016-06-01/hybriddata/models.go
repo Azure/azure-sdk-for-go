@@ -391,11 +391,11 @@ type DataManager struct {
 	autorest.Response `json:"-"`
 	// Etag - Etag of the Resource.
 	Etag *string `json:"etag,omitempty"`
-	// ID - The Resource Id.
+	// ID - READ-ONLY; The Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - The Resource Name.
+	// Name - READ-ONLY; The Resource Name.
 	Name *string `json:"name,omitempty"`
-	// Type - The Resource type.
+	// Type - READ-ONLY; The Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East
 	// US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo
@@ -413,15 +413,6 @@ func (dm DataManager) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dm.Etag != nil {
 		objectMap["etag"] = dm.Etag
-	}
-	if dm.ID != nil {
-		objectMap["id"] = dm.ID
-	}
-	if dm.Name != nil {
-		objectMap["name"] = dm.Name
-	}
-	if dm.Type != nil {
-		objectMap["type"] = dm.Type
 	}
 	if dm.Location != nil {
 		objectMap["location"] = dm.Location
@@ -454,7 +445,7 @@ type DataManagersCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DataManagersCreateFuture) Result(client DataManagersClient) (dm DataManager, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -483,7 +474,7 @@ type DataManagersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DataManagersDeleteFuture) Result(client DataManagersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -506,7 +497,7 @@ type DataManagersUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DataManagersUpdateFuture) Result(client DataManagersClient) (dm DataManager, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -551,11 +542,11 @@ type DataService struct {
 	autorest.Response `json:"-"`
 	// DataServiceProperties - DataService properties.
 	*DataServiceProperties `json:"properties,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -564,15 +555,6 @@ func (ds DataService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ds.DataServiceProperties != nil {
 		objectMap["properties"] = ds.DataServiceProperties
-	}
-	if ds.Name != nil {
-		objectMap["name"] = ds.Name
-	}
-	if ds.ID != nil {
-		objectMap["id"] = ds.ID
-	}
-	if ds.Type != nil {
-		objectMap["type"] = ds.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -789,11 +771,11 @@ type DataStore struct {
 	autorest.Response `json:"-"`
 	// DataStoreProperties - DataStore properties.
 	*DataStoreProperties `json:"properties,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -802,15 +784,6 @@ func (ds DataStore) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ds.DataStoreProperties != nil {
 		objectMap["properties"] = ds.DataStoreProperties
-	}
-	if ds.Name != nil {
-		objectMap["name"] = ds.Name
-	}
-	if ds.ID != nil {
-		objectMap["id"] = ds.ID
-	}
-	if ds.Type != nil {
-		objectMap["type"] = ds.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1042,7 +1015,7 @@ type DataStoresCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DataStoresCreateOrUpdateFuture) Result(client DataStoresClient) (ds DataStore, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1071,7 +1044,7 @@ type DataStoresDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DataStoresDeleteFuture) Result(client DataStoresClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1089,11 +1062,11 @@ type DataStoreType struct {
 	autorest.Response `json:"-"`
 	// DataStoreTypeProperties - DataStoreType properties.
 	*DataStoreTypeProperties `json:"properties,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1102,15 +1075,6 @@ func (dst DataStoreType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dst.DataStoreTypeProperties != nil {
 		objectMap["properties"] = dst.DataStoreTypeProperties
-	}
-	if dst.Name != nil {
-		objectMap["name"] = dst.Name
-	}
-	if dst.ID != nil {
-		objectMap["id"] = dst.ID
-	}
-	if dst.Type != nil {
-		objectMap["type"] = dst.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1326,11 +1290,11 @@ type DataStoreTypeProperties struct {
 
 // DmsBaseObject base class for all objects under DataManager Service
 type DmsBaseObject struct {
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1367,11 +1331,11 @@ type Job struct {
 	*JobProperties `json:"properties,omitempty"`
 	// Error - Top level error for the job.
 	Error *Error `json:"error,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1392,15 +1356,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	}
 	if j.Error != nil {
 		objectMap["error"] = j.Error
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1497,11 +1452,11 @@ type JobDefinition struct {
 	autorest.Response `json:"-"`
 	// JobDefinitionProperties - JobDefinition properties.
 	*JobDefinitionProperties `json:"properties,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1510,15 +1465,6 @@ func (jd JobDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if jd.JobDefinitionProperties != nil {
 		objectMap["properties"] = jd.JobDefinitionProperties
-	}
-	if jd.Name != nil {
-		objectMap["name"] = jd.Name
-	}
-	if jd.ID != nil {
-		objectMap["id"] = jd.ID
-	}
-	if jd.Type != nil {
-		objectMap["type"] = jd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1762,7 +1708,7 @@ type JobDefinitionsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobDefinitionsCreateOrUpdateFuture) Result(client JobDefinitionsClient) (jd JobDefinition, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1791,7 +1737,7 @@ type JobDefinitionsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobDefinitionsDeleteFuture) Result(client JobDefinitionsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1814,7 +1760,7 @@ type JobDefinitionsRunFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobDefinitionsRunFuture) Result(client JobDefinitionsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsRunFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2022,7 +1968,7 @@ type JobsCancelFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsCancelFuture) Result(client JobsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsCancelFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2044,7 +1990,7 @@ type JobsResumeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsResumeFuture) Result(client JobsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsResumeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2084,11 +2030,11 @@ type PublicKey struct {
 	autorest.Response `json:"-"`
 	// PublicKeyProperties - Public key property.
 	*PublicKeyProperties `json:"properties,omitempty"`
-	// Name - Name of the object.
+	// Name - READ-ONLY; Name of the object.
 	Name *string `json:"name,omitempty"`
-	// ID - Id of the object.
+	// ID - READ-ONLY; Id of the object.
 	ID *string `json:"id,omitempty"`
-	// Type - Type of the object.
+	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2097,15 +2043,6 @@ func (pk PublicKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pk.PublicKeyProperties != nil {
 		objectMap["properties"] = pk.PublicKeyProperties
-	}
-	if pk.Name != nil {
-		objectMap["name"] = pk.Name
-	}
-	if pk.ID != nil {
-		objectMap["id"] = pk.ID
-	}
-	if pk.Type != nil {
-		objectMap["type"] = pk.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2317,11 +2254,11 @@ type PublicKeyProperties struct {
 
 // Resource model of the Resource.
 type Resource struct {
-	// ID - The Resource Id.
+	// ID - READ-ONLY; The Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - The Resource Name.
+	// Name - READ-ONLY; The Resource Name.
 	Name *string `json:"name,omitempty"`
-	// Type - The Resource type.
+	// Type - READ-ONLY; The Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East
 	// US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo
@@ -2337,15 +2274,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

@@ -3019,6 +3019,14 @@ func (client BaseClient) UpdateIterationPreparer(ctx context.Context, projectID 
 		"projectId":   autorest.Encode("path", projectID),
 	}
 
+	updatedIteration.ID = nil
+	updatedIteration.Status = nil
+	updatedIteration.Created = nil
+	updatedIteration.LastModified = nil
+	updatedIteration.TrainedAt = nil
+	updatedIteration.ProjectID = nil
+	updatedIteration.Exportable = nil
+	updatedIteration.DomainID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -3091,6 +3099,10 @@ func (client BaseClient) UpdateProjectPreparer(ctx context.Context, projectID uu
 		"projectId": autorest.Encode("path", projectID),
 	}
 
+	updatedProject.ID = nil
+	updatedProject.Created = nil
+	updatedProject.LastModified = nil
+	updatedProject.ThumbnailURI = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
@@ -3165,6 +3177,8 @@ func (client BaseClient) UpdateTagPreparer(ctx context.Context, projectID uuid.U
 		"tagId":     autorest.Encode("path", tagID),
 	}
 
+	updatedTag.ID = nil
+	updatedTag.ImageCount = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

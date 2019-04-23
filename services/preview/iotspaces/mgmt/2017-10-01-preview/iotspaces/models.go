@@ -95,7 +95,7 @@ type CreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateOrUpdateFuture) Result(client Client) (d Description, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotspaces.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -123,7 +123,7 @@ type DeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeleteFuture) Result(client Client) (d Description, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotspaces.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -149,11 +149,11 @@ type Description struct {
 	Properties *Properties `json:"properties,omitempty"`
 	// Sku - A valid instance SKU.
 	Sku *SkuInfo `json:"sku,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -169,15 +169,6 @@ func (d Description) MarshalJSON() ([]byte, error) {
 	}
 	if d.Sku != nil {
 		objectMap["sku"] = d.Sku
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
@@ -336,20 +327,20 @@ func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionL
 
 // ErrorDetails error details.
 type ErrorDetails struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
 }
 
 // NameAvailabilityInfo the properties indicating whether a given IoTSpaces service name is available.
 type NameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
+	// NameAvailable - READ-ONLY; The value which indicates whether the provided name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason NameUnavailabilityReason `json:"reason,omitempty"`
 	// Message - The detailed reason message.
 	Message *string `json:"message,omitempty"`
@@ -357,20 +348,20 @@ type NameAvailabilityInfo struct {
 
 // Operation ioTSpaces service REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{read | write | action | delete}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name    *string           `json:"name,omitempty"`
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft IoTSpaces
+	// Provider - READ-ONLY; Service provider: Microsoft IoTSpaces
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource Type: IoTSpaces
+	// Resource - READ-ONLY; Resource Type: IoTSpaces
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Name of the operation
+	// Operation - READ-ONLY; Name of the operation
 	Operation *string `json:"operation,omitempty"`
-	// Description - Friendly description for the operation,
+	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
 }
 
@@ -386,7 +377,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of IoTSpaces description objects.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - A list of IoT spaces operations supported by the Microsoft.IoTSpaces resource provider.
+	// Value - READ-ONLY; A list of IoT spaces operations supported by the Microsoft.IoTSpaces resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 }
 
@@ -549,11 +540,11 @@ func (pd PatchDescription) MarshalJSON() ([]byte, error) {
 
 // Properties the properties of an IoTSpaces instance.
 type Properties struct {
-	// ProvisioningState - The provisioning state. Possible values include: 'Provisioning', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state. Possible values include: 'Provisioning', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// ManagementAPIURL - The management Api endpoint.
+	// ManagementAPIURL - READ-ONLY; The management Api endpoint.
 	ManagementAPIURL *string `json:"managementApiUrl,omitempty"`
-	// WebPortalURL - The management UI endpoint.
+	// WebPortalURL - READ-ONLY; The management UI endpoint.
 	WebPortalURL *string `json:"webPortalUrl,omitempty"`
 	// StorageContainer - The properties of the designated storage container.
 	StorageContainer *StorageContainerProperties `json:"storageContainer,omitempty"`
@@ -561,11 +552,11 @@ type Properties struct {
 
 // Resource the common properties of an IoTSpaces service.
 type Resource struct {
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -576,15 +567,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -621,7 +603,7 @@ type UpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UpdateFuture) Result(client Client) (d Description, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotspaces.UpdateFuture", "Result", future.Response(), "Polling failure")
 		return

@@ -363,9 +363,9 @@ type JobAction struct {
 // JobCollectionDefinition ...
 type JobCollectionDefinition struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the job collection resource identifier.
+	// ID - READ-ONLY; Gets the job collection resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Gets the job collection resource type.
+	// Type - READ-ONLY; Gets the job collection resource type.
 	Type *string `json:"type,omitempty"`
 	// Name - Gets or sets the job collection resource name.
 	Name *string `json:"name,omitempty"`
@@ -380,12 +380,6 @@ type JobCollectionDefinition struct {
 // MarshalJSON is the custom marshaler for JobCollectionDefinition.
 func (jcd JobCollectionDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if jcd.ID != nil {
-		objectMap["id"] = jcd.ID
-	}
-	if jcd.Type != nil {
-		objectMap["type"] = jcd.Type
-	}
 	if jcd.Name != nil {
 		objectMap["name"] = jcd.Name
 	}
@@ -404,7 +398,7 @@ func (jcd JobCollectionDefinition) MarshalJSON() ([]byte, error) {
 // JobCollectionListResult ...
 type JobCollectionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Gets the job collections.
+	// Value - READ-ONLY; Gets the job collections.
 	Value *[]JobCollectionDefinition `json:"value,omitempty"`
 	// NextLink - Gets or sets the URL to get the next set of job collections.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -570,11 +564,11 @@ type JobCollectionQuota struct {
 // JobDefinition ...
 type JobDefinition struct {
 	autorest.Response `json:"-"`
-	// ID - Gets the job resource identifier.
+	// ID - READ-ONLY; Gets the job resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Gets the job resource type.
+	// Type - READ-ONLY; Gets the job resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Gets the job resource name.
+	// Name - READ-ONLY; Gets the job resource name.
 	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets the job properties.
 	Properties *JobProperties `json:"properties,omitempty"`
@@ -598,33 +592,33 @@ type JobErrorAction struct {
 
 // JobHistoryDefinition ...
 type JobHistoryDefinition struct {
-	// ID - Gets the job history identifier.
+	// ID - READ-ONLY; Gets the job history identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Gets the job history resource type.
+	// Type - READ-ONLY; Gets the job history resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Gets the job history name.
+	// Name - READ-ONLY; Gets the job history name.
 	Name *string `json:"name,omitempty"`
-	// Properties - Gets or sets the job history properties.
+	// Properties - READ-ONLY; Gets or sets the job history properties.
 	Properties *JobHistoryDefinitionProperties `json:"properties,omitempty"`
 }
 
 // JobHistoryDefinitionProperties ...
 type JobHistoryDefinitionProperties struct {
-	// StartTime - Gets the start time for this job.
+	// StartTime - READ-ONLY; Gets the start time for this job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the end time for this job.
+	// EndTime - READ-ONLY; Gets the end time for this job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ExpectedExecutionTime - Gets the expected execution time for this job.
+	// ExpectedExecutionTime - READ-ONLY; Gets the expected execution time for this job.
 	ExpectedExecutionTime *date.Time `json:"expectedExecutionTime,omitempty"`
-	// ActionName - Gets the job history action name. Possible values include: 'MainAction', 'ErrorAction'
+	// ActionName - READ-ONLY; Gets the job history action name. Possible values include: 'MainAction', 'ErrorAction'
 	ActionName JobHistoryActionName `json:"actionName,omitempty"`
-	// Status - Gets the job history status. Possible values include: 'Completed', 'Failed', 'Postponed'
+	// Status - READ-ONLY; Gets the job history status. Possible values include: 'Completed', 'Failed', 'Postponed'
 	Status JobExecutionStatus `json:"status,omitempty"`
-	// Message - Gets the message for the job history.
+	// Message - READ-ONLY; Gets the message for the job history.
 	Message *string `json:"message,omitempty"`
-	// RetryCount - Gets the retry count for job.
+	// RetryCount - READ-ONLY; Gets the retry count for job.
 	RetryCount *int32 `json:"retryCount,omitempty"`
-	// RepeatCount - Gets the repeat count for the job.
+	// RepeatCount - READ-ONLY; Gets the repeat count for the job.
 	RepeatCount *int32 `json:"repeatCount,omitempty"`
 }
 
@@ -944,7 +938,7 @@ type JobProperties struct {
 	Recurrence *JobRecurrence `json:"recurrence,omitempty"`
 	// State - Gets or set the job state. Possible values include: 'JobStateEnabled', 'JobStateDisabled', 'JobStateFaulted', 'JobStateCompleted'
 	State JobState `json:"state,omitempty"`
-	// Status - Gets the job status.
+	// Status - READ-ONLY; Gets the job status.
 	Status *JobStatus `json:"status,omitempty"`
 }
 
@@ -991,15 +985,15 @@ type JobStateFilter struct {
 
 // JobStatus ...
 type JobStatus struct {
-	// ExecutionCount - Gets the number of times this job has executed.
+	// ExecutionCount - READ-ONLY; Gets the number of times this job has executed.
 	ExecutionCount *int32 `json:"executionCount,omitempty"`
-	// FailureCount - Gets the number of times this job has failed.
+	// FailureCount - READ-ONLY; Gets the number of times this job has failed.
 	FailureCount *int32 `json:"failureCount,omitempty"`
-	// FaultedCount - Gets the number of faulted occurrences (occurrences that were retried and failed as many times as the retry policy states).
+	// FaultedCount - READ-ONLY; Gets the number of faulted occurrences (occurrences that were retried and failed as many times as the retry policy states).
 	FaultedCount *int32 `json:"faultedCount,omitempty"`
-	// LastExecutionTime - Gets the time the last occurrence executed in ISO-8601 format.  Could be empty if job has not run yet.
+	// LastExecutionTime - READ-ONLY; Gets the time the last occurrence executed in ISO-8601 format.  Could be empty if job has not run yet.
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
-	// NextExecutionTime - Gets the time of the next occurrence in ISO-8601 format. Could be empty if the job is completed.
+	// NextExecutionTime - READ-ONLY; Gets the time of the next occurrence in ISO-8601 format. Could be empty if the job is completed.
 	NextExecutionTime *date.Time `json:"nextExecutionTime,omitempty"`
 }
 

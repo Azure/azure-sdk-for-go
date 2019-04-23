@@ -176,11 +176,11 @@ type Environment struct {
 	autorest.Response `json:"-"`
 	// EnvironmentProperties - The properties of the Environment resource
 	*EnvironmentProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -193,15 +193,6 @@ func (e Environment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if e.EnvironmentProperties != nil {
 		objectMap["properties"] = e.EnvironmentProperties
-	}
-	if e.ID != nil {
-		objectMap["id"] = e.ID
-	}
-	if e.Name != nil {
-		objectMap["name"] = e.Name
-	}
-	if e.Type != nil {
-		objectMap["type"] = e.Type
 	}
 	if e.Location != nil {
 		objectMap["location"] = e.Location
@@ -283,23 +274,23 @@ func (e *Environment) UnmarshalJSON(body []byte) error {
 
 // EnvironmentDetails this represents the details about a User's environment and its state.
 type EnvironmentDetails struct {
-	// Name - Name of the Environment
+	// Name - READ-ONLY; Name of the Environment
 	Name *string `json:"name,omitempty"`
-	// Description - Description of the Environment
+	// Description - READ-ONLY; Description of the Environment
 	Description *string `json:"description,omitempty"`
-	// ID - Resource Id of the environment
+	// ID - READ-ONLY; Resource Id of the environment
 	ID *string `json:"id,omitempty"`
-	// ProvisioningState - The provisioning state of the environment. This also includes LabIsFull and NotYetProvisioned status.
+	// ProvisioningState - READ-ONLY; The provisioning state of the environment. This also includes LabIsFull and NotYetProvisioned status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// VirtualMachineDetails - Details of backing DTL virtual machine with compute and network details.
+	// VirtualMachineDetails - READ-ONLY; Details of backing DTL virtual machine with compute and network details.
 	VirtualMachineDetails *VirtualMachineDetails `json:"virtualMachineDetails,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
-	// EnvironmentState - Publishing state of the environment setting Possible values are Creating, Created, Failed
+	// EnvironmentState - READ-ONLY; Publishing state of the environment setting Possible values are Creating, Created, Failed
 	EnvironmentState *string `json:"environmentState,omitempty"`
-	// TotalUsage - How long the environment has been used by a lab user
+	// TotalUsage - READ-ONLY; How long the environment has been used by a lab user
 	TotalUsage *string `json:"totalUsage,omitempty"`
-	// PasswordLastReset - When the password was last reset on the environment.
+	// PasswordLastReset - READ-ONLY; When the password was last reset on the environment.
 	PasswordLastReset *date.Time `json:"passwordLastReset,omitempty"`
 }
 
@@ -307,11 +298,11 @@ type EnvironmentDetails struct {
 type EnvironmentFragment struct {
 	// EnvironmentPropertiesFragment - The properties of the Environment resource
 	*EnvironmentPropertiesFragment `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -324,15 +315,6 @@ func (ef EnvironmentFragment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ef.EnvironmentPropertiesFragment != nil {
 		objectMap["properties"] = ef.EnvironmentPropertiesFragment
-	}
-	if ef.ID != nil {
-		objectMap["id"] = ef.ID
-	}
-	if ef.Name != nil {
-		objectMap["name"] = ef.Name
-	}
-	if ef.Type != nil {
-		objectMap["type"] = ef.Type
 	}
 	if ef.Location != nil {
 		objectMap["location"] = ef.Location
@@ -423,27 +405,27 @@ type EnvironmentOperationsPayload struct {
 type EnvironmentProperties struct {
 	// ResourceSets - The set of a VM and the setting id it was created for
 	ResourceSets *ResourceSet `json:"resourceSets,omitempty"`
-	// ClaimedByUserObjectID - The AAD object Id of the user who has claimed the environment
+	// ClaimedByUserObjectID - READ-ONLY; The AAD object Id of the user who has claimed the environment
 	ClaimedByUserObjectID *string `json:"claimedByUserObjectId,omitempty"`
-	// ClaimedByUserPrincipalID - The user principal Id of the user who has claimed the environment
+	// ClaimedByUserPrincipalID - READ-ONLY; The user principal Id of the user who has claimed the environment
 	ClaimedByUserPrincipalID *string `json:"claimedByUserPrincipalId,omitempty"`
-	// ClaimedByUserName - The name or email address of the user who has claimed the environment
+	// ClaimedByUserName - READ-ONLY; The name or email address of the user who has claimed the environment
 	ClaimedByUserName *string `json:"claimedByUserName,omitempty"`
-	// IsClaimed - Is the environment claimed or not
+	// IsClaimed - READ-ONLY; Is the environment claimed or not
 	IsClaimed *bool `json:"isClaimed,omitempty"`
-	// LastKnownPowerState - Last known power state of the environment
+	// LastKnownPowerState - READ-ONLY; Last known power state of the environment
 	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty"`
-	// NetworkInterface - Network details of the environment
+	// NetworkInterface - READ-ONLY; Network details of the environment
 	NetworkInterface *NetworkInterface `json:"networkInterface,omitempty"`
-	// TotalUsage - How long the environment has been used by a lab user
+	// TotalUsage - READ-ONLY; How long the environment has been used by a lab user
 	TotalUsage *string `json:"totalUsage,omitempty"`
-	// PasswordLastReset - When the password was last reset on the environment.
+	// PasswordLastReset - READ-ONLY; When the password was last reset on the environment.
 	PasswordLastReset *date.Time `json:"passwordLastReset,omitempty"`
 	// ProvisioningState - The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
@@ -467,7 +449,7 @@ type EnvironmentsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsDeleteFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -486,11 +468,11 @@ type EnvironmentSetting struct {
 	autorest.Response `json:"-"`
 	// EnvironmentSettingProperties - The properties of the Environment Setting resource
 	*EnvironmentSettingProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -503,15 +485,6 @@ func (es EnvironmentSetting) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if es.EnvironmentSettingProperties != nil {
 		objectMap["properties"] = es.EnvironmentSettingProperties
-	}
-	if es.ID != nil {
-		objectMap["id"] = es.ID
-	}
-	if es.Name != nil {
-		objectMap["name"] = es.Name
-	}
-	if es.Type != nil {
-		objectMap["type"] = es.Type
 	}
 	if es.Location != nil {
 		objectMap["location"] = es.Location
@@ -602,11 +575,11 @@ type EnvironmentSettingCreationParameters struct {
 type EnvironmentSettingFragment struct {
 	// EnvironmentSettingPropertiesFragment - The properties of the Environment Setting resource
 	*EnvironmentSettingPropertiesFragment `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -619,15 +592,6 @@ func (esf EnvironmentSettingFragment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if esf.EnvironmentSettingPropertiesFragment != nil {
 		objectMap["properties"] = esf.EnvironmentSettingPropertiesFragment
-	}
-	if esf.ID != nil {
-		objectMap["id"] = esf.ID
-	}
-	if esf.Name != nil {
-		objectMap["name"] = esf.Name
-	}
-	if esf.Type != nil {
-		objectMap["type"] = esf.Type
 	}
 	if esf.Location != nil {
 		objectMap["location"] = esf.Location
@@ -709,7 +673,7 @@ func (esf *EnvironmentSettingFragment) UnmarshalJSON(body []byte) error {
 
 // EnvironmentSettingProperties properties of an environment setting
 type EnvironmentSettingProperties struct {
-	// PublishingState - Describes the readiness of this environment setting. Possible values include: 'Draft', 'Publishing', 'Published', 'PublishFailed', 'Scaling'
+	// PublishingState - READ-ONLY; Describes the readiness of this environment setting. Possible values include: 'Draft', 'Publishing', 'Published', 'PublishFailed', 'Scaling'
 	PublishingState PublishingState `json:"publishingState,omitempty"`
 	// ConfigurationState - Describes the user's progress in configuring their environment setting. Possible values include: 'NotApplicable', 'Completed'
 	ConfigurationState ConfigurationState `json:"configurationState,omitempty"`
@@ -719,15 +683,15 @@ type EnvironmentSettingProperties struct {
 	Title *string `json:"title,omitempty"`
 	// ResourceSettings - The resource specific settings
 	ResourceSettings *ResourceSettings `json:"resourceSettings,omitempty"`
-	// LastChanged - Time when the template VM was last changed.
+	// LastChanged - READ-ONLY; Time when the template VM was last changed.
 	LastChanged *date.Time `json:"lastChanged,omitempty"`
-	// LastPublished - Time when the template VM was last sent for publishing.
+	// LastPublished - READ-ONLY; Time when the template VM was last sent for publishing.
 	LastPublished *date.Time `json:"lastPublished,omitempty"`
 	// ProvisioningState - The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
@@ -757,7 +721,7 @@ type EnvironmentSettingsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentSettingsCreateOrUpdateFuture) Result(client EnvironmentSettingsClient) (es EnvironmentSetting, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -786,7 +750,7 @@ type EnvironmentSettingsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentSettingsDeleteFuture) Result(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -809,7 +773,7 @@ type EnvironmentSettingsStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentSettingsStartFuture) Result(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -832,7 +796,7 @@ type EnvironmentSettingsStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentSettingsStopFuture) Result(client EnvironmentSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -851,11 +815,11 @@ type EnvironmentSize struct {
 	Name ManagedLabVMSize `json:"name,omitempty"`
 	// VMSizes - Represents a set of compute sizes that can serve this given size type
 	VMSizes *[]SizeInfo `json:"vmSizes,omitempty"`
-	// MaxPrice - The pay-as-you-go dollar price per hour this size will cost. It does not include discounts and may not reflect the actual price the size will cost. This is the maximum price of all prices within this tier.
+	// MaxPrice - READ-ONLY; The pay-as-you-go dollar price per hour this size will cost. It does not include discounts and may not reflect the actual price the size will cost. This is the maximum price of all prices within this tier.
 	MaxPrice *decimal.Decimal `json:"maxPrice,omitempty"`
-	// MinNumberOfCores - The number of cores a VM of this size has. This is the minimum number of cores within this tier.
+	// MinNumberOfCores - READ-ONLY; The number of cores a VM of this size has. This is the minimum number of cores within this tier.
 	MinNumberOfCores *int32 `json:"minNumberOfCores,omitempty"`
-	// MinMemory - The amount of memory available (in GB). This is the minimum amount of memory within this tier.
+	// MinMemory - READ-ONLY; The amount of memory available (in GB). This is the minimum amount of memory within this tier.
 	MinMemory *float64 `json:"minMemory,omitempty"`
 }
 
@@ -878,7 +842,7 @@ type EnvironmentsResetPasswordFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsResetPasswordFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsResetPasswordFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -901,7 +865,7 @@ type EnvironmentsStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsStartFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -924,7 +888,7 @@ type EnvironmentsStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsStopFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -942,11 +906,11 @@ type GalleryImage struct {
 	autorest.Response `json:"-"`
 	// GalleryImageProperties - The gallery image properties
 	*GalleryImageProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -959,15 +923,6 @@ func (gi GalleryImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gi.GalleryImageProperties != nil {
 		objectMap["properties"] = gi.GalleryImageProperties
-	}
-	if gi.ID != nil {
-		objectMap["id"] = gi.ID
-	}
-	if gi.Name != nil {
-		objectMap["name"] = gi.Name
-	}
-	if gi.Type != nil {
-		objectMap["type"] = gi.Type
 	}
 	if gi.Location != nil {
 		objectMap["location"] = gi.Location
@@ -1051,11 +1006,11 @@ func (gi *GalleryImage) UnmarshalJSON(body []byte) error {
 type GalleryImageFragment struct {
 	// GalleryImagePropertiesFragment - The gallery image properties
 	*GalleryImagePropertiesFragment `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1068,15 +1023,6 @@ func (gifVar GalleryImageFragment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gifVar.GalleryImagePropertiesFragment != nil {
 		objectMap["properties"] = gifVar.GalleryImagePropertiesFragment
-	}
-	if gifVar.ID != nil {
-		objectMap["id"] = gifVar.ID
-	}
-	if gifVar.Name != nil {
-		objectMap["name"] = gifVar.Name
-	}
-	if gifVar.Type != nil {
-		objectMap["type"] = gifVar.Type
 	}
 	if gifVar.Location != nil {
 		objectMap["location"] = gifVar.Location
@@ -1158,21 +1104,21 @@ func (gifVar *GalleryImageFragment) UnmarshalJSON(body []byte) error {
 
 // GalleryImageProperties the gallery image properties
 type GalleryImageProperties struct {
-	// Author - The author of the gallery image.
+	// Author - READ-ONLY; The author of the gallery image.
 	Author *string `json:"author,omitempty"`
-	// CreatedDate - The creation date of the gallery image.
+	// CreatedDate - READ-ONLY; The creation date of the gallery image.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// Description - The description of the gallery image.
+	// Description - READ-ONLY; The description of the gallery image.
 	Description *string `json:"description,omitempty"`
-	// ImageReference - The image reference of the gallery image.
+	// ImageReference - READ-ONLY; The image reference of the gallery image.
 	ImageReference *GalleryImageReference `json:"imageReference,omitempty"`
-	// Icon - The icon of the gallery image.
+	// Icon - READ-ONLY; The icon of the gallery image.
 	Icon *string `json:"icon,omitempty"`
 	// IsEnabled - Indicates whether this gallery image is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// IsOverride - Indicates whether this gallery has been overridden for this lab account
 	IsOverride *bool `json:"isOverride,omitempty"`
-	// PlanID - The third party plan that applies to this image
+	// PlanID - READ-ONLY; The third party plan that applies to this image
 	PlanID *string `json:"planId,omitempty"`
 	// IsPlanAuthorized - Indicates if the plan has been authorized for programmatic deployment.
 	IsPlanAuthorized *bool `json:"isPlanAuthorized,omitempty"`
@@ -1180,7 +1126,7 @@ type GalleryImageProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
@@ -1229,7 +1175,7 @@ type GalleryImageReferenceFragment struct {
 // GetEnvironmentResponse represents the environments details
 type GetEnvironmentResponse struct {
 	autorest.Response `json:"-"`
-	// Environment - Details of the environment
+	// Environment - READ-ONLY; Details of the environment
 	Environment *EnvironmentDetails `json:"environment,omitempty"`
 }
 
@@ -1259,7 +1205,7 @@ type GlobalUsersResetPasswordFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GlobalUsersResetPasswordFuture) Result(client GlobalUsersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersResetPasswordFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1282,7 +1228,7 @@ type GlobalUsersStartEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GlobalUsersStartEnvironmentFuture) Result(client GlobalUsersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersStartEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1305,7 +1251,7 @@ type GlobalUsersStopEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GlobalUsersStopEnvironmentFuture) Result(client GlobalUsersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersStopEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1323,11 +1269,11 @@ type Lab struct {
 	autorest.Response `json:"-"`
 	// LabProperties - The properties of the resource.
 	*LabProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1340,15 +1286,6 @@ func (l Lab) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if l.LabProperties != nil {
 		objectMap["properties"] = l.LabProperties
-	}
-	if l.ID != nil {
-		objectMap["id"] = l.ID
-	}
-	if l.Name != nil {
-		objectMap["name"] = l.Name
-	}
-	if l.Type != nil {
-		objectMap["type"] = l.Type
 	}
 	if l.Location != nil {
 		objectMap["location"] = l.Location
@@ -1433,11 +1370,11 @@ type LabAccount struct {
 	autorest.Response `json:"-"`
 	// LabAccountProperties - The properties of the resource.
 	*LabAccountProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1450,15 +1387,6 @@ func (la LabAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if la.LabAccountProperties != nil {
 		objectMap["properties"] = la.LabAccountProperties
-	}
-	if la.ID != nil {
-		objectMap["id"] = la.ID
-	}
-	if la.Name != nil {
-		objectMap["name"] = la.Name
-	}
-	if la.Type != nil {
-		objectMap["type"] = la.Type
 	}
 	if la.Location != nil {
 		objectMap["location"] = la.Location
@@ -1542,11 +1470,11 @@ func (la *LabAccount) UnmarshalJSON(body []byte) error {
 type LabAccountFragment struct {
 	// LabAccountPropertiesFragment - The properties of the resource.
 	*LabAccountPropertiesFragment `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1559,15 +1487,6 @@ func (laf LabAccountFragment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if laf.LabAccountPropertiesFragment != nil {
 		objectMap["properties"] = laf.LabAccountPropertiesFragment
-	}
-	if laf.ID != nil {
-		objectMap["id"] = laf.ID
-	}
-	if laf.Name != nil {
-		objectMap["name"] = laf.Name
-	}
-	if laf.Type != nil {
-		objectMap["type"] = laf.Type
 	}
 	if laf.Location != nil {
 		objectMap["location"] = laf.Location
@@ -1649,7 +1568,7 @@ func (laf *LabAccountFragment) UnmarshalJSON(body []byte) error {
 
 // LabAccountProperties properties of a Lab Account.
 type LabAccountProperties struct {
-	// SizeConfiguration - Represents the size configuration under the lab account
+	// SizeConfiguration - READ-ONLY; Represents the size configuration under the lab account
 	SizeConfiguration *SizeConfigurationProperties `json:"sizeConfiguration,omitempty"`
 	// EnabledRegionSelection - Represents if region selection is enabled
 	EnabledRegionSelection *bool `json:"enabledRegionSelection,omitempty"`
@@ -1657,7 +1576,7 @@ type LabAccountProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
@@ -1681,7 +1600,7 @@ type LabAccountsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabAccountsDeleteFuture) Result(client LabAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1708,7 +1627,7 @@ type LabDetails struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ID - The Id of the lab.
 	ID *string `json:"id,omitempty"`
-	// UsageQuota - The maximum duration a user can use a VM in this lab.
+	// UsageQuota - READ-ONLY; The maximum duration a user can use a VM in this lab.
 	UsageQuota *string `json:"usageQuota,omitempty"`
 }
 
@@ -1716,11 +1635,11 @@ type LabDetails struct {
 type LabFragment struct {
 	// LabPropertiesFragment - The properties of the resource.
 	*LabPropertiesFragment `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1733,15 +1652,6 @@ func (lf LabFragment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lf.LabPropertiesFragment != nil {
 		objectMap["properties"] = lf.LabPropertiesFragment
-	}
-	if lf.ID != nil {
-		objectMap["id"] = lf.ID
-	}
-	if lf.Name != nil {
-		objectMap["name"] = lf.Name
-	}
-	if lf.Type != nil {
-		objectMap["type"] = lf.Type
 	}
 	if lf.Location != nil {
 		objectMap["location"] = lf.Location
@@ -1825,25 +1735,25 @@ func (lf *LabFragment) UnmarshalJSON(body []byte) error {
 type LabProperties struct {
 	// MaxUsersInLab - Maximum number of users allowed in the lab.
 	MaxUsersInLab *int32 `json:"maxUsersInLab,omitempty"`
-	// UserQuota - Maximum value MaxUsersInLab can be set to, as specified by the service
+	// UserQuota - READ-ONLY; Maximum value MaxUsersInLab can be set to, as specified by the service
 	UserQuota *int32 `json:"userQuota,omitempty"`
-	// InvitationCode - Invitation code that users can use to join a lab.
+	// InvitationCode - READ-ONLY; Invitation code that users can use to join a lab.
 	InvitationCode *string `json:"invitationCode,omitempty"`
-	// CreatedByObjectID - Object id of the user that created the lab.
+	// CreatedByObjectID - READ-ONLY; Object id of the user that created the lab.
 	CreatedByObjectID *string `json:"createdByObjectId,omitempty"`
 	// UsageQuota - Maximum duration a user can use an environment for in the lab.
 	UsageQuota *string `json:"usageQuota,omitempty"`
 	// UserAccessMode - Lab user access mode (open to all vs. restricted to those listed on the lab). Possible values include: 'Restricted', 'Open'
 	UserAccessMode LabUserAccessMode `json:"userAccessMode,omitempty"`
-	// CreatedByUserPrincipalName - Lab creator name
+	// CreatedByUserPrincipalName - READ-ONLY; Lab creator name
 	CreatedByUserPrincipalName *string `json:"createdByUserPrincipalName,omitempty"`
-	// CreatedDate - Creation date for the lab
+	// CreatedDate - READ-ONLY; Creation date for the lab
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// ProvisioningState - The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
@@ -1870,7 +1780,7 @@ type LabsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsDeleteFuture) Result(client LabsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1885,17 +1795,17 @@ func (future *LabsDeleteFuture) Result(client LabsClient) (ar autorest.Response,
 
 // LatestOperationResult details of the status of an operation.
 type LatestOperationResult struct {
-	// Status - The current status of the operation.
+	// Status - READ-ONLY; The current status of the operation.
 	Status *string `json:"status,omitempty"`
-	// ErrorCode - Error code on failure.
+	// ErrorCode - READ-ONLY; Error code on failure.
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorMessage - The error message.
+	// ErrorMessage - READ-ONLY; The error message.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// RequestURI - Request URI of the operation.
+	// RequestURI - READ-ONLY; Request URI of the operation.
 	RequestURI *string `json:"requestUri,omitempty"`
-	// HTTPMethod - The HttpMethod - PUT/POST/DELETE for the operation.
+	// HTTPMethod - READ-ONLY; The HttpMethod - PUT/POST/DELETE for the operation.
 	HTTPMethod *string `json:"httpMethod,omitempty"`
-	// OperationURL - The URL to use to check long-running operation status
+	// OperationURL - READ-ONLY; The URL to use to check long-running operation status
 	OperationURL *string `json:"operationUrl,omitempty"`
 }
 
@@ -1921,13 +1831,13 @@ type ListLabsResponse struct {
 
 // NetworkInterface network details of the environment
 type NetworkInterface struct {
-	// PrivateIPAddress - PrivateIp address of the Compute VM
+	// PrivateIPAddress - READ-ONLY; PrivateIp address of the Compute VM
 	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
-	// SSHAuthority - Connection information for Linux
+	// SSHAuthority - READ-ONLY; Connection information for Linux
 	SSHAuthority *string `json:"sshAuthority,omitempty"`
-	// RdpAuthority - Connection information for Windows
+	// RdpAuthority - READ-ONLY; Connection information for Windows
 	RdpAuthority *string `json:"rdpAuthority,omitempty"`
-	// Username - Username of the VM
+	// Username - READ-ONLY; Username of the VM
 	Username *string `json:"username,omitempty"`
 }
 
@@ -1940,15 +1850,15 @@ type OperationBatchStatusPayload struct {
 // OperationBatchStatusResponse status Details of the long running operation for an environment
 type OperationBatchStatusResponse struct {
 	autorest.Response `json:"-"`
-	// Items - Gets a collection of items that contain the operation url and status.
+	// Items - READ-ONLY; Gets a collection of items that contain the operation url and status.
 	Items *[]OperationBatchStatusResponseItem `json:"items,omitempty"`
 }
 
 // OperationBatchStatusResponseItem represents the status of an operation that used the batch API.
 type OperationBatchStatusResponseItem struct {
-	// OperationURL - status of the long running operation for an environment
+	// OperationURL - READ-ONLY; status of the long running operation for an environment
 	OperationURL *string `json:"operationUrl,omitempty"`
-	// Status - status of the long running operation for an environment
+	// Status - READ-ONLY; status of the long running operation for an environment
 	Status *string `json:"status,omitempty"`
 }
 
@@ -1998,7 +1908,7 @@ type OperationStatusPayload struct {
 // OperationStatusResponse status Details of the long running operation for an environment
 type OperationStatusResponse struct {
 	autorest.Response `json:"-"`
-	// Status - status of the long running operation for an environment
+	// Status - READ-ONLY; status of the long running operation for an environment
 	Status *string `json:"status,omitempty"`
 }
 
@@ -2018,7 +1928,7 @@ type ProviderOperationResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the resource provider.
 	Value *[]OperationMetadata `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2171,9 +2081,9 @@ type ReferenceVM struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - The password of the virtual machine. This will be set to null in GET resource API
 	Password *string `json:"password,omitempty"`
-	// VMStateDetails - The state details for the reference virtual machine.
+	// VMStateDetails - READ-ONLY; The state details for the reference virtual machine.
 	VMStateDetails *VMStateDetails `json:"vmStateDetails,omitempty"`
-	// VMResourceID - VM resource Id for the environment
+	// VMResourceID - READ-ONLY; VM resource Id for the environment
 	VMResourceID *string `json:"vmResourceId,omitempty"`
 }
 
@@ -2219,11 +2129,11 @@ type ResetPasswordPayload struct {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2234,15 +2144,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -2284,15 +2185,15 @@ type ResourceSettingCreationParameters struct {
 
 // ResourceSettings represents resource specific settings
 type ResourceSettings struct {
-	// ID - The unique id of the resource setting
+	// ID - READ-ONLY; The unique id of the resource setting
 	ID *string `json:"id,omitempty"`
 	// GalleryImageResourceID - The resource id of the gallery image used for creating the virtual machine
 	GalleryImageResourceID *string `json:"galleryImageResourceId,omitempty"`
-	// ImageName - The name of the image used to created the environment setting
+	// ImageName - READ-ONLY; The name of the image used to created the environment setting
 	ImageName *string `json:"imageName,omitempty"`
 	// Size - The size of the virtual machine. Possible values include: 'Basic', 'Standard', 'Performance'
 	Size ManagedLabVMSize `json:"size,omitempty"`
-	// Cores - The translated compute cores of the virtual machine
+	// Cores - READ-ONLY; The translated compute cores of the virtual machine
 	Cores *int32 `json:"cores,omitempty"`
 	// ReferenceVM - Details specific to Reference Vm
 	ReferenceVM *ReferenceVM `json:"referenceVm,omitempty"`
@@ -3235,11 +3136,11 @@ type User struct {
 	autorest.Response `json:"-"`
 	// UserProperties - These are the properties for the user registered under a lab.
 	*UserProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -3252,15 +3153,6 @@ func (u User) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if u.UserProperties != nil {
 		objectMap["properties"] = u.UserProperties
-	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	if u.Location != nil {
 		objectMap["location"] = u.Location
@@ -3344,11 +3236,11 @@ func (u *User) UnmarshalJSON(body []byte) error {
 type UserFragment struct {
 	// UserPropertiesFragment - These are the properties for the user registered under a lab.
 	*UserPropertiesFragment `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -3361,15 +3253,6 @@ func (uf UserFragment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if uf.UserPropertiesFragment != nil {
 		objectMap["properties"] = uf.UserPropertiesFragment
-	}
-	if uf.ID != nil {
-		objectMap["id"] = uf.ID
-	}
-	if uf.Name != nil {
-		objectMap["name"] = uf.Name
-	}
-	if uf.Type != nil {
-		objectMap["type"] = uf.Type
 	}
 	if uf.Location != nil {
 		objectMap["location"] = uf.Location
@@ -3451,21 +3334,21 @@ func (uf *UserFragment) UnmarshalJSON(body []byte) error {
 
 // UserProperties lab User properties
 type UserProperties struct {
-	// Email - The user email address, as it was specified during registration.
+	// Email - READ-ONLY; The user email address, as it was specified during registration.
 	Email *string `json:"email,omitempty"`
-	// FamilyName - The user family name, as it was specified during registration.
+	// FamilyName - READ-ONLY; The user family name, as it was specified during registration.
 	FamilyName *string `json:"familyName,omitempty"`
-	// GivenName - The user given name, as it was specified during registration.
+	// GivenName - READ-ONLY; The user given name, as it was specified during registration.
 	GivenName *string `json:"givenName,omitempty"`
-	// TenantID - The user tenant ID, as it was specified during registration.
+	// TenantID - READ-ONLY; The user tenant ID, as it was specified during registration.
 	TenantID *string `json:"tenantId,omitempty"`
-	// TotalUsage - How long the user has used his VMs in this lab
+	// TotalUsage - READ-ONLY; How long the user has used his VMs in this lab
 	TotalUsage *string `json:"totalUsage,omitempty"`
 	// ProvisioningState - The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
-	// LatestOperationResult - The details of the latest operation. ex: status, error
+	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
@@ -3486,7 +3369,7 @@ type UsersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UsersDeleteFuture) Result(client UsersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.UsersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3501,28 +3384,28 @@ func (future *UsersDeleteFuture) Result(client UsersClient) (ar autorest.Respons
 
 // VirtualMachineDetails details of the backing virtual machine.
 type VirtualMachineDetails struct {
-	// ProvisioningState - Provisioning state of the Dtl VM
+	// ProvisioningState - READ-ONLY; Provisioning state of the Dtl VM
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// RdpAuthority - Connection information for Windows
+	// RdpAuthority - READ-ONLY; Connection information for Windows
 	RdpAuthority *string `json:"rdpAuthority,omitempty"`
-	// SSHAuthority - Connection information for Linux
+	// SSHAuthority - READ-ONLY; Connection information for Linux
 	SSHAuthority *string `json:"sshAuthority,omitempty"`
-	// PrivateIPAddress - PrivateIp address of the compute VM
+	// PrivateIPAddress - READ-ONLY; PrivateIp address of the compute VM
 	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
-	// UserName - Compute VM login user name
+	// UserName - READ-ONLY; Compute VM login user name
 	UserName *string `json:"userName,omitempty"`
-	// LastKnownPowerState - Last known compute power state captured in DTL
+	// LastKnownPowerState - READ-ONLY; Last known compute power state captured in DTL
 	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty"`
 }
 
 // VMStateDetails details about the state of the reference virtual machine.
 type VMStateDetails struct {
-	// RdpAuthority - The RdpAuthority property is a server DNS host name or IP address followed by the service port number for RDP (Remote Desktop Protocol).
+	// RdpAuthority - READ-ONLY; The RdpAuthority property is a server DNS host name or IP address followed by the service port number for RDP (Remote Desktop Protocol).
 	RdpAuthority *string `json:"rdpAuthority,omitempty"`
-	// SSHAuthority - The SshAuthority property is a server DNS host name or IP address followed by the service port number for SSH.
+	// SSHAuthority - READ-ONLY; The SshAuthority property is a server DNS host name or IP address followed by the service port number for SSH.
 	SSHAuthority *string `json:"sshAuthority,omitempty"`
-	// PowerState - The power state of the reference virtual machine.
+	// PowerState - READ-ONLY; The power state of the reference virtual machine.
 	PowerState *string `json:"powerState,omitempty"`
-	// LastKnownPowerState - Last known compute power state captured in DTL
+	// LastKnownPowerState - READ-ONLY; Last known compute power state captured in DTL
 	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty"`
 }

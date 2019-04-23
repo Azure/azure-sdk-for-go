@@ -623,7 +623,7 @@ type BackendPool struct {
 	*BackendPoolProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -637,9 +637,6 @@ func (bp BackendPool) MarshalJSON() ([]byte, error) {
 	}
 	if bp.Name != nil {
 		objectMap["name"] = bp.Name
-	}
-	if bp.Type != nil {
-		objectMap["type"] = bp.Type
 	}
 	if bp.ID != nil {
 		objectMap["id"] = bp.ID
@@ -702,7 +699,7 @@ func (bp *BackendPool) UnmarshalJSON(body []byte) error {
 // objects and a URL link to get the next set of results.
 type BackendPoolListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Backend Pools within a Front Door.
+	// Value - READ-ONLY; List of Backend Pools within a Front Door.
 	Value *[]BackendPool `json:"value,omitempty"`
 	// NextLink - URL to get the next set of BackendPool objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -867,7 +864,7 @@ type BackendPoolsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackendPoolsCreateOrUpdateFuture) Result(client BackendPoolsClient) (bp BackendPool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -896,7 +893,7 @@ type BackendPoolsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackendPoolsDeleteFuture) Result(client BackendPoolsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -951,11 +948,11 @@ type CheckNameAvailabilityInput struct {
 // CheckNameAvailabilityOutput output of check name availability API.
 type CheckNameAvailabilityOutput struct {
 	autorest.Response `json:"-"`
-	// NameAvailability - Indicates whether the name is available. Possible values include: 'Available', 'Unavailable'
+	// NameAvailability - READ-ONLY; Indicates whether the name is available. Possible values include: 'Available', 'Unavailable'
 	NameAvailability Availability `json:"nameAvailability,omitempty"`
-	// Reason - The reason why the name is not available.
+	// Reason - READ-ONLY; The reason why the name is not available.
 	Reason *string `json:"reason,omitempty"`
-	// Message - The detailed error message describing why the name is not available.
+	// Message - READ-ONLY; The detailed error message describing why the name is not available.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -1076,7 +1073,7 @@ type EndpointsPurgeContentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.EndpointsPurgeContentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1108,9 +1105,9 @@ type ErrorDetails struct {
 // ErrorResponse error response indicates Front Door service is not able to process the incoming request.
 // The reason is provided in the error message.
 type ErrorResponse struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -1176,11 +1173,11 @@ type FrontDoor struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the Front Door Load Balancer
 	*Properties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1193,15 +1190,6 @@ func (fd FrontDoor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if fd.Properties != nil {
 		objectMap["properties"] = fd.Properties
-	}
-	if fd.ID != nil {
-		objectMap["id"] = fd.ID
-	}
-	if fd.Name != nil {
-		objectMap["name"] = fd.Name
-	}
-	if fd.Type != nil {
-		objectMap["type"] = fd.Type
 	}
 	if fd.Location != nil {
 		objectMap["location"] = fd.Location
@@ -1291,7 +1279,7 @@ type FrontDoorsCreateOrUpdateFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *FrontDoorsCreateOrUpdateFutureType) Result(client FrontDoorsClient) (fd FrontDoor, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -1320,7 +1308,7 @@ type FrontDoorsDeleteFutureType struct {
 // If the operation has not completed it will return an error.
 func (future *FrontDoorsDeleteFutureType) Result(client FrontDoorsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontDoorsDeleteFutureType", "Result", future.Response(), "Polling failure")
 		return
@@ -1340,7 +1328,7 @@ type FrontendEndpoint struct {
 	*FrontendEndpointProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -1354,9 +1342,6 @@ func (fe FrontendEndpoint) MarshalJSON() ([]byte, error) {
 	}
 	if fe.Name != nil {
 		objectMap["name"] = fe.Name
-	}
-	if fe.Type != nil {
-		objectMap["type"] = fe.Type
 	}
 	if fe.ID != nil {
 		objectMap["id"] = fe.ID
@@ -1426,11 +1411,11 @@ type FrontendEndpointLink struct {
 type FrontendEndpointProperties struct {
 	// ResourceState - Resource status. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
 	ResourceState ResourceState `json:"resourceState,omitempty"`
-	// CustomHTTPSProvisioningState - Provisioning status of Custom Https of the frontendEndpoint. Possible values include: 'CustomHTTPSProvisioningStateEnabling', 'CustomHTTPSProvisioningStateEnabled', 'CustomHTTPSProvisioningStateDisabling', 'CustomHTTPSProvisioningStateDisabled', 'CustomHTTPSProvisioningStateFailed'
+	// CustomHTTPSProvisioningState - READ-ONLY; Provisioning status of Custom Https of the frontendEndpoint. Possible values include: 'CustomHTTPSProvisioningStateEnabling', 'CustomHTTPSProvisioningStateEnabled', 'CustomHTTPSProvisioningStateDisabling', 'CustomHTTPSProvisioningStateDisabled', 'CustomHTTPSProvisioningStateFailed'
 	CustomHTTPSProvisioningState CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty"`
-	// CustomHTTPSProvisioningSubstate - Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. Possible values include: 'SubmittingDomainControlValidationRequest', 'PendingDomainControlValidationREquestApproval', 'DomainControlValidationRequestApproved', 'DomainControlValidationRequestRejected', 'DomainControlValidationRequestTimedOut', 'IssuingCertificate', 'DeployingCertificate', 'CertificateDeployed', 'DeletingCertificate', 'CertificateDeleted'
+	// CustomHTTPSProvisioningSubstate - READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. Possible values include: 'SubmittingDomainControlValidationRequest', 'PendingDomainControlValidationREquestApproval', 'DomainControlValidationRequestApproved', 'DomainControlValidationRequestRejected', 'DomainControlValidationRequestTimedOut', 'IssuingCertificate', 'DeployingCertificate', 'CertificateDeployed', 'DeletingCertificate', 'CertificateDeleted'
 	CustomHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty"`
-	// CustomHTTPSConfiguration - The configuration specifying how to enable HTTPS
+	// CustomHTTPSConfiguration - READ-ONLY; The configuration specifying how to enable HTTPS
 	CustomHTTPSConfiguration *CustomHTTPSConfiguration `json:"customHttpsConfiguration,omitempty"`
 	// HostName - The host name of the frontendEndpoint. Must be a domain name.
 	HostName *string `json:"hostName,omitempty"`
@@ -1452,7 +1437,7 @@ type FrontendEndpointsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FrontendEndpointsCreateOrUpdateFuture) Result(client FrontendEndpointsClient) (fe FrontendEndpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1481,7 +1466,7 @@ type FrontendEndpointsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FrontendEndpointsDeleteFuture) Result(client FrontendEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1504,7 +1489,7 @@ type FrontendEndpointsDisableHTTPSFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FrontendEndpointsDisableHTTPSFuture) Result(client FrontendEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsDisableHTTPSFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1527,7 +1512,7 @@ type FrontendEndpointsEnableHTTPSFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FrontendEndpointsEnableHTTPSFuture) Result(client FrontendEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsEnableHTTPSFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1544,7 +1529,7 @@ func (future *FrontendEndpointsEnableHTTPSFuture) Result(client FrontendEndpoint
 // Frontend endpoint objects and a URL link to get the next set of results.
 type FrontendEndpointsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Frontend endpoints within a Front Door.
+	// Value - READ-ONLY; List of Frontend endpoints within a Front Door.
 	Value *[]FrontendEndpoint `json:"value,omitempty"`
 	// NextLink - URL to get the next set of frontend endpoints if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1716,7 +1701,7 @@ type HealthProbeSettingsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HealthProbeSettingsCreateOrUpdateFuture) Result(client HealthProbeSettingsClient) (hpsm HealthProbeSettingsModel, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.HealthProbeSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1745,7 +1730,7 @@ type HealthProbeSettingsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HealthProbeSettingsDeleteFuture) Result(client HealthProbeSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.HealthProbeSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1762,7 +1747,7 @@ func (future *HealthProbeSettingsDeleteFuture) Result(client HealthProbeSettings
 // HealthProbeSettings objects and a URL link to get the next set of results.
 type HealthProbeSettingsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of HealthProbeSettings within a Front Door.
+	// Value - READ-ONLY; List of HealthProbeSettings within a Front Door.
 	Value *[]HealthProbeSettingsModel `json:"value,omitempty"`
 	// NextLink - URL to get the next set of HealthProbeSettings objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1913,7 +1898,7 @@ type HealthProbeSettingsModel struct {
 	*HealthProbeSettingsProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -1927,9 +1912,6 @@ func (hpsm HealthProbeSettingsModel) MarshalJSON() ([]byte, error) {
 	}
 	if hpsm.Name != nil {
 		objectMap["name"] = hpsm.Name
-	}
-	if hpsm.Type != nil {
-		objectMap["type"] = hpsm.Type
 	}
 	if hpsm.ID != nil {
 		objectMap["id"] = hpsm.ID
@@ -2031,7 +2013,7 @@ type KeyVaultCertificateSourceParametersVault struct {
 // link to get the next set of results.
 type ListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Front Doors within a resource group.
+	// Value - READ-ONLY; List of Front Doors within a resource group.
 	Value *[]FrontDoor `json:"value,omitempty"`
 	// NextLink - URL to get the next set of Front Door objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2184,7 +2166,7 @@ type LoadBalancingSettingsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LoadBalancingSettingsCreateOrUpdateFuture) Result(client LoadBalancingSettingsClient) (lbsm LoadBalancingSettingsModel, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.LoadBalancingSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2213,7 +2195,7 @@ type LoadBalancingSettingsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LoadBalancingSettingsDeleteFuture) Result(client LoadBalancingSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.LoadBalancingSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2230,7 +2212,7 @@ func (future *LoadBalancingSettingsDeleteFuture) Result(client LoadBalancingSett
 // list of load balancing settings objects and a URL link to get the next set of results.
 type LoadBalancingSettingsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Backend Pools within a Front Door.
+	// Value - READ-ONLY; List of Backend Pools within a Front Door.
 	Value *[]LoadBalancingSettingsModel `json:"value,omitempty"`
 	// NextLink - URL to get the next set of LoadBalancingSettings objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2381,7 +2363,7 @@ type LoadBalancingSettingsModel struct {
 	*LoadBalancingSettingsProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -2395,9 +2377,6 @@ func (lbsm LoadBalancingSettingsModel) MarshalJSON() ([]byte, error) {
 	}
 	if lbsm.Name != nil {
 		objectMap["name"] = lbsm.Name
-	}
-	if lbsm.Type != nil {
-		objectMap["type"] = lbsm.Type
 	}
 	if lbsm.ID != nil {
 		objectMap["id"] = lbsm.ID
@@ -2481,19 +2460,19 @@ type LoadBalancingSettingsUpdateParameters struct {
 
 // ManagedRuleDefinition describes a managed rule definition.
 type ManagedRuleDefinition struct {
-	// RuleID - Identifier for the managed rule.
+	// RuleID - READ-ONLY; Identifier for the managed rule.
 	RuleID *string `json:"ruleId,omitempty"`
-	// Description - Describes the functionality of the managed rule.
+	// Description - READ-ONLY; Describes the functionality of the managed rule.
 	Description *string `json:"description,omitempty"`
 }
 
 // ManagedRuleGroupDefinition describes a managed rule group.
 type ManagedRuleGroupDefinition struct {
-	// RuleGroupName - Name of the managed rule group.
+	// RuleGroupName - READ-ONLY; Name of the managed rule group.
 	RuleGroupName *string `json:"ruleGroupName,omitempty"`
-	// Description - Description of the managed rule group.
+	// Description - READ-ONLY; Description of the managed rule group.
 	Description *string `json:"description,omitempty"`
-	// Rules - List of rules within the managed rule group.
+	// Rules - READ-ONLY; List of rules within the managed rule group.
 	Rules *[]ManagedRuleDefinition `json:"rules,omitempty"`
 }
 
@@ -2528,11 +2507,11 @@ type ManagedRuleSet struct {
 // ManagedRuleSetDefinition describes the a managed rule set definition.
 type ManagedRuleSetDefinition struct {
 	*ManagedRuleSetDefinitionProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2545,15 +2524,6 @@ func (mrsd ManagedRuleSetDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mrsd.ManagedRuleSetDefinitionProperties != nil {
 		objectMap["properties"] = mrsd.ManagedRuleSetDefinitionProperties
-	}
-	if mrsd.ID != nil {
-		objectMap["id"] = mrsd.ID
-	}
-	if mrsd.Name != nil {
-		objectMap["name"] = mrsd.Name
-	}
-	if mrsd.Type != nil {
-		objectMap["type"] = mrsd.Type
 	}
 	if mrsd.Location != nil {
 		objectMap["location"] = mrsd.Location
@@ -2636,7 +2606,7 @@ func (mrsd *ManagedRuleSetDefinition) UnmarshalJSON(body []byte) error {
 // ManagedRuleSetDefinitionList list of managed rule set definitions available for use in a policy.
 type ManagedRuleSetDefinitionList struct {
 	autorest.Response `json:"-"`
-	// Value - List of managed rule set definitions.
+	// Value - READ-ONLY; List of managed rule set definitions.
 	Value *[]ManagedRuleSetDefinition `json:"value,omitempty"`
 	// NextLink - URL to retrieve next set of managed rule set definitions.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2782,13 +2752,13 @@ func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, Manag
 
 // ManagedRuleSetDefinitionProperties properties for a managed rule set definition.
 type ManagedRuleSetDefinitionProperties struct {
-	// ProvisioningState - Provisioning state of the managed rule set.
+	// ProvisioningState - READ-ONLY; Provisioning state of the managed rule set.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// RuleSetType - Type of the managed rule set.
+	// RuleSetType - READ-ONLY; Type of the managed rule set.
 	RuleSetType *string `json:"ruleSetType,omitempty"`
-	// RuleSetVersion - Version of the managed rule set type.
+	// RuleSetVersion - READ-ONLY; Version of the managed rule set type.
 	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
-	// RuleGroups - Rule groups of the managed rule set.
+	// RuleGroups - READ-ONLY; Rule groups of the managed rule set.
 	RuleGroups *[]ManagedRuleGroupDefinition `json:"ruleGroups,omitempty"`
 }
 
@@ -2824,7 +2794,7 @@ type PoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PoliciesCreateOrUpdateFuture) Result(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2853,7 +2823,7 @@ type PoliciesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PoliciesDeleteFuture) Result(client PoliciesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2884,9 +2854,9 @@ type PolicySettings struct {
 type Properties struct {
 	// ResourceState - Resource status of the Front Door. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
 	ResourceState ResourceState `json:"resourceState,omitempty"`
-	// ProvisioningState - Provisioning state of the Front Door.
+	// ProvisioningState - READ-ONLY; Provisioning state of the Front Door.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// Cname - The host that each frontendEndpoint must CNAME to.
+	// Cname - READ-ONLY; The host that each frontendEndpoint must CNAME to.
 	Cname *string `json:"cname,omitempty"`
 	// FriendlyName - A friendly name for the frontDoor
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -2980,11 +2950,11 @@ func (rc RedirectConfiguration) AsBasicRouteConfiguration() (BasicRouteConfigura
 
 // Resource common resource representation.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2995,15 +2965,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -3105,7 +3066,7 @@ type RoutingRule struct {
 	*RoutingRuleProperties `json:"properties,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -3119,9 +3080,6 @@ func (rr RoutingRule) MarshalJSON() ([]byte, error) {
 	}
 	if rr.Name != nil {
 		objectMap["name"] = rr.Name
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
 	}
 	if rr.ID != nil {
 		objectMap["id"] = rr.ID
@@ -3184,7 +3142,7 @@ func (rr *RoutingRule) UnmarshalJSON(body []byte) error {
 // objects and a URL link to get the next set of results.
 type RoutingRuleListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Routing Rules within a Front Door.
+	// Value - READ-ONLY; List of Routing Rules within a Front Door.
 	Value *[]RoutingRule `json:"value,omitempty"`
 	// NextLink - URL to get the next set of RoutingRule objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -3421,7 +3379,7 @@ type RoutingRulesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RoutingRulesCreateOrUpdateFuture) Result(client RoutingRulesClient) (rr RoutingRule, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.RoutingRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3450,7 +3408,7 @@ type RoutingRulesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RoutingRulesDeleteFuture) Result(client RoutingRulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.RoutingRulesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3586,11 +3544,11 @@ type ValidateCustomDomainInput struct {
 // ValidateCustomDomainOutput output of custom domain validation.
 type ValidateCustomDomainOutput struct {
 	autorest.Response `json:"-"`
-	// CustomDomainValidated - Indicates whether the custom domain is valid or not.
+	// CustomDomainValidated - READ-ONLY; Indicates whether the custom domain is valid or not.
 	CustomDomainValidated *bool `json:"customDomainValidated,omitempty"`
-	// Reason - The reason why the custom domain is not valid.
+	// Reason - READ-ONLY; The reason why the custom domain is not valid.
 	Reason *string `json:"reason,omitempty"`
-	// Message - Error message describing why the custom domain is not valid.
+	// Message - READ-ONLY; Error message describing why the custom domain is not valid.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -3601,11 +3559,11 @@ type WebApplicationFirewallPolicy struct {
 	*WebApplicationFirewallPolicyProperties `json:"properties,omitempty"`
 	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -3621,15 +3579,6 @@ func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
 	}
 	if wafp.Etag != nil {
 		objectMap["etag"] = wafp.Etag
-	}
-	if wafp.ID != nil {
-		objectMap["id"] = wafp.ID
-	}
-	if wafp.Name != nil {
-		objectMap["name"] = wafp.Name
-	}
-	if wafp.Type != nil {
-		objectMap["type"] = wafp.Type
 	}
 	if wafp.Location != nil {
 		objectMap["location"] = wafp.Location
@@ -3722,7 +3671,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 // WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
 type WebApplicationFirewallPolicyList struct {
 	autorest.Response `json:"-"`
-	// Value - List of WebApplicationFirewallPolicies within a resource group.
+	// Value - READ-ONLY; List of WebApplicationFirewallPolicies within a resource group.
 	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
 	// NextLink - URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -3874,10 +3823,10 @@ type WebApplicationFirewallPolicyProperties struct {
 	CustomRules *CustomRuleList `json:"customRules,omitempty"`
 	// ManagedRules - Describes managed rules inside the policy.
 	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
-	// FrontendEndpointLinks - Describes Frontend Endpoints associated with this Web Application Firewall policy.
+	// FrontendEndpointLinks - READ-ONLY; Describes Frontend Endpoints associated with this Web Application Firewall policy.
 	FrontendEndpointLinks *[]FrontendEndpointLink `json:"frontendEndpointLinks,omitempty"`
-	// ProvisioningState - Provisioning state of the policy.
+	// ProvisioningState - READ-ONLY; Provisioning state of the policy.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// ResourceState - Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'
+	// ResourceState - READ-ONLY; Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'
 	ResourceState PolicyResourceState `json:"resourceState,omitempty"`
 }

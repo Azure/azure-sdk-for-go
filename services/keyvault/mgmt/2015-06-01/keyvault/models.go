@@ -185,11 +185,11 @@ type Permissions struct {
 
 // Resource key Vault resource
 type Resource struct {
-	// ID - The Azure Resource Manager resource ID for the key vault.
+	// ID - READ-ONLY; The Azure Resource Manager resource ID for the key vault.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the key vault.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type of the key vault.
+	// Type - READ-ONLY; The resource type of the key vault.
 	Type *string `json:"type,omitempty"`
 	// Location - The supported Azure location where the key vault should be created.
 	Location *string `json:"location,omitempty"`
@@ -200,14 +200,8 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
 	if r.Name != nil {
 		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
@@ -377,11 +371,11 @@ type Vault struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the vault
 	Properties *VaultProperties `json:"properties,omitempty"`
-	// ID - The Azure Resource Manager resource ID for the key vault.
+	// ID - READ-ONLY; The Azure Resource Manager resource ID for the key vault.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the key vault.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type of the key vault.
+	// Type - READ-ONLY; The resource type of the key vault.
 	Type *string `json:"type,omitempty"`
 	// Location - The supported Azure location where the key vault should be created.
 	Location *string `json:"location,omitempty"`
@@ -395,14 +389,8 @@ func (vVar Vault) MarshalJSON() ([]byte, error) {
 	if vVar.Properties != nil {
 		objectMap["properties"] = vVar.Properties
 	}
-	if vVar.ID != nil {
-		objectMap["id"] = vVar.ID
-	}
 	if vVar.Name != nil {
 		objectMap["name"] = vVar.Name
-	}
-	if vVar.Type != nil {
-		objectMap["type"] = vVar.Type
 	}
 	if vVar.Location != nil {
 		objectMap["location"] = vVar.Location

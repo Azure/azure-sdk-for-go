@@ -211,11 +211,11 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 // ResourceLink the resource link.
 type ResourceLink struct {
 	autorest.Response `json:"-"`
-	// ID - The fully qualified ID of the resource link.
+	// ID - READ-ONLY; The fully qualified ID of the resource link.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource link.
+	// Name - READ-ONLY; The name of the resource link.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource link object.
+	// Type - READ-ONLY; The resource link object.
 	Type interface{} `json:"type,omitempty"`
 	// Properties - Properties for resource link.
 	Properties *ResourceLinkProperties `json:"properties,omitempty"`
@@ -229,7 +229,7 @@ type ResourceLinkFilter struct {
 
 // ResourceLinkProperties the resource link properties.
 type ResourceLinkProperties struct {
-	// SourceID - The fully qualified ID of the source resource in the link.
+	// SourceID - READ-ONLY; The fully qualified ID of the source resource in the link.
 	SourceID *string `json:"sourceId,omitempty"`
 	// TargetID - The fully qualified ID of the target resource in the link.
 	TargetID *string `json:"targetId,omitempty"`
@@ -242,7 +242,7 @@ type ResourceLinkResult struct {
 	autorest.Response `json:"-"`
 	// Value - An array of resource links.
 	Value *[]ResourceLink `json:"value,omitempty"`
-	// NextLink - The URL to use for getting the next set of results.
+	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

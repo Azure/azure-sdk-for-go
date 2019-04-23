@@ -229,7 +229,7 @@ type AdultInfo struct {
 // AreaOfInterestResult result of AreaOfInterest operation.
 type AreaOfInterestResult struct {
 	autorest.Response `json:"-"`
-	// AreaOfInterest - A bounding box for an area of interest inside an image.
+	// AreaOfInterest - READ-ONLY; A bounding box for an area of interest inside an image.
 	AreaOfInterest *BoundingRect `json:"areaOfInterest,omitempty"`
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
@@ -301,17 +301,17 @@ type ColorInfo struct {
 
 // DetectedBrand a brand detected in an image.
 type DetectedBrand struct {
-	// Name - Label for the brand.
+	// Name - READ-ONLY; Label for the brand.
 	Name *string `json:"name,omitempty"`
-	// Confidence - Confidence score of having observed the brand in the image, as a value ranging from 0 to 1.
+	// Confidence - READ-ONLY; Confidence score of having observed the brand in the image, as a value ranging from 0 to 1.
 	Confidence *float64 `json:"confidence,omitempty"`
-	// Rectangle - Approximate location of the detected brand.
+	// Rectangle - READ-ONLY; Approximate location of the detected brand.
 	Rectangle *BoundingRect `json:"rectangle,omitempty"`
 }
 
 // DetectedObject an object detected in an image.
 type DetectedObject struct {
-	// Rectangle - Approximate location of the detected object.
+	// Rectangle - READ-ONLY; Approximate location of the detected object.
 	Rectangle *BoundingRect `json:"rectangle,omitempty"`
 	// Object - Label for the object.
 	Object *string `json:"object,omitempty"`
@@ -325,7 +325,7 @@ type DetectedObject struct {
 // DetectResult result of a DetectImage call.
 type DetectResult struct {
 	autorest.Response `json:"-"`
-	// Objects - An array of detected objects.
+	// Objects - READ-ONLY; An array of detected objects.
 	Objects *[]DetectedObject `json:"objects,omitempty"`
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
@@ -549,7 +549,7 @@ type Line struct {
 // ListModelsResult result of the List Domain Models operation.
 type ListModelsResult struct {
 	autorest.Response `json:"-"`
-	// ModelsProperty - An array of supported models.
+	// ModelsProperty - READ-ONLY; An array of supported models.
 	ModelsProperty *[]ModelDescription `json:"models,omitempty"`
 }
 

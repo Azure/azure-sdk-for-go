@@ -534,9 +534,9 @@ type ApplicationGateway struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -555,12 +555,6 @@ func (ag ApplicationGateway) MarshalJSON() ([]byte, error) {
 	}
 	if ag.ID != nil {
 		objectMap["id"] = ag.ID
-	}
-	if ag.Name != nil {
-		objectMap["name"] = ag.Name
-	}
-	if ag.Type != nil {
-		objectMap["type"] = ag.Type
 	}
 	if ag.Location != nil {
 		objectMap["location"] = ag.Location
@@ -1554,7 +1548,7 @@ type ApplicationGatewayProbePropertiesFormat struct {
 type ApplicationGatewayPropertiesFormat struct {
 	// Sku - Gets or sets sku of application gateway resource
 	Sku *ApplicationGatewaySku `json:"sku,omitempty"`
-	// OperationalState - Gets operational state of application gateway resource. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping'
+	// OperationalState - READ-ONLY; Gets operational state of application gateway resource. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping'
 	OperationalState ApplicationGatewayOperationalState `json:"operationalState,omitempty"`
 	// GatewayIPConfigurations - Gets or sets subnets of application gateway resource
 	GatewayIPConfigurations *[]ApplicationGatewayIPConfiguration `json:"gatewayIPConfigurations,omitempty"`
@@ -1689,7 +1683,7 @@ type ApplicationGatewaysCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationGatewaysCreateOrUpdateFuture) Result(client ApplicationGatewaysClient) (ag ApplicationGateway, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1718,7 +1712,7 @@ type ApplicationGatewaysDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationGatewaysDeleteFuture) Result(client ApplicationGatewaysClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1843,7 +1837,7 @@ type ApplicationGatewaysStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationGatewaysStartFuture) Result(client ApplicationGatewaysClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1866,7 +1860,7 @@ type ApplicationGatewaysStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationGatewaysStopFuture) Result(client ApplicationGatewaysClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2304,9 +2298,9 @@ type ExpressRouteCircuit struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -2328,12 +2322,6 @@ func (erc ExpressRouteCircuit) MarshalJSON() ([]byte, error) {
 	}
 	if erc.ID != nil {
 		objectMap["id"] = erc.ID
-	}
-	if erc.Name != nil {
-		objectMap["name"] = erc.Name
-	}
-	if erc.Type != nil {
-		objectMap["type"] = erc.Type
 	}
 	if erc.Location != nil {
 		objectMap["location"] = erc.Location
@@ -2534,7 +2522,7 @@ type ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture) Result(client ExpressRouteCircuitAuthorizationsClient) (erca ExpressRouteCircuitAuthorization, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2563,7 +2551,7 @@ type ExpressRouteCircuitAuthorizationsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitAuthorizationsDeleteFuture) Result(client ExpressRouteCircuitAuthorizationsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3004,7 +2992,7 @@ type ExpressRouteCircuitPeeringsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitPeeringsCreateOrUpdateFuture) Result(client ExpressRouteCircuitPeeringsClient) (ercp ExpressRouteCircuitPeering, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3033,7 +3021,7 @@ type ExpressRouteCircuitPeeringsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitPeeringsDeleteFuture) Result(client ExpressRouteCircuitPeeringsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3116,7 +3104,7 @@ type ExpressRouteCircuitsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitsCreateOrUpdateFuture) Result(client ExpressRouteCircuitsClient) (erc ExpressRouteCircuit, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3145,7 +3133,7 @@ type ExpressRouteCircuitsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitsDeleteFuture) Result(client ExpressRouteCircuitsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3189,7 +3177,7 @@ type ExpressRouteCircuitsListArpTableFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitsListArpTableFuture) Result(client ExpressRouteCircuitsClient) (ercatlr ExpressRouteCircuitsArpTableListResult, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3218,7 +3206,7 @@ type ExpressRouteCircuitsListRoutesTableFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitsListRoutesTableFuture) Result(client ExpressRouteCircuitsClient) (ercrtlr ExpressRouteCircuitsRoutesTableListResult, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3247,7 +3235,7 @@ type ExpressRouteCircuitsListRoutesTableSummaryFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExpressRouteCircuitsListRoutesTableSummaryFuture) Result(client ExpressRouteCircuitsClient) (ercrtslr ExpressRouteCircuitsRoutesTableSummaryListResult, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3304,9 +3292,9 @@ type ExpressRouteServiceProvider struct {
 	*ExpressRouteServiceProviderPropertiesFormat `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -3322,12 +3310,6 @@ func (ersp ExpressRouteServiceProvider) MarshalJSON() ([]byte, error) {
 	}
 	if ersp.ID != nil {
 		objectMap["id"] = ersp.ID
-	}
-	if ersp.Name != nil {
-		objectMap["name"] = ersp.Name
-	}
-	if ersp.Type != nil {
-		objectMap["type"] = ersp.Type
 	}
 	if ersp.Location != nil {
 		objectMap["location"] = ersp.Location
@@ -3878,9 +3860,9 @@ type Interface struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -3899,12 +3881,6 @@ func (i Interface) MarshalJSON() ([]byte, error) {
 	}
 	if i.ID != nil {
 		objectMap["id"] = i.ID
-	}
-	if i.Name != nil {
-		objectMap["name"] = i.Name
-	}
-	if i.Type != nil {
-		objectMap["type"] = i.Type
 	}
 	if i.Location != nil {
 		objectMap["location"] = i.Location
@@ -4285,7 +4261,7 @@ type InterfacesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *InterfacesCreateOrUpdateFuture) Result(client InterfacesClient) (i Interface, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4314,7 +4290,7 @@ type InterfacesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *InterfacesDeleteFuture) Result(client InterfacesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4429,9 +4405,9 @@ type LoadBalancer struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -4450,12 +4426,6 @@ func (lb LoadBalancer) MarshalJSON() ([]byte, error) {
 	}
 	if lb.ID != nil {
 		objectMap["id"] = lb.ID
-	}
-	if lb.Name != nil {
-		objectMap["name"] = lb.Name
-	}
-	if lb.Type != nil {
-		objectMap["type"] = lb.Type
 	}
 	if lb.Location != nil {
 		objectMap["location"] = lb.Location
@@ -4722,7 +4692,7 @@ type LoadBalancersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LoadBalancersCreateOrUpdateFuture) Result(client LoadBalancersClient) (lb LoadBalancer, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4751,7 +4721,7 @@ type LoadBalancersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LoadBalancersDeleteFuture) Result(client LoadBalancersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4876,9 +4846,9 @@ type LocalNetworkGateway struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -4897,12 +4867,6 @@ func (lng LocalNetworkGateway) MarshalJSON() ([]byte, error) {
 	}
 	if lng.ID != nil {
 		objectMap["id"] = lng.ID
-	}
-	if lng.Name != nil {
-		objectMap["name"] = lng.Name
-	}
-	if lng.Type != nil {
-		objectMap["type"] = lng.Type
 	}
 	if lng.Location != nil {
 		objectMap["location"] = lng.Location
@@ -5162,7 +5126,7 @@ type LocalNetworkGatewaysCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LocalNetworkGatewaysCreateOrUpdateFuture) Result(client LocalNetworkGatewaysClient) (lng LocalNetworkGateway, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5191,7 +5155,7 @@ type LocalNetworkGatewaysDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LocalNetworkGatewaysDeleteFuture) Result(client LocalNetworkGatewaysClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5402,9 +5366,9 @@ type PublicIPAddress struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -5423,12 +5387,6 @@ func (pia PublicIPAddress) MarshalJSON() ([]byte, error) {
 	}
 	if pia.ID != nil {
 		objectMap["id"] = pia.ID
-	}
-	if pia.Name != nil {
-		objectMap["name"] = pia.Name
-	}
-	if pia.Type != nil {
-		objectMap["type"] = pia.Type
 	}
 	if pia.Location != nil {
 		objectMap["location"] = pia.Location
@@ -5537,7 +5495,7 @@ type PublicIPAddressesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PublicIPAddressesCreateOrUpdateFuture) Result(client PublicIPAddressesClient) (pia PublicIPAddress, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5566,7 +5524,7 @@ type PublicIPAddressesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PublicIPAddressesDeleteFuture) Result(client PublicIPAddressesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5747,9 +5705,9 @@ type PublicIPAddressPropertiesFormat struct {
 type Resource struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -5762,12 +5720,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if r.ID != nil {
 		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
@@ -6027,7 +5979,7 @@ type RoutesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RoutesCreateOrUpdateFuture) Result(client RoutesClient) (r Route, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RoutesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6055,7 +6007,7 @@ type RoutesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RoutesDeleteFuture) Result(client RoutesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RoutesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6076,9 +6028,9 @@ type RouteTable struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -6097,12 +6049,6 @@ func (rt RouteTable) MarshalJSON() ([]byte, error) {
 	}
 	if rt.ID != nil {
 		objectMap["id"] = rt.ID
-	}
-	if rt.Name != nil {
-		objectMap["name"] = rt.Name
-	}
-	if rt.Type != nil {
-		objectMap["type"] = rt.Type
 	}
 	if rt.Location != nil {
 		objectMap["location"] = rt.Location
@@ -6357,7 +6303,7 @@ type RouteTablesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RouteTablesCreateOrUpdateFuture) Result(client RouteTablesClient) (rt RouteTable, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteTablesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6386,7 +6332,7 @@ type RouteTablesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RouteTablesDeleteFuture) Result(client RouteTablesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteTablesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6407,9 +6353,9 @@ type SecurityGroup struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -6428,12 +6374,6 @@ func (sg SecurityGroup) MarshalJSON() ([]byte, error) {
 	}
 	if sg.ID != nil {
 		objectMap["id"] = sg.ID
-	}
-	if sg.Name != nil {
-		objectMap["name"] = sg.Name
-	}
-	if sg.Type != nil {
-		objectMap["type"] = sg.Type
 	}
 	if sg.Location != nil {
 		objectMap["location"] = sg.Location
@@ -6694,7 +6634,7 @@ type SecurityGroupsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SecurityGroupsCreateOrUpdateFuture) Result(client SecurityGroupsClient) (sg SecurityGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6723,7 +6663,7 @@ type SecurityGroupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SecurityGroupsDeleteFuture) Result(client SecurityGroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6998,7 +6938,7 @@ type SecurityRulesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SecurityRulesCreateOrUpdateFuture) Result(client SecurityRulesClient) (sr SecurityRule, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7027,7 +6967,7 @@ type SecurityRulesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SecurityRulesDeleteFuture) Result(client SecurityRulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7298,7 +7238,7 @@ type SubnetsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SubnetsCreateOrUpdateFuture) Result(client SubnetsClient) (s Subnet, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7327,7 +7267,7 @@ type SubnetsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SubnetsDeleteFuture) Result(client SubnetsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7381,9 +7321,9 @@ type VirtualNetwork struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -7402,12 +7342,6 @@ func (vn VirtualNetwork) MarshalJSON() ([]byte, error) {
 	}
 	if vn.ID != nil {
 		objectMap["id"] = vn.ID
-	}
-	if vn.Name != nil {
-		objectMap["name"] = vn.Name
-	}
-	if vn.Type != nil {
-		objectMap["type"] = vn.Type
 	}
 	if vn.Location != nil {
 		objectMap["location"] = vn.Location
@@ -7504,9 +7438,9 @@ type VirtualNetworkGateway struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -7525,12 +7459,6 @@ func (vng VirtualNetworkGateway) MarshalJSON() ([]byte, error) {
 	}
 	if vng.ID != nil {
 		objectMap["id"] = vng.ID
-	}
-	if vng.Name != nil {
-		objectMap["name"] = vng.Name
-	}
-	if vng.Type != nil {
-		objectMap["type"] = vng.Type
 	}
 	if vng.Location != nil {
 		objectMap["location"] = vng.Location
@@ -7627,9 +7555,9 @@ type VirtualNetworkGatewayConnection struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -7648,12 +7576,6 @@ func (vngc VirtualNetworkGatewayConnection) MarshalJSON() ([]byte, error) {
 	}
 	if vngc.ID != nil {
 		objectMap["id"] = vngc.ID
-	}
-	if vngc.Name != nil {
-		objectMap["name"] = vngc.Name
-	}
-	if vngc.Type != nil {
-		objectMap["type"] = vngc.Type
 	}
 	if vngc.Location != nil {
 		objectMap["location"] = vngc.Location
@@ -7929,7 +7851,7 @@ type VirtualNetworkGatewayConnectionsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewayConnectionsCreateOrUpdateFuture) Result(client VirtualNetworkGatewayConnectionsClient) (vngc VirtualNetworkGatewayConnection, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7958,7 +7880,7 @@ type VirtualNetworkGatewayConnectionsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewayConnectionsDeleteFuture) Result(client VirtualNetworkGatewayConnectionsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7981,7 +7903,7 @@ type VirtualNetworkGatewayConnectionsResetSharedKeyFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewayConnectionsResetSharedKeyFuture) Result(client VirtualNetworkGatewayConnectionsClient) (crsk ConnectionResetSharedKey, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8010,7 +7932,7 @@ type VirtualNetworkGatewayConnectionsSetSharedKeyFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewayConnectionsSetSharedKeyFuture) Result(client VirtualNetworkGatewayConnectionsClient) (csk ConnectionSharedKey, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8304,7 +8226,7 @@ type VirtualNetworkGatewaysCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewaysCreateOrUpdateFuture) Result(client VirtualNetworkGatewaysClient) (vng VirtualNetworkGateway, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8333,7 +8255,7 @@ type VirtualNetworkGatewaysDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewaysDeleteFuture) Result(client VirtualNetworkGatewaysClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8366,7 +8288,7 @@ type VirtualNetworkGatewaysResetFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGatewaysClient) (vng VirtualNetworkGateway, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8555,7 +8477,7 @@ type VirtualNetworksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworksCreateOrUpdateFuture) Result(client VirtualNetworksClient) (vn VirtualNetwork, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8584,7 +8506,7 @@ type VirtualNetworksDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworksDeleteFuture) Result(client VirtualNetworksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return

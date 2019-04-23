@@ -487,11 +487,11 @@ type ActionGroupResource struct {
 	autorest.Response `json:"-"`
 	// ActionGroup - The action groups properties of the resource.
 	*ActionGroup `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -504,15 +504,6 @@ func (agr ActionGroupResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if agr.ActionGroup != nil {
 		objectMap["properties"] = agr.ActionGroup
-	}
-	if agr.ID != nil {
-		objectMap["id"] = agr.ID
-	}
-	if agr.Name != nil {
-		objectMap["name"] = agr.Name
-	}
-	if agr.Type != nil {
-		objectMap["type"] = agr.Type
 	}
 	if agr.Location != nil {
 		objectMap["location"] = agr.Location
@@ -721,11 +712,11 @@ type ActivityLogAlertResource struct {
 	autorest.Response `json:"-"`
 	// ActivityLogAlert - The activity log alert properties of the resource.
 	*ActivityLogAlert `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -738,15 +729,6 @@ func (alar ActivityLogAlertResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if alar.ActivityLogAlert != nil {
 		objectMap["properties"] = alar.ActivityLogAlert
-	}
-	if alar.ID != nil {
-		objectMap["id"] = alar.ID
-	}
-	if alar.Name != nil {
-		objectMap["name"] = alar.Name
-	}
-	if alar.Type != nil {
-		objectMap["type"] = alar.Type
 	}
 	if alar.Location != nil {
 		objectMap["location"] = alar.Location
@@ -838,7 +820,7 @@ type AlertRule struct {
 	Condition BasicRuleCondition `json:"condition,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
 	Actions *[]BasicRuleAction `json:"actions,omitempty"`
-	// LastUpdatedTime - Last time the rule was updated in ISO8601 format.
+	// LastUpdatedTime - READ-ONLY; Last time the rule was updated in ISO8601 format.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 }
 
@@ -914,11 +896,11 @@ type AlertRuleResource struct {
 	autorest.Response `json:"-"`
 	// AlertRule - The alert rule properties of the resource.
 	*AlertRule `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -931,15 +913,6 @@ func (arr AlertRuleResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if arr.AlertRule != nil {
 		objectMap["properties"] = arr.AlertRule
-	}
-	if arr.ID != nil {
-		objectMap["id"] = arr.ID
-	}
-	if arr.Name != nil {
-		objectMap["name"] = arr.Name
-	}
-	if arr.Type != nil {
-		objectMap["type"] = arr.Type
 	}
 	if arr.Location != nil {
 		objectMap["location"] = arr.Location
@@ -1147,11 +1120,11 @@ type AutoscaleSettingResource struct {
 	autorest.Response `json:"-"`
 	// AutoscaleSetting - The autoscale setting of the resource.
 	*AutoscaleSetting `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1164,15 +1137,6 @@ func (asr AutoscaleSettingResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if asr.AutoscaleSetting != nil {
 		objectMap["properties"] = asr.AutoscaleSetting
-	}
-	if asr.ID != nil {
-		objectMap["id"] = asr.ID
-	}
-	if asr.Name != nil {
-		objectMap["name"] = asr.Name
-	}
-	if asr.Type != nil {
-		objectMap["type"] = asr.Type
 	}
 	if asr.Location != nil {
 		objectMap["location"] = asr.Location
@@ -1509,11 +1473,11 @@ type BaselineProperties struct {
 // BaselineResponse the response to a baseline query.
 type BaselineResponse struct {
 	autorest.Response `json:"-"`
-	// ID - the metric baseline Id.
+	// ID - READ-ONLY; the metric baseline Id.
 	ID *string `json:"id,omitempty"`
-	// Type - the resource type of the baseline resource.
+	// Type - READ-ONLY; the resource type of the baseline resource.
 	Type *string `json:"type,omitempty"`
-	// Name - the name and the display name of the metric, i.e. it is localizable string.
+	// Name - READ-ONLY; the name and the display name of the metric, i.e. it is localizable string.
 	Name *LocalizableString `json:"name,omitempty"`
 	// BaselineProperties - the properties of the baseline.
 	*BaselineProperties `json:"properties,omitempty"`
@@ -1522,15 +1486,6 @@ type BaselineResponse struct {
 // MarshalJSON is the custom marshaler for BaselineResponse.
 func (br BaselineResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if br.ID != nil {
-		objectMap["id"] = br.ID
-	}
-	if br.Type != nil {
-		objectMap["type"] = br.Type
-	}
-	if br.Name != nil {
-		objectMap["name"] = br.Name
-	}
 	if br.BaselineProperties != nil {
 		objectMap["properties"] = br.BaselineProperties
 	}
@@ -1628,11 +1583,11 @@ type DiagnosticSettingsCategoryResource struct {
 	autorest.Response `json:"-"`
 	// DiagnosticSettingsCategory - The properties of a Diagnostic Settings Category.
 	*DiagnosticSettingsCategory `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1641,15 +1596,6 @@ func (dscr DiagnosticSettingsCategoryResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dscr.DiagnosticSettingsCategory != nil {
 		objectMap["properties"] = dscr.DiagnosticSettingsCategory
-	}
-	if dscr.ID != nil {
-		objectMap["id"] = dscr.ID
-	}
-	if dscr.Name != nil {
-		objectMap["name"] = dscr.Name
-	}
-	if dscr.Type != nil {
-		objectMap["type"] = dscr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1718,11 +1664,11 @@ type DiagnosticSettingsResource struct {
 	autorest.Response `json:"-"`
 	// DiagnosticSettings - Properties of a Diagnostic Settings Resource.
 	*DiagnosticSettings `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1731,15 +1677,6 @@ func (dsr DiagnosticSettingsResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dsr.DiagnosticSettings != nil {
 		objectMap["properties"] = dsr.DiagnosticSettings
-	}
-	if dsr.ID != nil {
-		objectMap["id"] = dsr.ID
-	}
-	if dsr.Name != nil {
-		objectMap["name"] = dsr.Name
-	}
-	if dsr.Type != nil {
-		objectMap["type"] = dsr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1818,7 +1755,7 @@ type EmailReceiver struct {
 	Name *string `json:"name,omitempty"`
 	// EmailAddress - The email address of this receiver.
 	EmailAddress *string `json:"emailAddress,omitempty"`
-	// Status - The receiver status of the e-mail. Possible values include: 'NotSpecified', 'Enabled', 'Disabled'
+	// Status - READ-ONLY; The receiver status of the e-mail. Possible values include: 'NotSpecified', 'Enabled', 'Disabled'
 	Status ReceiverStatus `json:"status,omitempty"`
 }
 
@@ -1846,131 +1783,59 @@ type EventCategoryCollection struct {
 
 // EventData the Azure event log entries are of type EventData
 type EventData struct {
-	// Authorization - The sender authorization information.
+	// Authorization - READ-ONLY; The sender authorization information.
 	Authorization *SenderAuthorization `json:"authorization,omitempty"`
-	// Claims - key value pairs to identify ARM permissions.
+	// Claims - READ-ONLY; key value pairs to identify ARM permissions.
 	Claims map[string]*string `json:"claims"`
-	// Caller - the email address of the user who has performed the operation, the UPN claim or SPN claim based on availability.
+	// Caller - READ-ONLY; the email address of the user who has performed the operation, the UPN claim or SPN claim based on availability.
 	Caller *string `json:"caller,omitempty"`
-	// Description - the description of the event.
+	// Description - READ-ONLY; the description of the event.
 	Description *string `json:"description,omitempty"`
-	// ID - the Id of this event as required by ARM for RBAC. It contains the EventDataID and a timestamp information.
+	// ID - READ-ONLY; the Id of this event as required by ARM for RBAC. It contains the EventDataID and a timestamp information.
 	ID *string `json:"id,omitempty"`
-	// EventDataID - the event data Id. This is a unique identifier for an event.
+	// EventDataID - READ-ONLY; the event data Id. This is a unique identifier for an event.
 	EventDataID *string `json:"eventDataId,omitempty"`
-	// CorrelationID - the correlation Id, usually a GUID in the string format. The correlation Id is shared among the events that belong to the same uber operation.
+	// CorrelationID - READ-ONLY; the correlation Id, usually a GUID in the string format. The correlation Id is shared among the events that belong to the same uber operation.
 	CorrelationID *string `json:"correlationId,omitempty"`
-	// EventName - the event name. This value should not be confused with OperationName. For practical purposes, OperationName might be more appealing to end users.
+	// EventName - READ-ONLY; the event name. This value should not be confused with OperationName. For practical purposes, OperationName might be more appealing to end users.
 	EventName *LocalizableString `json:"eventName,omitempty"`
-	// Category - the event category.
+	// Category - READ-ONLY; the event category.
 	Category *LocalizableString `json:"category,omitempty"`
-	// HTTPRequest - the HTTP request info. Usually includes the 'clientRequestId', 'clientIpAddress' (IP address of the user who initiated the event) and 'method' (HTTP method e.g. PUT).
+	// HTTPRequest - READ-ONLY; the HTTP request info. Usually includes the 'clientRequestId', 'clientIpAddress' (IP address of the user who initiated the event) and 'method' (HTTP method e.g. PUT).
 	HTTPRequest *HTTPRequestInfo `json:"httpRequest,omitempty"`
-	// Level - the event level. Possible values include: 'Critical', 'Error', 'Warning', 'Informational', 'Verbose'
+	// Level - READ-ONLY; the event level. Possible values include: 'Critical', 'Error', 'Warning', 'Informational', 'Verbose'
 	Level EventLevel `json:"level,omitempty"`
-	// ResourceGroupName - the resource group name of the impacted resource.
+	// ResourceGroupName - READ-ONLY; the resource group name of the impacted resource.
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-	// ResourceProviderName - the resource provider name of the impacted resource.
+	// ResourceProviderName - READ-ONLY; the resource provider name of the impacted resource.
 	ResourceProviderName *LocalizableString `json:"resourceProviderName,omitempty"`
-	// ResourceID - the resource uri that uniquely identifies the resource that caused this event.
+	// ResourceID - READ-ONLY; the resource uri that uniquely identifies the resource that caused this event.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// ResourceType - the resource type
+	// ResourceType - READ-ONLY; the resource type
 	ResourceType *LocalizableString `json:"resourceType,omitempty"`
-	// OperationID - It is usually a GUID shared among the events corresponding to single operation. This value should not be confused with EventName.
+	// OperationID - READ-ONLY; It is usually a GUID shared among the events corresponding to single operation. This value should not be confused with EventName.
 	OperationID *string `json:"operationId,omitempty"`
-	// OperationName - the operation name.
+	// OperationName - READ-ONLY; the operation name.
 	OperationName *LocalizableString `json:"operationName,omitempty"`
-	// Properties - the set of <Key, Value> pairs (usually a Dictionary<String, String>) that includes details about the event.
+	// Properties - READ-ONLY; the set of <Key, Value> pairs (usually a Dictionary<String, String>) that includes details about the event.
 	Properties map[string]*string `json:"properties"`
-	// Status - a string describing the status of the operation. Some typical values are: Started, In progress, Succeeded, Failed, Resolved.
+	// Status - READ-ONLY; a string describing the status of the operation. Some typical values are: Started, In progress, Succeeded, Failed, Resolved.
 	Status *LocalizableString `json:"status,omitempty"`
-	// SubStatus - the event sub status. Most of the time, when included, this captures the HTTP status code of the REST call. Common values are: OK (HTTP Status Code: 200), Created (HTTP Status Code: 201), Accepted (HTTP Status Code: 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP Status Code: 404), Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status Code: 500), Service Unavailable (HTTP Status Code:503), Gateway Timeout (HTTP Status Code: 504)
+	// SubStatus - READ-ONLY; the event sub status. Most of the time, when included, this captures the HTTP status code of the REST call. Common values are: OK (HTTP Status Code: 200), Created (HTTP Status Code: 201), Accepted (HTTP Status Code: 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP Status Code: 404), Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status Code: 500), Service Unavailable (HTTP Status Code:503), Gateway Timeout (HTTP Status Code: 504)
 	SubStatus *LocalizableString `json:"subStatus,omitempty"`
-	// EventTimestamp - the timestamp of when the event was generated by the Azure service processing the request corresponding the event. It in ISO 8601 format.
+	// EventTimestamp - READ-ONLY; the timestamp of when the event was generated by the Azure service processing the request corresponding the event. It in ISO 8601 format.
 	EventTimestamp *date.Time `json:"eventTimestamp,omitempty"`
-	// SubmissionTimestamp - the timestamp of when the event became available for querying via this API. It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay between the occurrence time of the event, and the time that the event is submitted to the Azure logging infrastructure.
+	// SubmissionTimestamp - READ-ONLY; the timestamp of when the event became available for querying via this API. It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay between the occurrence time of the event, and the time that the event is submitted to the Azure logging infrastructure.
 	SubmissionTimestamp *date.Time `json:"submissionTimestamp,omitempty"`
-	// SubscriptionID - the Azure subscription Id usually a GUID.
+	// SubscriptionID - READ-ONLY; the Azure subscription Id usually a GUID.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// TenantID - the Azure tenant Id
+	// TenantID - READ-ONLY; the Azure tenant Id
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EventData.
 func (ed EventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ed.Authorization != nil {
-		objectMap["authorization"] = ed.Authorization
-	}
-	if ed.Claims != nil {
-		objectMap["claims"] = ed.Claims
-	}
-	if ed.Caller != nil {
-		objectMap["caller"] = ed.Caller
-	}
-	if ed.Description != nil {
-		objectMap["description"] = ed.Description
-	}
-	if ed.ID != nil {
-		objectMap["id"] = ed.ID
-	}
-	if ed.EventDataID != nil {
-		objectMap["eventDataId"] = ed.EventDataID
-	}
-	if ed.CorrelationID != nil {
-		objectMap["correlationId"] = ed.CorrelationID
-	}
-	if ed.EventName != nil {
-		objectMap["eventName"] = ed.EventName
-	}
-	if ed.Category != nil {
-		objectMap["category"] = ed.Category
-	}
-	if ed.HTTPRequest != nil {
-		objectMap["httpRequest"] = ed.HTTPRequest
-	}
-	if ed.Level != "" {
-		objectMap["level"] = ed.Level
-	}
-	if ed.ResourceGroupName != nil {
-		objectMap["resourceGroupName"] = ed.ResourceGroupName
-	}
-	if ed.ResourceProviderName != nil {
-		objectMap["resourceProviderName"] = ed.ResourceProviderName
-	}
-	if ed.ResourceID != nil {
-		objectMap["resourceId"] = ed.ResourceID
-	}
-	if ed.ResourceType != nil {
-		objectMap["resourceType"] = ed.ResourceType
-	}
-	if ed.OperationID != nil {
-		objectMap["operationId"] = ed.OperationID
-	}
-	if ed.OperationName != nil {
-		objectMap["operationName"] = ed.OperationName
-	}
-	if ed.Properties != nil {
-		objectMap["properties"] = ed.Properties
-	}
-	if ed.Status != nil {
-		objectMap["status"] = ed.Status
-	}
-	if ed.SubStatus != nil {
-		objectMap["subStatus"] = ed.SubStatus
-	}
-	if ed.EventTimestamp != nil {
-		objectMap["eventTimestamp"] = ed.EventTimestamp
-	}
-	if ed.SubmissionTimestamp != nil {
-		objectMap["submissionTimestamp"] = ed.SubmissionTimestamp
-	}
-	if ed.SubscriptionID != nil {
-		objectMap["subscriptionId"] = ed.SubscriptionID
-	}
-	if ed.TenantID != nil {
-		objectMap["tenantId"] = ed.TenantID
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -2135,15 +2000,15 @@ type HTTPRequestInfo struct {
 // Incident an alert incident indicates the activation status of an alert rule.
 type Incident struct {
 	autorest.Response `json:"-"`
-	// Name - Incident name.
+	// Name - READ-ONLY; Incident name.
 	Name *string `json:"name,omitempty"`
-	// RuleName - Rule name that is associated with the incident.
+	// RuleName - READ-ONLY; Rule name that is associated with the incident.
 	RuleName *string `json:"ruleName,omitempty"`
-	// IsActive - A boolean to indicate whether the incident is active or resolved.
+	// IsActive - READ-ONLY; A boolean to indicate whether the incident is active or resolved.
 	IsActive *bool `json:"isActive,omitempty"`
-	// ActivatedTime - The time at which the incident was activated in ISO8601 format.
+	// ActivatedTime - READ-ONLY; The time at which the incident was activated in ISO8601 format.
 	ActivatedTime *date.Time `json:"activatedTime,omitempty"`
-	// ResolvedTime - The time at which the incident was resolved in ISO8601 format. If null, it means the incident is still active.
+	// ResolvedTime - READ-ONLY; The time at which the incident was resolved in ISO8601 format. If null, it means the incident is still active.
 	ResolvedTime *date.Time `json:"resolvedTime,omitempty"`
 }
 
@@ -2316,11 +2181,11 @@ type LogProfileResource struct {
 	autorest.Response `json:"-"`
 	// LogProfileProperties - The log profile properties of the resource.
 	*LogProfileProperties `json:"properties,omitempty"`
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -2333,15 +2198,6 @@ func (lpr LogProfileResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lpr.LogProfileProperties != nil {
 		objectMap["properties"] = lpr.LogProfileProperties
-	}
-	if lpr.ID != nil {
-		objectMap["id"] = lpr.ID
-	}
-	if lpr.Name != nil {
-		objectMap["name"] = lpr.Name
-	}
-	if lpr.Type != nil {
-		objectMap["type"] = lpr.Type
 	}
 	if lpr.Location != nil {
 		objectMap["location"] = lpr.Location
@@ -2720,11 +2576,11 @@ type OperationListResult struct {
 
 // ProxyOnlyResource a proxy only azure resource object
 type ProxyOnlyResource struct {
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2751,11 +2607,11 @@ type RecurrentSchedule struct {
 
 // Resource an azure resource object
 type Resource struct {
-	// ID - Azure resource Id
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -2766,15 +2622,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -3393,7 +3240,7 @@ type SmsReceiver struct {
 	CountryCode *string `json:"countryCode,omitempty"`
 	// PhoneNumber - The phone number of the SMS receiver.
 	PhoneNumber *string `json:"phoneNumber,omitempty"`
-	// Status - The status of the receiver. Possible values include: 'NotSpecified', 'Enabled', 'Disabled'
+	// Status - READ-ONLY; The status of the receiver. Possible values include: 'NotSpecified', 'Enabled', 'Disabled'
 	Status ReceiverStatus `json:"status,omitempty"`
 }
 

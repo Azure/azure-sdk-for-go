@@ -391,11 +391,11 @@ func PossibleVirtualMachineTypeValues() []VirtualMachineType {
 // Acceptor a process accepting on a port.
 type Acceptor struct {
 	*AcceptorProperties `json:"properties,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindRelationship', 'KindRelconnection', 'KindRelacceptor'
 	Kind KindBasicRelationship `json:"kind,omitempty"`
@@ -410,15 +410,6 @@ func (a Acceptor) MarshalJSON() ([]byte, error) {
 	}
 	if a.Kind != "" {
 		objectMap["kind"] = a.Kind
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -715,11 +706,11 @@ type ClientGroup struct {
 	*ClientGroupProperties `json:"properties,omitempty"`
 	// Etag - Resource ETAG.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindCoreResource', 'KindMachine', 'KindProcess', 'KindPort', 'KindClientGroup', 'KindMachineGroup'
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
@@ -737,15 +728,6 @@ func (cg ClientGroup) MarshalJSON() ([]byte, error) {
 	}
 	if cg.Kind != "" {
 		objectMap["kind"] = cg.Kind
-	}
-	if cg.ID != nil {
-		objectMap["id"] = cg.ID
-	}
-	if cg.Type != nil {
-		objectMap["type"] = cg.Type
-	}
-	if cg.Name != nil {
-		objectMap["name"] = cg.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -858,11 +840,11 @@ func (cg *ClientGroup) UnmarshalJSON(body []byte) error {
 type ClientGroupMember struct {
 	// ClientGroupMemberProperties - Resource properties.
 	*ClientGroupMemberProperties `json:"properties,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -871,15 +853,6 @@ func (cgm ClientGroupMember) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cgm.ClientGroupMemberProperties != nil {
 		objectMap["properties"] = cgm.ClientGroupMemberProperties
-	}
-	if cgm.ID != nil {
-		objectMap["id"] = cgm.ID
-	}
-	if cgm.Type != nil {
-		objectMap["type"] = cgm.Type
-	}
-	if cgm.Name != nil {
-		objectMap["name"] = cgm.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1139,9 +1112,9 @@ func (cg *ClientGroupProperties) UnmarshalJSON(body []byte) error {
 type ClientGroupReference struct {
 	// ID - Resource URI.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type qualifier.
+	// Type - READ-ONLY; Resource type qualifier.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindResourceReference', 'KindRefmachine', 'KindRefprocess', 'KindRefport', 'KindRefmachinewithhints', 'KindRefclientgroup'
 	Kind Kind `json:"kind,omitempty"`
@@ -1153,12 +1126,6 @@ func (cgr ClientGroupReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cgr.ID != nil {
 		objectMap["id"] = cgr.ID
-	}
-	if cgr.Type != nil {
-		objectMap["type"] = cgr.Type
-	}
-	if cgr.Name != nil {
-		objectMap["name"] = cgr.Name
 	}
 	if cgr.Kind != "" {
 		objectMap["kind"] = cgr.Kind
@@ -1206,11 +1173,11 @@ type Connection struct {
 	*ConnectionProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindRelationship', 'KindRelconnection', 'KindRelacceptor'
 	Kind KindBasicRelationship `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1223,15 +1190,6 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 	}
 	if c.Kind != "" {
 		objectMap["kind"] = c.Kind
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1561,11 +1519,11 @@ type CoreResource struct {
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindCoreResource', 'KindMachine', 'KindProcess', 'KindPort', 'KindClientGroup', 'KindMachineGroup'
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1631,15 +1589,6 @@ func (cr CoreResource) MarshalJSON() ([]byte, error) {
 	}
 	if cr.Kind != "" {
 		objectMap["kind"] = cr.Kind
-	}
-	if cr.ID != nil {
-		objectMap["id"] = cr.ID
-	}
-	if cr.Type != nil {
-		objectMap["type"] = cr.Type
-	}
-	if cr.Name != nil {
-		objectMap["name"] = cr.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1831,11 +1780,11 @@ type Machine struct {
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindCoreResource', 'KindMachine', 'KindProcess', 'KindPort', 'KindClientGroup', 'KindMachineGroup'
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1851,15 +1800,6 @@ func (mVar Machine) MarshalJSON() ([]byte, error) {
 	}
 	if mVar.Kind != "" {
 		objectMap["kind"] = mVar.Kind
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -2131,11 +2071,11 @@ type MachineGroup struct {
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindCoreResource', 'KindMachine', 'KindProcess', 'KindPort', 'KindClientGroup', 'KindMachineGroup'
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -2151,15 +2091,6 @@ func (mg MachineGroup) MarshalJSON() ([]byte, error) {
 	}
 	if mg.Kind != "" {
 		objectMap["kind"] = mg.Kind
-	}
-	if mg.ID != nil {
-		objectMap["id"] = mg.ID
-	}
-	if mg.Type != nil {
-		objectMap["type"] = mg.Type
-	}
-	if mg.Name != nil {
-		objectMap["name"] = mg.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -2757,9 +2688,9 @@ func (mVar *MachineProperties) UnmarshalJSON(body []byte) error {
 type MachineReference struct {
 	// ID - Resource URI.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type qualifier.
+	// Type - READ-ONLY; Resource type qualifier.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindResourceReference', 'KindRefmachine', 'KindRefprocess', 'KindRefport', 'KindRefmachinewithhints', 'KindRefclientgroup'
 	Kind Kind `json:"kind,omitempty"`
@@ -2771,12 +2702,6 @@ func (mr MachineReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mr.ID != nil {
 		objectMap["id"] = mr.ID
-	}
-	if mr.Type != nil {
-		objectMap["type"] = mr.Type
-	}
-	if mr.Name != nil {
-		objectMap["name"] = mr.Name
 	}
 	if mr.Kind != "" {
 		objectMap["kind"] = mr.Kind
@@ -2825,9 +2750,9 @@ type MachineReferenceWithHints struct {
 	*MachineReferenceWithHintsProperties `json:"properties,omitempty"`
 	// ID - Resource URI.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type qualifier.
+	// Type - READ-ONLY; Resource type qualifier.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindResourceReference', 'KindRefmachine', 'KindRefprocess', 'KindRefport', 'KindRefmachinewithhints', 'KindRefclientgroup'
 	Kind Kind `json:"kind,omitempty"`
@@ -2842,12 +2767,6 @@ func (mrwh MachineReferenceWithHints) MarshalJSON() ([]byte, error) {
 	}
 	if mrwh.ID != nil {
 		objectMap["id"] = mrwh.ID
-	}
-	if mrwh.Type != nil {
-		objectMap["type"] = mrwh.Type
-	}
-	if mrwh.Name != nil {
-		objectMap["name"] = mrwh.Name
 	}
 	if mrwh.Kind != "" {
 		objectMap["kind"] = mrwh.Kind
@@ -2952,9 +2871,9 @@ func (mrwh *MachineReferenceWithHints) UnmarshalJSON(body []byte) error {
 
 // MachineReferenceWithHintsProperties machine reference with name and os hints.
 type MachineReferenceWithHintsProperties struct {
-	// DisplayNameHint - Last known display name.
+	// DisplayNameHint - READ-ONLY; Last known display name.
 	DisplayNameHint *string `json:"displayNameHint,omitempty"`
-	// OsFamilyHint - Last known operating system family. Possible values include: 'OperatingSystemFamilyUnknown', 'OperatingSystemFamilyWindows', 'OperatingSystemFamilyLinux', 'OperatingSystemFamilySolaris', 'OperatingSystemFamilyAix'
+	// OsFamilyHint - READ-ONLY; Last known operating system family. Possible values include: 'OperatingSystemFamilyUnknown', 'OperatingSystemFamilyWindows', 'OperatingSystemFamilyLinux', 'OperatingSystemFamilySolaris', 'OperatingSystemFamilyAix'
 	OsFamilyHint OperatingSystemFamily `json:"osFamilyHint,omitempty"`
 }
 
@@ -2974,11 +2893,11 @@ type MachineResourcesConfiguration struct {
 type MachinesSummary struct {
 	autorest.Response          `json:"-"`
 	*MachinesSummaryProperties `json:"properties,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -2987,15 +2906,6 @@ func (ms MachinesSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ms.MachinesSummaryProperties != nil {
 		objectMap["properties"] = ms.MachinesSummaryProperties
-	}
-	if ms.ID != nil {
-		objectMap["id"] = ms.ID
-	}
-	if ms.Type != nil {
-		objectMap["type"] = ms.Type
-	}
-	if ms.Name != nil {
-		objectMap["name"] = ms.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -3372,11 +3282,11 @@ type Port struct {
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindCoreResource', 'KindMachine', 'KindProcess', 'KindPort', 'KindClientGroup', 'KindMachineGroup'
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -3392,15 +3302,6 @@ func (p Port) MarshalJSON() ([]byte, error) {
 	}
 	if p.Kind != "" {
 		objectMap["kind"] = p.Kind
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -3734,9 +3635,9 @@ type PortReference struct {
 	*PortReferenceProperties `json:"properties,omitempty"`
 	// ID - Resource URI.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type qualifier.
+	// Type - READ-ONLY; Resource type qualifier.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindResourceReference', 'KindRefmachine', 'KindRefprocess', 'KindRefport', 'KindRefmachinewithhints', 'KindRefclientgroup'
 	Kind Kind `json:"kind,omitempty"`
@@ -3751,12 +3652,6 @@ func (pr PortReference) MarshalJSON() ([]byte, error) {
 	}
 	if pr.ID != nil {
 		objectMap["id"] = pr.ID
-	}
-	if pr.Type != nil {
-		objectMap["type"] = pr.Type
-	}
-	if pr.Name != nil {
-		objectMap["name"] = pr.Name
 	}
 	if pr.Kind != "" {
 		objectMap["kind"] = pr.Kind
@@ -3861,9 +3756,9 @@ func (pr *PortReference) UnmarshalJSON(body []byte) error {
 
 // PortReferenceProperties resource properties.
 type PortReferenceProperties struct {
-	// Machine - Machine hosting the port.
+	// Machine - READ-ONLY; Machine hosting the port.
 	Machine *MachineReference `json:"machine,omitempty"`
-	// IPAddress - IP address of the port.
+	// IPAddress - READ-ONLY; IP address of the port.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// PortNumber - Port number.
 	PortNumber *int32 `json:"portNumber,omitempty"`
@@ -3883,11 +3778,11 @@ type Process struct {
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindCoreResource', 'KindMachine', 'KindProcess', 'KindPort', 'KindClientGroup', 'KindMachineGroup'
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -3903,15 +3798,6 @@ func (p Process) MarshalJSON() ([]byte, error) {
 	}
 	if p.Kind != "" {
 		objectMap["kind"] = p.Kind
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -4449,9 +4335,9 @@ type ProcessReference struct {
 	*ProcessReferenceProperties `json:"properties,omitempty"`
 	// ID - Resource URI.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type qualifier.
+	// Type - READ-ONLY; Resource type qualifier.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindResourceReference', 'KindRefmachine', 'KindRefprocess', 'KindRefport', 'KindRefmachinewithhints', 'KindRefclientgroup'
 	Kind Kind `json:"kind,omitempty"`
@@ -4466,12 +4352,6 @@ func (pr ProcessReference) MarshalJSON() ([]byte, error) {
 	}
 	if pr.ID != nil {
 		objectMap["id"] = pr.ID
-	}
-	if pr.Type != nil {
-		objectMap["type"] = pr.Type
-	}
-	if pr.Name != nil {
-		objectMap["name"] = pr.Name
 	}
 	if pr.Kind != "" {
 		objectMap["kind"] = pr.Kind
@@ -4576,7 +4456,7 @@ func (pr *ProcessReference) UnmarshalJSON(body []byte) error {
 
 // ProcessReferenceProperties resource properties.
 type ProcessReferenceProperties struct {
-	// Machine - Machine hosting the process.
+	// Machine - READ-ONLY; Machine hosting the process.
 	Machine *MachineReference `json:"machine,omitempty"`
 }
 
@@ -4599,11 +4479,11 @@ type BasicRelationship interface {
 type Relationship struct {
 	// Kind - Possible values include: 'KindRelationship', 'KindRelconnection', 'KindRelacceptor'
 	Kind KindBasicRelationship `json:"kind,omitempty"`
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -4654,15 +4534,6 @@ func (r Relationship) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if r.Kind != "" {
 		objectMap["kind"] = r.Kind
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -4750,11 +4621,11 @@ func (rp *RelationshipProperties) UnmarshalJSON(body []byte) error {
 
 // Resource resource model definition.
 type Resource struct {
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -4772,9 +4643,9 @@ type BasicResourceReference interface {
 type ResourceReference struct {
 	// ID - Resource URI.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type qualifier.
+	// Type - READ-ONLY; Resource type qualifier.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Possible values include: 'KindResourceReference', 'KindRefmachine', 'KindRefprocess', 'KindRefport', 'KindRefmachinewithhints', 'KindRefclientgroup'
 	Kind Kind `json:"kind,omitempty"`
@@ -4839,12 +4710,6 @@ func (rr ResourceReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rr.ID != nil {
 		objectMap["id"] = rr.ID
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
 	}
 	if rr.Kind != "" {
 		objectMap["kind"] = rr.Kind
@@ -4956,11 +4821,11 @@ func (smdmr SingleMachineDependencyMapRequest) AsBasicMapRequest() (BasicMapRequ
 
 // Summary base for all resource summaries.
 type Summary struct {
-	// ID - Resource identifier.
+	// ID - READ-ONLY; Resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
 }
 

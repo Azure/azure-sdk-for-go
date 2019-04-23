@@ -475,11 +475,11 @@ type ApplicableSchedule struct {
 	autorest.Response `json:"-"`
 	// ApplicableScheduleProperties - The properties of the resource.
 	*ApplicableScheduleProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -492,15 +492,6 @@ func (as ApplicableSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if as.ApplicableScheduleProperties != nil {
 		objectMap["properties"] = as.ApplicableScheduleProperties
-	}
-	if as.ID != nil {
-		objectMap["id"] = as.ID
-	}
-	if as.Name != nil {
-		objectMap["name"] = as.Name
-	}
-	if as.Type != nil {
-		objectMap["type"] = as.Type
 	}
 	if as.Location != nil {
 		objectMap["location"] = as.Location
@@ -661,11 +652,11 @@ type ArmTemplate struct {
 	autorest.Response `json:"-"`
 	// ArmTemplateProperties - The properties of the resource.
 	*ArmTemplateProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -678,15 +669,6 @@ func (at ArmTemplate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if at.ArmTemplateProperties != nil {
 		objectMap["properties"] = at.ArmTemplateProperties
-	}
-	if at.ID != nil {
-		objectMap["id"] = at.ID
-	}
-	if at.Name != nil {
-		objectMap["name"] = at.Name
-	}
-	if at.Type != nil {
-		objectMap["type"] = at.Type
 	}
 	if at.Location != nil {
 		objectMap["location"] = at.Location
@@ -939,21 +921,21 @@ type ArmTemplateParameterPropertiesFragment struct {
 
 // ArmTemplateProperties properties of an Azure Resource Manager template.
 type ArmTemplateProperties struct {
-	// DisplayName - The display name of the ARM template.
+	// DisplayName - READ-ONLY; The display name of the ARM template.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Description - The description of the ARM template.
+	// Description - READ-ONLY; The description of the ARM template.
 	Description *string `json:"description,omitempty"`
-	// Publisher - The publisher of the ARM template.
+	// Publisher - READ-ONLY; The publisher of the ARM template.
 	Publisher *string `json:"publisher,omitempty"`
-	// Icon - The URI to the icon of the ARM template.
+	// Icon - READ-ONLY; The URI to the icon of the ARM template.
 	Icon *string `json:"icon,omitempty"`
-	// Contents - The contents of the ARM template.
+	// Contents - READ-ONLY; The contents of the ARM template.
 	Contents interface{} `json:"contents,omitempty"`
-	// CreatedDate - The creation date of the armTemplate.
+	// CreatedDate - READ-ONLY; The creation date of the armTemplate.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ParametersValueFilesInfo - File name and parameter values information from all azuredeploy.*.parameters.json for the ARM template.
+	// ParametersValueFilesInfo - READ-ONLY; File name and parameter values information from all azuredeploy.*.parameters.json for the ARM template.
 	ParametersValueFilesInfo *[]ParametersValueFileInfo `json:"parametersValueFilesInfo,omitempty"`
-	// Enabled - Whether or not ARM template is enabled for use by lab user.
+	// Enabled - READ-ONLY; Whether or not ARM template is enabled for use by lab user.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
@@ -962,11 +944,11 @@ type Artifact struct {
 	autorest.Response `json:"-"`
 	// ArtifactProperties - The properties of the resource.
 	*ArtifactProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -979,15 +961,6 @@ func (a Artifact) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.ArtifactProperties != nil {
 		objectMap["properties"] = a.ArtifactProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
@@ -1287,21 +1260,21 @@ type ArtifactParameterPropertiesFragment struct {
 
 // ArtifactProperties properties of an artifact.
 type ArtifactProperties struct {
-	// Title - The artifact's title.
+	// Title - READ-ONLY; The artifact's title.
 	Title *string `json:"title,omitempty"`
-	// Description - The artifact's description.
+	// Description - READ-ONLY; The artifact's description.
 	Description *string `json:"description,omitempty"`
-	// Publisher - The artifact's publisher.
+	// Publisher - READ-ONLY; The artifact's publisher.
 	Publisher *string `json:"publisher,omitempty"`
-	// FilePath - The file path to the artifact.
+	// FilePath - READ-ONLY; The file path to the artifact.
 	FilePath *string `json:"filePath,omitempty"`
-	// Icon - The URI to the artifact icon.
+	// Icon - READ-ONLY; The URI to the artifact icon.
 	Icon *string `json:"icon,omitempty"`
-	// TargetOsType - The artifact's target OS.
+	// TargetOsType - READ-ONLY; The artifact's target OS.
 	TargetOsType *string `json:"targetOsType,omitempty"`
-	// Parameters - The artifact's parameters.
+	// Parameters - READ-ONLY; The artifact's parameters.
 	Parameters interface{} `json:"parameters,omitempty"`
-	// CreatedDate - The artifact's creation date.
+	// CreatedDate - READ-ONLY; The artifact's creation date.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 }
 
@@ -1310,11 +1283,11 @@ type ArtifactSource struct {
 	autorest.Response `json:"-"`
 	// ArtifactSourceProperties - The properties of the resource.
 	*ArtifactSourceProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1327,15 +1300,6 @@ func (as ArtifactSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if as.ArtifactSourceProperties != nil {
 		objectMap["properties"] = as.ArtifactSourceProperties
-	}
-	if as.ID != nil {
-		objectMap["id"] = as.ID
-	}
-	if as.Name != nil {
-		objectMap["name"] = as.Name
-	}
-	if as.Type != nil {
-		objectMap["type"] = as.Type
 	}
 	if as.Location != nil {
 		objectMap["location"] = as.Location
@@ -1632,11 +1596,11 @@ type ArtifactSourceProperties struct {
 	SecurityToken *string `json:"securityToken,omitempty"`
 	// Status - Indicates if the artifact source is enabled (values: Enabled, Disabled). Possible values include: 'EnableStatusEnabled', 'EnableStatusDisabled'
 	Status EnableStatus `json:"status,omitempty"`
-	// CreatedDate - The artifact source's creation date.
+	// CreatedDate - READ-ONLY; The artifact source's creation date.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -1815,11 +1779,11 @@ type CustomImage struct {
 	autorest.Response `json:"-"`
 	// CustomImageProperties - The properties of the resource.
 	*CustomImageProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1832,15 +1796,6 @@ func (ci CustomImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ci.CustomImageProperties != nil {
 		objectMap["properties"] = ci.CustomImageProperties
-	}
-	if ci.ID != nil {
-		objectMap["id"] = ci.ID
-	}
-	if ci.Name != nil {
-		objectMap["name"] = ci.Name
-	}
-	if ci.Type != nil {
-		objectMap["type"] = ci.Type
 	}
 	if ci.Location != nil {
 		objectMap["location"] = ci.Location
@@ -2129,7 +2084,7 @@ type CustomImageProperties struct {
 	Description *string `json:"description,omitempty"`
 	// Author - The author of the custom image.
 	Author *string `json:"author,omitempty"`
-	// CreationDate - The creation date of the custom image.
+	// CreationDate - READ-ONLY; The creation date of the custom image.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// ManagedImageID - The Managed Image Id backing the custom image.
 	ManagedImageID *string `json:"managedImageId,omitempty"`
@@ -2141,9 +2096,9 @@ type CustomImageProperties struct {
 	CustomImagePlan *CustomImagePropertiesFromPlan `json:"customImagePlan,omitempty"`
 	// IsPlanAuthorized - Whether or not the custom images underlying offer/plan has been enabled for programmatic deployment
 	IsPlanAuthorized *bool `json:"isPlanAuthorized,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -2239,7 +2194,7 @@ type CustomImagesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CustomImagesCreateOrUpdateFuture) Result(client CustomImagesClient) (ci CustomImage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2268,7 +2223,7 @@ type CustomImagesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CustomImagesDeleteFuture) Result(client CustomImagesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImagesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2346,11 +2301,11 @@ type Disk struct {
 	autorest.Response `json:"-"`
 	// DiskProperties - The properties of the resource.
 	*DiskProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2363,15 +2318,6 @@ func (d Disk) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DiskProperties != nil {
 		objectMap["properties"] = d.DiskProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
@@ -2662,15 +2608,15 @@ type DiskProperties struct {
 	DiskBlobName *string `json:"diskBlobName,omitempty"`
 	// DiskURI - When backed by a blob, the URI of underlying blob.
 	DiskURI *string `json:"diskUri,omitempty"`
-	// CreatedDate - The creation date of the disk.
+	// CreatedDate - READ-ONLY; The creation date of the disk.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// HostCaching - The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
 	HostCaching *string `json:"hostCaching,omitempty"`
 	// ManagedDiskID - When backed by managed disk, this is the ID of the compute disk resource.
 	ManagedDiskID *string `json:"managedDiskId,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -2701,7 +2647,7 @@ type DisksAttachFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DisksAttachFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksAttachFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2724,7 +2670,7 @@ type DisksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DisksCreateOrUpdateFuture) Result(client DisksClient) (d Disk, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2752,7 +2698,7 @@ type DisksDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DisksDeleteFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2774,7 +2720,7 @@ type DisksDetachFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DisksDetachFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.DisksDetachFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2792,11 +2738,11 @@ type Environment struct {
 	autorest.Response `json:"-"`
 	// EnvironmentProperties - The properties of the resource.
 	*EnvironmentProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2809,15 +2755,6 @@ func (e Environment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if e.EnvironmentProperties != nil {
 		objectMap["properties"] = e.EnvironmentProperties
-	}
-	if e.ID != nil {
-		objectMap["id"] = e.ID
-	}
-	if e.Name != nil {
-		objectMap["name"] = e.Name
-	}
-	if e.Type != nil {
-		objectMap["type"] = e.Type
 	}
 	if e.Location != nil {
 		objectMap["location"] = e.Location
@@ -3118,13 +3055,13 @@ type EnvironmentProperties struct {
 	DeploymentProperties *EnvironmentDeploymentProperties `json:"deploymentProperties,omitempty"`
 	// ArmTemplateDisplayName - The display name of the Azure Resource Manager template that produced the environment.
 	ArmTemplateDisplayName *string `json:"armTemplateDisplayName,omitempty"`
-	// ResourceGroupID - The identifier of the resource group containing the environment's resources.
+	// ResourceGroupID - READ-ONLY; The identifier of the resource group containing the environment's resources.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
-	// CreatedByUser - The creator of the environment.
+	// CreatedByUser - READ-ONLY; The creator of the environment.
 	CreatedByUser *string `json:"createdByUser,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -3146,7 +3083,7 @@ type EnvironmentsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsCreateOrUpdateFuture) Result(client EnvironmentsClient) (e Environment, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.EnvironmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3175,7 +3112,7 @@ type EnvironmentsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EnvironmentsDeleteFuture) Result(client EnvironmentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.EnvironmentsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3254,11 +3191,11 @@ type Formula struct {
 	autorest.Response `json:"-"`
 	// FormulaProperties - The properties of the resource.
 	*FormulaProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -3271,15 +3208,6 @@ func (f Formula) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if f.FormulaProperties != nil {
 		objectMap["properties"] = f.FormulaProperties
-	}
-	if f.ID != nil {
-		objectMap["id"] = f.ID
-	}
-	if f.Name != nil {
-		objectMap["name"] = f.Name
-	}
-	if f.Type != nil {
-		objectMap["type"] = f.Type
 	}
 	if f.Location != nil {
 		objectMap["location"] = f.Location
@@ -3566,15 +3494,15 @@ type FormulaProperties struct {
 	Author *string `json:"author,omitempty"`
 	// OsType - The OS type of the formula.
 	OsType *string `json:"osType,omitempty"`
-	// CreationDate - The creation date of the formula.
+	// CreationDate - READ-ONLY; The creation date of the formula.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// FormulaContent - The content of the formula.
 	FormulaContent *LabVirtualMachineCreationParameter `json:"formulaContent,omitempty"`
 	// VM - Information about a VM from which a formula is to be created.
 	VM *FormulaPropertiesFromVM `json:"vm,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -3614,7 +3542,7 @@ type FormulasCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FormulasCreateOrUpdateFuture) Result(client FormulasClient) (f Formula, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulasCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3637,11 +3565,11 @@ func (future *FormulasCreateOrUpdateFuture) Result(client FormulasClient) (f For
 type GalleryImage struct {
 	// GalleryImageProperties - The properties of the resource.
 	*GalleryImageProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -3654,15 +3582,6 @@ func (gi GalleryImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gi.GalleryImageProperties != nil {
 		objectMap["properties"] = gi.GalleryImageProperties
-	}
-	if gi.ID != nil {
-		objectMap["id"] = gi.ID
-	}
-	if gi.Name != nil {
-		objectMap["name"] = gi.Name
-	}
-	if gi.Type != nil {
-		objectMap["type"] = gi.Type
 	}
 	if gi.Location != nil {
 		objectMap["location"] = gi.Location
@@ -3892,7 +3811,7 @@ func NewGalleryImageListPage(getNextPage func(context.Context, GalleryImageList)
 type GalleryImageProperties struct {
 	// Author - The author of the gallery image.
 	Author *string `json:"author,omitempty"`
-	// CreatedDate - The creation date of the gallery image.
+	// CreatedDate - READ-ONLY; The creation date of the gallery image.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// Description - The description of the gallery image.
 	Description *string `json:"description,omitempty"`
@@ -3971,7 +3890,7 @@ type GlobalSchedulesExecuteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GlobalSchedulesExecuteFuture) Result(client GlobalSchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.GlobalSchedulesExecuteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3994,7 +3913,7 @@ type GlobalSchedulesRetargetFuture struct {
 // If the operation has not completed it will return an error.
 func (future *GlobalSchedulesRetargetFuture) Result(client GlobalSchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.GlobalSchedulesRetargetFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4067,11 +3986,11 @@ type Lab struct {
 	autorest.Response `json:"-"`
 	// LabProperties - The properties of the resource.
 	*LabProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -4084,15 +4003,6 @@ func (l Lab) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if l.LabProperties != nil {
 		objectMap["properties"] = l.LabProperties
-	}
-	if l.ID != nil {
-		objectMap["id"] = l.ID
-	}
-	if l.Name != nil {
-		objectMap["name"] = l.Name
-	}
-	if l.Type != nil {
-		objectMap["type"] = l.Type
 	}
 	if l.Location != nil {
 		objectMap["location"] = l.Location
@@ -4184,9 +4094,9 @@ type LabAnnouncementProperties struct {
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Expired - Has this announcement expired?
 	Expired *bool `json:"expired,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -4209,11 +4119,11 @@ type LabCost struct {
 	autorest.Response `json:"-"`
 	// LabCostProperties - The properties of the resource.
 	*LabCostProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -4226,15 +4136,6 @@ func (lc LabCost) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lc.LabCostProperties != nil {
 		objectMap["properties"] = lc.LabCostProperties
-	}
-	if lc.ID != nil {
-		objectMap["id"] = lc.ID
-	}
-	if lc.Name != nil {
-		objectMap["name"] = lc.Name
-	}
-	if lc.Type != nil {
-		objectMap["type"] = lc.Type
 	}
 	if lc.Location != nil {
 		objectMap["location"] = lc.Location
@@ -4328,11 +4229,11 @@ type LabCostDetailsProperties struct {
 type LabCostProperties struct {
 	// TargetCost - The target cost properties
 	TargetCost *TargetCostProperties `json:"targetCost,omitempty"`
-	// LabCostSummary - The lab cost summary component of the cost data.
+	// LabCostSummary - READ-ONLY; The lab cost summary component of the cost data.
 	LabCostSummary *LabCostSummaryProperties `json:"labCostSummary,omitempty"`
-	// LabCostDetails - The lab cost details component of the cost data.
+	// LabCostDetails - READ-ONLY; The lab cost details component of the cost data.
 	LabCostDetails *[]LabCostDetailsProperties `json:"labCostDetails,omitempty"`
-	// ResourceCosts - The resource cost component of the cost data.
+	// ResourceCosts - READ-ONLY; The resource cost component of the cost data.
 	ResourceCosts *[]LabResourceCostProperties `json:"resourceCosts,omitempty"`
 	// CurrencyCode - The currency code of the cost.
 	CurrencyCode *string `json:"currencyCode,omitempty"`
@@ -4342,9 +4243,9 @@ type LabCostProperties struct {
 	EndDateTime *date.Time `json:"endDateTime,omitempty"`
 	// CreatedDate - The creation date of the cost.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -4555,15 +4456,15 @@ func NewLabListPage(getNextPage func(context.Context, LabList) (LabList, error))
 
 // LabProperties properties of a lab.
 type LabProperties struct {
-	// DefaultStorageAccount - The lab's default storage account.
+	// DefaultStorageAccount - READ-ONLY; The lab's default storage account.
 	DefaultStorageAccount *string `json:"defaultStorageAccount,omitempty"`
-	// DefaultPremiumStorageAccount - The lab's default premium storage account.
+	// DefaultPremiumStorageAccount - READ-ONLY; The lab's default premium storage account.
 	DefaultPremiumStorageAccount *string `json:"defaultPremiumStorageAccount,omitempty"`
-	// ArtifactsStorageAccount - The lab's artifact storage account.
+	// ArtifactsStorageAccount - READ-ONLY; The lab's artifact storage account.
 	ArtifactsStorageAccount *string `json:"artifactsStorageAccount,omitempty"`
-	// PremiumDataDiskStorageAccount - The lab's premium data disk storage account.
+	// PremiumDataDiskStorageAccount - READ-ONLY; The lab's premium data disk storage account.
 	PremiumDataDiskStorageAccount *string `json:"premiumDataDiskStorageAccount,omitempty"`
-	// VaultName - The lab's Key vault.
+	// VaultName - READ-ONLY; The lab's Key vault.
 	VaultName *string `json:"vaultName,omitempty"`
 	// LabStorageType - Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'
 	LabStorageType StorageType `json:"labStorageType,omitempty"`
@@ -4571,7 +4472,7 @@ type LabProperties struct {
 	MandatoryArtifactsResourceIdsLinux *[]string `json:"mandatoryArtifactsResourceIdsLinux,omitempty"`
 	// MandatoryArtifactsResourceIdsWindows - The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to the artifacts specified by the user.
 	MandatoryArtifactsResourceIdsWindows *[]string `json:"mandatoryArtifactsResourceIdsWindows,omitempty"`
-	// CreatedDate - The creation date of the lab.
+	// CreatedDate - READ-ONLY; The creation date of the lab.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// PremiumDataDisks - The setting to enable usage of premium data disks.
 	// When its value is 'Enabled', creation of standard or premium data disks is allowed.
@@ -4583,40 +4484,25 @@ type LabProperties struct {
 	Announcement *LabAnnouncementProperties `json:"announcement,omitempty"`
 	// Support - The properties of any lab support message associated with this lab
 	Support *LabSupportProperties `json:"support,omitempty"`
-	// VMCreationResourceGroup - The resource group in which lab virtual machines will be created in.
+	// VMCreationResourceGroup - READ-ONLY; The resource group in which lab virtual machines will be created in.
 	VMCreationResourceGroup *string `json:"vmCreationResourceGroup,omitempty"`
-	// PublicIPID - The public IP address for the lab's load balancer.
+	// PublicIPID - READ-ONLY; The public IP address for the lab's load balancer.
 	PublicIPID *string `json:"publicIpId,omitempty"`
-	// LoadBalancerID - The load balancer used to for lab VMs that use shared IP address.
+	// LoadBalancerID - READ-ONLY; The load balancer used to for lab VMs that use shared IP address.
 	LoadBalancerID *string `json:"loadBalancerId,omitempty"`
-	// NetworkSecurityGroupID - The Network Security Group attached to the lab VMs Network interfaces to restrict open ports.
+	// NetworkSecurityGroupID - READ-ONLY; The Network Security Group attached to the lab VMs Network interfaces to restrict open ports.
 	NetworkSecurityGroupID *string `json:"networkSecurityGroupId,omitempty"`
 	// ExtendedProperties - Extended properties of the lab used for experimental features
 	ExtendedProperties map[string]*string `json:"extendedProperties"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LabProperties.
 func (lp LabProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if lp.DefaultStorageAccount != nil {
-		objectMap["defaultStorageAccount"] = lp.DefaultStorageAccount
-	}
-	if lp.DefaultPremiumStorageAccount != nil {
-		objectMap["defaultPremiumStorageAccount"] = lp.DefaultPremiumStorageAccount
-	}
-	if lp.ArtifactsStorageAccount != nil {
-		objectMap["artifactsStorageAccount"] = lp.ArtifactsStorageAccount
-	}
-	if lp.PremiumDataDiskStorageAccount != nil {
-		objectMap["premiumDataDiskStorageAccount"] = lp.PremiumDataDiskStorageAccount
-	}
-	if lp.VaultName != nil {
-		objectMap["vaultName"] = lp.VaultName
-	}
 	if lp.LabStorageType != "" {
 		objectMap["labStorageType"] = lp.LabStorageType
 	}
@@ -4625,9 +4511,6 @@ func (lp LabProperties) MarshalJSON() ([]byte, error) {
 	}
 	if lp.MandatoryArtifactsResourceIdsWindows != nil {
 		objectMap["mandatoryArtifactsResourceIdsWindows"] = lp.MandatoryArtifactsResourceIdsWindows
-	}
-	if lp.CreatedDate != nil {
-		objectMap["createdDate"] = lp.CreatedDate
 	}
 	if lp.PremiumDataDisks != "" {
 		objectMap["premiumDataDisks"] = lp.PremiumDataDisks
@@ -4641,26 +4524,8 @@ func (lp LabProperties) MarshalJSON() ([]byte, error) {
 	if lp.Support != nil {
 		objectMap["support"] = lp.Support
 	}
-	if lp.VMCreationResourceGroup != nil {
-		objectMap["vmCreationResourceGroup"] = lp.VMCreationResourceGroup
-	}
-	if lp.PublicIPID != nil {
-		objectMap["publicIpId"] = lp.PublicIPID
-	}
-	if lp.LoadBalancerID != nil {
-		objectMap["loadBalancerId"] = lp.LoadBalancerID
-	}
-	if lp.NetworkSecurityGroupID != nil {
-		objectMap["networkSecurityGroupId"] = lp.NetworkSecurityGroupID
-	}
 	if lp.ExtendedProperties != nil {
 		objectMap["extendedProperties"] = lp.ExtendedProperties
-	}
-	if lp.ProvisioningState != nil {
-		objectMap["provisioningState"] = lp.ProvisioningState
-	}
-	if lp.UniqueIdentifier != nil {
-		objectMap["uniqueIdentifier"] = lp.UniqueIdentifier
 	}
 	return json.Marshal(objectMap)
 }
@@ -4749,7 +4614,7 @@ type LabsClaimAnyVMFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsClaimAnyVMFuture) Result(client LabsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsClaimAnyVMFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4772,7 +4637,7 @@ type LabsCreateEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsCreateEnvironmentFuture) Result(client LabsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsCreateEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4795,7 +4660,7 @@ type LabsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsCreateOrUpdateFuture) Result(client LabsClient) (l Lab, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4823,7 +4688,7 @@ type LabsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsDeleteFuture) Result(client LabsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4846,7 +4711,7 @@ type LabsExportResourceUsageFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsExportResourceUsageFuture) Result(client LabsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsExportResourceUsageFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4869,7 +4734,7 @@ type LabsImportVirtualMachineFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabsImportVirtualMachineFuture) Result(client LabsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabsImportVirtualMachineFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5055,11 +4920,11 @@ type LabVirtualMachine struct {
 	autorest.Response `json:"-"`
 	// LabVirtualMachineProperties - The properties of the resource.
 	*LabVirtualMachineProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -5072,15 +4937,6 @@ func (lvm LabVirtualMachine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lvm.LabVirtualMachineProperties != nil {
 		objectMap["properties"] = lvm.LabVirtualMachineProperties
-	}
-	if lvm.ID != nil {
-		objectMap["id"] = lvm.ID
-	}
-	if lvm.Name != nil {
-		objectMap["name"] = lvm.Name
-	}
-	if lvm.Type != nil {
-		objectMap["type"] = lvm.Type
 	}
 	if lvm.Location != nil {
 		objectMap["location"] = lvm.Location
@@ -5703,11 +5559,11 @@ type LabVirtualMachineProperties struct {
 	GalleryImageReference *GalleryImageReference `json:"galleryImageReference,omitempty"`
 	// PlanID - The id of the plan associated with the virtual machine image
 	PlanID *string `json:"planId,omitempty"`
-	// ComputeVM - The compute virtual machine properties.
+	// ComputeVM - READ-ONLY; The compute virtual machine properties.
 	ComputeVM *ComputeVMProperties `json:"computeVm,omitempty"`
 	// NetworkInterface - The network interface properties.
 	NetworkInterface *NetworkInterfaceProperties `json:"networkInterface,omitempty"`
-	// ApplicableSchedule - The applicable schedule for the virtual machine.
+	// ApplicableSchedule - READ-ONLY; The applicable schedule for the virtual machine.
 	ApplicableSchedule *ApplicableSchedule `json:"applicableSchedule,omitempty"`
 	// ExpirationDate - The expiration date for VM.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
@@ -5725,9 +5581,9 @@ type LabVirtualMachineProperties struct {
 	ScheduleParameters *[]ScheduleCreationParameter `json:"scheduleParameters,omitempty"`
 	// LastKnownPowerState - Last known compute power state captured in DTL
 	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -5858,11 +5714,11 @@ type NotificationChannel struct {
 	autorest.Response `json:"-"`
 	// NotificationChannelProperties - The properties of the resource.
 	*NotificationChannelProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -5875,15 +5731,6 @@ func (nc NotificationChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if nc.NotificationChannelProperties != nil {
 		objectMap["properties"] = nc.NotificationChannelProperties
-	}
-	if nc.ID != nil {
-		objectMap["id"] = nc.ID
-	}
-	if nc.Name != nil {
-		objectMap["name"] = nc.Name
-	}
-	if nc.Type != nil {
-		objectMap["type"] = nc.Type
 	}
 	if nc.Location != nil {
 		objectMap["location"] = nc.Location
@@ -6174,11 +6021,11 @@ type NotificationChannelProperties struct {
 	Description *string `json:"description,omitempty"`
 	// Events - The list of event for which this notification is enabled.
 	Events *[]Event `json:"events,omitempty"`
-	// CreatedDate - The creation date of the notification channel.
+	// CreatedDate - READ-ONLY; The creation date of the notification channel.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -6298,11 +6145,11 @@ type Policy struct {
 	autorest.Response `json:"-"`
 	// PolicyProperties - The properties of the resource.
 	*PolicyProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -6315,15 +6162,6 @@ func (p Policy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.PolicyProperties != nil {
 		objectMap["properties"] = p.PolicyProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	if p.Location != nil {
 		objectMap["location"] = p.Location
@@ -6616,11 +6454,11 @@ type PolicyProperties struct {
 	Threshold *string `json:"threshold,omitempty"`
 	// EvaluatorType - The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy). Possible values include: 'AllowedValuesPolicy', 'MaxValuePolicy'
 	EvaluatorType PolicyEvaluatorType `json:"evaluatorType,omitempty"`
-	// CreatedDate - The creation date of the policy.
+	// CreatedDate - READ-ONLY; The creation date of the policy.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -6677,7 +6515,7 @@ type ProviderOperationResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the resource provider.
 	Value *[]OperationMetadata `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6833,11 +6671,11 @@ type ResizeLabVirtualMachineProperties struct {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -6848,15 +6686,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -6879,11 +6708,11 @@ type Schedule struct {
 	autorest.Response `json:"-"`
 	// ScheduleProperties - The properties of the resource.
 	*ScheduleProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -6896,15 +6725,6 @@ func (s Schedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.ScheduleProperties != nil {
 		objectMap["properties"] = s.ScheduleProperties
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
@@ -7401,13 +7221,13 @@ type ScheduleProperties struct {
 	TimeZoneID *string `json:"timeZoneId,omitempty"`
 	// NotificationSettings - Notification settings.
 	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
-	// CreatedDate - The creation date of the schedule.
+	// CreatedDate - READ-ONLY; The creation date of the schedule.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// TargetResourceID - The resource ID to which the schedule belongs
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -7441,7 +7261,7 @@ type SchedulesExecuteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SchedulesExecuteFuture) Result(client SchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SchedulesExecuteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7459,11 +7279,11 @@ type Secret struct {
 	autorest.Response `json:"-"`
 	// SecretProperties - The properties of the resource.
 	*SecretProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -7476,15 +7296,6 @@ func (s Secret) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.SecretProperties != nil {
 		objectMap["properties"] = s.SecretProperties
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
@@ -7767,9 +7578,9 @@ func NewSecretListPage(getNextPage func(context.Context, SecretList) (SecretList
 type SecretProperties struct {
 	// Value - The value of the secret for secret creation.
 	Value *string `json:"value,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -7789,7 +7600,7 @@ type SecretsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SecretsCreateOrUpdateFuture) Result(client SecretsClient) (s Secret, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.SecretsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -7813,11 +7624,11 @@ type ServiceFabric struct {
 	autorest.Response `json:"-"`
 	// ServiceFabricProperties - The properties of the resource.
 	*ServiceFabricProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -7830,15 +7641,6 @@ func (sf ServiceFabric) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sf.ServiceFabricProperties != nil {
 		objectMap["properties"] = sf.ServiceFabricProperties
-	}
-	if sf.ID != nil {
-		objectMap["id"] = sf.ID
-	}
-	if sf.Name != nil {
-		objectMap["name"] = sf.Name
-	}
-	if sf.Type != nil {
-		objectMap["type"] = sf.Type
 	}
 	if sf.Location != nil {
 		objectMap["location"] = sf.Location
@@ -8123,11 +7925,11 @@ type ServiceFabricProperties struct {
 	ExternalServiceFabricID *string `json:"externalServiceFabricId,omitempty"`
 	// EnvironmentID - The resource id of the environment under which the service fabric resource is present
 	EnvironmentID *string `json:"environmentId,omitempty"`
-	// ApplicableSchedule - The applicable schedule for the virtual machine.
+	// ApplicableSchedule - READ-ONLY; The applicable schedule for the virtual machine.
 	ApplicableSchedule *ApplicableSchedule `json:"applicableSchedule,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -8149,7 +7951,7 @@ type ServiceFabricSchedulesExecuteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceFabricSchedulesExecuteFuture) Result(client ServiceFabricSchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesExecuteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8172,7 +7974,7 @@ type ServiceFabricsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceFabricsCreateOrUpdateFuture) Result(client ServiceFabricsClient) (sf ServiceFabric, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8201,7 +8003,7 @@ type ServiceFabricsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceFabricsDeleteFuture) Result(client ServiceFabricsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8224,7 +8026,7 @@ type ServiceFabricsStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceFabricsStartFuture) Result(client ServiceFabricsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricsStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8247,7 +8049,7 @@ type ServiceFabricsStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceFabricsStopFuture) Result(client ServiceFabricsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricsStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8265,11 +8067,11 @@ type ServiceRunner struct {
 	autorest.Response `json:"-"`
 	// Identity - The identity of the resource.
 	Identity *IdentityProperties `json:"identity,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -8282,15 +8084,6 @@ func (sr ServiceRunner) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sr.Identity != nil {
 		objectMap["identity"] = sr.Identity
-	}
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
 	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
@@ -8592,11 +8385,11 @@ type User struct {
 	autorest.Response `json:"-"`
 	// UserProperties - The properties of the resource.
 	*UserProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -8609,15 +8402,6 @@ func (u User) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if u.UserProperties != nil {
 		objectMap["properties"] = u.UserProperties
-	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	if u.Location != nil {
 		objectMap["location"] = u.Location
@@ -8930,11 +8714,11 @@ type UserProperties struct {
 	Identity *UserIdentity `json:"identity,omitempty"`
 	// SecretStore - The secret store of the user.
 	SecretStore *UserSecretStore `json:"secretStore,omitempty"`
-	// CreatedDate - The creation date of the user profile.
+	// CreatedDate - READ-ONLY; The creation date of the user profile.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -8956,7 +8740,7 @@ type UsersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UsersCreateOrUpdateFuture) Result(client UsersClient) (u User, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.UsersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8984,7 +8768,7 @@ type UsersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UsersDeleteFuture) Result(client UsersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.UsersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9023,7 +8807,7 @@ type VirtualMachinesAddDataDiskFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesAddDataDiskFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesAddDataDiskFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9046,7 +8830,7 @@ type VirtualMachinesApplyArtifactsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesApplyArtifactsFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesApplyArtifactsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9069,7 +8853,7 @@ type VirtualMachineSchedulesExecuteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineSchedulesExecuteFuture) Result(client VirtualMachineSchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineSchedulesExecuteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9092,7 +8876,7 @@ type VirtualMachinesClaimFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesClaimFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesClaimFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9115,7 +8899,7 @@ type VirtualMachinesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesCreateOrUpdateFuture) Result(client VirtualMachinesClient) (lvm LabVirtualMachine, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9144,7 +8928,7 @@ type VirtualMachinesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9167,7 +8951,7 @@ type VirtualMachinesDetachDataDiskFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesDetachDataDiskFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesDetachDataDiskFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9190,7 +8974,7 @@ type VirtualMachinesRedeployFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesRedeployFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesRedeployFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9213,7 +8997,7 @@ type VirtualMachinesResizeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesResizeFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesResizeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9236,7 +9020,7 @@ type VirtualMachinesRestartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesRestartFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesRestartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9259,7 +9043,7 @@ type VirtualMachinesStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9282,7 +9066,7 @@ type VirtualMachinesStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesStopFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9305,7 +9089,7 @@ type VirtualMachinesTransferDisksFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesTransferDisksFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesTransferDisksFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9328,7 +9112,7 @@ type VirtualMachinesUnClaimFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachinesUnClaimFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesUnClaimFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9346,11 +9130,11 @@ type VirtualNetwork struct {
 	autorest.Response `json:"-"`
 	// VirtualNetworkProperties - The properties of the resource.
 	*VirtualNetworkProperties `json:"properties,omitempty"`
-	// ID - The identifier of the resource.
+	// ID - READ-ONLY; The identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -9363,15 +9147,6 @@ func (vn VirtualNetwork) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vn.VirtualNetworkProperties != nil {
 		objectMap["properties"] = vn.VirtualNetworkProperties
-	}
-	if vn.ID != nil {
-		objectMap["id"] = vn.ID
-	}
-	if vn.Name != nil {
-		objectMap["name"] = vn.Name
-	}
-	if vn.Type != nil {
-		objectMap["type"] = vn.Type
 	}
 	if vn.Location != nil {
 		objectMap["location"] = vn.Location
@@ -9658,15 +9433,15 @@ type VirtualNetworkProperties struct {
 	Description *string `json:"description,omitempty"`
 	// ExternalProviderResourceID - The Microsoft.Network resource identifier of the virtual network.
 	ExternalProviderResourceID *string `json:"externalProviderResourceId,omitempty"`
-	// ExternalSubnets - The external subnet properties.
+	// ExternalSubnets - READ-ONLY; The external subnet properties.
 	ExternalSubnets *[]ExternalSubnet `json:"externalSubnets,omitempty"`
 	// SubnetOverrides - The subnet overrides of the virtual network.
 	SubnetOverrides *[]SubnetOverride `json:"subnetOverrides,omitempty"`
-	// CreatedDate - The creation date of the virtual network.
+	// CreatedDate - READ-ONLY; The creation date of the virtual network.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// ProvisioningState - The provisioning status of the resource.
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueIdentifier - The unique immutable identifier of a resource (Guid).
+	// UniqueIdentifier - READ-ONLY; The unique immutable identifier of a resource (Guid).
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 }
 
@@ -9692,7 +9467,7 @@ type VirtualNetworksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworksCreateOrUpdateFuture) Result(client VirtualNetworksClient) (vn VirtualNetwork, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9721,7 +9496,7 @@ type VirtualNetworksDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworksDeleteFuture) Result(client VirtualNetworksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return

@@ -103,6 +103,7 @@ func (client BackendPoolsClient) CreateOrUpdatePreparer(ctx context.Context, res
 		"api-version": APIVersion,
 	}
 
+	backendPoolParameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

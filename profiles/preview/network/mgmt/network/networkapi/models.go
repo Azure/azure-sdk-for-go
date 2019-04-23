@@ -19,7 +19,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-12-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-02-01/network/networkapi"
 
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI
@@ -61,6 +61,7 @@ type LoadBalancerOutboundRulesClientAPI = original.LoadBalancerOutboundRulesClie
 type LoadBalancerProbesClientAPI = original.LoadBalancerProbesClientAPI
 type LoadBalancersClientAPI = original.LoadBalancersClientAPI
 type LocalNetworkGatewaysClientAPI = original.LocalNetworkGatewaysClientAPI
+type NatGatewaysClientAPI = original.NatGatewaysClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type P2sVpnGatewaysClientAPI = original.P2sVpnGatewaysClientAPI
 type P2sVpnServerConfigurationsClientAPI = original.P2sVpnServerConfigurationsClientAPI

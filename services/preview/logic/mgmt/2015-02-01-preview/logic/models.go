@@ -284,9 +284,9 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ResourceReference struct {
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets the resource name.
+	// Name - READ-ONLY; Gets the resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Gets the resource type.
+	// Type - READ-ONLY; Gets the resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -427,9 +427,9 @@ type WorkflowAccessKey struct {
 	autorest.Response `json:"-"`
 	// WorkflowAccessKeyProperties - Gets or sets the workflow access key properties.
 	*WorkflowAccessKeyProperties `json:"properties,omitempty"`
-	// Name - Gets the workflow access key name.
+	// Name - READ-ONLY; Gets the workflow access key name.
 	Name *string `json:"name,omitempty"`
-	// Type - Gets the workflow access key type.
+	// Type - READ-ONLY; Gets the workflow access key type.
 	Type *string `json:"type,omitempty"`
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
@@ -440,12 +440,6 @@ func (wak WorkflowAccessKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wak.WorkflowAccessKeyProperties != nil {
 		objectMap["properties"] = wak.WorkflowAccessKeyProperties
-	}
-	if wak.Name != nil {
-		objectMap["name"] = wak.Name
-	}
-	if wak.Type != nil {
-		objectMap["type"] = wak.Type
 	}
 	if wak.ID != nil {
 		objectMap["id"] = wak.ID
@@ -812,7 +806,7 @@ func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListRes
 
 // WorkflowOutputParameter ...
 type WorkflowOutputParameter struct {
-	// Error - Gets the error.
+	// Error - READ-ONLY; Gets the error.
 	Error interface{} `json:"error,omitempty"`
 	// Type - Gets or sets the type. Possible values include: 'ParameterTypeNotSpecified', 'ParameterTypeString', 'ParameterTypeSecureString', 'ParameterTypeInt', 'ParameterTypeFloat', 'ParameterTypeBool', 'ParameterTypeArray', 'ParameterTypeObject', 'ParameterTypeSecureObject'
 	Type ParameterType `json:"type,omitempty"`
@@ -834,17 +828,17 @@ type WorkflowParameter struct {
 
 // WorkflowProperties ...
 type WorkflowProperties struct {
-	// ProvisioningState - Gets the provisioning state. Possible values include: 'WorkflowProvisioningStateNotSpecified', 'WorkflowProvisioningStateMoving', 'WorkflowProvisioningStateSucceeded'
+	// ProvisioningState - READ-ONLY; Gets the provisioning state. Possible values include: 'WorkflowProvisioningStateNotSpecified', 'WorkflowProvisioningStateMoving', 'WorkflowProvisioningStateSucceeded'
 	ProvisioningState WorkflowProvisioningState `json:"provisioningState,omitempty"`
-	// CreatedTime - Gets the created time.
+	// CreatedTime - READ-ONLY; Gets the created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - Gets the changed time.
+	// ChangedTime - READ-ONLY; Gets the changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// State - Gets or sets the state. Possible values include: 'WorkflowStateNotSpecified', 'WorkflowStateEnabled', 'WorkflowStateDisabled', 'WorkflowStateDeleted', 'WorkflowStateSuspended'
 	State WorkflowState `json:"state,omitempty"`
-	// Version - Gets the version.
+	// Version - READ-ONLY; Gets the version.
 	Version *string `json:"version,omitempty"`
-	// AccessEndpoint - Gets the access endpoint.
+	// AccessEndpoint - READ-ONLY; Gets the access endpoint.
 	AccessEndpoint *string `json:"accessEndpoint,omitempty"`
 	// Sku - Gets or sets the sku.
 	Sku *Sku `json:"sku,omitempty"`
@@ -861,23 +855,8 @@ type WorkflowProperties struct {
 // MarshalJSON is the custom marshaler for WorkflowProperties.
 func (wp WorkflowProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wp.ProvisioningState != "" {
-		objectMap["provisioningState"] = wp.ProvisioningState
-	}
-	if wp.CreatedTime != nil {
-		objectMap["createdTime"] = wp.CreatedTime
-	}
-	if wp.ChangedTime != nil {
-		objectMap["changedTime"] = wp.ChangedTime
-	}
 	if wp.State != "" {
 		objectMap["state"] = wp.State
-	}
-	if wp.Version != nil {
-		objectMap["version"] = wp.Version
-	}
-	if wp.AccessEndpoint != nil {
-		objectMap["accessEndpoint"] = wp.AccessEndpoint
 	}
 	if wp.Sku != nil {
 		objectMap["sku"] = wp.Sku
@@ -902,9 +881,9 @@ type WorkflowRun struct {
 	autorest.Response `json:"-"`
 	// WorkflowRunProperties - Gets or sets the workflow run properties.
 	*WorkflowRunProperties `json:"properties,omitempty"`
-	// Name - Gets the workflow run name.
+	// Name - READ-ONLY; Gets the workflow run name.
 	Name *string `json:"name,omitempty"`
-	// Type - Gets the workflow run type.
+	// Type - READ-ONLY; Gets the workflow run type.
 	Type *string `json:"type,omitempty"`
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
@@ -915,12 +894,6 @@ func (wr WorkflowRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wr.WorkflowRunProperties != nil {
 		objectMap["properties"] = wr.WorkflowRunProperties
-	}
-	if wr.Name != nil {
-		objectMap["name"] = wr.Name
-	}
-	if wr.Type != nil {
-		objectMap["type"] = wr.Type
 	}
 	if wr.ID != nil {
 		objectMap["id"] = wr.ID
@@ -984,9 +957,9 @@ type WorkflowRunAction struct {
 	autorest.Response `json:"-"`
 	// WorkflowRunActionProperties - Gets or sets the workflow run action properties.
 	*WorkflowRunActionProperties `json:"properties,omitempty"`
-	// Name - Gets the workflow run action name.
+	// Name - READ-ONLY; Gets the workflow run action name.
 	Name *string `json:"name,omitempty"`
-	// Type - Gets the workflow run action type.
+	// Type - READ-ONLY; Gets the workflow run action type.
 	Type *string `json:"type,omitempty"`
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
@@ -997,12 +970,6 @@ func (wra WorkflowRunAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wra.WorkflowRunActionProperties != nil {
 		objectMap["properties"] = wra.WorkflowRunActionProperties
-	}
-	if wra.Name != nil {
-		objectMap["name"] = wra.Name
-	}
-	if wra.Type != nil {
-		objectMap["type"] = wra.Type
 	}
 	if wra.ID != nil {
 		objectMap["id"] = wra.ID
@@ -1215,21 +1182,21 @@ func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, Workfl
 
 // WorkflowRunActionProperties ...
 type WorkflowRunActionProperties struct {
-	// StartTime - Gets the start time.
+	// StartTime - READ-ONLY; Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the end time.
+	// EndTime - READ-ONLY; Gets the end time.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Status - Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
+	// Status - READ-ONLY; Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
-	// Code - Gets the code.
+	// Code - READ-ONLY; Gets the code.
 	Code *string `json:"code,omitempty"`
-	// Error - Gets the error.
+	// Error - READ-ONLY; Gets the error.
 	Error interface{} `json:"error,omitempty"`
-	// TrackingID - Gets the trackingId.
+	// TrackingID - READ-ONLY; Gets the trackingId.
 	TrackingID *string `json:"trackingId,omitempty"`
-	// InputsLink - Gets the link to inputs.
+	// InputsLink - READ-ONLY; Gets the link to inputs.
 	InputsLink *ContentLink `json:"inputsLink,omitempty"`
-	// OutputsLink - Gets the link to outputs.
+	// OutputsLink - READ-ONLY; Gets the link to outputs.
 	OutputsLink *ContentLink `json:"outputsLink,omitempty"`
 }
 
@@ -1387,91 +1354,64 @@ func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunL
 
 // WorkflowRunProperties ...
 type WorkflowRunProperties struct {
-	// StartTime - Gets the start time.
+	// StartTime - READ-ONLY; Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the end time.
+	// EndTime - READ-ONLY; Gets the end time.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Status - Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
+	// Status - READ-ONLY; Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
-	// Code - Gets the code.
+	// Code - READ-ONLY; Gets the code.
 	Code *string `json:"code,omitempty"`
-	// Error - Gets the error.
+	// Error - READ-ONLY; Gets the error.
 	Error interface{} `json:"error,omitempty"`
-	// CorrelationID - Gets the correlation id.
+	// CorrelationID - READ-ONLY; Gets the correlation id.
 	CorrelationID *string `json:"correlationId,omitempty"`
-	// Workflow - Gets the reference to workflow version.
+	// Workflow - READ-ONLY; Gets the reference to workflow version.
 	Workflow *ResourceReference `json:"workflow,omitempty"`
-	// Trigger - Gets the fired trigger.
+	// Trigger - READ-ONLY; Gets the fired trigger.
 	Trigger *WorkflowRunTrigger `json:"trigger,omitempty"`
-	// Outputs - Gets the outputs.
+	// Outputs - READ-ONLY; Gets the outputs.
 	Outputs map[string]*WorkflowOutputParameter `json:"outputs"`
 }
 
 // MarshalJSON is the custom marshaler for WorkflowRunProperties.
 func (wrp WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wrp.StartTime != nil {
-		objectMap["startTime"] = wrp.StartTime
-	}
-	if wrp.EndTime != nil {
-		objectMap["endTime"] = wrp.EndTime
-	}
-	if wrp.Status != "" {
-		objectMap["status"] = wrp.Status
-	}
-	if wrp.Code != nil {
-		objectMap["code"] = wrp.Code
-	}
-	if wrp.Error != nil {
-		objectMap["error"] = wrp.Error
-	}
-	if wrp.CorrelationID != nil {
-		objectMap["correlationId"] = wrp.CorrelationID
-	}
-	if wrp.Workflow != nil {
-		objectMap["workflow"] = wrp.Workflow
-	}
-	if wrp.Trigger != nil {
-		objectMap["trigger"] = wrp.Trigger
-	}
-	if wrp.Outputs != nil {
-		objectMap["outputs"] = wrp.Outputs
-	}
 	return json.Marshal(objectMap)
 }
 
 // WorkflowRunTrigger ...
 type WorkflowRunTrigger struct {
-	// Name - Gets the name.
+	// Name - READ-ONLY; Gets the name.
 	Name *string `json:"name,omitempty"`
-	// Inputs - Gets the inputs.
+	// Inputs - READ-ONLY; Gets the inputs.
 	Inputs interface{} `json:"inputs,omitempty"`
-	// InputsLink - Gets the link to inputs.
+	// InputsLink - READ-ONLY; Gets the link to inputs.
 	InputsLink *ContentLink `json:"inputsLink,omitempty"`
-	// Outputs - Gets the outputs.
+	// Outputs - READ-ONLY; Gets the outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// OutputsLink - Gets the link to outputs.
+	// OutputsLink - READ-ONLY; Gets the link to outputs.
 	OutputsLink *ContentLink `json:"outputsLink,omitempty"`
-	// StartTime - Gets the start time.
+	// StartTime - READ-ONLY; Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the end time.
+	// EndTime - READ-ONLY; Gets the end time.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TrackingID - Gets the trackingId.
+	// TrackingID - READ-ONLY; Gets the trackingId.
 	TrackingID *string `json:"trackingId,omitempty"`
-	// Code - Gets the code.
+	// Code - READ-ONLY; Gets the code.
 	Code *string `json:"code,omitempty"`
-	// Status - Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
+	// Status - READ-ONLY; Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
-	// Error - Gets the error.
+	// Error - READ-ONLY; Gets the error.
 	Error interface{} `json:"error,omitempty"`
 }
 
 // WorkflowSecretKeys ...
 type WorkflowSecretKeys struct {
 	autorest.Response `json:"-"`
-	// PrimarySecretKey - Gets the primary secret key.
+	// PrimarySecretKey - READ-ONLY; Gets the primary secret key.
 	PrimarySecretKey *string `json:"primarySecretKey,omitempty"`
-	// SecondarySecretKey - Gets the secondary secret key.
+	// SecondarySecretKey - READ-ONLY; Gets the secondary secret key.
 	SecondarySecretKey *string `json:"secondarySecretKey,omitempty"`
 }
 
@@ -1484,7 +1424,7 @@ type WorkflowsRunFuture struct {
 // If the operation has not completed it will return an error.
 func (future *WorkflowsRunFuture) Result(client WorkflowsClient) (wr WorkflowRun, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsRunFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1508,9 +1448,9 @@ type WorkflowTrigger struct {
 	autorest.Response `json:"-"`
 	// WorkflowTriggerProperties - Gets or sets the workflow trigger properties.
 	*WorkflowTriggerProperties `json:"properties,omitempty"`
-	// Name - Gets the workflow trigger name.
+	// Name - READ-ONLY; Gets the workflow trigger name.
 	Name *string `json:"name,omitempty"`
-	// Type - Gets the workflow trigger type.
+	// Type - READ-ONLY; Gets the workflow trigger type.
 	Type *string `json:"type,omitempty"`
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
@@ -1521,12 +1461,6 @@ func (wt WorkflowTrigger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wt.WorkflowTriggerProperties != nil {
 		objectMap["properties"] = wt.WorkflowTriggerProperties
-	}
-	if wt.Name != nil {
-		objectMap["name"] = wt.Name
-	}
-	if wt.Type != nil {
-		objectMap["type"] = wt.Type
 	}
 	if wt.ID != nil {
 		objectMap["id"] = wt.ID
@@ -1596,9 +1530,9 @@ type WorkflowTriggerHistory struct {
 	autorest.Response `json:"-"`
 	// WorkflowTriggerHistoryProperties - Gets the workflow trigger history properties.
 	*WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
-	// Name - Gets the workflow trigger history name.
+	// Name - READ-ONLY; Gets the workflow trigger history name.
 	Name *string `json:"name,omitempty"`
-	// Type - Gets the workflow trigger history type.
+	// Type - READ-ONLY; Gets the workflow trigger history type.
 	Type *string `json:"type,omitempty"`
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
@@ -1609,12 +1543,6 @@ func (wth WorkflowTriggerHistory) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wth.WorkflowTriggerHistoryProperties != nil {
 		objectMap["properties"] = wth.WorkflowTriggerHistoryProperties
-	}
-	if wth.Name != nil {
-		objectMap["name"] = wth.Name
-	}
-	if wth.Type != nil {
-		objectMap["type"] = wth.Type
 	}
 	if wth.ID != nil {
 		objectMap["id"] = wth.ID
@@ -1828,25 +1756,25 @@ func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, W
 
 // WorkflowTriggerHistoryProperties ...
 type WorkflowTriggerHistoryProperties struct {
-	// StartTime - Gets the start time.
+	// StartTime - READ-ONLY; Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Gets the end time.
+	// EndTime - READ-ONLY; Gets the end time.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Status - Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
+	// Status - READ-ONLY; Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
-	// Code - Gets the code.
+	// Code - READ-ONLY; Gets the code.
 	Code *string `json:"code,omitempty"`
-	// Error - Gets the error.
+	// Error - READ-ONLY; Gets the error.
 	Error interface{} `json:"error,omitempty"`
-	// TrackingID - Gets the tracking id.
+	// TrackingID - READ-ONLY; Gets the tracking id.
 	TrackingID *string `json:"trackingId,omitempty"`
-	// InputsLink - Gets the link to input parameters.
+	// InputsLink - READ-ONLY; Gets the link to input parameters.
 	InputsLink *ContentLink `json:"inputsLink,omitempty"`
-	// OutputsLink - Gets the link to output parameters.
+	// OutputsLink - READ-ONLY; Gets the link to output parameters.
 	OutputsLink *ContentLink `json:"outputsLink,omitempty"`
-	// Fired - Gets a value indicating whether trigger was fired.
+	// Fired - READ-ONLY; Gets a value indicating whether trigger was fired.
 	Fired *bool `json:"fired,omitempty"`
-	// Run - Gets the reference to workflow run.
+	// Run - READ-ONLY; Gets the reference to workflow run.
 	Run *ResourceReference `json:"run,omitempty"`
 }
 
@@ -1998,23 +1926,23 @@ func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, Workflow
 
 // WorkflowTriggerProperties ...
 type WorkflowTriggerProperties struct {
-	// ProvisioningState - Gets the provisioning state. Possible values include: 'WorkflowTriggerProvisioningStateNotSpecified', 'WorkflowTriggerProvisioningStateCreating', 'WorkflowTriggerProvisioningStateSucceeded', 'WorkflowTriggerProvisioningStateUpdating'
+	// ProvisioningState - READ-ONLY; Gets the provisioning state. Possible values include: 'WorkflowTriggerProvisioningStateNotSpecified', 'WorkflowTriggerProvisioningStateCreating', 'WorkflowTriggerProvisioningStateSucceeded', 'WorkflowTriggerProvisioningStateUpdating'
 	ProvisioningState WorkflowTriggerProvisioningState `json:"provisioningState,omitempty"`
-	// CreatedTime - Gets the created time.
+	// CreatedTime - READ-ONLY; Gets the created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - Gets the changed time.
+	// ChangedTime - READ-ONLY; Gets the changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
-	// State - Gets the state. Possible values include: 'WorkflowStateNotSpecified', 'WorkflowStateEnabled', 'WorkflowStateDisabled', 'WorkflowStateDeleted', 'WorkflowStateSuspended'
+	// State - READ-ONLY; Gets the state. Possible values include: 'WorkflowStateNotSpecified', 'WorkflowStateEnabled', 'WorkflowStateDisabled', 'WorkflowStateDeleted', 'WorkflowStateSuspended'
 	State WorkflowState `json:"state,omitempty"`
-	// Status - Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
+	// Status - READ-ONLY; Gets the status. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
-	// LastExecutionTime - Gets the last execution time.
+	// LastExecutionTime - READ-ONLY; Gets the last execution time.
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
-	// NextExecutionTime - Gets the next execution time.
+	// NextExecutionTime - READ-ONLY; Gets the next execution time.
 	NextExecutionTime *date.Time `json:"nextExecutionTime,omitempty"`
-	// Recurrence - Gets the workflow trigger recurrence.
+	// Recurrence - READ-ONLY; Gets the workflow trigger recurrence.
 	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty"`
-	// Workflow - Gets the reference to workflow.
+	// Workflow - READ-ONLY; Gets the reference to workflow.
 	Workflow *ResourceReference `json:"workflow,omitempty"`
 }
 
@@ -2142,15 +2070,15 @@ func (wv *WorkflowVersion) UnmarshalJSON(body []byte) error {
 
 // WorkflowVersionProperties ...
 type WorkflowVersionProperties struct {
-	// CreatedTime - Gets the created time.
+	// CreatedTime - READ-ONLY; Gets the created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - Gets the changed time.
+	// ChangedTime - READ-ONLY; Gets the changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// State - Gets or sets the state. Possible values include: 'WorkflowStateNotSpecified', 'WorkflowStateEnabled', 'WorkflowStateDisabled', 'WorkflowStateDeleted', 'WorkflowStateSuspended'
 	State WorkflowState `json:"state,omitempty"`
-	// Version - Gets the version.
+	// Version - READ-ONLY; Gets the version.
 	Version *string `json:"version,omitempty"`
-	// AccessEndpoint - Gets the access endpoint.
+	// AccessEndpoint - READ-ONLY; Gets the access endpoint.
 	AccessEndpoint *string `json:"accessEndpoint,omitempty"`
 	// Sku - Gets or sets the sku.
 	Sku *Sku `json:"sku,omitempty"`
@@ -2167,20 +2095,8 @@ type WorkflowVersionProperties struct {
 // MarshalJSON is the custom marshaler for WorkflowVersionProperties.
 func (wvp WorkflowVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wvp.CreatedTime != nil {
-		objectMap["createdTime"] = wvp.CreatedTime
-	}
-	if wvp.ChangedTime != nil {
-		objectMap["changedTime"] = wvp.ChangedTime
-	}
 	if wvp.State != "" {
 		objectMap["state"] = wvp.State
-	}
-	if wvp.Version != nil {
-		objectMap["version"] = wvp.Version
-	}
-	if wvp.AccessEndpoint != nil {
-		objectMap["accessEndpoint"] = wvp.AccessEndpoint
 	}
 	if wvp.Sku != nil {
 		objectMap["sku"] = wvp.Sku

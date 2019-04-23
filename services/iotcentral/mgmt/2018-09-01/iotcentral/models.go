@@ -52,11 +52,11 @@ type App struct {
 	*AppProperties `json:"properties,omitempty"`
 	// Sku - A valid instance SKU.
 	Sku *AppSkuInfo `json:"sku,omitempty"`
-	// ID - The ARM resource identifier.
+	// ID - READ-ONLY; The ARM resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The ARM resource name.
+	// Name - READ-ONLY; The ARM resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -72,15 +72,6 @@ func (a App) MarshalJSON() ([]byte, error) {
 	}
 	if a.Sku != nil {
 		objectMap["sku"] = a.Sku
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
@@ -173,11 +164,11 @@ func (a *App) UnmarshalJSON(body []byte) error {
 // is available.
 type AppAvailabilityInfo struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
+	// NameAvailable - READ-ONLY; The value which indicates whether the provided name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability.
+	// Reason - READ-ONLY; The reason for unavailability.
 	Reason *string `json:"reason,omitempty"`
-	// Message - The detailed reason message.
+	// Message - READ-ONLY; The detailed reason message.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -382,7 +373,7 @@ func (ap *AppPatch) UnmarshalJSON(body []byte) error {
 
 // AppProperties the properties of an IoT Central application.
 type AppProperties struct {
-	// ApplicationID - The ID of the application.
+	// ApplicationID - READ-ONLY; The ID of the application.
 	ApplicationID *string `json:"applicationId,omitempty"`
 	// DisplayName - The display name of the application.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -402,7 +393,7 @@ type AppsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateOrUpdateFuture) Result(client AppsClient) (a App, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -430,7 +421,7 @@ type AppsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsDeleteFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -458,7 +449,7 @@ type AppsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -479,17 +470,17 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // AppTemplate ioT Central Application Template.
 type AppTemplate struct {
-	// ManifestID - The ID of the template.
+	// ManifestID - READ-ONLY; The ID of the template.
 	ManifestID *string `json:"manifestId,omitempty"`
-	// ManifestVersion - The version of the template.
+	// ManifestVersion - READ-ONLY; The version of the template.
 	ManifestVersion *string `json:"manifestVersion,omitempty"`
-	// AppTemplateName - The name of the template.
+	// AppTemplateName - READ-ONLY; The name of the template.
 	AppTemplateName *string `json:"appTemplateName,omitempty"`
-	// Title - The title of the template.
+	// Title - READ-ONLY; The title of the template.
 	Title *string `json:"title,omitempty"`
-	// Order - The order of the template in the templates list.
+	// Order - READ-ONLY; The order of the template in the templates list.
 	Order *float64 `json:"order,omitempty"`
-	// Description - The description of the template.
+	// Description - READ-ONLY; The description of the template.
 	Description *string `json:"description,omitempty"`
 }
 
@@ -498,7 +489,7 @@ type AppTemplatesResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of IoT Central application templates.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - A list of IoT Central Application Templates.
+	// Value - READ-ONLY; A list of IoT Central Application Templates.
 	Value *[]AppTemplate `json:"value,omitempty"`
 }
 
@@ -680,11 +671,11 @@ func (ed *ErrorDetails) UnmarshalJSON(body []byte) error {
 
 // ErrorResponseBody details of error response.
 type ErrorResponseBody struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
 	// Details - A list of additional details about the error.
 	Details *[]ErrorResponseBody `json:"details,omitempty"`
@@ -692,7 +683,7 @@ type ErrorResponseBody struct {
 
 // Operation ioT Central REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{read | write | action | delete}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -700,13 +691,13 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft IoT Central
+	// Provider - READ-ONLY; Service provider: Microsoft IoT Central
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource Type: IoT Central
+	// Resource - READ-ONLY; Resource Type: IoT Central
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Name of the operation
+	// Operation - READ-ONLY; Name of the operation
 	Operation *string `json:"operation,omitempty"`
-	// Description - Friendly description for the operation,
+	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
 }
 
@@ -724,7 +715,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of IoT Central description objects.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - A list of operations supported by the Microsoft.IoTCentral resource provider.
+	// Value - READ-ONLY; A list of operations supported by the Microsoft.IoTCentral resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 }
 
@@ -867,11 +858,11 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // Resource the common properties of an ARM resource.
 type Resource struct {
-	// ID - The ARM resource identifier.
+	// ID - READ-ONLY; The ARM resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The ARM resource name.
+	// Name - READ-ONLY; The ARM resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -882,15 +873,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

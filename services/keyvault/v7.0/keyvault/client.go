@@ -5883,6 +5883,7 @@ func (client BaseClient) SetCertificateContactsPreparer(ctx context.Context, vau
 		"api-version": APIVersion,
 	}
 
+	contacts.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -6769,6 +6770,7 @@ func (client BaseClient) UpdateCertificatePolicyPreparer(ctx context.Context, va
 		"api-version": APIVersion,
 	}
 
+	certificatePolicy.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

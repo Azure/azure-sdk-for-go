@@ -412,15 +412,15 @@ type ApplicationProperties struct {
 	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
 	// DebugParams - Internal - used by Visual Studio to setup the debugging session on the local development environment.
 	DebugParams *string `json:"debugParams,omitempty"`
-	// ServiceNames - Names of the services in the application.
+	// ServiceNames - READ-ONLY; Names of the services in the application.
 	ServiceNames *[]string `json:"serviceNames,omitempty"`
-	// Status - Status of the application. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the application. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the application.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the application.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -433,11 +433,11 @@ type ApplicationResourceDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -452,15 +452,6 @@ func (ard ApplicationResourceDescription) MarshalJSON() ([]byte, error) {
 	}
 	if ard.Location != nil {
 		objectMap["location"] = ard.Location
-	}
-	if ard.ID != nil {
-		objectMap["id"] = ard.ID
-	}
-	if ard.Name != nil {
-		objectMap["name"] = ard.Name
-	}
-	if ard.Type != nil {
-		objectMap["type"] = ard.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -683,7 +674,7 @@ func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context,
 
 // ApplicationResourceProperties this type describes properties of an application resource.
 type ApplicationResourceProperties struct {
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Description - User readable description of the application.
 	Description *string `json:"description,omitempty"`
@@ -693,15 +684,15 @@ type ApplicationResourceProperties struct {
 	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
 	// DebugParams - Internal - used by Visual Studio to setup the debugging session on the local development environment.
 	DebugParams *string `json:"debugParams,omitempty"`
-	// ServiceNames - Names of the services in the application.
+	// ServiceNames - READ-ONLY; Names of the services in the application.
 	ServiceNames *[]string `json:"serviceNames,omitempty"`
-	// Status - Status of the application. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the application. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the application.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the application.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -1416,7 +1407,7 @@ type ContainerCodePackageProperties struct {
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
 	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
 	ReliableCollectionsRefs *[]ReliableCollectionsRef `json:"reliableCollectionsRefs,omitempty"`
-	// InstanceView - Runtime information of a container instance.
+	// InstanceView - READ-ONLY; Runtime information of a container instance.
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`
 }
 
@@ -1687,11 +1678,11 @@ type GatewayProperties struct {
 	TCP *[]TCPConfig `json:"tcp,omitempty"`
 	// HTTP - Configuration for http connectivity for this gateway.
 	HTTP *[]HTTPConfig `json:"http,omitempty"`
-	// Status - Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the gateway.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the gateway.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// IPAddress - IP address of the gateway. This is populated in the response and is ignored for incoming requests.
+	// IPAddress - READ-ONLY; IP address of the gateway. This is populated in the response and is ignored for incoming requests.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
@@ -1704,11 +1695,11 @@ type GatewayResourceDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1723,15 +1714,6 @@ func (grd GatewayResourceDescription) MarshalJSON() ([]byte, error) {
 	}
 	if grd.Location != nil {
 		objectMap["location"] = grd.Location
-	}
-	if grd.ID != nil {
-		objectMap["id"] = grd.ID
-	}
-	if grd.Name != nil {
-		objectMap["name"] = grd.Name
-	}
-	if grd.Type != nil {
-		objectMap["type"] = grd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1954,7 +1936,7 @@ func NewGatewayResourceDescriptionListPage(getNextPage func(context.Context, Gat
 
 // GatewayResourceProperties this type describes properties of a gateway resource.
 type GatewayResourceProperties struct {
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Description - User readable description of the gateway.
 	Description *string `json:"description,omitempty"`
@@ -1966,11 +1948,11 @@ type GatewayResourceProperties struct {
 	TCP *[]TCPConfig `json:"tcp,omitempty"`
 	// HTTP - Configuration for http connectivity for this gateway.
 	HTTP *[]HTTPConfig `json:"http,omitempty"`
-	// Status - Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the gateway.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the gateway.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// IPAddress - IP address of the gateway. This is populated in the response and is ignored for incoming requests.
+	// IPAddress - READ-ONLY; IP address of the gateway. This is populated in the response and is ignored for incoming requests.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
@@ -2047,13 +2029,13 @@ type ImageRegistryCredential struct {
 type InlinedValueSecretResourceProperties struct {
 	// Description - User readable description of the secret.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the secret.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the secret.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// ContentType - The type of the content stored in the secret value. The value of this property is opaque to Service Fabric. Once set, the value of this property cannot be changed.
 	ContentType *string `json:"contentType,omitempty"`
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Kind - Possible values include: 'KindSecretResourcePropertiesBase', 'KindSecretResourceProperties', 'KindInlinedValue'
 	Kind Kind `json:"kind,omitempty"`
@@ -2066,20 +2048,11 @@ func (ivsrp InlinedValueSecretResourceProperties) MarshalJSON() ([]byte, error) 
 	if ivsrp.Description != nil {
 		objectMap["description"] = ivsrp.Description
 	}
-	if ivsrp.Status != "" {
-		objectMap["status"] = ivsrp.Status
-	}
-	if ivsrp.StatusDetails != nil {
-		objectMap["statusDetails"] = ivsrp.StatusDetails
-	}
 	if ivsrp.ContentType != nil {
 		objectMap["contentType"] = ivsrp.ContentType
 	}
 	if ivsrp.Kind != "" {
 		objectMap["kind"] = ivsrp.Kind
-	}
-	if ivsrp.ProvisioningState != nil {
-		objectMap["provisioningState"] = ivsrp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -2116,11 +2089,11 @@ type LocalNetworkResourceProperties struct {
 	NetworkAddressPrefix *string `json:"networkAddressPrefix,omitempty"`
 	// Description - User readable description of the network.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the network. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the network. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the network.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the network.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Kind - Possible values include: 'KindNetworkResourcePropertiesBase', 'KindNetworkResourceProperties', 'KindLocal'
 	Kind KindBasicNetworkResourcePropertiesBase `json:"kind,omitempty"`
@@ -2136,17 +2109,8 @@ func (lnrp LocalNetworkResourceProperties) MarshalJSON() ([]byte, error) {
 	if lnrp.Description != nil {
 		objectMap["description"] = lnrp.Description
 	}
-	if lnrp.Status != "" {
-		objectMap["status"] = lnrp.Status
-	}
-	if lnrp.StatusDetails != nil {
-		objectMap["statusDetails"] = lnrp.StatusDetails
-	}
 	if lnrp.Kind != "" {
 		objectMap["kind"] = lnrp.Kind
-	}
-	if lnrp.ProvisioningState != nil {
-		objectMap["provisioningState"] = lnrp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -2180,11 +2144,11 @@ func (lnrp LocalNetworkResourceProperties) AsBasicNetworkResourcePropertiesBase(
 // have everything other than required location and tags. This proxy resource is explicitly created or
 // updated by including it in the parent resource.
 type ManagedProxyResource struct {
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2205,11 +2169,11 @@ type NetworkResourceDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2222,15 +2186,6 @@ func (nrd NetworkResourceDescription) MarshalJSON() ([]byte, error) {
 	}
 	if nrd.Location != nil {
 		objectMap["location"] = nrd.Location
-	}
-	if nrd.ID != nil {
-		objectMap["id"] = nrd.ID
-	}
-	if nrd.Name != nil {
-		objectMap["name"] = nrd.Name
-	}
-	if nrd.Type != nil {
-		objectMap["type"] = nrd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2460,13 +2415,13 @@ type BasicNetworkResourceProperties interface {
 type NetworkResourceProperties struct {
 	// Description - User readable description of the network.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the network. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the network. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the network.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the network.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// Kind - Possible values include: 'KindNetworkResourcePropertiesBase', 'KindNetworkResourceProperties', 'KindLocal'
 	Kind KindBasicNetworkResourcePropertiesBase `json:"kind,omitempty"`
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -2514,17 +2469,8 @@ func (nrp NetworkResourceProperties) MarshalJSON() ([]byte, error) {
 	if nrp.Description != nil {
 		objectMap["description"] = nrp.Description
 	}
-	if nrp.Status != "" {
-		objectMap["status"] = nrp.Status
-	}
-	if nrp.StatusDetails != nil {
-		objectMap["statusDetails"] = nrp.StatusDetails
-	}
 	if nrp.Kind != "" {
 		objectMap["kind"] = nrp.Kind
-	}
-	if nrp.ProvisioningState != nil {
-		objectMap["provisioningState"] = nrp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -2566,7 +2512,7 @@ type BasicNetworkResourcePropertiesBase interface {
 type NetworkResourcePropertiesBase struct {
 	// Kind - Possible values include: 'KindNetworkResourcePropertiesBase', 'KindNetworkResourceProperties', 'KindLocal'
 	Kind KindBasicNetworkResourcePropertiesBase `json:"kind,omitempty"`
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -2618,9 +2564,6 @@ func (nrpb NetworkResourcePropertiesBase) MarshalJSON() ([]byte, error) {
 	if nrpb.Kind != "" {
 		objectMap["kind"] = nrpb.Kind
 	}
-	if nrpb.ProvisioningState != nil {
-		objectMap["provisioningState"] = nrpb.ProvisioningState
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -2654,7 +2597,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Service Fabric operations supported by the Microsoft.ServiceFabric resource provider.
 	Value *[]OperationResult `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2809,18 +2752,18 @@ type OperationResult struct {
 
 // ProvisionedResourceProperties describes common properties of a provisioned resource.
 type ProvisionedResourceProperties struct {
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // ProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have
 // everything other than required location and tags.
 type ProxyResource struct {
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2834,11 +2777,11 @@ type ReliableCollectionsRef struct {
 
 // Resource the resource model definition for Azure Resource Manager resource.
 type Resource struct {
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2879,11 +2822,11 @@ type SecretResourceDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2896,15 +2839,6 @@ func (srd SecretResourceDescription) MarshalJSON() ([]byte, error) {
 	}
 	if srd.Location != nil {
 		objectMap["location"] = srd.Location
-	}
-	if srd.ID != nil {
-		objectMap["id"] = srd.ID
-	}
-	if srd.Name != nil {
-		objectMap["name"] = srd.Name
-	}
-	if srd.Type != nil {
-		objectMap["type"] = srd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3134,15 +3068,15 @@ type BasicSecretResourceProperties interface {
 type SecretResourceProperties struct {
 	// Description - User readable description of the secret.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the secret.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the secret.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// ContentType - The type of the content stored in the secret value. The value of this property is opaque to Service Fabric. Once set, the value of this property cannot be changed.
 	ContentType *string `json:"contentType,omitempty"`
 	// Kind - Possible values include: 'KindSecretResourcePropertiesBase', 'KindSecretResourceProperties', 'KindInlinedValue'
 	Kind Kind `json:"kind,omitempty"`
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -3190,20 +3124,11 @@ func (srp SecretResourceProperties) MarshalJSON() ([]byte, error) {
 	if srp.Description != nil {
 		objectMap["description"] = srp.Description
 	}
-	if srp.Status != "" {
-		objectMap["status"] = srp.Status
-	}
-	if srp.StatusDetails != nil {
-		objectMap["statusDetails"] = srp.StatusDetails
-	}
 	if srp.ContentType != nil {
 		objectMap["contentType"] = srp.ContentType
 	}
 	if srp.Kind != "" {
 		objectMap["kind"] = srp.Kind
-	}
-	if srp.ProvisioningState != nil {
-		objectMap["provisioningState"] = srp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -3245,7 +3170,7 @@ type BasicSecretResourcePropertiesBase interface {
 type SecretResourcePropertiesBase struct {
 	// Kind - Possible values include: 'KindSecretResourcePropertiesBase', 'KindSecretResourceProperties', 'KindInlinedValue'
 	Kind Kind `json:"kind,omitempty"`
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -3296,9 +3221,6 @@ func (srpb SecretResourcePropertiesBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if srpb.Kind != "" {
 		objectMap["kind"] = srpb.Kind
-	}
-	if srpb.ProvisioningState != nil {
-		objectMap["provisioningState"] = srpb.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -3351,11 +3273,11 @@ type SecretValueResourceDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3370,15 +3292,6 @@ func (svrd SecretValueResourceDescription) MarshalJSON() ([]byte, error) {
 	}
 	if svrd.Location != nil {
 		objectMap["location"] = svrd.Location
-	}
-	if svrd.ID != nil {
-		objectMap["id"] = svrd.ID
-	}
-	if svrd.Name != nil {
-		objectMap["name"] = svrd.Name
-	}
-	if svrd.Type != nil {
-		objectMap["type"] = svrd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3602,7 +3515,7 @@ func NewSecretValueResourceDescriptionListPage(getNextPage func(context.Context,
 
 // SecretValueResourceProperties this type describes properties of a secret value resource.
 type SecretValueResourceProperties struct {
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Value - The actual value of the secret.
 	Value *string `json:"value,omitempty"`
@@ -3616,13 +3529,13 @@ type ServiceProperties struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// AutoScalingPolicies - Auto scaling policies
 	AutoScalingPolicies *[]AutoScalingPolicy `json:"autoScalingPolicies,omitempty"`
-	// Status - Status of the service. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the service. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the service.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the service.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -3805,11 +3718,11 @@ type ServiceResourceDescription struct {
 	autorest.Response `json:"-"`
 	// ServiceResourceProperties - This type describes properties of a service resource.
 	*ServiceResourceProperties `json:"properties,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3819,14 +3732,8 @@ func (srd ServiceResourceDescription) MarshalJSON() ([]byte, error) {
 	if srd.ServiceResourceProperties != nil {
 		objectMap["properties"] = srd.ServiceResourceProperties
 	}
-	if srd.ID != nil {
-		objectMap["id"] = srd.ID
-	}
 	if srd.Name != nil {
 		objectMap["name"] = srd.Name
-	}
-	if srd.Type != nil {
-		objectMap["type"] = srd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4031,7 +3938,7 @@ func NewServiceResourceDescriptionListPage(getNextPage func(context.Context, Ser
 
 // ServiceResourceProperties this type describes properties of a service resource.
 type ServiceResourceProperties struct {
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OsType - The operation system required by the code in service. Possible values include: 'Linux', 'Windows'
 	OsType OperatingSystemType `json:"osType,omitempty"`
@@ -4047,13 +3954,13 @@ type ServiceResourceProperties struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// AutoScalingPolicies - Auto scaling policies
 	AutoScalingPolicies *[]AutoScalingPolicy `json:"autoScalingPolicies,omitempty"`
-	// Status - Status of the service. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the service. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the service.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the service.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -4083,11 +3990,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4100,15 +4007,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -4116,9 +4014,9 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 type VolumeProperties struct {
 	// Description - User readable description of the volume.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the volume. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the volume. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the volume.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the volume.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// Provider - Provider of the volume.
 	Provider *string `json:"provider,omitempty"`
@@ -4155,11 +4053,11 @@ type VolumeResourceDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4174,15 +4072,6 @@ func (vrd VolumeResourceDescription) MarshalJSON() ([]byte, error) {
 	}
 	if vrd.Location != nil {
 		objectMap["location"] = vrd.Location
-	}
-	if vrd.ID != nil {
-		objectMap["id"] = vrd.ID
-	}
-	if vrd.Name != nil {
-		objectMap["name"] = vrd.Name
-	}
-	if vrd.Type != nil {
-		objectMap["type"] = vrd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4405,13 +4294,13 @@ func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, Volu
 
 // VolumeResourceProperties this type describes properties of a volume resource.
 type VolumeResourceProperties struct {
-	// ProvisioningState - State of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Description - User readable description of the volume.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the volume. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
+	// Status - READ-ONLY; Status of the volume. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the volume.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the volume.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// Provider - Provider of the volume.
 	Provider *string `json:"provider,omitempty"`

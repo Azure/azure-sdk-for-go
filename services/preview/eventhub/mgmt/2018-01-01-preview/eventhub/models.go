@@ -115,11 +115,11 @@ type Cluster struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -137,15 +137,6 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	}
 	if c.Tags != nil {
 		objectMap["tags"] = c.Tags
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -376,11 +367,11 @@ func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResul
 
 // ClusterProperties event Hubs Cluster properties supplied in responses in List or Get operations.
 type ClusterProperties struct {
-	// Created - The UTC time when the Event Hubs Cluster was created.
+	// Created - READ-ONLY; The UTC time when the Event Hubs Cluster was created.
 	Created *string `json:"created,omitempty"`
-	// Updated - The UTC time when the Event Hubs Cluster was last updated.
+	// Updated - READ-ONLY; The UTC time when the Event Hubs Cluster was last updated.
 	Updated *string `json:"updated,omitempty"`
-	// MetricID - The metric ID of the cluster resource. Provided by the service and not modifiable by the user.
+	// MetricID - READ-ONLY; The metric ID of the cluster resource. Provided by the service and not modifiable by the user.
 	MetricID *string `json:"metricId,omitempty"`
 }
 
@@ -418,7 +409,7 @@ type ClustersPatchFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ClustersPatchFuture) Result(client ClustersClient) (c Cluster, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.ClustersPatchFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -448,11 +439,11 @@ type EHNamespace struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -470,15 +461,6 @@ func (en EHNamespace) MarshalJSON() ([]byte, error) {
 	}
 	if en.Tags != nil {
 		objectMap["tags"] = en.Tags
-	}
-	if en.ID != nil {
-		objectMap["id"] = en.ID
-	}
-	if en.Name != nil {
-		objectMap["name"] = en.Name
-	}
-	if en.Type != nil {
-		objectMap["type"] = en.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -709,15 +691,15 @@ func NewEHNamespaceListResultPage(getNextPage func(context.Context, EHNamespaceL
 
 // EHNamespaceProperties namespace properties supplied for create namespace operation.
 type EHNamespaceProperties struct {
-	// ProvisioningState - Provisioning state of the Namespace.
+	// ProvisioningState - READ-ONLY; Provisioning state of the Namespace.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// CreatedAt - The time the Namespace was created.
+	// CreatedAt - READ-ONLY; The time the Namespace was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// UpdatedAt - The time the Namespace was updated.
+	// UpdatedAt - READ-ONLY; The time the Namespace was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
-	// ServiceBusEndpoint - Endpoint you can use to perform Service Bus operations.
+	// ServiceBusEndpoint - READ-ONLY; Endpoint you can use to perform Service Bus operations.
 	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
-	// MetricID - Identifier for Azure Insights metrics.
+	// MetricID - READ-ONLY; Identifier for Azure Insights metrics.
 	MetricID *string `json:"metricId,omitempty"`
 	// IsAutoInflateEnabled - Value that indicates whether AutoInflate is enabled for eventhub namespace.
 	IsAutoInflateEnabled *bool `json:"isAutoInflateEnabled,omitempty"`
@@ -743,11 +725,11 @@ type IPFilterRule struct {
 	autorest.Response `json:"-"`
 	// IPFilterRuleProperties - Properties supplied to create or update IpFilterRules
 	*IPFilterRuleProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -756,15 +738,6 @@ func (ifr IPFilterRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ifr.IPFilterRuleProperties != nil {
 		objectMap["properties"] = ifr.IPFilterRuleProperties
-	}
-	if ifr.ID != nil {
-		objectMap["id"] = ifr.ID
-	}
-	if ifr.Name != nil {
-		objectMap["name"] = ifr.Name
-	}
-	if ifr.Type != nil {
-		objectMap["type"] = ifr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -986,7 +959,7 @@ type NamespacesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (en EHNamespace, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.NamespacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1015,7 +988,7 @@ type NamespacesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.NamespacesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1033,11 +1006,11 @@ type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
 	// NetworkRuleSetProperties - NetworkRuleSet properties
 	*NetworkRuleSetProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1046,15 +1019,6 @@ func (nrs NetworkRuleSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if nrs.NetworkRuleSetProperties != nil {
 		objectMap["properties"] = nrs.NetworkRuleSetProperties
-	}
-	if nrs.ID != nil {
-		objectMap["id"] = nrs.ID
-	}
-	if nrs.Name != nil {
-		objectMap["name"] = nrs.Name
-	}
-	if nrs.Type != nil {
-		objectMap["type"] = nrs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1138,7 +1102,7 @@ type NWRuleSetVirtualNetworkRules struct {
 
 // Operation a Event Hub REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -1146,11 +1110,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.EventHub
+	// Provider - READ-ONLY; Service provider: Microsoft.EventHub
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -1158,9 +1122,9 @@ type OperationDisplay struct {
 // and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Event Hub operations supported by the Microsoft.EventHub resource provider.
+	// Value - READ-ONLY; List of Event Hub operations supported by the Microsoft.EventHub resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1303,11 +1267,11 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // Resource the Resource definition
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1333,11 +1297,11 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1350,15 +1314,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1367,11 +1322,11 @@ type VirtualNetworkRule struct {
 	autorest.Response `json:"-"`
 	// VirtualNetworkRuleProperties - Properties supplied to create or update VirtualNetworkRules
 	*VirtualNetworkRuleProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1380,15 +1335,6 @@ func (vnr VirtualNetworkRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vnr.VirtualNetworkRuleProperties != nil {
 		objectMap["properties"] = vnr.VirtualNetworkRuleProperties
-	}
-	if vnr.ID != nil {
-		objectMap["id"] = vnr.ID
-	}
-	if vnr.Name != nil {
-		objectMap["name"] = vnr.Name
-	}
-	if vnr.Type != nil {
-		objectMap["type"] = vnr.Type
 	}
 	return json.Marshal(objectMap)
 }

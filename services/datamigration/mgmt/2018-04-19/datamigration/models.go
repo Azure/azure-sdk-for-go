@@ -1172,9 +1172,9 @@ type BasicCommandProperties interface {
 // CommandProperties base class for all types of DMS command properties. If command is not supported by current
 // client, this object is returned.
 type CommandProperties struct {
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	// State - READ-ONLY; The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
 	State CommandState `json:"state,omitempty"`
 	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase'
 	CommandType CommandType `json:"commandType,omitempty"`
@@ -1225,12 +1225,6 @@ func unmarshalBasicCommandPropertiesArray(body []byte) ([]BasicCommandProperties
 func (cp CommandProperties) MarshalJSON() ([]byte, error) {
 	cp.CommandType = CommandTypeUnknown
 	objectMap := make(map[string]interface{})
-	if cp.Errors != nil {
-		objectMap["errors"] = cp.Errors
-	}
-	if cp.State != "" {
-		objectMap["state"] = cp.State
-	}
 	if cp.CommandType != "" {
 		objectMap["commandType"] = cp.CommandType
 	}
@@ -1385,13 +1379,13 @@ type ConnectToSourceMySQLTaskInput struct {
 type ConnectToSourceMySQLTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToSourceMySQLTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToSourceNonSQLTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -1403,18 +1397,6 @@ func (ctsmstp ConnectToSourceMySQLTaskProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if ctsmstp.Input != nil {
 		objectMap["input"] = ctsmstp.Input
-	}
-	if ctsmstp.Output != nil {
-		objectMap["output"] = ctsmstp.Output
-	}
-	if ctsmstp.Errors != nil {
-		objectMap["errors"] = ctsmstp.Errors
-	}
-	if ctsmstp.State != "" {
-		objectMap["state"] = ctsmstp.State
-	}
-	if ctsmstp.Commands != nil {
-		objectMap["commands"] = ctsmstp.Commands
 	}
 	if ctsmstp.TaskType != "" {
 		objectMap["taskType"] = ctsmstp.TaskType
@@ -1612,15 +1594,15 @@ func (ctsmstp *ConnectToSourceMySQLTaskProperties) UnmarshalJSON(body []byte) er
 
 // ConnectToSourceNonSQLTaskOutput output for connect to Oracle, MySQL type source
 type ConnectToSourceNonSQLTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// SourceServerBrandVersion - Server brand version
+	// SourceServerBrandVersion - READ-ONLY; Server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
-	// ServerProperties - Server properties
+	// ServerProperties - READ-ONLY; Server properties
 	ServerProperties *ServerProperties `json:"serverProperties,omitempty"`
-	// Databases - List of databases on the server
+	// Databases - READ-ONLY; List of databases on the server
 	Databases *[]string `json:"databases,omitempty"`
-	// ValidationErrors - Validation errors associated with the task
+	// ValidationErrors - READ-ONLY; Validation errors associated with the task
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -1634,15 +1616,15 @@ type ConnectToSourcePostgreSQLSyncTaskInput struct {
 // ConnectToSourcePostgreSQLSyncTaskOutput output for the task that validates connection to PostgreSQL and
 // source server requirements
 type ConnectToSourcePostgreSQLSyncTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// SourceServerVersion - Version of the source server
+	// SourceServerVersion - READ-ONLY; Version of the source server
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// Databases - List of databases on source server
+	// Databases - READ-ONLY; List of databases on source server
 	Databases *[]string `json:"databases,omitempty"`
-	// SourceServerBrandVersion - Source server brand version
+	// SourceServerBrandVersion - READ-ONLY; Source server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
-	// ValidationErrors - Validation errors associated with the task
+	// ValidationErrors - READ-ONLY; Validation errors associated with the task
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -1651,13 +1633,13 @@ type ConnectToSourcePostgreSQLSyncTaskOutput struct {
 type ConnectToSourcePostgreSQLSyncTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToSourcePostgreSQLSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToSourcePostgreSQLSyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -1669,18 +1651,6 @@ func (ctspsstp ConnectToSourcePostgreSQLSyncTaskProperties) MarshalJSON() ([]byt
 	objectMap := make(map[string]interface{})
 	if ctspsstp.Input != nil {
 		objectMap["input"] = ctspsstp.Input
-	}
-	if ctspsstp.Output != nil {
-		objectMap["output"] = ctspsstp.Output
-	}
-	if ctspsstp.Errors != nil {
-		objectMap["errors"] = ctspsstp.Errors
-	}
-	if ctspsstp.State != "" {
-		objectMap["state"] = ctspsstp.State
-	}
-	if ctspsstp.Commands != nil {
-		objectMap["commands"] = ctspsstp.Commands
 	}
 	if ctspsstp.TaskType != "" {
 		objectMap["taskType"] = ctspsstp.TaskType
@@ -1881,13 +1851,13 @@ func (ctspsstp *ConnectToSourcePostgreSQLSyncTaskProperties) UnmarshalJSON(body 
 type ConnectToSourceSQLServerSyncTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicConnectToSourceSQLServerTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -1899,18 +1869,6 @@ func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) MarshalJSON() ([]byte
 	objectMap := make(map[string]interface{})
 	if ctsssstp.Input != nil {
 		objectMap["input"] = ctsssstp.Input
-	}
-	if ctsssstp.Output != nil {
-		objectMap["output"] = ctsssstp.Output
-	}
-	if ctsssstp.Errors != nil {
-		objectMap["errors"] = ctsssstp.Errors
-	}
-	if ctsssstp.State != "" {
-		objectMap["state"] = ctsssstp.State
-	}
-	if ctsssstp.Commands != nil {
-		objectMap["commands"] = ctsssstp.Commands
 	}
 	if ctsssstp.TaskType != "" {
 		objectMap["taskType"] = ctsssstp.TaskType
@@ -2131,7 +2089,7 @@ type BasicConnectToSourceSQLServerTaskOutput interface {
 // ConnectToSourceSQLServerTaskOutput output for the task that validates connection to SQL Server and also
 // validates source server requirements
 type ConnectToSourceSQLServerTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
@@ -2190,9 +2148,6 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutputArray(body []byte) ([]Basic
 func (ctsssto ConnectToSourceSQLServerTaskOutput) MarshalJSON() ([]byte, error) {
 	ctsssto.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
 	objectMap := make(map[string]interface{})
-	if ctsssto.ID != nil {
-		objectMap["id"] = ctsssto.ID
-	}
 	if ctsssto.ResultType != "" {
 		objectMap["resultType"] = ctsssto.ResultType
 	}
@@ -2232,19 +2187,19 @@ func (ctsssto ConnectToSourceSQLServerTaskOutput) AsBasicConnectToSourceSQLServe
 // ConnectToSourceSQLServerTaskOutputAgentJobLevel agentJob level output for the task that validates
 // connection to SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputAgentJobLevel struct {
-	// Name - AgentJob name
+	// Name - READ-ONLY; AgentJob name
 	Name *string `json:"name,omitempty"`
-	// JobCategory - The type of AgentJob.
+	// JobCategory - READ-ONLY; The type of AgentJob.
 	JobCategory *string `json:"jobCategory,omitempty"`
-	// IsEnabled - The state of the original AgentJob.
+	// IsEnabled - READ-ONLY; The state of the original AgentJob.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// JobOwner - The owner of the AgentJob
+	// JobOwner - READ-ONLY; The owner of the AgentJob
 	JobOwner *string `json:"jobOwner,omitempty"`
-	// LastExecutedOn - UTC Date and time when the AgentJob was last executed.
+	// LastExecutedOn - READ-ONLY; UTC Date and time when the AgentJob was last executed.
 	LastExecutedOn *date.Time `json:"lastExecutedOn,omitempty"`
-	// MigrationEligibility - Information about eligibility of agent job for migration.
+	// MigrationEligibility - READ-ONLY; Information about eligibility of agent job for migration.
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
@@ -2254,27 +2209,6 @@ type ConnectToSourceSQLServerTaskOutputAgentJobLevel struct {
 func (ctssstoajl ConnectToSourceSQLServerTaskOutputAgentJobLevel) MarshalJSON() ([]byte, error) {
 	ctssstoajl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput
 	objectMap := make(map[string]interface{})
-	if ctssstoajl.Name != nil {
-		objectMap["name"] = ctssstoajl.Name
-	}
-	if ctssstoajl.JobCategory != nil {
-		objectMap["jobCategory"] = ctssstoajl.JobCategory
-	}
-	if ctssstoajl.IsEnabled != nil {
-		objectMap["isEnabled"] = ctssstoajl.IsEnabled
-	}
-	if ctssstoajl.JobOwner != nil {
-		objectMap["jobOwner"] = ctssstoajl.JobOwner
-	}
-	if ctssstoajl.LastExecutedOn != nil {
-		objectMap["lastExecutedOn"] = ctssstoajl.LastExecutedOn
-	}
-	if ctssstoajl.MigrationEligibility != nil {
-		objectMap["migrationEligibility"] = ctssstoajl.MigrationEligibility
-	}
-	if ctssstoajl.ID != nil {
-		objectMap["id"] = ctssstoajl.ID
-	}
 	if ctssstoajl.ResultType != "" {
 		objectMap["resultType"] = ctssstoajl.ResultType
 	}
@@ -2314,17 +2248,17 @@ func (ctssstoajl ConnectToSourceSQLServerTaskOutputAgentJobLevel) AsBasicConnect
 // ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates
 // connection to SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
-	// Name - Database name
+	// Name - READ-ONLY; Database name
 	Name *string `json:"name,omitempty"`
-	// SizeMB - Size of the file in megabytes
+	// SizeMB - READ-ONLY; Size of the file in megabytes
 	SizeMB *float64 `json:"sizeMB,omitempty"`
-	// DatabaseFiles - The list of database files
+	// DatabaseFiles - READ-ONLY; The list of database files
 	DatabaseFiles *[]DatabaseFileInfo `json:"databaseFiles,omitempty"`
-	// CompatibilityLevel - SQL Server compatibility level of database. Possible values include: 'CompatLevel80', 'CompatLevel90', 'CompatLevel100', 'CompatLevel110', 'CompatLevel120', 'CompatLevel130', 'CompatLevel140'
+	// CompatibilityLevel - READ-ONLY; SQL Server compatibility level of database. Possible values include: 'CompatLevel80', 'CompatLevel90', 'CompatLevel100', 'CompatLevel110', 'CompatLevel120', 'CompatLevel130', 'CompatLevel140'
 	CompatibilityLevel DatabaseCompatLevel `json:"compatibilityLevel,omitempty"`
-	// DatabaseState - State of the database. Possible values include: 'DatabaseStateOnline', 'DatabaseStateRestoring', 'DatabaseStateRecovering', 'DatabaseStateRecoveryPending', 'DatabaseStateSuspect', 'DatabaseStateEmergency', 'DatabaseStateOffline', 'DatabaseStateCopying', 'DatabaseStateOfflineSecondary'
+	// DatabaseState - READ-ONLY; State of the database. Possible values include: 'DatabaseStateOnline', 'DatabaseStateRestoring', 'DatabaseStateRecovering', 'DatabaseStateRecoveryPending', 'DatabaseStateSuspect', 'DatabaseStateEmergency', 'DatabaseStateOffline', 'DatabaseStateCopying', 'DatabaseStateOfflineSecondary'
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
@@ -2334,24 +2268,6 @@ type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	ctssstodl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if ctssstodl.Name != nil {
-		objectMap["name"] = ctssstodl.Name
-	}
-	if ctssstodl.SizeMB != nil {
-		objectMap["sizeMB"] = ctssstodl.SizeMB
-	}
-	if ctssstodl.DatabaseFiles != nil {
-		objectMap["databaseFiles"] = ctssstodl.DatabaseFiles
-	}
-	if ctssstodl.CompatibilityLevel != "" {
-		objectMap["compatibilityLevel"] = ctssstodl.CompatibilityLevel
-	}
-	if ctssstodl.DatabaseState != "" {
-		objectMap["databaseState"] = ctssstodl.DatabaseState
-	}
-	if ctssstodl.ID != nil {
-		objectMap["id"] = ctssstodl.ID
-	}
 	if ctssstodl.ResultType != "" {
 		objectMap["resultType"] = ctssstodl.ResultType
 	}
@@ -2391,17 +2307,17 @@ func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsBasicConnectT
 // ConnectToSourceSQLServerTaskOutputLoginLevel login level output for the task that validates connection
 // to SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputLoginLevel struct {
-	// Name - Login name.
+	// Name - READ-ONLY; Login name.
 	Name *string `json:"name,omitempty"`
-	// LoginType - The type of login. Possible values include: 'WindowsUser', 'WindowsGroup', 'SQLLogin', 'Certificate', 'AsymmetricKey', 'ExternalUser', 'ExternalGroup'
+	// LoginType - READ-ONLY; The type of login. Possible values include: 'WindowsUser', 'WindowsGroup', 'SQLLogin', 'Certificate', 'AsymmetricKey', 'ExternalUser', 'ExternalGroup'
 	LoginType LoginType `json:"loginType,omitempty"`
-	// DefaultDatabase - The default database for the login.
+	// DefaultDatabase - READ-ONLY; The default database for the login.
 	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
-	// IsEnabled - The state of the login.
+	// IsEnabled - READ-ONLY; The state of the login.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// MigrationEligibility - Information about eligibility of login for migration.
+	// MigrationEligibility - READ-ONLY; Information about eligibility of login for migration.
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
@@ -2411,24 +2327,6 @@ type ConnectToSourceSQLServerTaskOutputLoginLevel struct {
 func (ctssstoll ConnectToSourceSQLServerTaskOutputLoginLevel) MarshalJSON() ([]byte, error) {
 	ctssstoll.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput
 	objectMap := make(map[string]interface{})
-	if ctssstoll.Name != nil {
-		objectMap["name"] = ctssstoll.Name
-	}
-	if ctssstoll.LoginType != "" {
-		objectMap["loginType"] = ctssstoll.LoginType
-	}
-	if ctssstoll.DefaultDatabase != nil {
-		objectMap["defaultDatabase"] = ctssstoll.DefaultDatabase
-	}
-	if ctssstoll.IsEnabled != nil {
-		objectMap["isEnabled"] = ctssstoll.IsEnabled
-	}
-	if ctssstoll.MigrationEligibility != nil {
-		objectMap["migrationEligibility"] = ctssstoll.MigrationEligibility
-	}
-	if ctssstoll.ID != nil {
-		objectMap["id"] = ctssstoll.ID
-	}
 	if ctssstoll.ResultType != "" {
 		objectMap["resultType"] = ctssstoll.ResultType
 	}
@@ -2468,19 +2366,19 @@ func (ctssstoll ConnectToSourceSQLServerTaskOutputLoginLevel) AsBasicConnectToSo
 // ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to
 // SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
-	// Databases - Source databases as a map from database name to database id
+	// Databases - READ-ONLY; Source databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
-	// Logins - Source logins as a map from login name to login id.
+	// Logins - READ-ONLY; Source logins as a map from login name to login id.
 	Logins map[string]*string `json:"logins"`
-	// AgentJobs - Source agent jobs as a map from agent job name to id.
+	// AgentJobs - READ-ONLY; Source agent jobs as a map from agent job name to id.
 	AgentJobs map[string]*string `json:"agentJobs"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServerBrandVersion - Source server brand version
+	// SourceServerBrandVersion - READ-ONLY; Source server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
-	// ValidationErrors - Validation errors
+	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
@@ -2490,27 +2388,6 @@ type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]byte, error) {
 	ctssstotl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 	objectMap := make(map[string]interface{})
-	if ctssstotl.Databases != nil {
-		objectMap["databases"] = ctssstotl.Databases
-	}
-	if ctssstotl.Logins != nil {
-		objectMap["logins"] = ctssstotl.Logins
-	}
-	if ctssstotl.AgentJobs != nil {
-		objectMap["agentJobs"] = ctssstotl.AgentJobs
-	}
-	if ctssstotl.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = ctssstotl.SourceServerVersion
-	}
-	if ctssstotl.SourceServerBrandVersion != nil {
-		objectMap["sourceServerBrandVersion"] = ctssstotl.SourceServerBrandVersion
-	}
-	if ctssstotl.ValidationErrors != nil {
-		objectMap["validationErrors"] = ctssstotl.ValidationErrors
-	}
-	if ctssstotl.ID != nil {
-		objectMap["id"] = ctssstotl.ID
-	}
 	if ctssstotl.ResultType != "" {
 		objectMap["resultType"] = ctssstotl.ResultType
 	}
@@ -2552,13 +2429,13 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsBasicConnectToSou
 type ConnectToSourceSQLServerTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicConnectToSourceSQLServerTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -2570,18 +2447,6 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) MarshalJSON() ([]byte, err
 	objectMap := make(map[string]interface{})
 	if ctssstp.Input != nil {
 		objectMap["input"] = ctssstp.Input
-	}
-	if ctssstp.Output != nil {
-		objectMap["output"] = ctssstp.Output
-	}
-	if ctssstp.Errors != nil {
-		objectMap["errors"] = ctssstp.Errors
-	}
-	if ctssstp.State != "" {
-		objectMap["state"] = ctssstp.State
-	}
-	if ctssstp.Commands != nil {
-		objectMap["commands"] = ctssstp.Commands
 	}
 	if ctssstp.TaskType != "" {
 		objectMap["taskType"] = ctssstp.TaskType
@@ -2788,15 +2653,15 @@ type ConnectToTargetAzureDbForMySQLTaskInput struct {
 // ConnectToTargetAzureDbForMySQLTaskOutput output for the task that validates connection to Azure Database
 // for MySQL and target server requirements
 type ConnectToTargetAzureDbForMySQLTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// ServerVersion - Version of the target server
+	// ServerVersion - READ-ONLY; Version of the target server
 	ServerVersion *string `json:"serverVersion,omitempty"`
-	// Databases - List of databases on target server
+	// Databases - READ-ONLY; List of databases on target server
 	Databases *[]string `json:"databases,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// ValidationErrors - Validation errors associated with the task
+	// ValidationErrors - READ-ONLY; Validation errors associated with the task
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -2805,13 +2670,13 @@ type ConnectToTargetAzureDbForMySQLTaskOutput struct {
 type ConnectToTargetAzureDbForMySQLTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetAzureDbForMySQLTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToTargetAzureDbForMySQLTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -2823,18 +2688,6 @@ func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) MarshalJSON() ([]
 	objectMap := make(map[string]interface{})
 	if cttadfmstp.Input != nil {
 		objectMap["input"] = cttadfmstp.Input
-	}
-	if cttadfmstp.Output != nil {
-		objectMap["output"] = cttadfmstp.Output
-	}
-	if cttadfmstp.Errors != nil {
-		objectMap["errors"] = cttadfmstp.Errors
-	}
-	if cttadfmstp.State != "" {
-		objectMap["state"] = cttadfmstp.State
-	}
-	if cttadfmstp.Commands != nil {
-		objectMap["commands"] = cttadfmstp.Commands
 	}
 	if cttadfmstp.TaskType != "" {
 		objectMap["taskType"] = cttadfmstp.TaskType
@@ -3042,15 +2895,15 @@ type ConnectToTargetAzureDbForPostgreSQLSyncTaskInput struct {
 // ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput output for the task that validates connection to Azure
 // Database for PostgreSQL and target server requirements
 type ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// TargetServerVersion - Version of the target server
+	// TargetServerVersion - READ-ONLY; Version of the target server
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// Databases - List of databases on target server
+	// Databases - READ-ONLY; List of databases on target server
 	Databases *[]string `json:"databases,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// ValidationErrors - Validation errors associated with the task
+	// ValidationErrors - READ-ONLY; Validation errors associated with the task
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -3059,13 +2912,13 @@ type ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput struct {
 type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetAzureDbForPostgreSQLSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -3077,18 +2930,6 @@ func (cttadfpsstp ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties) Marshal
 	objectMap := make(map[string]interface{})
 	if cttadfpsstp.Input != nil {
 		objectMap["input"] = cttadfpsstp.Input
-	}
-	if cttadfpsstp.Output != nil {
-		objectMap["output"] = cttadfpsstp.Output
-	}
-	if cttadfpsstp.Errors != nil {
-		objectMap["errors"] = cttadfpsstp.Errors
-	}
-	if cttadfpsstp.State != "" {
-		objectMap["state"] = cttadfpsstp.State
-	}
-	if cttadfpsstp.Commands != nil {
-		objectMap["commands"] = cttadfpsstp.Commands
 	}
 	if cttadfpsstp.TaskType != "" {
 		objectMap["taskType"] = cttadfpsstp.TaskType
@@ -3294,31 +3135,19 @@ type ConnectToTargetSQLDbTaskInput struct {
 // ConnectToTargetSQLDbTaskOutput output for the task that validates connection to SQL DB and target server
 // requirements
 type ConnectToTargetSQLDbTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// Databases - Source databases as a map from database name to database id
+	// Databases - READ-ONLY; Source databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
-	// TargetServerVersion - Version of the target server
+	// TargetServerVersion - READ-ONLY; Version of the target server
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToTargetSQLDbTaskOutput.
 func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cttsdto.ID != nil {
-		objectMap["id"] = cttsdto.ID
-	}
-	if cttsdto.Databases != nil {
-		objectMap["databases"] = cttsdto.Databases
-	}
-	if cttsdto.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = cttsdto.TargetServerVersion
-	}
-	if cttsdto.TargetServerBrandVersion != nil {
-		objectMap["targetServerBrandVersion"] = cttsdto.TargetServerBrandVersion
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -3327,13 +3156,13 @@ func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 type ConnectToTargetSQLDbTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetSQLDbTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToTargetSQLDbTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -3345,18 +3174,6 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if cttsdtp.Input != nil {
 		objectMap["input"] = cttsdtp.Input
-	}
-	if cttsdtp.Output != nil {
-		objectMap["output"] = cttsdtp.Output
-	}
-	if cttsdtp.Errors != nil {
-		objectMap["errors"] = cttsdtp.Errors
-	}
-	if cttsdtp.State != "" {
-		objectMap["state"] = cttsdtp.State
-	}
-	if cttsdtp.Commands != nil {
-		objectMap["commands"] = cttsdtp.Commands
 	}
 	if cttsdtp.TaskType != "" {
 		objectMap["taskType"] = cttsdtp.TaskType
@@ -3564,11 +3381,11 @@ type ConnectToTargetSQLMISyncTaskInput struct {
 // ConnectToTargetSQLMISyncTaskOutput output for the task that validates connection to Azure SQL Database
 // Managed Instance.
 type ConnectToTargetSQLMISyncTaskOutput struct {
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// ValidationErrors - Validation errors
+	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -3577,13 +3394,13 @@ type ConnectToTargetSQLMISyncTaskOutput struct {
 type ConnectToTargetSQLMISyncTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetSQLMISyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToTargetSQLMISyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -3595,18 +3412,6 @@ func (cttsmstp ConnectToTargetSQLMISyncTaskProperties) MarshalJSON() ([]byte, er
 	objectMap := make(map[string]interface{})
 	if cttsmstp.Input != nil {
 		objectMap["input"] = cttsmstp.Input
-	}
-	if cttsmstp.Output != nil {
-		objectMap["output"] = cttsmstp.Output
-	}
-	if cttsmstp.Errors != nil {
-		objectMap["errors"] = cttsmstp.Errors
-	}
-	if cttsmstp.State != "" {
-		objectMap["state"] = cttsmstp.State
-	}
-	if cttsmstp.Commands != nil {
-		objectMap["commands"] = cttsmstp.Commands
 	}
 	if cttsmstp.TaskType != "" {
 		objectMap["taskType"] = cttsmstp.TaskType
@@ -3812,17 +3617,17 @@ type ConnectToTargetSQLMITaskInput struct {
 // ConnectToTargetSQLMITaskOutput output for the task that validates connection to Azure SQL Database
 // Managed Instance.
 type ConnectToTargetSQLMITaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// Logins - List of logins on the target server.
+	// Logins - READ-ONLY; List of logins on the target server.
 	Logins *[]string `json:"logins,omitempty"`
-	// AgentJobs - List of agent jobs on the target server.
+	// AgentJobs - READ-ONLY; List of agent jobs on the target server.
 	AgentJobs *[]string `json:"agentJobs,omitempty"`
-	// ValidationErrors - Validation errors
+	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -3831,13 +3636,13 @@ type ConnectToTargetSQLMITaskOutput struct {
 type ConnectToTargetSQLMITaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetSQLMITaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToTargetSQLMITaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -3849,18 +3654,6 @@ func (cttsmtp ConnectToTargetSQLMITaskProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if cttsmtp.Input != nil {
 		objectMap["input"] = cttsmtp.Input
-	}
-	if cttsmtp.Output != nil {
-		objectMap["output"] = cttsmtp.Output
-	}
-	if cttsmtp.Errors != nil {
-		objectMap["errors"] = cttsmtp.Errors
-	}
-	if cttsmtp.State != "" {
-		objectMap["state"] = cttsmtp.State
-	}
-	if cttsmtp.Commands != nil {
-		objectMap["commands"] = cttsmtp.Commands
 	}
 	if cttsmtp.TaskType != "" {
 		objectMap["taskType"] = cttsmtp.TaskType
@@ -4070,13 +3863,13 @@ type ConnectToTargetSQLSQLDbSyncTaskInput struct {
 type ConnectToTargetSQLSQLDbSyncTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetSQLSQLDbSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ConnectToTargetSQLDbTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -4088,18 +3881,6 @@ func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) MarshalJSON() ([]byte
 	objectMap := make(map[string]interface{})
 	if cttssdstp.Input != nil {
 		objectMap["input"] = cttssdstp.Input
-	}
-	if cttssdstp.Output != nil {
-		objectMap["output"] = cttssdstp.Output
-	}
-	if cttssdstp.Errors != nil {
-		objectMap["errors"] = cttssdstp.Errors
-	}
-	if cttssdstp.State != "" {
-		objectMap["state"] = cttssdstp.State
-	}
-	if cttssdstp.Commands != nil {
-		objectMap["commands"] = cttssdstp.Commands
 	}
 	if cttssdstp.TaskType != "" {
 		objectMap["taskType"] = cttssdstp.TaskType
@@ -4297,59 +4078,59 @@ func (cttssdstp *ConnectToTargetSQLSQLDbSyncTaskProperties) UnmarshalJSON(body [
 
 // Database information about a single database
 type Database struct {
-	// ID - Unique identifier for the database
+	// ID - READ-ONLY; Unique identifier for the database
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the database
+	// Name - READ-ONLY; Name of the database
 	Name *string `json:"name,omitempty"`
-	// CompatibilityLevel - SQL Server compatibility level of database. Possible values include: 'CompatLevel80', 'CompatLevel90', 'CompatLevel100', 'CompatLevel110', 'CompatLevel120', 'CompatLevel130', 'CompatLevel140'
+	// CompatibilityLevel - READ-ONLY; SQL Server compatibility level of database. Possible values include: 'CompatLevel80', 'CompatLevel90', 'CompatLevel100', 'CompatLevel110', 'CompatLevel120', 'CompatLevel130', 'CompatLevel140'
 	CompatibilityLevel DatabaseCompatLevel `json:"compatibilityLevel,omitempty"`
-	// Collation - Collation name of the database
+	// Collation - READ-ONLY; Collation name of the database
 	Collation *string `json:"collation,omitempty"`
-	// ServerName - Name of the server
+	// ServerName - READ-ONLY; Name of the server
 	ServerName *string `json:"serverName,omitempty"`
-	// Fqdn - Fully qualified name
+	// Fqdn - READ-ONLY; Fully qualified name
 	Fqdn *string `json:"fqdn,omitempty"`
-	// InstallID - Install id of the database
+	// InstallID - READ-ONLY; Install id of the database
 	InstallID *string `json:"installId,omitempty"`
-	// ServerVersion - Version of the server
+	// ServerVersion - READ-ONLY; Version of the server
 	ServerVersion *string `json:"serverVersion,omitempty"`
-	// ServerEdition - Edition of the server
+	// ServerEdition - READ-ONLY; Edition of the server
 	ServerEdition *string `json:"serverEdition,omitempty"`
-	// ServerLevel - Product level of the server (RTM, SP, CTP).
+	// ServerLevel - READ-ONLY; Product level of the server (RTM, SP, CTP).
 	ServerLevel *string `json:"serverLevel,omitempty"`
-	// ServerDefaultDataPath - Default path of the data files
+	// ServerDefaultDataPath - READ-ONLY; Default path of the data files
 	ServerDefaultDataPath *string `json:"serverDefaultDataPath,omitempty"`
-	// ServerDefaultLogPath - Default path of the log files
+	// ServerDefaultLogPath - READ-ONLY; Default path of the log files
 	ServerDefaultLogPath *string `json:"serverDefaultLogPath,omitempty"`
-	// ServerDefaultBackupPath - Default path of the backup folder
+	// ServerDefaultBackupPath - READ-ONLY; Default path of the backup folder
 	ServerDefaultBackupPath *string `json:"serverDefaultBackupPath,omitempty"`
-	// ServerCoreCount - Number of cores on the server
+	// ServerCoreCount - READ-ONLY; Number of cores on the server
 	ServerCoreCount *int32 `json:"serverCoreCount,omitempty"`
-	// ServerVisibleOnlineCoreCount - Number of cores on the server that have VISIBLE ONLINE status
+	// ServerVisibleOnlineCoreCount - READ-ONLY; Number of cores on the server that have VISIBLE ONLINE status
 	ServerVisibleOnlineCoreCount *int32 `json:"serverVisibleOnlineCoreCount,omitempty"`
-	// DatabaseState - State of the database. Possible values include: 'DatabaseStateOnline', 'DatabaseStateRestoring', 'DatabaseStateRecovering', 'DatabaseStateRecoveryPending', 'DatabaseStateSuspect', 'DatabaseStateEmergency', 'DatabaseStateOffline', 'DatabaseStateCopying', 'DatabaseStateOfflineSecondary'
+	// DatabaseState - READ-ONLY; State of the database. Possible values include: 'DatabaseStateOnline', 'DatabaseStateRestoring', 'DatabaseStateRecovering', 'DatabaseStateRecoveryPending', 'DatabaseStateSuspect', 'DatabaseStateEmergency', 'DatabaseStateOffline', 'DatabaseStateCopying', 'DatabaseStateOfflineSecondary'
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
-	// ServerID - The unique Server Id
+	// ServerID - READ-ONLY; The unique Server Id
 	ServerID *string `json:"serverId,omitempty"`
 }
 
 // DatabaseBackupInfo information about backup files when existing backup mode is used.
 type DatabaseBackupInfo struct {
-	// DatabaseName - Database name.
+	// DatabaseName - READ-ONLY; Database name.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// BackupType - Backup Type. Possible values include: 'BackupTypeDatabase', 'BackupTypeTransactionLog', 'BackupTypeFile', 'BackupTypeDifferentialDatabase', 'BackupTypeDifferentialFile', 'BackupTypePartial', 'BackupTypeDifferentialPartial'
+	// BackupType - READ-ONLY; Backup Type. Possible values include: 'BackupTypeDatabase', 'BackupTypeTransactionLog', 'BackupTypeFile', 'BackupTypeDifferentialDatabase', 'BackupTypeDifferentialFile', 'BackupTypePartial', 'BackupTypeDifferentialPartial'
 	BackupType BackupType `json:"backupType,omitempty"`
-	// BackupFiles - The list of backup files for the current database.
+	// BackupFiles - READ-ONLY; The list of backup files for the current database.
 	BackupFiles *[]string `json:"backupFiles,omitempty"`
-	// Position - Position of current database backup in the file.
+	// Position - READ-ONLY; Position of current database backup in the file.
 	Position *int32 `json:"position,omitempty"`
-	// IsDamaged - Database was damaged when backed up, but the backup operation was requested to continue despite errors.
+	// IsDamaged - READ-ONLY; Database was damaged when backed up, but the backup operation was requested to continue despite errors.
 	IsDamaged *bool `json:"isDamaged,omitempty"`
-	// IsCompressed - Whether the backup set is compressed
+	// IsCompressed - READ-ONLY; Whether the backup set is compressed
 	IsCompressed *bool `json:"isCompressed,omitempty"`
-	// FamilyCount - Number of files in the backup set.
+	// FamilyCount - READ-ONLY; Number of files in the backup set.
 	FamilyCount *int32 `json:"familyCount,omitempty"`
-	// BackupFinishDate - Date and time when the backup operation finished.
+	// BackupFinishDate - READ-ONLY; Date and time when the backup operation finished.
 	BackupFinishDate *date.Time `json:"backupFinishDate,omitempty"`
 }
 
@@ -4393,11 +4174,11 @@ type DatabaseInfo struct {
 
 // DatabaseObjectName a representation of the name of an object in a database
 type DatabaseObjectName struct {
-	// DatabaseName - The unescaped name of the database containing the object
+	// DatabaseName - READ-ONLY; The unescaped name of the database containing the object
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// ObjectName - The unescaped name of the object
+	// ObjectName - READ-ONLY; The unescaped name of the object
 	ObjectName *string `json:"objectName,omitempty"`
-	// SchemaName - The unescaped name of the schema containing the object
+	// SchemaName - READ-ONLY; The unescaped name of the schema containing the object
 	SchemaName *string `json:"schemaName,omitempty"`
 	// ObjectType - Type of the object in the database. Possible values include: 'StoredProcedures', 'Table', 'User', 'View', 'Function'
 	ObjectType ObjectType `json:"objectType,omitempty"`
@@ -4405,81 +4186,75 @@ type DatabaseObjectName struct {
 
 // DatabaseSummaryResult summary of database results in the migration
 type DatabaseSummaryResult struct {
-	// SizeMB - Size of the database in megabytes
+	// SizeMB - READ-ONLY; Size of the database in megabytes
 	SizeMB *float64 `json:"sizeMB,omitempty"`
-	// Name - Name of the item
+	// Name - READ-ONLY; Name of the item
 	Name *string `json:"name,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// StatusMessage - Status message
+	// StatusMessage - READ-ONLY; Status message
 	StatusMessage *string `json:"statusMessage,omitempty"`
-	// ItemsCount - Number of items
+	// ItemsCount - READ-ONLY; Number of items
 	ItemsCount *int64 `json:"itemsCount,omitempty"`
-	// ItemsCompletedCount - Number of successfully completed items
+	// ItemsCompletedCount - READ-ONLY; Number of successfully completed items
 	ItemsCompletedCount *int64 `json:"itemsCompletedCount,omitempty"`
-	// ErrorPrefix - Wildcard string prefix to use for querying all errors of the item
+	// ErrorPrefix - READ-ONLY; Wildcard string prefix to use for querying all errors of the item
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
-	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
+	// ResultPrefix - READ-ONLY; Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
 }
 
 // DatabaseTable table properties
 type DatabaseTable struct {
-	// HasRows - Indicates whether table is empty or not
+	// HasRows - READ-ONLY; Indicates whether table is empty or not
 	HasRows *bool `json:"hasRows,omitempty"`
-	// Name - Schema-qualified name of the table
+	// Name - READ-ONLY; Schema-qualified name of the table
 	Name *string `json:"name,omitempty"`
 }
 
 // DataIntegrityValidationResult results for checksum based Data Integrity validation results
 type DataIntegrityValidationResult struct {
-	// FailedObjects - List of failed table names of source and target pair
+	// FailedObjects - READ-ONLY; List of failed table names of source and target pair
 	FailedObjects map[string]*string `json:"failedObjects"`
-	// ValidationErrors - List of errors that happened while performing data integrity validation
+	// ValidationErrors - READ-ONLY; List of errors that happened while performing data integrity validation
 	ValidationErrors *ValidationError `json:"validationErrors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataIntegrityValidationResult.
 func (divr DataIntegrityValidationResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if divr.FailedObjects != nil {
-		objectMap["failedObjects"] = divr.FailedObjects
-	}
-	if divr.ValidationErrors != nil {
-		objectMap["validationErrors"] = divr.ValidationErrors
-	}
 	return json.Marshal(objectMap)
 }
 
 // DataItemMigrationSummaryResult basic summary of a data item migration
 type DataItemMigrationSummaryResult struct {
-	// Name - Name of the item
+	// Name - READ-ONLY; Name of the item
 	Name *string `json:"name,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// StatusMessage - Status message
+	// StatusMessage - READ-ONLY; Status message
 	StatusMessage *string `json:"statusMessage,omitempty"`
-	// ItemsCount - Number of items
+	// ItemsCount - READ-ONLY; Number of items
 	ItemsCount *int64 `json:"itemsCount,omitempty"`
-	// ItemsCompletedCount - Number of successfully completed items
+	// ItemsCompletedCount - READ-ONLY; Number of successfully completed items
 	ItemsCompletedCount *int64 `json:"itemsCompletedCount,omitempty"`
-	// ErrorPrefix - Wildcard string prefix to use for querying all errors of the item
+	// ErrorPrefix - READ-ONLY; Wildcard string prefix to use for querying all errors of the item
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
-	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
+	// ResultPrefix - READ-ONLY; Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
 }
 
 // Error migration Task errors
 type Error struct {
-	// Message - Error description
+	// Message - READ-ONLY; Error description
 	Message *string `json:"message,omitempty"`
 	// Type - Type of error. Possible values include: 'ErrorTypeDefault', 'ErrorTypeWarning', 'ErrorTypeError'
 	Type ErrorType `json:"type,omitempty"`
@@ -4487,40 +4262,25 @@ type Error struct {
 
 // ExecutionStatistics description about the errors happen while performing migration validation
 type ExecutionStatistics struct {
-	// ExecutionCount - No. of query executions
+	// ExecutionCount - READ-ONLY; No. of query executions
 	ExecutionCount *int64 `json:"executionCount,omitempty"`
-	// CPUTimeMs - CPU Time in millisecond(s) for the query execution
+	// CPUTimeMs - READ-ONLY; CPU Time in millisecond(s) for the query execution
 	CPUTimeMs *float64 `json:"cpuTimeMs,omitempty"`
-	// ElapsedTimeMs - Time taken in millisecond(s) for executing the query
+	// ElapsedTimeMs - READ-ONLY; Time taken in millisecond(s) for executing the query
 	ElapsedTimeMs *float64 `json:"elapsedTimeMs,omitempty"`
 	// WaitStats - Dictionary of sql query execution wait types and the respective statistics
 	WaitStats map[string]*WaitStatistics `json:"waitStats"`
-	// HasErrors - Indicates whether the query resulted in an error
+	// HasErrors - READ-ONLY; Indicates whether the query resulted in an error
 	HasErrors *bool `json:"hasErrors,omitempty"`
-	// SQLErrors - List of sql Errors
+	// SQLErrors - READ-ONLY; List of sql Errors
 	SQLErrors *[]string `json:"sqlErrors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ExecutionStatistics.
 func (es ExecutionStatistics) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if es.ExecutionCount != nil {
-		objectMap["executionCount"] = es.ExecutionCount
-	}
-	if es.CPUTimeMs != nil {
-		objectMap["cpuTimeMs"] = es.CPUTimeMs
-	}
-	if es.ElapsedTimeMs != nil {
-		objectMap["elapsedTimeMs"] = es.ElapsedTimeMs
-	}
 	if es.WaitStats != nil {
 		objectMap["waitStats"] = es.WaitStats
-	}
-	if es.HasErrors != nil {
-		objectMap["hasErrors"] = es.HasErrors
-	}
-	if es.SQLErrors != nil {
-		objectMap["sqlErrors"] = es.SQLErrors
 	}
 	return json.Marshal(objectMap)
 }
@@ -4555,21 +4315,15 @@ type GetTdeCertificatesSQLTaskInput struct {
 
 // GetTdeCertificatesSQLTaskOutput output of the task that gets TDE certificates in Base64 encoded format.
 type GetTdeCertificatesSQLTaskOutput struct {
-	// Base64EncodedCertificates - Mapping from certificate name to base 64 encoded format.
+	// Base64EncodedCertificates - READ-ONLY; Mapping from certificate name to base 64 encoded format.
 	Base64EncodedCertificates map[string][]string `json:"base64EncodedCertificates"`
-	// ValidationErrors - Validation errors
+	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GetTdeCertificatesSQLTaskOutput.
 func (gtcsto GetTdeCertificatesSQLTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if gtcsto.Base64EncodedCertificates != nil {
-		objectMap["base64EncodedCertificates"] = gtcsto.Base64EncodedCertificates
-	}
-	if gtcsto.ValidationErrors != nil {
-		objectMap["validationErrors"] = gtcsto.ValidationErrors
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -4578,13 +4332,13 @@ func (gtcsto GetTdeCertificatesSQLTaskOutput) MarshalJSON() ([]byte, error) {
 type GetTdeCertificatesSQLTaskProperties struct {
 	// Input - Task input
 	Input *GetTdeCertificatesSQLTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]GetTdeCertificatesSQLTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -4596,18 +4350,6 @@ func (gtcstp GetTdeCertificatesSQLTaskProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if gtcstp.Input != nil {
 		objectMap["input"] = gtcstp.Input
-	}
-	if gtcstp.Output != nil {
-		objectMap["output"] = gtcstp.Output
-	}
-	if gtcstp.Errors != nil {
-		objectMap["errors"] = gtcstp.Errors
-	}
-	if gtcstp.State != "" {
-		objectMap["state"] = gtcstp.State
-	}
-	if gtcstp.Commands != nil {
-		objectMap["commands"] = gtcstp.Commands
 	}
 	if gtcstp.TaskType != "" {
 		objectMap["taskType"] = gtcstp.TaskType
@@ -4819,31 +4561,19 @@ type GetUserTablesSQLSyncTaskInput struct {
 // GetUserTablesSQLSyncTaskOutput output of the task that collects user tables for the given list of
 // databases
 type GetUserTablesSQLSyncTaskOutput struct {
-	// DatabasesToSourceTables - Mapping from database name to list of source tables
+	// DatabasesToSourceTables - READ-ONLY; Mapping from database name to list of source tables
 	DatabasesToSourceTables map[string][]DatabaseTable `json:"databasesToSourceTables"`
-	// DatabasesToTargetTables - Mapping from database name to list of target tables
+	// DatabasesToTargetTables - READ-ONLY; Mapping from database name to list of target tables
 	DatabasesToTargetTables map[string][]DatabaseTable `json:"databasesToTargetTables"`
-	// TableValidationErrors - Mapping from database name to list of validation errors
+	// TableValidationErrors - READ-ONLY; Mapping from database name to list of validation errors
 	TableValidationErrors map[string][]string `json:"tableValidationErrors"`
-	// ValidationErrors - Validation errors
+	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GetUserTablesSQLSyncTaskOutput.
 func (gutssto GetUserTablesSQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if gutssto.DatabasesToSourceTables != nil {
-		objectMap["databasesToSourceTables"] = gutssto.DatabasesToSourceTables
-	}
-	if gutssto.DatabasesToTargetTables != nil {
-		objectMap["databasesToTargetTables"] = gutssto.DatabasesToTargetTables
-	}
-	if gutssto.TableValidationErrors != nil {
-		objectMap["tableValidationErrors"] = gutssto.TableValidationErrors
-	}
-	if gutssto.ValidationErrors != nil {
-		objectMap["validationErrors"] = gutssto.ValidationErrors
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -4852,13 +4582,13 @@ func (gutssto GetUserTablesSQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
 type GetUserTablesSQLSyncTaskProperties struct {
 	// Input - Task input
 	Input *GetUserTablesSQLSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]GetUserTablesSQLSyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -4870,18 +4600,6 @@ func (gutsstp GetUserTablesSQLSyncTaskProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if gutsstp.Input != nil {
 		objectMap["input"] = gutsstp.Input
-	}
-	if gutsstp.Output != nil {
-		objectMap["output"] = gutsstp.Output
-	}
-	if gutsstp.Errors != nil {
-		objectMap["errors"] = gutsstp.Errors
-	}
-	if gutsstp.State != "" {
-		objectMap["state"] = gutsstp.State
-	}
-	if gutsstp.Commands != nil {
-		objectMap["commands"] = gutsstp.Commands
 	}
 	if gutsstp.TaskType != "" {
 		objectMap["taskType"] = gutsstp.TaskType
@@ -5087,26 +4805,17 @@ type GetUserTablesSQLTaskInput struct {
 
 // GetUserTablesSQLTaskOutput output of the task that collects user tables for the given list of databases
 type GetUserTablesSQLTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// DatabasesToTables - Mapping from database name to list of tables
+	// DatabasesToTables - READ-ONLY; Mapping from database name to list of tables
 	DatabasesToTables map[string][]DatabaseTable `json:"databasesToTables"`
-	// ValidationErrors - Validation errors
+	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GetUserTablesSQLTaskOutput.
 func (gutsto GetUserTablesSQLTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if gutsto.ID != nil {
-		objectMap["id"] = gutsto.ID
-	}
-	if gutsto.DatabasesToTables != nil {
-		objectMap["databasesToTables"] = gutsto.DatabasesToTables
-	}
-	if gutsto.ValidationErrors != nil {
-		objectMap["validationErrors"] = gutsto.ValidationErrors
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -5115,13 +4824,13 @@ func (gutsto GetUserTablesSQLTaskOutput) MarshalJSON() ([]byte, error) {
 type GetUserTablesSQLTaskProperties struct {
 	// Input - Task input
 	Input *GetUserTablesSQLTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]GetUserTablesSQLTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -5133,18 +4842,6 @@ func (gutstp GetUserTablesSQLTaskProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gutstp.Input != nil {
 		objectMap["input"] = gutstp.Input
-	}
-	if gutstp.Output != nil {
-		objectMap["output"] = gutstp.Output
-	}
-	if gutstp.Errors != nil {
-		objectMap["errors"] = gutstp.Errors
-	}
-	if gutstp.State != "" {
-		objectMap["state"] = gutstp.State
-	}
-	if gutstp.Commands != nil {
-		objectMap["commands"] = gutstp.Commands
 	}
 	if gutstp.TaskType != "" {
 		objectMap["taskType"] = gutstp.TaskType
@@ -5359,11 +5056,11 @@ type MigrateMISyncCompleteCommandOutput struct {
 type MigrateMISyncCompleteCommandProperties struct {
 	// Input - Command input
 	Input *MigrateMISyncCompleteCommandInput `json:"input,omitempty"`
-	// Output - Command output. This is ignored if submitted.
+	// Output - READ-ONLY; Command output. This is ignored if submitted.
 	Output *MigrateMISyncCompleteCommandOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	// State - READ-ONLY; The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
 	State CommandState `json:"state,omitempty"`
 	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase'
 	CommandType CommandType `json:"commandType,omitempty"`
@@ -5375,15 +5072,6 @@ func (mmsccp MigrateMISyncCompleteCommandProperties) MarshalJSON() ([]byte, erro
 	objectMap := make(map[string]interface{})
 	if mmsccp.Input != nil {
 		objectMap["input"] = mmsccp.Input
-	}
-	if mmsccp.Output != nil {
-		objectMap["output"] = mmsccp.Output
-	}
-	if mmsccp.Errors != nil {
-		objectMap["errors"] = mmsccp.Errors
-	}
-	if mmsccp.State != "" {
-		objectMap["state"] = mmsccp.State
 	}
 	if mmsccp.CommandType != "" {
 		objectMap["commandType"] = mmsccp.CommandType
@@ -5472,7 +5160,7 @@ type BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput interface {
 // MigrateMySQLAzureDbForMySQLSyncTaskOutput output for the task that migrates MySQL databases to Azure
 // Database for MySQL for online migrations
 type MigrateMySQLAzureDbForMySQLSyncTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
@@ -5535,9 +5223,6 @@ func unmarshalBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputArray(body []byte) (
 func (mmsadfmssto MigrateMySQLAzureDbForMySQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
 	mmsadfmssto.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput
 	objectMap := make(map[string]interface{})
-	if mmsadfmssto.ID != nil {
-		objectMap["id"] = mmsadfmssto.ID
-	}
 	if mmsadfmssto.ResultType != "" {
 		objectMap["resultType"] = mmsadfmssto.ResultType
 	}
@@ -5585,7 +5270,7 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// Events - List of error events.
 	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
@@ -5600,9 +5285,6 @@ func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) Mars
 	}
 	if mmsadfmsstode.Events != nil {
 		objectMap["events"] = mmsadfmsstode.Events
-	}
-	if mmsadfmsstode.ID != nil {
-		objectMap["id"] = mmsadfmsstode.ID
 	}
 	if mmsadfmsstode.ResultType != "" {
 		objectMap["resultType"] = mmsadfmsstode.ResultType
@@ -5647,37 +5329,37 @@ func (mmsadfmsstode MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError) AsBa
 
 // MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel ...
 type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel struct {
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
-	// IncomingChanges - Number of incoming changes
+	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
-	// AppliedChanges - Number of applied changes
+	// AppliedChanges - READ-ONLY; Number of applied changes
 	AppliedChanges *int64 `json:"appliedChanges,omitempty"`
-	// CdcInsertCounter - Number of cdc inserts
+	// CdcInsertCounter - READ-ONLY; Number of cdc inserts
 	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
-	// CdcDeleteCounter - Number of cdc deletes
+	// CdcDeleteCounter - READ-ONLY; Number of cdc deletes
 	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
-	// CdcUpdateCounter - Number of cdc updates
+	// CdcUpdateCounter - READ-ONLY; Number of cdc updates
 	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
-	// FullLoadCompletedTables - Number of tables completed in full load
+	// FullLoadCompletedTables - READ-ONLY; Number of tables completed in full load
 	FullLoadCompletedTables *int64 `json:"fullLoadCompletedTables,omitempty"`
-	// FullLoadLoadingTables - Number of tables loading in full load
+	// FullLoadLoadingTables - READ-ONLY; Number of tables loading in full load
 	FullLoadLoadingTables *int64 `json:"fullLoadLoadingTables,omitempty"`
-	// FullLoadQueuedTables - Number of tables queued in full load
+	// FullLoadQueuedTables - READ-ONLY; Number of tables queued in full load
 	FullLoadQueuedTables *int64 `json:"fullLoadQueuedTables,omitempty"`
-	// FullLoadErroredTables - Number of tables errored in full load
+	// FullLoadErroredTables - READ-ONLY; Number of tables errored in full load
 	FullLoadErroredTables *int64 `json:"fullLoadErroredTables,omitempty"`
-	// InitializationCompleted - Indicates if initial load (full load) has been completed
+	// InitializationCompleted - READ-ONLY; Indicates if initial load (full load) has been completed
 	InitializationCompleted *bool `json:"initializationCompleted,omitempty"`
-	// Latency - CDC apply latency
+	// Latency - READ-ONLY; CDC apply latency
 	Latency *int64 `json:"latency,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
@@ -5687,54 +5369,6 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel struct {
 func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	mmsadfmsstodl.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if mmsadfmsstodl.DatabaseName != nil {
-		objectMap["databaseName"] = mmsadfmsstodl.DatabaseName
-	}
-	if mmsadfmsstodl.StartedOn != nil {
-		objectMap["startedOn"] = mmsadfmsstodl.StartedOn
-	}
-	if mmsadfmsstodl.EndedOn != nil {
-		objectMap["endedOn"] = mmsadfmsstodl.EndedOn
-	}
-	if mmsadfmsstodl.MigrationState != "" {
-		objectMap["migrationState"] = mmsadfmsstodl.MigrationState
-	}
-	if mmsadfmsstodl.IncomingChanges != nil {
-		objectMap["incomingChanges"] = mmsadfmsstodl.IncomingChanges
-	}
-	if mmsadfmsstodl.AppliedChanges != nil {
-		objectMap["appliedChanges"] = mmsadfmsstodl.AppliedChanges
-	}
-	if mmsadfmsstodl.CdcInsertCounter != nil {
-		objectMap["cdcInsertCounter"] = mmsadfmsstodl.CdcInsertCounter
-	}
-	if mmsadfmsstodl.CdcDeleteCounter != nil {
-		objectMap["cdcDeleteCounter"] = mmsadfmsstodl.CdcDeleteCounter
-	}
-	if mmsadfmsstodl.CdcUpdateCounter != nil {
-		objectMap["cdcUpdateCounter"] = mmsadfmsstodl.CdcUpdateCounter
-	}
-	if mmsadfmsstodl.FullLoadCompletedTables != nil {
-		objectMap["fullLoadCompletedTables"] = mmsadfmsstodl.FullLoadCompletedTables
-	}
-	if mmsadfmsstodl.FullLoadLoadingTables != nil {
-		objectMap["fullLoadLoadingTables"] = mmsadfmsstodl.FullLoadLoadingTables
-	}
-	if mmsadfmsstodl.FullLoadQueuedTables != nil {
-		objectMap["fullLoadQueuedTables"] = mmsadfmsstodl.FullLoadQueuedTables
-	}
-	if mmsadfmsstodl.FullLoadErroredTables != nil {
-		objectMap["fullLoadErroredTables"] = mmsadfmsstodl.FullLoadErroredTables
-	}
-	if mmsadfmsstodl.InitializationCompleted != nil {
-		objectMap["initializationCompleted"] = mmsadfmsstodl.InitializationCompleted
-	}
-	if mmsadfmsstodl.Latency != nil {
-		objectMap["latency"] = mmsadfmsstodl.Latency
-	}
-	if mmsadfmsstodl.ID != nil {
-		objectMap["id"] = mmsadfmsstodl.ID
-	}
 	if mmsadfmsstodl.ResultType != "" {
 		objectMap["resultType"] = mmsadfmsstodl.ResultType
 	}
@@ -5778,9 +5412,9 @@ func (mmsadfmsstodl MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel) AsBa
 
 // MigrateMySQLAzureDbForMySQLSyncTaskOutputError ...
 type MigrateMySQLAzureDbForMySQLSyncTaskOutputError struct {
-	// Error - Migration error
+	// Error - READ-ONLY; Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
@@ -5790,12 +5424,6 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputError struct {
 func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) MarshalJSON() ([]byte, error) {
 	mmsadfmsstoe.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
-	if mmsadfmsstoe.Error != nil {
-		objectMap["error"] = mmsadfmsstoe.Error
-	}
-	if mmsadfmsstoe.ID != nil {
-		objectMap["id"] = mmsadfmsstoe.ID
-	}
 	if mmsadfmsstoe.ResultType != "" {
 		objectMap["resultType"] = mmsadfmsstoe.ResultType
 	}
@@ -5839,19 +5467,19 @@ func (mmsadfmsstoe MigrateMySQLAzureDbForMySQLSyncTaskOutputError) AsBasicMigrat
 
 // MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel ...
 type MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel struct {
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServer - Source server name
+	// SourceServer - READ-ONLY; Source server name
 	SourceServer *string `json:"sourceServer,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServer - Target server name
+	// TargetServer - READ-ONLY; Target server name
 	TargetServer *string `json:"targetServer,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
@@ -5861,27 +5489,6 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel struct {
 func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	mmsadfmsstoml.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
-	if mmsadfmsstoml.StartedOn != nil {
-		objectMap["startedOn"] = mmsadfmsstoml.StartedOn
-	}
-	if mmsadfmsstoml.EndedOn != nil {
-		objectMap["endedOn"] = mmsadfmsstoml.EndedOn
-	}
-	if mmsadfmsstoml.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = mmsadfmsstoml.SourceServerVersion
-	}
-	if mmsadfmsstoml.SourceServer != nil {
-		objectMap["sourceServer"] = mmsadfmsstoml.SourceServer
-	}
-	if mmsadfmsstoml.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = mmsadfmsstoml.TargetServerVersion
-	}
-	if mmsadfmsstoml.TargetServer != nil {
-		objectMap["targetServer"] = mmsadfmsstoml.TargetServer
-	}
-	if mmsadfmsstoml.ID != nil {
-		objectMap["id"] = mmsadfmsstoml.ID
-	}
 	if mmsadfmsstoml.ResultType != "" {
 		objectMap["resultType"] = mmsadfmsstoml.ResultType
 	}
@@ -5925,33 +5532,33 @@ func (mmsadfmsstoml MigrateMySQLAzureDbForMySQLSyncTaskOutputMigrationLevel) AsB
 
 // MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel ...
 type MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel struct {
-	// TableName - Name of the table
+	// TableName - READ-ONLY; Name of the table
 	TableName *string `json:"tableName,omitempty"`
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// CdcInsertCounter - Number of applied inserts
+	// CdcInsertCounter - READ-ONLY; Number of applied inserts
 	CdcInsertCounter *string `json:"cdcInsertCounter,omitempty"`
-	// CdcUpdateCounter - Number of applied updates
+	// CdcUpdateCounter - READ-ONLY; Number of applied updates
 	CdcUpdateCounter *string `json:"cdcUpdateCounter,omitempty"`
-	// CdcDeleteCounter - Number of applied deletes
+	// CdcDeleteCounter - READ-ONLY; Number of applied deletes
 	CdcDeleteCounter *string `json:"cdcDeleteCounter,omitempty"`
-	// FullLoadEstFinishTime - Estimate to finish full load
+	// FullLoadEstFinishTime - READ-ONLY; Estimate to finish full load
 	FullLoadEstFinishTime *date.Time `json:"fullLoadEstFinishTime,omitempty"`
-	// FullLoadStartedOn - Full load start time
+	// FullLoadStartedOn - READ-ONLY; Full load start time
 	FullLoadStartedOn *date.Time `json:"fullLoadStartedOn,omitempty"`
-	// FullLoadEndedOn - Full load end time
+	// FullLoadEndedOn - READ-ONLY; Full load end time
 	FullLoadEndedOn *date.Time `json:"fullLoadEndedOn,omitempty"`
-	// FullLoadTotalRows - Number of rows applied in full load
+	// FullLoadTotalRows - READ-ONLY; Number of rows applied in full load
 	FullLoadTotalRows *int64 `json:"fullLoadTotalRows,omitempty"`
-	// State - Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
+	// State - READ-ONLY; Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
 	State SyncTableMigrationState `json:"state,omitempty"`
-	// TotalChangesApplied - Total number of applied changes
+	// TotalChangesApplied - READ-ONLY; Total number of applied changes
 	TotalChangesApplied *int64 `json:"totalChangesApplied,omitempty"`
-	// DataErrorsCounter - Number of data errors occurred
+	// DataErrorsCounter - READ-ONLY; Number of data errors occurred
 	DataErrorsCounter *int64 `json:"dataErrorsCounter,omitempty"`
-	// LastModifiedTime - Last modified time on target
+	// LastModifiedTime - READ-ONLY; Last modified time on target
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrateMySQLAzureDbForMySQLSyncTaskOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"resultType,omitempty"`
@@ -5961,48 +5568,6 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel struct {
 func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
 	mmsadfmsstotl.ResultType = ResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputResultTypeTableLevelOutput
 	objectMap := make(map[string]interface{})
-	if mmsadfmsstotl.TableName != nil {
-		objectMap["tableName"] = mmsadfmsstotl.TableName
-	}
-	if mmsadfmsstotl.DatabaseName != nil {
-		objectMap["databaseName"] = mmsadfmsstotl.DatabaseName
-	}
-	if mmsadfmsstotl.CdcInsertCounter != nil {
-		objectMap["cdcInsertCounter"] = mmsadfmsstotl.CdcInsertCounter
-	}
-	if mmsadfmsstotl.CdcUpdateCounter != nil {
-		objectMap["cdcUpdateCounter"] = mmsadfmsstotl.CdcUpdateCounter
-	}
-	if mmsadfmsstotl.CdcDeleteCounter != nil {
-		objectMap["cdcDeleteCounter"] = mmsadfmsstotl.CdcDeleteCounter
-	}
-	if mmsadfmsstotl.FullLoadEstFinishTime != nil {
-		objectMap["fullLoadEstFinishTime"] = mmsadfmsstotl.FullLoadEstFinishTime
-	}
-	if mmsadfmsstotl.FullLoadStartedOn != nil {
-		objectMap["fullLoadStartedOn"] = mmsadfmsstotl.FullLoadStartedOn
-	}
-	if mmsadfmsstotl.FullLoadEndedOn != nil {
-		objectMap["fullLoadEndedOn"] = mmsadfmsstotl.FullLoadEndedOn
-	}
-	if mmsadfmsstotl.FullLoadTotalRows != nil {
-		objectMap["fullLoadTotalRows"] = mmsadfmsstotl.FullLoadTotalRows
-	}
-	if mmsadfmsstotl.State != "" {
-		objectMap["state"] = mmsadfmsstotl.State
-	}
-	if mmsadfmsstotl.TotalChangesApplied != nil {
-		objectMap["totalChangesApplied"] = mmsadfmsstotl.TotalChangesApplied
-	}
-	if mmsadfmsstotl.DataErrorsCounter != nil {
-		objectMap["dataErrorsCounter"] = mmsadfmsstotl.DataErrorsCounter
-	}
-	if mmsadfmsstotl.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = mmsadfmsstotl.LastModifiedTime
-	}
-	if mmsadfmsstotl.ID != nil {
-		objectMap["id"] = mmsadfmsstotl.ID
-	}
 	if mmsadfmsstotl.ResultType != "" {
 		objectMap["resultType"] = mmsadfmsstotl.ResultType
 	}
@@ -6049,13 +5614,13 @@ func (mmsadfmsstotl MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel) AsBasic
 type MigrateMySQLAzureDbForMySQLSyncTaskProperties struct {
 	// Input - Task input
 	Input *MigrateMySQLAzureDbForMySQLSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -6067,18 +5632,6 @@ func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) MarshalJSON() (
 	objectMap := make(map[string]interface{})
 	if mmsadfmsstp.Input != nil {
 		objectMap["input"] = mmsadfmsstp.Input
-	}
-	if mmsadfmsstp.Output != nil {
-		objectMap["output"] = mmsadfmsstp.Output
-	}
-	if mmsadfmsstp.Errors != nil {
-		objectMap["errors"] = mmsadfmsstp.Errors
-	}
-	if mmsadfmsstp.State != "" {
-		objectMap["state"] = mmsadfmsstp.State
-	}
-	if mmsadfmsstp.Commands != nil {
-		objectMap["commands"] = mmsadfmsstp.Commands
 	}
 	if mmsadfmsstp.TaskType != "" {
 		objectMap["taskType"] = mmsadfmsstp.TaskType
@@ -6334,7 +5887,7 @@ type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput interface {
 // MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput output for the task that migrates PostgreSQL databases
 // to Azure Database for PostgreSQL for online migrations
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
@@ -6397,9 +5950,6 @@ func unmarshalBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputArray(body
 func (mpsadfpssto MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput) MarshalJSON() ([]byte, error) {
 	mpsadfpssto.ResultType = ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
 	objectMap := make(map[string]interface{})
-	if mpsadfpssto.ID != nil {
-		objectMap["id"] = mpsadfpssto.ID
-	}
 	if mpsadfpssto.ResultType != "" {
 		objectMap["resultType"] = mpsadfpssto.ResultType
 	}
@@ -6447,7 +5997,7 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// Events - List of error events.
 	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
@@ -6462,9 +6012,6 @@ func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseE
 	}
 	if mpsadfpsstode.Events != nil {
 		objectMap["events"] = mpsadfpsstode.Events
-	}
-	if mpsadfpsstode.ID != nil {
-		objectMap["id"] = mpsadfpsstode.ID
 	}
 	if mpsadfpsstode.ResultType != "" {
 		objectMap["resultType"] = mpsadfpsstode.ResultType
@@ -6509,37 +6056,37 @@ func (mpsadfpsstode MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseE
 
 // MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel ...
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel struct {
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
-	// IncomingChanges - Number of incoming changes
+	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
-	// AppliedChanges - Number of applied changes
+	// AppliedChanges - READ-ONLY; Number of applied changes
 	AppliedChanges *int64 `json:"appliedChanges,omitempty"`
-	// CdcInsertCounter - Number of cdc inserts
+	// CdcInsertCounter - READ-ONLY; Number of cdc inserts
 	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
-	// CdcDeleteCounter - Number of cdc deletes
+	// CdcDeleteCounter - READ-ONLY; Number of cdc deletes
 	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
-	// CdcUpdateCounter - Number of cdc updates
+	// CdcUpdateCounter - READ-ONLY; Number of cdc updates
 	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
-	// FullLoadCompletedTables - Number of tables completed in full load
+	// FullLoadCompletedTables - READ-ONLY; Number of tables completed in full load
 	FullLoadCompletedTables *int64 `json:"fullLoadCompletedTables,omitempty"`
-	// FullLoadLoadingTables - Number of tables loading in full load
+	// FullLoadLoadingTables - READ-ONLY; Number of tables loading in full load
 	FullLoadLoadingTables *int64 `json:"fullLoadLoadingTables,omitempty"`
-	// FullLoadQueuedTables - Number of tables queued in full load
+	// FullLoadQueuedTables - READ-ONLY; Number of tables queued in full load
 	FullLoadQueuedTables *int64 `json:"fullLoadQueuedTables,omitempty"`
-	// FullLoadErroredTables - Number of tables errored in full load
+	// FullLoadErroredTables - READ-ONLY; Number of tables errored in full load
 	FullLoadErroredTables *int64 `json:"fullLoadErroredTables,omitempty"`
-	// InitializationCompleted - Indicates if initial load (full load) has been completed
+	// InitializationCompleted - READ-ONLY; Indicates if initial load (full load) has been completed
 	InitializationCompleted *bool `json:"initializationCompleted,omitempty"`
-	// Latency - CDC apply latency
+	// Latency - READ-ONLY; CDC apply latency
 	Latency *int64 `json:"latency,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
@@ -6549,54 +6096,6 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel struct {
 func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	mpsadfpsstodl.ResultType = ResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if mpsadfpsstodl.DatabaseName != nil {
-		objectMap["databaseName"] = mpsadfpsstodl.DatabaseName
-	}
-	if mpsadfpsstodl.StartedOn != nil {
-		objectMap["startedOn"] = mpsadfpsstodl.StartedOn
-	}
-	if mpsadfpsstodl.EndedOn != nil {
-		objectMap["endedOn"] = mpsadfpsstodl.EndedOn
-	}
-	if mpsadfpsstodl.MigrationState != "" {
-		objectMap["migrationState"] = mpsadfpsstodl.MigrationState
-	}
-	if mpsadfpsstodl.IncomingChanges != nil {
-		objectMap["incomingChanges"] = mpsadfpsstodl.IncomingChanges
-	}
-	if mpsadfpsstodl.AppliedChanges != nil {
-		objectMap["appliedChanges"] = mpsadfpsstodl.AppliedChanges
-	}
-	if mpsadfpsstodl.CdcInsertCounter != nil {
-		objectMap["cdcInsertCounter"] = mpsadfpsstodl.CdcInsertCounter
-	}
-	if mpsadfpsstodl.CdcDeleteCounter != nil {
-		objectMap["cdcDeleteCounter"] = mpsadfpsstodl.CdcDeleteCounter
-	}
-	if mpsadfpsstodl.CdcUpdateCounter != nil {
-		objectMap["cdcUpdateCounter"] = mpsadfpsstodl.CdcUpdateCounter
-	}
-	if mpsadfpsstodl.FullLoadCompletedTables != nil {
-		objectMap["fullLoadCompletedTables"] = mpsadfpsstodl.FullLoadCompletedTables
-	}
-	if mpsadfpsstodl.FullLoadLoadingTables != nil {
-		objectMap["fullLoadLoadingTables"] = mpsadfpsstodl.FullLoadLoadingTables
-	}
-	if mpsadfpsstodl.FullLoadQueuedTables != nil {
-		objectMap["fullLoadQueuedTables"] = mpsadfpsstodl.FullLoadQueuedTables
-	}
-	if mpsadfpsstodl.FullLoadErroredTables != nil {
-		objectMap["fullLoadErroredTables"] = mpsadfpsstodl.FullLoadErroredTables
-	}
-	if mpsadfpsstodl.InitializationCompleted != nil {
-		objectMap["initializationCompleted"] = mpsadfpsstodl.InitializationCompleted
-	}
-	if mpsadfpsstodl.Latency != nil {
-		objectMap["latency"] = mpsadfpsstodl.Latency
-	}
-	if mpsadfpsstodl.ID != nil {
-		objectMap["id"] = mpsadfpsstodl.ID
-	}
 	if mpsadfpsstodl.ResultType != "" {
 		objectMap["resultType"] = mpsadfpsstodl.ResultType
 	}
@@ -6640,9 +6139,9 @@ func (mpsadfpsstodl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseL
 
 // MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError ...
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError struct {
-	// Error - Migration error
+	// Error - READ-ONLY; Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
@@ -6652,12 +6151,6 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError struct {
 func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) MarshalJSON() ([]byte, error) {
 	mpsadfpsstoe.ResultType = ResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
-	if mpsadfpsstoe.Error != nil {
-		objectMap["error"] = mpsadfpsstoe.Error
-	}
-	if mpsadfpsstoe.ID != nil {
-		objectMap["id"] = mpsadfpsstoe.ID
-	}
 	if mpsadfpsstoe.ResultType != "" {
 		objectMap["resultType"] = mpsadfpsstoe.ResultType
 	}
@@ -6701,19 +6194,19 @@ func (mpsadfpsstoe MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError) AsB
 
 // MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel ...
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel struct {
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServer - Source server name
+	// SourceServer - READ-ONLY; Source server name
 	SourceServer *string `json:"sourceServer,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServer - Target server name
+	// TargetServer - READ-ONLY; Target server name
 	TargetServer *string `json:"targetServer,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
@@ -6723,27 +6216,6 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel struct {
 func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	mpsadfpsstoml.ResultType = ResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
-	if mpsadfpsstoml.StartedOn != nil {
-		objectMap["startedOn"] = mpsadfpsstoml.StartedOn
-	}
-	if mpsadfpsstoml.EndedOn != nil {
-		objectMap["endedOn"] = mpsadfpsstoml.EndedOn
-	}
-	if mpsadfpsstoml.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = mpsadfpsstoml.SourceServerVersion
-	}
-	if mpsadfpsstoml.SourceServer != nil {
-		objectMap["sourceServer"] = mpsadfpsstoml.SourceServer
-	}
-	if mpsadfpsstoml.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = mpsadfpsstoml.TargetServerVersion
-	}
-	if mpsadfpsstoml.TargetServer != nil {
-		objectMap["targetServer"] = mpsadfpsstoml.TargetServer
-	}
-	if mpsadfpsstoml.ID != nil {
-		objectMap["id"] = mpsadfpsstoml.ID
-	}
 	if mpsadfpsstoml.ResultType != "" {
 		objectMap["resultType"] = mpsadfpsstoml.ResultType
 	}
@@ -6787,33 +6259,33 @@ func (mpsadfpsstoml MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigration
 
 // MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel ...
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel struct {
-	// TableName - Name of the table
+	// TableName - READ-ONLY; Name of the table
 	TableName *string `json:"tableName,omitempty"`
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// CdcInsertCounter - Number of applied inserts
+	// CdcInsertCounter - READ-ONLY; Number of applied inserts
 	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
-	// CdcUpdateCounter - Number of applied updates
+	// CdcUpdateCounter - READ-ONLY; Number of applied updates
 	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
-	// CdcDeleteCounter - Number of applied deletes
+	// CdcDeleteCounter - READ-ONLY; Number of applied deletes
 	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
-	// FullLoadEstFinishTime - Estimate to finish full load
+	// FullLoadEstFinishTime - READ-ONLY; Estimate to finish full load
 	FullLoadEstFinishTime *date.Time `json:"fullLoadEstFinishTime,omitempty"`
-	// FullLoadStartedOn - Full load start time
+	// FullLoadStartedOn - READ-ONLY; Full load start time
 	FullLoadStartedOn *date.Time `json:"fullLoadStartedOn,omitempty"`
-	// FullLoadEndedOn - Full load end time
+	// FullLoadEndedOn - READ-ONLY; Full load end time
 	FullLoadEndedOn *date.Time `json:"fullLoadEndedOn,omitempty"`
-	// FullLoadTotalRows - Number of rows applied in full load
+	// FullLoadTotalRows - READ-ONLY; Number of rows applied in full load
 	FullLoadTotalRows *int64 `json:"fullLoadTotalRows,omitempty"`
-	// State - Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
+	// State - READ-ONLY; Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
 	State SyncTableMigrationState `json:"state,omitempty"`
-	// TotalChangesApplied - Total number of applied changes
+	// TotalChangesApplied - READ-ONLY; Total number of applied changes
 	TotalChangesApplied *int64 `json:"totalChangesApplied,omitempty"`
-	// DataErrorsCounter - Number of data errors occurred
+	// DataErrorsCounter - READ-ONLY; Number of data errors occurred
 	DataErrorsCounter *int64 `json:"dataErrorsCounter,omitempty"`
-	// LastModifiedTime - Last modified time on target
+	// LastModifiedTime - READ-ONLY; Last modified time on target
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput', 'ResultTypeDatabaseLevelErrorOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
@@ -6823,48 +6295,6 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel struct {
 func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
 	mpsadfpsstotl.ResultType = ResultTypeTableLevelOutput
 	objectMap := make(map[string]interface{})
-	if mpsadfpsstotl.TableName != nil {
-		objectMap["tableName"] = mpsadfpsstotl.TableName
-	}
-	if mpsadfpsstotl.DatabaseName != nil {
-		objectMap["databaseName"] = mpsadfpsstotl.DatabaseName
-	}
-	if mpsadfpsstotl.CdcInsertCounter != nil {
-		objectMap["cdcInsertCounter"] = mpsadfpsstotl.CdcInsertCounter
-	}
-	if mpsadfpsstotl.CdcUpdateCounter != nil {
-		objectMap["cdcUpdateCounter"] = mpsadfpsstotl.CdcUpdateCounter
-	}
-	if mpsadfpsstotl.CdcDeleteCounter != nil {
-		objectMap["cdcDeleteCounter"] = mpsadfpsstotl.CdcDeleteCounter
-	}
-	if mpsadfpsstotl.FullLoadEstFinishTime != nil {
-		objectMap["fullLoadEstFinishTime"] = mpsadfpsstotl.FullLoadEstFinishTime
-	}
-	if mpsadfpsstotl.FullLoadStartedOn != nil {
-		objectMap["fullLoadStartedOn"] = mpsadfpsstotl.FullLoadStartedOn
-	}
-	if mpsadfpsstotl.FullLoadEndedOn != nil {
-		objectMap["fullLoadEndedOn"] = mpsadfpsstotl.FullLoadEndedOn
-	}
-	if mpsadfpsstotl.FullLoadTotalRows != nil {
-		objectMap["fullLoadTotalRows"] = mpsadfpsstotl.FullLoadTotalRows
-	}
-	if mpsadfpsstotl.State != "" {
-		objectMap["state"] = mpsadfpsstotl.State
-	}
-	if mpsadfpsstotl.TotalChangesApplied != nil {
-		objectMap["totalChangesApplied"] = mpsadfpsstotl.TotalChangesApplied
-	}
-	if mpsadfpsstotl.DataErrorsCounter != nil {
-		objectMap["dataErrorsCounter"] = mpsadfpsstotl.DataErrorsCounter
-	}
-	if mpsadfpsstotl.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = mpsadfpsstotl.LastModifiedTime
-	}
-	if mpsadfpsstotl.ID != nil {
-		objectMap["id"] = mpsadfpsstotl.ID
-	}
 	if mpsadfpsstotl.ResultType != "" {
 		objectMap["resultType"] = mpsadfpsstotl.ResultType
 	}
@@ -6911,13 +6341,13 @@ func (mpsadfpsstotl MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLeve
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties struct {
 	// Input - Task input
 	Input *MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -6929,18 +6359,6 @@ func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) Marsh
 	objectMap := make(map[string]interface{})
 	if mpsadfpsstp.Input != nil {
 		objectMap["input"] = mpsadfpsstp.Input
-	}
-	if mpsadfpsstp.Output != nil {
-		objectMap["output"] = mpsadfpsstp.Output
-	}
-	if mpsadfpsstp.Errors != nil {
-		objectMap["errors"] = mpsadfpsstp.Errors
-	}
-	if mpsadfpsstp.State != "" {
-		objectMap["state"] = mpsadfpsstp.State
-	}
-	if mpsadfpsstp.Commands != nil {
-		objectMap["commands"] = mpsadfpsstp.Commands
 	}
 	if mpsadfpsstp.TaskType != "" {
 		objectMap["taskType"] = mpsadfpsstp.TaskType
@@ -7244,7 +6662,7 @@ type BasicMigrateSQLServerSQLDbSyncTaskOutput interface {
 // MigrateSQLServerSQLDbSyncTaskOutput output for the task that migrates on-prem SQL Server databases to Azure
 // SQL Database for online migrations
 type MigrateSQLServerSQLDbSyncTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
@@ -7307,9 +6725,6 @@ func unmarshalBasicMigrateSQLServerSQLDbSyncTaskOutputArray(body []byte) ([]Basi
 func (msssdsto MigrateSQLServerSQLDbSyncTaskOutput) MarshalJSON() ([]byte, error) {
 	msssdsto.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput
 	objectMap := make(map[string]interface{})
-	if msssdsto.ID != nil {
-		objectMap["id"] = msssdsto.ID
-	}
 	if msssdsto.ResultType != "" {
 		objectMap["resultType"] = msssdsto.ResultType
 	}
@@ -7357,7 +6772,7 @@ type MigrateSQLServerSQLDbSyncTaskOutputDatabaseError struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// Events - List of error events.
 	Events *[]SyncMigrationDatabaseErrorEvent `json:"events,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
@@ -7372,9 +6787,6 @@ func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) MarshalJSON()
 	}
 	if msssdstode.Events != nil {
 		objectMap["events"] = msssdstode.Events
-	}
-	if msssdstode.ID != nil {
-		objectMap["id"] = msssdstode.ID
 	}
 	if msssdstode.ResultType != "" {
 		objectMap["resultType"] = msssdstode.ResultType
@@ -7419,37 +6831,37 @@ func (msssdstode MigrateSQLServerSQLDbSyncTaskOutputDatabaseError) AsBasicMigrat
 
 // MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel ...
 type MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel struct {
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// MigrationState - Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
+	// MigrationState - READ-ONLY; Migration state that this database is in. Possible values include: 'SyncDatabaseMigrationReportingStateUNDEFINED', 'SyncDatabaseMigrationReportingStateCONFIGURING', 'SyncDatabaseMigrationReportingStateINITIALIAZING', 'SyncDatabaseMigrationReportingStateSTARTING', 'SyncDatabaseMigrationReportingStateRUNNING', 'SyncDatabaseMigrationReportingStateREADYTOCOMPLETE', 'SyncDatabaseMigrationReportingStateCOMPLETING', 'SyncDatabaseMigrationReportingStateCOMPLETE', 'SyncDatabaseMigrationReportingStateCANCELLING', 'SyncDatabaseMigrationReportingStateCANCELLED', 'SyncDatabaseMigrationReportingStateFAILED'
 	MigrationState SyncDatabaseMigrationReportingState `json:"migrationState,omitempty"`
-	// IncomingChanges - Number of incoming changes
+	// IncomingChanges - READ-ONLY; Number of incoming changes
 	IncomingChanges *int64 `json:"incomingChanges,omitempty"`
-	// AppliedChanges - Number of applied changes
+	// AppliedChanges - READ-ONLY; Number of applied changes
 	AppliedChanges *int64 `json:"appliedChanges,omitempty"`
-	// CdcInsertCounter - Number of cdc inserts
+	// CdcInsertCounter - READ-ONLY; Number of cdc inserts
 	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
-	// CdcDeleteCounter - Number of cdc deletes
+	// CdcDeleteCounter - READ-ONLY; Number of cdc deletes
 	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
-	// CdcUpdateCounter - Number of cdc updates
+	// CdcUpdateCounter - READ-ONLY; Number of cdc updates
 	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
-	// FullLoadCompletedTables - Number of tables completed in full load
+	// FullLoadCompletedTables - READ-ONLY; Number of tables completed in full load
 	FullLoadCompletedTables *int64 `json:"fullLoadCompletedTables,omitempty"`
-	// FullLoadLoadingTables - Number of tables loading in full load
+	// FullLoadLoadingTables - READ-ONLY; Number of tables loading in full load
 	FullLoadLoadingTables *int64 `json:"fullLoadLoadingTables,omitempty"`
-	// FullLoadQueuedTables - Number of tables queued in full load
+	// FullLoadQueuedTables - READ-ONLY; Number of tables queued in full load
 	FullLoadQueuedTables *int64 `json:"fullLoadQueuedTables,omitempty"`
-	// FullLoadErroredTables - Number of tables errored in full load
+	// FullLoadErroredTables - READ-ONLY; Number of tables errored in full load
 	FullLoadErroredTables *int64 `json:"fullLoadErroredTables,omitempty"`
-	// InitializationCompleted - Indicates if initial load (full load) has been completed
+	// InitializationCompleted - READ-ONLY; Indicates if initial load (full load) has been completed
 	InitializationCompleted *bool `json:"initializationCompleted,omitempty"`
-	// Latency - CDC apply latency
+	// Latency - READ-ONLY; CDC apply latency
 	Latency *int64 `json:"latency,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
@@ -7459,54 +6871,6 @@ type MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel struct {
 func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	msssdstodl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssdstodl.DatabaseName != nil {
-		objectMap["databaseName"] = msssdstodl.DatabaseName
-	}
-	if msssdstodl.StartedOn != nil {
-		objectMap["startedOn"] = msssdstodl.StartedOn
-	}
-	if msssdstodl.EndedOn != nil {
-		objectMap["endedOn"] = msssdstodl.EndedOn
-	}
-	if msssdstodl.MigrationState != "" {
-		objectMap["migrationState"] = msssdstodl.MigrationState
-	}
-	if msssdstodl.IncomingChanges != nil {
-		objectMap["incomingChanges"] = msssdstodl.IncomingChanges
-	}
-	if msssdstodl.AppliedChanges != nil {
-		objectMap["appliedChanges"] = msssdstodl.AppliedChanges
-	}
-	if msssdstodl.CdcInsertCounter != nil {
-		objectMap["cdcInsertCounter"] = msssdstodl.CdcInsertCounter
-	}
-	if msssdstodl.CdcDeleteCounter != nil {
-		objectMap["cdcDeleteCounter"] = msssdstodl.CdcDeleteCounter
-	}
-	if msssdstodl.CdcUpdateCounter != nil {
-		objectMap["cdcUpdateCounter"] = msssdstodl.CdcUpdateCounter
-	}
-	if msssdstodl.FullLoadCompletedTables != nil {
-		objectMap["fullLoadCompletedTables"] = msssdstodl.FullLoadCompletedTables
-	}
-	if msssdstodl.FullLoadLoadingTables != nil {
-		objectMap["fullLoadLoadingTables"] = msssdstodl.FullLoadLoadingTables
-	}
-	if msssdstodl.FullLoadQueuedTables != nil {
-		objectMap["fullLoadQueuedTables"] = msssdstodl.FullLoadQueuedTables
-	}
-	if msssdstodl.FullLoadErroredTables != nil {
-		objectMap["fullLoadErroredTables"] = msssdstodl.FullLoadErroredTables
-	}
-	if msssdstodl.InitializationCompleted != nil {
-		objectMap["initializationCompleted"] = msssdstodl.InitializationCompleted
-	}
-	if msssdstodl.Latency != nil {
-		objectMap["latency"] = msssdstodl.Latency
-	}
-	if msssdstodl.ID != nil {
-		objectMap["id"] = msssdstodl.ID
-	}
 	if msssdstodl.ResultType != "" {
 		objectMap["resultType"] = msssdstodl.ResultType
 	}
@@ -7550,9 +6914,9 @@ func (msssdstodl MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel) AsBasicMigrat
 
 // MigrateSQLServerSQLDbSyncTaskOutputError ...
 type MigrateSQLServerSQLDbSyncTaskOutputError struct {
-	// Error - Migration error
+	// Error - READ-ONLY; Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
@@ -7562,12 +6926,6 @@ type MigrateSQLServerSQLDbSyncTaskOutputError struct {
 func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) MarshalJSON() ([]byte, error) {
 	msssdstoe.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
-	if msssdstoe.Error != nil {
-		objectMap["error"] = msssdstoe.Error
-	}
-	if msssdstoe.ID != nil {
-		objectMap["id"] = msssdstoe.ID
-	}
 	if msssdstoe.ResultType != "" {
 		objectMap["resultType"] = msssdstoe.ResultType
 	}
@@ -7611,21 +6969,21 @@ func (msssdstoe MigrateSQLServerSQLDbSyncTaskOutputError) AsBasicMigrateSQLServe
 
 // MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel ...
 type MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel struct {
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServer - Source server name
+	// SourceServer - READ-ONLY; Source server name
 	SourceServer *string `json:"sourceServer,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServer - Target server name
+	// TargetServer - READ-ONLY; Target server name
 	TargetServer *string `json:"targetServer,omitempty"`
-	// DatabaseCount - Count of databases
+	// DatabaseCount - READ-ONLY; Count of databases
 	DatabaseCount *int32 `json:"databaseCount,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
@@ -7635,30 +6993,6 @@ type MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel struct {
 func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	msssdstoml.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssdstoml.StartedOn != nil {
-		objectMap["startedOn"] = msssdstoml.StartedOn
-	}
-	if msssdstoml.EndedOn != nil {
-		objectMap["endedOn"] = msssdstoml.EndedOn
-	}
-	if msssdstoml.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = msssdstoml.SourceServerVersion
-	}
-	if msssdstoml.SourceServer != nil {
-		objectMap["sourceServer"] = msssdstoml.SourceServer
-	}
-	if msssdstoml.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = msssdstoml.TargetServerVersion
-	}
-	if msssdstoml.TargetServer != nil {
-		objectMap["targetServer"] = msssdstoml.TargetServer
-	}
-	if msssdstoml.DatabaseCount != nil {
-		objectMap["databaseCount"] = msssdstoml.DatabaseCount
-	}
-	if msssdstoml.ID != nil {
-		objectMap["id"] = msssdstoml.ID
-	}
 	if msssdstoml.ResultType != "" {
 		objectMap["resultType"] = msssdstoml.ResultType
 	}
@@ -7702,33 +7036,33 @@ func (msssdstoml MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel) AsBasicMigra
 
 // MigrateSQLServerSQLDbSyncTaskOutputTableLevel ...
 type MigrateSQLServerSQLDbSyncTaskOutputTableLevel struct {
-	// TableName - Name of the table
+	// TableName - READ-ONLY; Name of the table
 	TableName *string `json:"tableName,omitempty"`
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// CdcInsertCounter - Number of applied inserts
+	// CdcInsertCounter - READ-ONLY; Number of applied inserts
 	CdcInsertCounter *int64 `json:"cdcInsertCounter,omitempty"`
-	// CdcUpdateCounter - Number of applied updates
+	// CdcUpdateCounter - READ-ONLY; Number of applied updates
 	CdcUpdateCounter *int64 `json:"cdcUpdateCounter,omitempty"`
-	// CdcDeleteCounter - Number of applied deletes
+	// CdcDeleteCounter - READ-ONLY; Number of applied deletes
 	CdcDeleteCounter *int64 `json:"cdcDeleteCounter,omitempty"`
-	// FullLoadEstFinishTime - Estimate to finish full load
+	// FullLoadEstFinishTime - READ-ONLY; Estimate to finish full load
 	FullLoadEstFinishTime *date.Time `json:"fullLoadEstFinishTime,omitempty"`
-	// FullLoadStartedOn - Full load start time
+	// FullLoadStartedOn - READ-ONLY; Full load start time
 	FullLoadStartedOn *date.Time `json:"fullLoadStartedOn,omitempty"`
-	// FullLoadEndedOn - Full load end time
+	// FullLoadEndedOn - READ-ONLY; Full load end time
 	FullLoadEndedOn *date.Time `json:"fullLoadEndedOn,omitempty"`
-	// FullLoadTotalRows - Number of rows applied in full load
+	// FullLoadTotalRows - READ-ONLY; Number of rows applied in full load
 	FullLoadTotalRows *int64 `json:"fullLoadTotalRows,omitempty"`
-	// State - Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
+	// State - READ-ONLY; Current state of the table migration. Possible values include: 'SyncTableMigrationStateBEFORELOAD', 'SyncTableMigrationStateFULLLOAD', 'SyncTableMigrationStateCOMPLETED', 'SyncTableMigrationStateCANCELED', 'SyncTableMigrationStateERROR', 'SyncTableMigrationStateFAILED'
 	State SyncTableMigrationState `json:"state,omitempty"`
-	// TotalChangesApplied - Total number of applied changes
+	// TotalChangesApplied - READ-ONLY; Total number of applied changes
 	TotalChangesApplied *int64 `json:"totalChangesApplied,omitempty"`
-	// DataErrorsCounter - Number of data errors occurred
+	// DataErrorsCounter - READ-ONLY; Number of data errors occurred
 	DataErrorsCounter *int64 `json:"dataErrorsCounter,omitempty"`
-	// LastModifiedTime - Last modified time on target
+	// LastModifiedTime - READ-ONLY; Last modified time on target
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrateSQLServerSQLDbSyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput `json:"resultType,omitempty"`
@@ -7738,48 +7072,6 @@ type MigrateSQLServerSQLDbSyncTaskOutputTableLevel struct {
 func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
 	msssdstotl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputResultTypeTableLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssdstotl.TableName != nil {
-		objectMap["tableName"] = msssdstotl.TableName
-	}
-	if msssdstotl.DatabaseName != nil {
-		objectMap["databaseName"] = msssdstotl.DatabaseName
-	}
-	if msssdstotl.CdcInsertCounter != nil {
-		objectMap["cdcInsertCounter"] = msssdstotl.CdcInsertCounter
-	}
-	if msssdstotl.CdcUpdateCounter != nil {
-		objectMap["cdcUpdateCounter"] = msssdstotl.CdcUpdateCounter
-	}
-	if msssdstotl.CdcDeleteCounter != nil {
-		objectMap["cdcDeleteCounter"] = msssdstotl.CdcDeleteCounter
-	}
-	if msssdstotl.FullLoadEstFinishTime != nil {
-		objectMap["fullLoadEstFinishTime"] = msssdstotl.FullLoadEstFinishTime
-	}
-	if msssdstotl.FullLoadStartedOn != nil {
-		objectMap["fullLoadStartedOn"] = msssdstotl.FullLoadStartedOn
-	}
-	if msssdstotl.FullLoadEndedOn != nil {
-		objectMap["fullLoadEndedOn"] = msssdstotl.FullLoadEndedOn
-	}
-	if msssdstotl.FullLoadTotalRows != nil {
-		objectMap["fullLoadTotalRows"] = msssdstotl.FullLoadTotalRows
-	}
-	if msssdstotl.State != "" {
-		objectMap["state"] = msssdstotl.State
-	}
-	if msssdstotl.TotalChangesApplied != nil {
-		objectMap["totalChangesApplied"] = msssdstotl.TotalChangesApplied
-	}
-	if msssdstotl.DataErrorsCounter != nil {
-		objectMap["dataErrorsCounter"] = msssdstotl.DataErrorsCounter
-	}
-	if msssdstotl.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = msssdstotl.LastModifiedTime
-	}
-	if msssdstotl.ID != nil {
-		objectMap["id"] = msssdstotl.ID
-	}
 	if msssdstotl.ResultType != "" {
 		objectMap["resultType"] = msssdstotl.ResultType
 	}
@@ -7826,13 +7118,13 @@ func (msssdstotl MigrateSQLServerSQLDbSyncTaskOutputTableLevel) AsBasicMigrateSQ
 type MigrateSQLServerSQLDbSyncTaskProperties struct {
 	// Input - Task input
 	Input *MigrateSQLServerSQLDbSyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicMigrateSQLServerSQLDbSyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -7844,18 +7136,6 @@ func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) MarshalJSON() ([]byte, e
 	objectMap := make(map[string]interface{})
 	if msssdstp.Input != nil {
 		objectMap["input"] = msssdstp.Input
-	}
-	if msssdstp.Output != nil {
-		objectMap["output"] = msssdstp.Output
-	}
-	if msssdstp.Errors != nil {
-		objectMap["errors"] = msssdstp.Errors
-	}
-	if msssdstp.State != "" {
-		objectMap["state"] = msssdstp.State
-	}
-	if msssdstp.Commands != nil {
-		objectMap["commands"] = msssdstp.Commands
 	}
 	if msssdstp.TaskType != "" {
 		objectMap["taskType"] = msssdstp.TaskType
@@ -8080,7 +7360,7 @@ type BasicMigrateSQLServerSQLDbTaskOutput interface {
 // MigrateSQLServerSQLDbTaskOutput output for the task that migrates on-prem SQL Server databases to Azure SQL
 // Database
 type MigrateSQLServerSQLDbTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8147,9 +7427,6 @@ func unmarshalBasicMigrateSQLServerSQLDbTaskOutputArray(body []byte) ([]BasicMig
 func (msssdto MigrateSQLServerSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	msssdto.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput
 	objectMap := make(map[string]interface{})
-	if msssdto.ID != nil {
-		objectMap["id"] = msssdto.ID
-	}
 	if msssdto.ResultType != "" {
 		objectMap["resultType"] = msssdto.ResultType
 	}
@@ -8199,35 +7476,35 @@ func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicMigrateSQLServerSQLDbTaskO
 // MigrateSQLServerSQLDbTaskOutputDatabaseLevel database level result for Sql Server to Azure Sql DB
 // migration.
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
-	// DatabaseName - Name of the item
+	// DatabaseName - READ-ONLY; Name of the item
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// Stage - Migration stage that this database is in. Possible values include: 'DatabaseMigrationStageNone', 'DatabaseMigrationStageInitialize', 'DatabaseMigrationStageBackup', 'DatabaseMigrationStageFileCopy', 'DatabaseMigrationStageRestore', 'DatabaseMigrationStageCompleted'
+	// Stage - READ-ONLY; Migration stage that this database is in. Possible values include: 'DatabaseMigrationStageNone', 'DatabaseMigrationStageInitialize', 'DatabaseMigrationStageBackup', 'DatabaseMigrationStageFileCopy', 'DatabaseMigrationStageRestore', 'DatabaseMigrationStageCompleted'
 	Stage DatabaseMigrationStage `json:"stage,omitempty"`
-	// StatusMessage - Status message
+	// StatusMessage - READ-ONLY; Status message
 	StatusMessage *string `json:"statusMessage,omitempty"`
-	// Message - Migration progress message
+	// Message - READ-ONLY; Migration progress message
 	Message *string `json:"message,omitempty"`
-	// NumberOfObjects - Number of objects
+	// NumberOfObjects - READ-ONLY; Number of objects
 	NumberOfObjects *int64 `json:"numberOfObjects,omitempty"`
-	// NumberOfObjectsCompleted - Number of successfully completed objects
+	// NumberOfObjectsCompleted - READ-ONLY; Number of successfully completed objects
 	NumberOfObjectsCompleted *int64 `json:"numberOfObjectsCompleted,omitempty"`
-	// ErrorCount - Number of database/object errors.
+	// ErrorCount - READ-ONLY; Number of database/object errors.
 	ErrorCount *int64 `json:"errorCount,omitempty"`
-	// ErrorPrefix - Wildcard string prefix to use for querying all errors of the item
+	// ErrorPrefix - READ-ONLY; Wildcard string prefix to use for querying all errors of the item
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
-	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
+	// ResultPrefix - READ-ONLY; Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
-	// ExceptionsAndWarnings - Migration exceptions and warnings.
+	// ExceptionsAndWarnings - READ-ONLY; Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ObjectSummary - Summary of object results in the migration
+	// ObjectSummary - READ-ONLY; Summary of object results in the migration
 	ObjectSummary map[string]*DataItemMigrationSummaryResult `json:"objectSummary"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8237,51 +7514,6 @@ type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	msssdtodl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssdtodl.DatabaseName != nil {
-		objectMap["databaseName"] = msssdtodl.DatabaseName
-	}
-	if msssdtodl.StartedOn != nil {
-		objectMap["startedOn"] = msssdtodl.StartedOn
-	}
-	if msssdtodl.EndedOn != nil {
-		objectMap["endedOn"] = msssdtodl.EndedOn
-	}
-	if msssdtodl.State != "" {
-		objectMap["state"] = msssdtodl.State
-	}
-	if msssdtodl.Stage != "" {
-		objectMap["stage"] = msssdtodl.Stage
-	}
-	if msssdtodl.StatusMessage != nil {
-		objectMap["statusMessage"] = msssdtodl.StatusMessage
-	}
-	if msssdtodl.Message != nil {
-		objectMap["message"] = msssdtodl.Message
-	}
-	if msssdtodl.NumberOfObjects != nil {
-		objectMap["numberOfObjects"] = msssdtodl.NumberOfObjects
-	}
-	if msssdtodl.NumberOfObjectsCompleted != nil {
-		objectMap["numberOfObjectsCompleted"] = msssdtodl.NumberOfObjectsCompleted
-	}
-	if msssdtodl.ErrorCount != nil {
-		objectMap["errorCount"] = msssdtodl.ErrorCount
-	}
-	if msssdtodl.ErrorPrefix != nil {
-		objectMap["errorPrefix"] = msssdtodl.ErrorPrefix
-	}
-	if msssdtodl.ResultPrefix != nil {
-		objectMap["resultPrefix"] = msssdtodl.ResultPrefix
-	}
-	if msssdtodl.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssdtodl.ExceptionsAndWarnings
-	}
-	if msssdtodl.ObjectSummary != nil {
-		objectMap["objectSummary"] = msssdtodl.ObjectSummary
-	}
-	if msssdtodl.ID != nil {
-		objectMap["id"] = msssdtodl.ID
-	}
 	if msssdtodl.ResultType != "" {
 		objectMap["resultType"] = msssdtodl.ResultType
 	}
@@ -8331,25 +7563,25 @@ func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsBasicMigrateSQLS
 // MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult database validation result for Sql Server
 // to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult struct {
-	// MigrationID - Migration Identifier
+	// MigrationID - READ-ONLY; Migration Identifier
 	MigrationID *string `json:"migrationId,omitempty"`
-	// SourceDatabaseName - Name of the source database
+	// SourceDatabaseName - READ-ONLY; Name of the source database
 	SourceDatabaseName *string `json:"sourceDatabaseName,omitempty"`
-	// TargetDatabaseName - Name of the target database
+	// TargetDatabaseName - READ-ONLY; Name of the target database
 	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
-	// StartedOn - Validation start time
+	// StartedOn - READ-ONLY; Validation start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Validation end time
+	// EndedOn - READ-ONLY; Validation end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// DataIntegrityValidationResult - Provides data integrity validation result between the source and target tables that are migrated.
+	// DataIntegrityValidationResult - READ-ONLY; Provides data integrity validation result between the source and target tables that are migrated.
 	DataIntegrityValidationResult *DataIntegrityValidationResult `json:"dataIntegrityValidationResult,omitempty"`
-	// SchemaValidationResult - Provides schema comparison result between source and target database
+	// SchemaValidationResult - READ-ONLY; Provides schema comparison result between source and target database
 	SchemaValidationResult *SchemaComparisonValidationResult `json:"schemaValidationResult,omitempty"`
-	// QueryAnalysisValidationResult - Results of some of the query execution result between source and target database
+	// QueryAnalysisValidationResult - READ-ONLY; Results of some of the query execution result between source and target database
 	QueryAnalysisValidationResult *QueryAnalysisValidationResult `json:"queryAnalysisValidationResult,omitempty"`
-	// Status - Current status of validation at the database level. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
+	// Status - READ-ONLY; Current status of validation at the database level. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
 	Status ValidationStatus `json:"status,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8359,36 +7591,6 @@ type MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult struct {
 func (msssdtodlvr MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult) MarshalJSON() ([]byte, error) {
 	msssdtodlvr.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput
 	objectMap := make(map[string]interface{})
-	if msssdtodlvr.MigrationID != nil {
-		objectMap["migrationId"] = msssdtodlvr.MigrationID
-	}
-	if msssdtodlvr.SourceDatabaseName != nil {
-		objectMap["sourceDatabaseName"] = msssdtodlvr.SourceDatabaseName
-	}
-	if msssdtodlvr.TargetDatabaseName != nil {
-		objectMap["targetDatabaseName"] = msssdtodlvr.TargetDatabaseName
-	}
-	if msssdtodlvr.StartedOn != nil {
-		objectMap["startedOn"] = msssdtodlvr.StartedOn
-	}
-	if msssdtodlvr.EndedOn != nil {
-		objectMap["endedOn"] = msssdtodlvr.EndedOn
-	}
-	if msssdtodlvr.DataIntegrityValidationResult != nil {
-		objectMap["dataIntegrityValidationResult"] = msssdtodlvr.DataIntegrityValidationResult
-	}
-	if msssdtodlvr.SchemaValidationResult != nil {
-		objectMap["schemaValidationResult"] = msssdtodlvr.SchemaValidationResult
-	}
-	if msssdtodlvr.QueryAnalysisValidationResult != nil {
-		objectMap["queryAnalysisValidationResult"] = msssdtodlvr.QueryAnalysisValidationResult
-	}
-	if msssdtodlvr.Status != "" {
-		objectMap["status"] = msssdtodlvr.Status
-	}
-	if msssdtodlvr.ID != nil {
-		objectMap["id"] = msssdtodlvr.ID
-	}
 	if msssdtodlvr.ResultType != "" {
 		objectMap["resultType"] = msssdtodlvr.ResultType
 	}
@@ -8437,9 +7639,9 @@ func (msssdtodlvr MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult) 
 
 // MigrateSQLServerSQLDbTaskOutputError task errors for Sql Server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputError struct {
-	// Error - Migration error
+	// Error - READ-ONLY; Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8449,12 +7651,6 @@ type MigrateSQLServerSQLDbTaskOutputError struct {
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) MarshalJSON() ([]byte, error) {
 	msssdtoe.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
-	if msssdtoe.Error != nil {
-		objectMap["error"] = msssdtoe.Error
-	}
-	if msssdtoe.ID != nil {
-		objectMap["id"] = msssdtoe.ID
-	}
 	if msssdtoe.ResultType != "" {
 		objectMap["resultType"] = msssdtoe.ResultType
 	}
@@ -8504,35 +7700,35 @@ func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsBasicMigrateSQLServerSQLD
 // MigrateSQLServerSQLDbTaskOutputMigrationLevel migration level result for Sql server to Azure Sql DB
 // migration.
 type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// DurationInSeconds - Duration of task execution in seconds.
+	// DurationInSeconds - READ-ONLY; Duration of task execution in seconds.
 	DurationInSeconds *int64 `json:"durationInSeconds,omitempty"`
-	// Status - Current status of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
+	// Status - READ-ONLY; Current status of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
 	Status MigrationStatus `json:"status,omitempty"`
-	// StatusMessage - Migration status message
+	// StatusMessage - READ-ONLY; Migration status message
 	StatusMessage *string `json:"statusMessage,omitempty"`
-	// Message - Migration progress message
+	// Message - READ-ONLY; Migration progress message
 	Message *string `json:"message,omitempty"`
-	// Databases - Selected databases as a map from database name to database id
+	// Databases - READ-ONLY; Selected databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
-	// DatabaseSummary - Summary of database results in the migration
+	// DatabaseSummary - READ-ONLY; Summary of database results in the migration
 	DatabaseSummary map[string]*DatabaseSummaryResult `json:"databaseSummary"`
-	// MigrationReport - Migration Report Result, provides unique url for downloading your migration report.
+	// MigrationReport - READ-ONLY; Migration Report Result, provides unique url for downloading your migration report.
 	MigrationReport *MigrationReportResult `json:"migrationReport,omitempty"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServerBrandVersion - Source server brand version
+	// SourceServerBrandVersion - READ-ONLY; Source server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// ExceptionsAndWarnings - Migration exceptions and warnings.
+	// ExceptionsAndWarnings - READ-ONLY; Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8542,51 +7738,6 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	msssdtoml.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssdtoml.StartedOn != nil {
-		objectMap["startedOn"] = msssdtoml.StartedOn
-	}
-	if msssdtoml.EndedOn != nil {
-		objectMap["endedOn"] = msssdtoml.EndedOn
-	}
-	if msssdtoml.DurationInSeconds != nil {
-		objectMap["durationInSeconds"] = msssdtoml.DurationInSeconds
-	}
-	if msssdtoml.Status != "" {
-		objectMap["status"] = msssdtoml.Status
-	}
-	if msssdtoml.StatusMessage != nil {
-		objectMap["statusMessage"] = msssdtoml.StatusMessage
-	}
-	if msssdtoml.Message != nil {
-		objectMap["message"] = msssdtoml.Message
-	}
-	if msssdtoml.Databases != nil {
-		objectMap["databases"] = msssdtoml.Databases
-	}
-	if msssdtoml.DatabaseSummary != nil {
-		objectMap["databaseSummary"] = msssdtoml.DatabaseSummary
-	}
-	if msssdtoml.MigrationReport != nil {
-		objectMap["migrationReport"] = msssdtoml.MigrationReport
-	}
-	if msssdtoml.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = msssdtoml.SourceServerVersion
-	}
-	if msssdtoml.SourceServerBrandVersion != nil {
-		objectMap["sourceServerBrandVersion"] = msssdtoml.SourceServerBrandVersion
-	}
-	if msssdtoml.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = msssdtoml.TargetServerVersion
-	}
-	if msssdtoml.TargetServerBrandVersion != nil {
-		objectMap["targetServerBrandVersion"] = msssdtoml.TargetServerBrandVersion
-	}
-	if msssdtoml.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssdtoml.ExceptionsAndWarnings
-	}
-	if msssdtoml.ID != nil {
-		objectMap["id"] = msssdtoml.ID
-	}
 	if msssdtoml.ResultType != "" {
 		objectMap["resultType"] = msssdtoml.ResultType
 	}
@@ -8635,25 +7786,25 @@ func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsBasicMigrateSQL
 
 // MigrateSQLServerSQLDbTaskOutputTableLevel table level result for Sql Server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
-	// ObjectName - Name of the item
+	// ObjectName - READ-ONLY; Name of the item
 	ObjectName *string `json:"objectName,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// StatusMessage - Status message
+	// StatusMessage - READ-ONLY; Status message
 	StatusMessage *string `json:"statusMessage,omitempty"`
-	// ItemsCount - Number of items
+	// ItemsCount - READ-ONLY; Number of items
 	ItemsCount *int64 `json:"itemsCount,omitempty"`
-	// ItemsCompletedCount - Number of successfully completed items
+	// ItemsCompletedCount - READ-ONLY; Number of successfully completed items
 	ItemsCompletedCount *int64 `json:"itemsCompletedCount,omitempty"`
-	// ErrorPrefix - Wildcard string prefix to use for querying all errors of the item
+	// ErrorPrefix - READ-ONLY; Wildcard string prefix to use for querying all errors of the item
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
-	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
+	// ResultPrefix - READ-ONLY; Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8663,36 +7814,6 @@ type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
 	msssdtotl.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssdtotl.ObjectName != nil {
-		objectMap["objectName"] = msssdtotl.ObjectName
-	}
-	if msssdtotl.StartedOn != nil {
-		objectMap["startedOn"] = msssdtotl.StartedOn
-	}
-	if msssdtotl.EndedOn != nil {
-		objectMap["endedOn"] = msssdtotl.EndedOn
-	}
-	if msssdtotl.State != "" {
-		objectMap["state"] = msssdtotl.State
-	}
-	if msssdtotl.StatusMessage != nil {
-		objectMap["statusMessage"] = msssdtotl.StatusMessage
-	}
-	if msssdtotl.ItemsCount != nil {
-		objectMap["itemsCount"] = msssdtotl.ItemsCount
-	}
-	if msssdtotl.ItemsCompletedCount != nil {
-		objectMap["itemsCompletedCount"] = msssdtotl.ItemsCompletedCount
-	}
-	if msssdtotl.ErrorPrefix != nil {
-		objectMap["errorPrefix"] = msssdtotl.ErrorPrefix
-	}
-	if msssdtotl.ResultPrefix != nil {
-		objectMap["resultPrefix"] = msssdtotl.ResultPrefix
-	}
-	if msssdtotl.ID != nil {
-		objectMap["id"] = msssdtotl.ID
-	}
 	if msssdtotl.ResultType != "" {
 		objectMap["resultType"] = msssdtotl.ResultType
 	}
@@ -8742,13 +7863,13 @@ func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsBasicMigrateSQLServ
 // MigrateSQLServerSQLDbTaskOutputValidationResult validation result for Sql Server to Azure Sql DB
 // migration.
 type MigrateSQLServerSQLDbTaskOutputValidationResult struct {
-	// MigrationID - Migration Identifier
+	// MigrationID - READ-ONLY; Migration Identifier
 	MigrationID *string `json:"migrationId,omitempty"`
 	// SummaryResults - Validation summary results for each database
 	SummaryResults map[string]*MigrationValidationDatabaseSummaryResult `json:"summaryResults"`
-	// Status - Current status of validation at the migration level. Status from the database validation result status will be aggregated here. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
+	// Status - READ-ONLY; Current status of validation at the migration level. Status from the database validation result status will be aggregated here. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
 	Status ValidationStatus `json:"status,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationDatabaseLevelValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLDbTaskOutput `json:"resultType,omitempty"`
@@ -8758,17 +7879,8 @@ type MigrateSQLServerSQLDbTaskOutputValidationResult struct {
 func (msssdtovr MigrateSQLServerSQLDbTaskOutputValidationResult) MarshalJSON() ([]byte, error) {
 	msssdtovr.ResultType = ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeMigrationValidationOutput
 	objectMap := make(map[string]interface{})
-	if msssdtovr.MigrationID != nil {
-		objectMap["migrationId"] = msssdtovr.MigrationID
-	}
 	if msssdtovr.SummaryResults != nil {
 		objectMap["summaryResults"] = msssdtovr.SummaryResults
-	}
-	if msssdtovr.Status != "" {
-		objectMap["status"] = msssdtovr.Status
-	}
-	if msssdtovr.ID != nil {
-		objectMap["id"] = msssdtovr.ID
 	}
 	if msssdtovr.ResultType != "" {
 		objectMap["resultType"] = msssdtovr.ResultType
@@ -8821,13 +7933,13 @@ func (msssdtovr MigrateSQLServerSQLDbTaskOutputValidationResult) AsBasicMigrateS
 type MigrateSQLServerSQLDbTaskProperties struct {
 	// Input - Task input
 	Input *MigrateSQLServerSQLDbTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicMigrateSQLServerSQLDbTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -8839,18 +7951,6 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) MarshalJSON() ([]byte, error)
 	objectMap := make(map[string]interface{})
 	if msssdtp.Input != nil {
 		objectMap["input"] = msssdtp.Input
-	}
-	if msssdtp.Output != nil {
-		objectMap["output"] = msssdtp.Output
-	}
-	if msssdtp.Errors != nil {
-		objectMap["errors"] = msssdtp.Errors
-	}
-	if msssdtp.State != "" {
-		objectMap["state"] = msssdtp.State
-	}
-	if msssdtp.Commands != nil {
-		objectMap["commands"] = msssdtp.Commands
 	}
 	if msssdtp.TaskType != "" {
 		objectMap["taskType"] = msssdtp.TaskType
@@ -9087,7 +8187,7 @@ type BasicMigrateSQLServerSQLMISyncTaskOutput interface {
 // MigrateSQLServerSQLMISyncTaskOutput output for task that migrates SQL Server databases to Azure SQL Database
 // Managed Instance using Log Replay Service.
 type MigrateSQLServerSQLMISyncTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
@@ -9142,9 +8242,6 @@ func unmarshalBasicMigrateSQLServerSQLMISyncTaskOutputArray(body []byte) ([]Basi
 func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) MarshalJSON() ([]byte, error) {
 	msssmsto.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput
 	objectMap := make(map[string]interface{})
-	if msssmsto.ID != nil {
-		objectMap["id"] = msssmsto.ID
-	}
 	if msssmsto.ResultType != "" {
 		objectMap["resultType"] = msssmsto.ResultType
 	}
@@ -9178,29 +8275,29 @@ func (msssmsto MigrateSQLServerSQLMISyncTaskOutput) AsBasicMigrateSQLServerSQLMI
 
 // MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel ...
 type MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel struct {
-	// SourceDatabaseName - Name of the database
+	// SourceDatabaseName - READ-ONLY; Name of the database
 	SourceDatabaseName *string `json:"sourceDatabaseName,omitempty"`
-	// MigrationState - Current state of database. Possible values include: 'UNDEFINED', 'INITIAL', 'FULLBACKUPUPLOADSTART', 'LOGSHIPPINGSTART', 'UPLOADLOGFILESSTART', 'CUTOVERSTART', 'POSTCUTOVERCOMPLETE', 'COMPLETED', 'CANCELLED', 'FAILED'
+	// MigrationState - READ-ONLY; Current state of database. Possible values include: 'UNDEFINED', 'INITIAL', 'FULLBACKUPUPLOADSTART', 'LOGSHIPPINGSTART', 'UPLOADLOGFILESSTART', 'CUTOVERSTART', 'POSTCUTOVERCOMPLETE', 'COMPLETED', 'CANCELLED', 'FAILED'
 	MigrationState DatabaseMigrationState `json:"migrationState,omitempty"`
-	// StartedOn - Database migration start time
+	// StartedOn - READ-ONLY; Database migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Database migration end time
+	// EndedOn - READ-ONLY; Database migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// FullBackupSetInfo - Details of full backup set
+	// FullBackupSetInfo - READ-ONLY; Details of full backup set
 	FullBackupSetInfo *BackupSetInfo `json:"fullBackupSetInfo,omitempty"`
-	// LastRestoredBackupSetInfo - Last applied backup set information
+	// LastRestoredBackupSetInfo - READ-ONLY; Last applied backup set information
 	LastRestoredBackupSetInfo *BackupSetInfo `json:"lastRestoredBackupSetInfo,omitempty"`
-	// ActiveBackupSets - Backup sets that are currently active (Either being uploaded or getting restored)
+	// ActiveBackupSets - READ-ONLY; Backup sets that are currently active (Either being uploaded or getting restored)
 	ActiveBackupSets *[]BackupSetInfo `json:"activeBackupSets,omitempty"`
-	// ContainerName - Name of container created in the Azure Storage account where backups are copied to
+	// ContainerName - READ-ONLY; Name of container created in the Azure Storage account where backups are copied to
 	ContainerName *string `json:"containerName,omitempty"`
-	// ErrorPrefix - prefix string to use for querying errors for this database
+	// ErrorPrefix - READ-ONLY; prefix string to use for querying errors for this database
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
-	// IsFullBackupRestored - Whether full backup has been applied to the target database or not
+	// IsFullBackupRestored - READ-ONLY; Whether full backup has been applied to the target database or not
 	IsFullBackupRestored *bool `json:"isFullBackupRestored,omitempty"`
-	// ExceptionsAndWarnings - Migration exceptions and warnings
+	// ExceptionsAndWarnings - READ-ONLY; Migration exceptions and warnings
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
@@ -9210,42 +8307,6 @@ type MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel struct {
 func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	msssmstodl.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssmstodl.SourceDatabaseName != nil {
-		objectMap["sourceDatabaseName"] = msssmstodl.SourceDatabaseName
-	}
-	if msssmstodl.MigrationState != "" {
-		objectMap["migrationState"] = msssmstodl.MigrationState
-	}
-	if msssmstodl.StartedOn != nil {
-		objectMap["startedOn"] = msssmstodl.StartedOn
-	}
-	if msssmstodl.EndedOn != nil {
-		objectMap["endedOn"] = msssmstodl.EndedOn
-	}
-	if msssmstodl.FullBackupSetInfo != nil {
-		objectMap["fullBackupSetInfo"] = msssmstodl.FullBackupSetInfo
-	}
-	if msssmstodl.LastRestoredBackupSetInfo != nil {
-		objectMap["lastRestoredBackupSetInfo"] = msssmstodl.LastRestoredBackupSetInfo
-	}
-	if msssmstodl.ActiveBackupSets != nil {
-		objectMap["activeBackupSets"] = msssmstodl.ActiveBackupSets
-	}
-	if msssmstodl.ContainerName != nil {
-		objectMap["containerName"] = msssmstodl.ContainerName
-	}
-	if msssmstodl.ErrorPrefix != nil {
-		objectMap["errorPrefix"] = msssmstodl.ErrorPrefix
-	}
-	if msssmstodl.IsFullBackupRestored != nil {
-		objectMap["isFullBackupRestored"] = msssmstodl.IsFullBackupRestored
-	}
-	if msssmstodl.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssmstodl.ExceptionsAndWarnings
-	}
-	if msssmstodl.ID != nil {
-		objectMap["id"] = msssmstodl.ID
-	}
 	if msssmstodl.ResultType != "" {
 		objectMap["resultType"] = msssmstodl.ResultType
 	}
@@ -9279,9 +8340,9 @@ func (msssmstodl MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel) AsBasicMigrat
 
 // MigrateSQLServerSQLMISyncTaskOutputError ...
 type MigrateSQLServerSQLMISyncTaskOutputError struct {
-	// Error - Migration error
+	// Error - READ-ONLY; Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
@@ -9291,12 +8352,6 @@ type MigrateSQLServerSQLMISyncTaskOutputError struct {
 func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) MarshalJSON() ([]byte, error) {
 	msssmstoe.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
-	if msssmstoe.Error != nil {
-		objectMap["error"] = msssmstoe.Error
-	}
-	if msssmstoe.ID != nil {
-		objectMap["id"] = msssmstoe.ID
-	}
 	if msssmstoe.ResultType != "" {
 		objectMap["resultType"] = msssmstoe.ResultType
 	}
@@ -9330,29 +8385,29 @@ func (msssmstoe MigrateSQLServerSQLMISyncTaskOutputError) AsBasicMigrateSQLServe
 
 // MigrateSQLServerSQLMISyncTaskOutputMigrationLevel ...
 type MigrateSQLServerSQLMISyncTaskOutputMigrationLevel struct {
-	// DatabaseCount - Count of databases
+	// DatabaseCount - READ-ONLY; Count of databases
 	DatabaseCount *int32 `json:"databaseCount,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// SourceServerName - Source server name
+	// SourceServerName - READ-ONLY; Source server name
 	SourceServerName *string `json:"sourceServerName,omitempty"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServerBrandVersion - Source server brand version
+	// SourceServerBrandVersion - READ-ONLY; Source server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
-	// TargetServerName - Target server name
+	// TargetServerName - READ-ONLY; Target server name
 	TargetServerName *string `json:"targetServerName,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// DatabaseErrorCount - Number of database level errors
+	// DatabaseErrorCount - READ-ONLY; Number of database level errors
 	DatabaseErrorCount *int32 `json:"databaseErrorCount,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput `json:"resultType,omitempty"`
@@ -9362,42 +8417,6 @@ type MigrateSQLServerSQLMISyncTaskOutputMigrationLevel struct {
 func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	msssmstoml.ResultType = ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssmstoml.DatabaseCount != nil {
-		objectMap["databaseCount"] = msssmstoml.DatabaseCount
-	}
-	if msssmstoml.State != "" {
-		objectMap["state"] = msssmstoml.State
-	}
-	if msssmstoml.StartedOn != nil {
-		objectMap["startedOn"] = msssmstoml.StartedOn
-	}
-	if msssmstoml.EndedOn != nil {
-		objectMap["endedOn"] = msssmstoml.EndedOn
-	}
-	if msssmstoml.SourceServerName != nil {
-		objectMap["sourceServerName"] = msssmstoml.SourceServerName
-	}
-	if msssmstoml.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = msssmstoml.SourceServerVersion
-	}
-	if msssmstoml.SourceServerBrandVersion != nil {
-		objectMap["sourceServerBrandVersion"] = msssmstoml.SourceServerBrandVersion
-	}
-	if msssmstoml.TargetServerName != nil {
-		objectMap["targetServerName"] = msssmstoml.TargetServerName
-	}
-	if msssmstoml.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = msssmstoml.TargetServerVersion
-	}
-	if msssmstoml.TargetServerBrandVersion != nil {
-		objectMap["targetServerBrandVersion"] = msssmstoml.TargetServerBrandVersion
-	}
-	if msssmstoml.DatabaseErrorCount != nil {
-		objectMap["databaseErrorCount"] = msssmstoml.DatabaseErrorCount
-	}
-	if msssmstoml.ID != nil {
-		objectMap["id"] = msssmstoml.ID
-	}
 	if msssmstoml.ResultType != "" {
 		objectMap["resultType"] = msssmstoml.ResultType
 	}
@@ -9434,13 +8453,13 @@ func (msssmstoml MigrateSQLServerSQLMISyncTaskOutputMigrationLevel) AsBasicMigra
 type MigrateSQLServerSQLMISyncTaskProperties struct {
 	// Input - Task input
 	Input *MigrateSQLServerSQLMISyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicMigrateSQLServerSQLMISyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -9452,18 +8471,6 @@ func (msssmstp MigrateSQLServerSQLMISyncTaskProperties) MarshalJSON() ([]byte, e
 	objectMap := make(map[string]interface{})
 	if msssmstp.Input != nil {
 		objectMap["input"] = msssmstp.Input
-	}
-	if msssmstp.Output != nil {
-		objectMap["output"] = msssmstp.Output
-	}
-	if msssmstp.Errors != nil {
-		objectMap["errors"] = msssmstp.Errors
-	}
-	if msssmstp.State != "" {
-		objectMap["state"] = msssmstp.State
-	}
-	if msssmstp.Commands != nil {
-		objectMap["commands"] = msssmstp.Commands
 	}
 	if msssmstp.TaskType != "" {
 		objectMap["taskType"] = msssmstp.TaskType
@@ -9693,7 +8700,7 @@ type BasicMigrateSQLServerSQLMITaskOutput interface {
 // MigrateSQLServerSQLMITaskOutput output for task that migrates SQL Server databases to Azure SQL Database
 // Managed Instance.
 type MigrateSQLServerSQLMITaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
@@ -9756,9 +8763,6 @@ func unmarshalBasicMigrateSQLServerSQLMITaskOutputArray(body []byte) ([]BasicMig
 func (msssmto MigrateSQLServerSQLMITaskOutput) MarshalJSON() ([]byte, error) {
 	msssmto.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput
 	objectMap := make(map[string]interface{})
-	if msssmto.ID != nil {
-		objectMap["id"] = msssmto.ID
-	}
 	if msssmto.ResultType != "" {
 		objectMap["resultType"] = msssmto.ResultType
 	}
@@ -9802,21 +8806,21 @@ func (msssmto MigrateSQLServerSQLMITaskOutput) AsBasicMigrateSQLServerSQLMITaskO
 
 // MigrateSQLServerSQLMITaskOutputAgentJobLevel ...
 type MigrateSQLServerSQLMITaskOutputAgentJobLevel struct {
-	// Name - Agent Job name.
+	// Name - READ-ONLY; Agent Job name.
 	Name *string `json:"name,omitempty"`
-	// IsEnabled - The state of the original Agent Job.
+	// IsEnabled - READ-ONLY; The state of the original Agent Job.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// Message - Migration progress message
+	// Message - READ-ONLY; Migration progress message
 	Message *string `json:"message,omitempty"`
-	// ExceptionsAndWarnings - Migration errors and warnings per job
+	// ExceptionsAndWarnings - READ-ONLY; Migration errors and warnings per job
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
@@ -9826,30 +8830,6 @@ type MigrateSQLServerSQLMITaskOutputAgentJobLevel struct {
 func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) MarshalJSON() ([]byte, error) {
 	msssmtoajl.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssmtoajl.Name != nil {
-		objectMap["name"] = msssmtoajl.Name
-	}
-	if msssmtoajl.IsEnabled != nil {
-		objectMap["isEnabled"] = msssmtoajl.IsEnabled
-	}
-	if msssmtoajl.State != "" {
-		objectMap["state"] = msssmtoajl.State
-	}
-	if msssmtoajl.StartedOn != nil {
-		objectMap["startedOn"] = msssmtoajl.StartedOn
-	}
-	if msssmtoajl.EndedOn != nil {
-		objectMap["endedOn"] = msssmtoajl.EndedOn
-	}
-	if msssmtoajl.Message != nil {
-		objectMap["message"] = msssmtoajl.Message
-	}
-	if msssmtoajl.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssmtoajl.ExceptionsAndWarnings
-	}
-	if msssmtoajl.ID != nil {
-		objectMap["id"] = msssmtoajl.ID
-	}
 	if msssmtoajl.ResultType != "" {
 		objectMap["resultType"] = msssmtoajl.ResultType
 	}
@@ -9893,23 +8873,23 @@ func (msssmtoajl MigrateSQLServerSQLMITaskOutputAgentJobLevel) AsBasicMigrateSQL
 
 // MigrateSQLServerSQLMITaskOutputDatabaseLevel ...
 type MigrateSQLServerSQLMITaskOutputDatabaseLevel struct {
-	// DatabaseName - Name of the database
+	// DatabaseName - READ-ONLY; Name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// SizeMB - Size of the database in megabytes
+	// SizeMB - READ-ONLY; Size of the database in megabytes
 	SizeMB *float64 `json:"sizeMB,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// Stage - Current stage of migration. Possible values include: 'DatabaseMigrationStageNone', 'DatabaseMigrationStageInitialize', 'DatabaseMigrationStageBackup', 'DatabaseMigrationStageFileCopy', 'DatabaseMigrationStageRestore', 'DatabaseMigrationStageCompleted'
+	// Stage - READ-ONLY; Current stage of migration. Possible values include: 'DatabaseMigrationStageNone', 'DatabaseMigrationStageInitialize', 'DatabaseMigrationStageBackup', 'DatabaseMigrationStageFileCopy', 'DatabaseMigrationStageRestore', 'DatabaseMigrationStageCompleted'
 	Stage DatabaseMigrationStage `json:"stage,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// Message - Migration progress message
+	// Message - READ-ONLY; Migration progress message
 	Message *string `json:"message,omitempty"`
-	// ExceptionsAndWarnings - Migration exceptions and warnings
+	// ExceptionsAndWarnings - READ-ONLY; Migration exceptions and warnings
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
@@ -9919,33 +8899,6 @@ type MigrateSQLServerSQLMITaskOutputDatabaseLevel struct {
 func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	msssmtodl.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssmtodl.DatabaseName != nil {
-		objectMap["databaseName"] = msssmtodl.DatabaseName
-	}
-	if msssmtodl.SizeMB != nil {
-		objectMap["sizeMB"] = msssmtodl.SizeMB
-	}
-	if msssmtodl.State != "" {
-		objectMap["state"] = msssmtodl.State
-	}
-	if msssmtodl.Stage != "" {
-		objectMap["stage"] = msssmtodl.Stage
-	}
-	if msssmtodl.StartedOn != nil {
-		objectMap["startedOn"] = msssmtodl.StartedOn
-	}
-	if msssmtodl.EndedOn != nil {
-		objectMap["endedOn"] = msssmtodl.EndedOn
-	}
-	if msssmtodl.Message != nil {
-		objectMap["message"] = msssmtodl.Message
-	}
-	if msssmtodl.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssmtodl.ExceptionsAndWarnings
-	}
-	if msssmtodl.ID != nil {
-		objectMap["id"] = msssmtodl.ID
-	}
 	if msssmtodl.ResultType != "" {
 		objectMap["resultType"] = msssmtodl.ResultType
 	}
@@ -9989,9 +8942,9 @@ func (msssmtodl MigrateSQLServerSQLMITaskOutputDatabaseLevel) AsBasicMigrateSQLS
 
 // MigrateSQLServerSQLMITaskOutputError ...
 type MigrateSQLServerSQLMITaskOutputError struct {
-	// Error - Migration error
+	// Error - READ-ONLY; Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
@@ -10001,12 +8954,6 @@ type MigrateSQLServerSQLMITaskOutputError struct {
 func (msssmtoe MigrateSQLServerSQLMITaskOutputError) MarshalJSON() ([]byte, error) {
 	msssmtoe.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput
 	objectMap := make(map[string]interface{})
-	if msssmtoe.Error != nil {
-		objectMap["error"] = msssmtoe.Error
-	}
-	if msssmtoe.ID != nil {
-		objectMap["id"] = msssmtoe.ID
-	}
 	if msssmtoe.ResultType != "" {
 		objectMap["resultType"] = msssmtoe.ResultType
 	}
@@ -10050,21 +8997,21 @@ func (msssmtoe MigrateSQLServerSQLMITaskOutputError) AsBasicMigrateSQLServerSQLM
 
 // MigrateSQLServerSQLMITaskOutputLoginLevel ...
 type MigrateSQLServerSQLMITaskOutputLoginLevel struct {
-	// LoginName - Login name.
+	// LoginName - READ-ONLY; Login name.
 	LoginName *string `json:"loginName,omitempty"`
-	// State - Current state of login. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of login. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// Stage - Current stage of login. Possible values include: 'LoginMigrationStageNone', 'LoginMigrationStageInitialize', 'LoginMigrationStageLoginMigration', 'LoginMigrationStageEstablishUserMapping', 'LoginMigrationStageAssignRoleMembership', 'LoginMigrationStageAssignRoleOwnership', 'LoginMigrationStageEstablishServerPermissions', 'LoginMigrationStageEstablishObjectPermissions', 'LoginMigrationStageCompleted'
+	// Stage - READ-ONLY; Current stage of login. Possible values include: 'LoginMigrationStageNone', 'LoginMigrationStageInitialize', 'LoginMigrationStageLoginMigration', 'LoginMigrationStageEstablishUserMapping', 'LoginMigrationStageAssignRoleMembership', 'LoginMigrationStageAssignRoleOwnership', 'LoginMigrationStageEstablishServerPermissions', 'LoginMigrationStageEstablishObjectPermissions', 'LoginMigrationStageCompleted'
 	Stage LoginMigrationStage `json:"stage,omitempty"`
-	// StartedOn - Login migration start time
+	// StartedOn - READ-ONLY; Login migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Login migration end time
+	// EndedOn - READ-ONLY; Login migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// Message - Login migration progress message
+	// Message - READ-ONLY; Login migration progress message
 	Message *string `json:"message,omitempty"`
-	// ExceptionsAndWarnings - Login migration errors and warnings per login
+	// ExceptionsAndWarnings - READ-ONLY; Login migration errors and warnings per login
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
@@ -10074,30 +9021,6 @@ type MigrateSQLServerSQLMITaskOutputLoginLevel struct {
 func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) MarshalJSON() ([]byte, error) {
 	msssmtoll.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssmtoll.LoginName != nil {
-		objectMap["loginName"] = msssmtoll.LoginName
-	}
-	if msssmtoll.State != "" {
-		objectMap["state"] = msssmtoll.State
-	}
-	if msssmtoll.Stage != "" {
-		objectMap["stage"] = msssmtoll.Stage
-	}
-	if msssmtoll.StartedOn != nil {
-		objectMap["startedOn"] = msssmtoll.StartedOn
-	}
-	if msssmtoll.EndedOn != nil {
-		objectMap["endedOn"] = msssmtoll.EndedOn
-	}
-	if msssmtoll.Message != nil {
-		objectMap["message"] = msssmtoll.Message
-	}
-	if msssmtoll.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssmtoll.ExceptionsAndWarnings
-	}
-	if msssmtoll.ID != nil {
-		objectMap["id"] = msssmtoll.ID
-	}
 	if msssmtoll.ResultType != "" {
 		objectMap["resultType"] = msssmtoll.ResultType
 	}
@@ -10141,37 +9064,37 @@ func (msssmtoll MigrateSQLServerSQLMITaskOutputLoginLevel) AsBasicMigrateSQLServ
 
 // MigrateSQLServerSQLMITaskOutputMigrationLevel ...
 type MigrateSQLServerSQLMITaskOutputMigrationLevel struct {
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// Status - Current status of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
+	// Status - READ-ONLY; Current status of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
 	Status MigrationStatus `json:"status,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// AgentJobs - Selected agent jobs as a map from name to id
+	// AgentJobs - READ-ONLY; Selected agent jobs as a map from name to id
 	AgentJobs map[string]*string `json:"agentJobs"`
-	// Logins - Selected logins as a map from name to id
+	// Logins - READ-ONLY; Selected logins as a map from name to id
 	Logins map[string]*string `json:"logins"`
-	// Message - Migration progress message
+	// Message - READ-ONLY; Migration progress message
 	Message *string `json:"message,omitempty"`
-	// ServerRoleResults - Map of server role migration results.
+	// ServerRoleResults - READ-ONLY; Map of server role migration results.
 	ServerRoleResults map[string]*StartMigrationScenarioServerRoleResult `json:"serverRoleResults"`
-	// OrphanedUsersInfo - List of orphaned users.
+	// OrphanedUsersInfo - READ-ONLY; List of orphaned users.
 	OrphanedUsersInfo *[]OrphanedUserInfo `json:"orphanedUsersInfo,omitempty"`
-	// Databases - Selected databases as a map from database name to database id
+	// Databases - READ-ONLY; Selected databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
-	// SourceServerVersion - Source server version
+	// SourceServerVersion - READ-ONLY; Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
-	// SourceServerBrandVersion - Source server brand version
+	// SourceServerBrandVersion - READ-ONLY; Source server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
-	// TargetServerVersion - Target server version
+	// TargetServerVersion - READ-ONLY; Target server version
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
-	// TargetServerBrandVersion - Target server brand version
+	// TargetServerBrandVersion - READ-ONLY; Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// ExceptionsAndWarnings - Migration exceptions and warnings.
+	// ExceptionsAndWarnings - READ-ONLY; Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput'
 	ResultType ResultTypeBasicMigrateSQLServerSQLMITaskOutput `json:"resultType,omitempty"`
@@ -10181,54 +9104,6 @@ type MigrateSQLServerSQLMITaskOutputMigrationLevel struct {
 func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	msssmtoml.ResultType = ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput
 	objectMap := make(map[string]interface{})
-	if msssmtoml.StartedOn != nil {
-		objectMap["startedOn"] = msssmtoml.StartedOn
-	}
-	if msssmtoml.EndedOn != nil {
-		objectMap["endedOn"] = msssmtoml.EndedOn
-	}
-	if msssmtoml.Status != "" {
-		objectMap["status"] = msssmtoml.Status
-	}
-	if msssmtoml.State != "" {
-		objectMap["state"] = msssmtoml.State
-	}
-	if msssmtoml.AgentJobs != nil {
-		objectMap["agentJobs"] = msssmtoml.AgentJobs
-	}
-	if msssmtoml.Logins != nil {
-		objectMap["logins"] = msssmtoml.Logins
-	}
-	if msssmtoml.Message != nil {
-		objectMap["message"] = msssmtoml.Message
-	}
-	if msssmtoml.ServerRoleResults != nil {
-		objectMap["serverRoleResults"] = msssmtoml.ServerRoleResults
-	}
-	if msssmtoml.OrphanedUsersInfo != nil {
-		objectMap["orphanedUsersInfo"] = msssmtoml.OrphanedUsersInfo
-	}
-	if msssmtoml.Databases != nil {
-		objectMap["databases"] = msssmtoml.Databases
-	}
-	if msssmtoml.SourceServerVersion != nil {
-		objectMap["sourceServerVersion"] = msssmtoml.SourceServerVersion
-	}
-	if msssmtoml.SourceServerBrandVersion != nil {
-		objectMap["sourceServerBrandVersion"] = msssmtoml.SourceServerBrandVersion
-	}
-	if msssmtoml.TargetServerVersion != nil {
-		objectMap["targetServerVersion"] = msssmtoml.TargetServerVersion
-	}
-	if msssmtoml.TargetServerBrandVersion != nil {
-		objectMap["targetServerBrandVersion"] = msssmtoml.TargetServerBrandVersion
-	}
-	if msssmtoml.ExceptionsAndWarnings != nil {
-		objectMap["exceptionsAndWarnings"] = msssmtoml.ExceptionsAndWarnings
-	}
-	if msssmtoml.ID != nil {
-		objectMap["id"] = msssmtoml.ID
-	}
 	if msssmtoml.ResultType != "" {
 		objectMap["resultType"] = msssmtoml.ResultType
 	}
@@ -10275,13 +9150,13 @@ func (msssmtoml MigrateSQLServerSQLMITaskOutputMigrationLevel) AsBasicMigrateSQL
 type MigrateSQLServerSQLMITaskProperties struct {
 	// Input - Task input
 	Input *MigrateSQLServerSQLMITaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]BasicMigrateSQLServerSQLMITaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -10293,18 +9168,6 @@ func (msssmtp MigrateSQLServerSQLMITaskProperties) MarshalJSON() ([]byte, error)
 	objectMap := make(map[string]interface{})
 	if msssmtp.Input != nil {
 		objectMap["input"] = msssmtp.Input
-	}
-	if msssmtp.Output != nil {
-		objectMap["output"] = msssmtp.Output
-	}
-	if msssmtp.Errors != nil {
-		objectMap["errors"] = msssmtp.Errors
-	}
-	if msssmtp.State != "" {
-		objectMap["state"] = msssmtp.State
-	}
-	if msssmtp.Commands != nil {
-		objectMap["commands"] = msssmtp.Commands
 	}
 	if msssmtp.TaskType != "" {
 		objectMap["taskType"] = msssmtp.TaskType
@@ -10522,9 +9385,9 @@ type MigrateSyncCompleteCommandInput struct {
 
 // MigrateSyncCompleteCommandOutput output for command that completes sync migration for a database.
 type MigrateSyncCompleteCommandOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// Errors - List of errors that happened during the command execution
+	// Errors - READ-ONLY; List of errors that happened during the command execution
 	Errors *[]ReportableException `json:"errors,omitempty"`
 }
 
@@ -10533,11 +9396,11 @@ type MigrateSyncCompleteCommandOutput struct {
 type MigrateSyncCompleteCommandProperties struct {
 	// Input - Command input
 	Input *MigrateSyncCompleteCommandInput `json:"input,omitempty"`
-	// Output - Command output. This is ignored if submitted.
+	// Output - READ-ONLY; Command output. This is ignored if submitted.
 	Output *MigrateSyncCompleteCommandOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
+	// State - READ-ONLY; The state of the command. This is ignored if submitted. Possible values include: 'Unknown', 'Accepted', 'Running', 'Succeeded', 'Failed'
 	State CommandState `json:"state,omitempty"`
 	// CommandType - Possible values include: 'CommandTypeUnknown', 'CommandTypeMigrateSQLServerAzureDbSQLMiComplete', 'CommandTypeMigrateSyncCompleteDatabase'
 	CommandType CommandType `json:"commandType,omitempty"`
@@ -10549,15 +9412,6 @@ func (msccp MigrateSyncCompleteCommandProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if msccp.Input != nil {
 		objectMap["input"] = msccp.Input
-	}
-	if msccp.Output != nil {
-		objectMap["output"] = msccp.Output
-	}
-	if msccp.Errors != nil {
-		objectMap["errors"] = msccp.Errors
-	}
-	if msccp.State != "" {
-		objectMap["state"] = msccp.State
 	}
 	if msccp.CommandType != "" {
 		objectMap["commandType"] = msccp.CommandType
@@ -10587,44 +9441,44 @@ func (msccp MigrateSyncCompleteCommandProperties) AsBasicCommandProperties() (Ba
 
 // MigrationEligibilityInfo information about migration eligibility of a server object
 type MigrationEligibilityInfo struct {
-	// IsEligibileForMigration - Whether object is eligible for migration or not.
+	// IsEligibileForMigration - READ-ONLY; Whether object is eligible for migration or not.
 	IsEligibileForMigration *bool `json:"isEligibileForMigration,omitempty"`
-	// ValidationMessages - Information about eligibility failure for the server object.
+	// ValidationMessages - READ-ONLY; Information about eligibility failure for the server object.
 	ValidationMessages *[]string `json:"validationMessages,omitempty"`
 }
 
 // MigrationReportResult migration validation report result, contains the url for downloading the generated
 // report.
 type MigrationReportResult struct {
-	// ID - Migration validation result identifier
+	// ID - READ-ONLY; Migration validation result identifier
 	ID *string `json:"id,omitempty"`
-	// ReportURL - The url of the report.
+	// ReportURL - READ-ONLY; The url of the report.
 	ReportURL *string `json:"reportUrl,omitempty"`
 }
 
 // MigrationTableMetadata metadata for tables selected in migration project
 type MigrationTableMetadata struct {
-	// SourceTableName - Source table name
+	// SourceTableName - READ-ONLY; Source table name
 	SourceTableName *string `json:"sourceTableName,omitempty"`
-	// TargetTableName - Target table name
+	// TargetTableName - READ-ONLY; Target table name
 	TargetTableName *string `json:"targetTableName,omitempty"`
 }
 
 // MigrationValidationDatabaseSummaryResult migration Validation Database level summary result
 type MigrationValidationDatabaseSummaryResult struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// MigrationID - Migration Identifier
+	// MigrationID - READ-ONLY; Migration Identifier
 	MigrationID *string `json:"migrationId,omitempty"`
-	// SourceDatabaseName - Name of the source database
+	// SourceDatabaseName - READ-ONLY; Name of the source database
 	SourceDatabaseName *string `json:"sourceDatabaseName,omitempty"`
-	// TargetDatabaseName - Name of the target database
+	// TargetDatabaseName - READ-ONLY; Name of the target database
 	TargetDatabaseName *string `json:"targetDatabaseName,omitempty"`
-	// StartedOn - Validation start time
+	// StartedOn - READ-ONLY; Validation start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Validation end time
+	// EndedOn - READ-ONLY; Validation end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// Status - Current status of validation at the database level. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
+	// Status - READ-ONLY; Current status of validation at the database level. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
 	Status ValidationStatus `json:"status,omitempty"`
 }
 
@@ -10776,11 +9630,11 @@ type NameAvailabilityRequest struct {
 // NameAvailabilityResponse indicates whether a proposed resource name is available
 type NameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - If true, the name is valid and available. If false, 'reason' describes why not.
+	// NameAvailable - READ-ONLY; If true, the name is valid and available. If false, 'reason' describes why not.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason why the name is not available, if nameAvailable is false. Possible values include: 'AlreadyExists', 'Invalid'
+	// Reason - READ-ONLY; The reason why the name is not available, if nameAvailable is false. Possible values include: 'AlreadyExists', 'Invalid'
 	Reason NameCheckFailureReason `json:"reason,omitempty"`
-	// Message - The localized reason why the name is not available, if nameAvailable is false
+	// Message - READ-ONLY; The localized reason why the name is not available, if nameAvailable is false
 	Message *string `json:"message,omitempty"`
 }
 
@@ -10792,19 +9646,19 @@ type NonSQLDataMigrationTable struct {
 
 // NonSQLDataMigrationTableResult object used to report the data migration results of a table
 type NonSQLDataMigrationTableResult struct {
-	// ResultCode - Result code of the data migration. Possible values include: 'Initial', 'Completed', 'ObjectNotExistsInSource', 'ObjectNotExistsInTarget', 'TargetObjectIsInaccessible', 'FatalError'
+	// ResultCode - READ-ONLY; Result code of the data migration. Possible values include: 'Initial', 'Completed', 'ObjectNotExistsInSource', 'ObjectNotExistsInTarget', 'TargetObjectIsInaccessible', 'FatalError'
 	ResultCode ResultCode `json:"resultCode,omitempty"`
-	// SourceName - Name of the source table
+	// SourceName - READ-ONLY; Name of the source table
 	SourceName *string `json:"sourceName,omitempty"`
-	// TargetName - Name of the target table
+	// TargetName - READ-ONLY; Name of the target table
 	TargetName *string `json:"targetName,omitempty"`
-	// SourceRowCount - Number of rows in the source table
+	// SourceRowCount - READ-ONLY; Number of rows in the source table
 	SourceRowCount *int64 `json:"sourceRowCount,omitempty"`
-	// TargetRowCount - Number of rows in the target table
+	// TargetRowCount - READ-ONLY; Number of rows in the target table
 	TargetRowCount *int64 `json:"targetRowCount,omitempty"`
-	// ElapsedTimeInMiliseconds - Time taken to migrate the data
+	// ElapsedTimeInMiliseconds - READ-ONLY; Time taken to migrate the data
 	ElapsedTimeInMiliseconds *float64 `json:"elapsedTimeInMiliseconds,omitempty"`
-	// Errors - List of errors, if any, during migration
+	// Errors - READ-ONLY; List of errors, if any, during migration
 	Errors *[]Error `json:"errors,omitempty"`
 }
 
@@ -10824,61 +9678,37 @@ type NonSQLMigrationTaskInput struct {
 
 // NonSQLMigrationTaskOutput base class for non sql migration task output
 type NonSQLMigrationTaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// StartedOn - Migration start time
+	// StartedOn - READ-ONLY; Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
-	// EndedOn - Migration end time
+	// EndedOn - READ-ONLY; Migration end time
 	EndedOn *date.Time `json:"endedOn,omitempty"`
-	// Status - Current state of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
+	// Status - READ-ONLY; Current state of migration. Possible values include: 'MigrationStatusDefault', 'MigrationStatusConnecting', 'MigrationStatusSourceAndTargetSelected', 'MigrationStatusSelectLogins', 'MigrationStatusConfigured', 'MigrationStatusRunning', 'MigrationStatusError', 'MigrationStatusStopped', 'MigrationStatusCompleted', 'MigrationStatusCompletedWithWarnings'
 	Status MigrationStatus `json:"status,omitempty"`
-	// DataMigrationTableResults - Results of the migration. The key contains the table name and the value the table result object
+	// DataMigrationTableResults - READ-ONLY; Results of the migration. The key contains the table name and the value the table result object
 	DataMigrationTableResults map[string]*NonSQLDataMigrationTableResult `json:"dataMigrationTableResults"`
-	// ProgressMessage - Message about the progress of the migration
+	// ProgressMessage - READ-ONLY; Message about the progress of the migration
 	ProgressMessage *string `json:"progressMessage,omitempty"`
-	// SourceServerName - Name of source server
+	// SourceServerName - READ-ONLY; Name of source server
 	SourceServerName *string `json:"sourceServerName,omitempty"`
-	// TargetServerName - Name of target server
+	// TargetServerName - READ-ONLY; Name of target server
 	TargetServerName *string `json:"targetServerName,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NonSQLMigrationTaskOutput.
 func (nsmto NonSQLMigrationTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if nsmto.ID != nil {
-		objectMap["id"] = nsmto.ID
-	}
-	if nsmto.StartedOn != nil {
-		objectMap["startedOn"] = nsmto.StartedOn
-	}
-	if nsmto.EndedOn != nil {
-		objectMap["endedOn"] = nsmto.EndedOn
-	}
-	if nsmto.Status != "" {
-		objectMap["status"] = nsmto.Status
-	}
-	if nsmto.DataMigrationTableResults != nil {
-		objectMap["dataMigrationTableResults"] = nsmto.DataMigrationTableResults
-	}
-	if nsmto.ProgressMessage != nil {
-		objectMap["progressMessage"] = nsmto.ProgressMessage
-	}
-	if nsmto.SourceServerName != nil {
-		objectMap["sourceServerName"] = nsmto.SourceServerName
-	}
-	if nsmto.TargetServerName != nil {
-		objectMap["targetServerName"] = nsmto.TargetServerName
-	}
 	return json.Marshal(objectMap)
 }
 
 // ODataError error information in OData format.
 type ODataError struct {
-	// Code - The machine-readable description of the error, such as 'InvalidRequest' or 'InternalServerError'
+	// Code - READ-ONLY; The machine-readable description of the error, such as 'InvalidRequest' or 'InternalServerError'
 	Code *string `json:"code,omitempty"`
-	// Message - The human-readable description of the error
+	// Message - READ-ONLY; The human-readable description of the error
 	Message *string `json:"message,omitempty"`
-	// Details - Inner errors that caused this error
+	// Details - READ-ONLY; Inner errors that caused this error
 	Details *[]ODataError `json:"details,omitempty"`
 }
 
@@ -10970,11 +9800,11 @@ type Project struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10989,15 +9819,6 @@ func (p Project) MarshalJSON() ([]byte, error) {
 	}
 	if p.Location != nil {
 		objectMap["location"] = p.Location
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11219,21 +10040,21 @@ func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectL
 
 // ProjectMetadata common metadata for migration projects
 type ProjectMetadata struct {
-	// SourceServerName - Source server name
+	// SourceServerName - READ-ONLY; Source server name
 	SourceServerName *string `json:"sourceServerName,omitempty"`
-	// SourceServerPort - Source server port number
+	// SourceServerPort - READ-ONLY; Source server port number
 	SourceServerPort *string `json:"sourceServerPort,omitempty"`
-	// SourceUsername - Source username
+	// SourceUsername - READ-ONLY; Source username
 	SourceUsername *string `json:"sourceUsername,omitempty"`
-	// TargetServerName - Target server name
+	// TargetServerName - READ-ONLY; Target server name
 	TargetServerName *string `json:"targetServerName,omitempty"`
-	// TargetUsername - Target username
+	// TargetUsername - READ-ONLY; Target username
 	TargetUsername *string `json:"targetUsername,omitempty"`
-	// TargetDbName - Target database name
+	// TargetDbName - READ-ONLY; Target database name
 	TargetDbName *string `json:"targetDbName,omitempty"`
-	// TargetUsingWinAuth - Whether target connection is Windows authentication
+	// TargetUsingWinAuth - READ-ONLY; Whether target connection is Windows authentication
 	TargetUsingWinAuth *bool `json:"targetUsingWinAuth,omitempty"`
-	// SelectedMigrationTables - List of tables selected for migration
+	// SelectedMigrationTables - READ-ONLY; List of tables selected for migration
 	SelectedMigrationTables *[]MigrationTableMetadata `json:"selectedMigrationTables,omitempty"`
 }
 
@@ -11243,7 +10064,7 @@ type ProjectProperties struct {
 	SourcePlatform ProjectSourcePlatform `json:"sourcePlatform,omitempty"`
 	// TargetPlatform - Target platform for the project. Possible values include: 'ProjectTargetPlatformSQLDB', 'ProjectTargetPlatformUnknown'
 	TargetPlatform ProjectTargetPlatform `json:"targetPlatform,omitempty"`
-	// CreationTime - UTC Date and time when project was created
+	// CreationTime - READ-ONLY; UTC Date and time when project was created
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// SourceConnectionInfo - Information for connecting to source
 	SourceConnectionInfo BasicConnectionInfo `json:"sourceConnectionInfo,omitempty"`
@@ -11251,7 +10072,7 @@ type ProjectProperties struct {
 	TargetConnectionInfo BasicConnectionInfo `json:"targetConnectionInfo,omitempty"`
 	// DatabasesInfo - List of DatabaseInfo
 	DatabasesInfo *[]DatabaseInfo `json:"databasesInfo,omitempty"`
-	// ProvisioningState - The project's provisioning state. Possible values include: 'ProjectProvisioningStateDeleting', 'ProjectProvisioningStateSucceeded'
+	// ProvisioningState - READ-ONLY; The project's provisioning state. Possible values include: 'ProjectProvisioningStateDeleting', 'ProjectProvisioningStateSucceeded'
 	ProvisioningState ProjectProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -11338,11 +10159,11 @@ type ProjectTask struct {
 	Etag *string `json:"etag,omitempty"`
 	// Properties - Custom task properties
 	Properties BasicProjectTaskProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11436,11 +10257,11 @@ type BasicProjectTaskProperties interface {
 // ProjectTaskProperties base class for all types of DMS task properties. If task is not supported by current
 // client, this object is returned.
 type ProjectTaskProperties struct {
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -11571,15 +10392,6 @@ func unmarshalBasicProjectTaskPropertiesArray(body []byte) ([]BasicProjectTaskPr
 func (ptp ProjectTaskProperties) MarshalJSON() ([]byte, error) {
 	ptp.TaskType = TaskTypeUnknown
 	objectMap := make(map[string]interface{})
-	if ptp.Errors != nil {
-		objectMap["errors"] = ptp.Errors
-	}
-	if ptp.State != "" {
-		objectMap["state"] = ptp.State
-	}
-	if ptp.Commands != nil {
-		objectMap["commands"] = ptp.Commands
-	}
 	if ptp.TaskType != "" {
 		objectMap["taskType"] = ptp.TaskType
 	}
@@ -11758,21 +10570,21 @@ func (ptp *ProjectTaskProperties) UnmarshalJSON(body []byte) error {
 
 // QueryAnalysisValidationResult results for query analysis comparison between the source and target
 type QueryAnalysisValidationResult struct {
-	// QueryResults - List of queries executed and it's execution results in source and target
+	// QueryResults - READ-ONLY; List of queries executed and it's execution results in source and target
 	QueryResults *QueryExecutionResult `json:"queryResults,omitempty"`
-	// ValidationErrors - Errors that are part of the execution
+	// ValidationErrors - READ-ONLY; Errors that are part of the execution
 	ValidationErrors *ValidationError `json:"validationErrors,omitempty"`
 }
 
 // QueryExecutionResult describes query analysis results for execution in source and target
 type QueryExecutionResult struct {
-	// QueryText - Query text retrieved from the source server
+	// QueryText - READ-ONLY; Query text retrieved from the source server
 	QueryText *string `json:"queryText,omitempty"`
-	// StatementsInBatch - Total no. of statements in the batch
+	// StatementsInBatch - READ-ONLY; Total no. of statements in the batch
 	StatementsInBatch *int64 `json:"statementsInBatch,omitempty"`
-	// SourceResult - Query analysis result from the source
+	// SourceResult - READ-ONLY; Query analysis result from the source
 	SourceResult *ExecutionStatistics `json:"sourceResult,omitempty"`
-	// TargetResult - Query analysis result from the target
+	// TargetResult - READ-ONLY; Query analysis result from the target
 	TargetResult *ExecutionStatistics `json:"targetResult,omitempty"`
 }
 
@@ -11946,95 +10758,95 @@ type QuotaName struct {
 
 // ReportableException exception object for all custom exceptions
 type ReportableException struct {
-	// Message - Error message
+	// Message - READ-ONLY; Error message
 	Message *string `json:"message,omitempty"`
 	// ActionableMessage - Actionable steps for this exception
 	ActionableMessage *string `json:"actionableMessage,omitempty"`
-	// FilePath - The path to the file where exception occurred
+	// FilePath - READ-ONLY; The path to the file where exception occurred
 	FilePath *string `json:"filePath,omitempty"`
-	// LineNumber - The line number where exception occurred
+	// LineNumber - READ-ONLY; The line number where exception occurred
 	LineNumber *string `json:"lineNumber,omitempty"`
-	// HResult - Coded numerical value that is assigned to a specific exception
+	// HResult - READ-ONLY; Coded numerical value that is assigned to a specific exception
 	HResult *int32 `json:"hResult,omitempty"`
-	// StackTrace - Stack trace
+	// StackTrace - READ-ONLY; Stack trace
 	StackTrace *string `json:"stackTrace,omitempty"`
 }
 
 // Resource ARM resource.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // ResourceSku describes an available DMS SKU.
 type ResourceSku struct {
-	// ResourceType - The type of resource the SKU applies to.
+	// ResourceType - READ-ONLY; The type of resource the SKU applies to.
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Name - The name of SKU.
+	// Name - READ-ONLY; The name of SKU.
 	Name *string `json:"name,omitempty"`
-	// Tier - Specifies the tier of DMS in a scale set.
+	// Tier - READ-ONLY; Specifies the tier of DMS in a scale set.
 	Tier *string `json:"tier,omitempty"`
-	// Size - The Size of the SKU.
+	// Size - READ-ONLY; The Size of the SKU.
 	Size *string `json:"size,omitempty"`
-	// Family - The Family of this particular SKU.
+	// Family - READ-ONLY; The Family of this particular SKU.
 	Family *string `json:"family,omitempty"`
-	// Kind - The Kind of resources that are supported in this SKU.
+	// Kind - READ-ONLY; The Kind of resources that are supported in this SKU.
 	Kind *string `json:"kind,omitempty"`
-	// Capacity - Not used.
+	// Capacity - READ-ONLY; Not used.
 	Capacity *ResourceSkuCapacity `json:"capacity,omitempty"`
-	// Locations - The set of locations that the SKU is available.
+	// Locations - READ-ONLY; The set of locations that the SKU is available.
 	Locations *[]string `json:"locations,omitempty"`
-	// APIVersions - The api versions that support this SKU.
+	// APIVersions - READ-ONLY; The api versions that support this SKU.
 	APIVersions *[]string `json:"apiVersions,omitempty"`
-	// Costs - Metadata for retrieving price info.
+	// Costs - READ-ONLY; Metadata for retrieving price info.
 	Costs *[]ResourceSkuCosts `json:"costs,omitempty"`
-	// Capabilities - A name value pair to describe the capability.
+	// Capabilities - READ-ONLY; A name value pair to describe the capability.
 	Capabilities *[]ResourceSkuCapabilities `json:"capabilities,omitempty"`
-	// Restrictions - The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
+	// Restrictions - READ-ONLY; The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
 	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
 }
 
 // ResourceSkuCapabilities describes The SKU capabilities object.
 type ResourceSkuCapabilities struct {
-	// Name - An invariant to describe the feature.
+	// Name - READ-ONLY; An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
-	// Value - An invariant if the feature is measured by quantity.
+	// Value - READ-ONLY; An invariant if the feature is measured by quantity.
 	Value *string `json:"value,omitempty"`
 }
 
 // ResourceSkuCapacity describes scaling information of a SKU.
 type ResourceSkuCapacity struct {
-	// Minimum - The minimum capacity.
+	// Minimum - READ-ONLY; The minimum capacity.
 	Minimum *int64 `json:"minimum,omitempty"`
-	// Maximum - The maximum capacity.
+	// Maximum - READ-ONLY; The maximum capacity.
 	Maximum *int64 `json:"maximum,omitempty"`
-	// Default - The default capacity.
+	// Default - READ-ONLY; The default capacity.
 	Default *int64 `json:"default,omitempty"`
-	// ScaleType - The scale type applicable to the SKU. Possible values include: 'ResourceSkuCapacityScaleTypeAutomatic', 'ResourceSkuCapacityScaleTypeManual', 'ResourceSkuCapacityScaleTypeNone'
+	// ScaleType - READ-ONLY; The scale type applicable to the SKU. Possible values include: 'ResourceSkuCapacityScaleTypeAutomatic', 'ResourceSkuCapacityScaleTypeManual', 'ResourceSkuCapacityScaleTypeNone'
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
 // ResourceSkuCosts describes metadata for retrieving price info.
 type ResourceSkuCosts struct {
-	// MeterID - Used for querying price from commerce.
+	// MeterID - READ-ONLY; Used for querying price from commerce.
 	MeterID *string `json:"meterID,omitempty"`
-	// Quantity - The multiplier is needed to extend the base metered cost.
+	// Quantity - READ-ONLY; The multiplier is needed to extend the base metered cost.
 	Quantity *int64 `json:"quantity,omitempty"`
-	// ExtendedUnit - An invariant to show the extended unit.
+	// ExtendedUnit - READ-ONLY; An invariant to show the extended unit.
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
 // ResourceSkuRestrictions describes scaling information of a SKU.
 type ResourceSkuRestrictions struct {
-	// Type - The type of restrictions. Possible values include: 'Location'
+	// Type - READ-ONLY; The type of restrictions. Possible values include: 'Location'
 	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
-	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// Values - READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
 	Values *[]string `json:"values,omitempty"`
-	// ReasonCode - The reason code for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	// ReasonCode - READ-ONLY; The reason code for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }
 
@@ -12186,9 +10998,9 @@ func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusRes
 
 // SchemaComparisonValidationResult results for schema comparison between the source and target
 type SchemaComparisonValidationResult struct {
-	// SchemaDifferences - List of schema differences between the source and target databases
+	// SchemaDifferences - READ-ONLY; List of schema differences between the source and target databases
 	SchemaDifferences *SchemaComparisonValidationResultType `json:"schemaDifferences,omitempty"`
-	// ValidationErrors - List of errors that happened while performing schema compare validation
+	// ValidationErrors - READ-ONLY; List of errors that happened while performing schema compare validation
 	ValidationErrors *ValidationError `json:"validationErrors,omitempty"`
 	// SourceDatabaseObjectCount - Count of source database objects
 	SourceDatabaseObjectCount map[string]*int64 `json:"sourceDatabaseObjectCount"`
@@ -12199,12 +11011,6 @@ type SchemaComparisonValidationResult struct {
 // MarshalJSON is the custom marshaler for SchemaComparisonValidationResult.
 func (scvr SchemaComparisonValidationResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scvr.SchemaDifferences != nil {
-		objectMap["schemaDifferences"] = scvr.SchemaDifferences
-	}
-	if scvr.ValidationErrors != nil {
-		objectMap["validationErrors"] = scvr.ValidationErrors
-	}
 	if scvr.SourceDatabaseObjectCount != nil {
 		objectMap["sourceDatabaseObjectCount"] = scvr.SourceDatabaseObjectCount
 	}
@@ -12217,11 +11023,11 @@ func (scvr SchemaComparisonValidationResult) MarshalJSON() ([]byte, error) {
 // SchemaComparisonValidationResultType description about the errors happen while performing migration
 // validation
 type SchemaComparisonValidationResultType struct {
-	// ObjectName - Name of the object that has the difference
+	// ObjectName - READ-ONLY; Name of the object that has the difference
 	ObjectName *string `json:"objectName,omitempty"`
-	// ObjectType - Type of the object that has the difference. e.g (Table/View/StoredProcedure). Possible values include: 'StoredProcedures', 'Table', 'User', 'View', 'Function'
+	// ObjectType - READ-ONLY; Type of the object that has the difference. e.g (Table/View/StoredProcedure). Possible values include: 'StoredProcedures', 'Table', 'User', 'View', 'Function'
 	ObjectType ObjectType `json:"objectType,omitempty"`
-	// UpdateAction - Update action type with respect to target. Possible values include: 'DeletedOnTarget', 'ChangedOnTarget', 'AddedOnTarget'
+	// UpdateAction - READ-ONLY; Update action type with respect to target. Possible values include: 'DeletedOnTarget', 'ChangedOnTarget', 'AddedOnTarget'
 	UpdateAction UpdateActionType `json:"updateAction,omitempty"`
 }
 
@@ -12235,17 +11041,17 @@ type SelectedCertificateInput struct {
 
 // ServerProperties server properties for Oracle, MySQL type source
 type ServerProperties struct {
-	// ServerPlatform - Name of the server platform
+	// ServerPlatform - READ-ONLY; Name of the server platform
 	ServerPlatform *string `json:"serverPlatform,omitempty"`
-	// ServerName - Name of the server
+	// ServerName - READ-ONLY; Name of the server
 	ServerName *string `json:"serverName,omitempty"`
-	// ServerVersion - Version of the database server
+	// ServerVersion - READ-ONLY; Version of the database server
 	ServerVersion *string `json:"serverVersion,omitempty"`
-	// ServerEdition - Edition of the database server
+	// ServerEdition - READ-ONLY; Edition of the database server
 	ServerEdition *string `json:"serverEdition,omitempty"`
-	// ServerOperatingSystemVersion - Version of the operating system
+	// ServerOperatingSystemVersion - READ-ONLY; Version of the operating system
 	ServerOperatingSystemVersion *string `json:"serverOperatingSystemVersion,omitempty"`
-	// ServerDatabaseCount - Number of databases in the server
+	// ServerDatabaseCount - READ-ONLY; Number of databases in the server
 	ServerDatabaseCount *int32 `json:"serverDatabaseCount,omitempty"`
 }
 
@@ -12264,11 +11070,11 @@ type Service struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12292,15 +11098,6 @@ func (s Service) MarshalJSON() ([]byte, error) {
 	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12715,7 +11512,7 @@ func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperat
 
 // ServiceProperties properties of the Data Migration service instance
 type ServiceProperties struct {
-	// ProvisioningState - The resource's provisioning state. Possible values include: 'ServiceProvisioningStateAccepted', 'ServiceProvisioningStateDeleting', 'ServiceProvisioningStateDeploying', 'ServiceProvisioningStateStopped', 'ServiceProvisioningStateStopping', 'ServiceProvisioningStateStarting', 'ServiceProvisioningStateFailedToStart', 'ServiceProvisioningStateFailedToStop', 'ServiceProvisioningStateSucceeded', 'ServiceProvisioningStateFailed'
+	// ProvisioningState - READ-ONLY; The resource's provisioning state. Possible values include: 'ServiceProvisioningStateAccepted', 'ServiceProvisioningStateDeleting', 'ServiceProvisioningStateDeploying', 'ServiceProvisioningStateStopped', 'ServiceProvisioningStateStopping', 'ServiceProvisioningStateStarting', 'ServiceProvisioningStateFailedToStart', 'ServiceProvisioningStateFailedToStop', 'ServiceProvisioningStateSucceeded', 'ServiceProvisioningStateFailed'
 	ProvisioningState ServiceProvisioningState `json:"provisioningState,omitempty"`
 	// PublicKey - The public key of the service, used to encrypt secrets sent to the service
 	PublicKey *string `json:"publicKey,omitempty"`
@@ -12733,7 +11530,7 @@ type ServicesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Service, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12762,7 +11559,7 @@ type ServicesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesDeleteFuture) Result(client ServicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12945,7 +11742,7 @@ type ServicesStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesStartFuture) Result(client ServicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12967,7 +11764,7 @@ type ServicesStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesStopFuture) Result(client ServicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -13003,7 +11800,7 @@ type ServicesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicesUpdateFuture) Result(client ServicesClient) (s Service, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServicesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -13135,21 +11932,21 @@ type SQLServerSQLMISyncTaskInput struct {
 
 // StartMigrationScenarioServerRoleResult server role migration result
 type StartMigrationScenarioServerRoleResult struct {
-	// Name - Name of server role.
+	// Name - READ-ONLY; Name of server role.
 	Name *string `json:"name,omitempty"`
-	// State - Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
+	// State - READ-ONLY; Current state of migration. Possible values include: 'MigrationStateNone', 'MigrationStateInProgress', 'MigrationStateFailed', 'MigrationStateWarning', 'MigrationStateCompleted', 'MigrationStateSkipped', 'MigrationStateStopped'
 	State MigrationState `json:"state,omitempty"`
-	// ExceptionsAndWarnings - Migration exceptions and warnings.
+	// ExceptionsAndWarnings - READ-ONLY; Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
 }
 
 // SyncMigrationDatabaseErrorEvent database migration errors for online migration
 type SyncMigrationDatabaseErrorEvent struct {
-	// TimestampString - String value of timestamp.
+	// TimestampString - READ-ONLY; String value of timestamp.
 	TimestampString *string `json:"timestampString,omitempty"`
-	// EventTypeString - Event type.
+	// EventTypeString - READ-ONLY; Event type.
 	EventTypeString *string `json:"eventTypeString,omitempty"`
-	// EventText - Event text.
+	// EventText - READ-ONLY; Event text.
 	EventText *string `json:"eventText,omitempty"`
 }
 
@@ -13305,11 +12102,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13322,15 +12119,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -13339,13 +12127,13 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties struct {
 	// Input - Task input
 	Input *ValidateSyncMigrationInputSQLServerTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ValidateSyncMigrationInputSQLServerTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -13357,18 +12145,6 @@ func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) Marshal
 	objectMap := make(map[string]interface{})
 	if vmisssdstp.Input != nil {
 		objectMap["input"] = vmisssdstp.Input
-	}
-	if vmisssdstp.Output != nil {
-		objectMap["output"] = vmisssdstp.Output
-	}
-	if vmisssdstp.Errors != nil {
-		objectMap["errors"] = vmisssdstp.Errors
-	}
-	if vmisssdstp.State != "" {
-		objectMap["state"] = vmisssdstp.State
-	}
-	if vmisssdstp.Commands != nil {
-		objectMap["commands"] = vmisssdstp.Commands
 	}
 	if vmisssdstp.TaskType != "" {
 		objectMap["taskType"] = vmisssdstp.TaskType
@@ -13584,11 +12360,11 @@ type ValidateMigrationInputSQLServerSQLMISyncTaskInput struct {
 // ValidateMigrationInputSQLServerSQLMISyncTaskOutput output for task that validates migration input for
 // Azure SQL Database Managed Instance online migration
 type ValidateMigrationInputSQLServerSQLMISyncTaskOutput struct {
-	// ID - Database identifier
+	// ID - READ-ONLY; Database identifier
 	ID *string `json:"id,omitempty"`
-	// Name - Name of database
+	// Name - READ-ONLY; Name of database
 	Name *string `json:"name,omitempty"`
-	// ValidationErrors - Errors associated with a selected database object
+	// ValidationErrors - READ-ONLY; Errors associated with a selected database object
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
@@ -13597,13 +12373,13 @@ type ValidateMigrationInputSQLServerSQLMISyncTaskOutput struct {
 type ValidateMigrationInputSQLServerSQLMISyncTaskProperties struct {
 	// Input - Task input
 	Input *ValidateMigrationInputSQLServerSQLMISyncTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ValidateMigrationInputSQLServerSQLMISyncTaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -13615,18 +12391,6 @@ func (vmisssmstp ValidateMigrationInputSQLServerSQLMISyncTaskProperties) Marshal
 	objectMap := make(map[string]interface{})
 	if vmisssmstp.Input != nil {
 		objectMap["input"] = vmisssmstp.Input
-	}
-	if vmisssmstp.Output != nil {
-		objectMap["output"] = vmisssmstp.Output
-	}
-	if vmisssmstp.Errors != nil {
-		objectMap["errors"] = vmisssmstp.Errors
-	}
-	if vmisssmstp.State != "" {
-		objectMap["state"] = vmisssmstp.State
-	}
-	if vmisssmstp.Commands != nil {
-		objectMap["commands"] = vmisssmstp.Commands
 	}
 	if vmisssmstp.TaskType != "" {
 		objectMap["taskType"] = vmisssmstp.TaskType
@@ -13844,19 +12608,19 @@ type ValidateMigrationInputSQLServerSQLMITaskInput struct {
 // ValidateMigrationInputSQLServerSQLMITaskOutput output for task that validates migration input for SQL to
 // Azure SQL Managed Instance migrations
 type ValidateMigrationInputSQLServerSQLMITaskOutput struct {
-	// ID - Result identifier
+	// ID - READ-ONLY; Result identifier
 	ID *string `json:"id,omitempty"`
-	// Name - Name of database
+	// Name - READ-ONLY; Name of database
 	Name *string `json:"name,omitempty"`
-	// RestoreDatabaseNameErrors - Errors associated with the RestoreDatabaseName
+	// RestoreDatabaseNameErrors - READ-ONLY; Errors associated with the RestoreDatabaseName
 	RestoreDatabaseNameErrors *[]ReportableException `json:"restoreDatabaseNameErrors,omitempty"`
-	// BackupFolderErrors - Errors associated with the BackupFolder path
+	// BackupFolderErrors - READ-ONLY; Errors associated with the BackupFolder path
 	BackupFolderErrors *[]ReportableException `json:"backupFolderErrors,omitempty"`
-	// BackupShareCredentialsErrors - Errors associated with backup share user name and password credentials
+	// BackupShareCredentialsErrors - READ-ONLY; Errors associated with backup share user name and password credentials
 	BackupShareCredentialsErrors *[]ReportableException `json:"backupShareCredentialsErrors,omitempty"`
-	// BackupStorageAccountErrors - Errors associated with the storage account provided.
+	// BackupStorageAccountErrors - READ-ONLY; Errors associated with the storage account provided.
 	BackupStorageAccountErrors *[]ReportableException `json:"backupStorageAccountErrors,omitempty"`
-	// ExistingBackupErrors - Errors associated with existing backup files.
+	// ExistingBackupErrors - READ-ONLY; Errors associated with existing backup files.
 	ExistingBackupErrors *[]ReportableException `json:"existingBackupErrors,omitempty"`
 	// DatabaseBackupInfo - Information about backup files when existing backup mode is used.
 	DatabaseBackupInfo *DatabaseBackupInfo `json:"databaseBackupInfo,omitempty"`
@@ -13867,13 +12631,13 @@ type ValidateMigrationInputSQLServerSQLMITaskOutput struct {
 type ValidateMigrationInputSQLServerSQLMITaskProperties struct {
 	// Input - Task input
 	Input *ValidateMigrationInputSQLServerSQLMITaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
+	// Output - READ-ONLY; Task output. This is ignored if submitted.
 	Output *[]ValidateMigrationInputSQLServerSQLMITaskOutput `json:"output,omitempty"`
-	// Errors - Array of errors. This is ignored if submitted.
+	// Errors - READ-ONLY; Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
-	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
+	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// Commands - Array of command properties.
+	// Commands - READ-ONLY; Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMISyncLRS', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetAzureDbForPostgreSQLSync', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourcePostgreSQLSync', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectToSourceMySQL'
 	TaskType TaskType `json:"taskType,omitempty"`
@@ -13885,18 +12649,6 @@ func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) MarshalJSON(
 	objectMap := make(map[string]interface{})
 	if vmisssmtp.Input != nil {
 		objectMap["input"] = vmisssmtp.Input
-	}
-	if vmisssmtp.Output != nil {
-		objectMap["output"] = vmisssmtp.Output
-	}
-	if vmisssmtp.Errors != nil {
-		objectMap["errors"] = vmisssmtp.Errors
-	}
-	if vmisssmtp.State != "" {
-		objectMap["state"] = vmisssmtp.State
-	}
-	if vmisssmtp.Commands != nil {
-		objectMap["commands"] = vmisssmtp.Commands
 	}
 	if vmisssmtp.TaskType != "" {
 		objectMap["taskType"] = vmisssmtp.TaskType
@@ -14106,28 +12858,28 @@ type ValidateSyncMigrationInputSQLServerTaskInput struct {
 // ValidateSyncMigrationInputSQLServerTaskOutput output for task that validates migration input for SQL
 // sync migrations
 type ValidateSyncMigrationInputSQLServerTaskOutput struct {
-	// ID - Database identifier
+	// ID - READ-ONLY; Database identifier
 	ID *string `json:"id,omitempty"`
-	// Name - Name of database
+	// Name - READ-ONLY; Name of database
 	Name *string `json:"name,omitempty"`
-	// ValidationErrors - Errors associated with a selected database object
+	// ValidationErrors - READ-ONLY; Errors associated with a selected database object
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
 // ValidationError description about the errors happen while performing migration validation
 type ValidationError struct {
-	// Text - Error Text
+	// Text - READ-ONLY; Error Text
 	Text *string `json:"text,omitempty"`
-	// Severity - Severity of the error. Possible values include: 'SeverityMessage', 'SeverityWarning', 'SeverityError'
+	// Severity - READ-ONLY; Severity of the error. Possible values include: 'SeverityMessage', 'SeverityWarning', 'SeverityError'
 	Severity Severity `json:"severity,omitempty"`
 }
 
 // WaitStatistics wait statistics gathered during query batch execution
 type WaitStatistics struct {
-	// WaitType - Type of the Wait
+	// WaitType - READ-ONLY; Type of the Wait
 	WaitType *string `json:"waitType,omitempty"`
-	// WaitTimeMs - Total wait time in millisecond(s)
+	// WaitTimeMs - READ-ONLY; Total wait time in millisecond(s)
 	WaitTimeMs *float64 `json:"waitTimeMs,omitempty"`
-	// WaitCount - Total no. of waits
+	// WaitCount - READ-ONLY; Total no. of waits
 	WaitCount *int64 `json:"waitCount,omitempty"`
 }

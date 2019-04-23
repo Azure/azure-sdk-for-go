@@ -20,12 +20,13 @@ package servicefabric
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -342,7 +343,7 @@ type ApplicationDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationDeleteFuture) Result(client ApplicationClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -411,7 +412,7 @@ type ApplicationPatchFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationPatchFuture) Result(client ApplicationClient) (aru ApplicationResourceUpdate, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPatchFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -457,7 +458,7 @@ type ApplicationPutFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationPutFuture) Result(client ApplicationClient) (ar ApplicationResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPutFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -682,7 +683,7 @@ type ApplicationTypeDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ApplicationTypeDeleteFuture) Result(client ApplicationTypeClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1170,7 +1171,7 @@ type ClustersCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1199,7 +1200,7 @@ type ClustersUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ClustersUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1775,7 +1776,7 @@ type ServiceDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceDeleteFuture) Result(client ServiceClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ServiceDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1811,7 +1812,7 @@ type ServicePatchFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicePatchFuture) Result(client ServiceClient) (sru ServiceResourceUpdate, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ServicePatchFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2185,7 +2186,7 @@ type ServicePutFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServicePutFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ServicePutFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3493,7 +3494,7 @@ type VersionDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VersionDeleteFuture) Result(client VersionClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.VersionDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3524,7 +3525,7 @@ type VersionPutFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VersionPutFuture) Result(client VersionClient) (vr VersionResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.VersionPutFuture", "Result", future.Response(), "Polling failure")
 		return

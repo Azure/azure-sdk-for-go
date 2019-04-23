@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-12-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-02-01/network"
 )
 
 const (
@@ -220,7 +220,6 @@ const (
 type AzureFirewallRCActionType = original.AzureFirewallRCActionType
 
 const (
-	AzureFirewallRCActionTypeAlert AzureFirewallRCActionType = original.AzureFirewallRCActionTypeAlert
 	AzureFirewallRCActionTypeAllow AzureFirewallRCActionType = original.AzureFirewallRCActionTypeAllow
 	AzureFirewallRCActionTypeDeny  AzureFirewallRCActionType = original.AzureFirewallRCActionTypeDeny
 )
@@ -291,6 +290,13 @@ const (
 	High    DdosCustomPolicyTriggerSensitivityOverride = original.High
 	Low     DdosCustomPolicyTriggerSensitivityOverride = original.Low
 	Relaxed DdosCustomPolicyTriggerSensitivityOverride = original.Relaxed
+)
+
+type DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverage
+
+const (
+	DdosSettingsProtectionCoverageBasic    DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverageBasic
+	DdosSettingsProtectionCoverageStandard DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverageStandard
 )
 
 type DhGroup = original.DhGroup
@@ -517,6 +523,14 @@ const (
 	IssueTypeUserDefinedRoute    IssueType = original.IssueTypeUserDefinedRoute
 )
 
+type LoadBalancerOutboundRuleProtocol = original.LoadBalancerOutboundRuleProtocol
+
+const (
+	LoadBalancerOutboundRuleProtocolAll LoadBalancerOutboundRuleProtocol = original.LoadBalancerOutboundRuleProtocolAll
+	LoadBalancerOutboundRuleProtocolTCP LoadBalancerOutboundRuleProtocol = original.LoadBalancerOutboundRuleProtocolTCP
+	LoadBalancerOutboundRuleProtocolUDP LoadBalancerOutboundRuleProtocol = original.LoadBalancerOutboundRuleProtocolUDP
+)
+
 type LoadBalancerSkuName = original.LoadBalancerSkuName
 
 const (
@@ -530,6 +544,12 @@ const (
 	LoadDistributionDefault          LoadDistribution = original.LoadDistributionDefault
 	LoadDistributionSourceIP         LoadDistribution = original.LoadDistributionSourceIP
 	LoadDistributionSourceIPProtocol LoadDistribution = original.LoadDistributionSourceIPProtocol
+)
+
+type NatGatewaySkuName = original.NatGatewaySkuName
+
+const (
+	Standard NatGatewaySkuName = original.Standard
 )
 
 type NextHopType = original.NextHopType
@@ -625,13 +645,6 @@ const (
 	X86   ProcessorArchitecture = original.X86
 )
 
-type ProtectionCoverage = original.ProtectionCoverage
-
-const (
-	ProtectionCoverageBasic    ProtectionCoverage = original.ProtectionCoverageBasic
-	ProtectionCoverageStandard ProtectionCoverage = original.ProtectionCoverageStandard
-)
-
 type Protocol = original.Protocol
 
 const (
@@ -639,14 +652,6 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 	ProtocolIcmp  Protocol = original.ProtocolIcmp
 	ProtocolTCP   Protocol = original.ProtocolTCP
-)
-
-type Protocol1 = original.Protocol1
-
-const (
-	Protocol1All Protocol1 = original.Protocol1All
-	Protocol1TCP Protocol1 = original.Protocol1TCP
-	Protocol1UDP Protocol1 = original.Protocol1UDP
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -668,7 +673,7 @@ const (
 type PublicIPPrefixSkuName = original.PublicIPPrefixSkuName
 
 const (
-	Standard PublicIPPrefixSkuName = original.Standard
+	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = original.PublicIPPrefixSkuNameStandard
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -708,6 +713,8 @@ type SecurityRuleProtocol = original.SecurityRuleProtocol
 
 const (
 	SecurityRuleProtocolAsterisk SecurityRuleProtocol = original.SecurityRuleProtocolAsterisk
+	SecurityRuleProtocolEsp      SecurityRuleProtocol = original.SecurityRuleProtocolEsp
+	SecurityRuleProtocolIcmp     SecurityRuleProtocol = original.SecurityRuleProtocolIcmp
 	SecurityRuleProtocolTCP      SecurityRuleProtocol = original.SecurityRuleProtocolTCP
 	SecurityRuleProtocolUDP      SecurityRuleProtocol = original.SecurityRuleProtocolUDP
 )
@@ -964,6 +971,7 @@ type ApplicationGatewayBackendHTTPSettings = original.ApplicationGatewayBackendH
 type ApplicationGatewayBackendHTTPSettingsPropertiesFormat = original.ApplicationGatewayBackendHTTPSettingsPropertiesFormat
 type ApplicationGatewayBackendHealth = original.ApplicationGatewayBackendHealth
 type ApplicationGatewayBackendHealthHTTPSettings = original.ApplicationGatewayBackendHealthHTTPSettings
+type ApplicationGatewayBackendHealthOnDemand = original.ApplicationGatewayBackendHealthOnDemand
 type ApplicationGatewayBackendHealthPool = original.ApplicationGatewayBackendHealthPool
 type ApplicationGatewayBackendHealthServer = original.ApplicationGatewayBackendHealthServer
 type ApplicationGatewayConnectionDraining = original.ApplicationGatewayConnectionDraining
@@ -986,6 +994,7 @@ type ApplicationGatewayIPConfigurationPropertiesFormat = original.ApplicationGat
 type ApplicationGatewayListResult = original.ApplicationGatewayListResult
 type ApplicationGatewayListResultIterator = original.ApplicationGatewayListResultIterator
 type ApplicationGatewayListResultPage = original.ApplicationGatewayListResultPage
+type ApplicationGatewayOnDemandProbe = original.ApplicationGatewayOnDemandProbe
 type ApplicationGatewayPathRule = original.ApplicationGatewayPathRule
 type ApplicationGatewayPathRulePropertiesFormat = original.ApplicationGatewayPathRulePropertiesFormat
 type ApplicationGatewayProbe = original.ApplicationGatewayProbe
@@ -1013,6 +1022,7 @@ type ApplicationGatewayURLPathMap = original.ApplicationGatewayURLPathMap
 type ApplicationGatewayURLPathMapPropertiesFormat = original.ApplicationGatewayURLPathMapPropertiesFormat
 type ApplicationGatewayWebApplicationFirewallConfiguration = original.ApplicationGatewayWebApplicationFirewallConfiguration
 type ApplicationGatewaysBackendHealthFuture = original.ApplicationGatewaysBackendHealthFuture
+type ApplicationGatewaysBackendHealthOnDemandFuture = original.ApplicationGatewaysBackendHealthOnDemandFuture
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 type ApplicationGatewaysCreateOrUpdateFuture = original.ApplicationGatewaysCreateOrUpdateFuture
 type ApplicationGatewaysDeleteFuture = original.ApplicationGatewaysDeleteFuture
@@ -1143,6 +1153,7 @@ type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesF
 type DdosProtectionPlansClient = original.DdosProtectionPlansClient
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
+type DdosProtectionPlansUpdateTagsFuture = original.DdosProtectionPlansUpdateTagsFuture
 type DdosSettings = original.DdosSettings
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation
@@ -1420,6 +1431,15 @@ type MatchCondition = original.MatchCondition
 type MatchVariable = original.MatchVariable
 type MatchedRule = original.MatchedRule
 type MetricSpecification = original.MetricSpecification
+type NatGateway = original.NatGateway
+type NatGatewayListResult = original.NatGatewayListResult
+type NatGatewayListResultIterator = original.NatGatewayListResultIterator
+type NatGatewayListResultPage = original.NatGatewayListResultPage
+type NatGatewayPropertiesFormat = original.NatGatewayPropertiesFormat
+type NatGatewaySku = original.NatGatewaySku
+type NatGatewaysClient = original.NatGatewaysClient
+type NatGatewaysCreateOrUpdateFuture = original.NatGatewaysCreateOrUpdateFuture
+type NatGatewaysDeleteFuture = original.NatGatewaysDeleteFuture
 type NextHopParameters = original.NextHopParameters
 type NextHopResult = original.NextHopResult
 type Operation = original.Operation
@@ -1663,8 +1683,6 @@ type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
 type VirtualNetworkGatewaysCreateOrUpdateFuture = original.VirtualNetworkGatewaysCreateOrUpdateFuture
 type VirtualNetworkGatewaysDeleteFuture = original.VirtualNetworkGatewaysDeleteFuture
-type VirtualNetworkGatewaysGenerateVpnProfileFuture = original.VirtualNetworkGatewaysGenerateVpnProfileFuture
-type VirtualNetworkGatewaysGeneratevpnclientpackageFuture = original.VirtualNetworkGatewaysGeneratevpnclientpackageFuture
 type VirtualNetworkGatewaysGetAdvertisedRoutesFuture = original.VirtualNetworkGatewaysGetAdvertisedRoutesFuture
 type VirtualNetworkGatewaysGetBgpPeerStatusFuture = original.VirtualNetworkGatewaysGetBgpPeerStatusFuture
 type VirtualNetworkGatewaysGetLearnedRoutesFuture = original.VirtualNetworkGatewaysGetLearnedRoutesFuture
@@ -2244,6 +2262,18 @@ func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysCl
 func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
 	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewNatGatewayListResultIterator(page NatGatewayListResultPage) NatGatewayListResultIterator {
+	return original.NewNatGatewayListResultIterator(page)
+}
+func NewNatGatewayListResultPage(getNextPage func(context.Context, NatGatewayListResult) (NatGatewayListResult, error)) NatGatewayListResultPage {
+	return original.NewNatGatewayListResultPage(getNextPage)
+}
+func NewNatGatewaysClient(subscriptionID string) NatGatewaysClient {
+	return original.NewNatGatewaysClient(subscriptionID)
+}
+func NewNatGatewaysClientWithBaseURI(baseURI string, subscriptionID string) NatGatewaysClient {
+	return original.NewNatGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
@@ -2661,6 +2691,9 @@ func PossibleDdosCustomPolicyProtocolValues() []DdosCustomPolicyProtocol {
 func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPolicyTriggerSensitivityOverride {
 	return original.PossibleDdosCustomPolicyTriggerSensitivityOverrideValues()
 }
+func PossibleDdosSettingsProtectionCoverageValues() []DdosSettingsProtectionCoverage {
+	return original.PossibleDdosSettingsProtectionCoverageValues()
+}
 func PossibleDhGroupValues() []DhGroup {
 	return original.PossibleDhGroupValues()
 }
@@ -2739,11 +2772,17 @@ func PossibleIpsecIntegrityValues() []IpsecIntegrity {
 func PossibleIssueTypeValues() []IssueType {
 	return original.PossibleIssueTypeValues()
 }
+func PossibleLoadBalancerOutboundRuleProtocolValues() []LoadBalancerOutboundRuleProtocol {
+	return original.PossibleLoadBalancerOutboundRuleProtocolValues()
+}
 func PossibleLoadBalancerSkuNameValues() []LoadBalancerSkuName {
 	return original.PossibleLoadBalancerSkuNameValues()
 }
 func PossibleLoadDistributionValues() []LoadDistribution {
 	return original.PossibleLoadDistributionValues()
+}
+func PossibleNatGatewaySkuNameValues() []NatGatewaySkuName {
+	return original.PossibleNatGatewaySkuNameValues()
 }
 func PossibleNextHopTypeValues() []NextHopType {
 	return original.PossibleNextHopTypeValues()
@@ -2774,12 +2813,6 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 }
 func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return original.PossibleProcessorArchitectureValues()
-}
-func PossibleProtectionCoverageValues() []ProtectionCoverage {
-	return original.PossibleProtectionCoverageValues()
-}
-func PossibleProtocol1Values() []Protocol1 {
-	return original.PossibleProtocol1Values()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()

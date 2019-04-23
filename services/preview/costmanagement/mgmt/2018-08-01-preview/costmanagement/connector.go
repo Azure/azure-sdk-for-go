@@ -90,6 +90,9 @@ func (client ConnectorClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		"api-version": APIVersion,
 	}
 
+	connector.ID = nil
+	connector.Name = nil
+	connector.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -470,6 +473,9 @@ func (client ConnectorClient) UpdatePreparer(ctx context.Context, resourceGroupN
 		"api-version": APIVersion,
 	}
 
+	connector.ID = nil
+	connector.Name = nil
+	connector.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

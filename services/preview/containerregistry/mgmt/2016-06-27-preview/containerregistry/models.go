@@ -35,11 +35,11 @@ type Registry struct {
 	autorest.Response `json:"-"`
 	// RegistryProperties - The properties of the container registry.
 	*RegistryProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -52,15 +52,6 @@ func (r Registry) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if r.RegistryProperties != nil {
 		objectMap["properties"] = r.RegistryProperties
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
@@ -317,9 +308,9 @@ type RegistryNameStatus struct {
 
 // RegistryProperties the properties of a container registry.
 type RegistryProperties struct {
-	// LoginServer - The URL that can be used to log into the container registry.
+	// LoginServer - READ-ONLY; The URL that can be used to log into the container registry.
 	LoginServer *string `json:"loginServer,omitempty"`
-	// CreationDate - The creation date of the container registry in ISO8601 format.
+	// CreationDate - READ-ONLY; The creation date of the container registry in ISO8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// AdminUserEnabled - The value that indicates whether the admin user is enabled. This value is false by default.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
@@ -390,11 +381,11 @@ func (rup *RegistryUpdateParameters) UnmarshalJSON(body []byte) error {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -405,15 +396,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

@@ -111,27 +111,28 @@ type AddStorageAccountParameters struct {
 // asynchronous operation failed, the response body includes the HTTP status code for the failed request
 // and error information regarding the failure.
 type AzureAsyncOperationResult struct {
-	// Status - the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
+	// Status - READ-ONLY; the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
 	Status OperationStatus `json:"status,omitempty"`
-	Error  *Error          `json:"error,omitempty"`
+	// Error - READ-ONLY
+	Error *Error `json:"error,omitempty"`
 }
 
 // BlobContainer azure Storage blob container information.
 type BlobContainer struct {
 	autorest.Response `json:"-"`
-	// Name - the name of the blob container.
+	// Name - READ-ONLY; the name of the blob container.
 	Name *string `json:"name,omitempty"`
-	// ID - the unique identifier of the blob container.
+	// ID - READ-ONLY; the unique identifier of the blob container.
 	ID *string `json:"id,omitempty"`
-	// Type - the type of the blob container.
+	// Type - READ-ONLY; the type of the blob container.
 	Type *string `json:"type,omitempty"`
-	// Properties - the properties of the blob container.
+	// Properties - READ-ONLY; the properties of the blob container.
 	Properties *BlobContainerProperties `json:"properties,omitempty"`
 }
 
 // BlobContainerProperties azure Storage blob container properties information.
 type BlobContainerProperties struct {
-	// LastModifiedTime - the last modified time of the blob container.
+	// LastModifiedTime - READ-ONLY; the last modified time of the blob container.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 }
 
@@ -144,7 +145,7 @@ type CreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateFuture) Result(client Client) (dlaa DataLakeAnalyticsAccount, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.CreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -171,9 +172,9 @@ type DataLakeAnalyticsAccount struct {
 	Location *string `json:"location,omitempty"`
 	// Name - the account name.
 	Name *string `json:"name,omitempty"`
-	// Type - the namespace and type of the account.
+	// Type - READ-ONLY; the namespace and type of the account.
 	Type *string `json:"type,omitempty"`
-	// ID - the account subscription ID.
+	// ID - READ-ONLY; the account subscription ID.
 	ID *string `json:"id,omitempty"`
 	// Tags - the value of custom properties.
 	Tags map[string]*string `json:"tags"`
@@ -190,12 +191,6 @@ func (dlaa DataLakeAnalyticsAccount) MarshalJSON() ([]byte, error) {
 	if dlaa.Name != nil {
 		objectMap["name"] = dlaa.Name
 	}
-	if dlaa.Type != nil {
-		objectMap["type"] = dlaa.Type
-	}
-	if dlaa.ID != nil {
-		objectMap["id"] = dlaa.ID
-	}
 	if dlaa.Tags != nil {
 		objectMap["tags"] = dlaa.Tags
 	}
@@ -208,11 +203,11 @@ func (dlaa DataLakeAnalyticsAccount) MarshalJSON() ([]byte, error) {
 // DataLakeAnalyticsAccountListDataLakeStoreResult data Lake Account list information.
 type DataLakeAnalyticsAccountListDataLakeStoreResult struct {
 	autorest.Response `json:"-"`
-	// Value - the results of the list operation
+	// Value - READ-ONLY; the results of the list operation
 	Value *[]DataLakeStoreAccountInfo `json:"value,omitempty"`
-	// Count - total number of results.
+	// Count - READ-ONLY; total number of results.
 	Count *int32 `json:"count,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -357,9 +352,9 @@ func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage func(con
 // DataLakeAnalyticsAccountListResult dataLakeAnalytics Account list information.
 type DataLakeAnalyticsAccountListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the results of the list operation
+	// Value - READ-ONLY; the results of the list operation
 	Value *[]DataLakeAnalyticsAccount `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -504,11 +499,11 @@ func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context,
 // DataLakeAnalyticsAccountListStorageAccountsResult azure Storage Account list information.
 type DataLakeAnalyticsAccountListStorageAccountsResult struct {
 	autorest.Response `json:"-"`
-	// Value - the results of the list operation
+	// Value - READ-ONLY; the results of the list operation
 	Value *[]StorageAccountInfo `json:"value,omitempty"`
-	// Count - total number of results.
+	// Count - READ-ONLY; total number of results.
 	Count *int32 `json:"count,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -653,9 +648,9 @@ func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage func(c
 // DataLakeAnalyticsAccountProperties the account specific properties that are associated with an
 // underlying Data Lake Analytics account.
 type DataLakeAnalyticsAccountProperties struct {
-	// ProvisioningState - the provisioning status of the Data Lake Analytics account. Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'
+	// ProvisioningState - READ-ONLY; the provisioning status of the Data Lake Analytics account. Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'
 	ProvisioningState DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty"`
-	// State - the state of the Data Lake Analytics account. Possible values include: 'Active', 'Suspended'
+	// State - READ-ONLY; the state of the Data Lake Analytics account. Possible values include: 'Active', 'Suspended'
 	State DataLakeAnalyticsAccountState `json:"state,omitempty"`
 	// DefaultDataLakeStoreAccount - the default data lake storage account associated with this Data Lake Analytics account.
 	DefaultDataLakeStoreAccount *string `json:"defaultDataLakeStoreAccount,omitempty"`
@@ -667,11 +662,11 @@ type DataLakeAnalyticsAccountProperties struct {
 	DataLakeStoreAccounts *[]DataLakeStoreAccountInfo `json:"dataLakeStoreAccounts,omitempty"`
 	// StorageAccounts - the list of Azure Blob storage accounts associated with this account.
 	StorageAccounts *[]StorageAccountInfo `json:"storageAccounts,omitempty"`
-	// CreationTime - the account creation time.
+	// CreationTime - READ-ONLY; the account creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// LastModifiedTime - the account last modified time.
+	// LastModifiedTime - READ-ONLY; the account last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// Endpoint - the full CName endpoint for this account.
+	// Endpoint - READ-ONLY; the full CName endpoint for this account.
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
@@ -699,7 +694,7 @@ type DeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -714,33 +709,33 @@ func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err err
 
 // Error generic resource error information.
 type Error struct {
-	// Code - the HTTP status code or error code associated with this error
+	// Code - READ-ONLY; the HTTP status code or error code associated with this error
 	Code *string `json:"code,omitempty"`
-	// Message - the error message to display.
+	// Message - READ-ONLY; the error message to display.
 	Message *string `json:"message,omitempty"`
-	// Target - the target of the error.
+	// Target - READ-ONLY; the target of the error.
 	Target *string `json:"target,omitempty"`
-	// Details - the list of error details
+	// Details - READ-ONLY; the list of error details
 	Details *[]ErrorDetails `json:"details,omitempty"`
-	// InnerError - the inner exceptions or errors, if any
+	// InnerError - READ-ONLY; the inner exceptions or errors, if any
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
 // ErrorDetails generic resource error details information.
 type ErrorDetails struct {
-	// Code - the HTTP status code or error code associated with this error
+	// Code - READ-ONLY; the HTTP status code or error code associated with this error
 	Code *string `json:"code,omitempty"`
-	// Message - the error message localized based on Accept-Language
+	// Message - READ-ONLY; the error message localized based on Accept-Language
 	Message *string `json:"message,omitempty"`
-	// Target - the target of the particular error (for example, the name of the property in error).
+	// Target - READ-ONLY; the target of the particular error (for example, the name of the property in error).
 	Target *string `json:"target,omitempty"`
 }
 
 // InnerError generic resource inner error information.
 type InnerError struct {
-	// Trace - the stack trace for the error
+	// Trace - READ-ONLY; the stack trace for the error
 	Trace *string `json:"trace,omitempty"`
-	// Context - the context for the error message
+	// Context - READ-ONLY; the context for the error message
 	Context *string `json:"context,omitempty"`
 }
 
@@ -748,9 +743,9 @@ type InnerError struct {
 // Data Lake Analytics account.
 type ListBlobContainersResult struct {
 	autorest.Response `json:"-"`
-	// Value - the results of the list operation
+	// Value - READ-ONLY; the results of the list operation
 	Value *[]BlobContainer `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -895,8 +890,9 @@ func NewListBlobContainersResultPage(getNextPage func(context.Context, ListBlobC
 // token for connection use.
 type ListSasTokensResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]SasTokenInfo `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// Value - READ-ONLY
+	Value *[]SasTokenInfo `json:"value,omitempty"`
+	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1039,7 +1035,7 @@ func NewListSasTokensResultPage(getNextPage func(context.Context, ListSasTokensR
 
 // SasTokenInfo SAS token information.
 type SasTokenInfo struct {
-	// AccessToken - the access token for the associated Azure Storage Container.
+	// AccessToken - READ-ONLY; the access token for the associated Azure Storage Container.
 	AccessToken *string `json:"accessToken,omitempty"`
 }
 
@@ -1069,7 +1065,7 @@ type UpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *UpdateFuture) Result(client Client) (dlaa DataLakeAnalyticsAccount, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.UpdateFuture", "Result", future.Response(), "Polling failure")
 		return

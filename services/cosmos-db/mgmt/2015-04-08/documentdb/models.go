@@ -247,11 +247,11 @@ type CassandraKeyspace struct {
 	autorest.Response `json:"-"`
 	// CassandraKeyspaceProperties - The properties of an Azure Cosmos DB Cassandra keyspace
 	*CassandraKeyspaceProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -263,15 +263,6 @@ func (ck CassandraKeyspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ck.CassandraKeyspaceProperties != nil {
 		objectMap["properties"] = ck.CassandraKeyspaceProperties
-	}
-	if ck.ID != nil {
-		objectMap["id"] = ck.ID
-	}
-	if ck.Name != nil {
-		objectMap["name"] = ck.Name
-	}
-	if ck.Type != nil {
-		objectMap["type"] = ck.Type
 	}
 	if ck.Location != nil {
 		objectMap["location"] = ck.Location
@@ -415,7 +406,7 @@ func (ckcup CassandraKeyspaceCreateUpdateProperties) MarshalJSON() ([]byte, erro
 // properties.
 type CassandraKeyspaceListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Cassandra keyspaces and their properties.
+	// Value - READ-ONLY; List of Cassandra keyspaces and their properties.
 	Value *[]CassandraKeyspace `json:"value,omitempty"`
 }
 
@@ -452,11 +443,11 @@ type CassandraTable struct {
 	autorest.Response `json:"-"`
 	// CassandraTableProperties - The properties of an Azure Cosmos DB Cassandra table
 	*CassandraTableProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -468,15 +459,6 @@ func (ct CassandraTable) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ct.CassandraTableProperties != nil {
 		objectMap["properties"] = ct.CassandraTableProperties
-	}
-	if ct.ID != nil {
-		objectMap["id"] = ct.ID
-	}
-	if ct.Name != nil {
-		objectMap["name"] = ct.Name
-	}
-	if ct.Type != nil {
-		objectMap["type"] = ct.Type
 	}
 	if ct.Location != nil {
 		objectMap["location"] = ct.Location
@@ -619,7 +601,7 @@ func (ctcup CassandraTableCreateUpdateProperties) MarshalJSON() ([]byte, error) 
 // properties.
 type CassandraTableListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Cassandra tables and their properties.
+	// Value - READ-ONLY; List of Cassandra tables and their properties.
 	Value *[]CassandraTable `json:"value,omitempty"`
 }
 
@@ -684,11 +666,11 @@ type Container struct {
 	autorest.Response `json:"-"`
 	// ContainerProperties - The properties of an Azure Cosmos DB container
 	*ContainerProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -700,15 +682,6 @@ func (c Container) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ContainerProperties != nil {
 		objectMap["properties"] = c.ContainerProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	if c.Location != nil {
 		objectMap["location"] = c.Location
@@ -850,7 +823,7 @@ func (ccup ContainerCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 // ContainerListResult the List operation response, that contains the containers and their properties.
 type ContainerListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of containers and their properties.
+	// Value - READ-ONLY; List of containers and their properties.
 	Value *[]Container `json:"value,omitempty"`
 }
 
@@ -907,11 +880,11 @@ type DatabaseAccount struct {
 	// Kind - Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
 	Kind                       DatabaseAccountKind `json:"kind,omitempty"`
 	*DatabaseAccountProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -926,15 +899,6 @@ func (da DatabaseAccount) MarshalJSON() ([]byte, error) {
 	}
 	if da.DatabaseAccountProperties != nil {
 		objectMap["properties"] = da.DatabaseAccountProperties
-	}
-	if da.ID != nil {
-		objectMap["id"] = da.ID
-	}
-	if da.Name != nil {
-		objectMap["name"] = da.Name
-	}
-	if da.Type != nil {
-		objectMap["type"] = da.Type
 	}
 	if da.Location != nil {
 		objectMap["location"] = da.Location
@@ -1025,9 +989,9 @@ func (da *DatabaseAccount) UnmarshalJSON(body []byte) error {
 
 // DatabaseAccountConnectionString connection string for the Cosmos DB account
 type DatabaseAccountConnectionString struct {
-	// ConnectionString - Value of the connection string
+	// ConnectionString - READ-ONLY; Value of the connection string
 	ConnectionString *string `json:"connectionString,omitempty"`
-	// Description - Description of the connection string
+	// Description - READ-ONLY; Description of the connection string
 	Description *string `json:"description,omitempty"`
 }
 
@@ -1036,11 +1000,11 @@ type DatabaseAccountCreateUpdateParameters struct {
 	// Kind - Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
 	Kind                                   DatabaseAccountKind `json:"kind,omitempty"`
 	*DatabaseAccountCreateUpdateProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -1055,15 +1019,6 @@ func (dacup DatabaseAccountCreateUpdateParameters) MarshalJSON() ([]byte, error)
 	}
 	if dacup.DatabaseAccountCreateUpdateProperties != nil {
 		objectMap["properties"] = dacup.DatabaseAccountCreateUpdateProperties
-	}
-	if dacup.ID != nil {
-		objectMap["id"] = dacup.ID
-	}
-	if dacup.Name != nil {
-		objectMap["name"] = dacup.Name
-	}
-	if dacup.Type != nil {
-		objectMap["type"] = dacup.Type
 	}
 	if dacup.Location != nil {
 		objectMap["location"] = dacup.Location
@@ -1184,9 +1139,9 @@ type DatabaseAccountListConnectionStringsResult struct {
 // DatabaseAccountListKeysResult the access keys for the given database account.
 type DatabaseAccountListKeysResult struct {
 	autorest.Response `json:"-"`
-	// PrimaryMasterKey - Base 64 encoded value of the primary read-write key.
+	// PrimaryMasterKey - READ-ONLY; Base 64 encoded value of the primary read-write key.
 	PrimaryMasterKey *string `json:"primaryMasterKey,omitempty"`
-	// SecondaryMasterKey - Base 64 encoded value of the secondary read-write key.
+	// SecondaryMasterKey - READ-ONLY; Base 64 encoded value of the secondary read-write key.
 	SecondaryMasterKey                     *string `json:"secondaryMasterKey,omitempty"`
 	*DatabaseAccountListReadOnlyKeysResult `json:"properties,omitempty"`
 }
@@ -1194,12 +1149,6 @@ type DatabaseAccountListKeysResult struct {
 // MarshalJSON is the custom marshaler for DatabaseAccountListKeysResult.
 func (dalkr DatabaseAccountListKeysResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dalkr.PrimaryMasterKey != nil {
-		objectMap["primaryMasterKey"] = dalkr.PrimaryMasterKey
-	}
-	if dalkr.SecondaryMasterKey != nil {
-		objectMap["secondaryMasterKey"] = dalkr.SecondaryMasterKey
-	}
 	if dalkr.DatabaseAccountListReadOnlyKeysResult != nil {
 		objectMap["properties"] = dalkr.DatabaseAccountListReadOnlyKeysResult
 	}
@@ -1251,9 +1200,9 @@ func (dalkr *DatabaseAccountListKeysResult) UnmarshalJSON(body []byte) error {
 // DatabaseAccountListReadOnlyKeysResult the read-only access keys for the given database account.
 type DatabaseAccountListReadOnlyKeysResult struct {
 	autorest.Response `json:"-"`
-	// PrimaryReadonlyMasterKey - Base 64 encoded value of the primary read-only key.
+	// PrimaryReadonlyMasterKey - READ-ONLY; Base 64 encoded value of the primary read-only key.
 	PrimaryReadonlyMasterKey *string `json:"primaryReadonlyMasterKey,omitempty"`
-	// SecondaryReadonlyMasterKey - Base 64 encoded value of the secondary read-only key.
+	// SecondaryReadonlyMasterKey - READ-ONLY; Base 64 encoded value of the secondary read-only key.
 	SecondaryReadonlyMasterKey *string `json:"secondaryReadonlyMasterKey,omitempty"`
 }
 
@@ -1317,9 +1266,9 @@ type DatabaseAccountPatchProperties struct {
 // DatabaseAccountProperties properties for the database account.
 type DatabaseAccountProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// DocumentEndpoint - The connection endpoint for the Cosmos DB database account.
+	// DocumentEndpoint - READ-ONLY; The connection endpoint for the Cosmos DB database account.
 	DocumentEndpoint *string `json:"documentEndpoint,omitempty"`
-	// DatabaseAccountOfferType - The offer type for the Cosmos DB database account. Default value: Standard. Possible values include: 'Standard'
+	// DatabaseAccountOfferType - READ-ONLY; The offer type for the Cosmos DB database account. Default value: Standard. Possible values include: 'Standard'
 	DatabaseAccountOfferType DatabaseAccountOfferType `json:"databaseAccountOfferType,omitempty"`
 	// IPRangeFilter - Cosmos DB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IPs for a given database account. IP addresses/ranges must be comma separated and must not contain any spaces.
 	IPRangeFilter *string `json:"ipRangeFilter,omitempty"`
@@ -1331,11 +1280,11 @@ type DatabaseAccountProperties struct {
 	ConsistencyPolicy *ConsistencyPolicy `json:"consistencyPolicy,omitempty"`
 	// Capabilities - List of Cosmos DB capabilities for the account
 	Capabilities *[]Capability `json:"capabilities,omitempty"`
-	// WriteLocations - An array that contains the write location for the Cosmos DB account.
+	// WriteLocations - READ-ONLY; An array that contains the write location for the Cosmos DB account.
 	WriteLocations *[]Location `json:"writeLocations,omitempty"`
-	// ReadLocations - An array that contains of the read locations enabled for the Cosmos DB account.
+	// ReadLocations - READ-ONLY; An array that contains of the read locations enabled for the Cosmos DB account.
 	ReadLocations *[]Location `json:"readLocations,omitempty"`
-	// FailoverPolicies - An array that contains the regions ordered by their failover priorities.
+	// FailoverPolicies - READ-ONLY; An array that contains the regions ordered by their failover priorities.
 	FailoverPolicies *[]FailoverPolicy `json:"failoverPolicies,omitempty"`
 	// VirtualNetworkRules - List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
@@ -1359,7 +1308,7 @@ type DatabaseAccountsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateOrUpdateFuture) Result(client DatabaseAccountsClient) (da DatabaseAccount, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1388,7 +1337,7 @@ type DatabaseAccountsCreateUpdateCassandraKeyspaceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateCassandraKeyspaceFuture) Result(client DatabaseAccountsClient) (ck CassandraKeyspace, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateCassandraKeyspaceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1417,7 +1366,7 @@ type DatabaseAccountsCreateUpdateCassandraTableFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateCassandraTableFuture) Result(client DatabaseAccountsClient) (ct CassandraTable, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateCassandraTableFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1446,7 +1395,7 @@ type DatabaseAccountsCreateUpdateGremlinContainerFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateGremlinContainerFuture) Result(client DatabaseAccountsClient) (c Container, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateGremlinContainerFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1475,7 +1424,7 @@ type DatabaseAccountsCreateUpdateGremlinDatabaseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateGremlinDatabaseFuture) Result(client DatabaseAccountsClient) (gd GremlinDatabase, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateGremlinDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1504,7 +1453,7 @@ type DatabaseAccountsCreateUpdateMongoCollectionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateMongoCollectionFuture) Result(client DatabaseAccountsClient) (mc MongoCollection, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateMongoCollectionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1533,7 +1482,7 @@ type DatabaseAccountsCreateUpdateMongoDatabaseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateMongoDatabaseFuture) Result(client DatabaseAccountsClient) (md MongoDatabase, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateMongoDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1562,7 +1511,7 @@ type DatabaseAccountsCreateUpdateSQLContainerFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateSQLContainerFuture) Result(client DatabaseAccountsClient) (c Container, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLContainerFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1591,7 +1540,7 @@ type DatabaseAccountsCreateUpdateSQLDatabaseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateSQLDatabaseFuture) Result(client DatabaseAccountsClient) (sd SQLDatabase, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1620,7 +1569,7 @@ type DatabaseAccountsCreateUpdateTableFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsCreateUpdateTableFuture) Result(client DatabaseAccountsClient) (t Table, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateTableFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1649,7 +1598,7 @@ type DatabaseAccountsDeleteCassandraKeyspaceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteCassandraKeyspaceFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteCassandraKeyspaceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1672,7 +1621,7 @@ type DatabaseAccountsDeleteCassandraTableFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteCassandraTableFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteCassandraTableFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1695,7 +1644,7 @@ type DatabaseAccountsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1718,7 +1667,7 @@ type DatabaseAccountsDeleteGremlinContainerFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteGremlinContainerFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteGremlinContainerFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1741,7 +1690,7 @@ type DatabaseAccountsDeleteGremlinDatabaseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteGremlinDatabaseFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteGremlinDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1764,7 +1713,7 @@ type DatabaseAccountsDeleteMongoCollectionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteMongoCollectionFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteMongoCollectionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1787,7 +1736,7 @@ type DatabaseAccountsDeleteMongoDatabaseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteMongoDatabaseFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteMongoDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1810,7 +1759,7 @@ type DatabaseAccountsDeleteSQLContainerFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteSQLContainerFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteSQLContainerFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1833,7 +1782,7 @@ type DatabaseAccountsDeleteSQLDatabaseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteSQLDatabaseFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteSQLDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1856,7 +1805,7 @@ type DatabaseAccountsDeleteTableFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsDeleteTableFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteTableFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1879,7 +1828,7 @@ type DatabaseAccountsFailoverPriorityChangeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsFailoverPriorityChangeFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsFailoverPriorityChangeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1896,7 +1845,7 @@ func (future *DatabaseAccountsFailoverPriorityChangeFuture) Result(client Databa
 // properties.
 type DatabaseAccountsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of database account and their properties.
+	// Value - READ-ONLY; List of database account and their properties.
 	Value *[]DatabaseAccount `json:"value,omitempty"`
 }
 
@@ -1910,7 +1859,7 @@ type DatabaseAccountsOfflineRegionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsOfflineRegionFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsOfflineRegionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1933,7 +1882,7 @@ type DatabaseAccountsOnlineRegionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsOnlineRegionFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsOnlineRegionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1956,7 +1905,7 @@ type DatabaseAccountsPatchFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsPatchFuture) Result(client DatabaseAccountsClient) (da DatabaseAccount, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1985,7 +1934,7 @@ type DatabaseAccountsRegenerateKeyFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabaseAccountsRegenerateKeyFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsRegenerateKeyFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2031,7 +1980,7 @@ type FailoverPolicies struct {
 
 // FailoverPolicy the failover policy for a given region of a database account.
 type FailoverPolicy struct {
-	// ID - The unique identifier of the region in which the database account replicates to. Example: &lt;accountName&gt;-&lt;locationName&gt;.
+	// ID - READ-ONLY; The unique identifier of the region in which the database account replicates to. Example: &lt;accountName&gt;-&lt;locationName&gt;.
 	ID *string `json:"id,omitempty"`
 	// LocationName - The name of the region in which the database account exists.
 	LocationName *string `json:"locationName,omitempty"`
@@ -2044,11 +1993,11 @@ type GremlinDatabase struct {
 	autorest.Response `json:"-"`
 	// GremlinDatabaseProperties - The properties of an Azure Cosmos DB SQL database
 	*GremlinDatabaseProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -2060,15 +2009,6 @@ func (gd GremlinDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gd.GremlinDatabaseProperties != nil {
 		objectMap["properties"] = gd.GremlinDatabaseProperties
-	}
-	if gd.ID != nil {
-		objectMap["id"] = gd.ID
-	}
-	if gd.Name != nil {
-		objectMap["name"] = gd.Name
-	}
-	if gd.Type != nil {
-		objectMap["type"] = gd.Type
 	}
 	if gd.Location != nil {
 		objectMap["location"] = gd.Location
@@ -2211,7 +2151,7 @@ func (gdcup GremlinDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error)
 // properties.
 type GremlinDatabaseListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Gremlin databases and their properties.
+	// Value - READ-ONLY; List of Gremlin databases and their properties.
 	Value *[]GremlinDatabase `json:"value,omitempty"`
 }
 
@@ -2265,11 +2205,11 @@ type IndexingPolicy struct {
 
 // Location a region in which the Azure Cosmos DB database account is deployed.
 type Location struct {
-	// ID - The unique identifier of the region within the database account. Example: &lt;accountName&gt;-&lt;locationName&gt;.
+	// ID - READ-ONLY; The unique identifier of the region within the database account. Example: &lt;accountName&gt;-&lt;locationName&gt;.
 	ID *string `json:"id,omitempty"`
 	// LocationName - The name of the region.
 	LocationName *string `json:"locationName,omitempty"`
-	// DocumentEndpoint - The connection endpoint for the specific region. Example: https://&lt;accountName&gt;-&lt;locationName&gt;.documents.azure.com:443/
+	// DocumentEndpoint - READ-ONLY; The connection endpoint for the specific region. Example: https://&lt;accountName&gt;-&lt;locationName&gt;.documents.azure.com:443/
 	DocumentEndpoint  *string `json:"documentEndpoint,omitempty"`
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// FailoverPriority - The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
@@ -2278,77 +2218,77 @@ type Location struct {
 
 // Metric metric data
 type Metric struct {
-	// StartTime - The start time for the metric (ISO-8601 format).
+	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time for the metric (ISO-8601 format).
+	// EndTime - READ-ONLY; The end time for the metric (ISO-8601 format).
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TimeGrain - The time grain to be used to summarize the metric values.
+	// TimeGrain - READ-ONLY; The time grain to be used to summarize the metric values.
 	TimeGrain *string `json:"timeGrain,omitempty"`
 	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
 	Unit UnitType `json:"unit,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// MetricValues - The metric values for the specified time window and timestep.
+	// MetricValues - READ-ONLY; The metric values for the specified time window and timestep.
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
 // MetricAvailability the availability of the metric.
 type MetricAvailability struct {
-	// TimeGrain - The time grain to be used to summarize the metric values.
+	// TimeGrain - READ-ONLY; The time grain to be used to summarize the metric values.
 	TimeGrain *string `json:"timeGrain,omitempty"`
-	// Retention - The retention for the metric values.
+	// Retention - READ-ONLY; The retention for the metric values.
 	Retention *string `json:"retention,omitempty"`
 }
 
 // MetricDefinition the definition of a metric.
 type MetricDefinition struct {
-	// MetricAvailabilities - The list of metric availabilities for the account.
+	// MetricAvailabilities - READ-ONLY; The list of metric availabilities for the account.
 	MetricAvailabilities *[]MetricAvailability `json:"metricAvailabilities,omitempty"`
-	// PrimaryAggregationType - The primary aggregation type of the metric. Possible values include: 'PrimaryAggregationTypeNone', 'PrimaryAggregationTypeAverage', 'PrimaryAggregationTypeTotal', 'PrimaryAggregationTypeMinimimum', 'PrimaryAggregationTypeMaximum', 'PrimaryAggregationTypeLast'
+	// PrimaryAggregationType - READ-ONLY; The primary aggregation type of the metric. Possible values include: 'PrimaryAggregationTypeNone', 'PrimaryAggregationTypeAverage', 'PrimaryAggregationTypeTotal', 'PrimaryAggregationTypeMinimimum', 'PrimaryAggregationTypeMaximum', 'PrimaryAggregationTypeLast'
 	PrimaryAggregationType PrimaryAggregationType `json:"primaryAggregationType,omitempty"`
 	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
 	Unit UnitType `json:"unit,omitempty"`
-	// ResourceURI - The resource uri of the database.
+	// ResourceURI - READ-ONLY; The resource uri of the database.
 	ResourceURI *string `json:"resourceUri,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
 }
 
 // MetricDefinitionsListResult the response to a list metric definitions request.
 type MetricDefinitionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of metric definitions for the account.
+	// Value - READ-ONLY; The list of metric definitions for the account.
 	Value *[]MetricDefinition `json:"value,omitempty"`
 }
 
 // MetricListResult the response to a list metrics request.
 type MetricListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of metrics for the account.
+	// Value - READ-ONLY; The list of metrics for the account.
 	Value *[]Metric `json:"value,omitempty"`
 }
 
 // MetricName a metric name.
 type MetricName struct {
-	// Value - The name of the metric.
+	// Value - READ-ONLY; The name of the metric.
 	Value *string `json:"value,omitempty"`
-	// LocalizedValue - The friendly name of the metric.
+	// LocalizedValue - READ-ONLY; The friendly name of the metric.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // MetricValue represents metrics values.
 type MetricValue struct {
-	// Count - The number of values for the metric.
+	// Count - READ-ONLY; The number of values for the metric.
 	Count *float64 `json:"_count,omitempty"`
-	// Average - The average value of the metric.
+	// Average - READ-ONLY; The average value of the metric.
 	Average *float64 `json:"average,omitempty"`
-	// Maximum - The max value of the metric.
+	// Maximum - READ-ONLY; The max value of the metric.
 	Maximum *float64 `json:"maximum,omitempty"`
-	// Minimum - The min value of the metric.
+	// Minimum - READ-ONLY; The min value of the metric.
 	Minimum *float64 `json:"minimum,omitempty"`
-	// Timestamp - The metric timestamp (ISO-8601 format).
+	// Timestamp - READ-ONLY; The metric timestamp (ISO-8601 format).
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Total - The total value of the metric.
+	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
 }
 
@@ -2357,11 +2297,11 @@ type MongoCollection struct {
 	autorest.Response `json:"-"`
 	// MongoCollectionProperties - The properties of an Azure Cosmos DB Mongo collection
 	*MongoCollectionProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -2373,15 +2313,6 @@ func (mc MongoCollection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mc.MongoCollectionProperties != nil {
 		objectMap["properties"] = mc.MongoCollectionProperties
-	}
-	if mc.ID != nil {
-		objectMap["id"] = mc.ID
-	}
-	if mc.Name != nil {
-		objectMap["name"] = mc.Name
-	}
-	if mc.Type != nil {
-		objectMap["type"] = mc.Type
 	}
 	if mc.Location != nil {
 		objectMap["location"] = mc.Location
@@ -2524,7 +2455,7 @@ func (mccup MongoCollectionCreateUpdateProperties) MarshalJSON() ([]byte, error)
 // properties.
 type MongoCollectionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Mongo collections and their properties.
+	// Value - READ-ONLY; List of Mongo collections and their properties.
 	Value *[]MongoCollection `json:"value,omitempty"`
 }
 
@@ -2583,11 +2514,11 @@ type MongoDatabase struct {
 	autorest.Response `json:"-"`
 	// MongoDatabaseProperties - The properties of an Azure Cosmos DB Mongo database
 	*MongoDatabaseProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -2599,15 +2530,6 @@ func (md MongoDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if md.MongoDatabaseProperties != nil {
 		objectMap["properties"] = md.MongoDatabaseProperties
-	}
-	if md.ID != nil {
-		objectMap["id"] = md.ID
-	}
-	if md.Name != nil {
-		objectMap["name"] = md.Name
-	}
-	if md.Type != nil {
-		objectMap["type"] = md.Type
 	}
 	if md.Location != nil {
 		objectMap["location"] = md.Location
@@ -2750,7 +2672,7 @@ func (mdcup MongoDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 // properties.
 type MongoDatabaseListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Mongo databases and their properties.
+	// Value - READ-ONLY; List of Mongo databases and their properties.
 	Value *[]MongoDatabase `json:"value,omitempty"`
 }
 
@@ -2957,106 +2879,106 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // PartitionMetric the metric values for a single partition.
 type PartitionMetric struct {
-	// PartitionID - The partition id (GUID identifier) of the metric values.
+	// PartitionID - READ-ONLY; The partition id (GUID identifier) of the metric values.
 	PartitionID *string `json:"partitionId,omitempty"`
-	// PartitionKeyRangeID - The partition key range id (integer identifier) of the metric values.
+	// PartitionKeyRangeID - READ-ONLY; The partition key range id (integer identifier) of the metric values.
 	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`
-	// StartTime - The start time for the metric (ISO-8601 format).
+	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time for the metric (ISO-8601 format).
+	// EndTime - READ-ONLY; The end time for the metric (ISO-8601 format).
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TimeGrain - The time grain to be used to summarize the metric values.
+	// TimeGrain - READ-ONLY; The time grain to be used to summarize the metric values.
 	TimeGrain *string `json:"timeGrain,omitempty"`
 	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
 	Unit UnitType `json:"unit,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// MetricValues - The metric values for the specified time window and timestep.
+	// MetricValues - READ-ONLY; The metric values for the specified time window and timestep.
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
 // PartitionMetricListResult the response to a list partition metrics request.
 type PartitionMetricListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of partition-level metrics for the account.
+	// Value - READ-ONLY; The list of partition-level metrics for the account.
 	Value *[]PartitionMetric `json:"value,omitempty"`
 }
 
 // PartitionUsage the partition level usage data for a usage request.
 type PartitionUsage struct {
-	// PartitionID - The partition id (GUID identifier) of the usages.
+	// PartitionID - READ-ONLY; The partition id (GUID identifier) of the usages.
 	PartitionID *string `json:"partitionId,omitempty"`
-	// PartitionKeyRangeID - The partition key range id (integer identifier) of the usages.
+	// PartitionKeyRangeID - READ-ONLY; The partition key range id (integer identifier) of the usages.
 	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`
 	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
 	Unit UnitType `json:"unit,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// QuotaPeriod - The quota period used to summarize the usage values.
+	// QuotaPeriod - READ-ONLY; The quota period used to summarize the usage values.
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// Limit - Maximum value for this metric
+	// Limit - READ-ONLY; Maximum value for this metric
 	Limit *int32 `json:"limit,omitempty"`
-	// CurrentValue - Current value for this metric
+	// CurrentValue - READ-ONLY; Current value for this metric
 	CurrentValue *int32 `json:"currentValue,omitempty"`
 }
 
 // PartitionUsagesResult the response to a list partition level usage request.
 type PartitionUsagesResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of partition-level usages for the database. A usage is a point in time metric
+	// Value - READ-ONLY; The list of partition-level usages for the database. A usage is a point in time metric
 	Value *[]PartitionUsage `json:"value,omitempty"`
 }
 
 // PercentileMetric percentile Metric data
 type PercentileMetric struct {
-	// StartTime - The start time for the metric (ISO-8601 format).
+	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time for the metric (ISO-8601 format).
+	// EndTime - READ-ONLY; The end time for the metric (ISO-8601 format).
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TimeGrain - The time grain to be used to summarize the metric values.
+	// TimeGrain - READ-ONLY; The time grain to be used to summarize the metric values.
 	TimeGrain *string `json:"timeGrain,omitempty"`
 	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
 	Unit UnitType `json:"unit,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// MetricValues - The percentile metric values for the specified time window and timestep.
+	// MetricValues - READ-ONLY; The percentile metric values for the specified time window and timestep.
 	MetricValues *[]PercentileMetricValue `json:"metricValues,omitempty"`
 }
 
 // PercentileMetricListResult the response to a list percentile metrics request.
 type PercentileMetricListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of percentile metrics for the account.
+	// Value - READ-ONLY; The list of percentile metrics for the account.
 	Value *[]PercentileMetric `json:"value,omitempty"`
 }
 
 // PercentileMetricValue represents percentile metrics values.
 type PercentileMetricValue struct {
-	// P10 - The 10th percentile value for the metric.
+	// P10 - READ-ONLY; The 10th percentile value for the metric.
 	P10 *float64 `json:"P10,omitempty"`
-	// P25 - The 25th percentile value for the metric.
+	// P25 - READ-ONLY; The 25th percentile value for the metric.
 	P25 *float64 `json:"P25,omitempty"`
-	// P50 - The 50th percentile value for the metric.
+	// P50 - READ-ONLY; The 50th percentile value for the metric.
 	P50 *float64 `json:"P50,omitempty"`
-	// P75 - The 75th percentile value for the metric.
+	// P75 - READ-ONLY; The 75th percentile value for the metric.
 	P75 *float64 `json:"P75,omitempty"`
-	// P90 - The 90th percentile value for the metric.
+	// P90 - READ-ONLY; The 90th percentile value for the metric.
 	P90 *float64 `json:"P90,omitempty"`
-	// P95 - The 95th percentile value for the metric.
+	// P95 - READ-ONLY; The 95th percentile value for the metric.
 	P95 *float64 `json:"P95,omitempty"`
-	// P99 - The 99th percentile value for the metric.
+	// P99 - READ-ONLY; The 99th percentile value for the metric.
 	P99 *float64 `json:"P99,omitempty"`
-	// Count - The number of values for the metric.
+	// Count - READ-ONLY; The number of values for the metric.
 	Count *float64 `json:"_count,omitempty"`
-	// Average - The average value of the metric.
+	// Average - READ-ONLY; The average value of the metric.
 	Average *float64 `json:"average,omitempty"`
-	// Maximum - The max value of the metric.
+	// Maximum - READ-ONLY; The max value of the metric.
 	Maximum *float64 `json:"maximum,omitempty"`
-	// Minimum - The min value of the metric.
+	// Minimum - READ-ONLY; The min value of the metric.
 	Minimum *float64 `json:"minimum,omitempty"`
-	// Timestamp - The metric timestamp (ISO-8601 format).
+	// Timestamp - READ-ONLY; The metric timestamp (ISO-8601 format).
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Total - The total value of the metric.
+	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
 }
 
@@ -3068,11 +2990,11 @@ type RegionForOnlineOffline struct {
 
 // Resource the core properties of ARM resources.
 type Resource struct {
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -3082,15 +3004,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -3105,11 +3018,11 @@ type SQLDatabase struct {
 	autorest.Response `json:"-"`
 	// SQLDatabaseProperties - The properties of an Azure Cosmos DB SQL database
 	*SQLDatabaseProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -3121,15 +3034,6 @@ func (sd SQLDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sd.SQLDatabaseProperties != nil {
 		objectMap["properties"] = sd.SQLDatabaseProperties
-	}
-	if sd.ID != nil {
-		objectMap["id"] = sd.ID
-	}
-	if sd.Name != nil {
-		objectMap["name"] = sd.Name
-	}
-	if sd.Type != nil {
-		objectMap["type"] = sd.Type
 	}
 	if sd.Location != nil {
 		objectMap["location"] = sd.Location
@@ -3271,7 +3175,7 @@ func (sdcup SQLDatabaseCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 // SQLDatabaseListResult the List operation response, that contains the SQL databases and their properties.
 type SQLDatabaseListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of SQL databases and their properties.
+	// Value - READ-ONLY; List of SQL databases and their properties.
 	Value *[]SQLDatabase `json:"value,omitempty"`
 }
 
@@ -3302,11 +3206,11 @@ type Table struct {
 	autorest.Response `json:"-"`
 	// TableProperties - The properties of an Azure Cosmos DB Table
 	*TableProperties `json:"properties,omitempty"`
-	// ID - The unique resource identifier of the database account.
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the database account.
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of Azure resource.
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource group to which the resource belongs.
 	Location *string            `json:"location,omitempty"`
@@ -3318,15 +3222,6 @@ func (t Table) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if t.TableProperties != nil {
 		objectMap["properties"] = t.TableProperties
-	}
-	if t.ID != nil {
-		objectMap["id"] = t.ID
-	}
-	if t.Name != nil {
-		objectMap["name"] = t.Name
-	}
-	if t.Type != nil {
-		objectMap["type"] = t.Type
 	}
 	if t.Location != nil {
 		objectMap["location"] = t.Location
@@ -3468,7 +3363,7 @@ func (tcup TableCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 // TableListResult the List operation response, that contains the Table and their properties.
 type TableListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Table and their properties.
+	// Value - READ-ONLY; List of Table and their properties.
 	Value *[]Table `json:"value,omitempty"`
 }
 
@@ -3502,20 +3397,20 @@ type UniqueKeyPolicy struct {
 type Usage struct {
 	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
 	Unit UnitType `json:"unit,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// QuotaPeriod - The quota period used to summarize the usage values.
+	// QuotaPeriod - READ-ONLY; The quota period used to summarize the usage values.
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// Limit - Maximum value for this metric
+	// Limit - READ-ONLY; Maximum value for this metric
 	Limit *int32 `json:"limit,omitempty"`
-	// CurrentValue - Current value for this metric
+	// CurrentValue - READ-ONLY; Current value for this metric
 	CurrentValue *int32 `json:"currentValue,omitempty"`
 }
 
 // UsagesResult the response to a list usage request.
 type UsagesResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of usages for the database. A usage is a point in time metric
+	// Value - READ-ONLY; The list of usages for the database. A usage is a point in time metric
 	Value *[]Usage `json:"value,omitempty"`
 }
 

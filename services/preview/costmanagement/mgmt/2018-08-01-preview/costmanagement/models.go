@@ -269,11 +269,11 @@ func PossibleTimeframeTypeValues() []TimeframeType {
 // Alert the Alert model definition
 type Alert struct {
 	autorest.Response `json:"-"`
-	// ID - Alert id
+	// ID - READ-ONLY; Alert id
 	ID *string `json:"id,omitempty"`
-	// Name - Alert name
+	// Name - READ-ONLY; Alert name
 	Name *string `json:"name,omitempty"`
-	// Type - Alert type
+	// Type - READ-ONLY; Alert type
 	Type *string `json:"type,omitempty"`
 	// AlertProperties - Alert properties
 	*AlertProperties `json:"properties,omitempty"`
@@ -282,15 +282,6 @@ type Alert struct {
 // MarshalJSON is the custom marshaler for Alert.
 func (a Alert) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
 	if a.AlertProperties != nil {
 		objectMap["properties"] = a.AlertProperties
 	}
@@ -350,20 +341,20 @@ func (a *Alert) UnmarshalJSON(body []byte) error {
 
 // AlertDefinition the definition (rule) of an Alert
 type AlertDefinition struct {
-	// Category - Category of the alert. Possible values include: 'Cost', 'Usage', 'Billing'
+	// Category - READ-ONLY; Category of the alert. Possible values include: 'Cost', 'Usage', 'Billing'
 	Category AlertCategory `json:"category,omitempty"`
-	// Type - The type of cost-entity the alert is defined on. Possible values include: 'Budget', 'Invoice', 'Credit'
+	// Type - READ-ONLY; The type of cost-entity the alert is defined on. Possible values include: 'Budget', 'Invoice', 'Credit'
 	Type AlertType `json:"type,omitempty"`
-	// Criteria - Criteria (condition) of the alert. Possible values include: 'CostThresholdExceeded', 'UsageThresholdExceeded', 'CreditThresholdReached'
+	// Criteria - READ-ONLY; Criteria (condition) of the alert. Possible values include: 'CostThresholdExceeded', 'UsageThresholdExceeded', 'CreditThresholdReached'
 	Criteria AlertCriteria `json:"criteria,omitempty"`
 }
 
 // AlertListResult result of listing alerts. It contains a list of available alerts in the scope provided.
 type AlertListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of alerts.
+	// Value - READ-ONLY; The list of alerts.
 	Value *[]Alert `json:"value,omitempty"`
-	// NextLink - The URI to fetch the next page of Alerts.
+	// NextLink - READ-ONLY; The URI to fetch the next page of Alerts.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -506,70 +497,37 @@ func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (
 
 // AlertProperties the properties of an Alert.
 type AlertProperties struct {
-	// CostEntityID - The id of the creating cost-entity (budget, invoice, credit).
+	// CostEntityID - READ-ONLY; The id of the creating cost-entity (budget, invoice, credit).
 	CostEntityID *string `json:"costEntityId,omitempty"`
-	// Definition - The definition (rule) of an Alert
+	// Definition - READ-ONLY; The definition (rule) of an Alert
 	Definition *AlertDefinition `json:"definition,omitempty"`
-	// Description - Description of an alert.
+	// Description - READ-ONLY; Description of an alert.
 	Description *string `json:"description,omitempty"`
-	// Scope - The scope of an alert.
+	// Scope - READ-ONLY; The scope of an alert.
 	Scope *string `json:"scope,omitempty"`
-	// Source - The source of an Alert. Possible values include: 'Preset', 'User'
+	// Source - READ-ONLY; The source of an Alert. Possible values include: 'Preset', 'User'
 	Source AlertSource `json:"source,omitempty"`
-	// Details - Specific details of an alert - key-value dictionary.
+	// Details - READ-ONLY; Specific details of an alert - key-value dictionary.
 	Details map[string]*string `json:"details"`
-	// CreationTime - The time when the alert was created.
+	// CreationTime - READ-ONLY; The time when the alert was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CloseTime - The time when the alert was closed (resolved / overridden).
+	// CloseTime - READ-ONLY; The time when the alert was closed (resolved / overridden).
 	CloseTime *date.Time `json:"closeTime,omitempty"`
 	// Status - The current status of the alert. Possible values include: 'Active', 'Overridden', 'Resolved', 'Dismissed'
 	Status AlertStatus `json:"status,omitempty"`
-	// StatusModificationTime - The current status when alert status was modified.
+	// StatusModificationTime - READ-ONLY; The current status when alert status was modified.
 	StatusModificationTime *date.Time `json:"statusModificationTime,omitempty"`
-	// ModificationTime - The current status when alert was modified.
+	// ModificationTime - READ-ONLY; The current status when alert was modified.
 	ModificationTime *date.Time `json:"modificationTime,omitempty"`
-	// ModificationUsername - The username who modified the alert.
+	// ModificationUsername - READ-ONLY; The username who modified the alert.
 	ModificationUsername *string `json:"modificationUsername,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AlertProperties.
 func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ap.CostEntityID != nil {
-		objectMap["costEntityId"] = ap.CostEntityID
-	}
-	if ap.Definition != nil {
-		objectMap["definition"] = ap.Definition
-	}
-	if ap.Description != nil {
-		objectMap["description"] = ap.Description
-	}
-	if ap.Scope != nil {
-		objectMap["scope"] = ap.Scope
-	}
-	if ap.Source != "" {
-		objectMap["source"] = ap.Source
-	}
-	if ap.Details != nil {
-		objectMap["details"] = ap.Details
-	}
-	if ap.CreationTime != nil {
-		objectMap["creationTime"] = ap.CreationTime
-	}
-	if ap.CloseTime != nil {
-		objectMap["closeTime"] = ap.CloseTime
-	}
 	if ap.Status != "" {
 		objectMap["status"] = ap.Status
-	}
-	if ap.StatusModificationTime != nil {
-		objectMap["statusModificationTime"] = ap.StatusModificationTime
-	}
-	if ap.ModificationTime != nil {
-		objectMap["modificationTime"] = ap.ModificationTime
-	}
-	if ap.ModificationUsername != nil {
-		objectMap["modificationUsername"] = ap.ModificationUsername
 	}
 	return json.Marshal(objectMap)
 }
@@ -586,21 +544,21 @@ type CommonReportProperties struct {
 
 // ConnectorCollectionErrorInfo details of any error encountered on last collection attempt
 type ConnectorCollectionErrorInfo struct {
-	// ErrorMessage - Detailed error message
+	// ErrorMessage - READ-ONLY; Detailed error message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// ErrorCode - Short error message
+	// ErrorCode - READ-ONLY; Short error message
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorStartTime - Time the error started occurring (Last time error occurred in lastRun)
+	// ErrorStartTime - READ-ONLY; Time the error started occurring (Last time error occurred in lastRun)
 	ErrorStartTime *date.Time `json:"errorStartTime,omitempty"`
 }
 
 // ConnectorCollectionInfo collection and ingestion information
 type ConnectorCollectionInfo struct {
-	// LastRun - Last time the data acquisition process completed (even if no new data was found)
+	// LastRun - READ-ONLY; Last time the data acquisition process completed (even if no new data was found)
 	LastRun *date.Time `json:"lastRun,omitempty"`
-	// SourceLastUpdated - Source timestamp of external data currently available in Azure (eg AWS last processed CUR file timestamp)
+	// SourceLastUpdated - READ-ONLY; Source timestamp of external data currently available in Azure (eg AWS last processed CUR file timestamp)
 	SourceLastUpdated *date.Time `json:"sourceLastUpdated,omitempty"`
-	// LastUpdated - Last time the external data was updated into Azure
+	// LastUpdated - READ-ONLY; Last time the external data was updated into Azure
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
 	// Error - Error information of last collection
 	Error *ConnectorCollectionErrorInfo `json:"error,omitempty"`
@@ -611,11 +569,11 @@ type ConnectorDefinition struct {
 	autorest.Response `json:"-"`
 	// Kind - Connector kind (eg aws)
 	Kind *string `json:"kind,omitempty"`
-	// ID - Connector id
+	// ID - READ-ONLY; Connector id
 	ID *string `json:"id,omitempty"`
-	// Name - Connector name
+	// Name - READ-ONLY; Connector name
 	Name *string `json:"name,omitempty"`
-	// Type - Connector type
+	// Type - READ-ONLY; Connector type
 	Type *string `json:"type,omitempty"`
 	// Location - Connector location
 	Location *string `json:"location,omitempty"`
@@ -630,15 +588,6 @@ func (cd ConnectorDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cd.Kind != nil {
 		objectMap["kind"] = cd.Kind
-	}
-	if cd.ID != nil {
-		objectMap["id"] = cd.ID
-	}
-	if cd.Name != nil {
-		objectMap["name"] = cd.Name
-	}
-	if cd.Type != nil {
-		objectMap["type"] = cd.Type
 	}
 	if cd.Location != nil {
 		objectMap["location"] = cd.Location
@@ -734,7 +683,7 @@ func (cd *ConnectorDefinition) UnmarshalJSON(body []byte) error {
 // connector definitions in the scope provided.
 type ConnectorDefinitionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of connector definitions.
+	// Value - READ-ONLY; The list of connector definitions.
 	Value *[]ConnectorDefinition `json:"value,omitempty"`
 }
 
@@ -742,7 +691,7 @@ type ConnectorDefinitionListResult struct {
 type ConnectorProperties struct {
 	// DisplayName - Connector DisplayName (defaults to Name)
 	DisplayName *string `json:"displayName,omitempty"`
-	// ProviderAccountID - Connector providerAccountId (determined from credentials)
+	// ProviderAccountID - READ-ONLY; Connector providerAccountId (determined from credentials)
 	ProviderAccountID *string `json:"providerAccountId,omitempty"`
 	// CredentialsKey - Credentials authentication key (eg AWS ARN)
 	CredentialsKey *string `json:"credentialsKey,omitempty"`
@@ -750,26 +699,26 @@ type ConnectorProperties struct {
 	CredentialsSecret *string `json:"credentialsSecret,omitempty"`
 	// ReportID - Identifying source report. (For AWS this is a CUR report name, defined with Daily and with Resources)
 	ReportID *string `json:"reportId,omitempty"`
-	// CreatedOn - Connector definition creation datetime
+	// CreatedOn - READ-ONLY; Connector definition creation datetime
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// ModifiedOn - Connector last modified datetime
+	// ModifiedOn - READ-ONLY; Connector last modified datetime
 	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
 	// Status - Connector status. Possible values include: 'ConnectorStatusActive', 'ConnectorStatusError', 'ConnectorStatusSuspended'
 	Status ConnectorStatus `json:"status,omitempty"`
-	// Collection - Collection information
+	// Collection - READ-ONLY; Collection information
 	Collection *ConnectorCollectionInfo `json:"collection,omitempty"`
 }
 
 // Dimension ...
 type Dimension struct {
 	*DimensionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -778,18 +727,6 @@ func (d Dimension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DimensionProperties != nil {
 		objectMap["properties"] = d.DimensionProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
-	}
-	if d.Tags != nil {
-		objectMap["tags"] = d.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -867,25 +804,25 @@ type DimensionProperties struct {
 // DimensionsListResult result of listing dimensions. It contains a list of available dimensions.
 type DimensionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of dimensions.
+	// Value - READ-ONLY; The list of dimensions.
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
 // ErrorBase the details of the error.
 type ErrorBase struct {
-	// Code - A machine readable error code.
+	// Code - READ-ONLY; A machine readable error code.
 	Code *string `json:"code,omitempty"`
-	// Message - A human readable error message.
+	// Message - READ-ONLY; A human readable error message.
 	Message *string `json:"message,omitempty"`
-	// Target - Indicates which property in the request is responsible for the error.
+	// Target - READ-ONLY; Indicates which property in the request is responsible for the error.
 	Target *string `json:"target,omitempty"`
 }
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - A machine readable error code.
+	// Code - READ-ONLY; A machine readable error code.
 	Code *string `json:"code,omitempty"`
-	// Message - A human readable error message.
+	// Message - READ-ONLY; A human readable error message.
 	Message *string `json:"message,omitempty"`
 	// Target - Indicates which property in the request is responsible for the error.
 	Target *string `json:"target,omitempty"`
@@ -902,7 +839,7 @@ type ErrorResponse struct {
 
 // Operation a Cost Management REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -910,11 +847,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.CostManagement.
+	// Provider - READ-ONLY; Service provider: Microsoft.CostManagement.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: UsageDetail, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: UsageDetail, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -922,9 +859,9 @@ type OperationDisplay struct {
 // URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of CostManagement operations supported by the Microsoft.CostManagement resource provider.
+	// Value - READ-ONLY; List of CostManagement operations supported by the Microsoft.CostManagement resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1068,13 +1005,13 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 // Query ...
 type Query struct {
 	*QueryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1083,18 +1020,6 @@ func (q Query) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if q.QueryProperties != nil {
 		objectMap["properties"] = q.QueryProperties
-	}
-	if q.ID != nil {
-		objectMap["id"] = q.ID
-	}
-	if q.Name != nil {
-		objectMap["name"] = q.Name
-	}
-	if q.Type != nil {
-		objectMap["type"] = q.Type
-	}
-	if q.Tags != nil {
-		objectMap["tags"] = q.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1176,7 +1101,7 @@ type QueryProperties struct {
 // QueryResult result of query. It contains all columns listed under groupings and aggregation.
 type QueryResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of usage data.
+	// Value - READ-ONLY; The list of usage data.
 	Value *[]Query `json:"value,omitempty"`
 }
 
@@ -1184,13 +1109,13 @@ type QueryResult struct {
 type Report struct {
 	autorest.Response `json:"-"`
 	*ReportProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1199,18 +1124,6 @@ func (r Report) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if r.ReportProperties != nil {
 		objectMap["properties"] = r.ReportProperties
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1365,13 +1278,13 @@ type ReportDeliveryInfo struct {
 // ReportExecution a report execution.
 type ReportExecution struct {
 	*ReportExecutionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1380,18 +1293,6 @@ func (re ReportExecution) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if re.ReportExecutionProperties != nil {
 		objectMap["properties"] = re.ReportExecutionProperties
-	}
-	if re.ID != nil {
-		objectMap["id"] = re.ID
-	}
-	if re.Name != nil {
-		objectMap["name"] = re.Name
-	}
-	if re.Type != nil {
-		objectMap["type"] = re.Type
-	}
-	if re.Tags != nil {
-		objectMap["tags"] = re.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1459,7 +1360,7 @@ func (re *ReportExecution) UnmarshalJSON(body []byte) error {
 // ReportExecutionListResult result of listing reports execution history of a report by name
 type ReportExecutionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of report executions.
+	// Value - READ-ONLY; The list of report executions.
 	Value *[]ReportExecution `json:"value,omitempty"`
 }
 
@@ -1508,7 +1409,7 @@ type ReportGrouping struct {
 // provided.
 type ReportListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of reports.
+	// Value - READ-ONLY; The list of reports.
 	Value *[]Report `json:"value,omitempty"`
 }
 
@@ -1552,30 +1453,18 @@ type ReportTimePeriod struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }

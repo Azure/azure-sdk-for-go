@@ -1281,13 +1281,13 @@ type AnalysisData struct {
 type AnalysisDefinition struct {
 	// AnalysisDefinitionProperties - AnalysisDefinition resource specific properties
 	*AnalysisDefinitionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1297,17 +1297,8 @@ func (ad AnalysisDefinition) MarshalJSON() ([]byte, error) {
 	if ad.AnalysisDefinitionProperties != nil {
 		objectMap["properties"] = ad.AnalysisDefinitionProperties
 	}
-	if ad.ID != nil {
-		objectMap["id"] = ad.ID
-	}
-	if ad.Name != nil {
-		objectMap["name"] = ad.Name
-	}
 	if ad.Kind != nil {
 		objectMap["kind"] = ad.Kind
-	}
-	if ad.Type != nil {
-		objectMap["type"] = ad.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1374,7 +1365,7 @@ func (ad *AnalysisDefinition) UnmarshalJSON(body []byte) error {
 
 // AnalysisDefinitionProperties analysisDefinition resource specific properties
 type AnalysisDefinitionProperties struct {
-	// Description - Description of the Analysis
+	// Description - READ-ONLY; Description of the Analysis
 	Description *string `json:"description,omitempty"`
 }
 
@@ -1389,7 +1380,7 @@ type AppCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Site `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1535,7 +1526,7 @@ type AppInstanceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SiteInstance `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1705,7 +1696,7 @@ type ApplicationStackCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ApplicationStack `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1856,7 +1847,7 @@ type AppsCreateFunctionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateFunctionFuture) Result(client AppsClient) (fe FunctionEnvelope, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateFunctionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1885,7 +1876,7 @@ type AppsCreateInstanceFunctionSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateInstanceFunctionSlotFuture) Result(client AppsClient) (fe FunctionEnvelope, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceFunctionSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1914,7 +1905,7 @@ type AppsCreateInstanceMSDeployOperationFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateInstanceMSDeployOperationFuture) Result(client AppsClient) (mds MSDeployStatus, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceMSDeployOperationFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1943,7 +1934,7 @@ type AppsCreateInstanceMSDeployOperationSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateInstanceMSDeployOperationSlotFuture) Result(client AppsClient) (mds MSDeployStatus, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateInstanceMSDeployOperationSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1972,7 +1963,7 @@ type AppsCreateMSDeployOperationFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateMSDeployOperationFuture) Result(client AppsClient) (mds MSDeployStatus, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateMSDeployOperationFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2001,7 +1992,7 @@ type AppsCreateMSDeployOperationSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateMSDeployOperationSlotFuture) Result(client AppsClient) (mds MSDeployStatus, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateMSDeployOperationSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2030,7 +2021,7 @@ type AppsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateOrUpdateFuture) Result(client AppsClient) (s Site, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2059,7 +2050,7 @@ type AppsCreateOrUpdateSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateOrUpdateSlotFuture) Result(client AppsClient) (s Site, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2088,7 +2079,7 @@ type AppsCreateOrUpdateSourceControlFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateOrUpdateSourceControlFuture) Result(client AppsClient) (ssc SiteSourceControl, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSourceControlFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2117,7 +2108,7 @@ type AppsCreateOrUpdateSourceControlSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsCreateOrUpdateSourceControlSlotFuture) Result(client AppsClient) (ssc SiteSourceControl, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsCreateOrUpdateSourceControlSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2142,7 +2133,7 @@ type AppServiceCertificate struct {
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 	// KeyVaultSecretName - Key Vault secret name.
 	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
-	// ProvisioningState - Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
+	// ProvisioningState - READ-ONLY; Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
 	ProvisioningState KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
@@ -2151,7 +2142,7 @@ type AppServiceCertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]AppServiceCertificateResource `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2298,15 +2289,15 @@ type AppServiceCertificateOrder struct {
 	autorest.Response `json:"-"`
 	// AppServiceCertificateOrderProperties - AppServiceCertificateOrder resource specific properties
 	*AppServiceCertificateOrderProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2318,20 +2309,11 @@ func (asco AppServiceCertificateOrder) MarshalJSON() ([]byte, error) {
 	if asco.AppServiceCertificateOrderProperties != nil {
 		objectMap["properties"] = asco.AppServiceCertificateOrderProperties
 	}
-	if asco.ID != nil {
-		objectMap["id"] = asco.ID
-	}
-	if asco.Name != nil {
-		objectMap["name"] = asco.Name
-	}
 	if asco.Kind != nil {
 		objectMap["kind"] = asco.Kind
 	}
 	if asco.Location != nil {
 		objectMap["location"] = asco.Location
-	}
-	if asco.Type != nil {
-		objectMap["type"] = asco.Type
 	}
 	if asco.Tags != nil {
 		objectMap["tags"] = asco.Tags
@@ -2422,7 +2404,7 @@ type AppServiceCertificateOrderCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]AppServiceCertificateOrder `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2569,13 +2551,13 @@ func NewAppServiceCertificateOrderCollectionPage(getNextPage func(context.Contex
 type AppServiceCertificateOrderPatchResource struct {
 	// AppServiceCertificateOrderPatchResourceProperties - AppServiceCertificateOrderPatchResource resource specific properties
 	*AppServiceCertificateOrderPatchResourceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2585,17 +2567,8 @@ func (ascopr AppServiceCertificateOrderPatchResource) MarshalJSON() ([]byte, err
 	if ascopr.AppServiceCertificateOrderPatchResourceProperties != nil {
 		objectMap["properties"] = ascopr.AppServiceCertificateOrderPatchResourceProperties
 	}
-	if ascopr.ID != nil {
-		objectMap["id"] = ascopr.ID
-	}
-	if ascopr.Name != nil {
-		objectMap["name"] = ascopr.Name
-	}
 	if ascopr.Kind != nil {
 		objectMap["kind"] = ascopr.Kind
-	}
-	if ascopr.Type != nil {
-		objectMap["type"] = ascopr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2667,7 +2640,7 @@ type AppServiceCertificateOrderPatchResourceProperties struct {
 	Certificates map[string]*AppServiceCertificate `json:"certificates"`
 	// DistinguishedName - Certificate distinguished name.
 	DistinguishedName *string `json:"distinguishedName,omitempty"`
-	// DomainVerificationToken - Domain verification token.
+	// DomainVerificationToken - READ-ONLY; Domain verification token.
 	DomainVerificationToken *string `json:"domainVerificationToken,omitempty"`
 	// ValidityInYears - Duration in years (must be between 1 and 3).
 	ValidityInYears *int32 `json:"validityInYears,omitempty"`
@@ -2677,29 +2650,29 @@ type AppServiceCertificateOrderPatchResourceProperties struct {
 	ProductType CertificateProductType `json:"productType,omitempty"`
 	// AutoRenew - <code>true</code> if the certificate should be automatically renewed when it expires; otherwise, <code>false</code>.
 	AutoRenew *bool `json:"autoRenew,omitempty"`
-	// ProvisioningState - Status of certificate order. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Status of certificate order. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Status - Current order status. Possible values include: 'Pendingissuance', 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation', 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'
+	// Status - READ-ONLY; Current order status. Possible values include: 'Pendingissuance', 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation', 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'
 	Status CertificateOrderStatus `json:"status,omitempty"`
-	// SignedCertificate - Signed certificate.
+	// SignedCertificate - READ-ONLY; Signed certificate.
 	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty"`
 	// Csr - Last CSR that was created for this order.
 	Csr *string `json:"csr,omitempty"`
-	// Intermediate - Intermediate certificate.
+	// Intermediate - READ-ONLY; Intermediate certificate.
 	Intermediate *CertificateDetails `json:"intermediate,omitempty"`
-	// Root - Root certificate.
+	// Root - READ-ONLY; Root certificate.
 	Root *CertificateDetails `json:"root,omitempty"`
-	// SerialNumber - Current serial number of the certificate.
+	// SerialNumber - READ-ONLY; Current serial number of the certificate.
 	SerialNumber *string `json:"serialNumber,omitempty"`
-	// LastCertificateIssuanceTime - Certificate last issuance time.
+	// LastCertificateIssuanceTime - READ-ONLY; Certificate last issuance time.
 	LastCertificateIssuanceTime *date.Time `json:"lastCertificateIssuanceTime,omitempty"`
-	// ExpirationTime - Certificate expiration time.
+	// ExpirationTime - READ-ONLY; Certificate expiration time.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// IsPrivateKeyExternal - <code>true</code> if private key is external; otherwise, <code>false</code>.
+	// IsPrivateKeyExternal - READ-ONLY; <code>true</code> if private key is external; otherwise, <code>false</code>.
 	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty"`
-	// AppServiceCertificateNotRenewableReasons - Reasons why App Service Certificate is not renewable at the current moment.
+	// AppServiceCertificateNotRenewableReasons - READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
 	AppServiceCertificateNotRenewableReasons *[]string `json:"appServiceCertificateNotRenewableReasons,omitempty"`
-	// NextAutoRenewalTimeStamp - Time stamp when the certificate would be auto renewed next
+	// NextAutoRenewalTimeStamp - READ-ONLY; Time stamp when the certificate would be auto renewed next
 	NextAutoRenewalTimeStamp *date.Time `json:"nextAutoRenewalTimeStamp,omitempty"`
 }
 
@@ -2711,9 +2684,6 @@ func (ascopr AppServiceCertificateOrderPatchResourceProperties) MarshalJSON() ([
 	}
 	if ascopr.DistinguishedName != nil {
 		objectMap["distinguishedName"] = ascopr.DistinguishedName
-	}
-	if ascopr.DomainVerificationToken != nil {
-		objectMap["domainVerificationToken"] = ascopr.DomainVerificationToken
 	}
 	if ascopr.ValidityInYears != nil {
 		objectMap["validityInYears"] = ascopr.ValidityInYears
@@ -2727,41 +2697,8 @@ func (ascopr AppServiceCertificateOrderPatchResourceProperties) MarshalJSON() ([
 	if ascopr.AutoRenew != nil {
 		objectMap["autoRenew"] = ascopr.AutoRenew
 	}
-	if ascopr.ProvisioningState != "" {
-		objectMap["provisioningState"] = ascopr.ProvisioningState
-	}
-	if ascopr.Status != "" {
-		objectMap["status"] = ascopr.Status
-	}
-	if ascopr.SignedCertificate != nil {
-		objectMap["signedCertificate"] = ascopr.SignedCertificate
-	}
 	if ascopr.Csr != nil {
 		objectMap["csr"] = ascopr.Csr
-	}
-	if ascopr.Intermediate != nil {
-		objectMap["intermediate"] = ascopr.Intermediate
-	}
-	if ascopr.Root != nil {
-		objectMap["root"] = ascopr.Root
-	}
-	if ascopr.SerialNumber != nil {
-		objectMap["serialNumber"] = ascopr.SerialNumber
-	}
-	if ascopr.LastCertificateIssuanceTime != nil {
-		objectMap["lastCertificateIssuanceTime"] = ascopr.LastCertificateIssuanceTime
-	}
-	if ascopr.ExpirationTime != nil {
-		objectMap["expirationTime"] = ascopr.ExpirationTime
-	}
-	if ascopr.IsPrivateKeyExternal != nil {
-		objectMap["isPrivateKeyExternal"] = ascopr.IsPrivateKeyExternal
-	}
-	if ascopr.AppServiceCertificateNotRenewableReasons != nil {
-		objectMap["appServiceCertificateNotRenewableReasons"] = ascopr.AppServiceCertificateNotRenewableReasons
-	}
-	if ascopr.NextAutoRenewalTimeStamp != nil {
-		objectMap["nextAutoRenewalTimeStamp"] = ascopr.NextAutoRenewalTimeStamp
 	}
 	return json.Marshal(objectMap)
 }
@@ -2772,7 +2709,7 @@ type AppServiceCertificateOrderProperties struct {
 	Certificates map[string]*AppServiceCertificate `json:"certificates"`
 	// DistinguishedName - Certificate distinguished name.
 	DistinguishedName *string `json:"distinguishedName,omitempty"`
-	// DomainVerificationToken - Domain verification token.
+	// DomainVerificationToken - READ-ONLY; Domain verification token.
 	DomainVerificationToken *string `json:"domainVerificationToken,omitempty"`
 	// ValidityInYears - Duration in years (must be between 1 and 3).
 	ValidityInYears *int32 `json:"validityInYears,omitempty"`
@@ -2782,29 +2719,29 @@ type AppServiceCertificateOrderProperties struct {
 	ProductType CertificateProductType `json:"productType,omitempty"`
 	// AutoRenew - <code>true</code> if the certificate should be automatically renewed when it expires; otherwise, <code>false</code>.
 	AutoRenew *bool `json:"autoRenew,omitempty"`
-	// ProvisioningState - Status of certificate order. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Status of certificate order. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Status - Current order status. Possible values include: 'Pendingissuance', 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation', 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'
+	// Status - READ-ONLY; Current order status. Possible values include: 'Pendingissuance', 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation', 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'
 	Status CertificateOrderStatus `json:"status,omitempty"`
-	// SignedCertificate - Signed certificate.
+	// SignedCertificate - READ-ONLY; Signed certificate.
 	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty"`
 	// Csr - Last CSR that was created for this order.
 	Csr *string `json:"csr,omitempty"`
-	// Intermediate - Intermediate certificate.
+	// Intermediate - READ-ONLY; Intermediate certificate.
 	Intermediate *CertificateDetails `json:"intermediate,omitempty"`
-	// Root - Root certificate.
+	// Root - READ-ONLY; Root certificate.
 	Root *CertificateDetails `json:"root,omitempty"`
-	// SerialNumber - Current serial number of the certificate.
+	// SerialNumber - READ-ONLY; Current serial number of the certificate.
 	SerialNumber *string `json:"serialNumber,omitempty"`
-	// LastCertificateIssuanceTime - Certificate last issuance time.
+	// LastCertificateIssuanceTime - READ-ONLY; Certificate last issuance time.
 	LastCertificateIssuanceTime *date.Time `json:"lastCertificateIssuanceTime,omitempty"`
-	// ExpirationTime - Certificate expiration time.
+	// ExpirationTime - READ-ONLY; Certificate expiration time.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// IsPrivateKeyExternal - <code>true</code> if private key is external; otherwise, <code>false</code>.
+	// IsPrivateKeyExternal - READ-ONLY; <code>true</code> if private key is external; otherwise, <code>false</code>.
 	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty"`
-	// AppServiceCertificateNotRenewableReasons - Reasons why App Service Certificate is not renewable at the current moment.
+	// AppServiceCertificateNotRenewableReasons - READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
 	AppServiceCertificateNotRenewableReasons *[]string `json:"appServiceCertificateNotRenewableReasons,omitempty"`
-	// NextAutoRenewalTimeStamp - Time stamp when the certificate would be auto renewed next
+	// NextAutoRenewalTimeStamp - READ-ONLY; Time stamp when the certificate would be auto renewed next
 	NextAutoRenewalTimeStamp *date.Time `json:"nextAutoRenewalTimeStamp,omitempty"`
 }
 
@@ -2816,9 +2753,6 @@ func (asco AppServiceCertificateOrderProperties) MarshalJSON() ([]byte, error) {
 	}
 	if asco.DistinguishedName != nil {
 		objectMap["distinguishedName"] = asco.DistinguishedName
-	}
-	if asco.DomainVerificationToken != nil {
-		objectMap["domainVerificationToken"] = asco.DomainVerificationToken
 	}
 	if asco.ValidityInYears != nil {
 		objectMap["validityInYears"] = asco.ValidityInYears
@@ -2832,41 +2766,8 @@ func (asco AppServiceCertificateOrderProperties) MarshalJSON() ([]byte, error) {
 	if asco.AutoRenew != nil {
 		objectMap["autoRenew"] = asco.AutoRenew
 	}
-	if asco.ProvisioningState != "" {
-		objectMap["provisioningState"] = asco.ProvisioningState
-	}
-	if asco.Status != "" {
-		objectMap["status"] = asco.Status
-	}
-	if asco.SignedCertificate != nil {
-		objectMap["signedCertificate"] = asco.SignedCertificate
-	}
 	if asco.Csr != nil {
 		objectMap["csr"] = asco.Csr
-	}
-	if asco.Intermediate != nil {
-		objectMap["intermediate"] = asco.Intermediate
-	}
-	if asco.Root != nil {
-		objectMap["root"] = asco.Root
-	}
-	if asco.SerialNumber != nil {
-		objectMap["serialNumber"] = asco.SerialNumber
-	}
-	if asco.LastCertificateIssuanceTime != nil {
-		objectMap["lastCertificateIssuanceTime"] = asco.LastCertificateIssuanceTime
-	}
-	if asco.ExpirationTime != nil {
-		objectMap["expirationTime"] = asco.ExpirationTime
-	}
-	if asco.IsPrivateKeyExternal != nil {
-		objectMap["isPrivateKeyExternal"] = asco.IsPrivateKeyExternal
-	}
-	if asco.AppServiceCertificateNotRenewableReasons != nil {
-		objectMap["appServiceCertificateNotRenewableReasons"] = asco.AppServiceCertificateNotRenewableReasons
-	}
-	if asco.NextAutoRenewalTimeStamp != nil {
-		objectMap["nextAutoRenewalTimeStamp"] = asco.NextAutoRenewalTimeStamp
 	}
 	return json.Marshal(objectMap)
 }
@@ -2881,7 +2782,7 @@ type AppServiceCertificateOrdersCreateOrUpdateCertificateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceCertificateOrdersCreateOrUpdateCertificateFuture) Result(client AppServiceCertificateOrdersClient) (ascr AppServiceCertificateResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersCreateOrUpdateCertificateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2910,7 +2811,7 @@ type AppServiceCertificateOrdersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceCertificateOrdersCreateOrUpdateFuture) Result(client AppServiceCertificateOrdersClient) (asco AppServiceCertificateOrder, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2934,13 +2835,13 @@ func (future *AppServiceCertificateOrdersCreateOrUpdateFuture) Result(client App
 type AppServiceCertificatePatchResource struct {
 	// AppServiceCertificate - Core resource properties
 	*AppServiceCertificate `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2950,17 +2851,8 @@ func (ascpr AppServiceCertificatePatchResource) MarshalJSON() ([]byte, error) {
 	if ascpr.AppServiceCertificate != nil {
 		objectMap["properties"] = ascpr.AppServiceCertificate
 	}
-	if ascpr.ID != nil {
-		objectMap["id"] = ascpr.ID
-	}
-	if ascpr.Name != nil {
-		objectMap["name"] = ascpr.Name
-	}
 	if ascpr.Kind != nil {
 		objectMap["kind"] = ascpr.Kind
-	}
-	if ascpr.Type != nil {
-		objectMap["type"] = ascpr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3031,15 +2923,15 @@ type AppServiceCertificateResource struct {
 	autorest.Response `json:"-"`
 	// AppServiceCertificate - Core resource properties
 	*AppServiceCertificate `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -3051,20 +2943,11 @@ func (ascr AppServiceCertificateResource) MarshalJSON() ([]byte, error) {
 	if ascr.AppServiceCertificate != nil {
 		objectMap["properties"] = ascr.AppServiceCertificate
 	}
-	if ascr.ID != nil {
-		objectMap["id"] = ascr.ID
-	}
-	if ascr.Name != nil {
-		objectMap["name"] = ascr.Name
-	}
 	if ascr.Kind != nil {
 		objectMap["kind"] = ascr.Kind
 	}
 	if ascr.Location != nil {
 		objectMap["location"] = ascr.Location
-	}
-	if ascr.Type != nil {
-		objectMap["type"] = ascr.Type
 	}
 	if ascr.Tags != nil {
 		objectMap["tags"] = ascr.Tags
@@ -3156,9 +3039,9 @@ type AppServiceEnvironment struct {
 	Name *string `json:"name,omitempty"`
 	// Location - Location of the App Service Environment, e.g. "West US".
 	Location *string `json:"location,omitempty"`
-	// ProvisioningState - Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Status - Current status of the App Service Environment. Possible values include: 'Preparing', 'Ready', 'Scaling', 'Deleting'
+	// Status - READ-ONLY; Current status of the App Service Environment. Possible values include: 'Preparing', 'Ready', 'Scaling', 'Deleting'
 	Status HostingEnvironmentStatus `json:"status,omitempty"`
 	// VnetName - Name of the Virtual Network for the App Service Environment.
 	VnetName *string `json:"vnetName,omitempty"`
@@ -3178,41 +3061,41 @@ type AppServiceEnvironment struct {
 	WorkerPools *[]WorkerPool `json:"workerPools,omitempty"`
 	// IpsslAddressCount - Number of IP SSL addresses reserved for the App Service Environment.
 	IpsslAddressCount *int32 `json:"ipsslAddressCount,omitempty"`
-	// DatabaseEdition - Edition of the metadata database for the App Service Environment, e.g. "Standard".
+	// DatabaseEdition - READ-ONLY; Edition of the metadata database for the App Service Environment, e.g. "Standard".
 	DatabaseEdition *string `json:"databaseEdition,omitempty"`
-	// DatabaseServiceObjective - Service objective of the metadata database for the App Service Environment, e.g. "S0".
+	// DatabaseServiceObjective - READ-ONLY; Service objective of the metadata database for the App Service Environment, e.g. "S0".
 	DatabaseServiceObjective *string `json:"databaseServiceObjective,omitempty"`
-	// UpgradeDomains - Number of upgrade domains of the App Service Environment.
+	// UpgradeDomains - READ-ONLY; Number of upgrade domains of the App Service Environment.
 	UpgradeDomains *int32 `json:"upgradeDomains,omitempty"`
-	// SubscriptionID - Subscription of the App Service Environment.
+	// SubscriptionID - READ-ONLY; Subscription of the App Service Environment.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 	// DNSSuffix - DNS suffix of the App Service Environment.
 	DNSSuffix *string `json:"dnsSuffix,omitempty"`
-	// LastAction - Last deployment action on the App Service Environment.
+	// LastAction - READ-ONLY; Last deployment action on the App Service Environment.
 	LastAction *string `json:"lastAction,omitempty"`
-	// LastActionResult - Result of the last deployment action on the App Service Environment.
+	// LastActionResult - READ-ONLY; Result of the last deployment action on the App Service Environment.
 	LastActionResult *string `json:"lastActionResult,omitempty"`
-	// AllowedMultiSizes - List of comma separated strings describing which VM sizes are allowed for front-ends.
+	// AllowedMultiSizes - READ-ONLY; List of comma separated strings describing which VM sizes are allowed for front-ends.
 	AllowedMultiSizes *string `json:"allowedMultiSizes,omitempty"`
-	// AllowedWorkerSizes - List of comma separated strings describing which VM sizes are allowed for workers.
+	// AllowedWorkerSizes - READ-ONLY; List of comma separated strings describing which VM sizes are allowed for workers.
 	AllowedWorkerSizes *string `json:"allowedWorkerSizes,omitempty"`
-	// MaximumNumberOfMachines - Maximum number of VMs in the App Service Environment.
+	// MaximumNumberOfMachines - READ-ONLY; Maximum number of VMs in the App Service Environment.
 	MaximumNumberOfMachines *int32 `json:"maximumNumberOfMachines,omitempty"`
-	// VipMappings - Description of IP SSL mapping for the App Service Environment.
+	// VipMappings - READ-ONLY; Description of IP SSL mapping for the App Service Environment.
 	VipMappings *[]VirtualIPMapping `json:"vipMappings,omitempty"`
-	// EnvironmentCapacities - Current total, used, and available worker capacities.
+	// EnvironmentCapacities - READ-ONLY; Current total, used, and available worker capacities.
 	EnvironmentCapacities *[]StampCapacity `json:"environmentCapacities,omitempty"`
 	// NetworkAccessControlList - Access control list for controlling traffic to the App Service Environment.
 	NetworkAccessControlList *[]NetworkAccessControlEntry `json:"networkAccessControlList,omitempty"`
-	// EnvironmentIsHealthy - True/false indicating whether the App Service Environment is healthy.
+	// EnvironmentIsHealthy - READ-ONLY; True/false indicating whether the App Service Environment is healthy.
 	EnvironmentIsHealthy *bool `json:"environmentIsHealthy,omitempty"`
-	// EnvironmentStatus - Detailed message about with results of the last check of the App Service Environment.
+	// EnvironmentStatus - READ-ONLY; Detailed message about with results of the last check of the App Service Environment.
 	EnvironmentStatus *string `json:"environmentStatus,omitempty"`
-	// ResourceGroup - Resource group of the App Service Environment.
+	// ResourceGroup - READ-ONLY; Resource group of the App Service Environment.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// FrontEndScaleFactor - Scale factor for front-ends.
 	FrontEndScaleFactor *int32 `json:"frontEndScaleFactor,omitempty"`
-	// DefaultFrontEndScaleFactor - Default Scale Factor for FrontEnds.
+	// DefaultFrontEndScaleFactor - READ-ONLY; Default Scale Factor for FrontEnds.
 	DefaultFrontEndScaleFactor *int32 `json:"defaultFrontEndScaleFactor,omitempty"`
 	// APIManagementAccountID - API Management Account associated with the App Service Environment.
 	APIManagementAccountID *string `json:"apiManagementAccountId,omitempty"`
@@ -3233,7 +3116,7 @@ type AppServiceEnvironmentCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]AppServiceEnvironmentResource `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3379,13 +3262,13 @@ func NewAppServiceEnvironmentCollectionPage(getNextPage func(context.Context, Ap
 type AppServiceEnvironmentPatchResource struct {
 	// AppServiceEnvironment - Core resource properties
 	*AppServiceEnvironment `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3395,17 +3278,8 @@ func (asepr AppServiceEnvironmentPatchResource) MarshalJSON() ([]byte, error) {
 	if asepr.AppServiceEnvironment != nil {
 		objectMap["properties"] = asepr.AppServiceEnvironment
 	}
-	if asepr.ID != nil {
-		objectMap["id"] = asepr.ID
-	}
-	if asepr.Name != nil {
-		objectMap["name"] = asepr.Name
-	}
 	if asepr.Kind != nil {
 		objectMap["kind"] = asepr.Kind
-	}
-	if asepr.Type != nil {
-		objectMap["type"] = asepr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3475,15 +3349,15 @@ type AppServiceEnvironmentResource struct {
 	autorest.Response `json:"-"`
 	// AppServiceEnvironment - Core resource properties
 	*AppServiceEnvironment `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -3495,20 +3369,11 @@ func (aser AppServiceEnvironmentResource) MarshalJSON() ([]byte, error) {
 	if aser.AppServiceEnvironment != nil {
 		objectMap["properties"] = aser.AppServiceEnvironment
 	}
-	if aser.ID != nil {
-		objectMap["id"] = aser.ID
-	}
-	if aser.Name != nil {
-		objectMap["name"] = aser.Name
-	}
 	if aser.Kind != nil {
 		objectMap["kind"] = aser.Kind
 	}
 	if aser.Location != nil {
 		objectMap["location"] = aser.Location
-	}
-	if aser.Type != nil {
-		objectMap["type"] = aser.Type
 	}
 	if aser.Tags != nil {
 		objectMap["tags"] = aser.Tags
@@ -3604,7 +3469,7 @@ type AppServiceEnvironmentsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsCreateOrUpdateFuture) Result(client AppServiceEnvironmentsClient) (aser AppServiceEnvironmentResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3633,7 +3498,7 @@ type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture) Result(client AppServiceEnvironmentsClient) (wpr WorkerPoolResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3662,7 +3527,7 @@ type AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture) Result(client AppServiceEnvironmentsClient) (wpr WorkerPoolResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3691,7 +3556,7 @@ type AppServiceEnvironmentsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsDeleteFuture) Result(client AppServiceEnvironmentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3714,7 +3579,7 @@ type AppServiceEnvironmentsResumeAllFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsResumeAllFuture) Result(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsResumeAllFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3743,7 +3608,7 @@ type AppServiceEnvironmentsResumeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsResumeFuture) Result(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsResumeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3772,7 +3637,7 @@ type AppServiceEnvironmentsSuspendAllFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsSuspendAllFuture) Result(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsSuspendAllFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3801,7 +3666,7 @@ type AppServiceEnvironmentsSuspendFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServiceEnvironmentsSuspendFuture) Result(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsSuspendFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3826,15 +3691,15 @@ type AppServicePlan struct {
 	// AppServicePlanProperties - AppServicePlan resource specific properties
 	*AppServicePlanProperties `json:"properties,omitempty"`
 	Sku                       *SkuDescription `json:"sku,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -3849,20 +3714,11 @@ func (asp AppServicePlan) MarshalJSON() ([]byte, error) {
 	if asp.Sku != nil {
 		objectMap["sku"] = asp.Sku
 	}
-	if asp.ID != nil {
-		objectMap["id"] = asp.ID
-	}
-	if asp.Name != nil {
-		objectMap["name"] = asp.Name
-	}
 	if asp.Kind != nil {
 		objectMap["kind"] = asp.Kind
 	}
 	if asp.Location != nil {
 		objectMap["location"] = asp.Location
-	}
-	if asp.Type != nil {
-		objectMap["type"] = asp.Type
 	}
 	if asp.Tags != nil {
 		objectMap["tags"] = asp.Tags
@@ -4107,13 +3963,13 @@ func NewAppServicePlanCollectionPage(getNextPage func(context.Context, AppServic
 type AppServicePlanPatchResource struct {
 	// AppServicePlanPatchResourceProperties - AppServicePlanPatchResource resource specific properties
 	*AppServicePlanPatchResourceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4123,17 +3979,8 @@ func (asppr AppServicePlanPatchResource) MarshalJSON() ([]byte, error) {
 	if asppr.AppServicePlanPatchResourceProperties != nil {
 		objectMap["properties"] = asppr.AppServicePlanPatchResourceProperties
 	}
-	if asppr.ID != nil {
-		objectMap["id"] = asppr.ID
-	}
-	if asppr.Name != nil {
-		objectMap["name"] = asppr.Name
-	}
 	if asppr.Kind != nil {
 		objectMap["kind"] = asppr.Kind
-	}
-	if asppr.Type != nil {
-		objectMap["type"] = asppr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4204,28 +4051,28 @@ type AppServicePlanPatchResourceProperties struct {
 	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
-	// Status - App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
+	// Status - READ-ONLY; App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
 	Status StatusOptions `json:"status,omitempty"`
-	// Subscription - App Service plan subscription.
+	// Subscription - READ-ONLY; App Service plan subscription.
 	Subscription *string `json:"subscription,omitempty"`
 	// AdminSiteName - App Service plan administration site.
 	AdminSiteName *string `json:"adminSiteName,omitempty"`
 	// HostingEnvironmentProfile - Specification for the App Service Environment to use for the App Service plan.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-	// MaximumNumberOfWorkers - Maximum number of instances that can be assigned to this App Service plan.
+	// MaximumNumberOfWorkers - READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
 	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty"`
-	// GeoRegion - Geographical location for the App Service plan.
+	// GeoRegion - READ-ONLY; Geographical location for the App Service plan.
 	GeoRegion *string `json:"geoRegion,omitempty"`
 	// PerSiteScaling - If <code>true</code>, apps assigned to this App Service plan can be scaled independently.
 	// If <code>false</code>, apps assigned to this App Service plan will scale to all instances of the plan.
 	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
-	// NumberOfSites - Number of apps assigned to this App Service plan.
+	// NumberOfSites - READ-ONLY; Number of apps assigned to this App Service plan.
 	NumberOfSites *int32 `json:"numberOfSites,omitempty"`
 	// IsSpot - If <code>true</code>, this App Service Plan owns spot instances.
 	IsSpot *bool `json:"isSpot,omitempty"`
 	// SpotExpirationTime - The time when the server farm expires. Valid only if it is a spot server farm.
 	SpotExpirationTime *date.Time `json:"spotExpirationTime,omitempty"`
-	// ResourceGroup - Resource group of the App Service plan.
+	// ResourceGroup - READ-ONLY; Resource group of the App Service plan.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
@@ -4233,7 +4080,7 @@ type AppServicePlanPatchResourceProperties struct {
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
 	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
-	// ProvisioningState - Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4243,28 +4090,28 @@ type AppServicePlanProperties struct {
 	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
-	// Status - App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
+	// Status - READ-ONLY; App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
 	Status StatusOptions `json:"status,omitempty"`
-	// Subscription - App Service plan subscription.
+	// Subscription - READ-ONLY; App Service plan subscription.
 	Subscription *string `json:"subscription,omitempty"`
 	// AdminSiteName - App Service plan administration site.
 	AdminSiteName *string `json:"adminSiteName,omitempty"`
 	// HostingEnvironmentProfile - Specification for the App Service Environment to use for the App Service plan.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-	// MaximumNumberOfWorkers - Maximum number of instances that can be assigned to this App Service plan.
+	// MaximumNumberOfWorkers - READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
 	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty"`
-	// GeoRegion - Geographical location for the App Service plan.
+	// GeoRegion - READ-ONLY; Geographical location for the App Service plan.
 	GeoRegion *string `json:"geoRegion,omitempty"`
 	// PerSiteScaling - If <code>true</code>, apps assigned to this App Service plan can be scaled independently.
 	// If <code>false</code>, apps assigned to this App Service plan will scale to all instances of the plan.
 	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
-	// NumberOfSites - Number of apps assigned to this App Service plan.
+	// NumberOfSites - READ-ONLY; Number of apps assigned to this App Service plan.
 	NumberOfSites *int32 `json:"numberOfSites,omitempty"`
 	// IsSpot - If <code>true</code>, this App Service Plan owns spot instances.
 	IsSpot *bool `json:"isSpot,omitempty"`
 	// SpotExpirationTime - The time when the server farm expires. Valid only if it is a spot server farm.
 	SpotExpirationTime *date.Time `json:"spotExpirationTime,omitempty"`
-	// ResourceGroup - Resource group of the App Service plan.
+	// ResourceGroup - READ-ONLY; Resource group of the App Service plan.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
@@ -4272,7 +4119,7 @@ type AppServicePlanProperties struct {
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
 	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
-	// ProvisioningState - Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4286,7 +4133,7 @@ type AppServicePlansCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppServicePlansCreateOrUpdateFuture) Result(client AppServicePlansClient) (asp AppServicePlan, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServicePlansCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4315,7 +4162,7 @@ type AppsInstallSiteExtensionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsInstallSiteExtensionFuture) Result(client AppsClient) (sei SiteExtensionInfo, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsInstallSiteExtensionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4344,7 +4191,7 @@ type AppsInstallSiteExtensionSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsInstallSiteExtensionSlotFuture) Result(client AppsClient) (sei SiteExtensionInfo, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsInstallSiteExtensionSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4373,7 +4220,7 @@ type AppsListPublishingCredentialsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsListPublishingCredentialsFuture) Result(client AppsClient) (u User, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsListPublishingCredentialsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4402,7 +4249,7 @@ type AppsListPublishingCredentialsSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsListPublishingCredentialsSlotFuture) Result(client AppsClient) (u User, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsListPublishingCredentialsSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4431,7 +4278,7 @@ type AppsMigrateMySQLFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsMigrateMySQLFuture) Result(client AppsClient) (o Operation, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsMigrateMySQLFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4460,7 +4307,7 @@ type AppsMigrateStorageFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsMigrateStorageFuture) Result(client AppsClient) (smr StorageMigrationResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsMigrateStorageFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4488,7 +4335,7 @@ type AppsRecoverFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsRecoverFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsRecoverFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4511,7 +4358,7 @@ type AppsRecoverSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsRecoverSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsRecoverSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4533,7 +4380,7 @@ type AppsRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsRestoreFuture) Result(client AppsClient) (rr RestoreResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4562,7 +4409,7 @@ type AppsRestoreSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsRestoreSlotFuture) Result(client AppsClient) (rr RestoreResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsRestoreSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4591,7 +4438,7 @@ type AppsSwapSlotSlotFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsSwapSlotSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsSwapSlotSlotFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4614,7 +4461,7 @@ type AppsSwapSlotWithProductionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AppsSwapSlotWithProductionFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsSwapSlotWithProductionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4704,13 +4551,13 @@ type BackupItem struct {
 	autorest.Response `json:"-"`
 	// BackupItemProperties - BackupItem resource specific properties
 	*BackupItemProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4720,17 +4567,8 @@ func (bi BackupItem) MarshalJSON() ([]byte, error) {
 	if bi.BackupItemProperties != nil {
 		objectMap["properties"] = bi.BackupItemProperties
 	}
-	if bi.ID != nil {
-		objectMap["id"] = bi.ID
-	}
-	if bi.Name != nil {
-		objectMap["name"] = bi.Name
-	}
 	if bi.Kind != nil {
 		objectMap["kind"] = bi.Kind
-	}
-	if bi.Type != nil {
-		objectMap["type"] = bi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4800,7 +4638,7 @@ type BackupItemCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]BackupItem `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4943,33 +4781,33 @@ func NewBackupItemCollectionPage(getNextPage func(context.Context, BackupItemCol
 
 // BackupItemProperties backupItem resource specific properties
 type BackupItemProperties struct {
-	// BackupID - Id of the backup.
+	// BackupID - READ-ONLY; Id of the backup.
 	BackupID *int32 `json:"id,omitempty"`
-	// StorageAccountURL - SAS URL for the storage account container which contains this backup.
+	// StorageAccountURL - READ-ONLY; SAS URL for the storage account container which contains this backup.
 	StorageAccountURL *string `json:"storageAccountUrl,omitempty"`
-	// BlobName - Name of the blob which contains data for this backup.
+	// BlobName - READ-ONLY; Name of the blob which contains data for this backup.
 	BlobName *string `json:"blobName,omitempty"`
-	// Name - Name of this backup.
+	// Name - READ-ONLY; Name of this backup.
 	Name *string `json:"name,omitempty"`
-	// Status - Backup status. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created', 'Skipped', 'PartiallySucceeded', 'DeleteInProgress', 'DeleteFailed', 'Deleted'
+	// Status - READ-ONLY; Backup status. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created', 'Skipped', 'PartiallySucceeded', 'DeleteInProgress', 'DeleteFailed', 'Deleted'
 	Status BackupItemStatus `json:"status,omitempty"`
-	// SizeInBytes - Size of the backup in bytes.
+	// SizeInBytes - READ-ONLY; Size of the backup in bytes.
 	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
-	// Created - Timestamp of the backup creation.
+	// Created - READ-ONLY; Timestamp of the backup creation.
 	Created *date.Time `json:"created,omitempty"`
-	// Log - Details regarding this backup. Might contain an error message.
+	// Log - READ-ONLY; Details regarding this backup. Might contain an error message.
 	Log *string `json:"log,omitempty"`
-	// Databases - List of databases included in the backup.
+	// Databases - READ-ONLY; List of databases included in the backup.
 	Databases *[]DatabaseBackupSetting `json:"databases,omitempty"`
-	// Scheduled - True if this backup has been created due to a schedule being triggered.
+	// Scheduled - READ-ONLY; True if this backup has been created due to a schedule being triggered.
 	Scheduled *bool `json:"scheduled,omitempty"`
-	// LastRestoreTimeStamp - Timestamp of a last restore operation which used this backup.
+	// LastRestoreTimeStamp - READ-ONLY; Timestamp of a last restore operation which used this backup.
 	LastRestoreTimeStamp *date.Time `json:"lastRestoreTimeStamp,omitempty"`
-	// FinishedTimeStamp - Timestamp when this backup finished.
+	// FinishedTimeStamp - READ-ONLY; Timestamp when this backup finished.
 	FinishedTimeStamp *date.Time `json:"finishedTimeStamp,omitempty"`
-	// CorrelationID - Unique correlation identifier. Please use this along with the timestamp while communicating with Azure support.
+	// CorrelationID - READ-ONLY; Unique correlation identifier. Please use this along with the timestamp while communicating with Azure support.
 	CorrelationID *string `json:"correlationId,omitempty"`
-	// WebsiteSizeInBytes - Size of the original web app which has been backed up.
+	// WebsiteSizeInBytes - READ-ONLY; Size of the original web app which has been backed up.
 	WebsiteSizeInBytes *int64 `json:"websiteSizeInBytes,omitempty"`
 }
 
@@ -4978,13 +4816,13 @@ type BackupRequest struct {
 	autorest.Response `json:"-"`
 	// BackupRequestProperties - BackupRequest resource specific properties
 	*BackupRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4994,17 +4832,8 @@ func (br BackupRequest) MarshalJSON() ([]byte, error) {
 	if br.BackupRequestProperties != nil {
 		objectMap["properties"] = br.BackupRequestProperties
 	}
-	if br.ID != nil {
-		objectMap["id"] = br.ID
-	}
-	if br.Name != nil {
-		objectMap["name"] = br.Name
-	}
 	if br.Kind != nil {
 		objectMap["kind"] = br.Kind
-	}
-	if br.Type != nil {
-		objectMap["type"] = br.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5098,7 +4927,7 @@ type BackupSchedule struct {
 	RetentionPeriodInDays *int32 `json:"retentionPeriodInDays,omitempty"`
 	// StartTime - When the schedule should start working.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// LastExecutionTime - Last time when this schedule was triggered.
+	// LastExecutionTime - READ-ONLY; Last time when this schedule was triggered.
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 }
 
@@ -5107,13 +4936,13 @@ type BackupSchedule struct {
 type BillingMeter struct {
 	// BillingMeterProperties - BillingMeter resource specific properties
 	*BillingMeterProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5123,17 +4952,8 @@ func (bm BillingMeter) MarshalJSON() ([]byte, error) {
 	if bm.BillingMeterProperties != nil {
 		objectMap["properties"] = bm.BillingMeterProperties
 	}
-	if bm.ID != nil {
-		objectMap["id"] = bm.ID
-	}
-	if bm.Name != nil {
-		objectMap["name"] = bm.Name
-	}
 	if bm.Kind != nil {
 		objectMap["kind"] = bm.Kind
-	}
-	if bm.Type != nil {
-		objectMap["type"] = bm.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5203,7 +5023,7 @@ type BillingMeterCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of Billing Meters.
 	Value *[]BillingMeter `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -5373,15 +5193,15 @@ type Certificate struct {
 	autorest.Response `json:"-"`
 	// CertificateProperties - Certificate resource specific properties
 	*CertificateProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -5393,20 +5213,11 @@ func (c Certificate) MarshalJSON() ([]byte, error) {
 	if c.CertificateProperties != nil {
 		objectMap["properties"] = c.CertificateProperties
 	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
 	if c.Kind != nil {
 		objectMap["kind"] = c.Kind
 	}
 	if c.Location != nil {
 		objectMap["location"] = c.Location
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	if c.Tags != nil {
 		objectMap["tags"] = c.Tags
@@ -5497,7 +5308,7 @@ type CertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Certificate `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -5640,23 +5451,23 @@ func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateC
 
 // CertificateDetails SSL certificate details.
 type CertificateDetails struct {
-	// Version - Certificate Version.
+	// Version - READ-ONLY; Certificate Version.
 	Version *int32 `json:"version,omitempty"`
-	// SerialNumber - Certificate Serial Number.
+	// SerialNumber - READ-ONLY; Certificate Serial Number.
 	SerialNumber *string `json:"serialNumber,omitempty"`
-	// Thumbprint - Certificate Thumbprint.
+	// Thumbprint - READ-ONLY; Certificate Thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// Subject - Certificate Subject.
+	// Subject - READ-ONLY; Certificate Subject.
 	Subject *string `json:"subject,omitempty"`
-	// NotBefore - Date Certificate is valid from.
+	// NotBefore - READ-ONLY; Date Certificate is valid from.
 	NotBefore *date.Time `json:"notBefore,omitempty"`
-	// NotAfter - Date Certificate is valid to.
+	// NotAfter - READ-ONLY; Date Certificate is valid to.
 	NotAfter *date.Time `json:"notAfter,omitempty"`
-	// SignatureAlgorithm - Certificate Signature algorithm.
+	// SignatureAlgorithm - READ-ONLY; Certificate Signature algorithm.
 	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
-	// Issuer - Certificate Issuer.
+	// Issuer - READ-ONLY; Certificate Issuer.
 	Issuer *string `json:"issuer,omitempty"`
-	// RawData - Raw certificate data.
+	// RawData - READ-ONLY; Raw certificate data.
 	RawData *string `json:"rawData,omitempty"`
 }
 
@@ -5664,13 +5475,13 @@ type CertificateDetails struct {
 type CertificateEmail struct {
 	// CertificateEmailProperties - CertificateEmail resource specific properties
 	*CertificateEmailProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5680,17 +5491,8 @@ func (ce CertificateEmail) MarshalJSON() ([]byte, error) {
 	if ce.CertificateEmailProperties != nil {
 		objectMap["properties"] = ce.CertificateEmailProperties
 	}
-	if ce.ID != nil {
-		objectMap["id"] = ce.ID
-	}
-	if ce.Name != nil {
-		objectMap["name"] = ce.Name
-	}
 	if ce.Kind != nil {
 		objectMap["kind"] = ce.Kind
-	}
-	if ce.Type != nil {
-		objectMap["type"] = ce.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5767,13 +5569,13 @@ type CertificateEmailProperties struct {
 type CertificateOrderAction struct {
 	// CertificateOrderActionProperties - CertificateOrderAction resource specific properties
 	*CertificateOrderActionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5783,17 +5585,8 @@ func (coa CertificateOrderAction) MarshalJSON() ([]byte, error) {
 	if coa.CertificateOrderActionProperties != nil {
 		objectMap["properties"] = coa.CertificateOrderActionProperties
 	}
-	if coa.ID != nil {
-		objectMap["id"] = coa.ID
-	}
-	if coa.Name != nil {
-		objectMap["name"] = coa.Name
-	}
 	if coa.Kind != nil {
 		objectMap["kind"] = coa.Kind
-	}
-	if coa.Type != nil {
-		objectMap["type"] = coa.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5870,13 +5663,13 @@ type CertificateOrderActionProperties struct {
 type CertificatePatchResource struct {
 	// CertificatePatchResourceProperties - CertificatePatchResource resource specific properties
 	*CertificatePatchResourceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5886,17 +5679,8 @@ func (cpr CertificatePatchResource) MarshalJSON() ([]byte, error) {
 	if cpr.CertificatePatchResourceProperties != nil {
 		objectMap["properties"] = cpr.CertificatePatchResourceProperties
 	}
-	if cpr.ID != nil {
-		objectMap["id"] = cpr.ID
-	}
-	if cpr.Name != nil {
-		objectMap["name"] = cpr.Name
-	}
 	if cpr.Kind != nil {
 		objectMap["kind"] = cpr.Kind
-	}
-	if cpr.Type != nil {
-		objectMap["type"] = cpr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5963,43 +5747,43 @@ func (cpr *CertificatePatchResource) UnmarshalJSON(body []byte) error {
 
 // CertificatePatchResourceProperties certificatePatchResource resource specific properties
 type CertificatePatchResourceProperties struct {
-	// FriendlyName - Friendly name of the certificate.
+	// FriendlyName - READ-ONLY; Friendly name of the certificate.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// SubjectName - Subject name of the certificate.
+	// SubjectName - READ-ONLY; Subject name of the certificate.
 	SubjectName *string `json:"subjectName,omitempty"`
 	// HostNames - Host names the certificate applies to.
 	HostNames *[]string `json:"hostNames,omitempty"`
 	// PfxBlob - Pfx blob.
 	PfxBlob *[]byte `json:"pfxBlob,omitempty"`
-	// SiteName - App name.
+	// SiteName - READ-ONLY; App name.
 	SiteName *string `json:"siteName,omitempty"`
-	// SelfLink - Self link.
+	// SelfLink - READ-ONLY; Self link.
 	SelfLink *string `json:"selfLink,omitempty"`
-	// Issuer - Certificate issuer.
+	// Issuer - READ-ONLY; Certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
-	// IssueDate - Certificate issue Date.
+	// IssueDate - READ-ONLY; Certificate issue Date.
 	IssueDate *date.Time `json:"issueDate,omitempty"`
-	// ExpirationDate - Certificate expiration date.
+	// ExpirationDate - READ-ONLY; Certificate expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Password - Certificate password.
 	Password *string `json:"password,omitempty"`
-	// Thumbprint - Certificate thumbprint.
+	// Thumbprint - READ-ONLY; Certificate thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// Valid - Is the certificate valid?.
+	// Valid - READ-ONLY; Is the certificate valid?.
 	Valid *bool `json:"valid,omitempty"`
-	// CerBlob - Raw bytes of .cer file
+	// CerBlob - READ-ONLY; Raw bytes of .cer file
 	CerBlob *[]byte `json:"cerBlob,omitempty"`
-	// PublicKeyHash - Public key hash.
+	// PublicKeyHash - READ-ONLY; Public key hash.
 	PublicKeyHash *string `json:"publicKeyHash,omitempty"`
-	// HostingEnvironmentProfile - Specification for the App Service Environment to use for the certificate.
+	// HostingEnvironmentProfile - READ-ONLY; Specification for the App Service Environment to use for the certificate.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 	// KeyVaultID - Key Vault Csm resource Id.
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 	// KeyVaultSecretName - Key Vault secret name.
 	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
-	// KeyVaultSecretStatus - Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
+	// KeyVaultSecretStatus - READ-ONLY; Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
 	KeyVaultSecretStatus KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty"`
-	// GeoRegion - Region of the certificate.
+	// GeoRegion - READ-ONLY; Region of the certificate.
 	GeoRegion *string `json:"geoRegion,omitempty"`
 	// ServerFarmID - Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
@@ -6007,43 +5791,43 @@ type CertificatePatchResourceProperties struct {
 
 // CertificateProperties certificate resource specific properties
 type CertificateProperties struct {
-	// FriendlyName - Friendly name of the certificate.
+	// FriendlyName - READ-ONLY; Friendly name of the certificate.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// SubjectName - Subject name of the certificate.
+	// SubjectName - READ-ONLY; Subject name of the certificate.
 	SubjectName *string `json:"subjectName,omitempty"`
 	// HostNames - Host names the certificate applies to.
 	HostNames *[]string `json:"hostNames,omitempty"`
 	// PfxBlob - Pfx blob.
 	PfxBlob *[]byte `json:"pfxBlob,omitempty"`
-	// SiteName - App name.
+	// SiteName - READ-ONLY; App name.
 	SiteName *string `json:"siteName,omitempty"`
-	// SelfLink - Self link.
+	// SelfLink - READ-ONLY; Self link.
 	SelfLink *string `json:"selfLink,omitempty"`
-	// Issuer - Certificate issuer.
+	// Issuer - READ-ONLY; Certificate issuer.
 	Issuer *string `json:"issuer,omitempty"`
-	// IssueDate - Certificate issue Date.
+	// IssueDate - READ-ONLY; Certificate issue Date.
 	IssueDate *date.Time `json:"issueDate,omitempty"`
-	// ExpirationDate - Certificate expiration date.
+	// ExpirationDate - READ-ONLY; Certificate expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Password - Certificate password.
 	Password *string `json:"password,omitempty"`
-	// Thumbprint - Certificate thumbprint.
+	// Thumbprint - READ-ONLY; Certificate thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// Valid - Is the certificate valid?.
+	// Valid - READ-ONLY; Is the certificate valid?.
 	Valid *bool `json:"valid,omitempty"`
-	// CerBlob - Raw bytes of .cer file
+	// CerBlob - READ-ONLY; Raw bytes of .cer file
 	CerBlob *[]byte `json:"cerBlob,omitempty"`
-	// PublicKeyHash - Public key hash.
+	// PublicKeyHash - READ-ONLY; Public key hash.
 	PublicKeyHash *string `json:"publicKeyHash,omitempty"`
-	// HostingEnvironmentProfile - Specification for the App Service Environment to use for the certificate.
+	// HostingEnvironmentProfile - READ-ONLY; Specification for the App Service Environment to use for the certificate.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 	// KeyVaultID - Key Vault Csm resource Id.
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 	// KeyVaultSecretName - Key Vault secret name.
 	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
-	// KeyVaultSecretStatus - Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
+	// KeyVaultSecretStatus - READ-ONLY; Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
 	KeyVaultSecretStatus KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty"`
-	// GeoRegion - Region of the certificate.
+	// GeoRegion - READ-ONLY; Region of the certificate.
 	GeoRegion *string `json:"geoRegion,omitempty"`
 	// ServerFarmID - Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
@@ -6124,13 +5908,13 @@ type ConnectionStringDictionary struct {
 	autorest.Response `json:"-"`
 	// Properties - Connection strings.
 	Properties map[string]*ConnStringValueTypePair `json:"properties"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6140,17 +5924,8 @@ func (csd ConnectionStringDictionary) MarshalJSON() ([]byte, error) {
 	if csd.Properties != nil {
 		objectMap["properties"] = csd.Properties
 	}
-	if csd.ID != nil {
-		objectMap["id"] = csd.ID
-	}
-	if csd.Name != nil {
-		objectMap["name"] = csd.Name
-	}
 	if csd.Kind != nil {
 		objectMap["kind"] = csd.Kind
-	}
-	if csd.Type != nil {
-		objectMap["type"] = csd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6202,13 +5977,13 @@ type ContinuousWebJob struct {
 	autorest.Response `json:"-"`
 	// ContinuousWebJobProperties - ContinuousWebJob resource specific properties
 	*ContinuousWebJobProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6218,17 +5993,8 @@ func (cwj ContinuousWebJob) MarshalJSON() ([]byte, error) {
 	if cwj.ContinuousWebJobProperties != nil {
 		objectMap["properties"] = cwj.ContinuousWebJobProperties
 	}
-	if cwj.ID != nil {
-		objectMap["id"] = cwj.ID
-	}
-	if cwj.Name != nil {
-		objectMap["name"] = cwj.Name
-	}
 	if cwj.Kind != nil {
 		objectMap["kind"] = cwj.Kind
-	}
-	if cwj.Type != nil {
-		objectMap["type"] = cwj.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6447,7 +6213,7 @@ type ContinuousWebJobProperties struct {
 	DetailedStatus *string `json:"detailedStatus,omitempty"`
 	// LogURL - Log URL.
 	LogURL *string `json:"logUrl,omitempty"`
-	// Name - Job name. Used as job identifier in ARM resource URI.
+	// Name - READ-ONLY; Job name. Used as job identifier in ARM resource URI.
 	Name *string `json:"name,omitempty"`
 	// RunCommand - Run command.
 	RunCommand *string `json:"runCommand,omitempty"`
@@ -6476,9 +6242,6 @@ func (cwj ContinuousWebJobProperties) MarshalJSON() ([]byte, error) {
 	}
 	if cwj.LogURL != nil {
 		objectMap["logUrl"] = cwj.LogURL
-	}
-	if cwj.Name != nil {
-		objectMap["name"] = cwj.Name
 	}
 	if cwj.RunCommand != nil {
 		objectMap["runCommand"] = cwj.RunCommand
@@ -6523,7 +6286,7 @@ type CsmOperationCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]CsmOperationDescription `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6721,7 +6484,7 @@ type CsmUsageQuotaCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]CsmUsageQuota `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6867,13 +6630,13 @@ type CustomHostnameAnalysisResult struct {
 	autorest.Response `json:"-"`
 	// CustomHostnameAnalysisResultProperties - CustomHostnameAnalysisResult resource specific properties
 	*CustomHostnameAnalysisResultProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6883,17 +6646,8 @@ func (char CustomHostnameAnalysisResult) MarshalJSON() ([]byte, error) {
 	if char.CustomHostnameAnalysisResultProperties != nil {
 		objectMap["properties"] = char.CustomHostnameAnalysisResultProperties
 	}
-	if char.ID != nil {
-		objectMap["id"] = char.ID
-	}
-	if char.Name != nil {
-		objectMap["name"] = char.Name
-	}
 	if char.Kind != nil {
 		objectMap["kind"] = char.Kind
-	}
-	if char.Type != nil {
-		objectMap["type"] = char.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6960,17 +6714,17 @@ func (char *CustomHostnameAnalysisResult) UnmarshalJSON(body []byte) error {
 
 // CustomHostnameAnalysisResultProperties customHostnameAnalysisResult resource specific properties
 type CustomHostnameAnalysisResultProperties struct {
-	// IsHostnameAlreadyVerified - <code>true</code> if hostname is already verified; otherwise, <code>false</code>.
+	// IsHostnameAlreadyVerified - READ-ONLY; <code>true</code> if hostname is already verified; otherwise, <code>false</code>.
 	IsHostnameAlreadyVerified *bool `json:"isHostnameAlreadyVerified,omitempty"`
-	// CustomDomainVerificationTest - DNS verification test result. Possible values include: 'DNSVerificationTestResultPassed', 'DNSVerificationTestResultFailed', 'DNSVerificationTestResultSkipped'
+	// CustomDomainVerificationTest - READ-ONLY; DNS verification test result. Possible values include: 'DNSVerificationTestResultPassed', 'DNSVerificationTestResultFailed', 'DNSVerificationTestResultSkipped'
 	CustomDomainVerificationTest DNSVerificationTestResult `json:"customDomainVerificationTest,omitempty"`
-	// CustomDomainVerificationFailureInfo - Raw failure information if DNS verification fails.
+	// CustomDomainVerificationFailureInfo - READ-ONLY; Raw failure information if DNS verification fails.
 	CustomDomainVerificationFailureInfo *ErrorEntity `json:"customDomainVerificationFailureInfo,omitempty"`
-	// HasConflictOnScaleUnit - <code>true</code> if there is a conflict on a scale unit; otherwise, <code>false</code>.
+	// HasConflictOnScaleUnit - READ-ONLY; <code>true</code> if there is a conflict on a scale unit; otherwise, <code>false</code>.
 	HasConflictOnScaleUnit *bool `json:"hasConflictOnScaleUnit,omitempty"`
-	// HasConflictAcrossSubscription - <code>true</code> if there is a conflict across subscriptions; otherwise, <code>false</code>.
+	// HasConflictAcrossSubscription - READ-ONLY; <code>true</code> if there is a conflict across subscriptions; otherwise, <code>false</code>.
 	HasConflictAcrossSubscription *bool `json:"hasConflictAcrossSubscription,omitempty"`
-	// ConflictingAppResourceID - Name of the conflicting app on scale unit if it's within the same subscription.
+	// ConflictingAppResourceID - READ-ONLY; Name of the conflicting app on scale unit if it's within the same subscription.
 	ConflictingAppResourceID *string `json:"conflictingAppResourceId,omitempty"`
 	// CNameRecords - CName records controller can see for this hostname.
 	CNameRecords *[]string `json:"cNameRecords,omitempty"`
@@ -7026,30 +6780,30 @@ type DataTableResponseObject struct {
 
 // DefaultErrorResponse app Service error response.
 type DefaultErrorResponse struct {
-	// Error - Error model.
+	// Error - READ-ONLY; Error model.
 	Error *DefaultErrorResponseError `json:"error,omitempty"`
 }
 
 // DefaultErrorResponseError error model.
 type DefaultErrorResponseError struct {
-	// Code - Standardized string to programmatically identify the error.
+	// Code - READ-ONLY; Standardized string to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
-	// Message - Detailed error description and debugging information.
+	// Message - READ-ONLY; Detailed error description and debugging information.
 	Message *string `json:"message,omitempty"`
-	// Target - Detailed error description and debugging information.
+	// Target - READ-ONLY; Detailed error description and debugging information.
 	Target  *string                                 `json:"target,omitempty"`
 	Details *[]DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
-	// Innererror - More information to debug error.
+	// Innererror - READ-ONLY; More information to debug error.
 	Innererror *string `json:"innererror,omitempty"`
 }
 
 // DefaultErrorResponseErrorDetailsItem detailed errors.
 type DefaultErrorResponseErrorDetailsItem struct {
-	// Code - Standardized string to programmatically identify the error.
+	// Code - READ-ONLY; Standardized string to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
-	// Message - Detailed error description and debugging information.
+	// Message - READ-ONLY; Detailed error description and debugging information.
 	Message *string `json:"message,omitempty"`
-	// Target - Detailed error description and debugging information.
+	// Target - READ-ONLY; Detailed error description and debugging information.
 	Target *string `json:"target,omitempty"`
 }
 
@@ -7057,15 +6811,15 @@ type DefaultErrorResponseErrorDetailsItem struct {
 type DeletedSite struct {
 	// ID - Numeric id for the deleted site
 	ID *int32 `json:"id,omitempty"`
-	// DeletedTimestamp - Time in UTC when the app was deleted.
+	// DeletedTimestamp - READ-ONLY; Time in UTC when the app was deleted.
 	DeletedTimestamp *string `json:"deletedTimestamp,omitempty"`
-	// Subscription - Subscription containing the deleted site
+	// Subscription - READ-ONLY; Subscription containing the deleted site
 	Subscription *string `json:"subscription,omitempty"`
-	// ResourceGroup - ResourceGroup that contained the deleted site
+	// ResourceGroup - READ-ONLY; ResourceGroup that contained the deleted site
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// Name - Name of the deleted site
+	// Name - READ-ONLY; Name of the deleted site
 	Name *string `json:"name,omitempty"`
-	// Slot - Slot of the deleted site
+	// Slot - READ-ONLY; Slot of the deleted site
 	Slot *string `json:"slot,omitempty"`
 }
 
@@ -7074,7 +6828,7 @@ type DeletedWebAppCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]DeletedSite `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7220,13 +6974,13 @@ type Deployment struct {
 	autorest.Response `json:"-"`
 	// DeploymentProperties - Deployment resource specific properties
 	*DeploymentProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7236,17 +6990,8 @@ func (d Deployment) MarshalJSON() ([]byte, error) {
 	if d.DeploymentProperties != nil {
 		objectMap["properties"] = d.DeploymentProperties
 	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
 	if d.Kind != nil {
 		objectMap["kind"] = d.Kind
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7316,7 +7061,7 @@ type DeploymentCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Deployment `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7517,13 +7262,13 @@ type DetectorAbnormalTimePeriod struct {
 type DetectorDefinition struct {
 	// DetectorDefinitionProperties - DetectorDefinition resource specific properties
 	*DetectorDefinitionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7533,17 +7278,8 @@ func (dd DetectorDefinition) MarshalJSON() ([]byte, error) {
 	if dd.DetectorDefinitionProperties != nil {
 		objectMap["properties"] = dd.DetectorDefinitionProperties
 	}
-	if dd.ID != nil {
-		objectMap["id"] = dd.ID
-	}
-	if dd.Name != nil {
-		objectMap["name"] = dd.Name
-	}
 	if dd.Kind != nil {
 		objectMap["kind"] = dd.Kind
-	}
-	if dd.Type != nil {
-		objectMap["type"] = dd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7610,25 +7346,25 @@ func (dd *DetectorDefinition) UnmarshalJSON(body []byte) error {
 
 // DetectorDefinitionProperties detectorDefinition resource specific properties
 type DetectorDefinitionProperties struct {
-	// DisplayName - Display name of the detector
+	// DisplayName - READ-ONLY; Display name of the detector
 	DisplayName *string `json:"displayName,omitempty"`
-	// Description - Description of the detector
+	// Description - READ-ONLY; Description of the detector
 	Description *string `json:"description,omitempty"`
-	// Rank - Detector Rank
+	// Rank - READ-ONLY; Detector Rank
 	Rank *float64 `json:"rank,omitempty"`
-	// IsEnabled - Flag representing whether detector is enabled or not.
+	// IsEnabled - READ-ONLY; Flag representing whether detector is enabled or not.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
 // DetectorInfo definition of Detector
 type DetectorInfo struct {
-	// Description - Short description of the detector and its purpose
+	// Description - READ-ONLY; Short description of the detector and its purpose
 	Description *string `json:"description,omitempty"`
-	// Category - Support Category
+	// Category - READ-ONLY; Support Category
 	Category *string `json:"category,omitempty"`
-	// SubCategory - Support Sub Category
+	// SubCategory - READ-ONLY; Support Sub Category
 	SubCategory *string `json:"subCategory,omitempty"`
-	// SupportTopicID - Support Topic Id
+	// SupportTopicID - READ-ONLY; Support Topic Id
 	SupportTopicID *string `json:"supportTopicId,omitempty"`
 }
 
@@ -7637,13 +7373,13 @@ type DetectorResponse struct {
 	autorest.Response `json:"-"`
 	// DetectorResponseProperties - DetectorResponse resource specific properties
 	*DetectorResponseProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7653,17 +7389,8 @@ func (dr DetectorResponse) MarshalJSON() ([]byte, error) {
 	if dr.DetectorResponseProperties != nil {
 		objectMap["properties"] = dr.DetectorResponseProperties
 	}
-	if dr.ID != nil {
-		objectMap["id"] = dr.ID
-	}
-	if dr.Name != nil {
-		objectMap["name"] = dr.Name
-	}
 	if dr.Kind != nil {
 		objectMap["kind"] = dr.Kind
-	}
-	if dr.Type != nil {
-		objectMap["type"] = dr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7733,7 +7460,7 @@ type DetectorResponseCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]DetectorResponse `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7887,13 +7614,13 @@ type DiagnosticAnalysis struct {
 	autorest.Response `json:"-"`
 	// DiagnosticAnalysisProperties - DiagnosticAnalysis resource specific properties
 	*DiagnosticAnalysisProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7903,17 +7630,8 @@ func (da DiagnosticAnalysis) MarshalJSON() ([]byte, error) {
 	if da.DiagnosticAnalysisProperties != nil {
 		objectMap["properties"] = da.DiagnosticAnalysisProperties
 	}
-	if da.ID != nil {
-		objectMap["id"] = da.ID
-	}
-	if da.Name != nil {
-		objectMap["name"] = da.Name
-	}
 	if da.Kind != nil {
 		objectMap["kind"] = da.Kind
-	}
-	if da.Type != nil {
-		objectMap["type"] = da.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7983,7 +7701,7 @@ type DiagnosticAnalysisCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]AnalysisDefinition `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8143,13 +7861,13 @@ type DiagnosticCategory struct {
 	autorest.Response `json:"-"`
 	// DiagnosticCategoryProperties - DiagnosticCategory resource specific properties
 	*DiagnosticCategoryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8159,17 +7877,8 @@ func (dc DiagnosticCategory) MarshalJSON() ([]byte, error) {
 	if dc.DiagnosticCategoryProperties != nil {
 		objectMap["properties"] = dc.DiagnosticCategoryProperties
 	}
-	if dc.ID != nil {
-		objectMap["id"] = dc.ID
-	}
-	if dc.Name != nil {
-		objectMap["name"] = dc.Name
-	}
 	if dc.Kind != nil {
 		objectMap["kind"] = dc.Kind
-	}
-	if dc.Type != nil {
-		objectMap["type"] = dc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8239,7 +7948,7 @@ type DiagnosticCategoryCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]DiagnosticCategory `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8382,7 +8091,7 @@ func NewDiagnosticCategoryCollectionPage(getNextPage func(context.Context, Diagn
 
 // DiagnosticCategoryProperties diagnosticCategory resource specific properties
 type DiagnosticCategoryProperties struct {
-	// Description - Description of the diagnostic category
+	// Description - READ-ONLY; Description of the diagnostic category
 	Description *string `json:"description,omitempty"`
 }
 
@@ -8399,7 +8108,7 @@ type DiagnosticDetectorCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]DetectorDefinition `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8545,13 +8254,13 @@ type DiagnosticDetectorResponse struct {
 	autorest.Response `json:"-"`
 	// DiagnosticDetectorResponseProperties - DiagnosticDetectorResponse resource specific properties
 	*DiagnosticDetectorResponseProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8561,17 +8270,8 @@ func (ddr DiagnosticDetectorResponse) MarshalJSON() ([]byte, error) {
 	if ddr.DiagnosticDetectorResponseProperties != nil {
 		objectMap["properties"] = ddr.DiagnosticDetectorResponseProperties
 	}
-	if ddr.ID != nil {
-		objectMap["id"] = ddr.ID
-	}
-	if ddr.Name != nil {
-		objectMap["name"] = ddr.Name
-	}
 	if ddr.Kind != nil {
 		objectMap["kind"] = ddr.Kind
-	}
-	if ddr.Type != nil {
-		objectMap["type"] = ddr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8705,15 +8405,15 @@ type Domain struct {
 	autorest.Response `json:"-"`
 	// DomainProperties - Domain resource specific properties
 	*DomainProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -8725,20 +8425,11 @@ func (d Domain) MarshalJSON() ([]byte, error) {
 	if d.DomainProperties != nil {
 		objectMap["properties"] = d.DomainProperties
 	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
 	if d.Kind != nil {
 		objectMap["kind"] = d.Kind
 	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	if d.Tags != nil {
 		objectMap["tags"] = d.Tags
@@ -8840,7 +8531,7 @@ type DomainCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Domain `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8984,11 +8675,11 @@ func NewDomainCollectionPage(getNextPage func(context.Context, DomainCollection)
 // DomainControlCenterSsoRequest single sign-on request information for domain management.
 type DomainControlCenterSsoRequest struct {
 	autorest.Response `json:"-"`
-	// URL - URL where the single sign-on request is to be made.
+	// URL - READ-ONLY; URL where the single sign-on request is to be made.
 	URL *string `json:"url,omitempty"`
-	// PostParameterKey - Post parameter key.
+	// PostParameterKey - READ-ONLY; Post parameter key.
 	PostParameterKey *string `json:"postParameterKey,omitempty"`
-	// PostParameterValue - Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
+	// PostParameterValue - READ-ONLY; Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
 	PostParameterValue *string `json:"postParameterValue,omitempty"`
 }
 
@@ -8997,13 +8688,13 @@ type DomainOwnershipIdentifier struct {
 	autorest.Response `json:"-"`
 	// DomainOwnershipIdentifierProperties - DomainOwnershipIdentifier resource specific properties
 	*DomainOwnershipIdentifierProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9013,17 +8704,8 @@ func (doi DomainOwnershipIdentifier) MarshalJSON() ([]byte, error) {
 	if doi.DomainOwnershipIdentifierProperties != nil {
 		objectMap["properties"] = doi.DomainOwnershipIdentifierProperties
 	}
-	if doi.ID != nil {
-		objectMap["id"] = doi.ID
-	}
-	if doi.Name != nil {
-		objectMap["name"] = doi.Name
-	}
 	if doi.Kind != nil {
 		objectMap["kind"] = doi.Kind
-	}
-	if doi.Type != nil {
-		objectMap["type"] = doi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9093,7 +8775,7 @@ type DomainOwnershipIdentifierCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]DomainOwnershipIdentifier `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -9245,13 +8927,13 @@ type DomainOwnershipIdentifierProperties struct {
 type DomainPatchResource struct {
 	// DomainPatchResourceProperties - DomainPatchResource resource specific properties
 	*DomainPatchResourceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9261,17 +8943,8 @@ func (dpr DomainPatchResource) MarshalJSON() ([]byte, error) {
 	if dpr.DomainPatchResourceProperties != nil {
 		objectMap["properties"] = dpr.DomainPatchResourceProperties
 	}
-	if dpr.ID != nil {
-		objectMap["id"] = dpr.ID
-	}
-	if dpr.Name != nil {
-		objectMap["name"] = dpr.Name
-	}
 	if dpr.Kind != nil {
 		objectMap["kind"] = dpr.Kind
-	}
-	if dpr.Type != nil {
-		objectMap["type"] = dpr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9346,30 +9019,30 @@ type DomainPatchResourceProperties struct {
 	ContactRegistrant *Contact `json:"contactRegistrant,omitempty"`
 	// ContactTech - Technical contact.
 	ContactTech *Contact `json:"contactTech,omitempty"`
-	// RegistrationStatus - Domain registration status. Possible values include: 'DomainStatusActive', 'DomainStatusAwaiting', 'DomainStatusCancelled', 'DomainStatusConfiscated', 'DomainStatusDisabled', 'DomainStatusExcluded', 'DomainStatusExpired', 'DomainStatusFailed', 'DomainStatusHeld', 'DomainStatusLocked', 'DomainStatusParked', 'DomainStatusPending', 'DomainStatusReserved', 'DomainStatusReverted', 'DomainStatusSuspended', 'DomainStatusTransferred', 'DomainStatusUnknown', 'DomainStatusUnlocked', 'DomainStatusUnparked', 'DomainStatusUpdated', 'DomainStatusJSONConverterFailed'
+	// RegistrationStatus - READ-ONLY; Domain registration status. Possible values include: 'DomainStatusActive', 'DomainStatusAwaiting', 'DomainStatusCancelled', 'DomainStatusConfiscated', 'DomainStatusDisabled', 'DomainStatusExcluded', 'DomainStatusExpired', 'DomainStatusFailed', 'DomainStatusHeld', 'DomainStatusLocked', 'DomainStatusParked', 'DomainStatusPending', 'DomainStatusReserved', 'DomainStatusReverted', 'DomainStatusSuspended', 'DomainStatusTransferred', 'DomainStatusUnknown', 'DomainStatusUnlocked', 'DomainStatusUnparked', 'DomainStatusUpdated', 'DomainStatusJSONConverterFailed'
 	RegistrationStatus DomainStatus `json:"registrationStatus,omitempty"`
-	// ProvisioningState - Domain provisioning state. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Domain provisioning state. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// NameServers - Name servers.
+	// NameServers - READ-ONLY; Name servers.
 	NameServers *[]string `json:"nameServers,omitempty"`
 	// Privacy - <code>true</code> if domain privacy is enabled for this domain; otherwise, <code>false</code>.
 	Privacy *bool `json:"privacy,omitempty"`
-	// CreatedTime - Domain creation timestamp.
+	// CreatedTime - READ-ONLY; Domain creation timestamp.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ExpirationTime - Domain expiration timestamp.
+	// ExpirationTime - READ-ONLY; Domain expiration timestamp.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// LastRenewedTime - Timestamp when the domain was renewed last time.
+	// LastRenewedTime - READ-ONLY; Timestamp when the domain was renewed last time.
 	LastRenewedTime *date.Time `json:"lastRenewedTime,omitempty"`
 	// AutoRenew - <code>true</code> if the domain should be automatically renewed; otherwise, <code>false</code>.
 	AutoRenew *bool `json:"autoRenew,omitempty"`
-	// ReadyForDNSRecordManagement - <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value will be <code>true</code> if domain registration status is active and
+	// ReadyForDNSRecordManagement - READ-ONLY; <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value will be <code>true</code> if domain registration status is active and
 	//  it is hosted on name servers Azure has programmatic access to.
 	ReadyForDNSRecordManagement *bool `json:"readyForDnsRecordManagement,omitempty"`
-	// ManagedHostNames - All hostnames derived from the domain and assigned to Azure resources.
+	// ManagedHostNames - READ-ONLY; All hostnames derived from the domain and assigned to Azure resources.
 	ManagedHostNames *[]HostName `json:"managedHostNames,omitempty"`
 	// Consent - Legal agreement consent.
 	Consent *DomainPurchaseConsent `json:"consent,omitempty"`
-	// DomainNotRenewableReasons - Reasons why domain is not renewable.
+	// DomainNotRenewableReasons - READ-ONLY; Reasons why domain is not renewable.
 	DomainNotRenewableReasons *[]string `json:"domainNotRenewableReasons,omitempty"`
 	// DNSType - Current DNS type. Possible values include: 'AzureDNS', 'DefaultDomainRegistrarDNS'
 	DNSType DNSType `json:"dnsType,omitempty"`
@@ -9390,30 +9063,30 @@ type DomainProperties struct {
 	ContactRegistrant *Contact `json:"contactRegistrant,omitempty"`
 	// ContactTech - Technical contact.
 	ContactTech *Contact `json:"contactTech,omitempty"`
-	// RegistrationStatus - Domain registration status. Possible values include: 'DomainStatusActive', 'DomainStatusAwaiting', 'DomainStatusCancelled', 'DomainStatusConfiscated', 'DomainStatusDisabled', 'DomainStatusExcluded', 'DomainStatusExpired', 'DomainStatusFailed', 'DomainStatusHeld', 'DomainStatusLocked', 'DomainStatusParked', 'DomainStatusPending', 'DomainStatusReserved', 'DomainStatusReverted', 'DomainStatusSuspended', 'DomainStatusTransferred', 'DomainStatusUnknown', 'DomainStatusUnlocked', 'DomainStatusUnparked', 'DomainStatusUpdated', 'DomainStatusJSONConverterFailed'
+	// RegistrationStatus - READ-ONLY; Domain registration status. Possible values include: 'DomainStatusActive', 'DomainStatusAwaiting', 'DomainStatusCancelled', 'DomainStatusConfiscated', 'DomainStatusDisabled', 'DomainStatusExcluded', 'DomainStatusExpired', 'DomainStatusFailed', 'DomainStatusHeld', 'DomainStatusLocked', 'DomainStatusParked', 'DomainStatusPending', 'DomainStatusReserved', 'DomainStatusReverted', 'DomainStatusSuspended', 'DomainStatusTransferred', 'DomainStatusUnknown', 'DomainStatusUnlocked', 'DomainStatusUnparked', 'DomainStatusUpdated', 'DomainStatusJSONConverterFailed'
 	RegistrationStatus DomainStatus `json:"registrationStatus,omitempty"`
-	// ProvisioningState - Domain provisioning state. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; Domain provisioning state. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// NameServers - Name servers.
+	// NameServers - READ-ONLY; Name servers.
 	NameServers *[]string `json:"nameServers,omitempty"`
 	// Privacy - <code>true</code> if domain privacy is enabled for this domain; otherwise, <code>false</code>.
 	Privacy *bool `json:"privacy,omitempty"`
-	// CreatedTime - Domain creation timestamp.
+	// CreatedTime - READ-ONLY; Domain creation timestamp.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ExpirationTime - Domain expiration timestamp.
+	// ExpirationTime - READ-ONLY; Domain expiration timestamp.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// LastRenewedTime - Timestamp when the domain was renewed last time.
+	// LastRenewedTime - READ-ONLY; Timestamp when the domain was renewed last time.
 	LastRenewedTime *date.Time `json:"lastRenewedTime,omitempty"`
 	// AutoRenew - <code>true</code> if the domain should be automatically renewed; otherwise, <code>false</code>.
 	AutoRenew *bool `json:"autoRenew,omitempty"`
-	// ReadyForDNSRecordManagement - <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value will be <code>true</code> if domain registration status is active and
+	// ReadyForDNSRecordManagement - READ-ONLY; <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value will be <code>true</code> if domain registration status is active and
 	//  it is hosted on name servers Azure has programmatic access to.
 	ReadyForDNSRecordManagement *bool `json:"readyForDnsRecordManagement,omitempty"`
-	// ManagedHostNames - All hostnames derived from the domain and assigned to Azure resources.
+	// ManagedHostNames - READ-ONLY; All hostnames derived from the domain and assigned to Azure resources.
 	ManagedHostNames *[]HostName `json:"managedHostNames,omitempty"`
 	// Consent - Legal agreement consent.
 	Consent *DomainPurchaseConsent `json:"consent,omitempty"`
-	// DomainNotRenewableReasons - Reasons why domain is not renewable.
+	// DomainNotRenewableReasons - READ-ONLY; Reasons why domain is not renewable.
 	DomainNotRenewableReasons *[]string `json:"domainNotRenewableReasons,omitempty"`
 	// DNSType - Current DNS type. Possible values include: 'AzureDNS', 'DefaultDomainRegistrarDNS'
 	DNSType DNSType `json:"dnsType,omitempty"`
@@ -9453,7 +9126,7 @@ type DomainsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DomainsCreateOrUpdateFuture) Result(client DomainsClient) (d Domain, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9533,13 +9206,13 @@ type FunctionEnvelope struct {
 	autorest.Response `json:"-"`
 	// FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
 	*FunctionEnvelopeProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9549,17 +9222,8 @@ func (fe FunctionEnvelope) MarshalJSON() ([]byte, error) {
 	if fe.FunctionEnvelopeProperties != nil {
 		objectMap["properties"] = fe.FunctionEnvelopeProperties
 	}
-	if fe.ID != nil {
-		objectMap["id"] = fe.ID
-	}
-	if fe.Name != nil {
-		objectMap["name"] = fe.Name
-	}
 	if fe.Kind != nil {
 		objectMap["kind"] = fe.Kind
-	}
-	if fe.Type != nil {
-		objectMap["type"] = fe.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9629,7 +9293,7 @@ type FunctionEnvelopeCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]FunctionEnvelope `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -9772,9 +9436,9 @@ func NewFunctionEnvelopeCollectionPage(getNextPage func(context.Context, Functio
 
 // FunctionEnvelopeProperties functionEnvelope resource specific properties
 type FunctionEnvelopeProperties struct {
-	// Name - Function name.
+	// Name - READ-ONLY; Function name.
 	Name *string `json:"name,omitempty"`
-	// FunctionAppID - Function App ID.
+	// FunctionAppID - READ-ONLY; Function App ID.
 	FunctionAppID *string `json:"functionAppId,omitempty"`
 	// ScriptRootPathHref - Script root path URI.
 	ScriptRootPathHref *string `json:"scriptRootPathHref,omitempty"`
@@ -9797,12 +9461,6 @@ type FunctionEnvelopeProperties struct {
 // MarshalJSON is the custom marshaler for FunctionEnvelopeProperties.
 func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fe.Name != nil {
-		objectMap["name"] = fe.Name
-	}
-	if fe.FunctionAppID != nil {
-		objectMap["functionAppId"] = fe.FunctionAppID
-	}
 	if fe.ScriptRootPathHref != nil {
 		objectMap["scriptRootPathHref"] = fe.ScriptRootPathHref
 	}
@@ -9835,13 +9493,13 @@ type FunctionSecrets struct {
 	autorest.Response `json:"-"`
 	// FunctionSecretsProperties - FunctionSecrets resource specific properties
 	*FunctionSecretsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9851,17 +9509,8 @@ func (fs FunctionSecrets) MarshalJSON() ([]byte, error) {
 	if fs.FunctionSecretsProperties != nil {
 		objectMap["properties"] = fs.FunctionSecretsProperties
 	}
-	if fs.ID != nil {
-		objectMap["id"] = fs.ID
-	}
-	if fs.Name != nil {
-		objectMap["name"] = fs.Name
-	}
 	if fs.Kind != nil {
 		objectMap["kind"] = fs.Kind
-	}
-	if fs.Type != nil {
-		objectMap["type"] = fs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9938,13 +9587,13 @@ type FunctionSecretsProperties struct {
 type GeoRegion struct {
 	// GeoRegionProperties - GeoRegion resource specific properties
 	*GeoRegionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9954,17 +9603,8 @@ func (gr GeoRegion) MarshalJSON() ([]byte, error) {
 	if gr.GeoRegionProperties != nil {
 		objectMap["properties"] = gr.GeoRegionProperties
 	}
-	if gr.ID != nil {
-		objectMap["id"] = gr.ID
-	}
-	if gr.Name != nil {
-		objectMap["name"] = gr.Name
-	}
 	if gr.Kind != nil {
 		objectMap["kind"] = gr.Kind
-	}
-	if gr.Type != nil {
-		objectMap["type"] = gr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10034,7 +9674,7 @@ type GeoRegionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]GeoRegion `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -10177,11 +9817,11 @@ func NewGeoRegionCollectionPage(getNextPage func(context.Context, GeoRegionColle
 
 // GeoRegionProperties geoRegion resource specific properties
 type GeoRegionProperties struct {
-	// Name - Region name.
+	// Name - READ-ONLY; Region name.
 	Name *string `json:"name,omitempty"`
-	// Description - Region description.
+	// Description - READ-ONLY; Region description.
 	Description *string `json:"description,omitempty"`
-	// DisplayName - Display name for region.
+	// DisplayName - READ-ONLY; Display name for region.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
@@ -10237,9 +9877,9 @@ type HostingEnvironmentDiagnostics struct {
 type HostingEnvironmentProfile struct {
 	// ID - Resource ID of the App Service Environment.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the App Service Environment.
+	// Name - READ-ONLY; Name of the App Service Environment.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type of the App Service Environment.
+	// Type - READ-ONLY; Resource type of the App Service Environment.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10264,13 +9904,13 @@ type HostNameBinding struct {
 	autorest.Response `json:"-"`
 	// HostNameBindingProperties - HostNameBinding resource specific properties
 	*HostNameBindingProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10280,17 +9920,8 @@ func (hnb HostNameBinding) MarshalJSON() ([]byte, error) {
 	if hnb.HostNameBindingProperties != nil {
 		objectMap["properties"] = hnb.HostNameBindingProperties
 	}
-	if hnb.ID != nil {
-		objectMap["id"] = hnb.ID
-	}
-	if hnb.Name != nil {
-		objectMap["name"] = hnb.Name
-	}
 	if hnb.Kind != nil {
 		objectMap["kind"] = hnb.Kind
-	}
-	if hnb.Type != nil {
-		objectMap["type"] = hnb.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10360,7 +9991,7 @@ type HostNameBindingCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]HostNameBinding `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -10519,7 +10150,7 @@ type HostNameBindingProperties struct {
 	SslState SslState `json:"sslState,omitempty"`
 	// Thumbprint - SSL certificate thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// VirtualIP - Virtual IP address assigned to the hostname if IP based SSL is enabled.
+	// VirtualIP - READ-ONLY; Virtual IP address assigned to the hostname if IP based SSL is enabled.
 	VirtualIP *string `json:"virtualIP,omitempty"`
 }
 
@@ -10552,13 +10183,13 @@ type HybridConnection struct {
 	autorest.Response `json:"-"`
 	// HybridConnectionProperties - HybridConnection resource specific properties
 	*HybridConnectionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10568,17 +10199,8 @@ func (hc HybridConnection) MarshalJSON() ([]byte, error) {
 	if hc.HybridConnectionProperties != nil {
 		objectMap["properties"] = hc.HybridConnectionProperties
 	}
-	if hc.ID != nil {
-		objectMap["id"] = hc.ID
-	}
-	if hc.Name != nil {
-		objectMap["name"] = hc.Name
-	}
 	if hc.Kind != nil {
 		objectMap["kind"] = hc.Kind
-	}
-	if hc.Type != nil {
-		objectMap["type"] = hc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10648,7 +10270,7 @@ type HybridConnectionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]HybridConnection `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -10795,13 +10417,13 @@ type HybridConnectionKey struct {
 	autorest.Response `json:"-"`
 	// HybridConnectionKeyProperties - HybridConnectionKey resource specific properties
 	*HybridConnectionKeyProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10811,17 +10433,8 @@ func (hck HybridConnectionKey) MarshalJSON() ([]byte, error) {
 	if hck.HybridConnectionKeyProperties != nil {
 		objectMap["properties"] = hck.HybridConnectionKeyProperties
 	}
-	if hck.ID != nil {
-		objectMap["id"] = hck.ID
-	}
-	if hck.Name != nil {
-		objectMap["name"] = hck.Name
-	}
 	if hck.Kind != nil {
 		objectMap["kind"] = hck.Kind
-	}
-	if hck.Type != nil {
-		objectMap["type"] = hck.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10888,9 +10501,9 @@ func (hck *HybridConnectionKey) UnmarshalJSON(body []byte) error {
 
 // HybridConnectionKeyProperties hybridConnectionKey resource specific properties
 type HybridConnectionKeyProperties struct {
-	// SendKeyName - The name of the send key.
+	// SendKeyName - READ-ONLY; The name of the send key.
 	SendKeyName *string `json:"sendKeyName,omitempty"`
-	// SendKeyValue - The value of the send key.
+	// SendKeyValue - READ-ONLY; The value of the send key.
 	SendKeyValue *string `json:"sendKeyValue,omitempty"`
 }
 
@@ -10900,13 +10513,13 @@ type HybridConnectionLimits struct {
 	autorest.Response `json:"-"`
 	// HybridConnectionLimitsProperties - HybridConnectionLimits resource specific properties
 	*HybridConnectionLimitsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10916,17 +10529,8 @@ func (hcl HybridConnectionLimits) MarshalJSON() ([]byte, error) {
 	if hcl.HybridConnectionLimitsProperties != nil {
 		objectMap["properties"] = hcl.HybridConnectionLimitsProperties
 	}
-	if hcl.ID != nil {
-		objectMap["id"] = hcl.ID
-	}
-	if hcl.Name != nil {
-		objectMap["name"] = hcl.Name
-	}
 	if hcl.Kind != nil {
 		objectMap["kind"] = hcl.Kind
-	}
-	if hcl.Type != nil {
-		objectMap["type"] = hcl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10993,9 +10597,9 @@ func (hcl *HybridConnectionLimits) UnmarshalJSON(body []byte) error {
 
 // HybridConnectionLimitsProperties hybridConnectionLimits resource specific properties
 type HybridConnectionLimitsProperties struct {
-	// Current - The current number of Hybrid Connections.
+	// Current - READ-ONLY; The current number of Hybrid Connections.
 	Current *int32 `json:"current,omitempty"`
-	// Maximum - The maximum number of Hybrid Connections allowed.
+	// Maximum - READ-ONLY; The maximum number of Hybrid Connections allowed.
 	Maximum *int32 `json:"maximum,omitempty"`
 }
 
@@ -11025,13 +10629,13 @@ type Identifier struct {
 	autorest.Response `json:"-"`
 	// IdentifierProperties - Identifier resource specific properties
 	*IdentifierProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11041,17 +10645,8 @@ func (i Identifier) MarshalJSON() ([]byte, error) {
 	if i.IdentifierProperties != nil {
 		objectMap["properties"] = i.IdentifierProperties
 	}
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
-	if i.Name != nil {
-		objectMap["name"] = i.Name
-	}
 	if i.Kind != nil {
 		objectMap["kind"] = i.Kind
-	}
-	if i.Type != nil {
-		objectMap["type"] = i.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11121,7 +10716,7 @@ type IdentifierCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Identifier `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -11281,13 +10876,13 @@ type Job struct {
 	autorest.Response `json:"-"`
 	// JobProperties - WebJob resource specific properties
 	*JobProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11297,17 +10892,8 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	if j.JobProperties != nil {
 		objectMap["properties"] = j.JobProperties
 	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
 	if j.Kind != nil {
 		objectMap["kind"] = j.Kind
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11377,7 +10963,7 @@ type JobCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Job `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -11520,7 +11106,7 @@ func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobC
 
 // JobProperties webJob resource specific properties
 type JobProperties struct {
-	// Name - Job name. Used as job identifier in ARM resource URI.
+	// Name - READ-ONLY; Job name. Used as job identifier in ARM resource URI.
 	Name *string `json:"name,omitempty"`
 	// RunCommand - Run command.
 	RunCommand *string `json:"runCommand,omitempty"`
@@ -11541,9 +11127,6 @@ type JobProperties struct {
 // MarshalJSON is the custom marshaler for JobProperties.
 func (j JobProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
 	if j.RunCommand != nil {
 		objectMap["runCommand"] = j.RunCommand
 	}
@@ -11622,9 +11205,9 @@ type LocalizableString struct {
 type ManagedServiceIdentity struct {
 	// Type - Type of managed service identity. Possible values include: 'SystemAssigned'
 	Type ManagedServiceIdentityType `json:"type,omitempty"`
-	// TenantID - Tenant of managed service identity.
+	// TenantID - READ-ONLY; Tenant of managed service identity.
 	TenantID *string `json:"tenantId,omitempty"`
-	// PrincipalID - Principal Id of managed service identity.
+	// PrincipalID - READ-ONLY; Principal Id of managed service identity.
 	PrincipalID *string `json:"principalId,omitempty"`
 }
 
@@ -11647,13 +11230,13 @@ type MetricDefinition struct {
 	autorest.Response `json:"-"`
 	// MetricDefinitionProperties - MetricDefinition resource specific properties
 	*MetricDefinitionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11663,17 +11246,8 @@ func (md MetricDefinition) MarshalJSON() ([]byte, error) {
 	if md.MetricDefinitionProperties != nil {
 		objectMap["properties"] = md.MetricDefinitionProperties
 	}
-	if md.ID != nil {
-		objectMap["id"] = md.ID
-	}
-	if md.Name != nil {
-		objectMap["name"] = md.Name
-	}
 	if md.Kind != nil {
 		objectMap["kind"] = md.Kind
-	}
-	if md.Type != nil {
-		objectMap["type"] = md.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11740,15 +11314,15 @@ func (md *MetricDefinition) UnmarshalJSON(body []byte) error {
 
 // MetricDefinitionProperties metricDefinition resource specific properties
 type MetricDefinitionProperties struct {
-	// Name - Name of the metric.
+	// Name - READ-ONLY; Name of the metric.
 	Name *string `json:"name,omitempty"`
-	// Unit - Unit of the metric.
+	// Unit - READ-ONLY; Unit of the metric.
 	Unit *string `json:"unit,omitempty"`
-	// PrimaryAggregationType - Primary aggregation type.
+	// PrimaryAggregationType - READ-ONLY; Primary aggregation type.
 	PrimaryAggregationType *string `json:"primaryAggregationType,omitempty"`
-	// MetricAvailabilities - List of time grains supported for the metric together with retention period.
+	// MetricAvailabilities - READ-ONLY; List of time grains supported for the metric together with retention period.
 	MetricAvailabilities *[]MetricAvailabilily `json:"metricAvailabilities,omitempty"`
-	// DisplayName - Friendly name shown in the UI.
+	// DisplayName - READ-ONLY; Friendly name shown in the UI.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
@@ -11775,13 +11349,13 @@ type MetricSpecification struct {
 type MigrateMySQLRequest struct {
 	// MigrateMySQLRequestProperties - MigrateMySqlRequest resource specific properties
 	*MigrateMySQLRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11791,17 +11365,8 @@ func (mmsr MigrateMySQLRequest) MarshalJSON() ([]byte, error) {
 	if mmsr.MigrateMySQLRequestProperties != nil {
 		objectMap["properties"] = mmsr.MigrateMySQLRequestProperties
 	}
-	if mmsr.ID != nil {
-		objectMap["id"] = mmsr.ID
-	}
-	if mmsr.Name != nil {
-		objectMap["name"] = mmsr.Name
-	}
 	if mmsr.Kind != nil {
 		objectMap["kind"] = mmsr.Kind
-	}
-	if mmsr.Type != nil {
-		objectMap["type"] = mmsr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11879,13 +11444,13 @@ type MigrateMySQLStatus struct {
 	autorest.Response `json:"-"`
 	// MigrateMySQLStatusProperties - MigrateMySqlStatus resource specific properties
 	*MigrateMySQLStatusProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11895,17 +11460,8 @@ func (mmss MigrateMySQLStatus) MarshalJSON() ([]byte, error) {
 	if mmss.MigrateMySQLStatusProperties != nil {
 		objectMap["properties"] = mmss.MigrateMySQLStatusProperties
 	}
-	if mmss.ID != nil {
-		objectMap["id"] = mmss.ID
-	}
-	if mmss.Name != nil {
-		objectMap["name"] = mmss.Name
-	}
 	if mmss.Kind != nil {
 		objectMap["kind"] = mmss.Kind
-	}
-	if mmss.Type != nil {
-		objectMap["type"] = mmss.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11972,11 +11528,11 @@ func (mmss *MigrateMySQLStatus) UnmarshalJSON(body []byte) error {
 
 // MigrateMySQLStatusProperties migrateMySqlStatus resource specific properties
 type MigrateMySQLStatusProperties struct {
-	// MigrationOperationStatus - Status of the migration task. Possible values include: 'OperationStatusInProgress', 'OperationStatusFailed', 'OperationStatusSucceeded', 'OperationStatusTimedOut', 'OperationStatusCreated'
+	// MigrationOperationStatus - READ-ONLY; Status of the migration task. Possible values include: 'OperationStatusInProgress', 'OperationStatusFailed', 'OperationStatusSucceeded', 'OperationStatusTimedOut', 'OperationStatusCreated'
 	MigrationOperationStatus OperationStatus `json:"migrationOperationStatus,omitempty"`
-	// OperationID - Operation ID for the migration task.
+	// OperationID - READ-ONLY; Operation ID for the migration task.
 	OperationID *string `json:"operationId,omitempty"`
-	// LocalMySQLEnabled - True if the web app has in app MySql enabled
+	// LocalMySQLEnabled - READ-ONLY; True if the web app has in app MySql enabled
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
 }
 
@@ -11984,13 +11540,13 @@ type MigrateMySQLStatusProperties struct {
 type MSDeploy struct {
 	// MSDeployCore - Core resource properties
 	*MSDeployCore `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12000,17 +11556,8 @@ func (md MSDeploy) MarshalJSON() ([]byte, error) {
 	if md.MSDeployCore != nil {
 		objectMap["properties"] = md.MSDeployCore
 	}
-	if md.ID != nil {
-		objectMap["id"] = md.ID
-	}
-	if md.Name != nil {
-		objectMap["name"] = md.Name
-	}
 	if md.Kind != nil {
 		objectMap["kind"] = md.Kind
-	}
-	if md.Type != nil {
-		objectMap["type"] = md.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12129,13 +11676,13 @@ type MSDeployLog struct {
 	autorest.Response `json:"-"`
 	// MSDeployLogProperties - MSDeployLog resource specific properties
 	*MSDeployLogProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12145,17 +11692,8 @@ func (mdl MSDeployLog) MarshalJSON() ([]byte, error) {
 	if mdl.MSDeployLogProperties != nil {
 		objectMap["properties"] = mdl.MSDeployLogProperties
 	}
-	if mdl.ID != nil {
-		objectMap["id"] = mdl.ID
-	}
-	if mdl.Name != nil {
-		objectMap["name"] = mdl.Name
-	}
 	if mdl.Kind != nil {
 		objectMap["kind"] = mdl.Kind
-	}
-	if mdl.Type != nil {
-		objectMap["type"] = mdl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12222,17 +11760,17 @@ func (mdl *MSDeployLog) UnmarshalJSON(body []byte) error {
 
 // MSDeployLogEntry mSDeploy log entry
 type MSDeployLogEntry struct {
-	// Time - Timestamp of log entry
+	// Time - READ-ONLY; Timestamp of log entry
 	Time *date.Time `json:"time,omitempty"`
-	// Type - Log entry type. Possible values include: 'MSDeployLogEntryTypeMessage', 'MSDeployLogEntryTypeWarning', 'MSDeployLogEntryTypeError'
+	// Type - READ-ONLY; Log entry type. Possible values include: 'MSDeployLogEntryTypeMessage', 'MSDeployLogEntryTypeWarning', 'MSDeployLogEntryTypeError'
 	Type MSDeployLogEntryType `json:"type,omitempty"`
-	// Message - Log entry message
+	// Message - READ-ONLY; Log entry message
 	Message *string `json:"message,omitempty"`
 }
 
 // MSDeployLogProperties mSDeployLog resource specific properties
 type MSDeployLogProperties struct {
-	// Entries - List of log entry messages
+	// Entries - READ-ONLY; List of log entry messages
 	Entries *[]MSDeployLogEntry `json:"entries,omitempty"`
 }
 
@@ -12241,13 +11779,13 @@ type MSDeployStatus struct {
 	autorest.Response `json:"-"`
 	// MSDeployStatusProperties - MSDeployStatus resource specific properties
 	*MSDeployStatusProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12257,17 +11795,8 @@ func (mds MSDeployStatus) MarshalJSON() ([]byte, error) {
 	if mds.MSDeployStatusProperties != nil {
 		objectMap["properties"] = mds.MSDeployStatusProperties
 	}
-	if mds.ID != nil {
-		objectMap["id"] = mds.ID
-	}
-	if mds.Name != nil {
-		objectMap["name"] = mds.Name
-	}
 	if mds.Kind != nil {
 		objectMap["kind"] = mds.Kind
-	}
-	if mds.Type != nil {
-		objectMap["type"] = mds.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12334,15 +11863,15 @@ func (mds *MSDeployStatus) UnmarshalJSON(body []byte) error {
 
 // MSDeployStatusProperties mSDeployStatus resource specific properties
 type MSDeployStatusProperties struct {
-	// Deployer - Username of deployer
+	// Deployer - READ-ONLY; Username of deployer
 	Deployer *string `json:"deployer,omitempty"`
-	// ProvisioningState - Provisioning state. Possible values include: 'MSDeployProvisioningStateAccepted', 'MSDeployProvisioningStateRunning', 'MSDeployProvisioningStateSucceeded', 'MSDeployProvisioningStateFailed', 'MSDeployProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'MSDeployProvisioningStateAccepted', 'MSDeployProvisioningStateRunning', 'MSDeployProvisioningStateSucceeded', 'MSDeployProvisioningStateFailed', 'MSDeployProvisioningStateCanceled'
 	ProvisioningState MSDeployProvisioningState `json:"provisioningState,omitempty"`
-	// StartTime - Start time of deploy operation
+	// StartTime - READ-ONLY; Start time of deploy operation
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of deploy operation
+	// EndTime - READ-ONLY; End time of deploy operation
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Complete - Whether the deployment operation has completed
+	// Complete - READ-ONLY; Whether the deployment operation has completed
 	Complete *bool `json:"complete,omitempty"`
 }
 
@@ -12357,7 +11886,7 @@ type NameIdentifierCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]NameIdentifier `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -12524,13 +12053,13 @@ type NetworkFeatures struct {
 	autorest.Response `json:"-"`
 	// NetworkFeaturesProperties - NetworkFeatures resource specific properties
 	*NetworkFeaturesProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12540,17 +12069,8 @@ func (nf NetworkFeatures) MarshalJSON() ([]byte, error) {
 	if nf.NetworkFeaturesProperties != nil {
 		objectMap["properties"] = nf.NetworkFeaturesProperties
 	}
-	if nf.ID != nil {
-		objectMap["id"] = nf.ID
-	}
-	if nf.Name != nil {
-		objectMap["name"] = nf.Name
-	}
 	if nf.Kind != nil {
 		objectMap["kind"] = nf.Kind
-	}
-	if nf.Type != nil {
-		objectMap["type"] = nf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12617,13 +12137,13 @@ func (nf *NetworkFeatures) UnmarshalJSON(body []byte) error {
 
 // NetworkFeaturesProperties networkFeatures resource specific properties
 type NetworkFeaturesProperties struct {
-	// VirtualNetworkName - The Virtual Network name.
+	// VirtualNetworkName - READ-ONLY; The Virtual Network name.
 	VirtualNetworkName *string `json:"virtualNetworkName,omitempty"`
-	// VirtualNetworkConnection - The Virtual Network summary view.
+	// VirtualNetworkConnection - READ-ONLY; The Virtual Network summary view.
 	VirtualNetworkConnection *VnetInfo `json:"virtualNetworkConnection,omitempty"`
-	// HybridConnections - The Hybrid Connections summary view.
+	// HybridConnections - READ-ONLY; The Hybrid Connections summary view.
 	HybridConnections *[]RelayServiceConnectionEntity `json:"hybridConnections,omitempty"`
-	// HybridConnectionsV2 - The Hybrid Connection V2 (Service Bus) view.
+	// HybridConnectionsV2 - READ-ONLY; The Hybrid Connection V2 (Service Bus) view.
 	HybridConnectionsV2 *[]HybridConnection `json:"hybridConnectionsV2,omitempty"`
 }
 
@@ -12653,7 +12173,7 @@ type PerfMonCounterCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]PerfMonResponse `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -12835,15 +12355,15 @@ type PremierAddOn struct {
 	autorest.Response `json:"-"`
 	// PremierAddOnProperties - PremierAddOn resource specific properties
 	*PremierAddOnProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -12855,20 +12375,11 @@ func (pao PremierAddOn) MarshalJSON() ([]byte, error) {
 	if pao.PremierAddOnProperties != nil {
 		objectMap["properties"] = pao.PremierAddOnProperties
 	}
-	if pao.ID != nil {
-		objectMap["id"] = pao.ID
-	}
-	if pao.Name != nil {
-		objectMap["name"] = pao.Name
-	}
 	if pao.Kind != nil {
 		objectMap["kind"] = pao.Kind
 	}
 	if pao.Location != nil {
 		objectMap["location"] = pao.Location
-	}
-	if pao.Type != nil {
-		objectMap["type"] = pao.Type
 	}
 	if pao.Tags != nil {
 		objectMap["tags"] = pao.Tags
@@ -12958,13 +12469,13 @@ func (pao *PremierAddOn) UnmarshalJSON(body []byte) error {
 type PremierAddOnOffer struct {
 	// PremierAddOnOfferProperties - PremierAddOnOffer resource specific properties
 	*PremierAddOnOfferProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12974,17 +12485,8 @@ func (paoo PremierAddOnOffer) MarshalJSON() ([]byte, error) {
 	if paoo.PremierAddOnOfferProperties != nil {
 		objectMap["properties"] = paoo.PremierAddOnOfferProperties
 	}
-	if paoo.ID != nil {
-		objectMap["id"] = paoo.ID
-	}
-	if paoo.Name != nil {
-		objectMap["name"] = paoo.Name
-	}
 	if paoo.Kind != nil {
 		objectMap["kind"] = paoo.Kind
-	}
-	if paoo.Type != nil {
-		objectMap["type"] = paoo.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -13054,7 +12556,7 @@ type PremierAddOnOfferCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]PremierAddOnOffer `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13276,13 +12778,13 @@ type ProcessInfo struct {
 	autorest.Response `json:"-"`
 	// ProcessInfoProperties - ProcessInfo resource specific properties
 	*ProcessInfoProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13292,17 +12794,8 @@ func (pi ProcessInfo) MarshalJSON() ([]byte, error) {
 	if pi.ProcessInfoProperties != nil {
 		objectMap["properties"] = pi.ProcessInfoProperties
 	}
-	if pi.ID != nil {
-		objectMap["id"] = pi.ID
-	}
-	if pi.Name != nil {
-		objectMap["name"] = pi.Name
-	}
 	if pi.Kind != nil {
 		objectMap["kind"] = pi.Kind
-	}
-	if pi.Type != nil {
-		objectMap["type"] = pi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -13372,7 +12865,7 @@ type ProcessInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ProcessInfo `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13708,13 +13201,13 @@ type ProcessModuleInfo struct {
 	autorest.Response `json:"-"`
 	// ProcessModuleInfoProperties - ProcessModuleInfo resource specific properties
 	*ProcessModuleInfoProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13724,17 +13217,8 @@ func (pmi ProcessModuleInfo) MarshalJSON() ([]byte, error) {
 	if pmi.ProcessModuleInfoProperties != nil {
 		objectMap["properties"] = pmi.ProcessModuleInfoProperties
 	}
-	if pmi.ID != nil {
-		objectMap["id"] = pmi.ID
-	}
-	if pmi.Name != nil {
-		objectMap["name"] = pmi.Name
-	}
 	if pmi.Kind != nil {
 		objectMap["kind"] = pmi.Kind
-	}
-	if pmi.Type != nil {
-		objectMap["type"] = pmi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -13804,7 +13288,7 @@ type ProcessModuleInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ProcessModuleInfo `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13976,13 +13460,13 @@ type ProcessThreadInfo struct {
 	autorest.Response `json:"-"`
 	// ProcessThreadInfoProperties - ProcessThreadInfo resource specific properties
 	*ProcessThreadInfoProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13992,17 +13476,8 @@ func (pti ProcessThreadInfo) MarshalJSON() ([]byte, error) {
 	if pti.ProcessThreadInfoProperties != nil {
 		objectMap["properties"] = pti.ProcessThreadInfoProperties
 	}
-	if pti.ID != nil {
-		objectMap["id"] = pti.ID
-	}
-	if pti.Name != nil {
-		objectMap["name"] = pti.Name
-	}
 	if pti.Kind != nil {
 		objectMap["kind"] = pti.Kind
-	}
-	if pti.Type != nil {
-		objectMap["type"] = pti.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -14072,7 +13547,7 @@ type ProcessThreadInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ProcessThreadInfo `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14245,13 +13720,13 @@ type ProcessThreadInfoProperties struct {
 
 // ProxyOnlyResource azure proxy only resource. This resource is not tracked by Azure Resource Manager.
 type ProxyOnlyResource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14260,13 +13735,13 @@ type PublicCertificate struct {
 	autorest.Response `json:"-"`
 	// PublicCertificateProperties - PublicCertificate resource specific properties
 	*PublicCertificateProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14276,17 +13751,8 @@ func (pc PublicCertificate) MarshalJSON() ([]byte, error) {
 	if pc.PublicCertificateProperties != nil {
 		objectMap["properties"] = pc.PublicCertificateProperties
 	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
 	if pc.Kind != nil {
 		objectMap["kind"] = pc.Kind
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -14356,7 +13822,7 @@ type PublicCertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]PublicCertificate `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14503,7 +13969,7 @@ type PublicCertificateProperties struct {
 	Blob *[]byte `json:"blob,omitempty"`
 	// PublicCertificateLocation - Public Certificate Location. Possible values include: 'PublicCertificateLocationCurrentUserMy', 'PublicCertificateLocationLocalMachineMy', 'PublicCertificateLocationUnknown'
 	PublicCertificateLocation PublicCertificateLocation `json:"publicCertificateLocation,omitempty"`
-	// Thumbprint - Certificate Thumbprint
+	// Thumbprint - READ-ONLY; Certificate Thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
 }
 
@@ -14512,13 +13978,13 @@ type PushSettings struct {
 	autorest.Response `json:"-"`
 	// PushSettingsProperties - PushSettings resource specific properties
 	*PushSettingsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14528,17 +13994,8 @@ func (ps PushSettings) MarshalJSON() ([]byte, error) {
 	if ps.PushSettingsProperties != nil {
 		objectMap["properties"] = ps.PushSettingsProperties
 	}
-	if ps.ID != nil {
-		objectMap["id"] = ps.ID
-	}
-	if ps.Name != nil {
-		objectMap["name"] = ps.Name
-	}
 	if ps.Kind != nil {
 		objectMap["kind"] = ps.Kind
-	}
-	if ps.Type != nil {
-		objectMap["type"] = ps.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -14652,13 +14109,13 @@ type ReadCloser struct {
 type Recommendation struct {
 	// RecommendationProperties - Recommendation resource specific properties
 	*RecommendationProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14668,17 +14125,8 @@ func (r Recommendation) MarshalJSON() ([]byte, error) {
 	if r.RecommendationProperties != nil {
 		objectMap["properties"] = r.RecommendationProperties
 	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
 	if r.Kind != nil {
 		objectMap["kind"] = r.Kind
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -14748,7 +14196,7 @@ type RecommendationCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Recommendation `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14940,13 +14388,13 @@ type RecommendationRule struct {
 	autorest.Response `json:"-"`
 	// RecommendationRuleProperties - RecommendationRule resource specific properties
 	*RecommendationRuleProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14956,17 +14404,8 @@ func (rr RecommendationRule) MarshalJSON() ([]byte, error) {
 	if rr.RecommendationRuleProperties != nil {
 		objectMap["properties"] = rr.RecommendationRuleProperties
 	}
-	if rr.ID != nil {
-		objectMap["id"] = rr.ID
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
-	}
 	if rr.Kind != nil {
 		objectMap["kind"] = rr.Kind
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15066,13 +14505,13 @@ type RecommendationRuleProperties struct {
 type ReissueCertificateOrderRequest struct {
 	// ReissueCertificateOrderRequestProperties - ReissueCertificateOrderRequest resource specific properties
 	*ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15082,17 +14521,8 @@ func (rcor ReissueCertificateOrderRequest) MarshalJSON() ([]byte, error) {
 	if rcor.ReissueCertificateOrderRequestProperties != nil {
 		objectMap["properties"] = rcor.ReissueCertificateOrderRequestProperties
 	}
-	if rcor.ID != nil {
-		objectMap["id"] = rcor.ID
-	}
-	if rcor.Name != nil {
-		objectMap["name"] = rcor.Name
-	}
 	if rcor.Kind != nil {
 		objectMap["kind"] = rcor.Kind
-	}
-	if rcor.Type != nil {
-		objectMap["type"] = rcor.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15174,13 +14604,13 @@ type RelayServiceConnectionEntity struct {
 	autorest.Response `json:"-"`
 	// RelayServiceConnectionEntityProperties - RelayServiceConnectionEntity resource specific properties
 	*RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15190,17 +14620,8 @@ func (rsce RelayServiceConnectionEntity) MarshalJSON() ([]byte, error) {
 	if rsce.RelayServiceConnectionEntityProperties != nil {
 		objectMap["properties"] = rsce.RelayServiceConnectionEntityProperties
 	}
-	if rsce.ID != nil {
-		objectMap["id"] = rsce.ID
-	}
-	if rsce.Name != nil {
-		objectMap["name"] = rsce.Name
-	}
 	if rsce.Kind != nil {
 		objectMap["kind"] = rsce.Kind
-	}
-	if rsce.Type != nil {
-		objectMap["type"] = rsce.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15290,13 +14711,13 @@ type Rendering struct {
 type RenewCertificateOrderRequest struct {
 	// RenewCertificateOrderRequestProperties - RenewCertificateOrderRequest resource specific properties
 	*RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15306,17 +14727,8 @@ func (rcor RenewCertificateOrderRequest) MarshalJSON() ([]byte, error) {
 	if rcor.RenewCertificateOrderRequestProperties != nil {
 		objectMap["properties"] = rcor.RenewCertificateOrderRequestProperties
 	}
-	if rcor.ID != nil {
-		objectMap["id"] = rcor.ID
-	}
-	if rcor.Name != nil {
-		objectMap["name"] = rcor.Name
-	}
 	if rcor.Kind != nil {
 		objectMap["kind"] = rcor.Kind
-	}
-	if rcor.Type != nil {
-		objectMap["type"] = rcor.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15401,15 +14813,15 @@ type RequestsBasedTrigger struct {
 
 // Resource azure resource. This resource is tracked in Azure Resource Manager
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -15418,20 +14830,11 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
 	if r.Kind != nil {
 		objectMap["kind"] = r.Kind
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags
@@ -15444,7 +14847,7 @@ type ResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]string `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -15590,13 +14993,13 @@ type ResourceHealthMetadata struct {
 	autorest.Response `json:"-"`
 	// ResourceHealthMetadataProperties - ResourceHealthMetadata resource specific properties
 	*ResourceHealthMetadataProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15606,17 +15009,8 @@ func (rhm ResourceHealthMetadata) MarshalJSON() ([]byte, error) {
 	if rhm.ResourceHealthMetadataProperties != nil {
 		objectMap["properties"] = rhm.ResourceHealthMetadataProperties
 	}
-	if rhm.ID != nil {
-		objectMap["id"] = rhm.ID
-	}
-	if rhm.Name != nil {
-		objectMap["name"] = rhm.Name
-	}
 	if rhm.Kind != nil {
 		objectMap["kind"] = rhm.Kind
-	}
-	if rhm.Type != nil {
-		objectMap["type"] = rhm.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15686,7 +15080,7 @@ type ResourceHealthMetadataCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ResourceHealthMetadata `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -15838,31 +15232,31 @@ type ResourceHealthMetadataProperties struct {
 
 // ResourceMetric object representing a metric for any resource .
 type ResourceMetric struct {
-	// Name - Name of metric.
+	// Name - READ-ONLY; Name of metric.
 	Name *ResourceMetricName `json:"name,omitempty"`
-	// Unit - Metric unit.
+	// Unit - READ-ONLY; Metric unit.
 	Unit *string `json:"unit,omitempty"`
-	// TimeGrain - Metric granularity. E.g PT1H, PT5M, P1D
+	// TimeGrain - READ-ONLY; Metric granularity. E.g PT1H, PT5M, P1D
 	TimeGrain *string `json:"timeGrain,omitempty"`
-	// StartTime - Metric start time.
+	// StartTime - READ-ONLY; Metric start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Metric end time.
+	// EndTime - READ-ONLY; Metric end time.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ResourceID - Metric resource Id.
+	// ResourceID - READ-ONLY; Metric resource Id.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// MetricValues - Metric values.
+	// MetricValues - READ-ONLY; Metric values.
 	MetricValues *[]ResourceMetricValue `json:"metricValues,omitempty"`
-	// Properties - Resource metric properties collection.
+	// Properties - READ-ONLY; Resource metric properties collection.
 	Properties *[]ResourceMetricProperty `json:"properties,omitempty"`
 }
 
 // ResourceMetricAvailability metrics availability and retention.
 type ResourceMetricAvailability struct {
-	// TimeGrain - Time grain .
+	// TimeGrain - READ-ONLY; Time grain .
 	TimeGrain *string `json:"timeGrain,omitempty"`
-	// Retention - Retention period for the current time grain.
+	// Retention - READ-ONLY; Retention period for the current time grain.
 	Retention *string `json:"retention,omitempty"`
 }
 
@@ -15871,7 +15265,7 @@ type ResourceMetricCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ResourceMetric `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -16016,13 +15410,13 @@ func NewResourceMetricCollectionPage(getNextPage func(context.Context, ResourceM
 type ResourceMetricDefinition struct {
 	// ResourceMetricDefinitionProperties - ResourceMetricDefinition resource specific properties
 	*ResourceMetricDefinitionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -16032,17 +15426,8 @@ func (rmd ResourceMetricDefinition) MarshalJSON() ([]byte, error) {
 	if rmd.ResourceMetricDefinitionProperties != nil {
 		objectMap["properties"] = rmd.ResourceMetricDefinitionProperties
 	}
-	if rmd.ID != nil {
-		objectMap["id"] = rmd.ID
-	}
-	if rmd.Name != nil {
-		objectMap["name"] = rmd.Name
-	}
 	if rmd.Kind != nil {
 		objectMap["kind"] = rmd.Kind
-	}
-	if rmd.Type != nil {
-		objectMap["type"] = rmd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -16112,7 +15497,7 @@ type ResourceMetricDefinitionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]ResourceMetricDefinition `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -16256,54 +15641,33 @@ func NewResourceMetricDefinitionCollectionPage(getNextPage func(context.Context,
 
 // ResourceMetricDefinitionProperties resourceMetricDefinition resource specific properties
 type ResourceMetricDefinitionProperties struct {
-	// Name - Name of the metric.
+	// Name - READ-ONLY; Name of the metric.
 	Name *ResourceMetricName `json:"name,omitempty"`
-	// Unit - Unit of the metric.
+	// Unit - READ-ONLY; Unit of the metric.
 	Unit *string `json:"unit,omitempty"`
-	// PrimaryAggregationType - Primary aggregation type.
+	// PrimaryAggregationType - READ-ONLY; Primary aggregation type.
 	PrimaryAggregationType *string `json:"primaryAggregationType,omitempty"`
-	// MetricAvailabilities - List of time grains supported for the metric together with retention period.
+	// MetricAvailabilities - READ-ONLY; List of time grains supported for the metric together with retention period.
 	MetricAvailabilities *[]ResourceMetricAvailability `json:"metricAvailabilities,omitempty"`
-	// ResourceURI - Resource URI.
+	// ResourceURI - READ-ONLY; Resource URI.
 	ResourceURI *string `json:"resourceUri,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Properties - Resource metric definition properties.
+	// Properties - READ-ONLY; Resource metric definition properties.
 	Properties map[string]*string `json:"properties"`
 }
 
 // MarshalJSON is the custom marshaler for ResourceMetricDefinitionProperties.
 func (rmd ResourceMetricDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rmd.Name != nil {
-		objectMap["name"] = rmd.Name
-	}
-	if rmd.Unit != nil {
-		objectMap["unit"] = rmd.Unit
-	}
-	if rmd.PrimaryAggregationType != nil {
-		objectMap["primaryAggregationType"] = rmd.PrimaryAggregationType
-	}
-	if rmd.MetricAvailabilities != nil {
-		objectMap["metricAvailabilities"] = rmd.MetricAvailabilities
-	}
-	if rmd.ResourceURI != nil {
-		objectMap["resourceUri"] = rmd.ResourceURI
-	}
-	if rmd.ID != nil {
-		objectMap["id"] = rmd.ID
-	}
-	if rmd.Properties != nil {
-		objectMap["properties"] = rmd.Properties
-	}
 	return json.Marshal(objectMap)
 }
 
 // ResourceMetricName name of a metric for any resource .
 type ResourceMetricName struct {
-	// Value - metric name value.
+	// Value - READ-ONLY; metric name value.
 	Value *string `json:"value,omitempty"`
-	// LocalizedValue - Localized metric name value.
+	// LocalizedValue - READ-ONLY; Localized metric name value.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
@@ -16317,19 +15681,19 @@ type ResourceMetricProperty struct {
 
 // ResourceMetricValue value of resource metric.
 type ResourceMetricValue struct {
-	// Timestamp - Value timestamp.
+	// Timestamp - READ-ONLY; Value timestamp.
 	Timestamp *string `json:"timestamp,omitempty"`
-	// Average - Value average.
+	// Average - READ-ONLY; Value average.
 	Average *float64 `json:"average,omitempty"`
-	// Minimum - Value minimum.
+	// Minimum - READ-ONLY; Value minimum.
 	Minimum *float64 `json:"minimum,omitempty"`
-	// Maximum - Value maximum.
+	// Maximum - READ-ONLY; Value maximum.
 	Maximum *float64 `json:"maximum,omitempty"`
-	// Total - Value total.
+	// Total - READ-ONLY; Value total.
 	Total *float64 `json:"total,omitempty"`
-	// Count - Value count.
+	// Count - READ-ONLY; Value count.
 	Count *float64 `json:"count,omitempty"`
-	// Properties - Resource metric properties collection.
+	// Properties - READ-ONLY; Resource metric properties collection.
 	Properties *[]ResourceMetricProperty `json:"properties,omitempty"`
 }
 
@@ -16365,13 +15729,13 @@ type RestoreRequest struct {
 	autorest.Response `json:"-"`
 	// RestoreRequestProperties - RestoreRequest resource specific properties
 	*RestoreRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -16381,17 +15745,8 @@ func (rr RestoreRequest) MarshalJSON() ([]byte, error) {
 	if rr.RestoreRequestProperties != nil {
 		objectMap["properties"] = rr.RestoreRequestProperties
 	}
-	if rr.ID != nil {
-		objectMap["id"] = rr.ID
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
-	}
 	if rr.Kind != nil {
 		objectMap["kind"] = rr.Kind
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -16488,13 +15843,13 @@ type RestoreResponse struct {
 	autorest.Response `json:"-"`
 	// RestoreResponseProperties - RestoreResponse resource specific properties
 	*RestoreResponseProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -16504,17 +15859,8 @@ func (rr RestoreResponse) MarshalJSON() ([]byte, error) {
 	if rr.RestoreResponseProperties != nil {
 		objectMap["properties"] = rr.RestoreResponseProperties
 	}
-	if rr.ID != nil {
-		objectMap["id"] = rr.ID
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
-	}
 	if rr.Kind != nil {
 		objectMap["kind"] = rr.Kind
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -16581,7 +15927,7 @@ func (rr *RestoreResponse) UnmarshalJSON(body []byte) error {
 
 // RestoreResponseProperties restoreResponse resource specific properties
 type RestoreResponseProperties struct {
-	// OperationID - When server starts the restore process, it will return an operation ID identifying that particular restore operation.
+	// OperationID - READ-ONLY; When server starts the restore process, it will return an operation ID identifying that particular restore operation.
 	OperationID *string `json:"operationId,omitempty"`
 }
 
@@ -16602,15 +15948,15 @@ type Site struct {
 	// SiteProperties - Site resource specific properties
 	*SiteProperties `json:"properties,omitempty"`
 	Identity        *ManagedServiceIdentity `json:"identity,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource Location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -16625,20 +15971,11 @@ func (s Site) MarshalJSON() ([]byte, error) {
 	if s.Identity != nil {
 		objectMap["identity"] = s.Identity
 	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
 	if s.Kind != nil {
 		objectMap["kind"] = s.Kind
 	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	if s.Tags != nil {
 		objectMap["tags"] = s.Tags
@@ -16739,13 +16076,13 @@ type SiteAuthSettings struct {
 	autorest.Response `json:"-"`
 	// SiteAuthSettingsProperties - SiteAuthSettings resource specific properties
 	*SiteAuthSettingsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -16755,17 +16092,8 @@ func (sas SiteAuthSettings) MarshalJSON() ([]byte, error) {
 	if sas.SiteAuthSettingsProperties != nil {
 		objectMap["properties"] = sas.SiteAuthSettingsProperties
 	}
-	if sas.ID != nil {
-		objectMap["id"] = sas.ID
-	}
-	if sas.Name != nil {
-		objectMap["name"] = sas.Name
-	}
 	if sas.Kind != nil {
 		objectMap["kind"] = sas.Kind
-	}
-	if sas.Type != nil {
-		objectMap["type"] = sas.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -16979,7 +16307,7 @@ type SiteConfig struct {
 	AppSettings *[]NameValuePair `json:"appSettings,omitempty"`
 	// ConnectionStrings - Connection strings.
 	ConnectionStrings *[]ConnStringInfo `json:"connectionStrings,omitempty"`
-	// MachineKey - Site MachineKey.
+	// MachineKey - READ-ONLY; Site MachineKey.
 	MachineKey *SiteMachineKey `json:"machineKey,omitempty"`
 	// HandlerMappings - Handler mappings.
 	HandlerMappings *[]HandlerMapping `json:"handlerMappings,omitempty"`
@@ -17042,13 +16370,13 @@ type SiteConfigResource struct {
 	autorest.Response `json:"-"`
 	// SiteConfig - Core resource properties
 	*SiteConfig `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -17058,17 +16386,8 @@ func (scr SiteConfigResource) MarshalJSON() ([]byte, error) {
 	if scr.SiteConfig != nil {
 		objectMap["properties"] = scr.SiteConfig
 	}
-	if scr.ID != nil {
-		objectMap["id"] = scr.ID
-	}
-	if scr.Name != nil {
-		objectMap["name"] = scr.Name
-	}
 	if scr.Kind != nil {
 		objectMap["kind"] = scr.Kind
-	}
-	if scr.Type != nil {
-		objectMap["type"] = scr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -17138,7 +16457,7 @@ type SiteConfigResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SiteConfigResource `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -17283,13 +16602,13 @@ func NewSiteConfigResourceCollectionPage(getNextPage func(context.Context, SiteC
 type SiteConfigurationSnapshotInfo struct {
 	// SiteConfigurationSnapshotInfoProperties - SiteConfigurationSnapshotInfo resource specific properties
 	*SiteConfigurationSnapshotInfoProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -17299,17 +16618,8 @@ func (scsi SiteConfigurationSnapshotInfo) MarshalJSON() ([]byte, error) {
 	if scsi.SiteConfigurationSnapshotInfoProperties != nil {
 		objectMap["properties"] = scsi.SiteConfigurationSnapshotInfoProperties
 	}
-	if scsi.ID != nil {
-		objectMap["id"] = scsi.ID
-	}
-	if scsi.Name != nil {
-		objectMap["name"] = scsi.Name
-	}
 	if scsi.Kind != nil {
 		objectMap["kind"] = scsi.Kind
-	}
-	if scsi.Type != nil {
-		objectMap["type"] = scsi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -17380,7 +16690,7 @@ type SiteConfigurationSnapshotInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SiteConfigurationSnapshotInfo `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -17524,9 +16834,9 @@ func NewSiteConfigurationSnapshotInfoCollectionPage(getNextPage func(context.Con
 
 // SiteConfigurationSnapshotInfoProperties siteConfigurationSnapshotInfo resource specific properties
 type SiteConfigurationSnapshotInfoProperties struct {
-	// Time - The time the snapshot was taken.
+	// Time - READ-ONLY; The time the snapshot was taken.
 	Time *date.Time `json:"time,omitempty"`
-	// ID - The id of the snapshot
+	// ID - READ-ONLY; The id of the snapshot
 	ID *int32 `json:"id,omitempty"`
 }
 
@@ -17535,13 +16845,13 @@ type SiteExtensionInfo struct {
 	autorest.Response `json:"-"`
 	// SiteExtensionInfoProperties - SiteExtensionInfo resource specific properties
 	*SiteExtensionInfoProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -17551,17 +16861,8 @@ func (sei SiteExtensionInfo) MarshalJSON() ([]byte, error) {
 	if sei.SiteExtensionInfoProperties != nil {
 		objectMap["properties"] = sei.SiteExtensionInfoProperties
 	}
-	if sei.ID != nil {
-		objectMap["id"] = sei.ID
-	}
-	if sei.Name != nil {
-		objectMap["name"] = sei.Name
-	}
 	if sei.Kind != nil {
 		objectMap["kind"] = sei.Kind
-	}
-	if sei.Type != nil {
-		objectMap["type"] = sei.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -17631,7 +16932,7 @@ type SiteExtensionInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SiteExtensionInfo `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -17820,13 +17121,13 @@ type SiteExtensionInfoProperties struct {
 type SiteInstance struct {
 	// SiteInstanceProperties - SiteInstance resource specific properties
 	*SiteInstanceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -17836,17 +17137,8 @@ func (si SiteInstance) MarshalJSON() ([]byte, error) {
 	if si.SiteInstanceProperties != nil {
 		objectMap["properties"] = si.SiteInstanceProperties
 	}
-	if si.ID != nil {
-		objectMap["id"] = si.ID
-	}
-	if si.Name != nil {
-		objectMap["name"] = si.Name
-	}
 	if si.Kind != nil {
 		objectMap["kind"] = si.Kind
-	}
-	if si.Type != nil {
-		objectMap["type"] = si.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -17913,7 +17205,7 @@ func (si *SiteInstance) UnmarshalJSON(body []byte) error {
 
 // SiteInstanceProperties siteInstance resource specific properties
 type SiteInstanceProperties struct {
-	// Name - Name of instance.
+	// Name - READ-ONLY; Name of instance.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -17932,13 +17224,13 @@ type SiteLogsConfig struct {
 	autorest.Response `json:"-"`
 	// SiteLogsConfigProperties - SiteLogsConfig resource specific properties
 	*SiteLogsConfigProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -17948,17 +17240,8 @@ func (slc SiteLogsConfig) MarshalJSON() ([]byte, error) {
 	if slc.SiteLogsConfigProperties != nil {
 		objectMap["properties"] = slc.SiteLogsConfigProperties
 	}
-	if slc.ID != nil {
-		objectMap["id"] = slc.ID
-	}
-	if slc.Name != nil {
-		objectMap["name"] = slc.Name
-	}
 	if slc.Kind != nil {
 		objectMap["kind"] = slc.Kind
-	}
-	if slc.Type != nil {
-		objectMap["type"] = slc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -18051,13 +17334,13 @@ type SiteMachineKey struct {
 type SitePatchResource struct {
 	// SitePatchResourceProperties - SitePatchResource resource specific properties
 	*SitePatchResourceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -18067,17 +17350,8 @@ func (spr SitePatchResource) MarshalJSON() ([]byte, error) {
 	if spr.SitePatchResourceProperties != nil {
 		objectMap["properties"] = spr.SitePatchResourceProperties
 	}
-	if spr.ID != nil {
-		objectMap["id"] = spr.ID
-	}
-	if spr.Name != nil {
-		objectMap["name"] = spr.Name
-	}
 	if spr.Kind != nil {
 		objectMap["kind"] = spr.Kind
-	}
-	if spr.Type != nil {
-		objectMap["type"] = spr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -18144,20 +17418,20 @@ func (spr *SitePatchResource) UnmarshalJSON(body []byte) error {
 
 // SitePatchResourceProperties sitePatchResource resource specific properties
 type SitePatchResourceProperties struct {
-	// State - Current state of the app.
+	// State - READ-ONLY; Current state of the app.
 	State *string `json:"state,omitempty"`
-	// HostNames - Hostnames associated with the app.
+	// HostNames - READ-ONLY; Hostnames associated with the app.
 	HostNames *[]string `json:"hostNames,omitempty"`
-	// RepositorySiteName - Name of the repository site.
+	// RepositorySiteName - READ-ONLY; Name of the repository site.
 	RepositorySiteName *string `json:"repositorySiteName,omitempty"`
-	// UsageState - State indicating whether the app has exceeded its quota usage. Read-only. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
+	// UsageState - READ-ONLY; State indicating whether the app has exceeded its quota usage. Read-only. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
 	UsageState UsageState `json:"usageState,omitempty"`
 	// Enabled - <code>true</code> if the app is enabled; otherwise, <code>false</code>. Setting this value to false disables the app (takes the app offline).
 	Enabled *bool `json:"enabled,omitempty"`
-	// EnabledHostNames - Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
+	// EnabledHostNames - READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
 	// the app is not served on those hostnames.
 	EnabledHostNames *[]string `json:"enabledHostNames,omitempty"`
-	// AvailabilityState - Management information availability state for the app. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'
+	// AvailabilityState - READ-ONLY; Management information availability state for the app. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'
 	AvailabilityState SiteAvailabilityState `json:"availabilityState,omitempty"`
 	// HostNameSslStates - Hostname SSL states are used to manage the SSL bindings for app's hostnames.
 	HostNameSslStates *[]HostNameSslState `json:"hostNameSslStates,omitempty"`
@@ -18165,15 +17439,15 @@ type SitePatchResourceProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
-	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
+	// LastModifiedTimeUtc - READ-ONLY; Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.
 	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
-	// TrafficManagerHostNames - Azure Traffic Manager hostnames associated with the app. Read-only.
+	// TrafficManagerHostNames - READ-ONLY; Azure Traffic Manager hostnames associated with the app. Read-only.
 	TrafficManagerHostNames *[]string `json:"trafficManagerHostNames,omitempty"`
 	// ScmSiteAlsoStopped - <code>true</code> to stop SCM (KUDU) site when the app is stopped; otherwise, <code>false</code>. The default is <code>false</code>.
 	ScmSiteAlsoStopped *bool `json:"scmSiteAlsoStopped,omitempty"`
-	// TargetSwapSlot - Specifies which deployment slot this app will swap into. Read-only.
+	// TargetSwapSlot - READ-ONLY; Specifies which deployment slot this app will swap into. Read-only.
 	TargetSwapSlot *string `json:"targetSwapSlot,omitempty"`
 	// HostingEnvironmentProfile - App Service Environment to use for the app.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
@@ -18184,30 +17458,30 @@ type SitePatchResourceProperties struct {
 	// HostNamesDisabled - <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
 	//  If <code>true</code>, the app is only accessible via API management process.
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
-	// OutboundIPAddresses - List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
+	// OutboundIPAddresses - READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
 	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty"`
-	// PossibleOutboundIPAddresses - List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants. Read-only.
+	// PossibleOutboundIPAddresses - READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants. Read-only.
 	PossibleOutboundIPAddresses *string `json:"possibleOutboundIpAddresses,omitempty"`
 	// ContainerSize - Size of the function container.
 	ContainerSize *int32 `json:"containerSize,omitempty"`
 	// DailyMemoryTimeQuota - Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 	DailyMemoryTimeQuota *int32 `json:"dailyMemoryTimeQuota,omitempty"`
-	// SuspendedTill - App suspended till in case memory-time quota is exceeded.
+	// SuspendedTill - READ-ONLY; App suspended till in case memory-time quota is exceeded.
 	SuspendedTill *date.Time `json:"suspendedTill,omitempty"`
-	// MaxNumberOfWorkers - Maximum number of workers.
+	// MaxNumberOfWorkers - READ-ONLY; Maximum number of workers.
 	// This only applies to Functions container.
 	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty"`
 	// CloningInfo - If specified during app creation, the app is cloned from a source app.
 	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
 	// SnapshotInfo - If specified during app creation, the app is created from a previous snapshot.
 	SnapshotInfo *SnapshotRecoveryRequest `json:"snapshotInfo,omitempty"`
-	// ResourceGroup - Name of the resource group the app belongs to. Read-only.
+	// ResourceGroup - READ-ONLY; Name of the resource group the app belongs to. Read-only.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// IsDefaultContainer - <code>true</code> if the app is a default container; otherwise, <code>false</code>.
+	// IsDefaultContainer - READ-ONLY; <code>true</code> if the app is a default container; otherwise, <code>false</code>.
 	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty"`
-	// DefaultHostName - Default hostname of the app. Read-only.
+	// DefaultHostName - READ-ONLY; Default hostname of the app. Read-only.
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
-	// SlotSwapStatus - Status of the last deployment slot swap operation.
+	// SlotSwapStatus - READ-ONLY; Status of the last deployment slot swap operation.
 	SlotSwapStatus *SlotSwapStatus `json:"slotSwapStatus,omitempty"`
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
@@ -18219,13 +17493,13 @@ type SitePhpErrorLogFlag struct {
 	autorest.Response `json:"-"`
 	// SitePhpErrorLogFlagProperties - SitePhpErrorLogFlag resource specific properties
 	*SitePhpErrorLogFlagProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -18235,17 +17509,8 @@ func (spelf SitePhpErrorLogFlag) MarshalJSON() ([]byte, error) {
 	if spelf.SitePhpErrorLogFlagProperties != nil {
 		objectMap["properties"] = spelf.SitePhpErrorLogFlagProperties
 	}
-	if spelf.ID != nil {
-		objectMap["id"] = spelf.ID
-	}
-	if spelf.Name != nil {
-		objectMap["name"] = spelf.Name
-	}
 	if spelf.Kind != nil {
 		objectMap["kind"] = spelf.Kind
-	}
-	if spelf.Type != nil {
-		objectMap["type"] = spelf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -18324,20 +17589,20 @@ type SitePhpErrorLogFlagProperties struct {
 
 // SiteProperties site resource specific properties
 type SiteProperties struct {
-	// State - Current state of the app.
+	// State - READ-ONLY; Current state of the app.
 	State *string `json:"state,omitempty"`
-	// HostNames - Hostnames associated with the app.
+	// HostNames - READ-ONLY; Hostnames associated with the app.
 	HostNames *[]string `json:"hostNames,omitempty"`
-	// RepositorySiteName - Name of the repository site.
+	// RepositorySiteName - READ-ONLY; Name of the repository site.
 	RepositorySiteName *string `json:"repositorySiteName,omitempty"`
-	// UsageState - State indicating whether the app has exceeded its quota usage. Read-only. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
+	// UsageState - READ-ONLY; State indicating whether the app has exceeded its quota usage. Read-only. Possible values include: 'UsageStateNormal', 'UsageStateExceeded'
 	UsageState UsageState `json:"usageState,omitempty"`
 	// Enabled - <code>true</code> if the app is enabled; otherwise, <code>false</code>. Setting this value to false disables the app (takes the app offline).
 	Enabled *bool `json:"enabled,omitempty"`
-	// EnabledHostNames - Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
+	// EnabledHostNames - READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
 	// the app is not served on those hostnames.
 	EnabledHostNames *[]string `json:"enabledHostNames,omitempty"`
-	// AvailabilityState - Management information availability state for the app. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'
+	// AvailabilityState - READ-ONLY; Management information availability state for the app. Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'
 	AvailabilityState SiteAvailabilityState `json:"availabilityState,omitempty"`
 	// HostNameSslStates - Hostname SSL states are used to manage the SSL bindings for app's hostnames.
 	HostNameSslStates *[]HostNameSslState `json:"hostNameSslStates,omitempty"`
@@ -18345,15 +17610,15 @@ type SiteProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
-	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
+	// LastModifiedTimeUtc - READ-ONLY; Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.
 	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
-	// TrafficManagerHostNames - Azure Traffic Manager hostnames associated with the app. Read-only.
+	// TrafficManagerHostNames - READ-ONLY; Azure Traffic Manager hostnames associated with the app. Read-only.
 	TrafficManagerHostNames *[]string `json:"trafficManagerHostNames,omitempty"`
 	// ScmSiteAlsoStopped - <code>true</code> to stop SCM (KUDU) site when the app is stopped; otherwise, <code>false</code>. The default is <code>false</code>.
 	ScmSiteAlsoStopped *bool `json:"scmSiteAlsoStopped,omitempty"`
-	// TargetSwapSlot - Specifies which deployment slot this app will swap into. Read-only.
+	// TargetSwapSlot - READ-ONLY; Specifies which deployment slot this app will swap into. Read-only.
 	TargetSwapSlot *string `json:"targetSwapSlot,omitempty"`
 	// HostingEnvironmentProfile - App Service Environment to use for the app.
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
@@ -18364,30 +17629,30 @@ type SiteProperties struct {
 	// HostNamesDisabled - <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
 	//  If <code>true</code>, the app is only accessible via API management process.
 	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
-	// OutboundIPAddresses - List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
+	// OutboundIPAddresses - READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
 	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty"`
-	// PossibleOutboundIPAddresses - List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants. Read-only.
+	// PossibleOutboundIPAddresses - READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all tenants. Read-only.
 	PossibleOutboundIPAddresses *string `json:"possibleOutboundIpAddresses,omitempty"`
 	// ContainerSize - Size of the function container.
 	ContainerSize *int32 `json:"containerSize,omitempty"`
 	// DailyMemoryTimeQuota - Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 	DailyMemoryTimeQuota *int32 `json:"dailyMemoryTimeQuota,omitempty"`
-	// SuspendedTill - App suspended till in case memory-time quota is exceeded.
+	// SuspendedTill - READ-ONLY; App suspended till in case memory-time quota is exceeded.
 	SuspendedTill *date.Time `json:"suspendedTill,omitempty"`
-	// MaxNumberOfWorkers - Maximum number of workers.
+	// MaxNumberOfWorkers - READ-ONLY; Maximum number of workers.
 	// This only applies to Functions container.
 	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty"`
 	// CloningInfo - If specified during app creation, the app is cloned from a source app.
 	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
 	// SnapshotInfo - If specified during app creation, the app is created from a previous snapshot.
 	SnapshotInfo *SnapshotRecoveryRequest `json:"snapshotInfo,omitempty"`
-	// ResourceGroup - Name of the resource group the app belongs to. Read-only.
+	// ResourceGroup - READ-ONLY; Name of the resource group the app belongs to. Read-only.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// IsDefaultContainer - <code>true</code> if the app is a default container; otherwise, <code>false</code>.
+	// IsDefaultContainer - READ-ONLY; <code>true</code> if the app is a default container; otherwise, <code>false</code>.
 	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty"`
-	// DefaultHostName - Default hostname of the app. Read-only.
+	// DefaultHostName - READ-ONLY; Default hostname of the app. Read-only.
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
-	// SlotSwapStatus - Status of the last deployment slot swap operation.
+	// SlotSwapStatus - READ-ONLY; Status of the last deployment slot swap operation.
 	SlotSwapStatus *SlotSwapStatus `json:"slotSwapStatus,omitempty"`
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
@@ -18414,13 +17679,13 @@ type SiteSourceControl struct {
 	autorest.Response `json:"-"`
 	// SiteSourceControlProperties - SiteSourceControl resource specific properties
 	*SiteSourceControlProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -18430,17 +17695,8 @@ func (ssc SiteSourceControl) MarshalJSON() ([]byte, error) {
 	if ssc.SiteSourceControlProperties != nil {
 		objectMap["properties"] = ssc.SiteSourceControlProperties
 	}
-	if ssc.ID != nil {
-		objectMap["id"] = ssc.ID
-	}
-	if ssc.Name != nil {
-		objectMap["name"] = ssc.Name
-	}
 	if ssc.Kind != nil {
 		objectMap["kind"] = ssc.Kind
-	}
-	if ssc.Type != nil {
-		objectMap["type"] = ssc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -18566,7 +17822,7 @@ type SkuInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SkuInfo `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -18731,13 +17987,13 @@ type SlotConfigNamesResource struct {
 	autorest.Response `json:"-"`
 	// SlotConfigNames - Core resource properties
 	*SlotConfigNames `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -18747,17 +18003,8 @@ func (scnr SlotConfigNamesResource) MarshalJSON() ([]byte, error) {
 	if scnr.SlotConfigNames != nil {
 		objectMap["properties"] = scnr.SlotConfigNames
 	}
-	if scnr.ID != nil {
-		objectMap["id"] = scnr.ID
-	}
-	if scnr.Name != nil {
-		objectMap["name"] = scnr.Name
-	}
 	if scnr.Kind != nil {
 		objectMap["kind"] = scnr.Kind
-	}
-	if scnr.Type != nil {
-		objectMap["type"] = scnr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -18826,13 +18073,13 @@ func (scnr *SlotConfigNamesResource) UnmarshalJSON(body []byte) error {
 type SlotDifference struct {
 	// SlotDifferenceProperties - SlotDifference resource specific properties
 	*SlotDifferenceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -18842,17 +18089,8 @@ func (sd SlotDifference) MarshalJSON() ([]byte, error) {
 	if sd.SlotDifferenceProperties != nil {
 		objectMap["properties"] = sd.SlotDifferenceProperties
 	}
-	if sd.ID != nil {
-		objectMap["id"] = sd.ID
-	}
-	if sd.Name != nil {
-		objectMap["name"] = sd.Name
-	}
 	if sd.Kind != nil {
 		objectMap["kind"] = sd.Kind
-	}
-	if sd.Type != nil {
-		objectMap["type"] = sd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -18922,7 +18160,7 @@ type SlotDifferenceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SlotDifference `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -19065,29 +18303,29 @@ func NewSlotDifferenceCollectionPage(getNextPage func(context.Context, SlotDiffe
 
 // SlotDifferenceProperties slotDifference resource specific properties
 type SlotDifferenceProperties struct {
-	// Type - Type of the difference: Information, Warning or Error.
+	// Type - READ-ONLY; Type of the difference: Information, Warning or Error.
 	Type *string `json:"type,omitempty"`
-	// SettingType - The type of the setting: General, AppSetting or ConnectionString.
+	// SettingType - READ-ONLY; The type of the setting: General, AppSetting or ConnectionString.
 	SettingType *string `json:"settingType,omitempty"`
-	// DiffRule - Rule that describes how to process the setting difference during a slot swap.
+	// DiffRule - READ-ONLY; Rule that describes how to process the setting difference during a slot swap.
 	DiffRule *string `json:"diffRule,omitempty"`
-	// SettingName - Name of the setting.
+	// SettingName - READ-ONLY; Name of the setting.
 	SettingName *string `json:"settingName,omitempty"`
-	// ValueInCurrentSlot - Value of the setting in the current slot.
+	// ValueInCurrentSlot - READ-ONLY; Value of the setting in the current slot.
 	ValueInCurrentSlot *string `json:"valueInCurrentSlot,omitempty"`
-	// ValueInTargetSlot - Value of the setting in the target slot.
+	// ValueInTargetSlot - READ-ONLY; Value of the setting in the target slot.
 	ValueInTargetSlot *string `json:"valueInTargetSlot,omitempty"`
-	// Description - Description of the setting difference.
+	// Description - READ-ONLY; Description of the setting difference.
 	Description *string `json:"description,omitempty"`
 }
 
 // SlotSwapStatus the status of the last successful slot swap operation.
 type SlotSwapStatus struct {
-	// TimestampUtc - The time the last successful slot swap completed.
+	// TimestampUtc - READ-ONLY; The time the last successful slot swap completed.
 	TimestampUtc *date.Time `json:"timestampUtc,omitempty"`
-	// SourceSlotName - The source slot of the last swap operation.
+	// SourceSlotName - READ-ONLY; The source slot of the last swap operation.
 	SourceSlotName *string `json:"sourceSlotName,omitempty"`
-	// DestinationSlotName - The destination slot of the last swap operation.
+	// DestinationSlotName - READ-ONLY; The destination slot of the last swap operation.
 	DestinationSlotName *string `json:"destinationSlotName,omitempty"`
 }
 
@@ -19105,13 +18343,13 @@ type SlowRequestsBasedTrigger struct {
 type Snapshot struct {
 	// SnapshotProperties - Snapshot resource specific properties
 	*SnapshotProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -19121,17 +18359,8 @@ func (s Snapshot) MarshalJSON() ([]byte, error) {
 	if s.SnapshotProperties != nil {
 		objectMap["properties"] = s.SnapshotProperties
 	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
 	if s.Kind != nil {
 		objectMap["kind"] = s.Kind
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -19201,7 +18430,7 @@ type SnapshotCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Snapshot `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -19344,7 +18573,7 @@ func NewSnapshotCollectionPage(getNextPage func(context.Context, SnapshotCollect
 
 // SnapshotProperties snapshot resource specific properties
 type SnapshotProperties struct {
-	// Time - The time the snapshot was taken.
+	// Time - READ-ONLY; The time the snapshot was taken.
 	Time *string `json:"time,omitempty"`
 }
 
@@ -19352,13 +18581,13 @@ type SnapshotProperties struct {
 type SnapshotRecoveryRequest struct {
 	// SnapshotRecoveryRequestProperties - SnapshotRecoveryRequest resource specific properties
 	*SnapshotRecoveryRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -19368,17 +18597,8 @@ func (srr SnapshotRecoveryRequest) MarshalJSON() ([]byte, error) {
 	if srr.SnapshotRecoveryRequestProperties != nil {
 		objectMap["properties"] = srr.SnapshotRecoveryRequestProperties
 	}
-	if srr.ID != nil {
-		objectMap["id"] = srr.ID
-	}
-	if srr.Name != nil {
-		objectMap["name"] = srr.Name
-	}
 	if srr.Kind != nil {
 		objectMap["kind"] = srr.Kind
-	}
-	if srr.Type != nil {
-		objectMap["type"] = srr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -19491,13 +18711,13 @@ type SourceControl struct {
 	autorest.Response `json:"-"`
 	// SourceControlProperties - SourceControl resource specific properties
 	*SourceControlProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -19507,17 +18727,8 @@ func (sc SourceControl) MarshalJSON() ([]byte, error) {
 	if sc.SourceControlProperties != nil {
 		objectMap["properties"] = sc.SourceControlProperties
 	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
 	if sc.Kind != nil {
 		objectMap["kind"] = sc.Kind
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -19587,7 +18798,7 @@ type SourceControlCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SourceControl `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -19797,7 +19008,7 @@ type StampCapacityCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]StampCapacity `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -19956,13 +19167,13 @@ type StatusCodesBasedTrigger struct {
 type StorageMigrationOptions struct {
 	// StorageMigrationOptionsProperties - StorageMigrationOptions resource specific properties
 	*StorageMigrationOptionsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -19972,17 +19183,8 @@ func (smo StorageMigrationOptions) MarshalJSON() ([]byte, error) {
 	if smo.StorageMigrationOptionsProperties != nil {
 		objectMap["properties"] = smo.StorageMigrationOptionsProperties
 	}
-	if smo.ID != nil {
-		objectMap["id"] = smo.ID
-	}
-	if smo.Name != nil {
-		objectMap["name"] = smo.Name
-	}
 	if smo.Kind != nil {
 		objectMap["kind"] = smo.Kind
-	}
-	if smo.Type != nil {
-		objectMap["type"] = smo.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -20064,13 +19266,13 @@ type StorageMigrationResponse struct {
 	autorest.Response `json:"-"`
 	// StorageMigrationResponseProperties - StorageMigrationResponse resource specific properties
 	*StorageMigrationResponseProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20080,17 +19282,8 @@ func (smr StorageMigrationResponse) MarshalJSON() ([]byte, error) {
 	if smr.StorageMigrationResponseProperties != nil {
 		objectMap["properties"] = smr.StorageMigrationResponseProperties
 	}
-	if smr.ID != nil {
-		objectMap["id"] = smr.ID
-	}
-	if smr.Name != nil {
-		objectMap["name"] = smr.Name
-	}
 	if smr.Kind != nil {
 		objectMap["kind"] = smr.Kind
-	}
-	if smr.Type != nil {
-		objectMap["type"] = smr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -20157,7 +19350,7 @@ func (smr *StorageMigrationResponse) UnmarshalJSON(body []byte) error {
 
 // StorageMigrationResponseProperties storageMigrationResponse resource specific properties
 type StorageMigrationResponseProperties struct {
-	// OperationID - When server starts the migration process, it will return an operation ID identifying that particular migration operation.
+	// OperationID - READ-ONLY; When server starts the migration process, it will return an operation ID identifying that particular migration operation.
 	OperationID *string `json:"operationId,omitempty"`
 }
 
@@ -20172,13 +19365,13 @@ type StringDictionary struct {
 	autorest.Response `json:"-"`
 	// Properties - Settings.
 	Properties map[string]*string `json:"properties"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20188,17 +19381,8 @@ func (sd StringDictionary) MarshalJSON() ([]byte, error) {
 	if sd.Properties != nil {
 		objectMap["properties"] = sd.Properties
 	}
-	if sd.ID != nil {
-		objectMap["id"] = sd.ID
-	}
-	if sd.Name != nil {
-		objectMap["name"] = sd.Name
-	}
 	if sd.Kind != nil {
 		objectMap["kind"] = sd.Kind
-	}
-	if sd.Type != nil {
-		objectMap["type"] = sd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -20220,7 +19404,7 @@ type TldLegalAgreementCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]TldLegalAgreement `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -20366,13 +19550,13 @@ type TopLevelDomain struct {
 	autorest.Response `json:"-"`
 	// TopLevelDomainProperties - TopLevelDomain resource specific properties
 	*TopLevelDomainProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20382,17 +19566,8 @@ func (tld TopLevelDomain) MarshalJSON() ([]byte, error) {
 	if tld.TopLevelDomainProperties != nil {
 		objectMap["properties"] = tld.TopLevelDomainProperties
 	}
-	if tld.ID != nil {
-		objectMap["id"] = tld.ID
-	}
-	if tld.Name != nil {
-		objectMap["name"] = tld.Name
-	}
 	if tld.Kind != nil {
 		objectMap["kind"] = tld.Kind
-	}
-	if tld.Type != nil {
-		objectMap["type"] = tld.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -20470,7 +19645,7 @@ type TopLevelDomainCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]TopLevelDomain `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -20613,7 +19788,7 @@ func NewTopLevelDomainCollectionPage(getNextPage func(context.Context, TopLevelD
 
 // TopLevelDomainProperties topLevelDomain resource specific properties
 type TopLevelDomainProperties struct {
-	// DomainName - Name of the top level domain.
+	// DomainName - READ-ONLY; Name of the top level domain.
 	DomainName *string `json:"name,omitempty"`
 	// Privacy - If <code>true</code>, then the top level domain supports domain privacy; otherwise, <code>false</code>.
 	Privacy *bool `json:"privacy,omitempty"`
@@ -20624,13 +19799,13 @@ type TriggeredJobHistory struct {
 	autorest.Response `json:"-"`
 	// TriggeredJobHistoryProperties - TriggeredJobHistory resource specific properties
 	*TriggeredJobHistoryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20640,17 +19815,8 @@ func (tjh TriggeredJobHistory) MarshalJSON() ([]byte, error) {
 	if tjh.TriggeredJobHistoryProperties != nil {
 		objectMap["properties"] = tjh.TriggeredJobHistoryProperties
 	}
-	if tjh.ID != nil {
-		objectMap["id"] = tjh.ID
-	}
-	if tjh.Name != nil {
-		objectMap["name"] = tjh.Name
-	}
 	if tjh.Kind != nil {
 		objectMap["kind"] = tjh.Kind
-	}
-	if tjh.Type != nil {
-		objectMap["type"] = tjh.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -20720,7 +19886,7 @@ type TriggeredJobHistoryCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]TriggeredJobHistory `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -20872,13 +20038,13 @@ type TriggeredJobHistoryProperties struct {
 type TriggeredJobRun struct {
 	// TriggeredJobRunProperties - TriggeredJobRun resource specific properties
 	*TriggeredJobRunProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -20888,17 +20054,8 @@ func (tjr TriggeredJobRun) MarshalJSON() ([]byte, error) {
 	if tjr.TriggeredJobRunProperties != nil {
 		objectMap["properties"] = tjr.TriggeredJobRunProperties
 	}
-	if tjr.ID != nil {
-		objectMap["id"] = tjr.ID
-	}
-	if tjr.Name != nil {
-		objectMap["name"] = tjr.Name
-	}
 	if tjr.Kind != nil {
 		objectMap["kind"] = tjr.Kind
-	}
-	if tjr.Type != nil {
-		objectMap["type"] = tjr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -20967,7 +20124,7 @@ func (tjr *TriggeredJobRun) UnmarshalJSON(body []byte) error {
 type TriggeredJobRunProperties struct {
 	// ID - Job ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Job name.
+	// Name - READ-ONLY; Job name.
 	Name *string `json:"name,omitempty"`
 	// Status - Job status. Possible values include: 'TriggeredWebJobStatusSuccess', 'TriggeredWebJobStatusFailed', 'TriggeredWebJobStatusError'
 	Status TriggeredWebJobStatus `json:"status,omitempty"`
@@ -20994,13 +20151,13 @@ type TriggeredWebJob struct {
 	autorest.Response `json:"-"`
 	// TriggeredWebJobProperties - TriggeredWebJob resource specific properties
 	*TriggeredWebJobProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -21010,17 +20167,8 @@ func (twj TriggeredWebJob) MarshalJSON() ([]byte, error) {
 	if twj.TriggeredWebJobProperties != nil {
 		objectMap["properties"] = twj.TriggeredWebJobProperties
 	}
-	if twj.ID != nil {
-		objectMap["id"] = twj.ID
-	}
-	if twj.Name != nil {
-		objectMap["name"] = twj.Name
-	}
 	if twj.Kind != nil {
 		objectMap["kind"] = twj.Kind
-	}
-	if twj.Type != nil {
-		objectMap["type"] = twj.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -21090,7 +20238,7 @@ type TriggeredWebJobCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]TriggeredWebJob `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -21239,7 +20387,7 @@ type TriggeredWebJobProperties struct {
 	HistoryURL *string `json:"historyUrl,omitempty"`
 	// SchedulerLogsURL - Scheduler Logs URL.
 	SchedulerLogsURL *string `json:"schedulerLogsUrl,omitempty"`
-	// Name - Job name. Used as job identifier in ARM resource URI.
+	// Name - READ-ONLY; Job name. Used as job identifier in ARM resource URI.
 	Name *string `json:"name,omitempty"`
 	// RunCommand - Run command.
 	RunCommand *string `json:"runCommand,omitempty"`
@@ -21269,9 +20417,6 @@ func (twj TriggeredWebJobProperties) MarshalJSON() ([]byte, error) {
 	if twj.SchedulerLogsURL != nil {
 		objectMap["schedulerLogsUrl"] = twj.SchedulerLogsURL
 	}
-	if twj.Name != nil {
-		objectMap["name"] = twj.Name
-	}
 	if twj.RunCommand != nil {
 		objectMap["runCommand"] = twj.RunCommand
 	}
@@ -21300,13 +20445,13 @@ func (twj TriggeredWebJobProperties) MarshalJSON() ([]byte, error) {
 type Usage struct {
 	// UsageProperties - Usage resource specific properties
 	*UsageProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -21316,17 +20461,8 @@ func (u Usage) MarshalJSON() ([]byte, error) {
 	if u.UsageProperties != nil {
 		objectMap["properties"] = u.UsageProperties
 	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
 	if u.Kind != nil {
 		objectMap["kind"] = u.Kind
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -21396,7 +20532,7 @@ type UsageCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]Usage `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -21539,23 +20675,23 @@ func NewUsageCollectionPage(getNextPage func(context.Context, UsageCollection) (
 
 // UsageProperties usage resource specific properties
 type UsageProperties struct {
-	// DisplayName - Friendly name shown in the UI.
+	// DisplayName - READ-ONLY; Friendly name shown in the UI.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Name - Name of the quota.
+	// Name - READ-ONLY; Name of the quota.
 	Name *string `json:"name,omitempty"`
-	// ResourceName - Name of the quota resource.
+	// ResourceName - READ-ONLY; Name of the quota resource.
 	ResourceName *string `json:"resourceName,omitempty"`
-	// Unit - Units of measurement for the quota resource.
+	// Unit - READ-ONLY; Units of measurement for the quota resource.
 	Unit *string `json:"unit,omitempty"`
-	// CurrentValue - The current value of the resource counter.
+	// CurrentValue - READ-ONLY; The current value of the resource counter.
 	CurrentValue *int64 `json:"currentValue,omitempty"`
-	// Limit - The resource limit.
+	// Limit - READ-ONLY; The resource limit.
 	Limit *int64 `json:"limit,omitempty"`
-	// NextResetTime - Next reset time for the resource counter.
+	// NextResetTime - READ-ONLY; Next reset time for the resource counter.
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
-	// ComputeMode - Compute mode used for this usage. Possible values include: 'ComputeModeOptionsShared', 'ComputeModeOptionsDedicated', 'ComputeModeOptionsDynamic'
+	// ComputeMode - READ-ONLY; Compute mode used for this usage. Possible values include: 'ComputeModeOptionsShared', 'ComputeModeOptionsDedicated', 'ComputeModeOptionsDynamic'
 	ComputeMode ComputeModeOptions `json:"computeMode,omitempty"`
-	// SiteMode - Site mode used for this usage.
+	// SiteMode - READ-ONLY; Site mode used for this usage.
 	SiteMode *string `json:"siteMode,omitempty"`
 }
 
@@ -21564,13 +20700,13 @@ type User struct {
 	autorest.Response `json:"-"`
 	// UserProperties - User resource specific properties
 	*UserProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -21580,17 +20716,8 @@ func (u User) MarshalJSON() ([]byte, error) {
 	if u.UserProperties != nil {
 		objectMap["properties"] = u.UserProperties
 	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
 	if u.Kind != nil {
 		objectMap["kind"] = u.Kind
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -21819,9 +20946,9 @@ type VirtualIPMapping struct {
 type VirtualNetworkProfile struct {
 	// ID - Resource id of the Virtual Network.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the Virtual Network (read-only).
+	// Name - READ-ONLY; Name of the Virtual Network (read-only).
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type of the Virtual Network (read-only).
+	// Type - READ-ONLY; Resource type of the Virtual Network (read-only).
 	Type *string `json:"type,omitempty"`
 	// Subnet - Subnet within the Virtual Network.
 	Subnet *string `json:"subnet,omitempty"`
@@ -21833,13 +20960,13 @@ type VnetGateway struct {
 	autorest.Response `json:"-"`
 	// VnetGatewayProperties - VnetGateway resource specific properties
 	*VnetGatewayProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -21849,17 +20976,8 @@ func (vg VnetGateway) MarshalJSON() ([]byte, error) {
 	if vg.VnetGatewayProperties != nil {
 		objectMap["properties"] = vg.VnetGatewayProperties
 	}
-	if vg.ID != nil {
-		objectMap["id"] = vg.ID
-	}
-	if vg.Name != nil {
-		objectMap["name"] = vg.Name
-	}
 	if vg.Kind != nil {
 		objectMap["kind"] = vg.Kind
-	}
-	if vg.Type != nil {
-		objectMap["type"] = vg.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -21937,13 +21055,13 @@ type VnetInfo struct {
 	autorest.Response `json:"-"`
 	// VnetInfoProperties - VnetInfo resource specific properties
 	*VnetInfoProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -21953,17 +21071,8 @@ func (vi VnetInfo) MarshalJSON() ([]byte, error) {
 	if vi.VnetInfoProperties != nil {
 		objectMap["properties"] = vi.VnetInfoProperties
 	}
-	if vi.ID != nil {
-		objectMap["id"] = vi.ID
-	}
-	if vi.Name != nil {
-		objectMap["name"] = vi.Name
-	}
 	if vi.Kind != nil {
 		objectMap["kind"] = vi.Kind
-	}
-	if vi.Type != nil {
-		objectMap["type"] = vi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -22032,14 +21141,14 @@ func (vi *VnetInfo) UnmarshalJSON(body []byte) error {
 type VnetInfoProperties struct {
 	// VnetResourceID - The Virtual Network's resource ID.
 	VnetResourceID *string `json:"vnetResourceId,omitempty"`
-	// CertThumbprint - The client certificate thumbprint.
+	// CertThumbprint - READ-ONLY; The client certificate thumbprint.
 	CertThumbprint *string `json:"certThumbprint,omitempty"`
 	// CertBlob - A certificate file (.cer) blob containing the public key of the private key used to authenticate a
 	// Point-To-Site VPN connection.
 	CertBlob *[]byte `json:"certBlob,omitempty"`
-	// Routes - The routes that this Virtual Network connection uses.
+	// Routes - READ-ONLY; The routes that this Virtual Network connection uses.
 	Routes *[]VnetRoute `json:"routes,omitempty"`
-	// ResyncRequired - <code>true</code> if a resync is required; otherwise, <code>false</code>.
+	// ResyncRequired - READ-ONLY; <code>true</code> if a resync is required; otherwise, <code>false</code>.
 	ResyncRequired *bool `json:"resyncRequired,omitempty"`
 	// DNSServers - DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses.
 	DNSServers *string `json:"dnsServers,omitempty"`
@@ -22049,13 +21158,13 @@ type VnetInfoProperties struct {
 type VnetParameters struct {
 	// VnetParametersProperties - VnetParameters resource specific properties
 	*VnetParametersProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -22065,17 +21174,8 @@ func (vp VnetParameters) MarshalJSON() ([]byte, error) {
 	if vp.VnetParametersProperties != nil {
 		objectMap["properties"] = vp.VnetParametersProperties
 	}
-	if vp.ID != nil {
-		objectMap["id"] = vp.ID
-	}
-	if vp.Name != nil {
-		objectMap["name"] = vp.Name
-	}
 	if vp.Kind != nil {
 		objectMap["kind"] = vp.Kind
-	}
-	if vp.Type != nil {
-		objectMap["type"] = vp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -22155,13 +21255,13 @@ type VnetRoute struct {
 	autorest.Response `json:"-"`
 	// VnetRouteProperties - VnetRoute resource specific properties
 	*VnetRouteProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -22171,17 +21271,8 @@ func (vr VnetRoute) MarshalJSON() ([]byte, error) {
 	if vr.VnetRouteProperties != nil {
 		objectMap["properties"] = vr.VnetRouteProperties
 	}
-	if vr.ID != nil {
-		objectMap["id"] = vr.ID
-	}
-	if vr.Name != nil {
-		objectMap["name"] = vr.Name
-	}
 	if vr.Kind != nil {
 		objectMap["kind"] = vr.Kind
-	}
-	if vr.Type != nil {
-		objectMap["type"] = vr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -22267,13 +21358,13 @@ type VnetValidationFailureDetails struct {
 	autorest.Response `json:"-"`
 	// VnetValidationFailureDetailsProperties - VnetValidationFailureDetails resource specific properties
 	*VnetValidationFailureDetailsProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -22283,17 +21374,8 @@ func (vvfd VnetValidationFailureDetails) MarshalJSON() ([]byte, error) {
 	if vvfd.VnetValidationFailureDetailsProperties != nil {
 		objectMap["properties"] = vvfd.VnetValidationFailureDetailsProperties
 	}
-	if vvfd.ID != nil {
-		objectMap["id"] = vvfd.ID
-	}
-	if vvfd.Name != nil {
-		objectMap["name"] = vvfd.Name
-	}
 	if vvfd.Kind != nil {
 		objectMap["kind"] = vvfd.Kind
-	}
-	if vvfd.Type != nil {
-		objectMap["type"] = vvfd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -22370,13 +21452,13 @@ type VnetValidationFailureDetailsProperties struct {
 type VnetValidationTestFailure struct {
 	// VnetValidationTestFailureProperties - VnetValidationTestFailure resource specific properties
 	*VnetValidationTestFailureProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -22386,17 +21468,8 @@ func (vvtf VnetValidationTestFailure) MarshalJSON() ([]byte, error) {
 	if vvtf.VnetValidationTestFailureProperties != nil {
 		objectMap["properties"] = vvtf.VnetValidationTestFailureProperties
 	}
-	if vvtf.ID != nil {
-		objectMap["id"] = vvtf.ID
-	}
-	if vvtf.Name != nil {
-		objectMap["name"] = vvtf.Name
-	}
 	if vvtf.Kind != nil {
 		objectMap["kind"] = vvtf.Kind
-	}
-	if vvtf.Type != nil {
-		objectMap["type"] = vvtf.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -22479,7 +21552,7 @@ type WorkerPool struct {
 	WorkerSize *string `json:"workerSize,omitempty"`
 	// WorkerCount - Number of instances in the worker pool.
 	WorkerCount *int32 `json:"workerCount,omitempty"`
-	// InstanceNames - Names of all instances in the worker pool (read only).
+	// InstanceNames - READ-ONLY; Names of all instances in the worker pool (read only).
 	InstanceNames *[]string `json:"instanceNames,omitempty"`
 }
 
@@ -22488,7 +21561,7 @@ type WorkerPoolCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]WorkerPoolResource `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
+	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -22635,13 +21708,13 @@ type WorkerPoolResource struct {
 	// WorkerPool - Core resource properties
 	*WorkerPool `json:"properties,omitempty"`
 	Sku         *SkuDescription `json:"sku,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
+	// Name - READ-ONLY; Resource Name.
 	Name *string `json:"name,omitempty"`
 	// Kind - Kind of resource.
 	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -22654,17 +21727,8 @@ func (wpr WorkerPoolResource) MarshalJSON() ([]byte, error) {
 	if wpr.Sku != nil {
 		objectMap["sku"] = wpr.Sku
 	}
-	if wpr.ID != nil {
-		objectMap["id"] = wpr.ID
-	}
-	if wpr.Name != nil {
-		objectMap["name"] = wpr.Name
-	}
 	if wpr.Kind != nil {
 		objectMap["kind"] = wpr.Kind
-	}
-	if wpr.Type != nil {
-		objectMap["type"] = wpr.Type
 	}
 	return json.Marshal(objectMap)
 }

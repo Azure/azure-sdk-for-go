@@ -173,17 +173,17 @@ type CertificateListDescription struct {
 
 // CertificateProperties the description of an X509 CA Certificate.
 type CertificateProperties struct {
-	// Subject - The certificate's subject name.
+	// Subject - READ-ONLY; The certificate's subject name.
 	Subject *string `json:"subject,omitempty"`
-	// Expiry - The certificate's expiration date and time.
+	// Expiry - READ-ONLY; The certificate's expiration date and time.
 	Expiry *date.TimeRFC1123 `json:"expiry,omitempty"`
-	// Thumbprint - The certificate's thumbprint.
+	// Thumbprint - READ-ONLY; The certificate's thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// IsVerified - Determines whether certificate has been verified.
+	// IsVerified - READ-ONLY; Determines whether certificate has been verified.
 	IsVerified *bool `json:"isVerified,omitempty"`
-	// Created - The certificate's creation date and time.
+	// Created - READ-ONLY; The certificate's creation date and time.
 	Created *date.TimeRFC1123 `json:"created,omitempty"`
-	// Updated - The certificate's last update date and time.
+	// Updated - READ-ONLY; The certificate's last update date and time.
 	Updated *date.TimeRFC1123 `json:"updated,omitempty"`
 }
 
@@ -192,13 +192,13 @@ type CertificateResponse struct {
 	autorest.Response `json:"-"`
 	// Properties - properties of a certificate
 	Properties *CertificateProperties `json:"properties,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the certificate.
+	// Name - READ-ONLY; The name of the certificate.
 	Name *string `json:"name,omitempty"`
-	// Etag - The entity tag.
+	// Etag - READ-ONLY; The entity tag.
 	Etag *string `json:"etag,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -208,7 +208,7 @@ type DefinitionDescription struct {
 	ApplyAllocationPolicy *bool `json:"applyAllocationPolicy,omitempty"`
 	// AllocationWeight - Weight to apply for a given IoT hub.
 	AllocationWeight *int32 `json:"allocationWeight,omitempty"`
-	// Name - Host name of the IoT hub.
+	// Name - READ-ONLY; Host name of the IoT hub.
 	Name *string `json:"name,omitempty"`
 	// ConnectionString - Connection string of the IoT hub.
 	ConnectionString *string `json:"connectionString,omitempty"`
@@ -218,13 +218,13 @@ type DefinitionDescription struct {
 
 // ErrorDetails error details.
 type ErrorDetails struct {
-	// Code - The error code.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"Code,omitempty"`
-	// HTTPStatusCode - The HTTP status code.
+	// HTTPStatusCode - READ-ONLY; The HTTP status code.
 	HTTPStatusCode *string `json:"HttpStatusCode,omitempty"`
-	// Message - The error message.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"Message,omitempty"`
-	// Details - The error details.
+	// Details - READ-ONLY; The error details.
 	Details *string `json:"Details,omitempty"`
 }
 
@@ -249,11 +249,11 @@ type IotDpsPropertiesDescription struct {
 	IotHubs *[]DefinitionDescription `json:"iotHubs,omitempty"`
 	// AllocationPolicy - Allocation policy to be used by this provisioning service. Possible values include: 'Hashed', 'GeoLatency', 'Static'
 	AllocationPolicy AllocationPolicy `json:"allocationPolicy,omitempty"`
-	// ServiceOperationsHostName - Service endpoint for provisioning service.
+	// ServiceOperationsHostName - READ-ONLY; Service endpoint for provisioning service.
 	ServiceOperationsHostName *string `json:"serviceOperationsHostName,omitempty"`
-	// DeviceProvisioningHostName - Device endpoint for this provisioning service.
+	// DeviceProvisioningHostName - READ-ONLY; Device endpoint for this provisioning service.
 	DeviceProvisioningHostName *string `json:"deviceProvisioningHostName,omitempty"`
-	// IDScope - Unique identifier of this provisioning service.
+	// IDScope - READ-ONLY; Unique identifier of this provisioning service.
 	IDScope *string `json:"idScope,omitempty"`
 	// AuthorizationPolicies - List of authorization keys for a provisioning service.
 	AuthorizationPolicies *[]SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"authorizationPolicies,omitempty"`
@@ -269,7 +269,7 @@ type IotDpsResourceCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IotDpsResourceCreateOrUpdateFuture) Result(client IotDpsResourceClient) (psd ProvisioningServiceDescription, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -298,7 +298,7 @@ type IotDpsResourceDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IotDpsResourceDeleteFuture) Result(client IotDpsResourceClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -321,7 +321,7 @@ type IotDpsResourceUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IotDpsResourceUpdateFuture) Result(client IotDpsResourceClient) (psd ProvisioningServiceDescription, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -351,7 +351,7 @@ type IotDpsSkuDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of SKUs
 	Value *[]IotDpsSkuDefinition `json:"value,omitempty"`
-	// NextLink - The next link.
+	// NextLink - READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -497,7 +497,7 @@ func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotD
 type IotDpsSkuInfo struct {
 	// Name - Sku name. Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
-	// Tier - Pricing tier name of the provisioning service.
+	// Tier - READ-ONLY; Pricing tier name of the provisioning service.
 	Tier *string `json:"tier,omitempty"`
 	// Capacity - The number of units to provision
 	Capacity *int64 `json:"capacity,omitempty"`
@@ -516,7 +516,7 @@ type NameAvailabilityInfo struct {
 
 // Operation ioT Hub REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{read | write | action | delete}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -524,11 +524,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft Devices.
+	// Provider - READ-ONLY; Service provider: Microsoft Devices.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource Type: ProvisioningServices.
+	// Resource - READ-ONLY; Resource Type: ProvisioningServices.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Name of the operation.
+	// Operation - READ-ONLY; Name of the operation.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -542,9 +542,9 @@ type OperationInputs struct {
 // and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of IoT Hub operations supported by the Microsoft.Devices resource provider.
+	// Value - READ-ONLY; List of IoT Hub operations supported by the Microsoft.Devices resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -694,11 +694,11 @@ type ProvisioningServiceDescription struct {
 	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
 	// Sku - SKU info for a provisioning service.
 	Sku *IotDpsSkuInfo `json:"sku,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -718,15 +718,6 @@ func (psd ProvisioningServiceDescription) MarshalJSON() ([]byte, error) {
 	if psd.Sku != nil {
 		objectMap["sku"] = psd.Sku
 	}
-	if psd.ID != nil {
-		objectMap["id"] = psd.ID
-	}
-	if psd.Name != nil {
-		objectMap["name"] = psd.Name
-	}
-	if psd.Type != nil {
-		objectMap["type"] = psd.Type
-	}
 	if psd.Location != nil {
 		objectMap["location"] = psd.Location
 	}
@@ -741,7 +732,7 @@ type ProvisioningServiceDescriptionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of provisioning service descriptions.
 	Value *[]ProvisioningServiceDescription `json:"value,omitempty"`
-	// NextLink - the next link
+	// NextLink - READ-ONLY; the next link
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -885,11 +876,11 @@ func NewProvisioningServiceDescriptionListResultPage(getNextPage func(context.Co
 
 // Resource the common properties of an Azure resource.
 type Resource struct {
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -900,15 +891,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -936,7 +918,7 @@ type SharedAccessSignatureAuthorizationRuleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of shared access policies.
 	Value *[]SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"value,omitempty"`
-	// NextLink - The next link.
+	// NextLink - READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1104,13 +1086,13 @@ type VerificationCodeRequest struct {
 // VerificationCodeResponse description of the response of the verification code.
 type VerificationCodeResponse struct {
 	autorest.Response `json:"-"`
-	// Name - Name of certificate.
+	// Name - READ-ONLY; Name of certificate.
 	Name *string `json:"name,omitempty"`
-	// Etag - Request etag.
+	// Etag - READ-ONLY; Request etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - The resource identifier.
+	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type       *string                             `json:"type,omitempty"`
 	Properties *VerificationCodeResponseProperties `json:"properties,omitempty"`
 }

@@ -1090,8 +1090,6 @@ type PatchProperties struct {
 	// AppliedScopeType - Possible values include: 'Single', 'Shared'
 	AppliedScopeType AppliedScopeType `json:"appliedScopeType,omitempty"`
 	AppliedScopes    *[]string        `json:"appliedScopes,omitempty"`
-	Renew            *bool            `json:"renew,omitempty"`
-	RenewProperties  *PurchaseRequest `json:"renewProperties,omitempty"`
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 	// Name - Name of the Reservation
@@ -1119,12 +1117,10 @@ type Properties struct {
 	// ExpiryDate - This is the date when the Reservation will expire.
 	ExpiryDate *date.Date `json:"expiryDate,omitempty"`
 	// SkuDescription - Description of the SKU in english.
-	SkuDescription     *string                  `json:"skuDescription,omitempty"`
-	ExtendedStatusInfo *ExtendedStatusInfo      `json:"extendedStatusInfo,omitempty"`
-	SplitProperties    *SplitPropertiesType     `json:"splitProperties,omitempty"`
-	MergeProperties    *MergePropertiesType     `json:"mergeProperties,omitempty"`
-	Renew              *bool                    `json:"renew,omitempty"`
-	RenewProperties    *RenewPropertiesResponse `json:"renewProperties,omitempty"`
+	SkuDescription     *string              `json:"skuDescription,omitempty"`
+	ExtendedStatusInfo *ExtendedStatusInfo  `json:"extendedStatusInfo,omitempty"`
+	SplitProperties    *SplitPropertiesType `json:"splitProperties,omitempty"`
+	MergeProperties    *MergePropertiesType `json:"mergeProperties,omitempty"`
 }
 
 // PurchaseRequest ...
@@ -1205,7 +1201,6 @@ type PurchaseRequestProperties struct {
 	// AppliedScopeType - Possible values include: 'Single', 'Shared'
 	AppliedScopeType AppliedScopeType `json:"appliedScopeType,omitempty"`
 	AppliedScopes    *[]string        `json:"appliedScopes,omitempty"`
-	Renew            *bool            `json:"renew,omitempty"`
 	// ReservedResourceProperties - Properties specific to each reserved resource type. Not required if not applicable.
 	ReservedResourceProperties *PurchaseRequestPropertiesReservedResourceProperties `json:"reservedResourceProperties,omitempty"`
 }
@@ -1215,30 +1210,6 @@ type PurchaseRequestProperties struct {
 type PurchaseRequestPropertiesReservedResourceProperties struct {
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
-}
-
-// RenewPropertiesResponse ...
-type RenewPropertiesResponse struct {
-	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
-	// LockedPriceTotal - Locked currency & amount for new reservation purchase at the time of renewal. Price is locked 30 days before expiry date time if renew is true.
-	LockedPriceTotal *RenewPropertiesResponseLockedPriceTotal `json:"lockedPriceTotal,omitempty"`
-	// Links - Contains prev and next reservation Ids' because of renewal.
-	Links *RenewPropertiesResponseLinks `json:"links,omitempty"`
-}
-
-// RenewPropertiesResponseLinks contains prev and next reservation Ids' because of renewal.
-type RenewPropertiesResponseLinks struct {
-	// RenewSource - Reservation Id of the reservation from which this reservation is renewed. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-	RenewSource *string `json:"renewSource,omitempty"`
-	// RenewDestination - Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-	RenewDestination *string `json:"renewDestination,omitempty"`
-}
-
-// RenewPropertiesResponseLockedPriceTotal locked currency & amount for new reservation purchase at the
-// time of renewal. Price is locked 30 days before expiry date time if renew is true.
-type RenewPropertiesResponseLockedPriceTotal struct {
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-	Amount       *string `json:"amount,omitempty"`
 }
 
 // ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running

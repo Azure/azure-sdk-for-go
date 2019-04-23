@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2018-02-01-preview/virtualmachineimagebuilder"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder"
 
 // ProvisioningErrorCode enumerates the values for provisioning error code.
 type ProvisioningErrorCode string
@@ -37,23 +37,33 @@ type ProvisioningErrorCode string
 const (
 	// BadCustomizerType ...
 	BadCustomizerType ProvisioningErrorCode = "BadCustomizerType"
+	// BadDistributeType ...
+	BadDistributeType ProvisioningErrorCode = "BadDistributeType"
 	// BadISOSource ...
 	BadISOSource ProvisioningErrorCode = "BadISOSource"
+	// BadManagedImageSource ...
+	BadManagedImageSource ProvisioningErrorCode = "BadManagedImageSource"
 	// BadPIRSource ...
 	BadPIRSource ProvisioningErrorCode = "BadPIRSource"
+	// BadSharedImageDistribute ...
+	BadSharedImageDistribute ProvisioningErrorCode = "BadSharedImageDistribute"
+	// BadSharedImageVersionSource ...
+	BadSharedImageVersionSource ProvisioningErrorCode = "BadSharedImageVersionSource"
 	// BadSourceType ...
 	BadSourceType ProvisioningErrorCode = "BadSourceType"
-	// NoCustomizerShellScript ...
-	NoCustomizerShellScript ProvisioningErrorCode = "NoCustomizerShellScript"
+	// NoCustomizerScript ...
+	NoCustomizerScript ProvisioningErrorCode = "NoCustomizerScript"
 	// Other ...
 	Other ProvisioningErrorCode = "Other"
 	// ServerError ...
 	ServerError ProvisioningErrorCode = "ServerError"
+	// UnsupportedCustomizerType ...
+	UnsupportedCustomizerType ProvisioningErrorCode = "UnsupportedCustomizerType"
 )
 
 // PossibleProvisioningErrorCodeValues returns an array of possible values for the ProvisioningErrorCode const type.
 func PossibleProvisioningErrorCodeValues() []ProvisioningErrorCode {
-	return []ProvisioningErrorCode{BadCustomizerType, BadISOSource, BadPIRSource, BadSourceType, NoCustomizerShellScript, Other, ServerError}
+	return []ProvisioningErrorCode{BadCustomizerType, BadDistributeType, BadISOSource, BadManagedImageSource, BadPIRSource, BadSharedImageDistribute, BadSharedImageVersionSource, BadSourceType, NoCustomizerScript, Other, ServerError, UnsupportedCustomizerType}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -68,11 +78,13 @@ const (
 	Failed ProvisioningState = "Failed"
 	// Succeeded ...
 	Succeeded ProvisioningState = "Succeeded"
+	// Updating ...
+	Updating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Succeeded}
+	return []ProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
 }
 
 // ProvisioningState1 enumerates the values for provisioning state 1.
@@ -87,11 +99,28 @@ const (
 	ProvisioningState1Failed ProvisioningState1 = "Failed"
 	// ProvisioningState1Succeeded ...
 	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
+	// ProvisioningState1Updating ...
+	ProvisioningState1Updating ProvisioningState1 = "Updating"
 )
 
 // PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
 func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Succeeded}
+	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Succeeded, ProvisioningState1Updating}
+}
+
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// None ...
+	None ResourceIdentityType = "None"
+	// UserAssigned ...
+	UserAssigned ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{None, UserAssigned}
 }
 
 // RunState enumerates the values for run state.
@@ -99,20 +128,18 @@ type RunState string
 
 const (
 	// RunStateFailed ...
-	RunStateFailed RunState = "failed"
+	RunStateFailed RunState = "Failed"
 	// RunStatePartiallySucceeded ...
-	RunStatePartiallySucceeded RunState = "partiallySucceeded"
-	// RunStateReady ...
-	RunStateReady RunState = "ready"
+	RunStatePartiallySucceeded RunState = "PartiallySucceeded"
 	// RunStateRunning ...
-	RunStateRunning RunState = "running"
+	RunStateRunning RunState = "Running"
 	// RunStateSucceeded ...
-	RunStateSucceeded RunState = "succeeded"
+	RunStateSucceeded RunState = "Succeeded"
 )
 
 // PossibleRunStateValues returns an array of possible values for the RunState const type.
 func PossibleRunStateValues() []RunState {
-	return []RunState{RunStateFailed, RunStatePartiallySucceeded, RunStateReady, RunStateRunning, RunStateSucceeded}
+	return []RunState{RunStateFailed, RunStatePartiallySucceeded, RunStateRunning, RunStateSucceeded}
 }
 
 // RunSubState enumerates the values for run sub state.
@@ -120,13 +147,13 @@ type RunSubState string
 
 const (
 	// Building ...
-	Building RunSubState = "building"
+	Building RunSubState = "Building"
 	// Customizing ...
-	Customizing RunSubState = "customizing"
+	Customizing RunSubState = "Customizing"
 	// Distributing ...
-	Distributing RunSubState = "distributing"
+	Distributing RunSubState = "Distributing"
 	// Queued ...
-	Queued RunSubState = "queued"
+	Queued RunSubState = "Queued"
 )
 
 // PossibleRunSubStateValues returns an array of possible values for the RunSubState const type.
@@ -142,53 +169,65 @@ const (
 	TypeImageTemplateSource Type = "ImageTemplateSource"
 	// TypeISO ...
 	TypeISO Type = "ISO"
+	// TypeManagedImage ...
+	TypeManagedImage Type = "ManagedImage"
 	// TypePlatformImage ...
 	TypePlatformImage Type = "PlatformImage"
+	// TypeSharedImageVersion ...
+	TypeSharedImageVersion Type = "SharedImageVersion"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeImageTemplateSource, TypeISO, TypePlatformImage}
+	return []Type{TypeImageTemplateSource, TypeISO, TypeManagedImage, TypePlatformImage, TypeSharedImageVersion}
 }
 
 // TypeBasicImageTemplateCustomizer enumerates the values for type basic image template customizer.
 type TypeBasicImageTemplateCustomizer string
 
 const (
+	// TypeFile ...
+	TypeFile TypeBasicImageTemplateCustomizer = "File"
 	// TypeImageTemplateCustomizer ...
 	TypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = "ImageTemplateCustomizer"
+	// TypePowerShell ...
+	TypePowerShell TypeBasicImageTemplateCustomizer = "PowerShell"
 	// TypeShell ...
-	TypeShell TypeBasicImageTemplateCustomizer = "shell"
+	TypeShell TypeBasicImageTemplateCustomizer = "Shell"
+	// TypeWindowsRestart ...
+	TypeWindowsRestart TypeBasicImageTemplateCustomizer = "WindowsRestart"
 )
 
 // PossibleTypeBasicImageTemplateCustomizerValues returns an array of possible values for the TypeBasicImageTemplateCustomizer const type.
 func PossibleTypeBasicImageTemplateCustomizerValues() []TypeBasicImageTemplateCustomizer {
-	return []TypeBasicImageTemplateCustomizer{TypeImageTemplateCustomizer, TypeShell}
+	return []TypeBasicImageTemplateCustomizer{TypeFile, TypeImageTemplateCustomizer, TypePowerShell, TypeShell, TypeWindowsRestart}
 }
 
 // TypeBasicImageTemplateDistributor enumerates the values for type basic image template distributor.
 type TypeBasicImageTemplateDistributor string
 
 const (
-	// TypeImageTemplateDistributor ...
-	TypeImageTemplateDistributor TypeBasicImageTemplateDistributor = "ImageTemplateDistributor"
-	// TypeManagedImage ...
-	TypeManagedImage TypeBasicImageTemplateDistributor = "managedImage"
-	// TypeSharedImage ...
-	TypeSharedImage TypeBasicImageTemplateDistributor = "sharedImage"
+	// TypeBasicImageTemplateDistributorTypeImageTemplateDistributor ...
+	TypeBasicImageTemplateDistributorTypeImageTemplateDistributor TypeBasicImageTemplateDistributor = "ImageTemplateDistributor"
+	// TypeBasicImageTemplateDistributorTypeManagedImage ...
+	TypeBasicImageTemplateDistributorTypeManagedImage TypeBasicImageTemplateDistributor = "ManagedImage"
+	// TypeBasicImageTemplateDistributorTypeSharedImage ...
+	TypeBasicImageTemplateDistributorTypeSharedImage TypeBasicImageTemplateDistributor = "SharedImage"
+	// TypeBasicImageTemplateDistributorTypeVHD ...
+	TypeBasicImageTemplateDistributorTypeVHD TypeBasicImageTemplateDistributor = "VHD"
 )
 
 // PossibleTypeBasicImageTemplateDistributorValues returns an array of possible values for the TypeBasicImageTemplateDistributor const type.
 func PossibleTypeBasicImageTemplateDistributorValues() []TypeBasicImageTemplateDistributor {
-	return []TypeBasicImageTemplateDistributor{TypeImageTemplateDistributor, TypeManagedImage, TypeSharedImage}
+	return []TypeBasicImageTemplateDistributor{TypeBasicImageTemplateDistributorTypeImageTemplateDistributor, TypeBasicImageTemplateDistributorTypeManagedImage, TypeBasicImageTemplateDistributorTypeSharedImage, TypeBasicImageTemplateDistributorTypeVHD}
 }
 
 // APIError api error.
 type APIError struct {
 	// Details - The Api error details
 	Details *[]APIErrorBase `json:"details,omitempty"`
-	// Innererror - The Api inner error
-	Innererror *InnerError `json:"innererror,omitempty"`
+	// InnerError - The Api inner error
+	InnerError *InnerError `json:"innerError,omitempty"`
 	// Code - The error code.
 	Code *string `json:"code,omitempty"`
 	// Target - The target of the particular error.
@@ -211,6 +250,8 @@ type APIErrorBase struct {
 type ImageTemplate struct {
 	autorest.Response        `json:"-"`
 	*ImageTemplateProperties `json:"properties,omitempty"`
+	// Identity - The identity of the image template, if configured.
+	Identity *ImageTemplateIdentity `json:"identity,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -228,6 +269,9 @@ func (it ImageTemplate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if it.ImageTemplateProperties != nil {
 		objectMap["properties"] = it.ImageTemplateProperties
+	}
+	if it.Identity != nil {
+		objectMap["identity"] = it.Identity
 	}
 	if it.Location != nil {
 		objectMap["location"] = it.Location
@@ -255,6 +299,15 @@ func (it *ImageTemplate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				it.ImageTemplateProperties = &imageTemplateProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity ImageTemplateIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				it.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -310,6 +363,9 @@ func (it *ImageTemplate) UnmarshalJSON(body []byte) error {
 // BasicImageTemplateCustomizer ...
 type BasicImageTemplateCustomizer interface {
 	AsImageTemplateShellCustomizer() (*ImageTemplateShellCustomizer, bool)
+	AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool)
+	AsImageTemplatePowerShellCustomizer() (*ImageTemplatePowerShellCustomizer, bool)
+	AsImageTemplateFileCustomizer() (*ImageTemplateFileCustomizer, bool)
 	AsImageTemplateCustomizer() (*ImageTemplateCustomizer, bool)
 }
 
@@ -317,7 +373,7 @@ type BasicImageTemplateCustomizer interface {
 type ImageTemplateCustomizer struct {
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell'
+	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell', 'TypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
@@ -333,6 +389,18 @@ func unmarshalBasicImageTemplateCustomizer(body []byte) (BasicImageTemplateCusto
 		var itsc ImageTemplateShellCustomizer
 		err := json.Unmarshal(body, &itsc)
 		return itsc, err
+	case string(TypeWindowsRestart):
+		var itrc ImageTemplateRestartCustomizer
+		err := json.Unmarshal(body, &itrc)
+		return itrc, err
+	case string(TypePowerShell):
+		var itpsc ImageTemplatePowerShellCustomizer
+		err := json.Unmarshal(body, &itpsc)
+		return itpsc, err
+	case string(TypeFile):
+		var itfc ImageTemplateFileCustomizer
+		err := json.Unmarshal(body, &itfc)
+		return itfc, err
 	default:
 		var itc ImageTemplateCustomizer
 		err := json.Unmarshal(body, &itc)
@@ -376,6 +444,21 @@ func (itc ImageTemplateCustomizer) AsImageTemplateShellCustomizer() (*ImageTempl
 	return nil, false
 }
 
+// AsImageTemplateRestartCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateCustomizer.
+func (itc ImageTemplateCustomizer) AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplatePowerShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateCustomizer.
+func (itc ImageTemplateCustomizer) AsImageTemplatePowerShellCustomizer() (*ImageTemplatePowerShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateFileCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateCustomizer.
+func (itc ImageTemplateCustomizer) AsImageTemplateFileCustomizer() (*ImageTemplateFileCustomizer, bool) {
+	return nil, false
+}
+
 // AsImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateCustomizer.
 func (itc ImageTemplateCustomizer) AsImageTemplateCustomizer() (*ImageTemplateCustomizer, bool) {
 	return &itc, true
@@ -390,6 +473,7 @@ func (itc ImageTemplateCustomizer) AsBasicImageTemplateCustomizer() (BasicImageT
 type BasicImageTemplateDistributor interface {
 	AsImageTemplateManagedImageDistributor() (*ImageTemplateManagedImageDistributor, bool)
 	AsImageTemplateSharedImageDistributor() (*ImageTemplateSharedImageDistributor, bool)
+	AsImageTemplateVhdDistributor() (*ImageTemplateVhdDistributor, bool)
 	AsImageTemplateDistributor() (*ImageTemplateDistributor, bool)
 }
 
@@ -399,7 +483,7 @@ type ImageTemplateDistributor struct {
 	RunOutputName *string `json:"runOutputName,omitempty"`
 	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
 	ArtifactTags map[string]*string `json:"artifactTags"`
-	// Type - Possible values include: 'TypeImageTemplateDistributor', 'TypeManagedImage', 'TypeSharedImage'
+	// Type - Possible values include: 'TypeBasicImageTemplateDistributorTypeImageTemplateDistributor', 'TypeBasicImageTemplateDistributorTypeManagedImage', 'TypeBasicImageTemplateDistributorTypeSharedImage', 'TypeBasicImageTemplateDistributorTypeVHD'
 	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
 }
 
@@ -411,14 +495,18 @@ func unmarshalBasicImageTemplateDistributor(body []byte) (BasicImageTemplateDist
 	}
 
 	switch m["type"] {
-	case string(TypeManagedImage):
+	case string(TypeBasicImageTemplateDistributorTypeManagedImage):
 		var itmid ImageTemplateManagedImageDistributor
 		err := json.Unmarshal(body, &itmid)
 		return itmid, err
-	case string(TypeSharedImage):
+	case string(TypeBasicImageTemplateDistributorTypeSharedImage):
 		var itsid ImageTemplateSharedImageDistributor
 		err := json.Unmarshal(body, &itsid)
 		return itsid, err
+	case string(TypeBasicImageTemplateDistributorTypeVHD):
+		var itvd ImageTemplateVhdDistributor
+		err := json.Unmarshal(body, &itvd)
+		return itvd, err
 	default:
 		var itd ImageTemplateDistributor
 		err := json.Unmarshal(body, &itd)
@@ -446,7 +534,7 @@ func unmarshalBasicImageTemplateDistributorArray(body []byte) ([]BasicImageTempl
 
 // MarshalJSON is the custom marshaler for ImageTemplateDistributor.
 func (itd ImageTemplateDistributor) MarshalJSON() ([]byte, error) {
-	itd.Type = TypeImageTemplateDistributor
+	itd.Type = TypeBasicImageTemplateDistributorTypeImageTemplateDistributor
 	objectMap := make(map[string]interface{})
 	if itd.RunOutputName != nil {
 		objectMap["runOutputName"] = itd.RunOutputName
@@ -470,6 +558,11 @@ func (itd ImageTemplateDistributor) AsImageTemplateSharedImageDistributor() (*Im
 	return nil, false
 }
 
+// AsImageTemplateVhdDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateDistributor.
+func (itd ImageTemplateDistributor) AsImageTemplateVhdDistributor() (*ImageTemplateVhdDistributor, bool) {
+	return nil, false
+}
+
 // AsImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateDistributor.
 func (itd ImageTemplateDistributor) AsImageTemplateDistributor() (*ImageTemplateDistributor, bool) {
 	return &itd, true
@@ -480,14 +573,104 @@ func (itd ImageTemplateDistributor) AsBasicImageTemplateDistributor() (BasicImag
 	return &itd, true
 }
 
+// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file
+// provisioner
+type ImageTemplateFileCustomizer struct {
+	// SourceURI - The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc
+	SourceURI *string `json:"sourceUri,omitempty"`
+	// Destination - The absolute path to a file (with nested directory structures already created) where the file (from sourceUri) will be uploaded to in the VM
+	Destination *string `json:"destination,omitempty"`
+	// Name - Friendly Name to provide context on what this customization step does
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell', 'TypeFile'
+	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) MarshalJSON() ([]byte, error) {
+	itfc.Type = TypeFile
+	objectMap := make(map[string]interface{})
+	if itfc.SourceURI != nil {
+		objectMap["sourceUri"] = itfc.SourceURI
+	}
+	if itfc.Destination != nil {
+		objectMap["destination"] = itfc.Destination
+	}
+	if itfc.Name != nil {
+		objectMap["name"] = itfc.Name
+	}
+	if itfc.Type != "" {
+		objectMap["type"] = itfc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsImageTemplateShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) AsImageTemplateShellCustomizer() (*ImageTemplateShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateRestartCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplatePowerShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) AsImageTemplatePowerShellCustomizer() (*ImageTemplatePowerShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateFileCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) AsImageTemplateFileCustomizer() (*ImageTemplateFileCustomizer, bool) {
+	return &itfc, true
+}
+
+// AsImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) AsImageTemplateCustomizer() (*ImageTemplateCustomizer, bool) {
+	return nil, false
+}
+
+// AsBasicImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateFileCustomizer.
+func (itfc ImageTemplateFileCustomizer) AsBasicImageTemplateCustomizer() (BasicImageTemplateCustomizer, bool) {
+	return &itfc, true
+}
+
+// ImageTemplateIdentity identity for the image template.
+type ImageTemplateIdentity struct {
+	// Type - The type of identity used for the image template. The type 'None' will remove any identities from the image template. Possible values include: 'UserAssigned', 'None'
+	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the image template. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*ImageTemplateIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateIdentity.
+func (iti ImageTemplateIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iti.Type != "" {
+		objectMap["type"] = iti.Type
+	}
+	if iti.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = iti.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
+// ImageTemplateIdentityUserAssignedIdentitiesValue ...
+type ImageTemplateIdentityUserAssignedIdentitiesValue struct {
+	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
+}
+
 // ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports
 // Red Hat Enterprise Linux 7.2-7.5 ISO's.
 type ImageTemplateIsoSource struct {
-	// SourceURI - URL to get the ISO image. This URL has to be accessible to the resource provider at the time of the imageTemplate creation.
-	SourceURI *string `json:"sourceURI,omitempty"`
+	// SourceURI - URI to get the ISO image. This URI has to be accessible to the resource provider at the time of the image template creation.
+	SourceURI *string `json:"sourceUri,omitempty"`
 	// Sha256Checksum - SHA256 Checksum of the ISO image.
 	Sha256Checksum *string `json:"sha256Checksum,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage'
+	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage', 'TypeManagedImage', 'TypeSharedImageVersion'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -496,7 +679,7 @@ func (itis ImageTemplateIsoSource) MarshalJSON() ([]byte, error) {
 	itis.Type = TypeISO
 	objectMap := make(map[string]interface{})
 	if itis.SourceURI != nil {
-		objectMap["sourceURI"] = itis.SourceURI
+		objectMap["sourceUri"] = itis.SourceURI
 	}
 	if itis.Sha256Checksum != nil {
 		objectMap["sha256Checksum"] = itis.Sha256Checksum
@@ -517,6 +700,16 @@ func (itis ImageTemplateIsoSource) AsImageTemplatePlatformImageSource() (*ImageT
 	return nil, false
 }
 
+// AsImageTemplateManagedImageSource is the BasicImageTemplateSource implementation for ImageTemplateIsoSource.
+func (itis ImageTemplateIsoSource) AsImageTemplateManagedImageSource() (*ImageTemplateManagedImageSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateSharedImageVersionSource is the BasicImageTemplateSource implementation for ImageTemplateIsoSource.
+func (itis ImageTemplateIsoSource) AsImageTemplateSharedImageVersionSource() (*ImageTemplateSharedImageVersionSource, bool) {
+	return nil, false
+}
+
 // AsImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplateIsoSource.
 func (itis ImageTemplateIsoSource) AsImageTemplateSource() (*ImageTemplateSource, bool) {
 	return nil, false
@@ -533,9 +726,9 @@ type ImageTemplateLastRunStatus struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - End time of the last run (UTC)
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// RunState - State of the last run. Possible values include: 'RunStateReady', 'RunStateRunning', 'RunStateSucceeded', 'RunStatePartiallySucceeded', 'RunStateFailed'
+	// RunState - State of the last run. Possible values include: 'RunStateRunning', 'RunStateSucceeded', 'RunStatePartiallySucceeded', 'RunStateFailed'
 	RunState RunState `json:"runState,omitempty"`
-	// RunSubState - Sub state of the last run. Possible values include: 'Queued', 'Building', 'Customizing', 'Distributing'
+	// RunSubState - Sub-state of the last run. Possible values include: 'Queued', 'Building', 'Customizing', 'Distributing'
 	RunSubState RunSubState `json:"runSubState,omitempty"`
 	// Message - Verbose information about the last run state
 	Message *string `json:"message,omitempty"`
@@ -696,13 +889,13 @@ type ImageTemplateManagedImageDistributor struct {
 	RunOutputName *string `json:"runOutputName,omitempty"`
 	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
 	ArtifactTags map[string]*string `json:"artifactTags"`
-	// Type - Possible values include: 'TypeImageTemplateDistributor', 'TypeManagedImage', 'TypeSharedImage'
+	// Type - Possible values include: 'TypeBasicImageTemplateDistributorTypeImageTemplateDistributor', 'TypeBasicImageTemplateDistributorTypeManagedImage', 'TypeBasicImageTemplateDistributorTypeSharedImage', 'TypeBasicImageTemplateDistributorTypeVHD'
 	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplateManagedImageDistributor.
 func (itmid ImageTemplateManagedImageDistributor) MarshalJSON() ([]byte, error) {
-	itmid.Type = TypeManagedImage
+	itmid.Type = TypeBasicImageTemplateDistributorTypeManagedImage
 	objectMap := make(map[string]interface{})
 	if itmid.ImageID != nil {
 		objectMap["imageId"] = itmid.ImageID
@@ -732,6 +925,11 @@ func (itmid ImageTemplateManagedImageDistributor) AsImageTemplateSharedImageDist
 	return nil, false
 }
 
+// AsImageTemplateVhdDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateManagedImageDistributor.
+func (itmid ImageTemplateManagedImageDistributor) AsImageTemplateVhdDistributor() (*ImageTemplateVhdDistributor, bool) {
+	return nil, false
+}
+
 // AsImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateManagedImageDistributor.
 func (itmid ImageTemplateManagedImageDistributor) AsImageTemplateDistributor() (*ImageTemplateDistributor, bool) {
 	return nil, false
@@ -740,6 +938,58 @@ func (itmid ImageTemplateManagedImageDistributor) AsImageTemplateDistributor() (
 // AsBasicImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateManagedImageDistributor.
 func (itmid ImageTemplateManagedImageDistributor) AsBasicImageTemplateDistributor() (BasicImageTemplateDistributor, bool) {
 	return &itmid, true
+}
+
+// ImageTemplateManagedImageSource describes an image source that is a managed image in customer
+// subscription.
+type ImageTemplateManagedImageSource struct {
+	// ImageID - ARM resource id of the managed image in customer subscription
+	ImageID *string `json:"imageId,omitempty"`
+	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage', 'TypeManagedImage', 'TypeSharedImageVersion'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) MarshalJSON() ([]byte, error) {
+	itmis.Type = TypeManagedImage
+	objectMap := make(map[string]interface{})
+	if itmis.ImageID != nil {
+		objectMap["imageId"] = itmis.ImageID
+	}
+	if itmis.Type != "" {
+		objectMap["type"] = itmis.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsImageTemplateIsoSource is the BasicImageTemplateSource implementation for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) AsImageTemplateIsoSource() (*ImageTemplateIsoSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplatePlatformImageSource is the BasicImageTemplateSource implementation for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) AsImageTemplatePlatformImageSource() (*ImageTemplatePlatformImageSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateManagedImageSource is the BasicImageTemplateSource implementation for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) AsImageTemplateManagedImageSource() (*ImageTemplateManagedImageSource, bool) {
+	return &itmis, true
+}
+
+// AsImageTemplateSharedImageVersionSource is the BasicImageTemplateSource implementation for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) AsImageTemplateSharedImageVersionSource() (*ImageTemplateSharedImageVersionSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) AsImageTemplateSource() (*ImageTemplateSource, bool) {
+	return nil, false
+}
+
+// AsBasicImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplateManagedImageSource.
+func (itmis ImageTemplateManagedImageSource) AsBasicImageTemplateSource() (BasicImageTemplateSource, bool) {
+	return &itmis, true
 }
 
 // ImageTemplatePlatformImageSource describes an image source from [Azure Gallery
@@ -753,7 +1003,7 @@ type ImageTemplatePlatformImageSource struct {
 	Sku *string `json:"sku,omitempty"`
 	// Version - Image version from the [Azure Gallery Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
 	Version *string `json:"version,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage'
+	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage', 'TypeManagedImage', 'TypeSharedImageVersion'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -789,6 +1039,16 @@ func (itpis ImageTemplatePlatformImageSource) AsImageTemplatePlatformImageSource
 	return &itpis, true
 }
 
+// AsImageTemplateManagedImageSource is the BasicImageTemplateSource implementation for ImageTemplatePlatformImageSource.
+func (itpis ImageTemplatePlatformImageSource) AsImageTemplateManagedImageSource() (*ImageTemplateManagedImageSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateSharedImageVersionSource is the BasicImageTemplateSource implementation for ImageTemplatePlatformImageSource.
+func (itpis ImageTemplatePlatformImageSource) AsImageTemplateSharedImageVersionSource() (*ImageTemplateSharedImageVersionSource, bool) {
+	return nil, false
+}
+
 // AsImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplatePlatformImageSource.
 func (itpis ImageTemplatePlatformImageSource) AsImageTemplateSource() (*ImageTemplateSource, bool) {
 	return nil, false
@@ -799,6 +1059,73 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 	return &itpis, true
 }
 
+// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
+// Packer powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
+type ImageTemplatePowerShellCustomizer struct {
+	// ScriptURI - URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
+	ScriptURI *string `json:"scriptUri,omitempty"`
+	// Inline - Array of PowerShell commands to execute
+	Inline *[]string `json:"inline,omitempty"`
+	// ValidExitCodes - Valid exit codes for the PowerShell script. [Default: 0]
+	ValidExitCodes *[]int32 `json:"validExitCodes,omitempty"`
+	// Name - Friendly Name to provide context on what this customization step does
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell', 'TypeFile'
+	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
+	itpsc.Type = TypePowerShell
+	objectMap := make(map[string]interface{})
+	if itpsc.ScriptURI != nil {
+		objectMap["scriptUri"] = itpsc.ScriptURI
+	}
+	if itpsc.Inline != nil {
+		objectMap["inline"] = itpsc.Inline
+	}
+	if itpsc.ValidExitCodes != nil {
+		objectMap["validExitCodes"] = itpsc.ValidExitCodes
+	}
+	if itpsc.Name != nil {
+		objectMap["name"] = itpsc.Name
+	}
+	if itpsc.Type != "" {
+		objectMap["type"] = itpsc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsImageTemplateShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) AsImageTemplateShellCustomizer() (*ImageTemplateShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateRestartCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplatePowerShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) AsImageTemplatePowerShellCustomizer() (*ImageTemplatePowerShellCustomizer, bool) {
+	return &itpsc, true
+}
+
+// AsImageTemplateFileCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) AsImageTemplateFileCustomizer() (*ImageTemplateFileCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) AsImageTemplateCustomizer() (*ImageTemplateCustomizer, bool) {
+	return nil, false
+}
+
+// AsBasicImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplatePowerShellCustomizer.
+func (itpsc ImageTemplatePowerShellCustomizer) AsBasicImageTemplateCustomizer() (BasicImageTemplateCustomizer, bool) {
+	return &itpsc, true
+}
+
 // ImageTemplateProperties ...
 type ImageTemplateProperties struct {
 	// Source - Specifies the properties used to describe the source image.
@@ -807,12 +1134,14 @@ type ImageTemplateProperties struct {
 	Customize *[]BasicImageTemplateCustomizer `json:"customize,omitempty"`
 	// Distribute - The distribution targets where the image output needs to go to.
 	Distribute *[]BasicImageTemplateDistributor `json:"distribute,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Succeeded', 'Failed', 'Deleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningError - READ-ONLY; Provisioning error, if any
 	ProvisioningError *ProvisioningError `json:"provisioningError,omitempty"`
 	// LastRunStatus - READ-ONLY; State of 'run' that is currently executing or was last executed.
 	LastRunStatus *ImageTemplateLastRunStatus `json:"lastRunStatus,omitempty"`
+	// BuildTimeoutInMinutes - Maximum duration to wait while building the image template. Omit or specify 0 to use the default (60 minutes).
+	BuildTimeoutInMinutes *int32 `json:"buildTimeoutInMinutes,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for ImageTemplateProperties struct.
@@ -875,10 +1204,86 @@ func (itp *ImageTemplateProperties) UnmarshalJSON(body []byte) error {
 				}
 				itp.LastRunStatus = &lastRunStatus
 			}
+		case "buildTimeoutInMinutes":
+			if v != nil {
+				var buildTimeoutInMinutes int32
+				err = json.Unmarshal(*v, &buildTimeoutInMinutes)
+				if err != nil {
+					return err
+				}
+				itp.BuildTimeoutInMinutes = &buildTimeoutInMinutes
+			}
 		}
 	}
 
 	return nil
+}
+
+// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds
+// to Packer windows-restart provisioner
+type ImageTemplateRestartCustomizer struct {
+	// RestartCommand - Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
+	RestartCommand *string `json:"restartCommand,omitempty"`
+	// RestartCheckCommand - Command to check if restart succeeded [Default: '']
+	RestartCheckCommand *string `json:"restartCheckCommand,omitempty"`
+	// RestartTimeout - Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default: '5m']
+	RestartTimeout *string `json:"restartTimeout,omitempty"`
+	// Name - Friendly Name to provide context on what this customization step does
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell', 'TypeFile'
+	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) MarshalJSON() ([]byte, error) {
+	itrc.Type = TypeWindowsRestart
+	objectMap := make(map[string]interface{})
+	if itrc.RestartCommand != nil {
+		objectMap["restartCommand"] = itrc.RestartCommand
+	}
+	if itrc.RestartCheckCommand != nil {
+		objectMap["restartCheckCommand"] = itrc.RestartCheckCommand
+	}
+	if itrc.RestartTimeout != nil {
+		objectMap["restartTimeout"] = itrc.RestartTimeout
+	}
+	if itrc.Name != nil {
+		objectMap["name"] = itrc.Name
+	}
+	if itrc.Type != "" {
+		objectMap["type"] = itrc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsImageTemplateShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) AsImageTemplateShellCustomizer() (*ImageTemplateShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateRestartCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool) {
+	return &itrc, true
+}
+
+// AsImageTemplatePowerShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) AsImageTemplatePowerShellCustomizer() (*ImageTemplatePowerShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateFileCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) AsImageTemplateFileCustomizer() (*ImageTemplateFileCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) AsImageTemplateCustomizer() (*ImageTemplateCustomizer, bool) {
+	return nil, false
+}
+
+// AsBasicImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateRestartCustomizer.
+func (itrc ImageTemplateRestartCustomizer) AsBasicImageTemplateCustomizer() (BasicImageTemplateCustomizer, bool) {
+	return &itrc, true
 }
 
 // ImageTemplateSharedImageDistributor distribute via Shared Image Gallery.
@@ -890,13 +1295,13 @@ type ImageTemplateSharedImageDistributor struct {
 	RunOutputName *string `json:"runOutputName,omitempty"`
 	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
 	ArtifactTags map[string]*string `json:"artifactTags"`
-	// Type - Possible values include: 'TypeImageTemplateDistributor', 'TypeManagedImage', 'TypeSharedImage'
+	// Type - Possible values include: 'TypeBasicImageTemplateDistributorTypeImageTemplateDistributor', 'TypeBasicImageTemplateDistributorTypeManagedImage', 'TypeBasicImageTemplateDistributorTypeSharedImage', 'TypeBasicImageTemplateDistributorTypeVHD'
 	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplateSharedImageDistributor.
 func (itsid ImageTemplateSharedImageDistributor) MarshalJSON() ([]byte, error) {
-	itsid.Type = TypeSharedImage
+	itsid.Type = TypeBasicImageTemplateDistributorTypeSharedImage
 	objectMap := make(map[string]interface{})
 	if itsid.GalleryImageID != nil {
 		objectMap["galleryImageId"] = itsid.GalleryImageID
@@ -926,6 +1331,11 @@ func (itsid ImageTemplateSharedImageDistributor) AsImageTemplateSharedImageDistr
 	return &itsid, true
 }
 
+// AsImageTemplateVhdDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateSharedImageDistributor.
+func (itsid ImageTemplateSharedImageDistributor) AsImageTemplateVhdDistributor() (*ImageTemplateVhdDistributor, bool) {
+	return nil, false
+}
+
 // AsImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateSharedImageDistributor.
 func (itsid ImageTemplateSharedImageDistributor) AsImageTemplateDistributor() (*ImageTemplateDistributor, bool) {
 	return nil, false
@@ -936,13 +1346,68 @@ func (itsid ImageTemplateSharedImageDistributor) AsBasicImageTemplateDistributor
 	return &itsid, true
 }
 
-// ImageTemplateShellCustomizer runs a shell script during the customization phase
+// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared
+// image gallery.
+type ImageTemplateSharedImageVersionSource struct {
+	// ImageVersionID - ARM resource id of the image version in the shared image gallery
+	ImageVersionID *string `json:"imageVersionId,omitempty"`
+	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage', 'TypeManagedImage', 'TypeSharedImageVersion'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) MarshalJSON() ([]byte, error) {
+	itsivs.Type = TypeSharedImageVersion
+	objectMap := make(map[string]interface{})
+	if itsivs.ImageVersionID != nil {
+		objectMap["imageVersionId"] = itsivs.ImageVersionID
+	}
+	if itsivs.Type != "" {
+		objectMap["type"] = itsivs.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsImageTemplateIsoSource is the BasicImageTemplateSource implementation for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) AsImageTemplateIsoSource() (*ImageTemplateIsoSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplatePlatformImageSource is the BasicImageTemplateSource implementation for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) AsImageTemplatePlatformImageSource() (*ImageTemplatePlatformImageSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateManagedImageSource is the BasicImageTemplateSource implementation for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) AsImageTemplateManagedImageSource() (*ImageTemplateManagedImageSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateSharedImageVersionSource is the BasicImageTemplateSource implementation for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) AsImageTemplateSharedImageVersionSource() (*ImageTemplateSharedImageVersionSource, bool) {
+	return &itsivs, true
+}
+
+// AsImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) AsImageTemplateSource() (*ImageTemplateSource, bool) {
+	return nil, false
+}
+
+// AsBasicImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplateSharedImageVersionSource.
+func (itsivs ImageTemplateSharedImageVersionSource) AsBasicImageTemplateSource() (BasicImageTemplateSource, bool) {
+	return &itsivs, true
+}
+
+// ImageTemplateShellCustomizer runs a shell script during the customization phase (Linux). Corresponds to
+// Packer shell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplateShellCustomizer struct {
-	// Script - The shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
-	Script *string `json:"script,omitempty"`
+	// ScriptURI - URI of the shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
+	ScriptURI *string `json:"scriptUri,omitempty"`
+	// Inline - Array of shell commands to execute
+	Inline *[]string `json:"inline,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell'
+	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell', 'TypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
@@ -950,8 +1415,11 @@ type ImageTemplateShellCustomizer struct {
 func (itsc ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
 	itsc.Type = TypeShell
 	objectMap := make(map[string]interface{})
-	if itsc.Script != nil {
-		objectMap["script"] = itsc.Script
+	if itsc.ScriptURI != nil {
+		objectMap["scriptUri"] = itsc.ScriptURI
+	}
+	if itsc.Inline != nil {
+		objectMap["inline"] = itsc.Inline
 	}
 	if itsc.Name != nil {
 		objectMap["name"] = itsc.Name
@@ -965,6 +1433,21 @@ func (itsc ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
 // AsImageTemplateShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateShellCustomizer.
 func (itsc ImageTemplateShellCustomizer) AsImageTemplateShellCustomizer() (*ImageTemplateShellCustomizer, bool) {
 	return &itsc, true
+}
+
+// AsImageTemplateRestartCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateShellCustomizer.
+func (itsc ImageTemplateShellCustomizer) AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplatePowerShellCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateShellCustomizer.
+func (itsc ImageTemplateShellCustomizer) AsImageTemplatePowerShellCustomizer() (*ImageTemplatePowerShellCustomizer, bool) {
+	return nil, false
+}
+
+// AsImageTemplateFileCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateShellCustomizer.
+func (itsc ImageTemplateShellCustomizer) AsImageTemplateFileCustomizer() (*ImageTemplateFileCustomizer, bool) {
+	return nil, false
 }
 
 // AsImageTemplateCustomizer is the BasicImageTemplateCustomizer implementation for ImageTemplateShellCustomizer.
@@ -981,12 +1464,14 @@ func (itsc ImageTemplateShellCustomizer) AsBasicImageTemplateCustomizer() (Basic
 type BasicImageTemplateSource interface {
 	AsImageTemplateIsoSource() (*ImageTemplateIsoSource, bool)
 	AsImageTemplatePlatformImageSource() (*ImageTemplatePlatformImageSource, bool)
+	AsImageTemplateManagedImageSource() (*ImageTemplateManagedImageSource, bool)
+	AsImageTemplateSharedImageVersionSource() (*ImageTemplateSharedImageVersionSource, bool)
 	AsImageTemplateSource() (*ImageTemplateSource, bool)
 }
 
 // ImageTemplateSource ...
 type ImageTemplateSource struct {
-	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage'
+	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage', 'TypeManagedImage', 'TypeSharedImageVersion'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -1006,6 +1491,14 @@ func unmarshalBasicImageTemplateSource(body []byte) (BasicImageTemplateSource, e
 		var itpis ImageTemplatePlatformImageSource
 		err := json.Unmarshal(body, &itpis)
 		return itpis, err
+	case string(TypeManagedImage):
+		var itmis ImageTemplateManagedImageSource
+		err := json.Unmarshal(body, &itmis)
+		return itmis, err
+	case string(TypeSharedImageVersion):
+		var itsivs ImageTemplateSharedImageVersionSource
+		err := json.Unmarshal(body, &itsivs)
+		return itsivs, err
 	default:
 		var its ImageTemplateSource
 		err := json.Unmarshal(body, &its)
@@ -1051,6 +1544,16 @@ func (its ImageTemplateSource) AsImageTemplatePlatformImageSource() (*ImageTempl
 	return nil, false
 }
 
+// AsImageTemplateManagedImageSource is the BasicImageTemplateSource implementation for ImageTemplateSource.
+func (its ImageTemplateSource) AsImageTemplateManagedImageSource() (*ImageTemplateManagedImageSource, bool) {
+	return nil, false
+}
+
+// AsImageTemplateSharedImageVersionSource is the BasicImageTemplateSource implementation for ImageTemplateSource.
+func (its ImageTemplateSource) AsImageTemplateSharedImageVersionSource() (*ImageTemplateSharedImageVersionSource, bool) {
+	return nil, false
+}
+
 // AsImageTemplateSource is the BasicImageTemplateSource implementation for ImageTemplateSource.
 func (its ImageTemplateSource) AsImageTemplateSource() (*ImageTemplateSource, bool) {
 	return &its, true
@@ -1063,6 +1566,8 @@ func (its ImageTemplateSource) AsBasicImageTemplateSource() (BasicImageTemplateS
 
 // ImageTemplateUpdateParameters parameters for updating an image template.
 type ImageTemplateUpdateParameters struct {
+	// Identity - The identity of the image template, if configured.
+	Identity *ImageTemplateIdentity `json:"identity,omitempty"`
 	// Tags - The user-specified tags associated with the image template.
 	Tags map[string]*string `json:"tags"`
 }
@@ -1070,18 +1575,72 @@ type ImageTemplateUpdateParameters struct {
 // MarshalJSON is the custom marshaler for ImageTemplateUpdateParameters.
 func (itup ImageTemplateUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if itup.Identity != nil {
+		objectMap["identity"] = itup.Identity
+	}
 	if itup.Tags != nil {
 		objectMap["tags"] = itup.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
+// ImageTemplateVhdDistributor distribute via VHD in a storage account.
+type ImageTemplateVhdDistributor struct {
+	// RunOutputName - The name to be used for the associated RunOutput.
+	RunOutputName *string `json:"runOutputName,omitempty"`
+	// ArtifactTags - Tags that will be applied to the artifact once it has been created/updated by the distributor.
+	ArtifactTags map[string]*string `json:"artifactTags"`
+	// Type - Possible values include: 'TypeBasicImageTemplateDistributorTypeImageTemplateDistributor', 'TypeBasicImageTemplateDistributorTypeManagedImage', 'TypeBasicImageTemplateDistributorTypeSharedImage', 'TypeBasicImageTemplateDistributorTypeVHD'
+	Type TypeBasicImageTemplateDistributor `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateVhdDistributor.
+func (itvd ImageTemplateVhdDistributor) MarshalJSON() ([]byte, error) {
+	itvd.Type = TypeBasicImageTemplateDistributorTypeVHD
+	objectMap := make(map[string]interface{})
+	if itvd.RunOutputName != nil {
+		objectMap["runOutputName"] = itvd.RunOutputName
+	}
+	if itvd.ArtifactTags != nil {
+		objectMap["artifactTags"] = itvd.ArtifactTags
+	}
+	if itvd.Type != "" {
+		objectMap["type"] = itvd.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsImageTemplateManagedImageDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateVhdDistributor.
+func (itvd ImageTemplateVhdDistributor) AsImageTemplateManagedImageDistributor() (*ImageTemplateManagedImageDistributor, bool) {
+	return nil, false
+}
+
+// AsImageTemplateSharedImageDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateVhdDistributor.
+func (itvd ImageTemplateVhdDistributor) AsImageTemplateSharedImageDistributor() (*ImageTemplateSharedImageDistributor, bool) {
+	return nil, false
+}
+
+// AsImageTemplateVhdDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateVhdDistributor.
+func (itvd ImageTemplateVhdDistributor) AsImageTemplateVhdDistributor() (*ImageTemplateVhdDistributor, bool) {
+	return &itvd, true
+}
+
+// AsImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateVhdDistributor.
+func (itvd ImageTemplateVhdDistributor) AsImageTemplateDistributor() (*ImageTemplateDistributor, bool) {
+	return nil, false
+}
+
+// AsBasicImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateVhdDistributor.
+func (itvd ImageTemplateVhdDistributor) AsBasicImageTemplateDistributor() (BasicImageTemplateDistributor, bool) {
+	return &itvd, true
+}
+
 // InnerError inner error details.
 type InnerError struct {
-	// Exceptiontype - The exception type.
-	Exceptiontype *string `json:"exceptiontype,omitempty"`
-	// Errordetail - The internal error message or exception dump.
-	Errordetail *string `json:"errordetail,omitempty"`
+	// ExceptionType - The exception type.
+	ExceptionType *string `json:"exceptionType,omitempty"`
+	// ErrorDetail - The internal error message or exception dump.
+	ErrorDetail *string `json:"errorDetail,omitempty"`
 }
 
 // Operation ...
@@ -1248,7 +1807,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // ProvisioningError ...
 type ProvisioningError struct {
-	// ProvisioningErrorCode - Error code of the provisioning failure. Possible values include: 'BadSourceType', 'BadPIRSource', 'BadISOSource', 'BadCustomizerType', 'NoCustomizerShellScript', 'ServerError', 'Other'
+	// ProvisioningErrorCode - Error code of the provisioning failure. Possible values include: 'BadSourceType', 'BadPIRSource', 'BadISOSource', 'BadManagedImageSource', 'BadSharedImageVersionSource', 'BadCustomizerType', 'UnsupportedCustomizerType', 'NoCustomizerScript', 'BadDistributeType', 'BadSharedImageDistribute', 'ServerError', 'Other'
 	ProvisioningErrorCode ProvisioningErrorCode `json:"provisioningErrorCode,omitempty"`
 	// Message - Verbose error message about the provisioning failure
 	Message *string `json:"message,omitempty"`
@@ -1504,7 +2063,9 @@ func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputColle
 type RunOutputProperties struct {
 	// ArtifactID - The resource id of the artifact.
 	ArtifactID *string `json:"artifactId,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
+	// ArtifactURI - The location URI of the artifact.
+	ArtifactURI *string `json:"artifactUri,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
 	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 }
 
@@ -1518,77 +2079,106 @@ type SubResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualMachineImageTemplateCreateOrUpdateFuture struct {
+// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplateCreateOrUpdateFuture) Result(client VirtualMachineImageTemplateClient) (it ImageTemplate, err error) {
+func (future *VirtualMachineImageTemplatesCreateOrUpdateFuture) Result(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
 		it, err = client.CreateOrUpdateResponder(it.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// VirtualMachineImageTemplateDeleteFuture an abstraction for monitoring and retrieving the results of a
+// VirtualMachineImageTemplatesDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type VirtualMachineImageTemplateDeleteFuture struct {
+type VirtualMachineImageTemplatesDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplateDeleteFuture) Result(client VirtualMachineImageTemplateClient) (ar autorest.Response, err error) {
+func (future *VirtualMachineImageTemplatesDeleteFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// VirtualMachineImageTemplateRunFuture an abstraction for monitoring and retrieving the results of a
+// VirtualMachineImageTemplatesRunFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type VirtualMachineImageTemplateRunFuture struct {
+type VirtualMachineImageTemplatesRunFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineImageTemplateRunFuture) Result(client VirtualMachineImageTemplateClient) (ar autorest.Response, err error) {
+func (future *VirtualMachineImageTemplatesRunFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture")
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture")
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineImageTemplatesUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineImageTemplatesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineImageTemplatesUpdateFuture) Result(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplatesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
+		it, err = client.UpdateResponder(it.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }

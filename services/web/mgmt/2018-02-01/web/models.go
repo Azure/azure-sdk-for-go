@@ -23473,7 +23473,7 @@ type VnetInfoProperties struct {
 	CertThumbprint *string `json:"certThumbprint,omitempty"`
 	// CertBlob - A certificate file (.cer) blob containing the public key of the private key used to authenticate a
 	// Point-To-Site VPN connection.
-	CertBlob *[]byte `json:"certBlob,omitempty"`
+	CertBlob *string `json:"certBlob,omitempty"`
 	// Routes - The routes that this Virtual Network connection uses.
 	Routes *[]VnetRoute `json:"routes,omitempty"`
 	// ResyncRequired - <code>true</code> if a resync is required; otherwise, <code>false</code>.

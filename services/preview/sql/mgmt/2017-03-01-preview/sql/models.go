@@ -610,21 +610,34 @@ func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
 	return []ManagedDatabaseStatus{Creating, Inaccessible, Offline, Online, Shutdown, Updating}
 }
 
-// ManagedInstanceProxyOverride enumerates the values for managed instance proxy override.
-type ManagedInstanceProxyOverride string
+// ManagedInstanceLicenseType enumerates the values for managed instance license type.
+type ManagedInstanceLicenseType string
 
 const (
-	// ManagedInstanceProxyOverrideDefault ...
-	ManagedInstanceProxyOverrideDefault ManagedInstanceProxyOverride = "Default"
-	// ManagedInstanceProxyOverrideProxy ...
-	ManagedInstanceProxyOverrideProxy ManagedInstanceProxyOverride = "Proxy"
-	// ManagedInstanceProxyOverrideRedirect ...
-	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = "Redirect"
+	// BasePrice ...
+	BasePrice ManagedInstanceLicenseType = "BasePrice"
+	// LicenseIncluded ...
+	LicenseIncluded ManagedInstanceLicenseType = "LicenseIncluded"
 )
 
-// PossibleManagedInstanceProxyOverrideValues returns an array of possible values for the ManagedInstanceProxyOverride const type.
-func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
-	return []ManagedInstanceProxyOverride{ManagedInstanceProxyOverrideDefault, ManagedInstanceProxyOverrideProxy, ManagedInstanceProxyOverrideRedirect}
+// PossibleManagedInstanceLicenseTypeValues returns an array of possible values for the ManagedInstanceLicenseType const type.
+func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
+	return []ManagedInstanceLicenseType{BasePrice, LicenseIncluded}
+}
+
+// ManagedServerCreateMode enumerates the values for managed server create mode.
+type ManagedServerCreateMode string
+
+const (
+	// ManagedServerCreateModeDefault ...
+	ManagedServerCreateModeDefault ManagedServerCreateMode = "Default"
+	// ManagedServerCreateModePointInTimeRestore ...
+	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = "PointInTimeRestore"
+)
+
+// PossibleManagedServerCreateModeValues returns an array of possible values for the ManagedServerCreateMode const type.
+func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
+	return []ManagedServerCreateMode{ManagedServerCreateModeDefault, ManagedServerCreateModePointInTimeRestore}
 }
 
 // ManagementOperationState enumerates the values for management operation state.
@@ -1442,11 +1455,11 @@ func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAs
 type AutomaticTuningOptions struct {
 	// DesiredState - Automatic tuning option desired state. Possible values include: 'AutomaticTuningOptionModeDesiredOff', 'AutomaticTuningOptionModeDesiredOn', 'AutomaticTuningOptionModeDesiredDefault'
 	DesiredState AutomaticTuningOptionModeDesired `json:"desiredState,omitempty"`
-	// ActualState - Automatic tuning option actual state. Possible values include: 'Off', 'On'
+	// ActualState - READ-ONLY; Automatic tuning option actual state. Possible values include: 'Off', 'On'
 	ActualState AutomaticTuningOptionModeActual `json:"actualState,omitempty"`
-	// ReasonCode - Reason code if desired and actual state are different.
+	// ReasonCode - READ-ONLY; Reason code if desired and actual state are different.
 	ReasonCode *int32 `json:"reasonCode,omitempty"`
-	// ReasonDesc - Reason description if desired and actual state are different. Possible values include: 'Default', 'Disabled', 'AutoConfigured', 'InheritedFromServer', 'QueryStoreOff', 'QueryStoreReadOnly', 'NotSupported'
+	// ReasonDesc - READ-ONLY; Reason description if desired and actual state are different. Possible values include: 'Default', 'Disabled', 'AutoConfigured', 'InheritedFromServer', 'QueryStoreOff', 'QueryStoreReadOnly', 'NotSupported'
 	ReasonDesc AutomaticTuningDisabledReason `json:"reasonDesc,omitempty"`
 }
 
@@ -1454,11 +1467,11 @@ type AutomaticTuningOptions struct {
 type AutomaticTuningServerOptions struct {
 	// DesiredState - Automatic tuning option desired state. Possible values include: 'AutomaticTuningOptionModeDesiredOff', 'AutomaticTuningOptionModeDesiredOn', 'AutomaticTuningOptionModeDesiredDefault'
 	DesiredState AutomaticTuningOptionModeDesired `json:"desiredState,omitempty"`
-	// ActualState - Automatic tuning option actual state. Possible values include: 'Off', 'On'
+	// ActualState - READ-ONLY; Automatic tuning option actual state. Possible values include: 'Off', 'On'
 	ActualState AutomaticTuningOptionModeActual `json:"actualState,omitempty"`
-	// ReasonCode - Reason code if desired and actual state are different.
+	// ReasonCode - READ-ONLY; Reason code if desired and actual state are different.
 	ReasonCode *int32 `json:"reasonCode,omitempty"`
-	// ReasonDesc - Reason description if desired and actual state are different. Possible values include: 'AutomaticTuningServerReasonDefault', 'AutomaticTuningServerReasonDisabled', 'AutomaticTuningServerReasonAutoConfigured'
+	// ReasonDesc - READ-ONLY; Reason description if desired and actual state are different. Possible values include: 'AutomaticTuningServerReasonDefault', 'AutomaticTuningServerReasonDisabled', 'AutomaticTuningServerReasonAutoConfigured'
 	ReasonDesc AutomaticTuningServerReason `json:"reasonDesc,omitempty"`
 }
 
@@ -1466,7 +1479,7 @@ type AutomaticTuningServerOptions struct {
 type AutomaticTuningServerProperties struct {
 	// DesiredState - Automatic tuning desired state. Possible values include: 'AutomaticTuningServerModeCustom', 'AutomaticTuningServerModeAuto', 'AutomaticTuningServerModeUnspecified'
 	DesiredState AutomaticTuningServerMode `json:"desiredState,omitempty"`
-	// ActualState - Automatic tuning actual state. Possible values include: 'AutomaticTuningServerModeCustom', 'AutomaticTuningServerModeAuto', 'AutomaticTuningServerModeUnspecified'
+	// ActualState - READ-ONLY; Automatic tuning actual state. Possible values include: 'AutomaticTuningServerModeCustom', 'AutomaticTuningServerModeAuto', 'AutomaticTuningServerModeUnspecified'
 	ActualState AutomaticTuningServerMode `json:"actualState,omitempty"`
 	// Options - Automatic tuning options definition.
 	Options map[string]*AutomaticTuningServerOptions `json:"options"`
@@ -1477,9 +1490,6 @@ func (atsp AutomaticTuningServerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if atsp.DesiredState != "" {
 		objectMap["desiredState"] = atsp.DesiredState
-	}
-	if atsp.ActualState != "" {
-		objectMap["actualState"] = atsp.ActualState
 	}
 	if atsp.Options != nil {
 		objectMap["options"] = atsp.Options
@@ -1497,7 +1507,7 @@ type BackupLongTermRetentionPoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupLongTermRetentionPoliciesCreateOrUpdateFuture) Result(client BackupLongTermRetentionPoliciesClient) (bltrp BackupLongTermRetentionPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1519,35 +1529,23 @@ func (future *BackupLongTermRetentionPoliciesCreateOrUpdateFuture) Result(client
 // BackupLongTermRetentionPolicy a backup long term retention policy
 type BackupLongTermRetentionPolicy struct {
 	autorest.Response `json:"-"`
-	// Location - The geo-location where the resource lives
+	// Location - READ-ONLY; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 	// BackupLongTermRetentionPolicyProperties - The properties of the backup long term retention policy
 	*BackupLongTermRetentionPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BackupLongTermRetentionPolicy.
 func (bltrp BackupLongTermRetentionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if bltrp.Location != nil {
-		objectMap["location"] = bltrp.Location
-	}
 	if bltrp.BackupLongTermRetentionPolicyProperties != nil {
 		objectMap["properties"] = bltrp.BackupLongTermRetentionPolicyProperties
-	}
-	if bltrp.ID != nil {
-		objectMap["id"] = bltrp.ID
-	}
-	if bltrp.Name != nil {
-		objectMap["name"] = bltrp.Name
-	}
-	if bltrp.Type != nil {
-		objectMap["type"] = bltrp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1631,35 +1629,23 @@ type BackupLongTermRetentionPolicyProperties struct {
 // BackupLongTermRetentionVault a backup long term retention vault
 type BackupLongTermRetentionVault struct {
 	autorest.Response `json:"-"`
-	// Location - The geo-location where the resource lives
+	// Location - READ-ONLY; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 	// BackupLongTermRetentionVaultProperties - The properties of the backup long term retention vault
 	*BackupLongTermRetentionVaultProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BackupLongTermRetentionVault.
 func (bltrv BackupLongTermRetentionVault) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if bltrv.Location != nil {
-		objectMap["location"] = bltrv.Location
-	}
 	if bltrv.BackupLongTermRetentionVaultProperties != nil {
 		objectMap["properties"] = bltrv.BackupLongTermRetentionVaultProperties
-	}
-	if bltrv.ID != nil {
-		objectMap["id"] = bltrv.ID
-	}
-	if bltrv.Name != nil {
-		objectMap["name"] = bltrv.Name
-	}
-	if bltrv.Type != nil {
-		objectMap["type"] = bltrv.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1747,7 +1733,7 @@ type BackupLongTermRetentionVaultsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupLongTermRetentionVaultsCreateOrUpdateFuture) Result(client BackupLongTermRetentionVaultsClient) (bltrv BackupLongTermRetentionVault, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1778,13 +1764,13 @@ type CheckNameAvailabilityRequest struct {
 // available.
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
-	// Available - True if the name is available, otherwise false.
+	// Available - READ-ONLY; True if the name is available, otherwise false.
 	Available *bool `json:"available,omitempty"`
-	// Message - A message explaining why the name is unavailable. Will be null if the name is available.
+	// Message - READ-ONLY; A message explaining why the name is unavailable. Will be null if the name is available.
 	Message *string `json:"message,omitempty"`
-	// Name - The name whose availability was checked.
+	// Name - READ-ONLY; The name whose availability was checked.
 	Name *string `json:"name,omitempty"`
-	// Reason - The reason code explaining why the name is unavailable. Will be null if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; The reason code explaining why the name is unavailable. Will be null if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
 }
 
@@ -1805,7 +1791,7 @@ type CreateDatabaseRestorePointDefinition struct {
 // Database represents a database.
 type Database struct {
 	autorest.Response `json:"-"`
-	// Kind - Kind of database.  This is metadata used for the Azure portal experience.
+	// Kind - READ-ONLY; Kind of database.  This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
 	// DatabaseProperties - The properties representing the resource.
 	*DatabaseProperties `json:"properties,omitempty"`
@@ -1813,20 +1799,17 @@ type Database struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Database.
 func (d Database) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if d.Kind != nil {
-		objectMap["kind"] = d.Kind
-	}
 	if d.DatabaseProperties != nil {
 		objectMap["properties"] = d.DatabaseProperties
 	}
@@ -1835,15 +1818,6 @@ func (d Database) MarshalJSON() ([]byte, error) {
 	}
 	if d.Tags != nil {
 		objectMap["tags"] = d.Tags
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1931,11 +1905,11 @@ type DatabaseAutomaticTuning struct {
 	autorest.Response `json:"-"`
 	// DatabaseAutomaticTuningProperties - Resource properties.
 	*DatabaseAutomaticTuningProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1944,15 +1918,6 @@ func (dat DatabaseAutomaticTuning) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dat.DatabaseAutomaticTuningProperties != nil {
 		objectMap["properties"] = dat.DatabaseAutomaticTuningProperties
-	}
-	if dat.ID != nil {
-		objectMap["id"] = dat.ID
-	}
-	if dat.Name != nil {
-		objectMap["name"] = dat.Name
-	}
-	if dat.Type != nil {
-		objectMap["type"] = dat.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2012,7 +1977,7 @@ func (dat *DatabaseAutomaticTuning) UnmarshalJSON(body []byte) error {
 type DatabaseAutomaticTuningProperties struct {
 	// DesiredState - Automatic tuning desired state. Possible values include: 'Inherit', 'Custom', 'Auto', 'Unspecified'
 	DesiredState AutomaticTuningMode `json:"desiredState,omitempty"`
-	// ActualState - Automatic tuning actual state. Possible values include: 'Inherit', 'Custom', 'Auto', 'Unspecified'
+	// ActualState - READ-ONLY; Automatic tuning actual state. Possible values include: 'Inherit', 'Custom', 'Auto', 'Unspecified'
 	ActualState AutomaticTuningMode `json:"actualState,omitempty"`
 	// Options - Automatic tuning options definition.
 	Options map[string]*AutomaticTuningOptions `json:"options"`
@@ -2024,9 +1989,6 @@ func (datp DatabaseAutomaticTuningProperties) MarshalJSON() ([]byte, error) {
 	if datp.DesiredState != "" {
 		objectMap["desiredState"] = datp.DesiredState
 	}
-	if datp.ActualState != "" {
-		objectMap["actualState"] = datp.ActualState
-	}
 	if datp.Options != nil {
 		objectMap["options"] = datp.Options
 	}
@@ -2036,35 +1998,23 @@ func (datp DatabaseAutomaticTuningProperties) MarshalJSON() ([]byte, error) {
 // DatabaseBlobAuditingPolicy a database blob auditing policy.
 type DatabaseBlobAuditingPolicy struct {
 	autorest.Response `json:"-"`
-	// Kind - Resource kind.
+	// Kind - READ-ONLY; Resource kind.
 	Kind *string `json:"kind,omitempty"`
 	// DatabaseBlobAuditingPolicyProperties - Resource properties.
 	*DatabaseBlobAuditingPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabaseBlobAuditingPolicy.
 func (dbap DatabaseBlobAuditingPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dbap.Kind != nil {
-		objectMap["kind"] = dbap.Kind
-	}
 	if dbap.DatabaseBlobAuditingPolicyProperties != nil {
 		objectMap["properties"] = dbap.DatabaseBlobAuditingPolicyProperties
-	}
-	if dbap.ID != nil {
-		objectMap["id"] = dbap.ID
-	}
-	if dbap.Name != nil {
-		objectMap["name"] = dbap.Name
-	}
-	if dbap.Type != nil {
-		objectMap["type"] = dbap.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2226,11 +2176,11 @@ type DatabaseListResult struct {
 type DatabaseOperation struct {
 	// DatabaseOperationProperties - Resource properties.
 	*DatabaseOperationProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2239,15 +2189,6 @@ func (do DatabaseOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if do.DatabaseOperationProperties != nil {
 		objectMap["properties"] = do.DatabaseOperationProperties
-	}
-	if do.ID != nil {
-		objectMap["id"] = do.ID
-	}
-	if do.Name != nil {
-		objectMap["name"] = do.Name
-	}
-	if do.Type != nil {
-		objectMap["type"] = do.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2306,9 +2247,9 @@ func (do *DatabaseOperation) UnmarshalJSON(body []byte) error {
 // DatabaseOperationListResult the response to a list database operations request
 type DatabaseOperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]DatabaseOperation `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2451,33 +2392,33 @@ func NewDatabaseOperationListResultPage(getNextPage func(context.Context, Databa
 
 // DatabaseOperationProperties the properties of a database operation.
 type DatabaseOperationProperties struct {
-	// DatabaseName - The name of the database the operation is being performed on.
+	// DatabaseName - READ-ONLY; The name of the database the operation is being performed on.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// Operation - The name of operation.
+	// Operation - READ-ONLY; The name of operation.
 	Operation *string `json:"operation,omitempty"`
-	// OperationFriendlyName - The friendly name of operation.
+	// OperationFriendlyName - READ-ONLY; The friendly name of operation.
 	OperationFriendlyName *string `json:"operationFriendlyName,omitempty"`
-	// PercentComplete - The percentage of the operation completed.
+	// PercentComplete - READ-ONLY; The percentage of the operation completed.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// ServerName - The name of the server.
+	// ServerName - READ-ONLY; The name of the server.
 	ServerName *string `json:"serverName,omitempty"`
-	// StartTime - The operation start time.
+	// StartTime - READ-ONLY; The operation start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// State - The operation state. Possible values include: 'ManagementOperationStatePending', 'ManagementOperationStateInProgress', 'ManagementOperationStateSucceeded', 'ManagementOperationStateFailed', 'ManagementOperationStateCancelInProgress', 'ManagementOperationStateCancelled'
+	// State - READ-ONLY; The operation state. Possible values include: 'ManagementOperationStatePending', 'ManagementOperationStateInProgress', 'ManagementOperationStateSucceeded', 'ManagementOperationStateFailed', 'ManagementOperationStateCancelInProgress', 'ManagementOperationStateCancelled'
 	State ManagementOperationState `json:"state,omitempty"`
-	// ErrorCode - The operation error code.
+	// ErrorCode - READ-ONLY; The operation error code.
 	ErrorCode *int32 `json:"errorCode,omitempty"`
-	// ErrorDescription - The operation error description.
+	// ErrorDescription - READ-ONLY; The operation error description.
 	ErrorDescription *string `json:"errorDescription,omitempty"`
-	// ErrorSeverity - The operation error severity.
+	// ErrorSeverity - READ-ONLY; The operation error severity.
 	ErrorSeverity *int32 `json:"errorSeverity,omitempty"`
-	// IsUserError - Whether or not the error is a user error.
+	// IsUserError - READ-ONLY; Whether or not the error is a user error.
 	IsUserError *bool `json:"isUserError,omitempty"`
-	// EstimatedCompletionTime - The estimated completion time of the operation.
+	// EstimatedCompletionTime - READ-ONLY; The estimated completion time of the operation.
 	EstimatedCompletionTime *date.Time `json:"estimatedCompletionTime,omitempty"`
-	// Description - The operation description.
+	// Description - READ-ONLY; The operation description.
 	Description *string `json:"description,omitempty"`
-	// IsCancellable - Whether the operation can be cancelled.
+	// IsCancellable - READ-ONLY; Whether the operation can be cancelled.
 	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
@@ -2485,15 +2426,15 @@ type DatabaseOperationProperties struct {
 type DatabaseProperties struct {
 	// Collation - The collation of the database. If createMode is not Default, this value is ignored.
 	Collation *string `json:"collation,omitempty"`
-	// CreationDate - The creation date of the database (ISO8601 format).
+	// CreationDate - READ-ONLY; The creation date of the database (ISO8601 format).
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ContainmentState - The containment state of the database.
+	// ContainmentState - READ-ONLY; The containment state of the database.
 	ContainmentState *int64 `json:"containmentState,omitempty"`
-	// CurrentServiceObjectiveID - The current service level objective ID of the database. This is the ID of the service level objective that is currently active.
+	// CurrentServiceObjectiveID - READ-ONLY; The current service level objective ID of the database. This is the ID of the service level objective that is currently active.
 	CurrentServiceObjectiveID *uuid.UUID `json:"currentServiceObjectiveId,omitempty"`
-	// DatabaseID - The ID of the database.
+	// DatabaseID - READ-ONLY; The ID of the database.
 	DatabaseID *uuid.UUID `json:"databaseId,omitempty"`
-	// EarliestRestoreDate - This records the earliest start date and time that restore is available for this database (ISO8601 format).
+	// EarliestRestoreDate - READ-ONLY; This records the earliest start date and time that restore is available for this database (ISO8601 format).
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 	// CreateMode - Specifies the mode of database creation.
 	// Default: regular database creation.
@@ -2521,21 +2462,21 @@ type DatabaseProperties struct {
 	RequestedServiceObjectiveID *uuid.UUID `json:"requestedServiceObjectiveId,omitempty"`
 	// RequestedServiceObjectiveName - The name of the configured service level objective of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of serviceLevelObjective property. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location <location> --query [].supportedServiceLevelObjectives[].name`. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	RequestedServiceObjectiveName ServiceObjectiveName `json:"requestedServiceObjectiveName,omitempty"`
-	// ServiceLevelObjective - The current service level objective of the database. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
+	// ServiceLevelObjective - READ-ONLY; The current service level objective of the database. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	ServiceLevelObjective ServiceObjectiveName `json:"serviceLevelObjective,omitempty"`
-	// Status - The status of the database.
+	// Status - READ-ONLY; The status of the database.
 	Status *string `json:"status,omitempty"`
 	// ElasticPoolName - The name of the elastic pool the database is in. If elasticPoolName and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveName is ignored. Not supported for DataWarehouse edition.
 	ElasticPoolName *string `json:"elasticPoolName,omitempty"`
-	// DefaultSecondaryLocation - The default secondary region for this database.
+	// DefaultSecondaryLocation - READ-ONLY; The default secondary region for this database.
 	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
-	// ServiceTierAdvisors - The list of service tier advisors for this database. Expanded property
+	// ServiceTierAdvisors - READ-ONLY; The list of service tier advisors for this database. Expanded property
 	ServiceTierAdvisors *[]ServiceTierAdvisor `json:"serviceTierAdvisors,omitempty"`
-	// TransparentDataEncryption - The transparent data encryption info for this database.
+	// TransparentDataEncryption - READ-ONLY; The transparent data encryption info for this database.
 	TransparentDataEncryption *[]TransparentDataEncryption `json:"transparentDataEncryption,omitempty"`
-	// RecommendedIndex - The recommended indices for this database.
+	// RecommendedIndex - READ-ONLY; The recommended indices for this database.
 	RecommendedIndex *[]RecommendedIndex `json:"recommendedIndex,omitempty"`
-	// FailoverGroupID - The resource identifier of the failover group containing this database.
+	// FailoverGroupID - READ-ONLY; The resource identifier of the failover group containing this database.
 	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
 	// ReadScale - Conditional. If the database is a geo-secondary, readScale indicates whether read-only connections are allowed to this database or not. Not supported for DataWarehouse edition. Possible values include: 'ReadScaleEnabled', 'ReadScaleDisabled'
 	ReadScale ReadScale `json:"readScale,omitempty"`
@@ -2555,7 +2496,7 @@ type DatabasesCreateImportOperationFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesCreateImportOperationFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2584,7 +2525,7 @@ type DatabasesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2608,15 +2549,15 @@ type DatabaseSecurityAlertPolicy struct {
 	autorest.Response `json:"-"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// Kind - Resource kind.
+	// Kind - READ-ONLY; Resource kind.
 	Kind *string `json:"kind,omitempty"`
 	// DatabaseSecurityAlertPolicyProperties - Properties of the security alert policy.
 	*DatabaseSecurityAlertPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2626,20 +2567,8 @@ func (dsap DatabaseSecurityAlertPolicy) MarshalJSON() ([]byte, error) {
 	if dsap.Location != nil {
 		objectMap["location"] = dsap.Location
 	}
-	if dsap.Kind != nil {
-		objectMap["kind"] = dsap.Kind
-	}
 	if dsap.DatabaseSecurityAlertPolicyProperties != nil {
 		objectMap["properties"] = dsap.DatabaseSecurityAlertPolicyProperties
-	}
-	if dsap.ID != nil {
-		objectMap["id"] = dsap.ID
-	}
-	if dsap.Name != nil {
-		objectMap["name"] = dsap.Name
-	}
-	if dsap.Type != nil {
-		objectMap["type"] = dsap.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2743,7 +2672,7 @@ type DatabasesExportFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2772,7 +2701,7 @@ type DatabasesImportFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2801,7 +2730,7 @@ type DatabasesPauseFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2824,7 +2753,7 @@ type DatabasesResumeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2847,7 +2776,7 @@ type DatabasesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2872,11 +2801,11 @@ type DatabaseUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// DatabaseProperties - The properties representing the resource.
 	*DatabaseProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2888,15 +2817,6 @@ func (du DatabaseUpdate) MarshalJSON() ([]byte, error) {
 	}
 	if du.DatabaseProperties != nil {
 		objectMap["properties"] = du.DatabaseProperties
-	}
-	if du.ID != nil {
-		objectMap["id"] = du.ID
-	}
-	if du.Name != nil {
-		objectMap["name"] = du.Name
-	}
-	if du.Type != nil {
-		objectMap["type"] = du.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2963,19 +2883,19 @@ func (du *DatabaseUpdate) UnmarshalJSON(body []byte) error {
 
 // DatabaseUsage the database usages.
 type DatabaseUsage struct {
-	// Name - The name of the usage metric.
+	// Name - READ-ONLY; The name of the usage metric.
 	Name *string `json:"name,omitempty"`
-	// ResourceName - The name of the resource.
+	// ResourceName - READ-ONLY; The name of the resource.
 	ResourceName *string `json:"resourceName,omitempty"`
-	// DisplayName - The usage metric display name.
+	// DisplayName - READ-ONLY; The usage metric display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CurrentValue - The current value of the usage metric.
+	// CurrentValue - READ-ONLY; The current value of the usage metric.
 	CurrentValue *float64 `json:"currentValue,omitempty"`
-	// Limit - The current limit of the usage metric.
+	// Limit - READ-ONLY; The current limit of the usage metric.
 	Limit *float64 `json:"limit,omitempty"`
-	// Unit - The units of the usage metric.
+	// Unit - READ-ONLY; The units of the usage metric.
 	Unit *string `json:"unit,omitempty"`
-	// NextResetTime - The next reset time for the usage metric (ISO8601 format).
+	// NextResetTime - READ-ONLY; The next reset time for the usage metric (ISO8601 format).
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
 }
 
@@ -2991,11 +2911,11 @@ type DatabaseVulnerabilityAssessment struct {
 	autorest.Response `json:"-"`
 	// DatabaseVulnerabilityAssessmentProperties - Resource properties.
 	*DatabaseVulnerabilityAssessmentProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3004,15 +2924,6 @@ func (dva DatabaseVulnerabilityAssessment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dva.DatabaseVulnerabilityAssessmentProperties != nil {
 		objectMap["properties"] = dva.DatabaseVulnerabilityAssessmentProperties
-	}
-	if dva.ID != nil {
-		objectMap["id"] = dva.ID
-	}
-	if dva.Name != nil {
-		objectMap["name"] = dva.Name
-	}
-	if dva.Type != nil {
-		objectMap["type"] = dva.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3071,9 +2982,9 @@ func (dva *DatabaseVulnerabilityAssessment) UnmarshalJSON(body []byte) error {
 // DatabaseVulnerabilityAssessmentListResult a list of the database's vulnerability assessments.
 type DatabaseVulnerabilityAssessmentListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]DatabaseVulnerabilityAssessment `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3232,11 +3143,11 @@ type DatabaseVulnerabilityAssessmentRuleBaseline struct {
 	autorest.Response `json:"-"`
 	// DatabaseVulnerabilityAssessmentRuleBaselineProperties - Resource properties.
 	*DatabaseVulnerabilityAssessmentRuleBaselineProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3245,15 +3156,6 @@ func (dvarb DatabaseVulnerabilityAssessmentRuleBaseline) MarshalJSON() ([]byte, 
 	objectMap := make(map[string]interface{})
 	if dvarb.DatabaseVulnerabilityAssessmentRuleBaselineProperties != nil {
 		objectMap["properties"] = dvarb.DatabaseVulnerabilityAssessmentRuleBaselineProperties
-	}
-	if dvarb.ID != nil {
-		objectMap["id"] = dvarb.ID
-	}
-	if dvarb.Name != nil {
-		objectMap["name"] = dvarb.Name
-	}
-	if dvarb.Type != nil {
-		objectMap["type"] = dvarb.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3328,15 +3230,15 @@ type DataMaskingPolicy struct {
 	autorest.Response `json:"-"`
 	// DataMaskingPolicyProperties - The properties of the data masking policy.
 	*DataMaskingPolicyProperties `json:"properties,omitempty"`
-	// Location - The location of the data masking policy.
+	// Location - READ-ONLY; The location of the data masking policy.
 	Location *string `json:"location,omitempty"`
-	// Kind - The kind of data masking policy. Metadata, used for Azure portal.
+	// Kind - READ-ONLY; The kind of data masking policy. Metadata, used for Azure portal.
 	Kind *string `json:"kind,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3345,21 +3247,6 @@ func (dmp DataMaskingPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dmp.DataMaskingPolicyProperties != nil {
 		objectMap["properties"] = dmp.DataMaskingPolicyProperties
-	}
-	if dmp.Location != nil {
-		objectMap["location"] = dmp.Location
-	}
-	if dmp.Kind != nil {
-		objectMap["kind"] = dmp.Kind
-	}
-	if dmp.ID != nil {
-		objectMap["id"] = dmp.ID
-	}
-	if dmp.Name != nil {
-		objectMap["name"] = dmp.Name
-	}
-	if dmp.Type != nil {
-		objectMap["type"] = dmp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3439,9 +3326,9 @@ type DataMaskingPolicyProperties struct {
 	DataMaskingState DataMaskingState `json:"dataMaskingState,omitempty"`
 	// ExemptPrincipals - The list of the exempt principals. Specifies the semicolon-separated list of database users for which the data masking policy does not apply. The specified users receive data results without masking for all of the database queries.
 	ExemptPrincipals *string `json:"exemptPrincipals,omitempty"`
-	// ApplicationPrincipals - The list of the application principals. This is a legacy parameter and is no longer used.
+	// ApplicationPrincipals - READ-ONLY; The list of the application principals. This is a legacy parameter and is no longer used.
 	ApplicationPrincipals *string `json:"applicationPrincipals,omitempty"`
-	// MaskingLevel - The masking level. This is a legacy parameter and is no longer used.
+	// MaskingLevel - READ-ONLY; The masking level. This is a legacy parameter and is no longer used.
 	MaskingLevel *string `json:"maskingLevel,omitempty"`
 }
 
@@ -3450,15 +3337,15 @@ type DataMaskingRule struct {
 	autorest.Response `json:"-"`
 	// DataMaskingRuleProperties - The properties of the resource.
 	*DataMaskingRuleProperties `json:"properties,omitempty"`
-	// Location - The location of the data masking rule.
+	// Location - READ-ONLY; The location of the data masking rule.
 	Location *string `json:"location,omitempty"`
-	// Kind - The kind of Data Masking Rule. Metadata, used for Azure portal.
+	// Kind - READ-ONLY; The kind of Data Masking Rule. Metadata, used for Azure portal.
 	Kind *string `json:"kind,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3467,21 +3354,6 @@ func (dmr DataMaskingRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dmr.DataMaskingRuleProperties != nil {
 		objectMap["properties"] = dmr.DataMaskingRuleProperties
-	}
-	if dmr.Location != nil {
-		objectMap["location"] = dmr.Location
-	}
-	if dmr.Kind != nil {
-		objectMap["kind"] = dmr.Kind
-	}
-	if dmr.ID != nil {
-		objectMap["id"] = dmr.ID
-	}
-	if dmr.Name != nil {
-		objectMap["name"] = dmr.Name
-	}
-	if dmr.Type != nil {
-		objectMap["type"] = dmr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3564,7 +3436,7 @@ type DataMaskingRuleListResult struct {
 
 // DataMaskingRuleProperties the properties of a database data masking rule.
 type DataMaskingRuleProperties struct {
-	// ID - The rule Id.
+	// ID - READ-ONLY; The rule Id.
 	ID *string `json:"id,omitempty"`
 	// AliasName - The alias name. This is a legacy parameter and is no longer used.
 	AliasName *string `json:"aliasName,omitempty"`
@@ -3595,11 +3467,11 @@ type DataWarehouseUserActivities struct {
 	autorest.Response `json:"-"`
 	// DataWarehouseUserActivitiesProperties - Resource properties.
 	*DataWarehouseUserActivitiesProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3608,15 +3480,6 @@ func (dwua DataWarehouseUserActivities) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dwua.DataWarehouseUserActivitiesProperties != nil {
 		objectMap["properties"] = dwua.DataWarehouseUserActivitiesProperties
-	}
-	if dwua.ID != nil {
-		objectMap["id"] = dwua.ID
-	}
-	if dwua.Name != nil {
-		objectMap["name"] = dwua.Name
-	}
-	if dwua.Type != nil {
-		objectMap["type"] = dwua.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3676,19 +3539,19 @@ func (dwua *DataWarehouseUserActivities) UnmarshalJSON(body []byte) error {
 // count of running or suspended queries. For more information, please view the sys.dm_pdw_exec_requests
 // dynamic management view (DMV).
 type DataWarehouseUserActivitiesProperties struct {
-	// ActiveQueriesCount - Count of running and suspended queries.
+	// ActiveQueriesCount - READ-ONLY; Count of running and suspended queries.
 	ActiveQueriesCount *int32 `json:"activeQueriesCount,omitempty"`
 }
 
 // EditionCapability the database edition capabilities.
 type EditionCapability struct {
-	// Name - The edition name.
+	// Name - READ-ONLY; The edition name.
 	Name *string `json:"name,omitempty"`
-	// Status - The status of the edition. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the edition. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// SupportedServiceLevelObjectives - The list of supported service objectives for the edition.
+	// SupportedServiceLevelObjectives - READ-ONLY; The list of supported service objectives for the edition.
 	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
-	// ZoneRedundant - Whether or not zone redundancy is supported for the edition.
+	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the edition.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
@@ -3697,17 +3560,17 @@ type ElasticPool struct {
 	autorest.Response `json:"-"`
 	// ElasticPoolProperties - The properties representing the resource.
 	*ElasticPoolProperties `json:"properties,omitempty"`
-	// Kind - Kind of elastic pool.  This is metadata used for the Azure portal experience.
+	// Kind - READ-ONLY; Kind of elastic pool.  This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3717,23 +3580,11 @@ func (ep ElasticPool) MarshalJSON() ([]byte, error) {
 	if ep.ElasticPoolProperties != nil {
 		objectMap["properties"] = ep.ElasticPoolProperties
 	}
-	if ep.Kind != nil {
-		objectMap["kind"] = ep.Kind
-	}
 	if ep.Location != nil {
 		objectMap["location"] = ep.Location
 	}
 	if ep.Tags != nil {
 		objectMap["tags"] = ep.Tags
-	}
-	if ep.ID != nil {
-		objectMap["id"] = ep.ID
-	}
-	if ep.Name != nil {
-		objectMap["name"] = ep.Name
-	}
-	if ep.Type != nil {
-		objectMap["type"] = ep.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3822,11 +3673,11 @@ type ElasticPoolActivity struct {
 	Location *string `json:"location,omitempty"`
 	// ElasticPoolActivityProperties - The properties representing the resource.
 	*ElasticPoolActivityProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3838,15 +3689,6 @@ func (epa ElasticPoolActivity) MarshalJSON() ([]byte, error) {
 	}
 	if epa.ElasticPoolActivityProperties != nil {
 		objectMap["properties"] = epa.ElasticPoolActivityProperties
-	}
-	if epa.ID != nil {
-		objectMap["id"] = epa.ID
-	}
-	if epa.Name != nil {
-		objectMap["name"] = epa.Name
-	}
-	if epa.Type != nil {
-		objectMap["type"] = epa.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3920,45 +3762,45 @@ type ElasticPoolActivityListResult struct {
 
 // ElasticPoolActivityProperties represents the properties of an elastic pool.
 type ElasticPoolActivityProperties struct {
-	// EndTime - The time the operation finished (ISO8601 format).
+	// EndTime - READ-ONLY; The time the operation finished (ISO8601 format).
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ErrorCode - The error code if available.
+	// ErrorCode - READ-ONLY; The error code if available.
 	ErrorCode *int32 `json:"errorCode,omitempty"`
-	// ErrorMessage - The error message if available.
+	// ErrorMessage - READ-ONLY; The error message if available.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// ErrorSeverity - The error severity if available.
+	// ErrorSeverity - READ-ONLY; The error severity if available.
 	ErrorSeverity *int32 `json:"errorSeverity,omitempty"`
-	// Operation - The operation name.
+	// Operation - READ-ONLY; The operation name.
 	Operation *string `json:"operation,omitempty"`
-	// OperationID - The unique operation ID.
+	// OperationID - READ-ONLY; The unique operation ID.
 	OperationID *uuid.UUID `json:"operationId,omitempty"`
-	// PercentComplete - The percentage complete if available.
+	// PercentComplete - READ-ONLY; The percentage complete if available.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// RequestedDatabaseDtuMax - The requested max DTU per database if available.
+	// RequestedDatabaseDtuMax - READ-ONLY; The requested max DTU per database if available.
 	RequestedDatabaseDtuMax *int32 `json:"requestedDatabaseDtuMax,omitempty"`
-	// RequestedDatabaseDtuMin - The requested min DTU per database if available.
+	// RequestedDatabaseDtuMin - READ-ONLY; The requested min DTU per database if available.
 	RequestedDatabaseDtuMin *int32 `json:"requestedDatabaseDtuMin,omitempty"`
-	// RequestedDtu - The requested DTU for the pool if available.
+	// RequestedDtu - READ-ONLY; The requested DTU for the pool if available.
 	RequestedDtu *int32 `json:"requestedDtu,omitempty"`
-	// RequestedElasticPoolName - The requested name for the elastic pool if available.
+	// RequestedElasticPoolName - READ-ONLY; The requested name for the elastic pool if available.
 	RequestedElasticPoolName *string `json:"requestedElasticPoolName,omitempty"`
-	// RequestedStorageLimitInGB - The requested storage limit for the pool in GB if available.
+	// RequestedStorageLimitInGB - READ-ONLY; The requested storage limit for the pool in GB if available.
 	RequestedStorageLimitInGB *int64 `json:"requestedStorageLimitInGB,omitempty"`
-	// ElasticPoolName - The name of the elastic pool.
+	// ElasticPoolName - READ-ONLY; The name of the elastic pool.
 	ElasticPoolName *string `json:"elasticPoolName,omitempty"`
-	// ServerName - The name of the server the elastic pool is in.
+	// ServerName - READ-ONLY; The name of the server the elastic pool is in.
 	ServerName *string `json:"serverName,omitempty"`
-	// StartTime - The time the operation started (ISO8601 format).
+	// StartTime - READ-ONLY; The time the operation started (ISO8601 format).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// State - The current state of the operation.
+	// State - READ-ONLY; The current state of the operation.
 	State *string `json:"state,omitempty"`
-	// RequestedStorageLimitInMB - The requested storage limit in MB.
+	// RequestedStorageLimitInMB - READ-ONLY; The requested storage limit in MB.
 	RequestedStorageLimitInMB *int32 `json:"requestedStorageLimitInMB,omitempty"`
-	// RequestedDatabaseDtuGuarantee - The requested per database DTU guarantee.
+	// RequestedDatabaseDtuGuarantee - READ-ONLY; The requested per database DTU guarantee.
 	RequestedDatabaseDtuGuarantee *int32 `json:"requestedDatabaseDtuGuarantee,omitempty"`
-	// RequestedDatabaseDtuCap - The requested per database DTU cap.
+	// RequestedDatabaseDtuCap - READ-ONLY; The requested per database DTU cap.
 	RequestedDatabaseDtuCap *int32 `json:"requestedDatabaseDtuCap,omitempty"`
-	// RequestedDtuGuarantee - The requested DTU guarantee.
+	// RequestedDtuGuarantee - READ-ONLY; The requested DTU guarantee.
 	RequestedDtuGuarantee *int32 `json:"requestedDtuGuarantee,omitempty"`
 }
 
@@ -3968,11 +3810,11 @@ type ElasticPoolDatabaseActivity struct {
 	Location *string `json:"location,omitempty"`
 	// ElasticPoolDatabaseActivityProperties - The properties representing the resource.
 	*ElasticPoolDatabaseActivityProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3984,15 +3826,6 @@ func (epda ElasticPoolDatabaseActivity) MarshalJSON() ([]byte, error) {
 	}
 	if epda.ElasticPoolDatabaseActivityProperties != nil {
 		objectMap["properties"] = epda.ElasticPoolDatabaseActivityProperties
-	}
-	if epda.ID != nil {
-		objectMap["id"] = epda.ID
-	}
-	if epda.Name != nil {
-		objectMap["name"] = epda.Name
-	}
-	if epda.Type != nil {
-		objectMap["type"] = epda.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4067,65 +3900,65 @@ type ElasticPoolDatabaseActivityListResult struct {
 
 // ElasticPoolDatabaseActivityProperties represents the properties of an elastic pool database activity.
 type ElasticPoolDatabaseActivityProperties struct {
-	// DatabaseName - The database name.
+	// DatabaseName - READ-ONLY; The database name.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// EndTime - The time the operation finished (ISO8601 format).
+	// EndTime - READ-ONLY; The time the operation finished (ISO8601 format).
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ErrorCode - The error code if available.
+	// ErrorCode - READ-ONLY; The error code if available.
 	ErrorCode *int32 `json:"errorCode,omitempty"`
-	// ErrorMessage - The error message if available.
+	// ErrorMessage - READ-ONLY; The error message if available.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// ErrorSeverity - The error severity if available.
+	// ErrorSeverity - READ-ONLY; The error severity if available.
 	ErrorSeverity *int32 `json:"errorSeverity,omitempty"`
-	// Operation - The operation name.
+	// Operation - READ-ONLY; The operation name.
 	Operation *string `json:"operation,omitempty"`
-	// OperationID - The unique operation ID.
+	// OperationID - READ-ONLY; The unique operation ID.
 	OperationID *uuid.UUID `json:"operationId,omitempty"`
-	// PercentComplete - The percentage complete if available.
+	// PercentComplete - READ-ONLY; The percentage complete if available.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// RequestedElasticPoolName - The name for the elastic pool the database is moving into if available.
+	// RequestedElasticPoolName - READ-ONLY; The name for the elastic pool the database is moving into if available.
 	RequestedElasticPoolName *string `json:"requestedElasticPoolName,omitempty"`
-	// CurrentElasticPoolName - The name of the current elastic pool the database is in if available.
+	// CurrentElasticPoolName - READ-ONLY; The name of the current elastic pool the database is in if available.
 	CurrentElasticPoolName *string `json:"currentElasticPoolName,omitempty"`
-	// CurrentServiceObjective - The name of the current service objective if available.
+	// CurrentServiceObjective - READ-ONLY; The name of the current service objective if available.
 	CurrentServiceObjective *string `json:"currentServiceObjective,omitempty"`
-	// RequestedServiceObjective - The name of the requested service objective if available.
+	// RequestedServiceObjective - READ-ONLY; The name of the requested service objective if available.
 	RequestedServiceObjective *string `json:"requestedServiceObjective,omitempty"`
-	// ServerName - The name of the server the elastic pool is in.
+	// ServerName - READ-ONLY; The name of the server the elastic pool is in.
 	ServerName *string `json:"serverName,omitempty"`
-	// StartTime - The time the operation started (ISO8601 format).
+	// StartTime - READ-ONLY; The time the operation started (ISO8601 format).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// State - The current state of the operation.
+	// State - READ-ONLY; The current state of the operation.
 	State *string `json:"state,omitempty"`
 }
 
 // ElasticPoolDtuCapability the Elastic Pool DTU capability.
 type ElasticPoolDtuCapability struct {
-	// Limit - The maximum size of the database (see 'unit' for the units).
+	// Limit - READ-ONLY; The maximum size of the database (see 'unit' for the units).
 	Limit *int64 `json:"limit,omitempty"`
-	// MaxDatabaseCount - The maximum number of databases supported.
+	// MaxDatabaseCount - READ-ONLY; The maximum number of databases supported.
 	MaxDatabaseCount *int64 `json:"maxDatabaseCount,omitempty"`
-	// Status - The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// SupportedMaxSizes - The list of supported max sizes.
+	// SupportedMaxSizes - READ-ONLY; The list of supported max sizes.
 	SupportedMaxSizes *[]MaxSizeCapability `json:"supportedMaxSizes,omitempty"`
-	// IncludedMaxSize - The included (free) max size for this service level objective.
+	// IncludedMaxSize - READ-ONLY; The included (free) max size for this service level objective.
 	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
-	// SupportedPerDatabaseMaxSizes - The list of supported max database sizes.
+	// SupportedPerDatabaseMaxSizes - READ-ONLY; The list of supported max database sizes.
 	SupportedPerDatabaseMaxSizes *[]MaxSizeCapability `json:"supportedPerDatabaseMaxSizes,omitempty"`
-	// SupportedPerDatabaseMaxDtus - The list of supported max database DTUs.
+	// SupportedPerDatabaseMaxDtus - READ-ONLY; The list of supported max database DTUs.
 	SupportedPerDatabaseMaxDtus *[]ElasticPoolPerDatabaseMaxDtuCapability `json:"supportedPerDatabaseMaxDtus,omitempty"`
 }
 
 // ElasticPoolEditionCapability the elastic pool edition capabilities.
 type ElasticPoolEditionCapability struct {
-	// Name - The elastic pool edition name.
+	// Name - READ-ONLY; The elastic pool edition name.
 	Name *string `json:"name,omitempty"`
-	// Status - The status of the elastic pool edition. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the elastic pool edition. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// SupportedElasticPoolDtus - The list of supported elastic pool DTU levels for the edition.
+	// SupportedElasticPoolDtus - READ-ONLY; The list of supported elastic pool DTU levels for the edition.
 	SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
-	// ZoneRedundant - Whether or not zone redundancy is supported for the edition.
+	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the edition.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
@@ -4138,27 +3971,27 @@ type ElasticPoolListResult struct {
 
 // ElasticPoolPerDatabaseMaxDtuCapability the max per-database DTU capability.
 type ElasticPoolPerDatabaseMaxDtuCapability struct {
-	// Limit - The maximum DTUs per database.
+	// Limit - READ-ONLY; The maximum DTUs per database.
 	Limit *int64 `json:"limit,omitempty"`
-	// Status - The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// SupportedPerDatabaseMinDtus - The list of supported min database DTUs.
+	// SupportedPerDatabaseMinDtus - READ-ONLY; The list of supported min database DTUs.
 	SupportedPerDatabaseMinDtus *[]ElasticPoolPerDatabaseMinDtuCapability `json:"supportedPerDatabaseMinDtus,omitempty"`
 }
 
 // ElasticPoolPerDatabaseMinDtuCapability the minimum per-database DTU capability.
 type ElasticPoolPerDatabaseMinDtuCapability struct {
-	// Limit - The maximum DTUs per database.
+	// Limit - READ-ONLY; The maximum DTUs per database.
 	Limit *int64 `json:"limit,omitempty"`
-	// Status - The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 }
 
 // ElasticPoolProperties represents the properties of an elastic pool.
 type ElasticPoolProperties struct {
-	// CreationDate - The creation date of the elastic pool (ISO8601 format).
+	// CreationDate - READ-ONLY; The creation date of the elastic pool (ISO8601 format).
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// State - The state of the elastic pool. Possible values include: 'ElasticPoolStateCreating', 'ElasticPoolStateReady', 'ElasticPoolStateDisabled'
+	// State - READ-ONLY; The state of the elastic pool. Possible values include: 'ElasticPoolStateCreating', 'ElasticPoolStateReady', 'ElasticPoolStateDisabled'
 	State ElasticPoolState `json:"state,omitempty"`
 	// Edition - The edition of the elastic pool. Possible values include: 'ElasticPoolEditionBasic', 'ElasticPoolEditionStandard', 'ElasticPoolEditionPremium'
 	Edition ElasticPoolEdition `json:"edition,omitempty"`
@@ -4184,7 +4017,7 @@ type ElasticPoolsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ElasticPoolsCreateOrUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4213,7 +4046,7 @@ type ElasticPoolsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ElasticPoolsUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4238,11 +4071,11 @@ type ElasticPoolUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ElasticPoolProperties - The properties representing the resource.
 	*ElasticPoolProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4254,15 +4087,6 @@ func (epu ElasticPoolUpdate) MarshalJSON() ([]byte, error) {
 	}
 	if epu.ElasticPoolProperties != nil {
 		objectMap["properties"] = epu.ElasticPoolProperties
-	}
-	if epu.ID != nil {
-		objectMap["id"] = epu.ID
-	}
-	if epu.Name != nil {
-		objectMap["name"] = epu.Name
-	}
-	if epu.Type != nil {
-		objectMap["type"] = epu.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4332,15 +4156,15 @@ type EncryptionProtector struct {
 	autorest.Response `json:"-"`
 	// Kind - Kind of encryption protector. This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// EncryptionProtectorProperties - Resource properties.
 	*EncryptionProtectorProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4350,20 +4174,8 @@ func (ep EncryptionProtector) MarshalJSON() ([]byte, error) {
 	if ep.Kind != nil {
 		objectMap["kind"] = ep.Kind
 	}
-	if ep.Location != nil {
-		objectMap["location"] = ep.Location
-	}
 	if ep.EncryptionProtectorProperties != nil {
 		objectMap["properties"] = ep.EncryptionProtectorProperties
-	}
-	if ep.ID != nil {
-		objectMap["id"] = ep.ID
-	}
-	if ep.Name != nil {
-		objectMap["name"] = ep.Name
-	}
-	if ep.Type != nil {
-		objectMap["type"] = ep.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4440,9 +4252,9 @@ func (ep *EncryptionProtector) UnmarshalJSON(body []byte) error {
 // EncryptionProtectorListResult a list of server encryption protectors.
 type EncryptionProtectorListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]EncryptionProtector `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4586,15 +4398,15 @@ func NewEncryptionProtectorListResultPage(getNextPage func(context.Context, Encr
 
 // EncryptionProtectorProperties properties for an encryption protector execution.
 type EncryptionProtectorProperties struct {
-	// Subregion - Subregion of the encryption protector.
+	// Subregion - READ-ONLY; Subregion of the encryption protector.
 	Subregion *string `json:"subregion,omitempty"`
 	// ServerKeyName - The name of the server key.
 	ServerKeyName *string `json:"serverKeyName,omitempty"`
 	// ServerKeyType - The encryption protector type like 'ServiceManaged', 'AzureKeyVault'. Possible values include: 'ServiceManaged', 'AzureKeyVault'
 	ServerKeyType ServerKeyType `json:"serverKeyType,omitempty"`
-	// URI - The URI of the server key.
+	// URI - READ-ONLY; The URI of the server key.
 	URI *string `json:"uri,omitempty"`
-	// Thumbprint - Thumbprint of the server key.
+	// Thumbprint - READ-ONLY; Thumbprint of the server key.
 	Thumbprint *string `json:"thumbprint,omitempty"`
 }
 
@@ -4608,7 +4420,7 @@ type EncryptionProtectorsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *EncryptionProtectorsCreateOrUpdateFuture) Result(client EncryptionProtectorsClient) (ep EncryptionProtector, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4648,11 +4460,11 @@ type ExtendedDatabaseBlobAuditingPolicy struct {
 	autorest.Response `json:"-"`
 	// ExtendedDatabaseBlobAuditingPolicyProperties - Resource properties.
 	*ExtendedDatabaseBlobAuditingPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4661,15 +4473,6 @@ func (edbap ExtendedDatabaseBlobAuditingPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if edbap.ExtendedDatabaseBlobAuditingPolicyProperties != nil {
 		objectMap["properties"] = edbap.ExtendedDatabaseBlobAuditingPolicyProperties
-	}
-	if edbap.ID != nil {
-		objectMap["id"] = edbap.ID
-	}
-	if edbap.Name != nil {
-		objectMap["name"] = edbap.Name
-	}
-	if edbap.Type != nil {
-		objectMap["type"] = edbap.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4823,7 +4626,7 @@ type ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture) Result(client ExtendedServerBlobAuditingPoliciesClient) (esbap ExtendedServerBlobAuditingPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ExtendedServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4847,11 +4650,11 @@ type ExtendedServerBlobAuditingPolicy struct {
 	autorest.Response `json:"-"`
 	// ExtendedServerBlobAuditingPolicyProperties - Resource properties.
 	*ExtendedServerBlobAuditingPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4860,15 +4663,6 @@ func (esbap ExtendedServerBlobAuditingPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if esbap.ExtendedServerBlobAuditingPolicyProperties != nil {
 		objectMap["properties"] = esbap.ExtendedServerBlobAuditingPolicyProperties
-	}
-	if esbap.ID != nil {
-		objectMap["id"] = esbap.ID
-	}
-	if esbap.Name != nil {
-		objectMap["name"] = esbap.Name
-	}
-	if esbap.Type != nil {
-		objectMap["type"] = esbap.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5015,40 +4809,28 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 // FailoverGroup a failover group.
 type FailoverGroup struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// FailoverGroupProperties - Resource properties.
 	*FailoverGroupProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FailoverGroup.
 func (fg FailoverGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fg.Location != nil {
-		objectMap["location"] = fg.Location
-	}
 	if fg.Tags != nil {
 		objectMap["tags"] = fg.Tags
 	}
 	if fg.FailoverGroupProperties != nil {
 		objectMap["properties"] = fg.FailoverGroupProperties
-	}
-	if fg.ID != nil {
-		objectMap["id"] = fg.ID
-	}
-	if fg.Name != nil {
-		objectMap["name"] = fg.Name
-	}
-	if fg.Type != nil {
-		objectMap["type"] = fg.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5125,9 +4907,9 @@ func (fg *FailoverGroup) UnmarshalJSON(body []byte) error {
 // FailoverGroupListResult a list of failover groups.
 type FailoverGroupListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]FailoverGroup `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -5274,9 +5056,9 @@ type FailoverGroupProperties struct {
 	ReadWriteEndpoint *FailoverGroupReadWriteEndpoint `json:"readWriteEndpoint,omitempty"`
 	// ReadOnlyEndpoint - Read-only endpoint of the failover group instance.
 	ReadOnlyEndpoint *FailoverGroupReadOnlyEndpoint `json:"readOnlyEndpoint,omitempty"`
-	// ReplicationRole - Local replication role of the failover group instance. Possible values include: 'Primary', 'Secondary'
+	// ReplicationRole - READ-ONLY; Local replication role of the failover group instance. Possible values include: 'Primary', 'Secondary'
 	ReplicationRole FailoverGroupReplicationRole `json:"replicationRole,omitempty"`
-	// ReplicationState - Replication state of the failover group instance.
+	// ReplicationState - READ-ONLY; Replication state of the failover group instance.
 	ReplicationState *string `json:"replicationState,omitempty"`
 	// PartnerServers - List of partner server information for the failover group.
 	PartnerServers *[]PartnerInfo `json:"partnerServers,omitempty"`
@@ -5308,7 +5090,7 @@ type FailoverGroupsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FailoverGroupsCreateOrUpdateFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5337,7 +5119,7 @@ type FailoverGroupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FailoverGroupsDeleteFuture) Result(client FailoverGroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5360,7 +5142,7 @@ type FailoverGroupsFailoverFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FailoverGroupsFailoverFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5389,7 +5171,7 @@ type FailoverGroupsForceFailoverAllowDataLossFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FailoverGroupsForceFailoverAllowDataLossFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5418,7 +5200,7 @@ type FailoverGroupsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FailoverGroupsUpdateFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5503,40 +5285,25 @@ type FailoverGroupUpdateProperties struct {
 // FirewallRule represents a server firewall rule.
 type FirewallRule struct {
 	autorest.Response `json:"-"`
-	// Kind - Kind of server that contains this firewall rule.
+	// Kind - READ-ONLY; Kind of server that contains this firewall rule.
 	Kind *string `json:"kind,omitempty"`
-	// Location - Location of the server that contains this firewall rule.
+	// Location - READ-ONLY; Location of the server that contains this firewall rule.
 	Location *string `json:"location,omitempty"`
 	// FirewallRuleProperties - The properties representing the resource.
 	*FirewallRuleProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FirewallRule.
 func (fr FirewallRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fr.Kind != nil {
-		objectMap["kind"] = fr.Kind
-	}
-	if fr.Location != nil {
-		objectMap["location"] = fr.Location
-	}
 	if fr.FirewallRuleProperties != nil {
 		objectMap["properties"] = fr.FirewallRuleProperties
-	}
-	if fr.ID != nil {
-		objectMap["id"] = fr.ID
-	}
-	if fr.Name != nil {
-		objectMap["name"] = fr.Name
-	}
-	if fr.Type != nil {
-		objectMap["type"] = fr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5630,15 +5397,15 @@ type GeoBackupPolicy struct {
 	autorest.Response `json:"-"`
 	// GeoBackupPolicyProperties - The properties of the geo backup policy.
 	*GeoBackupPolicyProperties `json:"properties,omitempty"`
-	// Kind - Kind of geo backup policy.  This is metadata used for the Azure portal experience.
+	// Kind - READ-ONLY; Kind of geo backup policy.  This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
-	// Location - Backup policy location.
+	// Location - READ-ONLY; Backup policy location.
 	Location *string `json:"location,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5647,21 +5414,6 @@ func (gbp GeoBackupPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if gbp.GeoBackupPolicyProperties != nil {
 		objectMap["properties"] = gbp.GeoBackupPolicyProperties
-	}
-	if gbp.Kind != nil {
-		objectMap["kind"] = gbp.Kind
-	}
-	if gbp.Location != nil {
-		objectMap["location"] = gbp.Location
-	}
-	if gbp.ID != nil {
-		objectMap["id"] = gbp.ID
-	}
-	if gbp.Name != nil {
-		objectMap["name"] = gbp.Name
-	}
-	if gbp.Type != nil {
-		objectMap["type"] = gbp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5746,7 +5498,7 @@ type GeoBackupPolicyListResult struct {
 type GeoBackupPolicyProperties struct {
 	// State - The state of the geo backup policy. Possible values include: 'GeoBackupPolicyStateDisabled', 'GeoBackupPolicyStateEnabled'
 	State GeoBackupPolicyState `json:"state,omitempty"`
-	// StorageType - The storage type of the geo backup policy.
+	// StorageType - READ-ONLY; The storage type of the geo backup policy.
 	StorageType *string `json:"storageType,omitempty"`
 }
 
@@ -5755,11 +5507,11 @@ type ImportExportResponse struct {
 	autorest.Response `json:"-"`
 	// ImportExportResponseProperties - The import/export operation properties.
 	*ImportExportResponseProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5768,15 +5520,6 @@ func (ier ImportExportResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ier.ImportExportResponseProperties != nil {
 		objectMap["properties"] = ier.ImportExportResponseProperties
-	}
-	if ier.ID != nil {
-		objectMap["id"] = ier.ID
-	}
-	if ier.Name != nil {
-		objectMap["name"] = ier.Name
-	}
-	if ier.Type != nil {
-		objectMap["type"] = ier.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -5834,23 +5577,23 @@ func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
 
 // ImportExportResponseProperties response for Import/Export Status operation.
 type ImportExportResponseProperties struct {
-	// RequestType - The request type of the operation.
+	// RequestType - READ-ONLY; The request type of the operation.
 	RequestType *string `json:"requestType,omitempty"`
-	// RequestID - The request type of the operation.
+	// RequestID - READ-ONLY; The request type of the operation.
 	RequestID *uuid.UUID `json:"requestId,omitempty"`
-	// ServerName - The name of the server.
+	// ServerName - READ-ONLY; The name of the server.
 	ServerName *string `json:"serverName,omitempty"`
-	// DatabaseName - The name of the database.
+	// DatabaseName - READ-ONLY; The name of the database.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// Status - The status message returned from the server.
+	// Status - READ-ONLY; The status message returned from the server.
 	Status *string `json:"status,omitempty"`
-	// LastModifiedTime - The operation status last modified time.
+	// LastModifiedTime - READ-ONLY; The operation status last modified time.
 	LastModifiedTime *string `json:"lastModifiedTime,omitempty"`
-	// QueuedTime - The operation queued time.
+	// QueuedTime - READ-ONLY; The operation queued time.
 	QueuedTime *string `json:"queuedTime,omitempty"`
-	// BlobURI - The blob uri.
+	// BlobURI - READ-ONLY; The blob uri.
 	BlobURI *string `json:"blobUri,omitempty"`
-	// ErrorMessage - The error message returned from the server.
+	// ErrorMessage - READ-ONLY; The error message returned from the server.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
@@ -5968,11 +5711,11 @@ type Job struct {
 	autorest.Response `json:"-"`
 	// JobProperties - Resource properties.
 	*JobProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5981,15 +5724,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if j.JobProperties != nil {
 		objectMap["properties"] = j.JobProperties
-	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6056,11 +5790,11 @@ type JobAgent struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6078,15 +5812,6 @@ func (ja JobAgent) MarshalJSON() ([]byte, error) {
 	}
 	if ja.Tags != nil {
 		objectMap["tags"] = ja.Tags
-	}
-	if ja.ID != nil {
-		objectMap["id"] = ja.ID
-	}
-	if ja.Name != nil {
-		objectMap["name"] = ja.Name
-	}
-	if ja.Type != nil {
-		objectMap["type"] = ja.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6172,9 +5897,9 @@ func (ja *JobAgent) UnmarshalJSON(body []byte) error {
 // JobAgentListResult a list of Azure SQL job agents.
 type JobAgentListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]JobAgent `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6319,7 +6044,7 @@ func NewJobAgentListResultPage(getNextPage func(context.Context, JobAgentListRes
 type JobAgentProperties struct {
 	// DatabaseID - Resource ID of the database to store job metadata in.
 	DatabaseID *string `json:"databaseId,omitempty"`
-	// State - The state of the job agent. Possible values include: 'JobAgentStateCreating', 'JobAgentStateReady', 'JobAgentStateUpdating', 'JobAgentStateDeleting', 'JobAgentStateDisabled'
+	// State - READ-ONLY; The state of the job agent. Possible values include: 'JobAgentStateCreating', 'JobAgentStateReady', 'JobAgentStateUpdating', 'JobAgentStateDeleting', 'JobAgentStateDisabled'
 	State JobAgentState `json:"state,omitempty"`
 }
 
@@ -6333,7 +6058,7 @@ type JobAgentsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobAgentsCreateOrUpdateFuture) Result(client JobAgentsClient) (ja JobAgent, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobAgentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6362,7 +6087,7 @@ type JobAgentsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobAgentsDeleteFuture) Result(client JobAgentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobAgentsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6385,7 +6110,7 @@ type JobAgentsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobAgentsUpdateFuture) Result(client JobAgentsClient) (ja JobAgent, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobAgentsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6424,11 +6149,11 @@ type JobCredential struct {
 	autorest.Response `json:"-"`
 	// JobCredentialProperties - Resource properties.
 	*JobCredentialProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6437,15 +6162,6 @@ func (jc JobCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if jc.JobCredentialProperties != nil {
 		objectMap["properties"] = jc.JobCredentialProperties
-	}
-	if jc.ID != nil {
-		objectMap["id"] = jc.ID
-	}
-	if jc.Name != nil {
-		objectMap["name"] = jc.Name
-	}
-	if jc.Type != nil {
-		objectMap["type"] = jc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6504,9 +6220,9 @@ func (jc *JobCredential) UnmarshalJSON(body []byte) error {
 // JobCredentialListResult a list of job credentials.
 type JobCredentialListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]JobCredential `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6660,11 +6376,11 @@ type JobExecution struct {
 	autorest.Response `json:"-"`
 	// JobExecutionProperties - Resource properties.
 	*JobExecutionProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6673,15 +6389,6 @@ func (je JobExecution) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if je.JobExecutionProperties != nil {
 		objectMap["properties"] = je.JobExecutionProperties
-	}
-	if je.ID != nil {
-		objectMap["id"] = je.ID
-	}
-	if je.Name != nil {
-		objectMap["name"] = je.Name
-	}
-	if je.Type != nil {
-		objectMap["type"] = je.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -6740,9 +6447,9 @@ func (je *JobExecution) UnmarshalJSON(body []byte) error {
 // JobExecutionListResult a list of job executions.
 type JobExecutionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]JobExecution `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -6885,31 +6592,31 @@ func NewJobExecutionListResultPage(getNextPage func(context.Context, JobExecutio
 
 // JobExecutionProperties properties for an Azure SQL Database Elastic job execution.
 type JobExecutionProperties struct {
-	// JobVersion - The job version number.
+	// JobVersion - READ-ONLY; The job version number.
 	JobVersion *int32 `json:"jobVersion,omitempty"`
-	// StepName - The job step name.
+	// StepName - READ-ONLY; The job step name.
 	StepName *string `json:"stepName,omitempty"`
-	// StepID - The job step id.
+	// StepID - READ-ONLY; The job step id.
 	StepID *int32 `json:"stepId,omitempty"`
-	// JobExecutionID - The unique identifier of the job execution.
+	// JobExecutionID - READ-ONLY; The unique identifier of the job execution.
 	JobExecutionID *uuid.UUID `json:"jobExecutionId,omitempty"`
-	// Lifecycle - The detailed state of the job execution. Possible values include: 'Created', 'InProgress', 'WaitingForChildJobExecutions', 'WaitingForRetry', 'Succeeded', 'SucceededWithSkipped', 'Failed', 'TimedOut', 'Canceled', 'Skipped'
+	// Lifecycle - READ-ONLY; The detailed state of the job execution. Possible values include: 'Created', 'InProgress', 'WaitingForChildJobExecutions', 'WaitingForRetry', 'Succeeded', 'SucceededWithSkipped', 'Failed', 'TimedOut', 'Canceled', 'Skipped'
 	Lifecycle JobExecutionLifecycle `json:"lifecycle,omitempty"`
-	// ProvisioningState - The ARM provisioning state of the job execution. Possible values include: 'ProvisioningStateCreated', 'ProvisioningStateInProgress', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The ARM provisioning state of the job execution. Possible values include: 'ProvisioningStateCreated', 'ProvisioningStateInProgress', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreateTime - The time that the job execution was created.
+	// CreateTime - READ-ONLY; The time that the job execution was created.
 	CreateTime *date.Time `json:"createTime,omitempty"`
-	// StartTime - The time that the job execution started.
+	// StartTime - READ-ONLY; The time that the job execution started.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The time that the job execution completed.
+	// EndTime - READ-ONLY; The time that the job execution completed.
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// CurrentAttempts - Number of times the job execution has been attempted.
 	CurrentAttempts *int32 `json:"currentAttempts,omitempty"`
-	// CurrentAttemptStartTime - Start time of the current attempt.
+	// CurrentAttemptStartTime - READ-ONLY; Start time of the current attempt.
 	CurrentAttemptStartTime *date.Time `json:"currentAttemptStartTime,omitempty"`
-	// LastMessage - The last status or error message.
+	// LastMessage - READ-ONLY; The last status or error message.
 	LastMessage *string `json:"lastMessage,omitempty"`
-	// Target - The target that this execution is executed on.
+	// Target - READ-ONLY; The target that this execution is executed on.
 	Target *JobExecutionTarget `json:"target,omitempty"`
 }
 
@@ -6923,7 +6630,7 @@ type JobExecutionsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobExecutionsCreateFuture) Result(client JobExecutionsClient) (je JobExecution, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6952,7 +6659,7 @@ type JobExecutionsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobExecutionsCreateOrUpdateFuture) Result(client JobExecutionsClient) (je JobExecution, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -6973,20 +6680,20 @@ func (future *JobExecutionsCreateOrUpdateFuture) Result(client JobExecutionsClie
 
 // JobExecutionTarget the target that a job execution is executed on.
 type JobExecutionTarget struct {
-	// Type - The type of the target. Possible values include: 'JobTargetTypeTargetGroup', 'JobTargetTypeSQLDatabase', 'JobTargetTypeSQLElasticPool', 'JobTargetTypeSQLShardMap', 'JobTargetTypeSQLServer'
+	// Type - READ-ONLY; The type of the target. Possible values include: 'JobTargetTypeTargetGroup', 'JobTargetTypeSQLDatabase', 'JobTargetTypeSQLElasticPool', 'JobTargetTypeSQLShardMap', 'JobTargetTypeSQLServer'
 	Type JobTargetType `json:"type,omitempty"`
-	// ServerName - The server name.
+	// ServerName - READ-ONLY; The server name.
 	ServerName *string `json:"serverName,omitempty"`
-	// DatabaseName - The database name.
+	// DatabaseName - READ-ONLY; The database name.
 	DatabaseName *string `json:"databaseName,omitempty"`
 }
 
 // JobListResult a list of jobs.
 type JobListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]Job `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7131,7 +6838,7 @@ func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobL
 type JobProperties struct {
 	// Description - User-defined description of the job.
 	Description *string `json:"description,omitempty"`
-	// Version - The job version number.
+	// Version - READ-ONLY; The job version number.
 	Version *int32 `json:"version,omitempty"`
 	// Schedule - Schedule properties of the job.
 	Schedule *JobSchedule `json:"schedule,omitempty"`
@@ -7156,11 +6863,11 @@ type JobStep struct {
 	autorest.Response `json:"-"`
 	// JobStepProperties - Resource properties.
 	*JobStepProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7169,15 +6876,6 @@ func (js JobStep) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if js.JobStepProperties != nil {
 		objectMap["properties"] = js.JobStepProperties
-	}
-	if js.ID != nil {
-		objectMap["id"] = js.ID
-	}
-	if js.Name != nil {
-		objectMap["name"] = js.Name
-	}
-	if js.Type != nil {
-		objectMap["type"] = js.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7260,9 +6958,9 @@ type JobStepExecutionOptions struct {
 // JobStepListResult a list of job steps.
 type JobStepListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]JobStep `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7463,11 +7161,11 @@ type JobTargetGroup struct {
 	autorest.Response `json:"-"`
 	// JobTargetGroupProperties - Resource properties.
 	*JobTargetGroupProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7476,15 +7174,6 @@ func (jtg JobTargetGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if jtg.JobTargetGroupProperties != nil {
 		objectMap["properties"] = jtg.JobTargetGroupProperties
-	}
-	if jtg.ID != nil {
-		objectMap["id"] = jtg.ID
-	}
-	if jtg.Name != nil {
-		objectMap["name"] = jtg.Name
-	}
-	if jtg.Type != nil {
-		objectMap["type"] = jtg.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -7543,9 +7232,9 @@ func (jtg *JobTargetGroup) UnmarshalJSON(body []byte) error {
 // JobTargetGroupListResult a list of target groups.
 type JobTargetGroupListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]JobTargetGroup `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7695,20 +7384,20 @@ type JobTargetGroupProperties struct {
 // JobVersion a job version.
 type JobVersion struct {
 	autorest.Response `json:"-"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // JobVersionListResult a list of job versions.
 type JobVersionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]JobVersion `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7852,20 +7541,20 @@ func NewJobVersionListResultPage(getNextPage func(context.Context, JobVersionLis
 // LocationCapabilities the capabilities for a location.
 type LocationCapabilities struct {
 	autorest.Response `json:"-"`
-	// Name - The location name.
+	// Name - READ-ONLY; The location name.
 	Name *string `json:"name,omitempty"`
-	// Status - Azure SQL Database's status for the location. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; Azure SQL Database's status for the location. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// SupportedServerVersions - The list of supported server versions.
+	// SupportedServerVersions - READ-ONLY; The list of supported server versions.
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
 }
 
 // LogicalServerSecurityAlertPolicyListResult a list of the server's security alert policies.
 type LogicalServerSecurityAlertPolicyListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]ServerSecurityAlertPolicy `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8017,7 +7706,7 @@ type ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ManagedBackupShortTermRetentionPoliciesClient) (mbstrp ManagedBackupShortTermRetentionPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8046,7 +7735,7 @@ type ManagedBackupShortTermRetentionPoliciesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedBackupShortTermRetentionPoliciesUpdateFuture) Result(client ManagedBackupShortTermRetentionPoliciesClient) (mbstrp ManagedBackupShortTermRetentionPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8070,11 +7759,11 @@ type ManagedBackupShortTermRetentionPolicy struct {
 	autorest.Response `json:"-"`
 	// ManagedBackupShortTermRetentionPolicyProperties - Resource properties.
 	*ManagedBackupShortTermRetentionPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8083,15 +7772,6 @@ func (mbstrp ManagedBackupShortTermRetentionPolicy) MarshalJSON() ([]byte, error
 	objectMap := make(map[string]interface{})
 	if mbstrp.ManagedBackupShortTermRetentionPolicyProperties != nil {
 		objectMap["properties"] = mbstrp.ManagedBackupShortTermRetentionPolicyProperties
-	}
-	if mbstrp.ID != nil {
-		objectMap["id"] = mbstrp.ID
-	}
-	if mbstrp.Name != nil {
-		objectMap["name"] = mbstrp.Name
-	}
-	if mbstrp.Type != nil {
-		objectMap["type"] = mbstrp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8150,9 +7830,9 @@ func (mbstrp *ManagedBackupShortTermRetentionPolicy) UnmarshalJSON(body []byte) 
 // ManagedBackupShortTermRetentionPolicyListResult a list of short term retention policies.
 type ManagedBackupShortTermRetentionPolicyListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]ManagedBackupShortTermRetentionPolicy `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8310,11 +7990,11 @@ type ManagedDatabase struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8329,15 +8009,6 @@ func (md ManagedDatabase) MarshalJSON() ([]byte, error) {
 	}
 	if md.Tags != nil {
 		objectMap["tags"] = md.Tags
-	}
-	if md.ID != nil {
-		objectMap["id"] = md.ID
-	}
-	if md.Name != nil {
-		objectMap["name"] = md.Name
-	}
-	if md.Type != nil {
-		objectMap["type"] = md.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8414,9 +8085,9 @@ func (md *ManagedDatabase) UnmarshalJSON(body []byte) error {
 // ManagedDatabaseListResult a list of managed databases.
 type ManagedDatabaseListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]ManagedDatabase `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -8561,15 +8232,15 @@ func NewManagedDatabaseListResultPage(getNextPage func(context.Context, ManagedD
 type ManagedDatabaseProperties struct {
 	// Collation - Collation of the managed database.
 	Collation *string `json:"collation,omitempty"`
-	// Status - Status of the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible', 'Updating'
+	// Status - READ-ONLY; Status of the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible', 'Updating'
 	Status ManagedDatabaseStatus `json:"status,omitempty"`
-	// CreationDate - Creation date of the database.
+	// CreationDate - READ-ONLY; Creation date of the database.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// EarliestRestorePoint - Earliest restore point in time for point in time restore.
+	// EarliestRestorePoint - READ-ONLY; Earliest restore point in time for point in time restore.
 	EarliestRestorePoint *date.Time `json:"earliestRestorePoint,omitempty"`
 	// RestorePointInTime - Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
-	// DefaultSecondaryLocation - Geo paired region.
+	// DefaultSecondaryLocation - READ-ONLY; Geo paired region.
 	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
 	// CatalogCollation - Collation of the metadata catalog. Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'
 	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
@@ -8583,7 +8254,7 @@ type ManagedDatabaseProperties struct {
 	RestorableDroppedDatabaseID *string `json:"restorableDroppedDatabaseId,omitempty"`
 	// StorageContainerSasToken - Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.
 	StorageContainerSasToken *string `json:"storageContainerSasToken,omitempty"`
-	// FailoverGroupID - Instance Failover Group resource identifier that this managed database belongs to.
+	// FailoverGroupID - READ-ONLY; Instance Failover Group resource identifier that this managed database belongs to.
 	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
 	// RecoverableDatabaseID - The resource identifier of the recoverable database associated with create operation of this database.
 	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
@@ -8599,7 +8270,7 @@ type ManagedDatabasesCompleteRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedDatabasesCompleteRestoreFuture) Result(client ManagedDatabasesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCompleteRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8622,7 +8293,7 @@ type ManagedDatabasesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedDatabasesCreateOrUpdateFuture) Result(client ManagedDatabasesClient) (md ManagedDatabase, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8651,7 +8322,7 @@ type ManagedDatabasesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedDatabasesDeleteFuture) Result(client ManagedDatabasesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8674,7 +8345,7 @@ type ManagedDatabasesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedDatabasesUpdateFuture) Result(client ManagedDatabasesClient) (md ManagedDatabase, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -8751,7 +8422,7 @@ type ManagedInstance struct {
 	autorest.Response `json:"-"`
 	// Identity - The Azure Active Directory identity of the managed instance.
 	Identity *ResourceIdentity `json:"identity,omitempty"`
-	// Sku - Managed instance sku
+	// Sku - Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5, BC_Gen4, BC_Gen5
 	Sku *Sku `json:"sku,omitempty"`
 	// ManagedInstanceProperties - Resource properties.
 	*ManagedInstanceProperties `json:"properties,omitempty"`
@@ -8759,11 +8430,11 @@ type ManagedInstance struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8784,15 +8455,6 @@ func (mi ManagedInstance) MarshalJSON() ([]byte, error) {
 	}
 	if mi.Tags != nil {
 		objectMap["tags"] = mi.Tags
-	}
-	if mi.ID != nil {
-		objectMap["id"] = mi.ID
-	}
-	if mi.Name != nil {
-		objectMap["name"] = mi.Name
-	}
-	if mi.Type != nil {
-		objectMap["type"] = mi.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -8887,9 +8549,9 @@ func (mi *ManagedInstance) UnmarshalJSON(body []byte) error {
 // ManagedInstanceListResult a list of managed instances.
 type ManagedInstanceListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]ManagedInstance `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -9032,7 +8694,13 @@ func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedI
 
 // ManagedInstanceProperties the properties of a managed instance.
 type ManagedInstanceProperties struct {
-	// FullyQualifiedDomainName - The fully qualified domain name of the managed instance.
+	// ManagedInstanceCreateMode - Specifies the mode of database creation.
+	//
+	// Default: Regular instance creation.
+	//
+	// Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. Possible values include: 'ManagedServerCreateModeDefault', 'ManagedServerCreateModePointInTimeRestore'
+	ManagedInstanceCreateMode ManagedServerCreateMode `json:"managedInstanceCreateMode,omitempty"`
+	// FullyQualifiedDomainName - READ-ONLY; The fully qualified domain name of the managed instance.
 	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
 	// AdministratorLogin - Administrator username for the managed instance. Can only be specified when the managed instance is being created (and is required for creation).
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
@@ -9040,24 +8708,28 @@ type ManagedInstanceProperties struct {
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 	// SubnetID - Subnet resource ID for the managed instance.
 	SubnetID *string `json:"subnetId,omitempty"`
-	// State - The state of the managed instance.
+	// State - READ-ONLY; The state of the managed instance.
 	State *string `json:"state,omitempty"`
-	// LicenseType - The license type. Possible values are 'LicenseIncluded' and 'BasePrice'.
-	LicenseType *string `json:"licenseType,omitempty"`
-	// VCores - The number of VCores.
+	// LicenseType - The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). Possible values include: 'LicenseIncluded', 'BasePrice'
+	LicenseType ManagedInstanceLicenseType `json:"licenseType,omitempty"`
+	// VCores - The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
 	VCores *int32 `json:"vCores,omitempty"`
-	// StorageSizeInGB - The maximum storage size in GB.
+	// StorageSizeInGB - Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only.
 	StorageSizeInGB *int32 `json:"storageSizeInGB,omitempty"`
 	// Collation - Collation of the managed instance.
 	Collation *string `json:"collation,omitempty"`
-	// DNSZone - The Dns Zone that the managed instance is in.
+	// DNSZone - READ-ONLY; The Dns Zone that the managed instance is in.
 	DNSZone *string `json:"dnsZone,omitempty"`
 	// DNSZonePartner - The resource id of another managed instance whose DNS zone this managed instance will share after creation.
 	DNSZonePartner *string `json:"dnsZonePartner,omitempty"`
 	// PublicDataEndpointEnabled - Whether or not the public data endpoint is enabled.
 	PublicDataEndpointEnabled *bool `json:"publicDataEndpointEnabled,omitempty"`
-	// ProxyOverride - Connection type used for connecting to the instance. Possible values include: 'ManagedInstanceProxyOverrideProxy', 'ManagedInstanceProxyOverrideRedirect', 'ManagedInstanceProxyOverrideDefault'
-	ProxyOverride ManagedInstanceProxyOverride `json:"proxyOverride,omitempty"`
+	// SourceManagedInstanceID - The resource identifier of the source managed instance associated with create operation of this instance.
+	SourceManagedInstanceID *string `json:"sourceManagedInstanceId,omitempty"`
+	// RestorePointInTime - Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
+	// ProxyOverride - Proxy override of the managed instance.
+	ProxyOverride *string `json:"proxyOverride,omitempty"`
 	// TimezoneID - Id of the timezone. Allowed values are timezones supported by Windows.
 	// Windows keeps details on supported timezones, including the id, in registry under
 	// KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
@@ -9065,6 +8737,8 @@ type ManagedInstanceProperties struct {
 	// List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
 	// An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
 	TimezoneID *string `json:"timezoneId,omitempty"`
+	// InstancePoolID - The Id of the instance pool this managed server belongs to.
+	InstancePoolID *string `json:"instancePoolId,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -9077,7 +8751,7 @@ type ManagedInstancesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedInstancesCreateOrUpdateFuture) Result(client ManagedInstancesClient) (mi ManagedInstance, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9106,7 +8780,7 @@ type ManagedInstancesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedInstancesDeleteFuture) Result(client ManagedInstancesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9129,7 +8803,7 @@ type ManagedInstancesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ManagedInstancesUpdateFuture) Result(client ManagedInstancesClient) (mi ManagedInstance, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9217,49 +8891,49 @@ func (miu *ManagedInstanceUpdate) UnmarshalJSON(body []byte) error {
 
 // MaxSizeCapability the maximum size limits for a database.
 type MaxSizeCapability struct {
-	// Limit - The maximum size of the database (see 'unit' for the units).
+	// Limit - READ-ONLY; The maximum size of the database (see 'unit' for the units).
 	Limit *int64 `json:"limit,omitempty"`
-	// Unit - The units that the limit is expressed in. Possible values include: 'Megabytes', 'Gigabytes', 'Terabytes', 'Petabytes'
+	// Unit - READ-ONLY; The units that the limit is expressed in. Possible values include: 'Megabytes', 'Gigabytes', 'Terabytes', 'Petabytes'
 	Unit MaxSizeUnits `json:"unit,omitempty"`
-	// Status - The status of the maximum size capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the maximum size capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 }
 
 // Metric database metrics.
 type Metric struct {
-	// StartTime - The start time for the metric (ISO-8601 format).
+	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The end time for the metric (ISO-8601 format).
+	// EndTime - READ-ONLY; The end time for the metric (ISO-8601 format).
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TimeGrain - The time step to be used to summarize the metric values.
+	// TimeGrain - READ-ONLY; The time step to be used to summarize the metric values.
 	TimeGrain *string `json:"timeGrain,omitempty"`
-	// Unit - The unit of the metric. Possible values include: 'UnitTypeCount', 'UnitTypeBytes', 'UnitTypeSeconds', 'UnitTypePercent', 'UnitTypeCountPerSecond', 'UnitTypeBytesPerSecond'
+	// Unit - READ-ONLY; The unit of the metric. Possible values include: 'UnitTypeCount', 'UnitTypeBytes', 'UnitTypeSeconds', 'UnitTypePercent', 'UnitTypeCountPerSecond', 'UnitTypeBytesPerSecond'
 	Unit UnitType `json:"unit,omitempty"`
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// MetricValues - The metric values for the specified time window and timestep.
+	// MetricValues - READ-ONLY; The metric values for the specified time window and timestep.
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
 // MetricAvailability a metric availability value.
 type MetricAvailability struct {
-	// Retention - The length of retention for the database metric.
+	// Retention - READ-ONLY; The length of retention for the database metric.
 	Retention *string `json:"retention,omitempty"`
-	// TimeGrain - The granularity of the database metric.
+	// TimeGrain - READ-ONLY; The granularity of the database metric.
 	TimeGrain *string `json:"timeGrain,omitempty"`
 }
 
 // MetricDefinition a database metric definition.
 type MetricDefinition struct {
-	// Name - The name information for the metric.
+	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
-	// PrimaryAggregationType - The primary aggregation type defining how metric values are displayed. Possible values include: 'None', 'Average', 'Count', 'Minimum', 'Maximum', 'Total'
+	// PrimaryAggregationType - READ-ONLY; The primary aggregation type defining how metric values are displayed. Possible values include: 'None', 'Average', 'Count', 'Minimum', 'Maximum', 'Total'
 	PrimaryAggregationType PrimaryAggregationType `json:"primaryAggregationType,omitempty"`
-	// ResourceURI - The resource uri of the database.
+	// ResourceURI - READ-ONLY; The resource uri of the database.
 	ResourceURI *string `json:"resourceUri,omitempty"`
-	// Unit - The unit of the metric. Possible values include: 'UnitDefinitionTypeCount', 'UnitDefinitionTypeBytes', 'UnitDefinitionTypeSeconds', 'UnitDefinitionTypePercent', 'UnitDefinitionTypeCountPerSecond', 'UnitDefinitionTypeBytesPerSecond'
+	// Unit - READ-ONLY; The unit of the metric. Possible values include: 'UnitDefinitionTypeCount', 'UnitDefinitionTypeBytes', 'UnitDefinitionTypeSeconds', 'UnitDefinitionTypePercent', 'UnitDefinitionTypeCountPerSecond', 'UnitDefinitionTypeBytesPerSecond'
 	Unit UnitDefinitionType `json:"unit,omitempty"`
-	// MetricAvailabilities - The list of database metric availabilities for the metric.
+	// MetricAvailabilities - READ-ONLY; The list of database metric availabilities for the metric.
 	MetricAvailabilities *[]MetricAvailability `json:"metricAvailabilities,omitempty"`
 }
 
@@ -9279,88 +8953,76 @@ type MetricListResult struct {
 
 // MetricName a database metric name.
 type MetricName struct {
-	// Value - The name of the database metric.
+	// Value - READ-ONLY; The name of the database metric.
 	Value *string `json:"value,omitempty"`
-	// LocalizedValue - The friendly name of the database metric.
+	// LocalizedValue - READ-ONLY; The friendly name of the database metric.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // MetricValue represents database metrics.
 type MetricValue struct {
-	// Count - The number of values for the metric.
+	// Count - READ-ONLY; The number of values for the metric.
 	Count *float64 `json:"count,omitempty"`
-	// Average - The average value of the metric.
+	// Average - READ-ONLY; The average value of the metric.
 	Average *float64 `json:"average,omitempty"`
-	// Maximum - The max value of the metric.
+	// Maximum - READ-ONLY; The max value of the metric.
 	Maximum *float64 `json:"maximum,omitempty"`
-	// Minimum - The min value of the metric.
+	// Minimum - READ-ONLY; The min value of the metric.
 	Minimum *float64 `json:"minimum,omitempty"`
-	// Timestamp - The metric timestamp (ISO-8601 format).
+	// Timestamp - READ-ONLY; The metric timestamp (ISO-8601 format).
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Total - The total value of the metric.
+	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
 }
 
 // Operation SQL REST API operation definition.
 type Operation struct {
-	// Name - The name of the operation being performed on this particular object.
+	// Name - READ-ONLY; The name of the operation being performed on this particular object.
 	Name *string `json:"name,omitempty"`
-	// Display - The localized display information for this particular operation / action.
+	// Display - READ-ONLY; The localized display information for this particular operation / action.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - The intended executor of the operation. Possible values include: 'OperationOriginUser', 'OperationOriginSystem'
+	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'OperationOriginUser', 'OperationOriginSystem'
 	Origin OperationOrigin `json:"origin,omitempty"`
-	// Properties - Additional descriptions for the operation.
+	// Properties - READ-ONLY; Additional descriptions for the operation.
 	Properties map[string]interface{} `json:"properties"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if o.Name != nil {
-		objectMap["name"] = o.Name
-	}
-	if o.Display != nil {
-		objectMap["display"] = o.Display
-	}
-	if o.Origin != "" {
-		objectMap["origin"] = o.Origin
-	}
-	if o.Properties != nil {
-		objectMap["properties"] = o.Properties
-	}
 	return json.Marshal(objectMap)
 }
 
 // OperationDisplay display metadata associated with the operation.
 type OperationDisplay struct {
-	// Provider - The localized friendly form of the resource provider name.
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The localized friendly form of the resource type related to this action/operation.
+	// Resource - READ-ONLY; The localized friendly form of the resource type related to this action/operation.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The localized friendly name for the operation.
+	// Operation - READ-ONLY; The localized friendly name for the operation.
 	Operation *string `json:"operation,omitempty"`
-	// Description - The localized friendly description for the operation.
+	// Description - READ-ONLY; The localized friendly description for the operation.
 	Description *string `json:"description,omitempty"`
 }
 
 // OperationImpact the impact of an operation, both in absolute and relative terms.
 type OperationImpact struct {
-	// Name - The name of the impact dimension.
+	// Name - READ-ONLY; The name of the impact dimension.
 	Name *string `json:"name,omitempty"`
-	// Unit - The unit in which estimated impact to dimension is measured.
+	// Unit - READ-ONLY; The unit in which estimated impact to dimension is measured.
 	Unit *string `json:"unit,omitempty"`
-	// ChangeValueAbsolute - The absolute impact to dimension.
+	// ChangeValueAbsolute - READ-ONLY; The absolute impact to dimension.
 	ChangeValueAbsolute *float64 `json:"changeValueAbsolute,omitempty"`
-	// ChangeValueRelative - The relative impact to dimension (null if not applicable)
+	// ChangeValueRelative - READ-ONLY; The relative impact to dimension (null if not applicable)
 	ChangeValueRelative *float64 `json:"changeValueRelative,omitempty"`
 }
 
 // OperationListResult result of the request to list SQL operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -9505,57 +9167,45 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 type PartnerInfo struct {
 	// ID - Resource identifier of the partner server.
 	ID *string `json:"id,omitempty"`
-	// Location - Geo location of the partner server.
+	// Location - READ-ONLY; Geo location of the partner server.
 	Location *string `json:"location,omitempty"`
-	// ReplicationRole - Replication role of the partner server. Possible values include: 'Primary', 'Secondary'
+	// ReplicationRole - READ-ONLY; Replication role of the partner server. Possible values include: 'Primary', 'Secondary'
 	ReplicationRole FailoverGroupReplicationRole `json:"replicationRole,omitempty"`
 }
 
 // PerformanceLevel a possible performance level of a service objective capability.
 type PerformanceLevel struct {
-	// Unit - Unit type used to measure service objective performance level. Possible values include: 'DTU'
+	// Unit - READ-ONLY; Unit type used to measure service objective performance level. Possible values include: 'DTU'
 	Unit PerformanceLevelUnit `json:"unit,omitempty"`
-	// Value - Performance level value.
+	// Value - READ-ONLY; Performance level value.
 	Value *int32 `json:"value,omitempty"`
 }
 
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // RecommendedIndex represents a database recommended index.
 type RecommendedIndex struct {
-	// RecommendedIndexProperties - The properties representing the resource.
+	// RecommendedIndexProperties - READ-ONLY; The properties representing the resource.
 	*RecommendedIndexProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RecommendedIndex.
 func (ri RecommendedIndex) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ri.RecommendedIndexProperties != nil {
-		objectMap["properties"] = ri.RecommendedIndexProperties
-	}
-	if ri.ID != nil {
-		objectMap["id"] = ri.ID
-	}
-	if ri.Name != nil {
-		objectMap["name"] = ri.Name
-	}
-	if ri.Type != nil {
-		objectMap["type"] = ri.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -9612,29 +9262,29 @@ func (ri *RecommendedIndex) UnmarshalJSON(body []byte) error {
 
 // RecommendedIndexProperties represents the properties of a database recommended index.
 type RecommendedIndexProperties struct {
-	// Action - The proposed index action. You can create a missing index, drop an unused index, or rebuild an existing index to improve its performance. Possible values include: 'Create', 'Drop', 'Rebuild'
+	// Action - READ-ONLY; The proposed index action. You can create a missing index, drop an unused index, or rebuild an existing index to improve its performance. Possible values include: 'Create', 'Drop', 'Rebuild'
 	Action RecommendedIndexAction `json:"action,omitempty"`
-	// State - The current recommendation state. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'
+	// State - READ-ONLY; The current recommendation state. Possible values include: 'Active', 'Pending', 'Executing', 'Verifying', 'PendingRevert', 'Reverting', 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'
 	State RecommendedIndexState `json:"state,omitempty"`
-	// Created - The UTC datetime showing when this resource was created (ISO8601 format).
+	// Created - READ-ONLY; The UTC datetime showing when this resource was created (ISO8601 format).
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The UTC datetime of when was this resource last changed (ISO8601 format).
+	// LastModified - READ-ONLY; The UTC datetime of when was this resource last changed (ISO8601 format).
 	LastModified *date.Time `json:"lastModified,omitempty"`
-	// IndexType - The type of index (CLUSTERED, NONCLUSTERED, COLUMNSTORE, CLUSTERED COLUMNSTORE). Possible values include: 'CLUSTERED', 'NONCLUSTERED', 'COLUMNSTORE', 'CLUSTEREDCOLUMNSTORE'
+	// IndexType - READ-ONLY; The type of index (CLUSTERED, NONCLUSTERED, COLUMNSTORE, CLUSTERED COLUMNSTORE). Possible values include: 'CLUSTERED', 'NONCLUSTERED', 'COLUMNSTORE', 'CLUSTEREDCOLUMNSTORE'
 	IndexType RecommendedIndexType `json:"indexType,omitempty"`
-	// Schema - The schema where table to build index over resides
+	// Schema - READ-ONLY; The schema where table to build index over resides
 	Schema *string `json:"schema,omitempty"`
-	// Table - The table on which to build index.
+	// Table - READ-ONLY; The table on which to build index.
 	Table *string `json:"table,omitempty"`
-	// Columns - Columns over which to build index
+	// Columns - READ-ONLY; Columns over which to build index
 	Columns *[]string `json:"columns,omitempty"`
-	// IncludedColumns - The list of column names to be included in the index
+	// IncludedColumns - READ-ONLY; The list of column names to be included in the index
 	IncludedColumns *[]string `json:"includedColumns,omitempty"`
-	// IndexScript - The full build index script
+	// IndexScript - READ-ONLY; The full build index script
 	IndexScript *string `json:"indexScript,omitempty"`
-	// EstimatedImpact - The estimated impact of doing recommended index action.
+	// EstimatedImpact - READ-ONLY; The estimated impact of doing recommended index action.
 	EstimatedImpact *[]OperationImpact `json:"estimatedImpact,omitempty"`
-	// ReportedImpact - The values reported after index action is complete.
+	// ReportedImpact - READ-ONLY; The values reported after index action is complete.
 	ReportedImpact *[]OperationImpact `json:"reportedImpact,omitempty"`
 }
 
@@ -9643,11 +9293,11 @@ type RecoverableDatabase struct {
 	autorest.Response `json:"-"`
 	// RecoverableDatabaseProperties - The properties of a recoverable database
 	*RecoverableDatabaseProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -9656,15 +9306,6 @@ func (rd RecoverableDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rd.RecoverableDatabaseProperties != nil {
 		objectMap["properties"] = rd.RecoverableDatabaseProperties
-	}
-	if rd.ID != nil {
-		objectMap["id"] = rd.ID
-	}
-	if rd.Name != nil {
-		objectMap["name"] = rd.Name
-	}
-	if rd.Type != nil {
-		objectMap["type"] = rd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9729,48 +9370,36 @@ type RecoverableDatabaseListResult struct {
 
 // RecoverableDatabaseProperties the properties of a recoverable database
 type RecoverableDatabaseProperties struct {
-	// Edition - The edition of the database
+	// Edition - READ-ONLY; The edition of the database
 	Edition *string `json:"edition,omitempty"`
-	// ServiceLevelObjective - The service level objective name of the database
+	// ServiceLevelObjective - READ-ONLY; The service level objective name of the database
 	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty"`
-	// ElasticPoolName - The elastic pool name of the database
+	// ElasticPoolName - READ-ONLY; The elastic pool name of the database
 	ElasticPoolName *string `json:"elasticPoolName,omitempty"`
-	// LastAvailableBackupDate - The last available backup date of the database (ISO8601 format)
+	// LastAvailableBackupDate - READ-ONLY; The last available backup date of the database (ISO8601 format)
 	LastAvailableBackupDate *date.Time `json:"lastAvailableBackupDate,omitempty"`
 }
 
 // ReplicationLink represents a database replication link.
 type ReplicationLink struct {
 	autorest.Response `json:"-"`
-	// Location - Location of the server that contains this firewall rule.
+	// Location - READ-ONLY; Location of the server that contains this firewall rule.
 	Location *string `json:"location,omitempty"`
 	// ReplicationLinkProperties - The properties representing the resource.
 	*ReplicationLinkProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ReplicationLink.
 func (rl ReplicationLink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rl.Location != nil {
-		objectMap["location"] = rl.Location
-	}
 	if rl.ReplicationLinkProperties != nil {
 		objectMap["properties"] = rl.ReplicationLinkProperties
-	}
-	if rl.ID != nil {
-		objectMap["id"] = rl.ID
-	}
-	if rl.Name != nil {
-		objectMap["name"] = rl.Name
-	}
-	if rl.Type != nil {
-		objectMap["type"] = rl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -9844,25 +9473,25 @@ type ReplicationLinkListResult struct {
 
 // ReplicationLinkProperties represents the properties of a database replication link.
 type ReplicationLinkProperties struct {
-	// IsTerminationAllowed - Legacy value indicating whether termination is allowed.  Currently always returns true.
+	// IsTerminationAllowed - READ-ONLY; Legacy value indicating whether termination is allowed.  Currently always returns true.
 	IsTerminationAllowed *bool `json:"isTerminationAllowed,omitempty"`
-	// ReplicationMode - Replication mode of this replication link.
+	// ReplicationMode - READ-ONLY; Replication mode of this replication link.
 	ReplicationMode *string `json:"replicationMode,omitempty"`
-	// PartnerServer - The name of the server hosting the partner database.
+	// PartnerServer - READ-ONLY; The name of the server hosting the partner database.
 	PartnerServer *string `json:"partnerServer,omitempty"`
-	// PartnerDatabase - The name of the partner database.
+	// PartnerDatabase - READ-ONLY; The name of the partner database.
 	PartnerDatabase *string `json:"partnerDatabase,omitempty"`
-	// PartnerLocation - The Azure Region of the partner database.
+	// PartnerLocation - READ-ONLY; The Azure Region of the partner database.
 	PartnerLocation *string `json:"partnerLocation,omitempty"`
-	// Role - The role of the database in the replication link. Possible values include: 'ReplicationRolePrimary', 'ReplicationRoleSecondary', 'ReplicationRoleNonReadableSecondary', 'ReplicationRoleSource', 'ReplicationRoleCopy'
+	// Role - READ-ONLY; The role of the database in the replication link. Possible values include: 'ReplicationRolePrimary', 'ReplicationRoleSecondary', 'ReplicationRoleNonReadableSecondary', 'ReplicationRoleSource', 'ReplicationRoleCopy'
 	Role ReplicationRole `json:"role,omitempty"`
-	// PartnerRole - The role of the partner database in the replication link. Possible values include: 'ReplicationRolePrimary', 'ReplicationRoleSecondary', 'ReplicationRoleNonReadableSecondary', 'ReplicationRoleSource', 'ReplicationRoleCopy'
+	// PartnerRole - READ-ONLY; The role of the partner database in the replication link. Possible values include: 'ReplicationRolePrimary', 'ReplicationRoleSecondary', 'ReplicationRoleNonReadableSecondary', 'ReplicationRoleSource', 'ReplicationRoleCopy'
 	PartnerRole ReplicationRole `json:"partnerRole,omitempty"`
-	// StartTime - The start time for the replication link.
+	// StartTime - READ-ONLY; The start time for the replication link.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// PercentComplete - The percentage of seeding complete for the replication link.
+	// PercentComplete - READ-ONLY; The percentage of seeding complete for the replication link.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// ReplicationState - The replication state for the replication link. Possible values include: 'PENDING', 'SEEDING', 'CATCHUP', 'SUSPENDED'
+	// ReplicationState - READ-ONLY; The replication state for the replication link. Possible values include: 'PENDING', 'SEEDING', 'CATCHUP', 'SUSPENDED'
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
 }
 
@@ -9876,7 +9505,7 @@ type ReplicationLinksFailoverAllowDataLossFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ReplicationLinksFailoverAllowDataLossFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9899,7 +9528,7 @@ type ReplicationLinksFailoverFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ReplicationLinksFailoverFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -9914,21 +9543,21 @@ func (future *ReplicationLinksFailoverFuture) Result(client ReplicationLinksClie
 
 // Resource ARM resource.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // ResourceIdentity azure Active Directory identity configuration for a resource.
 type ResourceIdentity struct {
-	// PrincipalID - The Azure Active Directory principal id.
+	// PrincipalID - READ-ONLY; The Azure Active Directory principal id.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
 	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'SystemAssigned'
 	Type IdentityType `json:"type,omitempty"`
-	// TenantID - The Azure Active Directory tenant id.
+	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
@@ -9941,35 +9570,23 @@ type ResourceMoveDefinition struct {
 // RestorableDroppedDatabase a restorable dropped database
 type RestorableDroppedDatabase struct {
 	autorest.Response `json:"-"`
-	// Location - The geo-location where the resource lives
+	// Location - READ-ONLY; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 	// RestorableDroppedDatabaseProperties - The properties of a restorable dropped database
 	*RestorableDroppedDatabaseProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorableDroppedDatabase.
 func (rdd RestorableDroppedDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rdd.Location != nil {
-		objectMap["location"] = rdd.Location
-	}
 	if rdd.RestorableDroppedDatabaseProperties != nil {
 		objectMap["properties"] = rdd.RestorableDroppedDatabaseProperties
-	}
-	if rdd.ID != nil {
-		objectMap["id"] = rdd.ID
-	}
-	if rdd.Name != nil {
-		objectMap["name"] = rdd.Name
-	}
-	if rdd.Type != nil {
-		objectMap["type"] = rdd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10043,21 +9660,21 @@ type RestorableDroppedDatabaseListResult struct {
 
 // RestorableDroppedDatabaseProperties the properties of a restorable dropped database
 type RestorableDroppedDatabaseProperties struct {
-	// DatabaseName - The name of the database
+	// DatabaseName - READ-ONLY; The name of the database
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// Edition - The edition of the database
+	// Edition - READ-ONLY; The edition of the database
 	Edition *string `json:"edition,omitempty"`
-	// MaxSizeBytes - The max size in bytes of the database
+	// MaxSizeBytes - READ-ONLY; The max size in bytes of the database
 	MaxSizeBytes *string `json:"maxSizeBytes,omitempty"`
-	// ServiceLevelObjective - The service level objective name of the database
+	// ServiceLevelObjective - READ-ONLY; The service level objective name of the database
 	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty"`
-	// ElasticPoolName - The elastic pool name of the database
+	// ElasticPoolName - READ-ONLY; The elastic pool name of the database
 	ElasticPoolName *string `json:"elasticPoolName,omitempty"`
-	// CreationDate - The creation date of the database (ISO8601 format)
+	// CreationDate - READ-ONLY; The creation date of the database (ISO8601 format)
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// DeletionDate - The deletion date of the database (ISO8601 format)
+	// DeletionDate - READ-ONLY; The deletion date of the database (ISO8601 format)
 	DeletionDate *date.Time `json:"deletionDate,omitempty"`
-	// EarliestRestoreDate - The earliest restore date of the database (ISO8601 format)
+	// EarliestRestoreDate - READ-ONLY; The earliest restore date of the database (ISO8601 format)
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 }
 
@@ -10070,11 +9687,11 @@ type RestorableDroppedManagedDatabase struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10089,15 +9706,6 @@ func (rdmd RestorableDroppedManagedDatabase) MarshalJSON() ([]byte, error) {
 	}
 	if rdmd.Tags != nil {
 		objectMap["tags"] = rdmd.Tags
-	}
-	if rdmd.ID != nil {
-		objectMap["id"] = rdmd.ID
-	}
-	if rdmd.Name != nil {
-		objectMap["name"] = rdmd.Name
-	}
-	if rdmd.Type != nil {
-		objectMap["type"] = rdmd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10174,9 +9782,9 @@ func (rdmd *RestorableDroppedManagedDatabase) UnmarshalJSON(body []byte) error {
 // RestorableDroppedManagedDatabaseListResult a list of restorable dropped managed databases.
 type RestorableDroppedManagedDatabaseListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]RestorableDroppedManagedDatabase `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -10321,48 +9929,36 @@ func NewRestorableDroppedManagedDatabaseListResultPage(getNextPage func(context.
 
 // RestorableDroppedManagedDatabaseProperties the restorable dropped managed database's properties.
 type RestorableDroppedManagedDatabaseProperties struct {
-	// DatabaseName - The name of the database.
+	// DatabaseName - READ-ONLY; The name of the database.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// CreationDate - The creation date of the database (ISO8601 format).
+	// CreationDate - READ-ONLY; The creation date of the database (ISO8601 format).
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// DeletionDate - The deletion date of the database (ISO8601 format).
+	// DeletionDate - READ-ONLY; The deletion date of the database (ISO8601 format).
 	DeletionDate *date.Time `json:"deletionDate,omitempty"`
-	// EarliestRestoreDate - The earliest restore date of the database (ISO8601 format).
+	// EarliestRestoreDate - READ-ONLY; The earliest restore date of the database (ISO8601 format).
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 }
 
 // RestorePoint database restore points.
 type RestorePoint struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// RestorePointProperties - Resource properties.
 	*RestorePointProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorePoint.
 func (rp RestorePoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rp.Location != nil {
-		objectMap["location"] = rp.Location
-	}
 	if rp.RestorePointProperties != nil {
 		objectMap["properties"] = rp.RestorePointProperties
-	}
-	if rp.ID != nil {
-		objectMap["id"] = rp.ID
-	}
-	if rp.Name != nil {
-		objectMap["name"] = rp.Name
-	}
-	if rp.Type != nil {
-		objectMap["type"] = rp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10430,21 +10026,21 @@ func (rp *RestorePoint) UnmarshalJSON(body []byte) error {
 // RestorePointListResult a list of long term retention backups.
 type RestorePointListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]RestorePoint `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // RestorePointProperties properties of a database restore point
 type RestorePointProperties struct {
-	// RestorePointType - The type of restore point. Possible values include: 'CONTINUOUS', 'DISCRETE'
+	// RestorePointType - READ-ONLY; The type of restore point. Possible values include: 'CONTINUOUS', 'DISCRETE'
 	RestorePointType RestorePointType `json:"restorePointType,omitempty"`
-	// EarliestRestoreDate - The earliest time to which this database can be restored
+	// EarliestRestoreDate - READ-ONLY; The earliest time to which this database can be restored
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
-	// RestorePointCreationDate - The time the backup was taken
+	// RestorePointCreationDate - READ-ONLY; The time the backup was taken
 	RestorePointCreationDate *date.Time `json:"restorePointCreationDate,omitempty"`
-	// RestorePointLabel - The label of restore point for backup request by user
+	// RestorePointLabel - READ-ONLY; The label of restore point for backup request by user
 	RestorePointLabel *string `json:"restorePointLabel,omitempty"`
 }
 
@@ -10458,7 +10054,7 @@ type RestorePointsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RestorePointsCreateFuture) Result(client RestorePointsClient) (rp RestorePoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RestorePointsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -10493,7 +10089,7 @@ type SecurityAlertPolicyProperties struct {
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RetentionDays - Specifies the number of days to keep in the Threat Detection audit logs.
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
-	// CreationTime - Specifies the UTC creation time of the policy.
+	// CreationTime - READ-ONLY; Specifies the UTC creation time of the policy.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
@@ -10502,11 +10098,11 @@ type SensitivityLabel struct {
 	autorest.Response `json:"-"`
 	// SensitivityLabelProperties - Resource properties.
 	*SensitivityLabelProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10515,15 +10111,6 @@ func (sl SensitivityLabel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sl.SensitivityLabelProperties != nil {
 		objectMap["properties"] = sl.SensitivityLabelProperties
-	}
-	if sl.ID != nil {
-		objectMap["id"] = sl.ID
-	}
-	if sl.Name != nil {
-		objectMap["name"] = sl.Name
-	}
-	if sl.Type != nil {
-		objectMap["type"] = sl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10582,9 +10169,9 @@ func (sl *SensitivityLabel) UnmarshalJSON(body []byte) error {
 // SensitivityLabelListResult a list of sensitivity labels.
 type SensitivityLabelListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SensitivityLabel `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -10735,7 +10322,7 @@ type SensitivityLabelProperties struct {
 	InformationType *string `json:"informationType,omitempty"`
 	// InformationTypeID - The information type ID.
 	InformationTypeID *string `json:"informationTypeId,omitempty"`
-	// IsDisabled - Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
+	// IsDisabled - READ-ONLY; Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
 	IsDisabled *bool `json:"isDisabled,omitempty"`
 }
 
@@ -10744,7 +10331,7 @@ type Server struct {
 	autorest.Response `json:"-"`
 	// Identity - The Azure Active Directory identity of the server.
 	Identity *ResourceIdentity `json:"identity,omitempty"`
-	// Kind - Kind of sql server. This is metadata used for the Azure portal experience.
+	// Kind - READ-ONLY; Kind of sql server. This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
 	// ServerProperties - Resource properties.
 	*ServerProperties `json:"properties,omitempty"`
@@ -10752,11 +10339,11 @@ type Server struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10766,9 +10353,6 @@ func (s Server) MarshalJSON() ([]byte, error) {
 	if s.Identity != nil {
 		objectMap["identity"] = s.Identity
 	}
-	if s.Kind != nil {
-		objectMap["kind"] = s.Kind
-	}
 	if s.ServerProperties != nil {
 		objectMap["properties"] = s.ServerProperties
 	}
@@ -10777,15 +10361,6 @@ func (s Server) MarshalJSON() ([]byte, error) {
 	}
 	if s.Tags != nil {
 		objectMap["tags"] = s.Tags
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10901,11 +10476,11 @@ type ServerAutomaticTuning struct {
 	autorest.Response `json:"-"`
 	// AutomaticTuningServerProperties - Resource properties.
 	*AutomaticTuningServerProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10914,15 +10489,6 @@ func (sat ServerAutomaticTuning) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sat.AutomaticTuningServerProperties != nil {
 		objectMap["properties"] = sat.AutomaticTuningServerProperties
-	}
-	if sat.ID != nil {
-		objectMap["id"] = sat.ID
-	}
-	if sat.Name != nil {
-		objectMap["name"] = sat.Name
-	}
-	if sat.Type != nil {
-		objectMap["type"] = sat.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -10983,11 +10549,11 @@ type ServerAzureADAdministrator struct {
 	autorest.Response `json:"-"`
 	// ServerAdministratorProperties - The properties of the resource.
 	*ServerAdministratorProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -10996,15 +10562,6 @@ func (saaa ServerAzureADAdministrator) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if saaa.ServerAdministratorProperties != nil {
 		objectMap["properties"] = saaa.ServerAdministratorProperties
-	}
-	if saaa.ID != nil {
-		objectMap["id"] = saaa.ID
-	}
-	if saaa.Name != nil {
-		objectMap["name"] = saaa.Name
-	}
-	if saaa.Type != nil {
-		objectMap["type"] = saaa.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11070,7 +10627,7 @@ type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerAzureADAdministratorsCreateOrUpdateFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11099,7 +10656,7 @@ type ServerAzureADAdministratorsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11128,7 +10685,7 @@ type ServerBlobAuditingPoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerBlobAuditingPoliciesCreateOrUpdateFuture) Result(client ServerBlobAuditingPoliciesClient) (sbap ServerBlobAuditingPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11152,11 +10709,11 @@ type ServerBlobAuditingPolicy struct {
 	autorest.Response `json:"-"`
 	// ServerBlobAuditingPolicyProperties - Resource properties.
 	*ServerBlobAuditingPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11165,15 +10722,6 @@ func (sbap ServerBlobAuditingPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sbap.ServerBlobAuditingPolicyProperties != nil {
 		objectMap["properties"] = sbap.ServerBlobAuditingPolicyProperties
-	}
-	if sbap.ID != nil {
-		objectMap["id"] = sbap.ID
-	}
-	if sbap.Name != nil {
-		objectMap["name"] = sbap.Name
-	}
-	if sbap.Type != nil {
-		objectMap["type"] = sbap.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11320,15 +10868,15 @@ type ServerCommunicationLink struct {
 	autorest.Response `json:"-"`
 	// ServerCommunicationLinkProperties - The properties of resource.
 	*ServerCommunicationLinkProperties `json:"properties,omitempty"`
-	// Location - Communication link location.
+	// Location - READ-ONLY; Communication link location.
 	Location *string `json:"location,omitempty"`
-	// Kind - Communication link kind.  This property is used for Azure Portal metadata.
+	// Kind - READ-ONLY; Communication link kind.  This property is used for Azure Portal metadata.
 	Kind *string `json:"kind,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11337,21 +10885,6 @@ func (scl ServerCommunicationLink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if scl.ServerCommunicationLinkProperties != nil {
 		objectMap["properties"] = scl.ServerCommunicationLinkProperties
-	}
-	if scl.Location != nil {
-		objectMap["location"] = scl.Location
-	}
-	if scl.Kind != nil {
-		objectMap["kind"] = scl.Kind
-	}
-	if scl.ID != nil {
-		objectMap["id"] = scl.ID
-	}
-	if scl.Name != nil {
-		objectMap["name"] = scl.Name
-	}
-	if scl.Type != nil {
-		objectMap["type"] = scl.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11434,7 +10967,7 @@ type ServerCommunicationLinkListResult struct {
 
 // ServerCommunicationLinkProperties the properties of a server communication link.
 type ServerCommunicationLinkProperties struct {
-	// State - The state.
+	// State - READ-ONLY; The state.
 	State *string `json:"state,omitempty"`
 	// PartnerServer - The name of the partner server.
 	PartnerServer *string `json:"partnerServer,omitempty"`
@@ -11450,7 +10983,7 @@ type ServerCommunicationLinksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerCommunicationLinksCreateOrUpdateFuture) Result(client ServerCommunicationLinksClient) (scl ServerCommunicationLink, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11472,40 +11005,25 @@ func (future *ServerCommunicationLinksCreateOrUpdateFuture) Result(client Server
 // ServerConnectionPolicy a server secure connection policy.
 type ServerConnectionPolicy struct {
 	autorest.Response `json:"-"`
-	// Kind - Metadata used for the Azure portal experience.
+	// Kind - READ-ONLY; Metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// ServerConnectionPolicyProperties - The properties of the server secure connection policy.
 	*ServerConnectionPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServerConnectionPolicy.
 func (scp ServerConnectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scp.Kind != nil {
-		objectMap["kind"] = scp.Kind
-	}
-	if scp.Location != nil {
-		objectMap["location"] = scp.Location
-	}
 	if scp.ServerConnectionPolicyProperties != nil {
 		objectMap["properties"] = scp.ServerConnectionPolicyProperties
-	}
-	if scp.ID != nil {
-		objectMap["id"] = scp.ID
-	}
-	if scp.Name != nil {
-		objectMap["name"] = scp.Name
-	}
-	if scp.Type != nil {
-		objectMap["type"] = scp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11590,11 +11108,11 @@ type ServerDNSAlias struct {
 	autorest.Response `json:"-"`
 	// ServerDNSAliasProperties - Resource properties.
 	*ServerDNSAliasProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11603,15 +11121,6 @@ func (sda ServerDNSAlias) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sda.ServerDNSAliasProperties != nil {
 		objectMap["properties"] = sda.ServerDNSAliasProperties
-	}
-	if sda.ID != nil {
-		objectMap["id"] = sda.ID
-	}
-	if sda.Name != nil {
-		objectMap["name"] = sda.Name
-	}
-	if sda.Type != nil {
-		objectMap["type"] = sda.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -11683,7 +11192,7 @@ type ServerDNSAliasesAcquireFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerDNSAliasesAcquireFuture) Result(client ServerDNSAliasesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerDNSAliasesAcquireFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11706,7 +11215,7 @@ type ServerDNSAliasesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerDNSAliasesCreateOrUpdateFuture) Result(client ServerDNSAliasesClient) (sda ServerDNSAlias, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerDNSAliasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11735,7 +11244,7 @@ type ServerDNSAliasesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerDNSAliasesDeleteFuture) Result(client ServerDNSAliasesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerDNSAliasesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -11751,9 +11260,9 @@ func (future *ServerDNSAliasesDeleteFuture) Result(client ServerDNSAliasesClient
 // ServerDNSAliasListResult a list of server DNS aliases.
 type ServerDNSAliasListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]ServerDNSAlias `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -11896,7 +11405,7 @@ func NewServerDNSAliasListResultPage(getNextPage func(context.Context, ServerDNS
 
 // ServerDNSAliasProperties properties of a server DNS alias.
 type ServerDNSAliasProperties struct {
-	// AzureDNSRecord - The fully qualified DNS record for alias
+	// AzureDNSRecord - READ-ONLY; The fully qualified DNS record for alias
 	AzureDNSRecord *string `json:"azureDnsRecord,omitempty"`
 }
 
@@ -11905,15 +11414,15 @@ type ServerKey struct {
 	autorest.Response `json:"-"`
 	// Kind - Kind of encryption protector. This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// ServerKeyProperties - Resource properties.
 	*ServerKeyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -11923,20 +11432,8 @@ func (sk ServerKey) MarshalJSON() ([]byte, error) {
 	if sk.Kind != nil {
 		objectMap["kind"] = sk.Kind
 	}
-	if sk.Location != nil {
-		objectMap["location"] = sk.Location
-	}
 	if sk.ServerKeyProperties != nil {
 		objectMap["properties"] = sk.ServerKeyProperties
-	}
-	if sk.ID != nil {
-		objectMap["id"] = sk.ID
-	}
-	if sk.Name != nil {
-		objectMap["name"] = sk.Name
-	}
-	if sk.Type != nil {
-		objectMap["type"] = sk.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12013,9 +11510,9 @@ func (sk *ServerKey) UnmarshalJSON(body []byte) error {
 // ServerKeyListResult a list of server keys.
 type ServerKeyListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]ServerKey `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -12158,7 +11655,7 @@ func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListR
 
 // ServerKeyProperties properties for a server key execution.
 type ServerKeyProperties struct {
-	// Subregion - Subregion of the server key.
+	// Subregion - READ-ONLY; Subregion of the server key.
 	Subregion *string `json:"subregion,omitempty"`
 	// ServerKeyType - The server key type like 'ServiceManaged', 'AzureKeyVault'. Possible values include: 'ServiceManaged', 'AzureKeyVault'
 	ServerKeyType ServerKeyType `json:"serverKeyType,omitempty"`
@@ -12180,7 +11677,7 @@ type ServerKeysCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (sk ServerKey, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12209,7 +11706,7 @@ type ServerKeysDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerKeysDeleteFuture) Result(client ServerKeysClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerKeysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12225,9 +11722,9 @@ func (future *ServerKeysDeleteFuture) Result(client ServerKeysClient) (ar autore
 // ServerListResult a list of servers.
 type ServerListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]Server `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -12376,9 +11873,9 @@ type ServerProperties struct {
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 	// Version - The version of the server.
 	Version *string `json:"version,omitempty"`
-	// State - The state of the server.
+	// State - READ-ONLY; The state of the server.
 	State *string `json:"state,omitempty"`
-	// FullyQualifiedDomainName - The fully qualified domain name of the server.
+	// FullyQualifiedDomainName - READ-ONLY; The fully qualified domain name of the server.
 	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
 }
 
@@ -12392,7 +11889,7 @@ type ServersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersCreateOrUpdateFuture) Result(client ServersClient) (s Server, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12421,7 +11918,7 @@ type ServersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12444,7 +11941,7 @@ type ServerSecurityAlertPoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerSecurityAlertPoliciesCreateOrUpdateFuture) Result(client ServerSecurityAlertPoliciesClient) (ssap ServerSecurityAlertPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12468,11 +11965,11 @@ type ServerSecurityAlertPolicy struct {
 	autorest.Response `json:"-"`
 	// SecurityAlertPolicyProperties - Resource properties.
 	*SecurityAlertPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12481,15 +11978,6 @@ func (ssap ServerSecurityAlertPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ssap.SecurityAlertPolicyProperties != nil {
 		objectMap["properties"] = ssap.SecurityAlertPolicyProperties
-	}
-	if ssap.ID != nil {
-		objectMap["id"] = ssap.ID
-	}
-	if ssap.Name != nil {
-		objectMap["name"] = ssap.Name
-	}
-	if ssap.Type != nil {
-		objectMap["type"] = ssap.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12555,7 +12043,7 @@ type ServersUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersUpdateFuture) Result(client ServersClient) (s Server, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -12629,19 +12117,19 @@ func (su *ServerUpdate) UnmarshalJSON(body []byte) error {
 
 // ServerUsage represents server metrics.
 type ServerUsage struct {
-	// Name - Name of the server usage metric.
+	// Name - READ-ONLY; Name of the server usage metric.
 	Name *string `json:"name,omitempty"`
-	// ResourceName - The name of the resource.
+	// ResourceName - READ-ONLY; The name of the resource.
 	ResourceName *string `json:"resourceName,omitempty"`
-	// DisplayName - The metric display name.
+	// DisplayName - READ-ONLY; The metric display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CurrentValue - The current value of the metric.
+	// CurrentValue - READ-ONLY; The current value of the metric.
 	CurrentValue *float64 `json:"currentValue,omitempty"`
-	// Limit - The current limit of the metric.
+	// Limit - READ-ONLY; The current limit of the metric.
 	Limit *float64 `json:"limit,omitempty"`
-	// Unit - The units of the metric.
+	// Unit - READ-ONLY; The units of the metric.
 	Unit *string `json:"unit,omitempty"`
-	// NextResetTime - The next reset time for the metric (ISO8601 format).
+	// NextResetTime - READ-ONLY; The next reset time for the metric (ISO8601 format).
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
 }
 
@@ -12654,13 +12142,13 @@ type ServerUsageListResult struct {
 
 // ServerVersionCapability the server capabilities.
 type ServerVersionCapability struct {
-	// Name - The server version name.
+	// Name - READ-ONLY; The server version name.
 	Name *string `json:"name,omitempty"`
-	// Status - The status of the server version. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the server version. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// SupportedEditions - The list of supported database editions.
+	// SupportedEditions - READ-ONLY; The list of supported database editions.
 	SupportedEditions *[]EditionCapability `json:"supportedEditions,omitempty"`
-	// SupportedElasticPoolEditions - The list of supported elastic pool editions.
+	// SupportedElasticPoolEditions - READ-ONLY; The list of supported elastic pool editions.
 	SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
 }
 
@@ -12669,11 +12157,11 @@ type ServiceObjective struct {
 	autorest.Response `json:"-"`
 	// ServiceObjectiveProperties - Represents the properties of the resource.
 	*ServiceObjectiveProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -12682,15 +12170,6 @@ func (so ServiceObjective) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if so.ServiceObjectiveProperties != nil {
 		objectMap["properties"] = so.ServiceObjectiveProperties
-	}
-	if so.ID != nil {
-		objectMap["id"] = so.ID
-	}
-	if so.Name != nil {
-		objectMap["name"] = so.Name
-	}
-	if so.Type != nil {
-		objectMap["type"] = so.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -12748,41 +12227,23 @@ func (so *ServiceObjective) UnmarshalJSON(body []byte) error {
 
 // ServiceObjectiveCapability the service objectives capability.
 type ServiceObjectiveCapability struct {
-	// Name - The service objective name.
+	// Name - READ-ONLY; The service objective name.
 	Name *string `json:"name,omitempty"`
-	// Status - The status of the service objective. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
+	// Status - READ-ONLY; The status of the service objective. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
-	// PerformanceLevel - The performance level of the service objective capability.
+	// PerformanceLevel - READ-ONLY; The performance level of the service objective capability.
 	*PerformanceLevel `json:"performanceLevel,omitempty"`
-	// ID - The unique ID of the service objective.
+	// ID - READ-ONLY; The unique ID of the service objective.
 	ID *uuid.UUID `json:"id,omitempty"`
-	// SupportedMaxSizes - The list of supported maximum database sizes for this service objective.
+	// SupportedMaxSizes - READ-ONLY; The list of supported maximum database sizes for this service objective.
 	SupportedMaxSizes *[]MaxSizeCapability `json:"supportedMaxSizes,omitempty"`
-	// IncludedMaxSize - The included (free) max size for this service level objective.
+	// IncludedMaxSize - READ-ONLY; The included (free) max size for this service level objective.
 	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceObjectiveCapability.
 func (soc ServiceObjectiveCapability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if soc.Name != nil {
-		objectMap["name"] = soc.Name
-	}
-	if soc.Status != "" {
-		objectMap["status"] = soc.Status
-	}
-	if soc.PerformanceLevel != nil {
-		objectMap["performanceLevel"] = soc.PerformanceLevel
-	}
-	if soc.ID != nil {
-		objectMap["id"] = soc.ID
-	}
-	if soc.SupportedMaxSizes != nil {
-		objectMap["supportedMaxSizes"] = soc.SupportedMaxSizes
-	}
-	if soc.IncludedMaxSize != nil {
-		objectMap["includedMaxSize"] = soc.IncludedMaxSize
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -12864,46 +12325,34 @@ type ServiceObjectiveListResult struct {
 
 // ServiceObjectiveProperties represents the properties of a database service objective.
 type ServiceObjectiveProperties struct {
-	// ServiceObjectiveName - The name for the service objective.
+	// ServiceObjectiveName - READ-ONLY; The name for the service objective.
 	ServiceObjectiveName *string `json:"serviceObjectiveName,omitempty"`
-	// IsDefault - Gets whether the service level objective is the default service objective.
+	// IsDefault - READ-ONLY; Gets whether the service level objective is the default service objective.
 	IsDefault *bool `json:"isDefault,omitempty"`
-	// IsSystem - Gets whether the service level objective is a system service objective.
+	// IsSystem - READ-ONLY; Gets whether the service level objective is a system service objective.
 	IsSystem *bool `json:"isSystem,omitempty"`
-	// Description - The description for the service level objective.
+	// Description - READ-ONLY; The description for the service level objective.
 	Description *string `json:"description,omitempty"`
-	// Enabled - Gets whether the service level objective is enabled.
+	// Enabled - READ-ONLY; Gets whether the service level objective is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // ServiceTierAdvisor represents a Service Tier Advisor.
 type ServiceTierAdvisor struct {
 	autorest.Response `json:"-"`
-	// ServiceTierAdvisorProperties - The properties representing the resource.
+	// ServiceTierAdvisorProperties - READ-ONLY; The properties representing the resource.
 	*ServiceTierAdvisorProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceTierAdvisor.
 func (sta ServiceTierAdvisor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sta.ServiceTierAdvisorProperties != nil {
-		objectMap["properties"] = sta.ServiceTierAdvisorProperties
-	}
-	if sta.ID != nil {
-		objectMap["id"] = sta.ID
-	}
-	if sta.Name != nil {
-		objectMap["name"] = sta.Name
-	}
-	if sta.Type != nil {
-		objectMap["type"] = sta.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -12967,43 +12416,43 @@ type ServiceTierAdvisorListResult struct {
 
 // ServiceTierAdvisorProperties represents the properties of a Service Tier Advisor.
 type ServiceTierAdvisorProperties struct {
-	// ObservationPeriodStart - The observation period start (ISO8601 format).
+	// ObservationPeriodStart - READ-ONLY; The observation period start (ISO8601 format).
 	ObservationPeriodStart *date.Time `json:"observationPeriodStart,omitempty"`
-	// ObservationPeriodEnd - The observation period start (ISO8601 format).
+	// ObservationPeriodEnd - READ-ONLY; The observation period start (ISO8601 format).
 	ObservationPeriodEnd *date.Time `json:"observationPeriodEnd,omitempty"`
-	// ActiveTimeRatio - The activeTimeRatio for service tier advisor.
+	// ActiveTimeRatio - READ-ONLY; The activeTimeRatio for service tier advisor.
 	ActiveTimeRatio *float64 `json:"activeTimeRatio,omitempty"`
-	// MinDtu - Gets or sets minDtu for service tier advisor.
+	// MinDtu - READ-ONLY; Gets or sets minDtu for service tier advisor.
 	MinDtu *float64 `json:"minDtu,omitempty"`
-	// AvgDtu - Gets or sets avgDtu for service tier advisor.
+	// AvgDtu - READ-ONLY; Gets or sets avgDtu for service tier advisor.
 	AvgDtu *float64 `json:"avgDtu,omitempty"`
-	// MaxDtu - Gets or sets maxDtu for service tier advisor.
+	// MaxDtu - READ-ONLY; Gets or sets maxDtu for service tier advisor.
 	MaxDtu *float64 `json:"maxDtu,omitempty"`
-	// MaxSizeInGB - Gets or sets maxSizeInGB for service tier advisor.
+	// MaxSizeInGB - READ-ONLY; Gets or sets maxSizeInGB for service tier advisor.
 	MaxSizeInGB *float64 `json:"maxSizeInGB,omitempty"`
-	// ServiceLevelObjectiveUsageMetrics - Gets or sets serviceLevelObjectiveUsageMetrics for the service tier advisor.
+	// ServiceLevelObjectiveUsageMetrics - READ-ONLY; Gets or sets serviceLevelObjectiveUsageMetrics for the service tier advisor.
 	ServiceLevelObjectiveUsageMetrics *[]SloUsageMetric `json:"serviceLevelObjectiveUsageMetrics,omitempty"`
-	// CurrentServiceLevelObjective - Gets or sets currentServiceLevelObjective for service tier advisor.
+	// CurrentServiceLevelObjective - READ-ONLY; Gets or sets currentServiceLevelObjective for service tier advisor.
 	CurrentServiceLevelObjective *string `json:"currentServiceLevelObjective,omitempty"`
-	// CurrentServiceLevelObjectiveID - Gets or sets currentServiceLevelObjectiveId for service tier advisor.
+	// CurrentServiceLevelObjectiveID - READ-ONLY; Gets or sets currentServiceLevelObjectiveId for service tier advisor.
 	CurrentServiceLevelObjectiveID *uuid.UUID `json:"currentServiceLevelObjectiveId,omitempty"`
-	// UsageBasedRecommendationServiceLevelObjective - Gets or sets usageBasedRecommendationServiceLevelObjective for service tier advisor.
+	// UsageBasedRecommendationServiceLevelObjective - READ-ONLY; Gets or sets usageBasedRecommendationServiceLevelObjective for service tier advisor.
 	UsageBasedRecommendationServiceLevelObjective *string `json:"usageBasedRecommendationServiceLevelObjective,omitempty"`
-	// UsageBasedRecommendationServiceLevelObjectiveID - Gets or sets usageBasedRecommendationServiceLevelObjectiveId for service tier advisor.
+	// UsageBasedRecommendationServiceLevelObjectiveID - READ-ONLY; Gets or sets usageBasedRecommendationServiceLevelObjectiveId for service tier advisor.
 	UsageBasedRecommendationServiceLevelObjectiveID *uuid.UUID `json:"usageBasedRecommendationServiceLevelObjectiveId,omitempty"`
-	// DatabaseSizeBasedRecommendationServiceLevelObjective - Gets or sets databaseSizeBasedRecommendationServiceLevelObjective for service tier advisor.
+	// DatabaseSizeBasedRecommendationServiceLevelObjective - READ-ONLY; Gets or sets databaseSizeBasedRecommendationServiceLevelObjective for service tier advisor.
 	DatabaseSizeBasedRecommendationServiceLevelObjective *string `json:"databaseSizeBasedRecommendationServiceLevelObjective,omitempty"`
-	// DatabaseSizeBasedRecommendationServiceLevelObjectiveID - Gets or sets databaseSizeBasedRecommendationServiceLevelObjectiveId for service tier advisor.
+	// DatabaseSizeBasedRecommendationServiceLevelObjectiveID - READ-ONLY; Gets or sets databaseSizeBasedRecommendationServiceLevelObjectiveId for service tier advisor.
 	DatabaseSizeBasedRecommendationServiceLevelObjectiveID *uuid.UUID `json:"databaseSizeBasedRecommendationServiceLevelObjectiveId,omitempty"`
-	// DisasterPlanBasedRecommendationServiceLevelObjective - Gets or sets disasterPlanBasedRecommendationServiceLevelObjective for service tier advisor.
+	// DisasterPlanBasedRecommendationServiceLevelObjective - READ-ONLY; Gets or sets disasterPlanBasedRecommendationServiceLevelObjective for service tier advisor.
 	DisasterPlanBasedRecommendationServiceLevelObjective *string `json:"disasterPlanBasedRecommendationServiceLevelObjective,omitempty"`
-	// DisasterPlanBasedRecommendationServiceLevelObjectiveID - Gets or sets disasterPlanBasedRecommendationServiceLevelObjectiveId for service tier advisor.
+	// DisasterPlanBasedRecommendationServiceLevelObjectiveID - READ-ONLY; Gets or sets disasterPlanBasedRecommendationServiceLevelObjectiveId for service tier advisor.
 	DisasterPlanBasedRecommendationServiceLevelObjectiveID *uuid.UUID `json:"disasterPlanBasedRecommendationServiceLevelObjectiveId,omitempty"`
-	// OverallRecommendationServiceLevelObjective - Gets or sets overallRecommendationServiceLevelObjective for service tier advisor.
+	// OverallRecommendationServiceLevelObjective - READ-ONLY; Gets or sets overallRecommendationServiceLevelObjective for service tier advisor.
 	OverallRecommendationServiceLevelObjective *string `json:"overallRecommendationServiceLevelObjective,omitempty"`
-	// OverallRecommendationServiceLevelObjectiveID - Gets or sets overallRecommendationServiceLevelObjectiveId for service tier advisor.
+	// OverallRecommendationServiceLevelObjectiveID - READ-ONLY; Gets or sets overallRecommendationServiceLevelObjectiveId for service tier advisor.
 	OverallRecommendationServiceLevelObjectiveID *uuid.UUID `json:"overallRecommendationServiceLevelObjectiveId,omitempty"`
-	// Confidence - Gets or sets confidence for service tier advisor.
+	// Confidence - READ-ONLY; Gets or sets confidence for service tier advisor.
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
@@ -13023,11 +12472,11 @@ type Sku struct {
 
 // SloUsageMetric a Slo Usage Metric.
 type SloUsageMetric struct {
-	// ServiceLevelObjective - The serviceLevelObjective for SLO usage metric. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
+	// ServiceLevelObjective - READ-ONLY; The serviceLevelObjective for SLO usage metric. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	ServiceLevelObjective ServiceObjectiveName `json:"serviceLevelObjective,omitempty"`
-	// ServiceLevelObjectiveID - The serviceLevelObjectiveId for SLO usage metric.
+	// ServiceLevelObjectiveID - READ-ONLY; The serviceLevelObjectiveId for SLO usage metric.
 	ServiceLevelObjectiveID *uuid.UUID `json:"serviceLevelObjectiveId,omitempty"`
-	// InRangeTimeRatio - Gets or sets inRangeTimeRatio for SLO usage metric.
+	// InRangeTimeRatio - READ-ONLY; Gets or sets inRangeTimeRatio for SLO usage metric.
 	InRangeTimeRatio *float64 `json:"inRangeTimeRatio,omitempty"`
 }
 
@@ -13036,11 +12485,11 @@ type SubscriptionUsage struct {
 	autorest.Response `json:"-"`
 	// SubscriptionUsageProperties - Resource properties.
 	*SubscriptionUsageProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13049,15 +12498,6 @@ func (su SubscriptionUsage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if su.SubscriptionUsageProperties != nil {
 		objectMap["properties"] = su.SubscriptionUsageProperties
-	}
-	if su.ID != nil {
-		objectMap["id"] = su.ID
-	}
-	if su.Name != nil {
-		objectMap["name"] = su.Name
-	}
-	if su.Type != nil {
-		objectMap["type"] = su.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -13116,9 +12556,9 @@ func (su *SubscriptionUsage) UnmarshalJSON(body []byte) error {
 // SubscriptionUsageListResult a list of subscription usage metrics in a location.
 type SubscriptionUsageListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SubscriptionUsage `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13261,13 +12701,13 @@ func NewSubscriptionUsageListResultPage(getNextPage func(context.Context, Subscr
 
 // SubscriptionUsageProperties properties of a subscription usage.
 type SubscriptionUsageProperties struct {
-	// DisplayName - User-readable name of the metric.
+	// DisplayName - READ-ONLY; User-readable name of the metric.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CurrentValue - Current value of the metric.
+	// CurrentValue - READ-ONLY; Current value of the metric.
 	CurrentValue *float64 `json:"currentValue,omitempty"`
-	// Limit - Boundary value of the metric.
+	// Limit - READ-ONLY; Boundary value of the metric.
 	Limit *float64 `json:"limit,omitempty"`
-	// Unit - Unit of the metric.
+	// Unit - READ-ONLY; Unit of the metric.
 	Unit *string `json:"unit,omitempty"`
 }
 
@@ -13276,11 +12716,11 @@ type SyncAgent struct {
 	autorest.Response `json:"-"`
 	// SyncAgentProperties - Resource properties.
 	*SyncAgentProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13289,15 +12729,6 @@ func (sa SyncAgent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sa.SyncAgentProperties != nil {
 		objectMap["properties"] = sa.SyncAgentProperties
-	}
-	if sa.ID != nil {
-		objectMap["id"] = sa.ID
-	}
-	if sa.Name != nil {
-		objectMap["name"] = sa.Name
-	}
-	if sa.Type != nil {
-		objectMap["type"] = sa.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -13356,7 +12787,7 @@ func (sa *SyncAgent) UnmarshalJSON(body []byte) error {
 // SyncAgentKeyProperties properties of an Azure SQL Database sync agent key.
 type SyncAgentKeyProperties struct {
 	autorest.Response `json:"-"`
-	// SyncAgentKey - Key of sync agent.
+	// SyncAgentKey - READ-ONLY; Key of sync agent.
 	SyncAgentKey *string `json:"syncAgentKey,omitempty"`
 }
 
@@ -13364,11 +12795,11 @@ type SyncAgentKeyProperties struct {
 type SyncAgentLinkedDatabase struct {
 	// SyncAgentLinkedDatabaseProperties - Resource properties.
 	*SyncAgentLinkedDatabaseProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -13377,15 +12808,6 @@ func (sald SyncAgentLinkedDatabase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sald.SyncAgentLinkedDatabaseProperties != nil {
 		objectMap["properties"] = sald.SyncAgentLinkedDatabaseProperties
-	}
-	if sald.ID != nil {
-		objectMap["id"] = sald.ID
-	}
-	if sald.Name != nil {
-		objectMap["name"] = sald.Name
-	}
-	if sald.Type != nil {
-		objectMap["type"] = sald.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -13444,9 +12866,9 @@ func (sald *SyncAgentLinkedDatabase) UnmarshalJSON(body []byte) error {
 // SyncAgentLinkedDatabaseListResult a list of sync agent linked databases.
 type SyncAgentLinkedDatabaseListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncAgentLinkedDatabase `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13590,26 +13012,26 @@ func NewSyncAgentLinkedDatabaseListResultPage(getNextPage func(context.Context, 
 
 // SyncAgentLinkedDatabaseProperties properties of an Azure SQL Database sync agent linked database.
 type SyncAgentLinkedDatabaseProperties struct {
-	// DatabaseType - Type of the sync agent linked database. Possible values include: 'AzureSQLDatabase', 'SQLServerDatabase'
+	// DatabaseType - READ-ONLY; Type of the sync agent linked database. Possible values include: 'AzureSQLDatabase', 'SQLServerDatabase'
 	DatabaseType SyncMemberDbType `json:"databaseType,omitempty"`
-	// DatabaseID - Id of the sync agent linked database.
+	// DatabaseID - READ-ONLY; Id of the sync agent linked database.
 	DatabaseID *string `json:"databaseId,omitempty"`
-	// Description - Description of the sync agent linked database.
+	// Description - READ-ONLY; Description of the sync agent linked database.
 	Description *string `json:"description,omitempty"`
-	// ServerName - Server name of the sync agent linked database.
+	// ServerName - READ-ONLY; Server name of the sync agent linked database.
 	ServerName *string `json:"serverName,omitempty"`
-	// DatabaseName - Database name of the sync agent linked database.
+	// DatabaseName - READ-ONLY; Database name of the sync agent linked database.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// UserName - User name of the sync agent linked database.
+	// UserName - READ-ONLY; User name of the sync agent linked database.
 	UserName *string `json:"userName,omitempty"`
 }
 
 // SyncAgentListResult a list of sync agents.
 type SyncAgentListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncAgent `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13752,19 +13174,19 @@ func NewSyncAgentListResultPage(getNextPage func(context.Context, SyncAgentListR
 
 // SyncAgentProperties properties of an Azure SQL Database sync agent.
 type SyncAgentProperties struct {
-	// Name - Name of the sync agent.
+	// Name - READ-ONLY; Name of the sync agent.
 	Name *string `json:"name,omitempty"`
 	// SyncDatabaseID - ARM resource id of the sync database in the sync agent.
 	SyncDatabaseID *string `json:"syncDatabaseId,omitempty"`
-	// LastAliveTime - Last alive time of the sync agent.
+	// LastAliveTime - READ-ONLY; Last alive time of the sync agent.
 	LastAliveTime *date.Time `json:"lastAliveTime,omitempty"`
-	// State - State of the sync agent. Possible values include: 'SyncAgentStateOnline', 'SyncAgentStateOffline', 'SyncAgentStateNeverConnected'
+	// State - READ-ONLY; State of the sync agent. Possible values include: 'SyncAgentStateOnline', 'SyncAgentStateOffline', 'SyncAgentStateNeverConnected'
 	State SyncAgentState `json:"state,omitempty"`
-	// IsUpToDate - If the sync agent version is up to date.
+	// IsUpToDate - READ-ONLY; If the sync agent version is up to date.
 	IsUpToDate *bool `json:"isUpToDate,omitempty"`
-	// ExpiryTime - Expiration time of the sync agent version.
+	// ExpiryTime - READ-ONLY; Expiration time of the sync agent version.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// Version - Version of the sync agent.
+	// Version - READ-ONLY; Version of the sync agent.
 	Version *string `json:"version,omitempty"`
 }
 
@@ -13778,7 +13200,7 @@ type SyncAgentsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncAgentsCreateOrUpdateFuture) Result(client SyncAgentsClient) (sa SyncAgent, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -13807,7 +13229,7 @@ type SyncAgentsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncAgentsDeleteFuture) Result(client SyncAgentsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncAgentsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -13823,9 +13245,9 @@ func (future *SyncAgentsDeleteFuture) Result(client SyncAgentsClient) (ar autore
 // SyncDatabaseIDListResult a list of sync database ID properties.
 type SyncDatabaseIDListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncDatabaseIDProperties `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -13969,24 +13391,24 @@ func NewSyncDatabaseIDListResultPage(getNextPage func(context.Context, SyncDatab
 
 // SyncDatabaseIDProperties properties of the sync database id.
 type SyncDatabaseIDProperties struct {
-	// ID - ARM resource id of sync database.
+	// ID - READ-ONLY; ARM resource id of sync database.
 	ID *string `json:"id,omitempty"`
 }
 
 // SyncFullSchemaProperties properties of the database full schema.
 type SyncFullSchemaProperties struct {
-	// Tables - List of tables in the database full schema.
+	// Tables - READ-ONLY; List of tables in the database full schema.
 	Tables *[]SyncFullSchemaTable `json:"tables,omitempty"`
-	// LastUpdateTime - Last update time of the database schema.
+	// LastUpdateTime - READ-ONLY; Last update time of the database schema.
 	LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
 }
 
 // SyncFullSchemaPropertiesListResult a list of sync schema properties.
 type SyncFullSchemaPropertiesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncFullSchemaProperties `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14130,33 +13552,33 @@ func NewSyncFullSchemaPropertiesListResultPage(getNextPage func(context.Context,
 
 // SyncFullSchemaTable properties of the table in the database full schema.
 type SyncFullSchemaTable struct {
-	// Columns - List of columns in the table of database full schema.
+	// Columns - READ-ONLY; List of columns in the table of database full schema.
 	Columns *[]SyncFullSchemaTableColumn `json:"columns,omitempty"`
-	// ErrorID - Error id of the table.
+	// ErrorID - READ-ONLY; Error id of the table.
 	ErrorID *string `json:"errorId,omitempty"`
-	// HasError - If there is error in the table.
+	// HasError - READ-ONLY; If there is error in the table.
 	HasError *bool `json:"hasError,omitempty"`
-	// Name - Name of the table.
+	// Name - READ-ONLY; Name of the table.
 	Name *string `json:"name,omitempty"`
-	// QuotedName - Quoted name of the table.
+	// QuotedName - READ-ONLY; Quoted name of the table.
 	QuotedName *string `json:"quotedName,omitempty"`
 }
 
 // SyncFullSchemaTableColumn properties of the column in the table of database full schema.
 type SyncFullSchemaTableColumn struct {
-	// DataSize - Data size of the column.
+	// DataSize - READ-ONLY; Data size of the column.
 	DataSize *string `json:"dataSize,omitempty"`
-	// DataType - Data type of the column.
+	// DataType - READ-ONLY; Data type of the column.
 	DataType *string `json:"dataType,omitempty"`
-	// ErrorID - Error id of the column.
+	// ErrorID - READ-ONLY; Error id of the column.
 	ErrorID *string `json:"errorId,omitempty"`
-	// HasError - If there is error in the table.
+	// HasError - READ-ONLY; If there is error in the table.
 	HasError *bool `json:"hasError,omitempty"`
-	// IsPrimaryKey - If it is the primary key of the table.
+	// IsPrimaryKey - READ-ONLY; If it is the primary key of the table.
 	IsPrimaryKey *bool `json:"isPrimaryKey,omitempty"`
-	// Name - Name of the column.
+	// Name - READ-ONLY; Name of the column.
 	Name *string `json:"name,omitempty"`
-	// QuotedName - Quoted name of the column.
+	// QuotedName - READ-ONLY; Quoted name of the column.
 	QuotedName *string `json:"quotedName,omitempty"`
 }
 
@@ -14165,11 +13587,11 @@ type SyncGroup struct {
 	autorest.Response `json:"-"`
 	// SyncGroupProperties - Resource properties.
 	*SyncGroupProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14178,15 +13600,6 @@ func (sg SyncGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sg.SyncGroupProperties != nil {
 		objectMap["properties"] = sg.SyncGroupProperties
-	}
-	if sg.ID != nil {
-		objectMap["id"] = sg.ID
-	}
-	if sg.Name != nil {
-		objectMap["name"] = sg.Name
-	}
-	if sg.Type != nil {
-		objectMap["type"] = sg.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -14245,9 +13658,9 @@ func (sg *SyncGroup) UnmarshalJSON(body []byte) error {
 // SyncGroupListResult a list of sync groups.
 type SyncGroupListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncGroup `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14391,9 +13804,9 @@ func NewSyncGroupListResultPage(getNextPage func(context.Context, SyncGroupListR
 // SyncGroupLogListResult a list of sync group log properties.
 type SyncGroupLogListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncGroupLogProperties `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14536,17 +13949,17 @@ func NewSyncGroupLogListResultPage(getNextPage func(context.Context, SyncGroupLo
 
 // SyncGroupLogProperties properties of an Azure SQL Database sync group log.
 type SyncGroupLogProperties struct {
-	// Timestamp - Timestamp of the sync group log.
+	// Timestamp - READ-ONLY; Timestamp of the sync group log.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Type - Type of the sync group log. Possible values include: 'SyncGroupLogTypeAll', 'SyncGroupLogTypeError', 'SyncGroupLogTypeWarning', 'SyncGroupLogTypeSuccess'
+	// Type - READ-ONLY; Type of the sync group log. Possible values include: 'SyncGroupLogTypeAll', 'SyncGroupLogTypeError', 'SyncGroupLogTypeWarning', 'SyncGroupLogTypeSuccess'
 	Type SyncGroupLogType `json:"type,omitempty"`
-	// Source - Source of the sync group log.
+	// Source - READ-ONLY; Source of the sync group log.
 	Source *string `json:"source,omitempty"`
-	// Details - Details of the sync group log.
+	// Details - READ-ONLY; Details of the sync group log.
 	Details *string `json:"details,omitempty"`
-	// TracingID - TracingId of the sync group log.
+	// TracingID - READ-ONLY; TracingId of the sync group log.
 	TracingID *uuid.UUID `json:"tracingId,omitempty"`
-	// OperationStatus - OperationStatus of the sync group log.
+	// OperationStatus - READ-ONLY; OperationStatus of the sync group log.
 	OperationStatus *string `json:"operationStatus,omitempty"`
 }
 
@@ -14554,7 +13967,7 @@ type SyncGroupLogProperties struct {
 type SyncGroupProperties struct {
 	// Interval - Sync interval of the sync group.
 	Interval *int32 `json:"interval,omitempty"`
-	// LastSyncTime - Last sync time of the sync group.
+	// LastSyncTime - READ-ONLY; Last sync time of the sync group.
 	LastSyncTime *date.Time `json:"lastSyncTime,omitempty"`
 	// ConflictResolutionPolicy - Conflict resolution policy of the sync group. Possible values include: 'HubWin', 'MemberWin'
 	ConflictResolutionPolicy SyncConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
@@ -14564,7 +13977,7 @@ type SyncGroupProperties struct {
 	HubDatabaseUserName *string `json:"hubDatabaseUserName,omitempty"`
 	// HubDatabasePassword - Password for the sync group hub database credential.
 	HubDatabasePassword *string `json:"hubDatabasePassword,omitempty"`
-	// SyncState - Sync state of the sync group. Possible values include: 'NotReady', 'Error', 'Warning', 'Progressing', 'Good'
+	// SyncState - READ-ONLY; Sync state of the sync group. Possible values include: 'NotReady', 'Error', 'Warning', 'Progressing', 'Good'
 	SyncState SyncGroupState `json:"syncState,omitempty"`
 	// Schema - Sync schema of the sync group.
 	Schema *SyncGroupSchema `json:"schema,omitempty"`
@@ -14606,7 +14019,7 @@ type SyncGroupsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncGroupsCreateOrUpdateFuture) Result(client SyncGroupsClient) (sg SyncGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -14635,7 +14048,7 @@ type SyncGroupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncGroupsDeleteFuture) Result(client SyncGroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -14658,7 +14071,7 @@ type SyncGroupsRefreshHubSchemaFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncGroupsRefreshHubSchemaFuture) Result(client SyncGroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsRefreshHubSchemaFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -14681,7 +14094,7 @@ type SyncGroupsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncGroupsUpdateFuture) Result(client SyncGroupsClient) (sg SyncGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -14705,11 +14118,11 @@ type SyncMember struct {
 	autorest.Response `json:"-"`
 	// SyncMemberProperties - Resource properties.
 	*SyncMemberProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -14718,15 +14131,6 @@ func (sm SyncMember) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sm.SyncMemberProperties != nil {
 		objectMap["properties"] = sm.SyncMemberProperties
-	}
-	if sm.ID != nil {
-		objectMap["id"] = sm.ID
-	}
-	if sm.Name != nil {
-		objectMap["name"] = sm.Name
-	}
-	if sm.Type != nil {
-		objectMap["type"] = sm.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -14785,9 +14189,9 @@ func (sm *SyncMember) UnmarshalJSON(body []byte) error {
 // SyncMemberListResult a list of Azure SQL Database sync members.
 type SyncMemberListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]SyncMember `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -14946,7 +14350,7 @@ type SyncMemberProperties struct {
 	Password *string `json:"password,omitempty"`
 	// SyncDirection - Sync direction of the sync member. Possible values include: 'Bidirectional', 'OneWayMemberToHub', 'OneWayHubToMember'
 	SyncDirection SyncDirection `json:"syncDirection,omitempty"`
-	// SyncState - Sync state of the sync member. Possible values include: 'SyncInProgress', 'SyncSucceeded', 'SyncFailed', 'DisabledTombstoneCleanup', 'DisabledBackupRestore', 'SyncSucceededWithWarnings', 'SyncCancelling', 'SyncCancelled', 'UnProvisioned', 'Provisioning', 'Provisioned', 'ProvisionFailed', 'DeProvisioning', 'DeProvisioned', 'DeProvisionFailed', 'Reprovisioning', 'ReprovisionFailed', 'UnReprovisioned'
+	// SyncState - READ-ONLY; Sync state of the sync member. Possible values include: 'SyncInProgress', 'SyncSucceeded', 'SyncFailed', 'DisabledTombstoneCleanup', 'DisabledBackupRestore', 'SyncSucceededWithWarnings', 'SyncCancelling', 'SyncCancelled', 'UnProvisioned', 'Provisioning', 'Provisioned', 'ProvisionFailed', 'DeProvisioning', 'DeProvisioned', 'DeProvisionFailed', 'Reprovisioning', 'ReprovisionFailed', 'UnReprovisioned'
 	SyncState SyncMemberState `json:"syncState,omitempty"`
 }
 
@@ -14960,7 +14364,7 @@ type SyncMembersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncMembersCreateOrUpdateFuture) Result(client SyncMembersClient) (sm SyncMember, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -14989,7 +14393,7 @@ type SyncMembersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncMembersDeleteFuture) Result(client SyncMembersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncMembersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -15012,7 +14416,7 @@ type SyncMembersRefreshMemberSchemaFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncMembersRefreshMemberSchemaFuture) Result(client SyncMembersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncMembersRefreshMemberSchemaFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -15035,7 +14439,7 @@ type SyncMembersUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SyncMembersUpdateFuture) Result(client SyncMembersClient) (sm SyncMember, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -15060,11 +14464,11 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15077,50 +14481,29 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
 	return json.Marshal(objectMap)
 }
 
 // TransparentDataEncryption represents a database transparent data encryption configuration.
 type TransparentDataEncryption struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// TransparentDataEncryptionProperties - Represents the properties of the resource.
 	*TransparentDataEncryptionProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TransparentDataEncryption.
 func (tde TransparentDataEncryption) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tde.Location != nil {
-		objectMap["location"] = tde.Location
-	}
 	if tde.TransparentDataEncryptionProperties != nil {
 		objectMap["properties"] = tde.TransparentDataEncryptionProperties
-	}
-	if tde.ID != nil {
-		objectMap["id"] = tde.ID
-	}
-	if tde.Name != nil {
-		objectMap["name"] = tde.Name
-	}
-	if tde.Type != nil {
-		objectMap["type"] = tde.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15187,35 +14570,23 @@ func (tde *TransparentDataEncryption) UnmarshalJSON(body []byte) error {
 
 // TransparentDataEncryptionActivity represents a database transparent data encryption Scan.
 type TransparentDataEncryptionActivity struct {
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// TransparentDataEncryptionActivityProperties - Represents the properties of the resource.
 	*TransparentDataEncryptionActivityProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TransparentDataEncryptionActivity.
 func (tdea TransparentDataEncryptionActivity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tdea.Location != nil {
-		objectMap["location"] = tdea.Location
-	}
 	if tdea.TransparentDataEncryptionActivityProperties != nil {
 		objectMap["properties"] = tdea.TransparentDataEncryptionActivityProperties
-	}
-	if tdea.ID != nil {
-		objectMap["id"] = tdea.ID
-	}
-	if tdea.Name != nil {
-		objectMap["name"] = tdea.Name
-	}
-	if tdea.Type != nil {
-		objectMap["type"] = tdea.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15291,9 +14662,9 @@ type TransparentDataEncryptionActivityListResult struct {
 // TransparentDataEncryptionActivityProperties represents the properties of a database transparent data
 // encryption Scan.
 type TransparentDataEncryptionActivityProperties struct {
-	// Status - The status of the database. Possible values include: 'Encrypting', 'Decrypting'
+	// Status - READ-ONLY; The status of the database. Possible values include: 'Encrypting', 'Decrypting'
 	Status TransparentDataEncryptionActivityStatus `json:"status,omitempty"`
-	// PercentComplete - The percent complete of the transparent data encryption scan for a database.
+	// PercentComplete - READ-ONLY; The percent complete of the transparent data encryption scan for a database.
 	PercentComplete *float64 `json:"percentComplete,omitempty"`
 }
 
@@ -15312,11 +14683,11 @@ type VirtualCluster struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15331,15 +14702,6 @@ func (vc VirtualCluster) MarshalJSON() ([]byte, error) {
 	}
 	if vc.Tags != nil {
 		objectMap["tags"] = vc.Tags
-	}
-	if vc.ID != nil {
-		objectMap["id"] = vc.ID
-	}
-	if vc.Name != nil {
-		objectMap["name"] = vc.Name
-	}
-	if vc.Type != nil {
-		objectMap["type"] = vc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15416,9 +14778,9 @@ func (vc *VirtualCluster) UnmarshalJSON(body []byte) error {
 // VirtualClusterListResult a list of virtual clusters.
 type VirtualClusterListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]VirtualCluster `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -15561,11 +14923,11 @@ func NewVirtualClusterListResultPage(getNextPage func(context.Context, VirtualCl
 
 // VirtualClusterProperties the properties of a virtual cluster.
 type VirtualClusterProperties struct {
-	// SubnetID - Subnet resource ID for the virtual cluster.
+	// SubnetID - READ-ONLY; Subnet resource ID for the virtual cluster.
 	SubnetID *string `json:"subnetId,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string `json:"family,omitempty"`
-	// ChildResources - List of resources in this virtual cluster.
+	// ChildResources - READ-ONLY; List of resources in this virtual cluster.
 	ChildResources *[]string `json:"childResources,omitempty"`
 }
 
@@ -15579,7 +14941,7 @@ type VirtualClustersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualClustersDeleteFuture) Result(client VirtualClustersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.VirtualClustersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -15602,7 +14964,7 @@ type VirtualClustersUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualClustersUpdateFuture) Result(client VirtualClustersClient) (vc VirtualCluster, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.VirtualClustersUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -15679,11 +15041,11 @@ type VirtualNetworkRule struct {
 	autorest.Response `json:"-"`
 	// VirtualNetworkRuleProperties - Resource properties.
 	*VirtualNetworkRuleProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -15692,15 +15054,6 @@ func (vnr VirtualNetworkRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vnr.VirtualNetworkRuleProperties != nil {
 		objectMap["properties"] = vnr.VirtualNetworkRuleProperties
-	}
-	if vnr.ID != nil {
-		objectMap["id"] = vnr.ID
-	}
-	if vnr.Name != nil {
-		objectMap["name"] = vnr.Name
-	}
-	if vnr.Type != nil {
-		objectMap["type"] = vnr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -15759,9 +15112,9 @@ func (vnr *VirtualNetworkRule) UnmarshalJSON(body []byte) error {
 // VirtualNetworkRuleListResult a list of virtual network rules.
 type VirtualNetworkRuleListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of results.
+	// Value - READ-ONLY; Array of results.
 	Value *[]VirtualNetworkRule `json:"value,omitempty"`
-	// NextLink - Link to retrieve next page of results.
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -15908,7 +15261,7 @@ type VirtualNetworkRuleProperties struct {
 	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
 	// IgnoreMissingVnetServiceEndpoint - Create firewall rule before the virtual network has vnet service endpoint enabled.
 	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
-	// State - Virtual Network Rule State. Possible values include: 'VirtualNetworkRuleStateInitializing', 'VirtualNetworkRuleStateInProgress', 'VirtualNetworkRuleStateReady', 'VirtualNetworkRuleStateDeleting', 'VirtualNetworkRuleStateUnknown'
+	// State - READ-ONLY; Virtual Network Rule State. Possible values include: 'VirtualNetworkRuleStateInitializing', 'VirtualNetworkRuleStateInProgress', 'VirtualNetworkRuleStateReady', 'VirtualNetworkRuleStateDeleting', 'VirtualNetworkRuleStateUnknown'
 	State VirtualNetworkRuleState `json:"state,omitempty"`
 }
 
@@ -15922,7 +15275,7 @@ type VirtualNetworkRulesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetworkRulesClient) (vnr VirtualNetworkRule, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -15951,7 +15304,7 @@ type VirtualNetworkRulesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkRulesDeleteFuture) Result(client VirtualNetworkRulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return

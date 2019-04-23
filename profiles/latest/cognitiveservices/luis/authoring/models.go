@@ -42,7 +42,6 @@ const (
 	ReadableTypePatternAnyEntityExtractor        ReadableType = original.ReadableTypePatternAnyEntityExtractor
 	ReadableTypePrebuiltEntityExtractor          ReadableType = original.ReadableTypePrebuiltEntityExtractor
 	ReadableTypeRegexEntityExtractor             ReadableType = original.ReadableTypeRegexEntityExtractor
-	ReadableTypeRegularExpressionEntityExtractor ReadableType = original.ReadableTypeRegularExpressionEntityExtractor
 )
 
 type ReadableType1 = original.ReadableType1
@@ -58,7 +57,6 @@ const (
 	ReadableType1PatternAnyEntityExtractor        ReadableType1 = original.ReadableType1PatternAnyEntityExtractor
 	ReadableType1PrebuiltEntityExtractor          ReadableType1 = original.ReadableType1PrebuiltEntityExtractor
 	ReadableType1RegexEntityExtractor             ReadableType1 = original.ReadableType1RegexEntityExtractor
-	ReadableType1RegularExpressionEntityExtractor ReadableType1 = original.ReadableType1RegularExpressionEntityExtractor
 )
 
 type ReadableType10 = original.ReadableType10
@@ -74,7 +72,6 @@ const (
 	ReadableType10PatternAnyEntityExtractor        ReadableType10 = original.ReadableType10PatternAnyEntityExtractor
 	ReadableType10PrebuiltEntityExtractor          ReadableType10 = original.ReadableType10PrebuiltEntityExtractor
 	ReadableType10RegexEntityExtractor             ReadableType10 = original.ReadableType10RegexEntityExtractor
-	ReadableType10RegularExpressionEntityExtractor ReadableType10 = original.ReadableType10RegularExpressionEntityExtractor
 )
 
 type ReadableType2 = original.ReadableType2
@@ -90,7 +87,6 @@ const (
 	ReadableType2PatternAnyEntityExtractor        ReadableType2 = original.ReadableType2PatternAnyEntityExtractor
 	ReadableType2PrebuiltEntityExtractor          ReadableType2 = original.ReadableType2PrebuiltEntityExtractor
 	ReadableType2RegexEntityExtractor             ReadableType2 = original.ReadableType2RegexEntityExtractor
-	ReadableType2RegularExpressionEntityExtractor ReadableType2 = original.ReadableType2RegularExpressionEntityExtractor
 )
 
 type ReadableType3 = original.ReadableType3
@@ -106,7 +102,6 @@ const (
 	ReadableType3PatternAnyEntityExtractor        ReadableType3 = original.ReadableType3PatternAnyEntityExtractor
 	ReadableType3PrebuiltEntityExtractor          ReadableType3 = original.ReadableType3PrebuiltEntityExtractor
 	ReadableType3RegexEntityExtractor             ReadableType3 = original.ReadableType3RegexEntityExtractor
-	ReadableType3RegularExpressionEntityExtractor ReadableType3 = original.ReadableType3RegularExpressionEntityExtractor
 )
 
 type ReadableType4 = original.ReadableType4
@@ -122,7 +117,6 @@ const (
 	ReadableType4PatternAnyEntityExtractor        ReadableType4 = original.ReadableType4PatternAnyEntityExtractor
 	ReadableType4PrebuiltEntityExtractor          ReadableType4 = original.ReadableType4PrebuiltEntityExtractor
 	ReadableType4RegexEntityExtractor             ReadableType4 = original.ReadableType4RegexEntityExtractor
-	ReadableType4RegularExpressionEntityExtractor ReadableType4 = original.ReadableType4RegularExpressionEntityExtractor
 )
 
 type ReadableType5 = original.ReadableType5
@@ -138,7 +132,6 @@ const (
 	ReadableType5PatternAnyEntityExtractor        ReadableType5 = original.ReadableType5PatternAnyEntityExtractor
 	ReadableType5PrebuiltEntityExtractor          ReadableType5 = original.ReadableType5PrebuiltEntityExtractor
 	ReadableType5RegexEntityExtractor             ReadableType5 = original.ReadableType5RegexEntityExtractor
-	ReadableType5RegularExpressionEntityExtractor ReadableType5 = original.ReadableType5RegularExpressionEntityExtractor
 )
 
 type ReadableType6 = original.ReadableType6
@@ -154,7 +147,6 @@ const (
 	ReadableType6PatternAnyEntityExtractor        ReadableType6 = original.ReadableType6PatternAnyEntityExtractor
 	ReadableType6PrebuiltEntityExtractor          ReadableType6 = original.ReadableType6PrebuiltEntityExtractor
 	ReadableType6RegexEntityExtractor             ReadableType6 = original.ReadableType6RegexEntityExtractor
-	ReadableType6RegularExpressionEntityExtractor ReadableType6 = original.ReadableType6RegularExpressionEntityExtractor
 )
 
 type ReadableType7 = original.ReadableType7
@@ -170,7 +162,6 @@ const (
 	ReadableType7PatternAnyEntityExtractor        ReadableType7 = original.ReadableType7PatternAnyEntityExtractor
 	ReadableType7PrebuiltEntityExtractor          ReadableType7 = original.ReadableType7PrebuiltEntityExtractor
 	ReadableType7RegexEntityExtractor             ReadableType7 = original.ReadableType7RegexEntityExtractor
-	ReadableType7RegularExpressionEntityExtractor ReadableType7 = original.ReadableType7RegularExpressionEntityExtractor
 )
 
 type ReadableType8 = original.ReadableType8
@@ -186,7 +177,6 @@ const (
 	ReadableType8PatternAnyEntityExtractor        ReadableType8 = original.ReadableType8PatternAnyEntityExtractor
 	ReadableType8PrebuiltEntityExtractor          ReadableType8 = original.ReadableType8PrebuiltEntityExtractor
 	ReadableType8RegexEntityExtractor             ReadableType8 = original.ReadableType8RegexEntityExtractor
-	ReadableType8RegularExpressionEntityExtractor ReadableType8 = original.ReadableType8RegularExpressionEntityExtractor
 )
 
 type ReadableType9 = original.ReadableType9
@@ -202,7 +192,6 @@ const (
 	ReadableType9PatternAnyEntityExtractor        ReadableType9 = original.ReadableType9PatternAnyEntityExtractor
 	ReadableType9PrebuiltEntityExtractor          ReadableType9 = original.ReadableType9PrebuiltEntityExtractor
 	ReadableType9RegexEntityExtractor             ReadableType9 = original.ReadableType9RegexEntityExtractor
-	ReadableType9RegularExpressionEntityExtractor ReadableType9 = original.ReadableType9RegularExpressionEntityExtractor
 )
 
 type Status = original.Status

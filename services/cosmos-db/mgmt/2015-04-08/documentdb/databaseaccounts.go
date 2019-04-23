@@ -428,107 +428,6 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraTableResponder(resp *h
 	return
 }
 
-// CreateUpdateGremlinContainer create or update an Azure Cosmos DB Gremlin container
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// databaseRid - cosmos DB database rid.
-// containerRid - cosmos DB container rid.
-// createUpdateGremlinContainerParameters - the parameters to provide for the current Gremlin container.
-func (client DatabaseAccountsClient) CreateUpdateGremlinContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string, createUpdateGremlinContainerParameters ContainerCreateUpdateParameters) (result DatabaseAccountsCreateUpdateGremlinContainerFuture, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateGremlinContainer")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
-		{TargetValue: createUpdateGremlinContainerParameters,
-			Constraints: []validation.Constraint{{Target: "createUpdateGremlinContainerParameters.ContainerCreateUpdateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createUpdateGremlinContainerParameters.ContainerCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "createUpdateGremlinContainerParameters.ContainerCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createUpdateGremlinContainerParameters.ContainerCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateGremlinContainer", err.Error())
-	}
-
-	req, err := client.CreateUpdateGremlinContainerPreparer(ctx, resourceGroupName, accountName, databaseRid, containerRid, createUpdateGremlinContainerParameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinContainer", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.CreateUpdateGremlinContainerSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinContainer", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// CreateUpdateGremlinContainerPreparer prepares the CreateUpdateGremlinContainer request.
-func (client DatabaseAccountsClient) CreateUpdateGremlinContainerPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string, createUpdateGremlinContainerParameters ContainerCreateUpdateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"containerRid":      autorest.Encode("path", containerRid),
-		"databaseRid":       autorest.Encode("path", databaseRid),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-04-08"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", pathParameters),
-		autorest.WithJSON(createUpdateGremlinContainerParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateUpdateGremlinContainerSender sends the CreateUpdateGremlinContainer request. The method will close the
-// http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) CreateUpdateGremlinContainerSender(req *http.Request) (future DatabaseAccountsCreateUpdateGremlinContainerFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// CreateUpdateGremlinContainerResponder handles the response to the CreateUpdateGremlinContainer request. The method always
-// closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateUpdateGremlinContainerResponder(resp *http.Response) (result Container, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // CreateUpdateGremlinDatabase create or update an Azure Cosmos DB Gremlin database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
@@ -618,6 +517,107 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinDatabaseSender(req *http
 // CreateUpdateGremlinDatabaseResponder handles the response to the CreateUpdateGremlinDatabase request. The method always
 // closes the http.Response Body.
 func (client DatabaseAccountsClient) CreateUpdateGremlinDatabaseResponder(resp *http.Response) (result GremlinDatabase, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateUpdateGremlinGraph create or update an Azure Cosmos DB Gremlin graph
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseRid - cosmos DB database rid.
+// graphRid - cosmos DB graph rid.
+// createUpdateGremlinGraphParameters - the parameters to provide for the current Gremlin graph.
+func (client DatabaseAccountsClient) CreateUpdateGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, graphRid string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters) (result DatabaseAccountsCreateUpdateGremlinGraphFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateGremlinGraph")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: createUpdateGremlinGraphParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateGremlinGraph", err.Error())
+	}
+
+	req, err := client.CreateUpdateGremlinGraphPreparer(ctx, resourceGroupName, accountName, databaseRid, graphRid, createUpdateGremlinGraphParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinGraph", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateUpdateGremlinGraphSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateGremlinGraph", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateUpdateGremlinGraphPreparer prepares the CreateUpdateGremlinGraph request.
+func (client DatabaseAccountsClient) CreateUpdateGremlinGraphPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, graphRid string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"databaseRid":       autorest.Encode("path", databaseRid),
+		"graphRid":          autorest.Encode("path", graphRid),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}", pathParameters),
+		autorest.WithJSON(createUpdateGremlinGraphParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateUpdateGremlinGraphSender sends the CreateUpdateGremlinGraph request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) CreateUpdateGremlinGraphSender(req *http.Request) (future DatabaseAccountsCreateUpdateGremlinGraphFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateUpdateGremlinGraphResponder handles the response to the CreateUpdateGremlinGraph request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) CreateUpdateGremlinGraphResponder(resp *http.Response) (result GremlinGraph, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -835,7 +835,7 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDatabaseResponder(resp *ht
 // databaseRid - cosmos DB database rid.
 // containerRid - cosmos DB container rid.
 // createUpdateSQLContainerParameters - the parameters to provide for the current SQL container.
-func (client DatabaseAccountsClient) CreateUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string, createUpdateSQLContainerParameters ContainerCreateUpdateParameters) (result DatabaseAccountsCreateUpdateSQLContainerFuture, err error) {
+func (client DatabaseAccountsClient) CreateUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters) (result DatabaseAccountsCreateUpdateSQLContainerFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateSQLContainer")
 		defer func() {
@@ -855,10 +855,10 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainer(ctx context.Contex
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: createUpdateSQLContainerParameters,
-			Constraints: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.ContainerCreateUpdateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.ContainerCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.ContainerCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createUpdateSQLContainerParameters.ContainerCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "createUpdateSQLContainerParameters.SQLContainerCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateSQLContainer", err.Error())
 	}
@@ -879,7 +879,7 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainer(ctx context.Contex
 }
 
 // CreateUpdateSQLContainerPreparer prepares the CreateUpdateSQLContainer request.
-func (client DatabaseAccountsClient) CreateUpdateSQLContainerPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string, createUpdateSQLContainerParameters ContainerCreateUpdateParameters) (*http.Request, error) {
+func (client DatabaseAccountsClient) CreateUpdateSQLContainerPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"containerRid":      autorest.Encode("path", containerRid),
@@ -918,7 +918,7 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainerSender(req *http.Re
 
 // CreateUpdateSQLContainerResponder handles the response to the CreateUpdateSQLContainer request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateUpdateSQLContainerResponder(resp *http.Response) (result Container, err error) {
+func (client DatabaseAccountsClient) CreateUpdateSQLContainerResponder(resp *http.Response) (result SQLContainer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1394,97 +1394,6 @@ func (client DatabaseAccountsClient) DeleteCassandraTableResponder(resp *http.Re
 	return
 }
 
-// DeleteGremlinContainer deletes an existing Azure Cosmos DB Gremlin container.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// databaseRid - cosmos DB database rid.
-// containerRid - cosmos DB container rid.
-func (client DatabaseAccountsClient) DeleteGremlinContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (result DatabaseAccountsDeleteGremlinContainerFuture, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteGremlinContainer")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteGremlinContainer", err.Error())
-	}
-
-	req, err := client.DeleteGremlinContainerPreparer(ctx, resourceGroupName, accountName, databaseRid, containerRid)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinContainer", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.DeleteGremlinContainerSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinContainer", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// DeleteGremlinContainerPreparer prepares the DeleteGremlinContainer request.
-func (client DatabaseAccountsClient) DeleteGremlinContainerPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"containerRid":      autorest.Encode("path", containerRid),
-		"databaseRid":       autorest.Encode("path", databaseRid),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-04-08"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteGremlinContainerSender sends the DeleteGremlinContainer request. The method will close the
-// http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) DeleteGremlinContainerSender(req *http.Request) (future DatabaseAccountsDeleteGremlinContainerFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// DeleteGremlinContainerResponder handles the response to the DeleteGremlinContainer request. The method always
-// closes the http.Response Body.
-func (client DatabaseAccountsClient) DeleteGremlinContainerResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // DeleteGremlinDatabase deletes an existing Azure Cosmos DB Gremlin database.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
@@ -1565,6 +1474,97 @@ func (client DatabaseAccountsClient) DeleteGremlinDatabaseSender(req *http.Reque
 // DeleteGremlinDatabaseResponder handles the response to the DeleteGremlinDatabase request. The method always
 // closes the http.Response Body.
 func (client DatabaseAccountsClient) DeleteGremlinDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteGremlinGraph deletes an existing Azure Cosmos DB Gremlin graph.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseRid - cosmos DB database rid.
+// graphRid - cosmos DB graph rid.
+func (client DatabaseAccountsClient) DeleteGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, graphRid string) (result DatabaseAccountsDeleteGremlinGraphFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteGremlinGraph")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteGremlinGraph", err.Error())
+	}
+
+	req, err := client.DeleteGremlinGraphPreparer(ctx, resourceGroupName, accountName, databaseRid, graphRid)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinGraph", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteGremlinGraphSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteGremlinGraph", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeleteGremlinGraphPreparer prepares the DeleteGremlinGraph request.
+func (client DatabaseAccountsClient) DeleteGremlinGraphPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, graphRid string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"databaseRid":       autorest.Encode("path", databaseRid),
+		"graphRid":          autorest.Encode("path", graphRid),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteGremlinGraphSender sends the DeleteGremlinGraph request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) DeleteGremlinGraphSender(req *http.Request) (future DatabaseAccountsDeleteGremlinGraphFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DeleteGremlinGraphResponder handles the response to the DeleteGremlinGraph request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) DeleteGremlinGraphResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2388,98 +2388,6 @@ func (client DatabaseAccountsClient) GetCassandraTableResponder(resp *http.Respo
 	return
 }
 
-// GetGremlinContainer gets the Gremlin container under an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// databaseRid - cosmos DB database rid.
-// containerRid - cosmos DB container rid.
-func (client DatabaseAccountsClient) GetGremlinContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (result Container, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetGremlinContainer")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetGremlinContainer", err.Error())
-	}
-
-	req, err := client.GetGremlinContainerPreparer(ctx, resourceGroupName, accountName, databaseRid, containerRid)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinContainer", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetGremlinContainerSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinContainer", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetGremlinContainerResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinContainer", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetGremlinContainerPreparer prepares the GetGremlinContainer request.
-func (client DatabaseAccountsClient) GetGremlinContainerPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"containerRid":      autorest.Encode("path", containerRid),
-		"databaseRid":       autorest.Encode("path", databaseRid),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-04-08"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers/{containerRid}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetGremlinContainerSender sends the GetGremlinContainer request. The method will close the
-// http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) GetGremlinContainerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetGremlinContainerResponder handles the response to the GetGremlinContainer request. The method always
-// closes the http.Response Body.
-func (client DatabaseAccountsClient) GetGremlinContainerResponder(resp *http.Response) (result Container, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // GetGremlinDatabase gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided
 // id.
 // Parameters:
@@ -2561,6 +2469,98 @@ func (client DatabaseAccountsClient) GetGremlinDatabaseSender(req *http.Request)
 // GetGremlinDatabaseResponder handles the response to the GetGremlinDatabase request. The method always
 // closes the http.Response Body.
 func (client DatabaseAccountsClient) GetGremlinDatabaseResponder(resp *http.Response) (result GremlinDatabase, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetGremlinGraph gets the Gremlin graph under an existing Azure Cosmos DB database account.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseRid - cosmos DB database rid.
+// graphRid - cosmos DB graph rid.
+func (client DatabaseAccountsClient) GetGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, graphRid string) (result GremlinGraph, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetGremlinGraph")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetGremlinGraph", err.Error())
+	}
+
+	req, err := client.GetGremlinGraphPreparer(ctx, resourceGroupName, accountName, databaseRid, graphRid)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinGraph", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetGremlinGraphSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinGraph", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetGremlinGraphResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinGraph", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetGremlinGraphPreparer prepares the GetGremlinGraph request.
+func (client DatabaseAccountsClient) GetGremlinGraphPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, graphRid string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"databaseRid":       autorest.Encode("path", databaseRid),
+		"graphRid":          autorest.Encode("path", graphRid),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs/{graphRid}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetGremlinGraphSender sends the GetGremlinGraph request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) GetGremlinGraphSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetGremlinGraphResponder handles the response to the GetGremlinGraph request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) GetGremlinGraphResponder(resp *http.Response) (result GremlinGraph, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2847,7 +2847,7 @@ func (client DatabaseAccountsClient) GetReadOnlyKeysResponder(resp *http.Respons
 // accountName - cosmos DB database account name.
 // databaseRid - cosmos DB database rid.
 // containerRid - cosmos DB container rid.
-func (client DatabaseAccountsClient) GetSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (result Container, err error) {
+func (client DatabaseAccountsClient) GetSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, containerRid string) (result SQLContainer, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetSQLContainer")
 		defer func() {
@@ -2922,7 +2922,7 @@ func (client DatabaseAccountsClient) GetSQLContainerSender(req *http.Request) (*
 
 // GetSQLContainerResponder handles the response to the GetSQLContainer request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) GetSQLContainerResponder(resp *http.Response) (result Container, err error) {
+func (client DatabaseAccountsClient) GetSQLContainerResponder(resp *http.Response) (result SQLContainer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3534,96 +3534,6 @@ func (client DatabaseAccountsClient) ListConnectionStringsResponder(resp *http.R
 	return
 }
 
-// ListGremlinContainers lists the Gremlin container under an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// databaseRid - cosmos DB database rid.
-func (client DatabaseAccountsClient) ListGremlinContainers(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (result ContainerListResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListGremlinContainers")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListGremlinContainers", err.Error())
-	}
-
-	req, err := client.ListGremlinContainersPreparer(ctx, resourceGroupName, accountName, databaseRid)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinContainers", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListGremlinContainersSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinContainers", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListGremlinContainersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinContainers", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListGremlinContainersPreparer prepares the ListGremlinContainers request.
-func (client DatabaseAccountsClient) ListGremlinContainersPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"databaseRid":       autorest.Encode("path", databaseRid),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-04-08"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/containers", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListGremlinContainersSender sends the ListGremlinContainers request. The method will close the
-// http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) ListGremlinContainersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListGremlinContainersResponder handles the response to the ListGremlinContainers request. The method always
-// closes the http.Response Body.
-func (client DatabaseAccountsClient) ListGremlinContainersResponder(resp *http.Response) (result ContainerListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // ListGremlinDatabases lists the Gremlin databases under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
@@ -3702,6 +3612,96 @@ func (client DatabaseAccountsClient) ListGremlinDatabasesSender(req *http.Reques
 // ListGremlinDatabasesResponder handles the response to the ListGremlinDatabases request. The method always
 // closes the http.Response Body.
 func (client DatabaseAccountsClient) ListGremlinDatabasesResponder(resp *http.Response) (result GremlinDatabaseListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListGremlinGraphs lists the Gremlin graph under an existing Azure Cosmos DB database account.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseRid - cosmos DB database rid.
+func (client DatabaseAccountsClient) ListGremlinGraphs(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (result GremlinGraphListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListGremlinGraphs")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListGremlinGraphs", err.Error())
+	}
+
+	req, err := client.ListGremlinGraphsPreparer(ctx, resourceGroupName, accountName, databaseRid)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinGraphs", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListGremlinGraphsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinGraphs", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListGremlinGraphsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListGremlinGraphs", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListGremlinGraphsPreparer prepares the ListGremlinGraphs request.
+func (client DatabaseAccountsClient) ListGremlinGraphsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"databaseRid":       autorest.Encode("path", databaseRid),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/gremlin/databases/{databaseRid}/graphs", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListGremlinGraphsSender sends the ListGremlinGraphs request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) ListGremlinGraphsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListGremlinGraphsResponder handles the response to the ListGremlinGraphs request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) ListGremlinGraphsResponder(resp *http.Response) (result GremlinGraphListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -4251,7 +4251,7 @@ func (client DatabaseAccountsClient) ListReadOnlyKeysResponder(resp *http.Respon
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseRid - cosmos DB database rid.
-func (client DatabaseAccountsClient) ListSQLContainers(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (result ContainerListResult, err error) {
+func (client DatabaseAccountsClient) ListSQLContainers(ctx context.Context, resourceGroupName string, accountName string, databaseRid string) (result SQLContainerListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListSQLContainers")
 		defer func() {
@@ -4325,7 +4325,7 @@ func (client DatabaseAccountsClient) ListSQLContainersSender(req *http.Request) 
 
 // ListSQLContainersResponder handles the response to the ListSQLContainers request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) ListSQLContainersResponder(resp *http.Response) (result ContainerListResult, err error) {
+func (client DatabaseAccountsClient) ListSQLContainersResponder(resp *http.Response) (result SQLContainerListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

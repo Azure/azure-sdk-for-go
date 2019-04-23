@@ -152,9 +152,6 @@ const (
 type AcceptTransferProperties = original.AcceptTransferProperties
 type AcceptTransferRequest = original.AcceptTransferRequest
 type Account = original.Account
-type AccountBillingPermissionsClient = original.AccountBillingPermissionsClient
-type AccountBillingRoleAssignmentClient = original.AccountBillingRoleAssignmentClient
-type AccountBillingRoleDefinitionClient = original.AccountBillingRoleDefinitionClient
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
@@ -165,13 +162,12 @@ type AgreementProperties = original.AgreementProperties
 type AgreementsClient = original.AgreementsClient
 type Amount = original.Amount
 type AvailableBalance = original.AvailableBalance
-type AvailableBalanceByBillingProfileClient = original.AvailableBalanceByBillingProfileClient
 type AvailableBalanceProperties = original.AvailableBalanceProperties
+type AvailableBalancesClient = original.AvailableBalancesClient
 type BaseClient = original.BaseClient
 type Department = original.Department
 type DepartmentListResult = original.DepartmentListResult
 type DepartmentProperties = original.DepartmentProperties
-type DepartmentsByBillingAccountNameClient = original.DepartmentsByBillingAccountNameClient
 type DepartmentsClient = original.DepartmentsClient
 type DetailedTransferStatus = original.DetailedTransferStatus
 type DownloadProperties = original.DownloadProperties
@@ -182,7 +178,6 @@ type EnrollmentAccount = original.EnrollmentAccount
 type EnrollmentAccountContext = original.EnrollmentAccountContext
 type EnrollmentAccountListResult = original.EnrollmentAccountListResult
 type EnrollmentAccountProperties = original.EnrollmentAccountProperties
-type EnrollmentAccountsByBillingAccountNameClient = original.EnrollmentAccountsByBillingAccountNameClient
 type EnrollmentAccountsClient = original.EnrollmentAccountsClient
 type EnrollmentPolicies = original.EnrollmentPolicies
 type Error = original.Error
@@ -190,25 +185,16 @@ type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type InitiateTransferProperties = original.InitiateTransferProperties
 type InitiateTransferRequest = original.InitiateTransferRequest
-type InvoiceClient = original.InvoiceClient
 type InvoiceListResult = original.InvoiceListResult
-type InvoicePricesheetClient = original.InvoicePricesheetClient
-type InvoicePricesheetDownloadFuture = original.InvoicePricesheetDownloadFuture
 type InvoiceSection = original.InvoiceSection
-type InvoiceSectionBillingRoleAssignmentClient = original.InvoiceSectionBillingRoleAssignmentClient
-type InvoiceSectionBillingRoleDefinitionClient = original.InvoiceSectionBillingRoleDefinitionClient
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
-type InvoiceSectionsBillingPermissionsClient = original.InvoiceSectionsBillingPermissionsClient
-type InvoiceSectionsByBillingAccountNameClient = original.InvoiceSectionsByBillingAccountNameClient
 type InvoiceSectionsClient = original.InvoiceSectionsClient
 type InvoiceSectionsCreateFuture = original.InvoiceSectionsCreateFuture
 type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
-type InvoiceSectionsWithCreateSubscriptionPermissionClient = original.InvoiceSectionsWithCreateSubscriptionPermissionClient
 type InvoiceSummary = original.InvoiceSummary
 type InvoiceSummaryProperties = original.InvoiceSummaryProperties
-type InvoicesByBillingAccountClient = original.InvoicesByBillingAccountClient
-type InvoicesByBillingProfileClient = original.InvoicesByBillingProfileClient
+type InvoicesClient = original.InvoicesClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -219,33 +205,29 @@ type OperationsClient = original.OperationsClient
 type Participants = original.Participants
 type PaymentMethod = original.PaymentMethod
 type PaymentMethodProperties = original.PaymentMethodProperties
-type PaymentMethodsByBillingProfileClient = original.PaymentMethodsByBillingProfileClient
+type PaymentMethodsClient = original.PaymentMethodsClient
 type PaymentMethodsListResult = original.PaymentMethodsListResult
 type PaymentMethodsListResultIterator = original.PaymentMethodsListResultIterator
 type PaymentMethodsListResultPage = original.PaymentMethodsListResultPage
 type PaymentProperties = original.PaymentProperties
-type Permissions = original.Permissions
+type PermissionsClient = original.PermissionsClient
 type PermissionsListResult = original.PermissionsListResult
+type PermissionsProperties = original.PermissionsProperties
+type PoliciesClient = original.PoliciesClient
 type Policy = original.Policy
-type PolicyClient = original.PolicyClient
 type PolicyProperties = original.PolicyProperties
+type PriceSheetClient = original.PriceSheetClient
+type PriceSheetDownloadFuture = original.PriceSheetDownloadFuture
 type ProductDetails = original.ProductDetails
 type ProductSummary = original.ProductSummary
 type ProductSummaryProperties = original.ProductSummaryProperties
-type ProductsByBillingAccountClient = original.ProductsByBillingAccountClient
-type ProductsByBillingSubscriptionsClient = original.ProductsByBillingSubscriptionsClient
-type ProductsByInvoiceSectionClient = original.ProductsByInvoiceSectionClient
 type ProductsClient = original.ProductsClient
 type ProductsListResult = original.ProductsListResult
 type ProductsListResultIterator = original.ProductsListResultIterator
 type ProductsListResultPage = original.ProductsListResultPage
 type Profile = original.Profile
-type ProfileBillingPermissionsClient = original.ProfileBillingPermissionsClient
-type ProfileBillingRoleAssignmentClient = original.ProfileBillingRoleAssignmentClient
-type ProfileBillingRoleDefinitionClient = original.ProfileBillingRoleDefinitionClient
 type ProfileListResult = original.ProfileListResult
 type ProfileProperties = original.ProfileProperties
-type ProfilesByBillingAccountNameClient = original.ProfilesByBillingAccountNameClient
 type ProfilesClient = original.ProfilesClient
 type ProfilesUpdateFuture = original.ProfilesUpdateFuture
 type Property = original.Property
@@ -262,21 +244,19 @@ type RoleAssignment = original.RoleAssignment
 type RoleAssignmentListResult = original.RoleAssignmentListResult
 type RoleAssignmentPayload = original.RoleAssignmentPayload
 type RoleAssignmentProperties = original.RoleAssignmentProperties
+type RoleAssignmentsClient = original.RoleAssignmentsClient
 type RoleDefinition = original.RoleDefinition
 type RoleDefinitionListResult = original.RoleDefinitionListResult
 type RoleDefinitionProperties = original.RoleDefinitionProperties
-type SubscriptionClient = original.SubscriptionClient
+type RoleDefinitionsClient = original.RoleDefinitionsClient
 type SubscriptionProperties = original.SubscriptionProperties
 type SubscriptionSummary = original.SubscriptionSummary
-type SubscriptionTransferFuture = original.SubscriptionTransferFuture
-type SubscriptionsByBillingProfileClient = original.SubscriptionsByBillingProfileClient
-type SubscriptionsByInvoiceSectionClient = original.SubscriptionsByInvoiceSectionClient
+type SubscriptionsClient = original.SubscriptionsClient
 type SubscriptionsListResult = original.SubscriptionsListResult
 type SubscriptionsListResultIterator = original.SubscriptionsListResultIterator
 type SubscriptionsListResultPage = original.SubscriptionsListResultPage
-type TransactionsByBillingAccountClient = original.TransactionsByBillingAccountClient
-type TransactionsByBillingProfileClient = original.TransactionsByBillingProfileClient
-type TransactionsByInvoiceSectionClient = original.TransactionsByInvoiceSectionClient
+type SubscriptionsTransferFuture = original.SubscriptionsTransferFuture
+type TransactionsClient = original.TransactionsClient
 type TransactionsListResult = original.TransactionsListResult
 type TransactionsListResultIterator = original.TransactionsListResultIterator
 type TransactionsListResultPage = original.TransactionsListResultPage
@@ -300,24 +280,6 @@ type UpdateAutoRenewRequest = original.UpdateAutoRenewRequest
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewAccountBillingPermissionsClient(subscriptionID string) AccountBillingPermissionsClient {
-	return original.NewAccountBillingPermissionsClient(subscriptionID)
-}
-func NewAccountBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingPermissionsClient {
-	return original.NewAccountBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAccountBillingRoleAssignmentClient(subscriptionID string) AccountBillingRoleAssignmentClient {
-	return original.NewAccountBillingRoleAssignmentClient(subscriptionID)
-}
-func NewAccountBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingRoleAssignmentClient {
-	return original.NewAccountBillingRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAccountBillingRoleDefinitionClient(subscriptionID string) AccountBillingRoleDefinitionClient {
-	return original.NewAccountBillingRoleDefinitionClient(subscriptionID)
-}
-func NewAccountBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) AccountBillingRoleDefinitionClient {
-	return original.NewAccountBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -330,17 +292,11 @@ func NewAgreementsClient(subscriptionID string) AgreementsClient {
 func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAvailableBalanceByBillingProfileClient(subscriptionID string) AvailableBalanceByBillingProfileClient {
-	return original.NewAvailableBalanceByBillingProfileClient(subscriptionID)
+func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
+	return original.NewAvailableBalancesClient(subscriptionID)
 }
-func NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalanceByBillingProfileClient {
-	return original.NewAvailableBalanceByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDepartmentsByBillingAccountNameClient(subscriptionID string) DepartmentsByBillingAccountNameClient {
-	return original.NewDepartmentsByBillingAccountNameClient(subscriptionID)
-}
-func NewDepartmentsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsByBillingAccountNameClient {
-	return original.NewDepartmentsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
+func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
+	return original.NewAvailableBalancesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDepartmentsClient(subscriptionID string) DepartmentsClient {
 	return original.NewDepartmentsClient(subscriptionID)
@@ -348,53 +304,11 @@ func NewDepartmentsClient(subscriptionID string) DepartmentsClient {
 func NewDepartmentsClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsClient {
 	return original.NewDepartmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewEnrollmentAccountsByBillingAccountNameClient(subscriptionID string) EnrollmentAccountsByBillingAccountNameClient {
-	return original.NewEnrollmentAccountsByBillingAccountNameClient(subscriptionID)
-}
-func NewEnrollmentAccountsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsByBillingAccountNameClient {
-	return original.NewEnrollmentAccountsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClient(subscriptionID)
 }
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceClient(subscriptionID string) InvoiceClient {
-	return original.NewInvoiceClient(subscriptionID)
-}
-func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string) InvoiceClient {
-	return original.NewInvoiceClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
-	return original.NewInvoicePricesheetClient(subscriptionID)
-}
-func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
-	return original.NewInvoicePricesheetClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionBillingRoleAssignmentClient(subscriptionID string) InvoiceSectionBillingRoleAssignmentClient {
-	return original.NewInvoiceSectionBillingRoleAssignmentClient(subscriptionID)
-}
-func NewInvoiceSectionBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleAssignmentClient {
-	return original.NewInvoiceSectionBillingRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
-	return original.NewInvoiceSectionBillingRoleDefinitionClient(subscriptionID)
-}
-func NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionBillingRoleDefinitionClient {
-	return original.NewInvoiceSectionBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionsBillingPermissionsClient(subscriptionID string) InvoiceSectionsBillingPermissionsClient {
-	return original.NewInvoiceSectionsBillingPermissionsClient(subscriptionID)
-}
-func NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsBillingPermissionsClient {
-	return original.NewInvoiceSectionsBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoiceSectionsByBillingAccountNameClient(subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
-	return original.NewInvoiceSectionsByBillingAccountNameClient(subscriptionID)
-}
-func NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsByBillingAccountNameClient {
-	return original.NewInvoiceSectionsByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
 	return original.NewInvoiceSectionsClient(subscriptionID)
@@ -402,23 +316,11 @@ func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
 func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsClient {
 	return original.NewInvoiceSectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInvoiceSectionsWithCreateSubscriptionPermissionClient(subscriptionID string) InvoiceSectionsWithCreateSubscriptionPermissionClient {
-	return original.NewInvoiceSectionsWithCreateSubscriptionPermissionClient(subscriptionID)
+func NewInvoicesClient(subscriptionID string) InvoicesClient {
+	return original.NewInvoicesClient(subscriptionID)
 }
-func NewInvoiceSectionsWithCreateSubscriptionPermissionClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsWithCreateSubscriptionPermissionClient {
-	return original.NewInvoiceSectionsWithCreateSubscriptionPermissionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoicesByBillingAccountClient(subscriptionID string) InvoicesByBillingAccountClient {
-	return original.NewInvoicesByBillingAccountClient(subscriptionID)
-}
-func NewInvoicesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) InvoicesByBillingAccountClient {
-	return original.NewInvoicesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoicesByBillingProfileClient(subscriptionID string) InvoicesByBillingProfileClient {
-	return original.NewInvoicesByBillingProfileClient(subscriptionID)
-}
-func NewInvoicesByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) InvoicesByBillingProfileClient {
-	return original.NewInvoicesByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
+	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -432,11 +334,11 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPaymentMethodsByBillingProfileClient(subscriptionID string) PaymentMethodsByBillingProfileClient {
-	return original.NewPaymentMethodsByBillingProfileClient(subscriptionID)
+func NewPaymentMethodsClient(subscriptionID string) PaymentMethodsClient {
+	return original.NewPaymentMethodsClient(subscriptionID)
 }
-func NewPaymentMethodsByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) PaymentMethodsByBillingProfileClient {
-	return original.NewPaymentMethodsByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
+func NewPaymentMethodsClientWithBaseURI(baseURI string, subscriptionID string) PaymentMethodsClient {
+	return original.NewPaymentMethodsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPaymentMethodsListResultIterator(page PaymentMethodsListResultPage) PaymentMethodsListResultIterator {
 	return original.NewPaymentMethodsListResultIterator(page)
@@ -444,29 +346,23 @@ func NewPaymentMethodsListResultIterator(page PaymentMethodsListResultPage) Paym
 func NewPaymentMethodsListResultPage(getNextPage func(context.Context, PaymentMethodsListResult) (PaymentMethodsListResult, error)) PaymentMethodsListResultPage {
 	return original.NewPaymentMethodsListResultPage(getNextPage)
 }
-func NewPolicyClient(subscriptionID string) PolicyClient {
-	return original.NewPolicyClient(subscriptionID)
+func NewPermissionsClient(subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClient(subscriptionID)
 }
-func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
-	return original.NewPolicyClientWithBaseURI(baseURI, subscriptionID)
+func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewProductsByBillingAccountClient(subscriptionID string) ProductsByBillingAccountClient {
-	return original.NewProductsByBillingAccountClient(subscriptionID)
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
 }
-func NewProductsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) ProductsByBillingAccountClient {
-	return original.NewProductsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewProductsByBillingSubscriptionsClient(subscriptionID string) ProductsByBillingSubscriptionsClient {
-	return original.NewProductsByBillingSubscriptionsClient(subscriptionID)
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID)
 }
-func NewProductsByBillingSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductsByBillingSubscriptionsClient {
-	return original.NewProductsByBillingSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProductsByInvoiceSectionClient(subscriptionID string) ProductsByInvoiceSectionClient {
-	return original.NewProductsByInvoiceSectionClient(subscriptionID)
-}
-func NewProductsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) ProductsByInvoiceSectionClient {
-	return original.NewProductsByInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProductsClient(subscriptionID string) ProductsClient {
 	return original.NewProductsClient(subscriptionID)
@@ -479,30 +375,6 @@ func NewProductsListResultIterator(page ProductsListResultPage) ProductsListResu
 }
 func NewProductsListResultPage(getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
 	return original.NewProductsListResultPage(getNextPage)
-}
-func NewProfileBillingPermissionsClient(subscriptionID string) ProfileBillingPermissionsClient {
-	return original.NewProfileBillingPermissionsClient(subscriptionID)
-}
-func NewProfileBillingPermissionsClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingPermissionsClient {
-	return original.NewProfileBillingPermissionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProfileBillingRoleAssignmentClient(subscriptionID string) ProfileBillingRoleAssignmentClient {
-	return original.NewProfileBillingRoleAssignmentClient(subscriptionID)
-}
-func NewProfileBillingRoleAssignmentClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingRoleAssignmentClient {
-	return original.NewProfileBillingRoleAssignmentClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProfileBillingRoleDefinitionClient(subscriptionID string) ProfileBillingRoleDefinitionClient {
-	return original.NewProfileBillingRoleDefinitionClient(subscriptionID)
-}
-func NewProfileBillingRoleDefinitionClientWithBaseURI(baseURI string, subscriptionID string) ProfileBillingRoleDefinitionClient {
-	return original.NewProfileBillingRoleDefinitionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProfilesByBillingAccountNameClient(subscriptionID string) ProfilesByBillingAccountNameClient {
-	return original.NewProfilesByBillingAccountNameClient(subscriptionID)
-}
-func NewProfilesByBillingAccountNameClientWithBaseURI(baseURI string, subscriptionID string) ProfilesByBillingAccountNameClient {
-	return original.NewProfilesByBillingAccountNameClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
@@ -528,23 +400,23 @@ func NewRecipientTransfersClient(subscriptionID string) RecipientTransfersClient
 func NewRecipientTransfersClientWithBaseURI(baseURI string, subscriptionID string) RecipientTransfersClient {
 	return original.NewRecipientTransfersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
-	return original.NewSubscriptionClient(subscriptionID)
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
 }
-func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
-	return original.NewSubscriptionClientWithBaseURI(baseURI, subscriptionID)
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionsByBillingProfileClient(subscriptionID string) SubscriptionsByBillingProfileClient {
-	return original.NewSubscriptionsByBillingProfileClient(subscriptionID)
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID)
 }
-func NewSubscriptionsByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsByBillingProfileClient {
-	return original.NewSubscriptionsByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionsByInvoiceSectionClient(subscriptionID string) SubscriptionsByInvoiceSectionClient {
-	return original.NewSubscriptionsByInvoiceSectionClient(subscriptionID)
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID)
 }
-func NewSubscriptionsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsByInvoiceSectionClient {
-	return original.NewSubscriptionsByInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSubscriptionsListResultIterator(page SubscriptionsListResultPage) SubscriptionsListResultIterator {
 	return original.NewSubscriptionsListResultIterator(page)
@@ -552,23 +424,11 @@ func NewSubscriptionsListResultIterator(page SubscriptionsListResultPage) Subscr
 func NewSubscriptionsListResultPage(getNextPage func(context.Context, SubscriptionsListResult) (SubscriptionsListResult, error)) SubscriptionsListResultPage {
 	return original.NewSubscriptionsListResultPage(getNextPage)
 }
-func NewTransactionsByBillingAccountClient(subscriptionID string) TransactionsByBillingAccountClient {
-	return original.NewTransactionsByBillingAccountClient(subscriptionID)
+func NewTransactionsClient(subscriptionID string) TransactionsClient {
+	return original.NewTransactionsClient(subscriptionID)
 }
-func NewTransactionsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByBillingAccountClient {
-	return original.NewTransactionsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTransactionsByBillingProfileClient(subscriptionID string) TransactionsByBillingProfileClient {
-	return original.NewTransactionsByBillingProfileClient(subscriptionID)
-}
-func NewTransactionsByBillingProfileClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByBillingProfileClient {
-	return original.NewTransactionsByBillingProfileClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTransactionsByInvoiceSectionClient(subscriptionID string) TransactionsByInvoiceSectionClient {
-	return original.NewTransactionsByInvoiceSectionClient(subscriptionID)
-}
-func NewTransactionsByInvoiceSectionClientWithBaseURI(baseURI string, subscriptionID string) TransactionsByInvoiceSectionClient {
-	return original.NewTransactionsByInvoiceSectionClientWithBaseURI(baseURI, subscriptionID)
+func NewTransactionsClientWithBaseURI(baseURI string, subscriptionID string) TransactionsClient {
+	return original.NewTransactionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTransactionsListResultIterator(page TransactionsListResultPage) TransactionsListResultIterator {
 	return original.NewTransactionsListResultIterator(page)

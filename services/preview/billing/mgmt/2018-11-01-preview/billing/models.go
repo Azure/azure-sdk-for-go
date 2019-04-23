@@ -336,11 +336,11 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// AccountProperties - A billing account.
 	*AccountProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -349,15 +349,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AccountProperties != nil {
 		objectMap["properties"] = a.AccountProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -416,35 +407,35 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 // AccountListResult result of listing billing accounts.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of billing accounts.
+	// Value - READ-ONLY; The list of billing accounts.
 	Value *[]Account `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // AccountProperties the properties of the billing account.
 type AccountProperties struct {
-	// DisplayName - The billing account name.
+	// DisplayName - READ-ONLY; The billing account name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// AccountType - The billing account Type. Possible values include: 'AccountTypeOrganization', 'AccountTypeEnrollment'
+	// AccountType - READ-ONLY; The billing account Type. Possible values include: 'AccountTypeOrganization', 'AccountTypeEnrollment'
 	AccountType AccountType `json:"accountType,omitempty"`
 	// Address - The address associated with billing account.
 	Address *Address `json:"address,omitempty"`
-	// Company - Company Name.
+	// Company - READ-ONLY; Company Name.
 	Company *string `json:"company,omitempty"`
-	// Country - Country Name.
+	// Country - READ-ONLY; Country Name.
 	Country *string `json:"country,omitempty"`
 	// InvoiceSections - The invoice sections associated to the billing account. By default this is not populated, unless it's specified in $expand.
 	InvoiceSections *[]InvoiceSection `json:"invoiceSections,omitempty"`
 	// BillingProfiles - The billing profiles associated to the billing account. By default this is not populated, unless it's specified in $expand.
 	BillingProfiles *[]Profile `json:"billingProfiles,omitempty"`
-	// EnrollmentDetails - The details about the associated legacy enrollment. By default this is not populated, unless it's specified in $expand.
+	// EnrollmentDetails - READ-ONLY; The details about the associated legacy enrollment. By default this is not populated, unless it's specified in $expand.
 	EnrollmentDetails *Enrollment `json:"enrollmentDetails,omitempty"`
 	// Departments - The departments associated to the enrollment.
 	Departments *[]Department `json:"departments,omitempty"`
 	// EnrollmentAccounts - The accounts associated to the enrollment.
 	EnrollmentAccounts *[]EnrollmentAccount `json:"enrollmentAccounts,omitempty"`
-	// HasReadAccess - Specifies whether the user has read access on billing account.
+	// HasReadAccess - READ-ONLY; Specifies whether the user has read access on billing account.
 	HasReadAccess *bool `json:"hasReadAccess,omitempty"`
 }
 
@@ -477,11 +468,11 @@ type Agreement struct {
 	autorest.Response `json:"-"`
 	// AgreementProperties - An agreement.
 	*AgreementProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -490,15 +481,6 @@ func (a Agreement) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AgreementProperties != nil {
 		objectMap["properties"] = a.AgreementProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -557,31 +539,31 @@ func (a *Agreement) UnmarshalJSON(body []byte) error {
 // AgreementListResult result of listing agreements.
 type AgreementListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of agreements.
+	// Value - READ-ONLY; The list of agreements.
 	Value *[]Agreement `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // AgreementProperties the properties of the agreement.
 type AgreementProperties struct {
-	// AgreementLink - The link to the agreement.
+	// AgreementLink - READ-ONLY; The link to the agreement.
 	AgreementLink *string `json:"agreementLink,omitempty"`
-	// EffectiveDate - Effective date.
+	// EffectiveDate - READ-ONLY; Effective date.
 	EffectiveDate *date.Time `json:"effectiveDate,omitempty"`
-	// ExpirationDate - Expiration date.
+	// ExpirationDate - READ-ONLY; Expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Participants - Participants or signer of the agreement.
 	Participants *[]Participants `json:"participants,omitempty"`
-	// Status - The agreement status
+	// Status - READ-ONLY; The agreement status
 	Status *string `json:"status,omitempty"`
 }
 
 // Amount the Amount.
 type Amount struct {
-	// Currency - The currency for the amount value.
+	// Currency - READ-ONLY; The currency for the amount value.
 	Currency *string `json:"currency,omitempty"`
-	// Value - Amount value.
+	// Value - READ-ONLY; Amount value.
 	Value *float64 `json:"value,omitempty"`
 }
 
@@ -589,11 +571,11 @@ type Amount struct {
 type AvailableBalance struct {
 	autorest.Response           `json:"-"`
 	*AvailableBalanceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -602,15 +584,6 @@ func (ab AvailableBalance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ab.AvailableBalanceProperties != nil {
 		objectMap["properties"] = ab.AvailableBalanceProperties
-	}
-	if ab.ID != nil {
-		objectMap["id"] = ab.ID
-	}
-	if ab.Name != nil {
-		objectMap["name"] = ab.Name
-	}
-	if ab.Type != nil {
-		objectMap["type"] = ab.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -668,7 +641,7 @@ func (ab *AvailableBalance) UnmarshalJSON(body []byte) error {
 
 // AvailableBalanceProperties the properties of available balance.
 type AvailableBalanceProperties struct {
-	// Amount - Balance Amount.
+	// Amount - READ-ONLY; Balance Amount.
 	Amount *Amount `json:"amount,omitempty"`
 }
 
@@ -677,11 +650,11 @@ type Department struct {
 	autorest.Response `json:"-"`
 	// DepartmentProperties - A department.
 	*DepartmentProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -690,15 +663,6 @@ func (d Department) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DepartmentProperties != nil {
 		objectMap["properties"] = d.DepartmentProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -757,9 +721,9 @@ func (d *Department) UnmarshalJSON(body []byte) error {
 // DepartmentListResult result of listing departments.
 type DepartmentListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of departments.
+	// Value - READ-ONLY; The list of departments.
 	Value *[]Department `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -777,11 +741,11 @@ type DepartmentProperties struct {
 
 // DetailedTransferStatus detailed transfer status.
 type DetailedTransferStatus struct {
-	// ProductType - Type of product being transferred. Possible values include: 'ProductTypeAzureSubscription', 'ProductTypeAzureReservation'
+	// ProductType - READ-ONLY; Type of product being transferred. Possible values include: 'ProductTypeAzureSubscription', 'ProductTypeAzureReservation'
 	ProductType ProductType `json:"productType,omitempty"`
-	// ProductID - Id of product being transferred.
+	// ProductID - READ-ONLY; Id of product being transferred.
 	ProductID *string `json:"productId,omitempty"`
-	// TransferStatus - Transfer status. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'Failed'
+	// TransferStatus - READ-ONLY; Transfer status. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'Failed'
 	TransferStatus ProductTransferStatus `json:"transferStatus,omitempty"`
 	// ErrorDetails - Error details for transfer execution.
 	ErrorDetails *Error `json:"errorDetails,omitempty"`
@@ -789,26 +753,26 @@ type DetailedTransferStatus struct {
 
 // DownloadProperties the properties of the invoice download.
 type DownloadProperties struct {
-	// Kind - Document type. Possible values include: 'Invoice', 'VoidNote', 'Receipt', 'CreditNote'
+	// Kind - READ-ONLY; Document type. Possible values include: 'Invoice', 'VoidNote', 'Receipt', 'CreditNote'
 	Kind Kind `json:"kind,omitempty"`
-	// URL - Document URL.
+	// URL - READ-ONLY; Document URL.
 	URL *string `json:"url,omitempty"`
 }
 
 // DownloadURL a secure URL that can be used to download a an entity until the URL expires.
 type DownloadURL struct {
 	autorest.Response `json:"-"`
-	// ExpiryTime - The time in UTC at which this download URL will expire.
+	// ExpiryTime - READ-ONLY; The time in UTC at which this download URL will expire.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// URL - The URL to the PDF file.
+	// URL - READ-ONLY; The URL to the PDF file.
 	URL *string `json:"url,omitempty"`
 }
 
 // EnabledAzureSKUs details about the enabled azure sku.
 type EnabledAzureSKUs struct {
-	// SkuID - The sku id.
+	// SkuID - READ-ONLY; The sku id.
 	SkuID *string `json:"skuId,omitempty"`
-	// SkuDescription - The sku description.
+	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
 }
 
@@ -818,19 +782,19 @@ type Enrollment struct {
 	StartDate *date.Time `json:"startDate,omitempty"`
 	// EndDate - Enrollment End Date
 	EndDate *date.Time `json:"endDate,omitempty"`
-	// Currency - The currency associated with enrollment
+	// Currency - READ-ONLY; The currency associated with enrollment
 	Currency *string `json:"currency,omitempty"`
-	// Channel - The channel for Enrollment
+	// Channel - READ-ONLY; The channel for Enrollment
 	Channel *string `json:"channel,omitempty"`
-	// Policies - The attributes associated with legacy enrollment.
+	// Policies - READ-ONLY; The attributes associated with legacy enrollment.
 	Policies *EnrollmentPolicies `json:"policies,omitempty"`
-	// Language - The language for Enrollment
+	// Language - READ-ONLY; The language for Enrollment
 	Language *string `json:"language,omitempty"`
-	// CountryCode - The countryCode for Enrollment
+	// CountryCode - READ-ONLY; The countryCode for Enrollment
 	CountryCode *string `json:"countryCode,omitempty"`
-	// Status - Enrollment status
+	// Status - READ-ONLY; Enrollment status
 	Status *string `json:"status,omitempty"`
-	// BillingCycle - Enrollment billing cycle
+	// BillingCycle - READ-ONLY; Enrollment billing cycle
 	BillingCycle *string `json:"billingCycle,omitempty"`
 }
 
@@ -839,11 +803,11 @@ type EnrollmentAccount struct {
 	autorest.Response `json:"-"`
 	// EnrollmentAccountProperties - An account.
 	*EnrollmentAccountProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -852,15 +816,6 @@ func (ea EnrollmentAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ea.EnrollmentAccountProperties != nil {
 		objectMap["properties"] = ea.EnrollmentAccountProperties
-	}
-	if ea.ID != nil {
-		objectMap["id"] = ea.ID
-	}
-	if ea.Name != nil {
-		objectMap["name"] = ea.Name
-	}
-	if ea.Type != nil {
-		objectMap["type"] = ea.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -931,9 +886,9 @@ type EnrollmentAccountContext struct {
 // EnrollmentAccountListResult result of listing enrollment accounts.
 type EnrollmentAccountListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of enrollment accounts.
+	// Value - READ-ONLY; The list of enrollment accounts.
 	Value *[]EnrollmentAccount `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -957,31 +912,31 @@ type EnrollmentAccountProperties struct {
 
 // EnrollmentPolicies the attributes associated with legacy enrollment
 type EnrollmentPolicies struct {
-	// AccountOwnerViewCharges - The accountOwnerViewCharges flag for Enrollment
+	// AccountOwnerViewCharges - READ-ONLY; The accountOwnerViewCharges flag for Enrollment
 	AccountOwnerViewCharges *bool `json:"accountOwnerViewCharges,omitempty"`
-	// DepartmentAdminViewCharges - The departmentAdminViewCharges flag for Enrollment
+	// DepartmentAdminViewCharges - READ-ONLY; The departmentAdminViewCharges flag for Enrollment
 	DepartmentAdminViewCharges *bool `json:"departmentAdminViewCharges,omitempty"`
-	// MarketplacesEnabled - The marketplaces flag for Enrollment
+	// MarketplacesEnabled - READ-ONLY; The marketplaces flag for Enrollment
 	MarketplacesEnabled *bool `json:"marketplacesEnabled,omitempty"`
-	// ReservedInstancesEnabled - The reserved instances flag for Enrollment
+	// ReservedInstancesEnabled - READ-ONLY; The reserved instances flag for Enrollment
 	ReservedInstancesEnabled *bool `json:"reservedInstancesEnabled,omitempty"`
 }
 
 // Error error details for transfer execution.
 type Error struct {
-	// ErrorCode - Error code.
+	// ErrorCode - READ-ONLY; Error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorMessage - Error message.
+	// ErrorMessage - READ-ONLY; Error message.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
 }
 
@@ -1042,39 +997,10 @@ func (itr *InitiateTransferRequest) UnmarshalJSON(body []byte) error {
 // InvoiceListResult result of listing invoices.
 type InvoiceListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of invoices.
+	// Value - READ-ONLY; The list of invoices.
 	Value *[]InvoiceSummary `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// InvoicePricesheetDownloadFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type InvoicePricesheetDownloadFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InvoicePricesheetDownloadFuture) Result(client InvoicePricesheetClient) (du DownloadURL, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetDownloadFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetDownloadFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
-		du, err = client.DownloadResponder(du.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetDownloadFuture", "Result", du.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // InvoiceSection an InvoiceSection resource.
@@ -1082,11 +1008,11 @@ type InvoiceSection struct {
 	autorest.Response `json:"-"`
 	// InvoiceSectionProperties - The InvoiceSection.
 	*InvoiceSectionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1095,15 +1021,6 @@ func (is InvoiceSection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if is.InvoiceSectionProperties != nil {
 		objectMap["properties"] = is.InvoiceSectionProperties
-	}
-	if is.ID != nil {
-		objectMap["id"] = is.ID
-	}
-	if is.Name != nil {
-		objectMap["name"] = is.Name
-	}
-	if is.Type != nil {
-		objectMap["type"] = is.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1162,9 +1079,9 @@ func (is *InvoiceSection) UnmarshalJSON(body []byte) error {
 // InvoiceSectionListResult result of listing invoice sections.
 type InvoiceSectionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of invoice sections.
+	// Value - READ-ONLY; The list of invoice sections.
 	Value *[]InvoiceSection `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1186,7 +1103,7 @@ type InvoiceSectionsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *InvoiceSectionsCreateFuture) Result(client InvoiceSectionsClient) (is InvoiceSection, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1215,7 +1132,7 @@ type InvoiceSectionsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *InvoiceSectionsUpdateFuture) Result(client InvoiceSectionsClient) (is InvoiceSection, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1239,11 +1156,11 @@ type InvoiceSummary struct {
 	autorest.Response `json:"-"`
 	// InvoiceSummaryProperties - An invoice.
 	*InvoiceSummaryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1252,15 +1169,6 @@ func (is InvoiceSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if is.InvoiceSummaryProperties != nil {
 		objectMap["properties"] = is.InvoiceSummaryProperties
-	}
-	if is.ID != nil {
-		objectMap["id"] = is.ID
-	}
-	if is.Name != nil {
-		objectMap["name"] = is.Name
-	}
-	if is.Type != nil {
-		objectMap["type"] = is.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1318,35 +1226,35 @@ func (is *InvoiceSummary) UnmarshalJSON(body []byte) error {
 
 // InvoiceSummaryProperties the properties of the invoice.
 type InvoiceSummaryProperties struct {
-	// DueDate - The due date for invoice.
+	// DueDate - READ-ONLY; The due date for invoice.
 	DueDate *date.Time `json:"dueDate,omitempty"`
-	// InvoiceDate - The date when invoice was created.
+	// InvoiceDate - READ-ONLY; The date when invoice was created.
 	InvoiceDate *date.Time `json:"invoiceDate,omitempty"`
-	// Status - Invoice status. Possible values include: 'StatusPastDue', 'StatusDue', 'StatusPaid', 'StatusVoid'
+	// Status - READ-ONLY; Invoice status. Possible values include: 'StatusPastDue', 'StatusDue', 'StatusPaid', 'StatusVoid'
 	Status Status `json:"status,omitempty"`
-	// AmountDue - Amount due.
+	// AmountDue - READ-ONLY; Amount due.
 	AmountDue *Amount `json:"amountDue,omitempty"`
-	// BilledAmount - Amount billed.
+	// BilledAmount - READ-ONLY; Amount billed.
 	BilledAmount *Amount `json:"billedAmount,omitempty"`
-	// InvoicePeriodStartDate - The start date of the billing period.
+	// InvoicePeriodStartDate - READ-ONLY; The start date of the billing period.
 	InvoicePeriodStartDate *date.Time `json:"invoicePeriodStartDate,omitempty"`
-	// InvoicePeriodEndDate - The end date of the billing period.
+	// InvoicePeriodEndDate - READ-ONLY; The end date of the billing period.
 	InvoicePeriodEndDate *date.Time `json:"invoicePeriodEndDate,omitempty"`
-	// BillingProfileID - The billing profile id this invoice belongs to.
+	// BillingProfileID - READ-ONLY; The billing profile id this invoice belongs to.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
-	// BillingProfileName - The profile name this invoice belongs to.
+	// BillingProfileName - READ-ONLY; The profile name this invoice belongs to.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
-	// PurchaseOrderNumber - The purchase identifier for the invoice.
+	// PurchaseOrderNumber - READ-ONLY; The purchase identifier for the invoice.
 	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty"`
-	// DocumentUrls - List of document urls available to download including invoice and tax documents.
+	// DocumentUrls - READ-ONLY; List of document urls available to download including invoice and tax documents.
 	DocumentUrls *[]DownloadProperties `json:"documentUrls,omitempty"`
-	// Payments - List of payments.
+	// Payments - READ-ONLY; List of payments.
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
 }
 
 // Operation a Billing REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -1354,11 +1262,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Billing.
+	// Provider - READ-ONLY; Service provider: Microsoft.Billing.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -1366,9 +1274,9 @@ type OperationDisplay struct {
 // to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of billing operations supported by the Microsoft.Billing resource provider.
+	// Value - READ-ONLY; List of billing operations supported by the Microsoft.Billing resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1511,7 +1419,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // OperationStatus status of the Billing POST/PUT operation.
 type OperationStatus struct {
-	// ID - The operation Id.
+	// ID - READ-ONLY; The operation Id.
 	ID *string `json:"id,omitempty"`
 	// Status - Status of the pending operation
 	Status *string `json:"status,omitempty"`
@@ -1521,22 +1429,22 @@ type OperationStatus struct {
 
 // Participants details about the participant or signer.
 type Participants struct {
-	// Status - The signing status
+	// Status - READ-ONLY; The signing status
 	Status *string `json:"status,omitempty"`
-	// StatusDate - The date when status got changed.
+	// StatusDate - READ-ONLY; The date when status got changed.
 	StatusDate *date.Time `json:"statusDate,omitempty"`
-	// Email - The email address of the participant or signer.
+	// Email - READ-ONLY; The email address of the participant or signer.
 	Email *string `json:"email,omitempty"`
 }
 
 // PaymentMethod a payment method resource.
 type PaymentMethod struct {
 	*PaymentMethodProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1545,15 +1453,6 @@ func (pm PaymentMethod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pm.PaymentMethodProperties != nil {
 		objectMap["properties"] = pm.PaymentMethodProperties
-	}
-	if pm.ID != nil {
-		objectMap["id"] = pm.ID
-	}
-	if pm.Name != nil {
-		objectMap["name"] = pm.Name
-	}
-	if pm.Type != nil {
-		objectMap["type"] = pm.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1613,20 +1512,20 @@ func (pm *PaymentMethod) UnmarshalJSON(body []byte) error {
 type PaymentMethodProperties struct {
 	// PaymentMethodType - Payment method type. Possible values include: 'Credits', 'ChequeWire'
 	PaymentMethodType PaymentMethodType `json:"paymentMethodType,omitempty"`
-	// Details - Details about the payment method.
+	// Details - READ-ONLY; Details about the payment method.
 	Details *string `json:"details,omitempty"`
-	// Expiration - Expiration date.
+	// Expiration - READ-ONLY; Expiration date.
 	Expiration *date.Time `json:"expiration,omitempty"`
-	// Currency - The currency associated with the payment method.
+	// Currency - READ-ONLY; The currency associated with the payment method.
 	Currency *string `json:"currency,omitempty"`
 }
 
 // PaymentMethodsListResult result of listing payment methods.
 type PaymentMethodsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of payment methods.
+	// Value - READ-ONLY; The list of payment methods.
 	Value *[]PaymentMethod `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1769,38 +1668,39 @@ func NewPaymentMethodsListResultPage(getNextPage func(context.Context, PaymentMe
 
 // PaymentProperties the properties of the payment.
 type PaymentProperties struct {
-	// PaymentType - The type of payment.
+	// PaymentType - READ-ONLY; The type of payment.
 	PaymentType *string `json:"paymentType,omitempty"`
-	// Amount - The paid amount.
+	// Amount - READ-ONLY; The paid amount.
 	Amount *Amount `json:"amount,omitempty"`
-	// Date - The date of the payment.
+	// Date - READ-ONLY; The date of the payment.
 	Date *date.Time `json:"date,omitempty"`
-}
-
-// Permissions the set of allowed action and not allowed actions a caller has on a billing account
-type Permissions struct {
-	// Actions - The set of actions that the caller is allowed to do
-	Actions *[]string `json:"actions,omitempty"`
-	// NotActions - The set of actions the caller is not allowed to do
-	NotActions *[]string `json:"notActions,omitempty"`
 }
 
 // PermissionsListResult result of list billingPermissions a caller has on a billing account.
 type PermissionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list OF billingPermissions a caller has on a billing account.
-	Value *[]Permissions `json:"value,omitempty"`
+	// Value - READ-ONLY; The list OF billingPermissions a caller has on a billing account.
+	Value *[]PermissionsProperties `json:"value,omitempty"`
+}
+
+// PermissionsProperties the set of allowed action and not allowed actions a caller has on a billing
+// account
+type PermissionsProperties struct {
+	// Actions - READ-ONLY; The set of actions that the caller is allowed to do
+	Actions *[]string `json:"actions,omitempty"`
+	// NotActions - READ-ONLY; The set of actions the caller is not allowed to do
+	NotActions *[]string `json:"notActions,omitempty"`
 }
 
 // Policy the Policy.
 type Policy struct {
 	autorest.Response `json:"-"`
 	*PolicyProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1809,15 +1709,6 @@ func (p Policy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.PolicyProperties != nil {
 		objectMap["properties"] = p.PolicyProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1883,6 +1774,35 @@ type PolicyProperties struct {
 	SubscriptionOwnerCanViewCharges *bool `json:"subscriptionOwnerCanViewCharges,omitempty"`
 }
 
+// PriceSheetDownloadFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type PriceSheetDownloadFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PriceSheetDownloadFuture) Result(client PriceSheetClient) (du DownloadURL, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.PriceSheetDownloadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du, err = client.DownloadResponder(du.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", du.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // ProductDetails details of the product to be transferred.
 type ProductDetails struct {
 	// ProductType - Type of the product to be transferred. Possible values include: 'ProductTypeAzureSubscription', 'ProductTypeAzureReservation'
@@ -1895,9 +1815,9 @@ type ProductDetails struct {
 // summaries in reverse chronological order by purchase date.
 type ProductsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of products summary.
+	// Value - READ-ONLY; The list of products summary.
 	Value *[]ProductSummary `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2042,11 +1962,11 @@ func NewProductsListResultPage(getNextPage func(context.Context, ProductsListRes
 type ProductSummary struct {
 	autorest.Response         `json:"-"`
 	*ProductSummaryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2055,15 +1975,6 @@ func (ps ProductSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ps.ProductSummaryProperties != nil {
 		objectMap["properties"] = ps.ProductSummaryProperties
-	}
-	if ps.ID != nil {
-		objectMap["id"] = ps.ID
-	}
-	if ps.Name != nil {
-		objectMap["name"] = ps.Name
-	}
-	if ps.Type != nil {
-		objectMap["type"] = ps.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2121,41 +2032,41 @@ func (ps *ProductSummary) UnmarshalJSON(body []byte) error {
 
 // ProductSummaryProperties the properties of the product summary.
 type ProductSummaryProperties struct {
-	// DisplayName - The display name of the product.
+	// DisplayName - READ-ONLY; The display name of the product.
 	DisplayName *string `json:"displayName,omitempty"`
-	// PurchaseDate - The date of purchase.
+	// PurchaseDate - READ-ONLY; The date of purchase.
 	PurchaseDate *date.Time `json:"purchaseDate,omitempty"`
-	// ProductTypeID - The product type id.
+	// ProductTypeID - READ-ONLY; The product type id.
 	ProductTypeID *string `json:"productTypeId,omitempty"`
-	// ProductType - The type of product.
+	// ProductType - READ-ONLY; The type of product.
 	ProductType *string `json:"productType,omitempty"`
 	// Status - Product status. Possible values include: 'Active', 'Inactive', 'PastDue', 'Expiring', 'Expired', 'Disabled', 'Cancelled', 'AutoRenew'
 	Status ProductStatusType `json:"status,omitempty"`
-	// EndDate - end date.
+	// EndDate - READ-ONLY; end date.
 	EndDate *date.Time `json:"endDate,omitempty"`
 	// BillingFrequency - Billing frequency. Possible values include: 'OneTime', 'Monthly', 'UsageBased'
 	BillingFrequency Frequency `json:"billingFrequency,omitempty"`
-	// LastCharge - Last month charges.
+	// LastCharge - READ-ONLY; Last month charges.
 	LastCharge *Amount `json:"lastCharge,omitempty"`
-	// LastChargeDate - The date of the last charge.
+	// LastChargeDate - READ-ONLY; The date of the last charge.
 	LastChargeDate *date.Time `json:"lastChargeDate,omitempty"`
-	// Quantity - The purchased product quantity.
+	// Quantity - READ-ONLY; The purchased product quantity.
 	Quantity *float64 `json:"quantity,omitempty"`
-	// SkuID - Sku Id.
+	// SkuID - READ-ONLY; Sku Id.
 	SkuID *string `json:"skuId,omitempty"`
-	// SkuDescription - Sku description.
+	// SkuDescription - READ-ONLY; Sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
-	// AvailabilityID - Availability Id.
+	// AvailabilityID - READ-ONLY; Availability Id.
 	AvailabilityID *string `json:"availabilityId,omitempty"`
-	// ParentProductID - Parent Product Id.
+	// ParentProductID - READ-ONLY; Parent Product Id.
 	ParentProductID *string `json:"parentProductId,omitempty"`
-	// InvoiceSectionID - Invoice section id to which this product belongs.
+	// InvoiceSectionID - READ-ONLY; Invoice section id to which this product belongs.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
-	// InvoiceSectionName - Invoice section name to which this product belongs.
+	// InvoiceSectionName - READ-ONLY; Invoice section name to which this product belongs.
 	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
-	// BillingProfileID - Billing Profile id to which this product belongs.
+	// BillingProfileID - READ-ONLY; Billing Profile id to which this product belongs.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
-	// BillingProfileName - Billing Profile name to which this product belongs.
+	// BillingProfileName - READ-ONLY; Billing Profile name to which this product belongs.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
 }
 
@@ -2164,11 +2075,11 @@ type Profile struct {
 	autorest.Response `json:"-"`
 	// ProfileProperties - A billing profile.
 	*ProfileProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2177,15 +2088,6 @@ func (p Profile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.ProfileProperties != nil {
 		objectMap["properties"] = p.ProfileProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2244,9 +2146,9 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 // ProfileListResult result of listing billing profiles.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of billing profiles.
+	// Value - READ-ONLY; The list of billing profiles.
 	Value *[]Profile `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2258,13 +2160,13 @@ type ProfileProperties struct {
 	PoNumber *string `json:"poNumber,omitempty"`
 	// Address - Billing address.
 	Address *Address `json:"address,omitempty"`
-	// InvoiceEmailOptIn - If the billing profile is opted in to receive invoices via email.
+	// InvoiceEmailOptIn - READ-ONLY; If the billing profile is opted in to receive invoices via email.
 	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
-	// IsClassic - Is OMS bootstrapped billing profile.
+	// IsClassic - READ-ONLY; Is OMS bootstrapped billing profile.
 	IsClassic *bool `json:"isClassic,omitempty"`
-	// InvoiceDay - Invoice day.
+	// InvoiceDay - READ-ONLY; Invoice day.
 	InvoiceDay *int32 `json:"invoiceDay,omitempty"`
-	// Currency - The currency associated with the billing profile.
+	// Currency - READ-ONLY; The currency associated with the billing profile.
 	Currency *string `json:"currency,omitempty"`
 	// EnabledAzureSKUs - Information about the product.
 	EnabledAzureSKUs *[]EnabledAzureSKUs `json:"enabledAzureSKUs,omitempty"`
@@ -2282,7 +2184,7 @@ type ProfilesUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ProfilesUpdateFuture) Result(client ProfilesClient) (p Profile, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProfilesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2306,11 +2208,11 @@ type Property struct {
 	autorest.Response `json:"-"`
 	// PropertySummary - A billing property.
 	*PropertySummary `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2319,15 +2221,6 @@ func (p Property) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.PropertySummary != nil {
 		objectMap["properties"] = p.PropertySummary
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2385,29 +2278,29 @@ func (p *Property) UnmarshalJSON(body []byte) error {
 
 // PropertySummary the billing property.
 type PropertySummary struct {
-	// BillingTenantID - Billing tenant Id.
+	// BillingTenantID - READ-ONLY; Billing tenant Id.
 	BillingTenantID *string `json:"billingTenantId,omitempty"`
-	// BillingAccountID - Billing account Id.
+	// BillingAccountID - READ-ONLY; Billing account Id.
 	BillingAccountID *string `json:"billingAccountId,omitempty"`
-	// BillingAccountName - Billing account name.
+	// BillingAccountName - READ-ONLY; Billing account name.
 	BillingAccountName *string `json:"billingAccountName,omitempty"`
-	// BillingProfileID - Billing profile Id.
+	// BillingProfileID - READ-ONLY; Billing profile Id.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
-	// BillingProfileName - Billing profile name.
+	// BillingProfileName - READ-ONLY; Billing profile name.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
-	// CostCenter - Cost center name.
+	// CostCenter - READ-ONLY; Cost center name.
 	CostCenter *string `json:"costCenter,omitempty"`
-	// InvoiceSectionID - Invoice Section Id.
+	// InvoiceSectionID - READ-ONLY; Invoice Section Id.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
-	// InvoiceSectionName - Invoice Section name.
+	// InvoiceSectionName - READ-ONLY; Invoice Section name.
 	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
-	// ProductID - Product Id.
+	// ProductID - READ-ONLY; Product Id.
 	ProductID *string `json:"productId,omitempty"`
-	// ProductName - Product name.
+	// ProductName - READ-ONLY; Product name.
 	ProductName *string `json:"productName,omitempty"`
-	// SkuID - SKU Id.
+	// SkuID - READ-ONLY; SKU Id.
 	SkuID *string `json:"skuId,omitempty"`
-	// SkuDescription - SKU description.
+	// SkuDescription - READ-ONLY; SKU description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
 }
 
@@ -2454,9 +2347,9 @@ func (rtd *RecipientTransferDetails) UnmarshalJSON(body []byte) error {
 // RecipientTransferDetailsListResult result of listing details of the transfer received by caller.
 type RecipientTransferDetailsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of transfers received by caller.
+	// Value - READ-ONLY; The list of transfers received by caller.
 	Value *[]RecipientTransferDetails `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2600,33 +2493,33 @@ func NewRecipientTransferDetailsListResultPage(getNextPage func(context.Context,
 
 // RecipientTransferProperties transfer Details.
 type RecipientTransferProperties struct {
-	// CreationTime - Transfer creation time.
+	// CreationTime - READ-ONLY; Transfer creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// ExpirationTime - Transfer expiration time.
+	// ExpirationTime - READ-ONLY; Transfer expiration time.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// AllowedProductType - Type of subscriptions that can be transferred.
+	// AllowedProductType - READ-ONLY; Type of subscriptions that can be transferred.
 	AllowedProductType *[]EligibleProductType `json:"allowedProductType,omitempty"`
-	// TransferStatus - Overall transfer status. Possible values include: 'TransferStatusPending', 'TransferStatusInProgress', 'TransferStatusCompleted', 'TransferStatusCompletedWithErrors', 'TransferStatusFailed', 'TransferStatusCanceled', 'TransferStatusDeclined'
+	// TransferStatus - READ-ONLY; Overall transfer status. Possible values include: 'TransferStatusPending', 'TransferStatusInProgress', 'TransferStatusCompleted', 'TransferStatusCompletedWithErrors', 'TransferStatusFailed', 'TransferStatusCanceled', 'TransferStatusDeclined'
 	TransferStatus TransferStatus `json:"transferStatus,omitempty"`
-	// RecipientEmailID - Email Id of recipient of transfer.
+	// RecipientEmailID - READ-ONLY; Email Id of recipient of transfer.
 	RecipientEmailID *string `json:"recipientEmailId,omitempty"`
-	// InitiatorEmailID - Email Id of initiator of transfer.
+	// InitiatorEmailID - READ-ONLY; Email Id of initiator of transfer.
 	InitiatorEmailID *string `json:"initiatorEmailId,omitempty"`
-	// CanceledBy - Email Id who user canceled the transfer.
+	// CanceledBy - READ-ONLY; Email Id who user canceled the transfer.
 	CanceledBy *string `json:"canceledBy,omitempty"`
-	// LastModifiedTime - Transfer last modification time.
+	// LastModifiedTime - READ-ONLY; Transfer last modification time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// DetailedTransferStatus - Detailed transfer status.
+	// DetailedTransferStatus - READ-ONLY; Detailed transfer status.
 	DetailedTransferStatus *[]DetailedTransferStatus `json:"detailedTransferStatus,omitempty"`
 }
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2635,11 +2528,11 @@ type RoleAssignment struct {
 	autorest.Response `json:"-"`
 	// RoleAssignmentProperties - The role assignment the caller has
 	*RoleAssignmentProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2648,15 +2541,6 @@ func (ra RoleAssignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ra.RoleAssignmentProperties != nil {
 		objectMap["properties"] = ra.RoleAssignmentProperties
-	}
-	if ra.ID != nil {
-		objectMap["id"] = ra.ID
-	}
-	if ra.Name != nil {
-		objectMap["name"] = ra.Name
-	}
-	if ra.Type != nil {
-		objectMap["type"] = ra.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2715,33 +2599,33 @@ func (ra *RoleAssignment) UnmarshalJSON(body []byte) error {
 // RoleAssignmentListResult result of get list of role assignments
 type RoleAssignmentListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list role assignments
+	// Value - READ-ONLY; The list role assignments
 	Value *[]RoleAssignment `json:"value,omitempty"`
 }
 
 // RoleAssignmentPayload the payload use to update role assignment on a scope
 type RoleAssignmentPayload struct {
-	// PrincipalID - The user's principal id that the role gets assigned to
+	// PrincipalID - READ-ONLY; The user's principal id that the role gets assigned to
 	PrincipalID *string `json:"principalId,omitempty"`
-	// BillingRoleDefinitionName - The role definition id
+	// BillingRoleDefinitionName - READ-ONLY; The role definition id
 	BillingRoleDefinitionName *string `json:"billingRoleDefinitionName,omitempty"`
 }
 
 // RoleAssignmentProperties the properties of the a role assignment.
 type RoleAssignmentProperties struct {
-	// CreatedOn - the date the role assignment is created
+	// CreatedOn - READ-ONLY; the date the role assignment is created
 	CreatedOn *string `json:"createdOn,omitempty"`
-	// CreatedByPrincipalTenantID - the creator's tenant Id
+	// CreatedByPrincipalTenantID - READ-ONLY; the creator's tenant Id
 	CreatedByPrincipalTenantID *string `json:"createdByPrincipalTenantId,omitempty"`
-	// CreatedByPrincipalID - the creator's principal Id
+	// CreatedByPrincipalID - READ-ONLY; the creator's principal Id
 	CreatedByPrincipalID *string `json:"createdByPrincipalId,omitempty"`
-	// Name - the name of the role assignment
+	// Name - READ-ONLY; the name of the role assignment
 	Name *string `json:"name,omitempty"`
-	// PrincipalID - The user's principal id that the role gets assigned to
+	// PrincipalID - READ-ONLY; The user's principal id that the role gets assigned to
 	PrincipalID *string `json:"principalId,omitempty"`
-	// RoleDefinitionName - The role definition id
+	// RoleDefinitionName - READ-ONLY; The role definition id
 	RoleDefinitionName *string `json:"roleDefinitionName,omitempty"`
-	// Scope - The scope the role get assigned to
+	// Scope - READ-ONLY; The scope the role get assigned to
 	Scope *string `json:"scope,omitempty"`
 }
 
@@ -2750,11 +2634,11 @@ type RoleDefinition struct {
 	autorest.Response `json:"-"`
 	// RoleDefinitionProperties - The role definition for a role.
 	*RoleDefinitionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2763,15 +2647,6 @@ func (rd RoleDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rd.RoleDefinitionProperties != nil {
 		objectMap["properties"] = rd.RoleDefinitionProperties
-	}
-	if rd.ID != nil {
-		objectMap["id"] = rd.ID
-	}
-	if rd.Name != nil {
-		objectMap["name"] = rd.Name
-	}
-	if rd.Type != nil {
-		objectMap["type"] = rd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2830,31 +2705,25 @@ func (rd *RoleDefinition) UnmarshalJSON(body []byte) error {
 // RoleDefinitionListResult list the role definitions.
 type RoleDefinitionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of role definitions.
+	// Value - READ-ONLY; The list of role definitions.
 	Value *[]RoleDefinition `json:"value,omitempty"`
 }
 
 // RoleDefinitionProperties the properties of the a role definition.
 type RoleDefinitionProperties struct {
-	// Description - The role description
+	// Description - READ-ONLY; The role description
 	Description *string `json:"description,omitempty"`
 	// PermissionsListResult - The billingPermissions the role has
 	*PermissionsListResult `json:"permissions,omitempty"`
-	// RoleName - The name of the role
+	// RoleName - READ-ONLY; The name of the role
 	RoleName *string `json:"roleName,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RoleDefinitionProperties.
 func (rdp RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rdp.Description != nil {
-		objectMap["description"] = rdp.Description
-	}
 	if rdp.PermissionsListResult != nil {
 		objectMap["permissions"] = rdp.PermissionsListResult
-	}
-	if rdp.RoleName != nil {
-		objectMap["roleName"] = rdp.RoleName
 	}
 	return json.Marshal(objectMap)
 }
@@ -2903,36 +2772,36 @@ func (rdp *RoleDefinitionProperties) UnmarshalJSON(body []byte) error {
 
 // SubscriptionProperties the usage context properties.
 type SubscriptionProperties struct {
-	// DisplayName - display name.
+	// DisplayName - READ-ONLY; display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// SubscriptionID - Subscription Id.
+	// SubscriptionID - READ-ONLY; Subscription Id.
 	SubscriptionID *uuid.UUID `json:"subscriptionId,omitempty"`
 	// SubscriptionBillingStatus - Subscription billing status. Possible values include: 'SubscriptionStatusTypeActive', 'SubscriptionStatusTypeInactive', 'SubscriptionStatusTypeAbandoned', 'SubscriptionStatusTypeDeleted', 'SubscriptionStatusTypeWarning'
 	SubscriptionBillingStatus SubscriptionStatusType `json:"subscriptionBillingStatus,omitempty"`
-	// LastMonthCharges - Last month charges.
+	// LastMonthCharges - READ-ONLY; Last month charges.
 	LastMonthCharges *Amount `json:"lastMonthCharges,omitempty"`
-	// MonthToDateCharges - Month to date charges.
+	// MonthToDateCharges - READ-ONLY; Month to date charges.
 	MonthToDateCharges *Amount `json:"monthToDateCharges,omitempty"`
-	// BillingProfileID - Billing Profile id to which this product belongs.
+	// BillingProfileID - READ-ONLY; Billing Profile id to which this product belongs.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
-	// BillingProfileName - Billing Profile name to which this product belongs.
+	// BillingProfileName - READ-ONLY; Billing Profile name to which this product belongs.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
-	// InvoiceSectionID - Invoice section id to which this product belongs.
+	// InvoiceSectionID - READ-ONLY; Invoice section id to which this product belongs.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
-	// InvoiceSectionName - Invoice section name to which this product belongs.
+	// InvoiceSectionName - READ-ONLY; Invoice section name to which this product belongs.
 	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
 	// SkuID - The sku id.
 	SkuID *string `json:"skuId,omitempty"`
-	// SkuDescription - The sku description.
+	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
 }
 
 // SubscriptionsListResult result of listing billing subscriptions summary.
 type SubscriptionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of billing subscriptions summary.
+	// Value - READ-ONLY; The list of billing subscriptions summary.
 	Value *[]SubscriptionSummary `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3073,15 +2942,44 @@ func NewSubscriptionsListResultPage(getNextPage func(context.Context, Subscripti
 	return SubscriptionsListResultPage{fn: getNextPage}
 }
 
+// SubscriptionsTransferFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SubscriptionsTransferFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SubscriptionsTransferFuture) Result(client SubscriptionsClient) (tbsr TransferBillingSubscriptionResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.SubscriptionsTransferFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tbsr.Response.Response, err = future.GetResult(sender); err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
+		tbsr, err = client.TransferResponder(tbsr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.SubscriptionsTransferFuture", "Result", tbsr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // SubscriptionSummary a billing Subscription summary resource.
 type SubscriptionSummary struct {
 	autorest.Response       `json:"-"`
 	*SubscriptionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3090,15 +2988,6 @@ func (ss SubscriptionSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ss.SubscriptionProperties != nil {
 		objectMap["properties"] = ss.SubscriptionProperties
-	}
-	if ss.ID != nil {
-		objectMap["id"] = ss.ID
-	}
-	if ss.Name != nil {
-		objectMap["name"] = ss.Name
-	}
-	if ss.Type != nil {
-		objectMap["type"] = ss.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3154,41 +3043,12 @@ func (ss *SubscriptionSummary) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SubscriptionTransferFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type SubscriptionTransferFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SubscriptionTransferFuture) Result(client SubscriptionClient) (tbsr TransferBillingSubscriptionResult, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionTransferFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.SubscriptionTransferFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if tbsr.Response.Response, err = future.GetResult(sender); err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
-		tbsr, err = client.TransferResponder(tbsr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.SubscriptionTransferFuture", "Result", tbsr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // TransactionsListResult result of listing reservation transactions summary.
 type TransactionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of reservation transactions summary.
+	// Value - READ-ONLY; The list of reservation transactions summary.
 	Value *[]TransactionsSummary `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3332,11 +3192,11 @@ func NewTransactionsListResultPage(getNextPage func(context.Context, Transaction
 // TransactionsSummary a reservation transaction summary resource.
 type TransactionsSummary struct {
 	*TransactionsSummaryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3345,15 +3205,6 @@ func (ts TransactionsSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ts.TransactionsSummaryProperties != nil {
 		objectMap["properties"] = ts.TransactionsSummaryProperties
-	}
-	if ts.ID != nil {
-		objectMap["id"] = ts.ID
-	}
-	if ts.Name != nil {
-		objectMap["name"] = ts.Name
-	}
-	if ts.Type != nil {
-		objectMap["type"] = ts.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3413,39 +3264,39 @@ func (ts *TransactionsSummary) UnmarshalJSON(body []byte) error {
 type TransactionsSummaryProperties struct {
 	// Kind - The kind of transaction. Choices are all and reservation. Possible values include: 'All', 'Reservation'
 	Kind TransactionTypeKind `json:"kind,omitempty"`
-	// Date - The date of reservation transaction.
+	// Date - READ-ONLY; The date of reservation transaction.
 	Date *date.Time `json:"date,omitempty"`
-	// Invoice - Invoice number or 'pending' if not invoiced.
+	// Invoice - READ-ONLY; Invoice number or 'pending' if not invoiced.
 	Invoice *string `json:"invoice,omitempty"`
-	// OrderID - The reservation order id.
+	// OrderID - READ-ONLY; The reservation order id.
 	OrderID *string `json:"orderId,omitempty"`
-	// OrderName - The reservation order name.
+	// OrderName - READ-ONLY; The reservation order name.
 	OrderName *string `json:"orderName,omitempty"`
-	// ProductFamily - The product family.
+	// ProductFamily - READ-ONLY; The product family.
 	ProductFamily *string `json:"productFamily,omitempty"`
-	// ProductTypeID - The product type id.
+	// ProductTypeID - READ-ONLY; The product type id.
 	ProductTypeID *string `json:"productTypeId,omitempty"`
-	// ProductType - The type of product.
+	// ProductType - READ-ONLY; The type of product.
 	ProductType *string `json:"productType,omitempty"`
-	// ProductDescription - Product description.
+	// ProductDescription - READ-ONLY; Product description.
 	ProductDescription *string `json:"productDescription,omitempty"`
 	// TransactionType - Transaction types. Possible values include: 'Purchase', 'UsageCharge'
 	TransactionType ReservationType `json:"transactionType,omitempty"`
-	// TransactionAmount - Last charge associated with the purchase.
+	// TransactionAmount - READ-ONLY; Last charge associated with the purchase.
 	TransactionAmount *Amount `json:"transactionAmount,omitempty"`
-	// Quantity - Purchase quantity.
+	// Quantity - READ-ONLY; Purchase quantity.
 	Quantity *int32 `json:"quantity,omitempty"`
-	// InvoiceSectionID - Invoice section id to which this product belongs.
+	// InvoiceSectionID - READ-ONLY; Invoice section id to which this product belongs.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
-	// InvoiceSectionName - Invoice section name to which this product belongs.
+	// InvoiceSectionName - READ-ONLY; Invoice section name to which this product belongs.
 	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
-	// BillingProfileID - Billing Profile id to which this product belongs.
+	// BillingProfileID - READ-ONLY; Billing Profile id to which this product belongs.
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
-	// BillingProfileName - Billing Profile name to which this product belongs.
+	// BillingProfileName - READ-ONLY; Billing Profile name to which this product belongs.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
-	// SubscriptionID - The subscription id.
+	// SubscriptionID - READ-ONLY; The subscription id.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// SubscriptionName - The subscription name.
+	// SubscriptionName - READ-ONLY; The subscription name.
 	SubscriptionName *string `json:"subscriptionName,omitempty"`
 }
 
@@ -3583,9 +3434,9 @@ func (td *TransferDetails) UnmarshalJSON(body []byte) error {
 // TransferDetailsListResult result of listing details of the transfer initiated by caller.
 type TransferDetailsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of transfers initiated by caller.
+	// Value - READ-ONLY; The list of transfers initiated by caller.
 	Value *[]TransferDetails `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3734,25 +3585,25 @@ type TransferProductRequestProperties struct {
 
 // TransferProperties transfer details
 type TransferProperties struct {
-	// CreationTime - Transfer creation time.
+	// CreationTime - READ-ONLY; Transfer creation time.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// ExpirationTime - Transfer expiration time.
+	// ExpirationTime - READ-ONLY; Transfer expiration time.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-	// InvoiceSectionID - Target invoice section Id.
+	// InvoiceSectionID - READ-ONLY; Target invoice section Id.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
-	// BillingAccountID - Target billing account Id.
+	// BillingAccountID - READ-ONLY; Target billing account Id.
 	BillingAccountID *string `json:"billingAccountId,omitempty"`
-	// TransferStatus - Overall transfer status. Possible values include: 'TransferStatusPending', 'TransferStatusInProgress', 'TransferStatusCompleted', 'TransferStatusCompletedWithErrors', 'TransferStatusFailed', 'TransferStatusCanceled', 'TransferStatusDeclined'
+	// TransferStatus - READ-ONLY; Overall transfer status. Possible values include: 'TransferStatusPending', 'TransferStatusInProgress', 'TransferStatusCompleted', 'TransferStatusCompletedWithErrors', 'TransferStatusFailed', 'TransferStatusCanceled', 'TransferStatusDeclined'
 	TransferStatus TransferStatus `json:"transferStatus,omitempty"`
-	// RecipientEmailID - Email Id of recipient of transfer.
+	// RecipientEmailID - READ-ONLY; Email Id of recipient of transfer.
 	RecipientEmailID *string `json:"recipientEmailId,omitempty"`
-	// InitiatorEmailID - Email Id of initiator of transfer.
+	// InitiatorEmailID - READ-ONLY; Email Id of initiator of transfer.
 	InitiatorEmailID *string `json:"initiatorEmailId,omitempty"`
-	// CanceledBy - Email Id who user canceled the transfer.
+	// CanceledBy - READ-ONLY; Email Id who user canceled the transfer.
 	CanceledBy *string `json:"canceledBy,omitempty"`
-	// LastModifiedTime - Transfer last modification time.
+	// LastModifiedTime - READ-ONLY; Transfer last modification time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// DetailedTransferStatus - Detailed transfer status.
+	// DetailedTransferStatus - READ-ONLY; Detailed transfer status.
 	DetailedTransferStatus *[]DetailedTransferStatus `json:"detailedTransferStatus,omitempty"`
 }
 

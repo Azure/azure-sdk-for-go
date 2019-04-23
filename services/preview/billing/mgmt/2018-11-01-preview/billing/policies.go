@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// PolicyClient is the billing client provides access to billing resources for Azure subscriptions.
-type PolicyClient struct {
+// PoliciesClient is the billing client provides access to billing resources for Azure subscriptions.
+type PoliciesClient struct {
 	BaseClient
 }
 
-// NewPolicyClient creates an instance of the PolicyClient client.
-func NewPolicyClient(subscriptionID string) PolicyClient {
-	return NewPolicyClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewPoliciesClient creates an instance of the PoliciesClient client.
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return NewPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPolicyClientWithBaseURI creates an instance of the PolicyClient client.
-func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
-	return PolicyClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewPoliciesClientWithBaseURI creates an instance of the PoliciesClient client.
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return PoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetByBillingProfile the policy for a given billingAccountName and billingProfileName.
+// GetByBillingProfileName the policy for a given billing account name and billing profile name.
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
-func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result Policy, err error) {
+func (client PoliciesClient) GetByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result Policy, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.GetByBillingProfile")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.GetByBillingProfileName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -55,29 +55,29 @@ func (client PolicyClient) GetByBillingProfile(ctx context.Context, billingAccou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByBillingProfilePreparer(ctx, billingAccountName, billingProfileName)
+	req, err := client.GetByBillingProfileNamePreparer(ctx, billingAccountName, billingProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "GetByBillingProfileName", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetByBillingProfileSender(req)
+	resp, err := client.GetByBillingProfileNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "GetByBillingProfileName", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetByBillingProfileResponder(resp)
+	result, err = client.GetByBillingProfileNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "GetByBillingProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "GetByBillingProfileName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetByBillingProfilePreparer prepares the GetByBillingProfile request.
-func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
+// GetByBillingProfileNamePreparer prepares the GetByBillingProfileName request.
+func (client PoliciesClient) GetByBillingProfileNamePreparer(ctx context.Context, billingAccountName string, billingProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -96,16 +96,16 @@ func (client PolicyClient) GetByBillingProfilePreparer(ctx context.Context, bill
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetByBillingProfileSender sends the GetByBillingProfile request. The method will close the
+// GetByBillingProfileNameSender sends the GetByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
-func (client PolicyClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
+func (client PoliciesClient) GetByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetByBillingProfileResponder handles the response to the GetByBillingProfile request. The method always
+// GetByBillingProfileNameResponder handles the response to the GetByBillingProfileName request. The method always
 // closes the http.Response Body.
-func (client PolicyClient) GetByBillingProfileResponder(resp *http.Response) (result Policy, err error) {
+func (client PoliciesClient) GetByBillingProfileNameResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -121,9 +121,9 @@ func (client PolicyClient) GetByBillingProfileResponder(resp *http.Response) (re
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.
 // parameters - parameters supplied to the update policy operation.
-func (client PolicyClient) Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy) (result Policy, err error) {
+func (client PoliciesClient) Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy) (result Policy, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -134,27 +134,27 @@ func (client PolicyClient) Update(ctx context.Context, billingAccountName string
 	}
 	req, err := client.UpdatePreparer(ctx, billingAccountName, billingProfileName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PolicyClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.PoliciesClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PolicyClient) UpdatePreparer(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy) (*http.Request, error) {
+func (client PoliciesClient) UpdatePreparer(ctx context.Context, billingAccountName string, billingProfileName string, parameters Policy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"billingProfileName": autorest.Encode("path", billingProfileName),
@@ -177,14 +177,14 @@ func (client PolicyClient) UpdatePreparer(ctx context.Context, billingAccountNam
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client PolicyClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client PoliciesClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client PolicyClient) UpdateResponder(resp *http.Response) (result Policy, err error) {
+func (client PoliciesClient) UpdateResponder(resp *http.Response) (result Policy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

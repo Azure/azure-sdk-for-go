@@ -89,6 +89,8 @@ func (client DefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, poli
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -168,6 +170,8 @@ func (client DefinitionsClient) CreateOrUpdateAtManagementGroupPreparer(ctx cont
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

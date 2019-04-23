@@ -101,6 +101,9 @@ func (client ResourceLinksClient) CreateOrUpdatePreparer(ctx context.Context, li
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = ""
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

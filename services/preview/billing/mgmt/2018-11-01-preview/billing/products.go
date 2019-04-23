@@ -118,7 +118,207 @@ func (client ProductsClient) GetResponder(resp *http.Response) (result ProductSu
 	return
 }
 
-// Transfer the operation to transfer a Product to another InvoiceSection.
+// ListByBillingAccountName lists products by billing account name.
+// Parameters:
+// billingAccountName - billing Account Id.
+// filter - may be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+// It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and
+// value is separated by a colon (:).
+func (client ProductsClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, filter string) (result ProductsListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.ListByBillingAccountName")
+		defer func() {
+			sc := -1
+			if result.plr.Response.Response != nil {
+				sc = result.plr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listByBillingAccountNameNextResults
+	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByBillingAccountName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByBillingAccountNameSender(req)
+	if err != nil {
+		result.plr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByBillingAccountName", resp, "Failure sending request")
+		return
+	}
+
+	result.plr, err = client.ListByBillingAccountNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByBillingAccountNamePreparer prepares the ListByBillingAccountName request.
+func (client ProductsClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) ListByBillingAccountNameResponder(resp *http.Response) (result ProductsListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByBillingAccountNameNextResults retrieves the next set of results, if any.
+func (client ProductsClient) listByBillingAccountNameNextResults(ctx context.Context, lastResults ProductsListResult) (result ProductsListResult, err error) {
+	req, err := lastResults.productsListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "billing.ProductsClient", "listByBillingAccountNameNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByBillingAccountNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "billing.ProductsClient", "listByBillingAccountNameNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByBillingAccountNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByBillingAccountNameComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ProductsClient) ListByBillingAccountNameComplete(ctx context.Context, billingAccountName string, filter string) (result ProductsListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.ListByBillingAccountName")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByBillingAccountName(ctx, billingAccountName, filter)
+	return
+}
+
+// ListByInvoiceSectionName lists products by invoice section name.
+// Parameters:
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
+// filter - may be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+// It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and
+// value is separated by a colon (:).
+func (client ProductsClient) ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, filter string) (result ProductsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.ListByInvoiceSectionName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByInvoiceSectionNamePreparer(ctx, billingAccountName, invoiceSectionName, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByInvoiceSectionName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByInvoiceSectionNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByInvoiceSectionName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByInvoiceSectionNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByInvoiceSectionNamePreparer prepares the ListByInvoiceSectionName request.
+func (client ProductsClient) ListByInvoiceSectionNamePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByInvoiceSectionNameSender sends the ListByInvoiceSectionName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) ListByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByInvoiceSectionNameResponder handles the response to the ListByInvoiceSectionName request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result ProductsListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Transfer the operation to transfer a Product to another invoice section.
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
@@ -193,6 +393,166 @@ func (client ProductsClient) TransferResponder(resp *http.Response) (result Prod
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateAutoRenewByBillingAccountName cancel auto renew for product by product id and billing account name
+// Parameters:
+// billingAccountName - billing Account Id.
+// productName - invoice Id.
+// body - update auto renew request parameters.
+func (client ProductsClient) UpdateAutoRenewByBillingAccountName(ctx context.Context, billingAccountName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.UpdateAutoRenewByBillingAccountName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateAutoRenewByBillingAccountNamePreparer(ctx, billingAccountName, productName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByBillingAccountName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateAutoRenewByBillingAccountNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByBillingAccountName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateAutoRenewByBillingAccountNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByBillingAccountName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateAutoRenewByBillingAccountNamePreparer prepares the UpdateAutoRenewByBillingAccountName request.
+func (client ProductsClient) UpdateAutoRenewByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, productName string, body UpdateAutoRenewRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"productName":        autorest.Encode("path", productName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/updateAutoRenew", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateAutoRenewByBillingAccountNameSender sends the UpdateAutoRenewByBillingAccountName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) UpdateAutoRenewByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// UpdateAutoRenewByBillingAccountNameResponder handles the response to the UpdateAutoRenewByBillingAccountName request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) UpdateAutoRenewByBillingAccountNameResponder(resp *http.Response) (result UpdateAutoRenewOperationSummary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateAutoRenewByInvoiceSectionName cancel auto renew for product by product id and invoice section name
+// Parameters:
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
+// productName - invoice Id.
+// body - update auto renew request parameters.
+func (client ProductsClient) UpdateAutoRenewByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.UpdateAutoRenewByInvoiceSectionName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UpdateAutoRenewByInvoiceSectionNamePreparer(ctx, billingAccountName, invoiceSectionName, productName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByInvoiceSectionName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateAutoRenewByInvoiceSectionNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByInvoiceSectionName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateAutoRenewByInvoiceSectionNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "UpdateAutoRenewByInvoiceSectionName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateAutoRenewByInvoiceSectionNamePreparer prepares the UpdateAutoRenewByInvoiceSectionName request.
+func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNamePreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body UpdateAutoRenewRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+		"productName":        autorest.Encode("path", productName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/updateAutoRenew", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateAutoRenewByInvoiceSectionNameSender sends the UpdateAutoRenewByInvoiceSectionName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// UpdateAutoRenewByInvoiceSectionNameResponder handles the response to the UpdateAutoRenewByInvoiceSectionName request. The method always
+// closes the http.Response Body.
+func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameResponder(resp *http.Response) (result UpdateAutoRenewOperationSummary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

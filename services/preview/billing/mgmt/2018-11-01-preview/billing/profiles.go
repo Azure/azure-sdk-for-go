@@ -120,6 +120,84 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 	return
 }
 
+// ListByBillingAccountName lists all billing profiles for a user which that user has access to.
+// Parameters:
+// billingAccountName - billing Account Id.
+// expand - may be used to expand the invoiceSections.
+func (client ProfilesClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string) (result ProfileListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.ListByBillingAccountName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName, expand)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "ListByBillingAccountName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByBillingAccountNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "ListByBillingAccountName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByBillingAccountNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "ListByBillingAccountName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByBillingAccountNamePreparer prepares the ListByBillingAccountName request.
+func (client ProfilesClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, expand string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProfilesClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
+// closes the http.Response Body.
+func (client ProfilesClient) ListByBillingAccountNameResponder(resp *http.Response) (result ProfileListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Update the operation to update a billing profile.
 // Parameters:
 // billingAccountName - billing Account Id.

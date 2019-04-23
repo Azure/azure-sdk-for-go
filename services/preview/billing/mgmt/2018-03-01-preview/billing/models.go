@@ -32,9 +32,9 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/20
 
 // DownloadURL a secure URL that can be used to download a PDF invoice until the URL expires.
 type DownloadURL struct {
-	// ExpiryTime - The time in UTC at which this download URL will expire.
+	// ExpiryTime - READ-ONLY; The time in UTC at which this download URL will expire.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// URL - The URL to the PDF file.
+	// URL - READ-ONLY; The URL to the PDF file.
 	URL *string `json:"url,omitempty"`
 }
 
@@ -43,11 +43,11 @@ type EnrollmentAccount struct {
 	autorest.Response `json:"-"`
 	// EnrollmentAccountProperties - An enrollment account.
 	*EnrollmentAccountProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -56,15 +56,6 @@ func (ea EnrollmentAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ea.EnrollmentAccountProperties != nil {
 		objectMap["properties"] = ea.EnrollmentAccountProperties
-	}
-	if ea.ID != nil {
-		objectMap["id"] = ea.ID
-	}
-	if ea.Name != nil {
-		objectMap["name"] = ea.Name
-	}
-	if ea.Type != nil {
-		objectMap["type"] = ea.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -123,9 +114,9 @@ func (ea *EnrollmentAccount) UnmarshalJSON(body []byte) error {
 // EnrollmentAccountListResult result of listing enrollment accounts.
 type EnrollmentAccountListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of enrollment accounts.
+	// Value - READ-ONLY; The list of enrollment accounts.
 	Value *[]EnrollmentAccount `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -268,17 +259,17 @@ func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, Enroll
 
 // EnrollmentAccountProperties the properties of the enrollment account.
 type EnrollmentAccountProperties struct {
-	// PrincipalName - The account owner's principal name.
+	// PrincipalName - READ-ONLY; The account owner's principal name.
 	PrincipalName *string `json:"principalName,omitempty"`
 }
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
 }
 
@@ -294,11 +285,11 @@ type Invoice struct {
 	autorest.Response `json:"-"`
 	// InvoiceProperties - An invoice.
 	*InvoiceProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -307,15 +298,6 @@ func (i Invoice) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if i.InvoiceProperties != nil {
 		objectMap["properties"] = i.InvoiceProperties
-	}
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
-	if i.Name != nil {
-		objectMap["name"] = i.Name
-	}
-	if i.Type != nil {
-		objectMap["type"] = i.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -375,11 +357,11 @@ func (i *Invoice) UnmarshalJSON(body []byte) error {
 type InvoiceProperties struct {
 	// DownloadURL - A secure link to download the PDF version of an invoice. The link will cease to work after its expiry time is reached.
 	DownloadURL *DownloadURL `json:"downloadUrl,omitempty"`
-	// InvoicePeriodStartDate - The start of the date range covered by the invoice.
+	// InvoicePeriodStartDate - READ-ONLY; The start of the date range covered by the invoice.
 	InvoicePeriodStartDate *date.Date `json:"invoicePeriodStartDate,omitempty"`
-	// InvoicePeriodEndDate - The end of the date range covered by the invoice.
+	// InvoicePeriodEndDate - READ-ONLY; The end of the date range covered by the invoice.
 	InvoicePeriodEndDate *date.Date `json:"invoicePeriodEndDate,omitempty"`
-	// BillingPeriodIds - Array of billing period ids that the invoice is attributed to.
+	// BillingPeriodIds - READ-ONLY; Array of billing period ids that the invoice is attributed to.
 	BillingPeriodIds *[]string `json:"billingPeriodIds,omitempty"`
 }
 
@@ -387,9 +369,9 @@ type InvoiceProperties struct {
 // chronological order.
 type InvoicesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of invoices.
+	// Value - READ-ONLY; The list of invoices.
 	Value *[]Invoice `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -532,7 +514,7 @@ func NewInvoicesListResultPage(getNextPage func(context.Context, InvoicesListRes
 
 // Operation a Billing REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -540,11 +522,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Billing.
+	// Provider - READ-ONLY; Service provider: Microsoft.Billing.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -552,9 +534,9 @@ type OperationDisplay struct {
 // to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of billing operations supported by the Microsoft.Billing resource provider.
+	// Value - READ-ONLY; List of billing operations supported by the Microsoft.Billing resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -700,11 +682,11 @@ type Period struct {
 	autorest.Response `json:"-"`
 	// PeriodProperties - A billing period.
 	*PeriodProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -713,15 +695,6 @@ func (p Period) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.PeriodProperties != nil {
 		objectMap["properties"] = p.PeriodProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -779,11 +752,11 @@ func (p *Period) UnmarshalJSON(body []byte) error {
 
 // PeriodProperties the properties of the billing period.
 type PeriodProperties struct {
-	// BillingPeriodStartDate - The start of the date range covered by the billing period.
+	// BillingPeriodStartDate - READ-ONLY; The start of the date range covered by the billing period.
 	BillingPeriodStartDate *date.Date `json:"billingPeriodStartDate,omitempty"`
-	// BillingPeriodEndDate - The end of the date range covered by the billing period.
+	// BillingPeriodEndDate - READ-ONLY; The end of the date range covered by the billing period.
 	BillingPeriodEndDate *date.Date `json:"billingPeriodEndDate,omitempty"`
-	// InvoiceIds - Array of invoice ids that associated with.
+	// InvoiceIds - READ-ONLY; Array of invoice ids that associated with.
 	InvoiceIds *[]string `json:"invoiceIds,omitempty"`
 }
 
@@ -791,9 +764,9 @@ type PeriodProperties struct {
 // reverse chronological order.
 type PeriodsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of billing periods.
+	// Value - READ-ONLY; The list of billing periods.
 	Value *[]Period `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -936,10 +909,10 @@ func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResul
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 }

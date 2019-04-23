@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// InvoicePricesheetClient is the billing client provides access to billing resources for Azure subscriptions.
-type InvoicePricesheetClient struct {
+// PriceSheetClient is the billing client provides access to billing resources for Azure subscriptions.
+type PriceSheetClient struct {
 	BaseClient
 }
 
-// NewInvoicePricesheetClient creates an instance of the InvoicePricesheetClient client.
-func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
-	return NewInvoicePricesheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewPriceSheetClient creates an instance of the PriceSheetClient client.
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoicePricesheetClientWithBaseURI creates an instance of the InvoicePricesheetClient client.
-func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
-	return InvoicePricesheetClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Download get pricesheet data for invoice id (invoiceName).
+// Download download price sheet for an invoice.
 // Parameters:
 // billingAccountName - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.
-func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccountName string, invoiceName string) (result InvoicePricesheetDownloadFuture, err error) {
+func (client PriceSheetClient) Download(ctx context.Context, billingAccountName string, invoiceName string) (result PriceSheetDownloadFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetClient.Download")
+		ctx = tracing.StartSpan(ctx, fqdn+"/PriceSheetClient.Download")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -57,13 +57,13 @@ func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccou
 	}
 	req, err := client.DownloadPreparer(ctx, billingAccountName, invoiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Download", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.PriceSheetClient", "Download", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DownloadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Download", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.PriceSheetClient", "Download", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -71,7 +71,7 @@ func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccou
 }
 
 // DownloadPreparer prepares the Download request.
-func (client InvoicePricesheetClient) DownloadPreparer(ctx context.Context, billingAccountName string, invoiceName string) (*http.Request, error) {
+func (client PriceSheetClient) DownloadPreparer(ctx context.Context, billingAccountName string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 		"invoiceName":        autorest.Encode("path", invoiceName),
@@ -92,7 +92,7 @@ func (client InvoicePricesheetClient) DownloadPreparer(ctx context.Context, bill
 
 // DownloadSender sends the Download request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoicePricesheetClient) DownloadSender(req *http.Request) (future InvoicePricesheetDownloadFuture, err error) {
+func (client PriceSheetClient) DownloadSender(req *http.Request) (future PriceSheetDownloadFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -105,7 +105,7 @@ func (client InvoicePricesheetClient) DownloadSender(req *http.Request) (future 
 
 // DownloadResponder handles the response to the Download request. The method always
 // closes the http.Response Body.
-func (client InvoicePricesheetClient) DownloadResponder(resp *http.Response) (result DownloadURL, err error) {
+func (client PriceSheetClient) DownloadResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

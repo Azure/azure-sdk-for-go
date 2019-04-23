@@ -1878,6 +1878,8 @@ type OpenShiftManagedClusterAADIdentityProvider struct {
 	Secret *string `json:"secret,omitempty"`
 	// TenantID - The tenantId associated with the provider.
 	TenantID *string `json:"tenantId,omitempty"`
+	// CustomerAdminGroupID - The groupId to be granted cluster admin role.
+	CustomerAdminGroupID *string `json:"customerAdminGroupId,omitempty"`
 	// Kind - Possible values include: 'KindOpenShiftManagedClusterBaseIdentityProvider', 'KindAADIdentityProvider'
 	Kind Kind `json:"kind,omitempty"`
 }
@@ -1894,6 +1896,9 @@ func (osmcaip OpenShiftManagedClusterAADIdentityProvider) MarshalJSON() ([]byte,
 	}
 	if osmcaip.TenantID != nil {
 		objectMap["tenantId"] = osmcaip.TenantID
+	}
+	if osmcaip.CustomerAdminGroupID != nil {
+		objectMap["customerAdminGroupId"] = osmcaip.CustomerAdminGroupID
 	}
 	if osmcaip.Kind != "" {
 		objectMap["kind"] = osmcaip.Kind

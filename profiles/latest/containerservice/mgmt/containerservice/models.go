@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-04-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-04-30/containerservice"
 )
 
 const (
@@ -41,13 +41,6 @@ type Kind = original.Kind
 const (
 	KindAADIdentityProvider                         Kind = original.KindAADIdentityProvider
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
-)
-
-type LoadBalancerSku = original.LoadBalancerSku
-
-const (
-	Basic    LoadBalancerSku = original.Basic
-	Standard LoadBalancerSku = original.Standard
 )
 
 type NetworkPlugin = original.NetworkPlugin
@@ -352,7 +345,6 @@ type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
-type ManagedClusterWindowsProfile = original.ManagedClusterWindowsProfile
 type ManagedClustersClient = original.ManagedClustersClient
 type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
 type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
@@ -463,9 +455,6 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
-}
-func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
-	return original.PossibleLoadBalancerSkuValues()
 }
 func PossibleNetworkPluginValues() []NetworkPlugin {
 	return original.PossibleNetworkPluginValues()

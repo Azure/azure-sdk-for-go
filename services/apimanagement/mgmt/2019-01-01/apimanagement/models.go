@@ -456,13 +456,13 @@ type PolicyExportFormat string
 const (
 	// PolicyExportFormatRawxml The contents are inline and Content type is a non XML encoded policy document.
 	PolicyExportFormatRawxml PolicyExportFormat = "rawxml"
-	// PolicyExportFormatRawxmlLink The policy document is not XML encoded and is hosted on a http endpoint
-	// accessible from the API Management service.
+	// PolicyExportFormatRawxmlLink The policy document is not XML encoded is exported to a storage blob with
+	// SAS Key valid for 5 minutes.
 	PolicyExportFormatRawxmlLink PolicyExportFormat = "rawxml-link"
 	// PolicyExportFormatXML The contents are inline and Content type is an XML document.
 	PolicyExportFormatXML PolicyExportFormat = "xml"
-	// PolicyExportFormatXMLLink The policy XML document is hosted on a http endpoint accessible from the API
-	// Management service.
+	// PolicyExportFormatXMLLink The policy XML document is exported to a storage blob with SAS key valid for 5
+	// minutes.
 	PolicyExportFormatXMLLink PolicyExportFormat = "xml-link"
 )
 

@@ -243,7 +243,8 @@ func (client ProductPolicyClient) DeleteResponder(resp *http.Response) (result a
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
 // productID - product identifier. Must be unique in the current API Management service instance.
-func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result PolicyContract, err error) {
+// formatParameter - policy Export Format.
+func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string, formatParameter PolicyExportFormat) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductPolicyClient.Get")
 		defer func() {
@@ -266,7 +267,7 @@ func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName str
 		return result, validation.NewError("apimanagement.ProductPolicyClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, productID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, productID, formatParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductPolicyClient", "Get", nil, "Failure preparing request")
 		return
@@ -288,7 +289,7 @@ func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // GetPreparer prepares the Get request.
-func (client ProductPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string) (*http.Request, error) {
+func (client ProductPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string, formatParameter PolicyExportFormat) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyId":          autorest.Encode("path", "policy"),
 		"productId":         autorest.Encode("path", productID),
@@ -300,6 +301,11 @@ func (client ProductPolicyClient) GetPreparer(ctx context.Context, resourceGroup
 	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(formatParameter)) > 0 {
+		queryParameters["format"] = autorest.Encode("query", formatParameter)
+	} else {
+		queryParameters["format"] = autorest.Encode("query", "xml")
 	}
 
 	preparer := autorest.CreatePreparer(

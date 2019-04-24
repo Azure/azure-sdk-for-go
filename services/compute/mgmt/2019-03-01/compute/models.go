@@ -365,6 +365,21 @@ func PossibleHyperVGenerationValues() []HyperVGeneration {
 	return []HyperVGeneration{V1, V2}
 }
 
+// HyperVGenerationTypes enumerates the values for hyper v generation types.
+type HyperVGenerationTypes string
+
+const (
+	// HyperVGenerationTypesV1 ...
+	HyperVGenerationTypesV1 HyperVGenerationTypes = "V1"
+	// HyperVGenerationTypesV2 ...
+	HyperVGenerationTypesV2 HyperVGenerationTypes = "V2"
+)
+
+// PossibleHyperVGenerationTypesValues returns an array of possible values for the HyperVGenerationTypes const type.
+func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
+	return []HyperVGenerationTypes{HyperVGenerationTypesV1, HyperVGenerationTypesV2}
+}
+
 // InstanceViewTypes enumerates the values for instance view types.
 type InstanceViewTypes string
 
@@ -4043,6 +4058,8 @@ type ImageProperties struct {
 	StorageProfile *ImageStorageProfile `json:"storageProfile,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// HyperVGeneration - Gets the HyperVGenerationType of the VirtualMachine created from the image. Possible values include: 'HyperVGenerationTypesV1', 'HyperVGenerationTypesV2'
+	HyperVGeneration HyperVGenerationTypes `json:"hyperVGeneration,omitempty"`
 }
 
 // ImagePurchasePlan describes the gallery Image Definition purchase plan. This is used by marketplace

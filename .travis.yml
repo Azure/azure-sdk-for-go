@@ -26,7 +26,7 @@ script:
   - echo -e "travis_fold:start:go.build\033[33;1mBuilding all packages\033[0m"
   - go build -v $(go list ./... | grep -v vendor)
   - echo -e "\ntravis_fold:end:go.build\r"
-  - if [[ $TRAVIS_GO_VERSION == 1.11* ]]; then test -z "$(go fmt $(go list ./... | grep -v vendor) | tee /dev/stderr)"; fi
+  - if [[ $TRAVIS_GO_VERSION == 1.12* ]]; then test -z "$(go fmt $(go list ./... | grep -v vendor) | tee /dev/stderr)"; fi
   - go vet $(go list ./... | grep -v vendor)
   - go test $(sh ./findTestedPackages.sh)
   - git diff --exit-code

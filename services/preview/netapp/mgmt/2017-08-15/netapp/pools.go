@@ -108,6 +108,9 @@ func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body Capac
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -462,6 +465,9 @@ func (client PoolsClient) UpdatePreparer(ctx context.Context, body CapacityPoolP
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

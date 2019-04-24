@@ -111,6 +111,9 @@ func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Vol
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -473,6 +476,9 @@ func (client VolumesClient) UpdatePreparer(ctx context.Context, body VolumePatch
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

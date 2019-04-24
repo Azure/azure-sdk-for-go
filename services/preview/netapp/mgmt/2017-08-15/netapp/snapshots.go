@@ -113,6 +113,9 @@ func (client SnapshotsClient) CreatePreparer(ctx context.Context, body Snapshot,
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

@@ -18,6 +18,7 @@ package netapp
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -50,11 +51,11 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -67,15 +68,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.Location != nil {
 		objectMap["location"] = a.Location
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Tags != nil {
 		objectMap["tags"] = a.Tags
@@ -166,11 +158,11 @@ type AccountList struct {
 type AccountPatch struct {
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -183,15 +175,6 @@ func (ap AccountPatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ap.Location != nil {
 		objectMap["location"] = ap.Location
-	}
-	if ap.ID != nil {
-		objectMap["id"] = ap.ID
-	}
-	if ap.Name != nil {
-		objectMap["name"] = ap.Name
-	}
-	if ap.Type != nil {
-		objectMap["type"] = ap.Type
 	}
 	if ap.Tags != nil {
 		objectMap["tags"] = ap.Tags
@@ -273,7 +256,7 @@ func (ap *AccountPatch) UnmarshalJSON(body []byte) error {
 
 // AccountProperties netApp account properties
 type AccountProperties struct {
-	// ProvisioningState - Azure lifecycle management
+	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ActiveDirectories - Active Directories
 	ActiveDirectories *[]ActiveDirectory `json:"activeDirectories,omitempty"`
@@ -289,7 +272,7 @@ type AccountsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountsCreateOrUpdateFuture) Result(client AccountsClient) (a Account, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -318,7 +301,7 @@ type AccountsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountsDeleteFuture) Result(client AccountsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -356,11 +339,11 @@ type CapacityPool struct {
 	autorest.Response `json:"-"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -373,15 +356,6 @@ func (cp CapacityPool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cp.Location != nil {
 		objectMap["location"] = cp.Location
-	}
-	if cp.ID != nil {
-		objectMap["id"] = cp.ID
-	}
-	if cp.Name != nil {
-		objectMap["name"] = cp.Name
-	}
-	if cp.Type != nil {
-		objectMap["type"] = cp.Type
 	}
 	if cp.Tags != nil {
 		objectMap["tags"] = cp.Tags
@@ -472,11 +446,11 @@ type CapacityPoolList struct {
 type CapacityPoolPatch struct {
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -489,15 +463,6 @@ func (cpp CapacityPoolPatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cpp.Location != nil {
 		objectMap["location"] = cpp.Location
-	}
-	if cpp.ID != nil {
-		objectMap["id"] = cpp.ID
-	}
-	if cpp.Name != nil {
-		objectMap["name"] = cpp.Name
-	}
-	if cpp.Type != nil {
-		objectMap["type"] = cpp.Type
 	}
 	if cpp.Tags != nil {
 		objectMap["tags"] = cpp.Tags
@@ -637,9 +602,9 @@ type MetricSpecification struct {
 type MountTarget struct {
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -652,12 +617,6 @@ func (mt MountTarget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mt.Location != nil {
 		objectMap["location"] = mt.Location
-	}
-	if mt.ID != nil {
-		objectMap["id"] = mt.ID
-	}
-	if mt.Name != nil {
-		objectMap["name"] = mt.Name
 	}
 	if mt.Tags != nil {
 		objectMap["tags"] = mt.Tags
@@ -737,11 +696,11 @@ type MountTargetList struct {
 
 // MountTargetProperties mount target properties
 type MountTargetProperties struct {
-	// MountTargetID - UUID v4 used to identify the MountTarget
+	// MountTargetID - READ-ONLY; UUID v4 used to identify the MountTarget
 	MountTargetID *string `json:"mountTargetId,omitempty"`
 	// FileSystemID - UUID v4 used to identify the MountTarget
 	FileSystemID *string `json:"fileSystemId,omitempty"`
-	// IPAddress - The mount target's IPv4 address
+	// IPAddress - READ-ONLY; The mount target's IPv4 address
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// Subnet - The subnet
 	Subnet *string `json:"subnet,omitempty"`
@@ -755,7 +714,7 @@ type MountTargetProperties struct {
 	Netmask *string `json:"netmask,omitempty"`
 	// SmbServerFqdn - The SMB server's Fully Qualified Domain Name, FQDN
 	SmbServerFqdn *string `json:"smbServerFqdn,omitempty"`
-	// ProvisioningState - Azure lifecycle management
+	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -876,13 +835,13 @@ type PoolPatchProperties struct {
 
 // PoolProperties pool properties
 type PoolProperties struct {
-	// PoolID - UUID v4 used to identify the Pool
+	// PoolID - READ-ONLY; UUID v4 used to identify the Pool
 	PoolID *string `json:"poolId,omitempty"`
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
 	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
-	// ProvisioningState - Azure lifecycle management
+	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -896,7 +855,7 @@ type PoolsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PoolsCreateOrUpdateFuture) Result(client PoolsClient) (cp CapacityPool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.PoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -924,7 +883,7 @@ type PoolsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PoolsDeleteFuture) Result(client PoolsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.PoolsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -948,11 +907,11 @@ type Snapshot struct {
 	autorest.Response `json:"-"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -965,15 +924,6 @@ func (s Snapshot) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.Location != nil {
 		objectMap["location"] = s.Location
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	if s.Tags != nil {
 		objectMap["tags"] = s.Tags
@@ -1061,13 +1011,13 @@ type SnapshotPatch struct {
 
 // SnapshotProperties snapshot properties
 type SnapshotProperties struct {
-	// SnapshotID - UUID v4 used to identify the Snapshot
+	// SnapshotID - READ-ONLY; UUID v4 used to identify the Snapshot
 	SnapshotID *string `json:"snapshotId,omitempty"`
 	// FileSystemID - UUID v4 used to identify the FileSystem
 	FileSystemID *string `json:"fileSystemId,omitempty"`
-	// CreationDate - The creation date of the snapshot
+	// CreationDate - READ-ONLY; The creation date of the snapshot
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - Azure lifecycle management
+	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -1081,7 +1031,7 @@ type SnapshotsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SnapshotsCreateFuture) Result(client SnapshotsClient) (s Snapshot, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1110,7 +1060,7 @@ type SnapshotsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *SnapshotsDeleteFuture) Result(client SnapshotsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1135,11 +1085,11 @@ type Volume struct {
 	autorest.Response `json:"-"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -1152,15 +1102,6 @@ func (vVar Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vVar.Location != nil {
 		objectMap["location"] = vVar.Location
-	}
-	if vVar.ID != nil {
-		objectMap["id"] = vVar.ID
-	}
-	if vVar.Name != nil {
-		objectMap["name"] = vVar.Name
-	}
-	if vVar.Type != nil {
-		objectMap["type"] = vVar.Type
 	}
 	if vVar.Tags != nil {
 		objectMap["tags"] = vVar.Tags
@@ -1251,11 +1192,11 @@ type VolumeList struct {
 type VolumePatch struct {
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags interface{} `json:"tags,omitempty"`
@@ -1268,15 +1209,6 @@ func (vp VolumePatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vp.Location != nil {
 		objectMap["location"] = vp.Location
-	}
-	if vp.ID != nil {
-		objectMap["id"] = vp.ID
-	}
-	if vp.Name != nil {
-		objectMap["name"] = vp.Name
-	}
-	if vp.Type != nil {
-		objectMap["type"] = vp.Type
 	}
 	if vp.Tags != nil {
 		objectMap["tags"] = vp.Tags
@@ -1373,7 +1305,7 @@ type VolumePatchPropertiesExportPolicy struct {
 
 // VolumeProperties volume properties
 type VolumeProperties struct {
-	// FileSystemID - Unique FileSystem Identifier.
+	// FileSystemID - READ-ONLY; Unique FileSystem Identifier.
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// CreationToken - A unique file path for the volume. Used when creating mount targets
 	CreationToken *string `json:"creationToken,omitempty"`
@@ -1383,7 +1315,7 @@ type VolumeProperties struct {
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Export policy rule
 	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
-	// ProvisioningState - Azure lifecycle management
+	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
@@ -1404,7 +1336,7 @@ type VolumesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Volume, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1433,7 +1365,7 @@ type VolumesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VolumesDeleteFuture) Result(client VolumesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.VolumesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return

@@ -233,6 +233,21 @@ func PossibleOSTypeValues() []OSType {
 	return []OSType{Linux, Windows}
 }
 
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// None ...
+	None ResourceIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{None, SystemAssigned}
+}
+
 // StorageProfileTypes enumerates the values for storage profile types.
 type StorageProfileTypes string
 
@@ -1293,6 +1308,8 @@ type ManagedCluster struct {
 	autorest.Response `json:"-"`
 	// ManagedClusterProperties - Properties of a managed cluster.
 	*ManagedClusterProperties `json:"properties,omitempty"`
+	// Identity - The identity of the managed cluster, if configured.
+	Identity *ManagedClusterIdentity `json:"identity,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -1310,6 +1327,9 @@ func (mc ManagedCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mc.ManagedClusterProperties != nil {
 		objectMap["properties"] = mc.ManagedClusterProperties
+	}
+	if mc.Identity != nil {
+		objectMap["identity"] = mc.Identity
 	}
 	if mc.ID != nil {
 		objectMap["id"] = mc.ID
@@ -1346,6 +1366,15 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mc.ManagedClusterProperties = &managedClusterProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity ManagedClusterIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				mc.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -1600,6 +1629,16 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
+}
+
+// ManagedClusterIdentity identity for the managed cluster.
+type ManagedClusterIdentity struct {
+	// PrincipalID - The principal id of the system assigned identity which is used by master components.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant id of the system assigned identity which is used by master components.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The type of identity used for the managed cluster. Type 'SystemAssigned' will use an implicitly created identity in master components and an auto-created user assigned identity in MC_ resource group in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead. Possible values include: 'SystemAssigned', 'None'
+	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
 // ManagedClusterListResult the response from the List Managed Clusters operation.

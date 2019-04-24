@@ -118,6 +118,16 @@ type AlterationsDTO struct {
 	Alterations *[]string `json:"alterations,omitempty"`
 }
 
+// ContextDTO context associated with Qna.
+type ContextDTO struct {
+	// IsContextOnly - To mark if a prompt is relevant only with a previous question or not.
+	// true - Do not include this QnA as search result for queries without context
+	// false - ignores context and includes this QnA in search result
+	IsContextOnly *bool `json:"isContextOnly,omitempty"`
+	// Prompts - List of prompts associated with the answer.
+	Prompts *[]PromptDTO `json:"prompts,omitempty"`
+}
+
 // CreateKbDTO post body schema for CreateKb operation.
 type CreateKbDTO struct {
 	// Name - Friendly name for the knowledgebase.
@@ -272,6 +282,34 @@ type Operation struct {
 	ErrorResponse *ErrorResponse `json:"errorResponse,omitempty"`
 }
 
+// PromptDTO prompt for an answer.
+type PromptDTO struct {
+	// DisplayOrder - Index of the prompt - used in ordering of the prompts
+	DisplayOrder *int32 `json:"displayOrder,omitempty"`
+	// QnaID - Qna id corresponding to the prompt - if QnaId is present, QnADTO object is ignored.
+	QnaID *int32 `json:"qnaId,omitempty"`
+	// Qna - QnADTO - Either QnaId or QnADTO needs to be present in a PromptDTO object
+	Qna *PromptDTOQna `json:"qna,omitempty"`
+	// DisplayText - Text displayed to represent a follow up question prompt
+	DisplayText *string `json:"displayText,omitempty"`
+}
+
+// PromptDTOQna qnADTO - Either QnaId or QnADTO needs to be present in a PromptDTO object
+type PromptDTOQna struct {
+	// ID - Unique id for the Q-A.
+	ID *int32 `json:"id,omitempty"`
+	// Answer - Answer text
+	Answer *string `json:"answer,omitempty"`
+	// Source - Source from which Q-A was indexed. eg. https://docs.microsoft.com/en-us/azure/cognitive-services/QnAMaker/FAQs
+	Source *string `json:"source,omitempty"`
+	// Questions - List of questions associated with the answer.
+	Questions *[]string `json:"questions,omitempty"`
+	// Metadata - List of metadata associated with the answer.
+	Metadata *[]MetadataDTO `json:"metadata,omitempty"`
+	// Context - Context of a QnA
+	Context *QnADTOContext `json:"context,omitempty"`
+}
+
 // QnADocumentsDTO list of QnADTO
 type QnADocumentsDTO struct {
 	autorest.Response `json:"-"`
@@ -291,12 +329,36 @@ type QnADTO struct {
 	Questions *[]string `json:"questions,omitempty"`
 	// Metadata - List of metadata associated with the answer.
 	Metadata *[]MetadataDTO `json:"metadata,omitempty"`
+	// Context - Context of a QnA
+	Context *QnADTOContext `json:"context,omitempty"`
+}
+
+// QnADTOContext context of a QnA
+type QnADTOContext struct {
+	// IsContextOnly - To mark if a prompt is relevant only with a previous question or not.
+	// true - Do not include this QnA as search result for queries without context
+	// false - ignores context and includes this QnA in search result
+	IsContextOnly *bool `json:"isContextOnly,omitempty"`
+	// Prompts - List of prompts associated with the answer.
+	Prompts *[]PromptDTO `json:"prompts,omitempty"`
 }
 
 // ReplaceKbDTO post body schema for Replace KB operation.
 type ReplaceKbDTO struct {
 	// QnAList - List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
 	QnAList *[]QnADTO `json:"qnAList,omitempty"`
+}
+
+// UpdateContextDTO update Body schema to represent context to be updated
+type UpdateContextDTO struct {
+	// PromptsToDelete - List of prompts associated with qna to be deleted
+	PromptsToDelete *[]int32 `json:"promptsToDelete,omitempty"`
+	// PromptsToAdd - List of prompts to be added to the qna.
+	PromptsToAdd *[]PromptDTO `json:"promptsToAdd,omitempty"`
+	// IsContextOnly - To mark if a prompt is relevant only with a previous question or not.
+	// true - Do not include this QnA as search result for queries without context
+	// false - ignores context and includes this QnA in search result
+	IsContextOnly *bool `json:"isContextOnly,omitempty"`
 }
 
 // UpdateKbContentsDTO PATCH body schema for Update operation in Update Kb
@@ -367,6 +429,20 @@ type UpdateQnaDTO struct {
 	Questions *UpdateQnaDTOQuestions `json:"questions,omitempty"`
 	// Metadata - List of metadata associated with the answer to be updated
 	Metadata *UpdateQnaDTOMetadata `json:"metadata,omitempty"`
+	// Context - Context associated with Qna to be updated.
+	Context *UpdateQnaDTOContext `json:"context,omitempty"`
+}
+
+// UpdateQnaDTOContext context associated with Qna to be updated.
+type UpdateQnaDTOContext struct {
+	// PromptsToDelete - List of prompts associated with qna to be deleted
+	PromptsToDelete *[]int32 `json:"promptsToDelete,omitempty"`
+	// PromptsToAdd - List of prompts to be added to the qna.
+	PromptsToAdd *[]PromptDTO `json:"promptsToAdd,omitempty"`
+	// IsContextOnly - To mark if a prompt is relevant only with a previous question or not.
+	// true - Do not include this QnA as search result for queries without context
+	// false - ignores context and includes this QnA in search result
+	IsContextOnly *bool `json:"isContextOnly,omitempty"`
 }
 
 // UpdateQnaDTOMetadata list of metadata associated with the answer to be updated

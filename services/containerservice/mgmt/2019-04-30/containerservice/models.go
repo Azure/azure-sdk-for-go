@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-04-30/containerservice"
 
 // AgentPoolType enumerates the values for agent pool type.
 type AgentPoolType string
@@ -2077,6 +2077,8 @@ type NetworkProfile struct {
 	VnetCidr *string `json:"vnetCidr,omitempty"`
 	// PeerVnetID - CIDR of the Vnet to peer.
 	PeerVnetID *string `json:"peerVnetId,omitempty"`
+	// VnetID - ID of the Vnet created for OSA cluster.
+	VnetID *string `json:"vnetId,omitempty"`
 }
 
 // NetworkProfileType profile of network configuration.
@@ -2576,9 +2578,11 @@ type OpenShiftManagedClusterProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OpenShiftVersion - Version of OpenShift specified when creating the cluster.
 	OpenShiftVersion *string `json:"openShiftVersion,omitempty"`
-	// PublicHostname - Optional user-specified FQDN for OpenShift API server.
+	// ClusterVersion - Version of OpenShift specified when creating the cluster.
+	ClusterVersion *string `json:"clusterVersion,omitempty"`
+	// PublicHostname - Service generated FQDN for OpenShift API server.
 	PublicHostname *string `json:"publicHostname,omitempty"`
-	// Fqdn - User-specified FQDN for OpenShift API server loadbalancer internal hostname.
+	// Fqdn - Service generated FQDN for OpenShift API server loadbalancer internal hostname.
 	Fqdn *string `json:"fqdn,omitempty"`
 	// NetworkProfile - Configuration for OpenShift networking.
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`

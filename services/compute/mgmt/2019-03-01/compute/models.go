@@ -2117,6 +2117,8 @@ type DataDisk struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// ManagedDisk - The managed disk parameters.
 	ManagedDisk *ManagedDiskParameters `json:"managedDisk,omitempty"`
+	// ToBeDetached - Specifies whether the datadisk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
+	ToBeDetached *bool `json:"toBeDetached,omitempty"`
 }
 
 // DataDiskImage contains the data disk images information.
@@ -5210,6 +5212,8 @@ type ResourceSkuLocationInfo struct {
 	Location *string `json:"location,omitempty"`
 	// Zones - READ-ONLY; List of availability zones where the SKU is supported.
 	Zones *[]string `json:"zones,omitempty"`
+	// ZoneDetails - READ-ONLY; Details of capabilities available to a SKU in specific zones.
+	ZoneDetails *[]ResourceSkuZoneDetails `json:"zoneDetails,omitempty"`
 }
 
 // ResourceSkuRestrictionInfo ...
@@ -5376,6 +5380,14 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 // Creates a new instance of the ResourceSkusResultPage type.
 func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
 	return ResourceSkusResultPage{fn: getNextPage}
+}
+
+// ResourceSkuZoneDetails describes The zonal capabilities of a SKU.
+type ResourceSkuZoneDetails struct {
+	// Name - READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
+	Name *[]string `json:"name,omitempty"`
+	// Capabilities - READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
+	Capabilities *[]ResourceSkuCapabilities `json:"capabilities,omitempty"`
 }
 
 // RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation.
@@ -8800,6 +8812,8 @@ type VirtualMachineScaleSetProperties struct {
 	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 	// ProximityPlacementGroup - Specifies information about the proximity placement group that the virtual machine scale set should be assigned to. <br><br>Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
+	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
+	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 }
 
 // VirtualMachineScaleSetPublicIPAddressConfiguration describes a virtual machines scale set IP
@@ -9607,6 +9621,8 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	Overprovision *bool `json:"overprovision,omitempty"`
 	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
+	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
+	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 }
 
 // VirtualMachineScaleSetUpdatePublicIPAddressConfiguration describes a virtual machines scale set IP
@@ -10065,8 +10081,6 @@ type VirtualMachineScaleSetVMProfile struct {
 	OsProfile *VirtualMachineScaleSetOSProfile `json:"osProfile,omitempty"`
 	// StorageProfile - Specifies the storage settings for the virtual machine disks.
 	StorageProfile *VirtualMachineScaleSetStorageProfile `json:"storageProfile,omitempty"`
-	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the virtual machine in the scale set. For instance: whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
-	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 	// NetworkProfile - Specifies properties of the network interfaces of the virtual machines in the scale set.
 	NetworkProfile *VirtualMachineScaleSetNetworkProfile `json:"networkProfile,omitempty"`
 	// DiagnosticsProfile - Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.

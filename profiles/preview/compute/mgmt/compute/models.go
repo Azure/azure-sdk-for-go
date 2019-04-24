@@ -772,6 +772,7 @@ type ResourceSkuCosts = original.ResourceSkuCosts
 type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
 type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator

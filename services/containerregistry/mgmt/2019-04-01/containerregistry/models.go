@@ -3543,16 +3543,6 @@ type RunUpdateParameters struct {
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 }
 
-// SchedulerTrigger the properties of a scheduler trigger.
-type SchedulerTrigger struct {
-	// Schedule - The CRON expression for the task schedule
-	Schedule *string `json:"schedule,omitempty"`
-	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
-	Status TriggerStatus `json:"status,omitempty"`
-	// Name - The name of the trigger.
-	Name *string `json:"name,omitempty"`
-}
-
 // SecretObject describes the properties of a secret object value.
 type SecretObject struct {
 	// Value - The value of the secret. The format of this value will be determined
@@ -4617,10 +4607,30 @@ func (tup *TaskUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// TimerTrigger the properties of a timer trigger.
+type TimerTrigger struct {
+	// Schedule - The CRON expression for the task schedule
+	Schedule *string `json:"schedule,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
+// TimerTriggerUpdateParameters the properties for updating a timer trigger.
+type TimerTriggerUpdateParameters struct {
+	// Schedule - The CRON expression for the task schedule
+	Schedule *string `json:"schedule,omitempty"`
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	Status TriggerStatus `json:"status,omitempty"`
+	// Name - The name of the trigger.
+	Name *string `json:"name,omitempty"`
+}
+
 // TriggerProperties the properties of a trigger.
 type TriggerProperties struct {
-	// SchedulerTriggers - The collection of scheduler triggers.
-	SchedulerTriggers *[]SchedulerTrigger `json:"schedulerTriggers,omitempty"`
+	// TimerTriggers - The collection of timer triggers.
+	TimerTriggers *[]TimerTrigger `json:"timerTriggers,omitempty"`
 	// SourceTriggers - The collection of triggers based on source code repository.
 	SourceTriggers *[]SourceTrigger `json:"sourceTriggers,omitempty"`
 	// BaseImageTrigger - The trigger based on base image dependencies.
@@ -4629,8 +4639,8 @@ type TriggerProperties struct {
 
 // TriggerUpdateParameters the properties for updating triggers.
 type TriggerUpdateParameters struct {
-	// SchedulerTriggers - The collection of scheduler triggers.
-	SchedulerTriggers *[]SchedulerTrigger `json:"schedulerTriggers,omitempty"`
+	// TimerTriggers - The collection of timer triggers.
+	TimerTriggers *[]TimerTriggerUpdateParameters `json:"timerTriggers,omitempty"`
 	// SourceTriggers - The collection of triggers based on source code repository.
 	SourceTriggers *[]SourceTriggerUpdateParameters `json:"sourceTriggers,omitempty"`
 	// BaseImageTrigger - The trigger based on base image dependencies.

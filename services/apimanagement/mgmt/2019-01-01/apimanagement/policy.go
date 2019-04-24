@@ -230,7 +230,8 @@ func (client PolicyClient) DeleteResponder(resp *http.Response) (result autorest
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-func (client PolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string) (result PolicyContract, err error) {
+// formatParameter - policy Export Format.
+func (client PolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, formatParameter PolicyExportFormat) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Get")
 		defer func() {
@@ -249,7 +250,7 @@ func (client PolicyClient) Get(ctx context.Context, resourceGroupName string, se
 		return result, validation.NewError("apimanagement.PolicyClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, formatParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PolicyClient", "Get", nil, "Failure preparing request")
 		return
@@ -271,7 +272,7 @@ func (client PolicyClient) Get(ctx context.Context, resourceGroupName string, se
 }
 
 // GetPreparer prepares the Get request.
-func (client PolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client PolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, formatParameter PolicyExportFormat) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyId":          autorest.Encode("path", "policy"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -282,6 +283,11 @@ func (client PolicyClient) GetPreparer(ctx context.Context, resourceGroupName st
 	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(formatParameter)) > 0 {
+		queryParameters["format"] = autorest.Encode("query", formatParameter)
+	} else {
+		queryParameters["format"] = autorest.Encode("query", "xml")
 	}
 
 	preparer := autorest.CreatePreparer(

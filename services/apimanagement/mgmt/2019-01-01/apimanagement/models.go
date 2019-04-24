@@ -456,7 +456,7 @@ type PolicyExportFormat string
 const (
 	// PolicyExportFormatRawxml The contents are inline and Content type is a non XML encoded policy document.
 	PolicyExportFormatRawxml PolicyExportFormat = "rawxml"
-	// PolicyExportFormatRawxmlLink The policy document is not Xml encoded and is hosted on a http endpoint
+	// PolicyExportFormatRawxmlLink The policy document is not XML encoded and is hosted on a http endpoint
 	// accessible from the API Management service.
 	PolicyExportFormatRawxmlLink PolicyExportFormat = "rawxml-link"
 	// PolicyExportFormatXML The contents are inline and Content type is an XML document.

@@ -189,6 +189,13 @@ const (
 	V2 HyperVGeneration = original.V2
 )
 
+type HyperVGenerationTypes = original.HyperVGenerationTypes
+
+const (
+	HyperVGenerationTypesV1 HyperVGenerationTypes = original.HyperVGenerationTypesV1
+	HyperVGenerationTypesV2 HyperVGenerationTypes = original.HyperVGenerationTypesV2
+)
+
 type IPVersion = original.IPVersion
 
 const (
@@ -1279,6 +1286,9 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
+}
+func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
+	return original.PossibleHyperVGenerationTypesValues()
 }
 func PossibleHyperVGenerationValues() []HyperVGeneration {
 	return original.PossibleHyperVGenerationValues()

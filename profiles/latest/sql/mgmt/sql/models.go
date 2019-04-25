@@ -55,25 +55,30 @@ const (
 type DatabaseEdition = original.DatabaseEdition
 
 const (
-	Basic         DatabaseEdition = original.Basic
-	Business      DatabaseEdition = original.Business
-	DataWarehouse DatabaseEdition = original.DataWarehouse
-	Free          DatabaseEdition = original.Free
-	Premium       DatabaseEdition = original.Premium
-	PremiumRS     DatabaseEdition = original.PremiumRS
-	Standard      DatabaseEdition = original.Standard
-	Stretch       DatabaseEdition = original.Stretch
-	System        DatabaseEdition = original.System
-	System2       DatabaseEdition = original.System2
-	Web           DatabaseEdition = original.Web
+	Basic            DatabaseEdition = original.Basic
+	Business         DatabaseEdition = original.Business
+	BusinessCritical DatabaseEdition = original.BusinessCritical
+	DataWarehouse    DatabaseEdition = original.DataWarehouse
+	Free             DatabaseEdition = original.Free
+	GeneralPurpose   DatabaseEdition = original.GeneralPurpose
+	Hyperscale       DatabaseEdition = original.Hyperscale
+	Premium          DatabaseEdition = original.Premium
+	PremiumRS        DatabaseEdition = original.PremiumRS
+	Standard         DatabaseEdition = original.Standard
+	Stretch          DatabaseEdition = original.Stretch
+	System           DatabaseEdition = original.System
+	System2          DatabaseEdition = original.System2
+	Web              DatabaseEdition = original.Web
 )
 
 type ElasticPoolEdition = original.ElasticPoolEdition
 
 const (
-	ElasticPoolEditionBasic    ElasticPoolEdition = original.ElasticPoolEditionBasic
-	ElasticPoolEditionPremium  ElasticPoolEdition = original.ElasticPoolEditionPremium
-	ElasticPoolEditionStandard ElasticPoolEdition = original.ElasticPoolEditionStandard
+	ElasticPoolEditionBasic            ElasticPoolEdition = original.ElasticPoolEditionBasic
+	ElasticPoolEditionBusinessCritical ElasticPoolEdition = original.ElasticPoolEditionBusinessCritical
+	ElasticPoolEditionGeneralPurpose   ElasticPoolEdition = original.ElasticPoolEditionGeneralPurpose
+	ElasticPoolEditionPremium          ElasticPoolEdition = original.ElasticPoolEditionPremium
+	ElasticPoolEditionStandard         ElasticPoolEdition = original.ElasticPoolEditionStandard
 )
 
 type ElasticPoolState = original.ElasticPoolState

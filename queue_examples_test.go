@@ -126,13 +126,13 @@ func ExampleQueue_Receive_second() {
 		go func() {
 			for msg := range msgChan {
 
-				ctx, cancel := context.WithTimeout(context.Background(), 30 * time.Millisecond)
+				ctx, cancel := context.WithTimeout(context.Background(), 30*time.Millisecond)
 				defer cancel()
 
 				fmt.Println(string(msg.Data))
 				msg.Complete(ctx)
 			}
-		} ()
+		}()
 	}
 
 	// Instantiate the clients needed to communicate with a Service Bus Queue.

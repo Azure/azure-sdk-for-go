@@ -439,7 +439,7 @@ func (suite *serviceBusSuite) TestSubscription_TwoWithReceiveAndDelete() {
 		wg := sync.WaitGroup{}
 		wg.Add(2)
 
-		go func(){
+		go func() {
 			suite.Require().NoError(sub1.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 				wg.Done()
 				return nil
@@ -448,7 +448,7 @@ func (suite *serviceBusSuite) TestSubscription_TwoWithReceiveAndDelete() {
 
 		suite.Require().NoError(topic.Send(ctx, NewMessageFromString("foo")))
 
-		go func(){
+		go func() {
 			suite.Require().NoError(sub2.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 				wg.Done()
 				return nil

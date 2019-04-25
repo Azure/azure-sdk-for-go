@@ -460,6 +460,12 @@ func (suite *serviceBusSuite) TestQueueClient() {
 		QueueEntityWithDuplicateDetection(&window),
 	}
 	suite.queueMessageTestWithMgmtOptions(tests, mgmtOpts...)
+
+	wssTests := make(map[string]func(context.Context, *testing.T, *Queue))
+	for key, val := range tests {
+		wssTests["WSS_"+key] = val
+	}
+	suite.queueMessageTest(wssTests, []QueueOption{}, mgmtOpts, []NamespaceOption{NamespaceWithWebSocket()})
 }
 
 func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
@@ -744,27 +750,28 @@ func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 func (suite *serviceBusSuite) queueMessageTestWithQueueOptions(
 	tests map[string]func(context.Context, *testing.T, *Queue),
 	queueOpts ...QueueOption) {
-	suite.queueMessageTest(tests, queueOpts, []QueueManagementOption{})
+	suite.queueMessageTest(tests, queueOpts, []QueueManagementOption{}, []NamespaceOption{})
 }
 
 func (suite *serviceBusSuite) queueMessageTestWithMgmtOptions(
 	tests map[string]func(context.Context, *testing.T, *Queue),
 	mgmtOptions ...QueueManagementOption) {
-	suite.queueMessageTest(tests, []QueueOption{}, mgmtOptions)
+	suite.queueMessageTest(tests, []QueueOption{}, mgmtOptions, []NamespaceOption{})
 }
 
 func (suite *serviceBusSuite) queueMessageTest(
 	tests map[string]func(context.Context, *testing.T, *Queue),
 	queueOpts []QueueOption,
-	mgmtOptions []QueueManagementOption) {
+	mgmtOpts []QueueManagementOption,
+	namespaceOpts []NamespaceOption) {
 
-	ns := suite.getNewSasInstance()
+	ns := suite.getNewSasInstance(namespaceOpts...)
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
-			cleanup := makeQueue(ctx, t, ns, queueName, mgmtOptions...)
+			cleanup := makeQueue(ctx, t, ns, queueName, mgmtOpts...)
 			q, err := ns.NewQueue(queueName, queueOpts...)
 			suite.NoError(err)
 			defer func() {

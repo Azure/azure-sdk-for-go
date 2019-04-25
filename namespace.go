@@ -26,12 +26,14 @@ import (
 	"context"
 	"fmt"
 	"runtime"
+	"strings"
 
 	"github.com/Azure/azure-amqp-common-go/auth"
 	"github.com/Azure/azure-amqp-common-go/cbs"
 	"github.com/Azure/azure-amqp-common-go/conn"
 	"github.com/Azure/azure-amqp-common-go/sas"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"golang.org/x/net/websocket"
 	"pack.ag/amqp"
 )
 
@@ -55,9 +57,11 @@ type (
 	// for using Queues, Topics and Subscriptions
 	Namespace struct {
 		Name          string
+		Suffix        string
 		TokenProvider auth.TokenProvider
 		Environment   azure.Environment
 		userAgent     string
+		useWebSocket  bool
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
@@ -71,13 +75,20 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 		if err != nil {
 			return err
 		}
+
 		if parsed.Namespace != "" {
 			ns.Name = parsed.Namespace
 		}
+
+		if parsed.Suffix != "" {
+			ns.Suffix = parsed.Suffix
+		}
+
 		provider, err := sas.NewTokenProvider(sas.TokenProviderWithKey(parsed.KeyName, parsed.Key))
 		if err != nil {
 			return err
 		}
+
 		ns.TokenProvider = provider
 		return nil
 	}
@@ -87,6 +98,14 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.userAgent = userAgent
+		return nil
+	}
+}
+
+// NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
+func NamespaceWithWebSocket() NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.useWebSocket = true
 		return nil
 	}
 }
@@ -108,8 +127,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 }
 
 func (ns *Namespace) newConnection() (*amqp.Client, error) {
-	host := ns.getAMQPHostURI()
-	return amqp.Dial(host,
+	defaultConnOptions := []amqp.ConnOption{
 		amqp.ConnSASLAnonymous(),
 		amqp.ConnMaxSessions(65535),
 		amqp.ConnProperty("product", "MSGolangClient"),
@@ -117,7 +135,20 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 		amqp.ConnProperty("platform", runtime.GOOS),
 		amqp.ConnProperty("framework", runtime.Version()),
 		amqp.ConnProperty("user-agent", ns.getUserAgent()),
-	)
+	}
+
+	if ns.useWebSocket {
+		wssHost := ns.getWSSHostURI() + "$servicebus/websocket"
+		wssConn, err := websocket.Dial(wssHost, "amqp", "http://localhost/")
+		if err != nil {
+			return nil, err
+		}
+
+		wssConn.PayloadType = websocket.BinaryFrame
+		return amqp.New(wssConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.getHostname()))...)
+	}
+
+	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
 }
 
 func (ns *Namespace) negotiateClaim(ctx context.Context, conn *amqp.Client, entityPath string) error {
@@ -128,12 +159,28 @@ func (ns *Namespace) negotiateClaim(ctx context.Context, conn *amqp.Client, enti
 	return cbs.NegotiateClaim(ctx, audience, conn, ns.TokenProvider)
 }
 
+func (ns *Namespace) getWSSHostURI() string {
+	suffix := ns.resolveSuffix()
+	if strings.HasSuffix(suffix, "onebox.windows-int.net") {
+		return fmt.Sprintf("wss://%s:4446/", ns.getHostname())
+	}
+	return fmt.Sprintf("wss://%s/", ns.getHostname())
+}
+
 func (ns *Namespace) getAMQPHostURI() string {
-	return fmt.Sprintf("amqps://%s.%s/", ns.Name, ns.Environment.ServiceBusEndpointSuffix)
+	return fmt.Sprintf("amqps://%s/", ns.getHostname())
 }
 
 func (ns *Namespace) getHTTPSHostURI() string {
-	return fmt.Sprintf("https://%s.%s/", ns.Name, ns.Environment.ServiceBusEndpointSuffix)
+	suffix := ns.resolveSuffix()
+	if strings.HasSuffix(suffix, "onebox.windows-int.net") {
+		return fmt.Sprintf("https://%s:4446/", ns.getHostname())
+	}
+	return fmt.Sprintf("https://%s/", ns.getHostname())
+}
+
+func (ns *Namespace) getHostname() string {
+	return strings.Join([]string{ns.Name, ns.resolveSuffix()}, ".")
 }
 
 func (ns *Namespace) getEntityAudience(entityPath string) string {
@@ -146,4 +193,15 @@ func (ns *Namespace) getUserAgent() string {
 		userAgent = fmt.Sprintf("%s/%s", userAgent, ns.userAgent)
 	}
 	return userAgent
+}
+
+func (ns *Namespace) resolveSuffix() string {
+	var suffix string
+	if ns.Suffix != "" {
+		suffix = ns.Suffix
+	} else {
+		suffix = azure.PublicCloud.ServiceBusEndpointSuffix
+	}
+
+	return suffix
 }

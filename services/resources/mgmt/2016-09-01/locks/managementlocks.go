@@ -1467,7 +1467,8 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelComplete(ctx context.
 // '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
 // '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
 // for resources.
-func (client ManagementLocksClient) ListByScope(ctx context.Context, scope string) (result ManagementLockListResultPage, err error) {
+// filter - the filter to apply on the operation.
+func (client ManagementLocksClient) ListByScope(ctx context.Context, scope string, filter string) (result ManagementLockListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementLocksClient.ListByScope")
 		defer func() {
@@ -1479,7 +1480,7 @@ func (client ManagementLocksClient) ListByScope(ctx context.Context, scope strin
 		}()
 	}
 	result.fn = client.listByScopeNextResults
-	req, err := client.ListByScopePreparer(ctx, scope)
+	req, err := client.ListByScopePreparer(ctx, scope, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListByScope", nil, "Failure preparing request")
 		return
@@ -1501,7 +1502,7 @@ func (client ManagementLocksClient) ListByScope(ctx context.Context, scope strin
 }
 
 // ListByScopePreparer prepares the ListByScope request.
-func (client ManagementLocksClient) ListByScopePreparer(ctx context.Context, scope string) (*http.Request, error) {
+func (client ManagementLocksClient) ListByScopePreparer(ctx context.Context, scope string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": autorest.Encode("path", scope),
 	}
@@ -1509,6 +1510,9 @@ func (client ManagementLocksClient) ListByScopePreparer(ctx context.Context, sco
 	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1561,7 +1565,7 @@ func (client ManagementLocksClient) listByScopeNextResults(ctx context.Context, 
 }
 
 // ListByScopeComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ManagementLocksClient) ListByScopeComplete(ctx context.Context, scope string) (result ManagementLockListResultIterator, err error) {
+func (client ManagementLocksClient) ListByScopeComplete(ctx context.Context, scope string, filter string) (result ManagementLockListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementLocksClient.ListByScope")
 		defer func() {
@@ -1572,6 +1576,6 @@ func (client ManagementLocksClient) ListByScopeComplete(ctx context.Context, sco
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByScope(ctx, scope)
+	result.page, err = client.ListByScope(ctx, scope, filter)
 	return
 }

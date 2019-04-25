@@ -2,6 +2,9 @@
 
 ## `head`
 
+## `v0.5.0`
+- add support for websockets
+
 ## `v0.4.1`
 - fix issue with sender when SB returns a different receiver disposition [#119](https://github.com/Azure/azure-service-bus-go/issues/119)
 

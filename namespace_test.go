@@ -45,7 +45,7 @@ func TestSB(t *testing.T) {
 }
 
 func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
-	godotenv.Load()
+	_ = godotenv.Load()
 
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
 	if connStr == "" {
@@ -105,14 +105,10 @@ func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
 	}
 }
 
-func (suite *serviceBusSuite) getNewSasInstance() *Namespace {
-	ns, err := getNewSasInstance(suite.ConnStr)
+func (suite *serviceBusSuite) getNewSasInstance(opts ...NamespaceOption) *Namespace {
+	ns, err := NewNamespace(append(opts, NamespaceWithConnectionString(suite.ConnStr))...)
 	if err != nil {
 		suite.T().Fatal(err)
 	}
 	return ns
-}
-
-func getNewSasInstance(connStr string) (*Namespace, error) {
-	return NewNamespace(NamespaceWithConnectionString(connStr))
 }

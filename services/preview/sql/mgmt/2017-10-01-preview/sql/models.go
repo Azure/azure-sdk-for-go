@@ -1315,6 +1315,10 @@ type DatabaseProperties struct {
 	ReadScale DatabaseReadScale `json:"readScale,omitempty"`
 	// CurrentSku - READ-ONLY; The name and tier of the SKU.
 	CurrentSku *Sku `json:"currentSku,omitempty"`
+	// AutoPauseDelay - Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
+	AutoPauseDelay *int32 `json:"autoPauseDelay,omitempty"`
+	// MinCapacity - Minimal capacity that database will always have allocated, if not paused
+	MinCapacity *float64 `json:"minCapacity,omitempty"`
 }
 
 // DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

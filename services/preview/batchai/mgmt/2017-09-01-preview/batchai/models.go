@@ -322,15 +322,15 @@ type Cluster struct {
 	autorest.Response `json:"-"`
 	// ClusterProperties - The properties associated with the Cluster.
 	*ClusterProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - READ-ONLY; The type of the resource
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
+	// Location - READ-ONLY; The location of the resource
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
+	// Tags - READ-ONLY; The tags of the resource
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -339,21 +339,6 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ClusterProperties != nil {
 		objectMap["properties"] = c.ClusterProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
-	}
-	if c.Location != nil {
-		objectMap["location"] = c.Location
-	}
-	if c.Tags != nil {
-		objectMap["tags"] = c.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -664,17 +649,22 @@ type ClusterProperties struct {
 	NodeSetup                   *NodeSetup                   `json:"nodeSetup,omitempty"`
 	UserAccountSettings         *UserAccountSettings         `json:"userAccountSettings,omitempty"`
 	Subnet                      *ResourceID                  `json:"subnet,omitempty"`
-	CreationTime                *date.Time                   `json:"creationTime,omitempty"`
-	// ProvisioningState - Possible value are: creating - Specifies that the cluster is being created. succeeded - Specifies that the cluster has been created successfully. failed - Specifies that the cluster creation has failed. deleting - Specifies that the cluster is being deleted. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateDeleting'
-	ProvisioningState               ProvisioningState `json:"provisioningState,omitempty"`
-	ProvisioningStateTransitionTime *date.Time        `json:"provisioningStateTransitionTime,omitempty"`
-	// AllocationState - Possible values are: steady and resizing. steady state indicates that the cluster is not resizing. There are no changes to the number of compute nodes in the cluster in progress. A cluster enters this state when it is created and when no operations are being performed on the cluster to change the number of compute nodes. resizing state indicates that the cluster is resizing; that is, compute nodes are being added to or removed from the cluster. Possible values include: 'Steady', 'Resizing'
-	AllocationState               AllocationState `json:"allocationState,omitempty"`
-	AllocationStateTransitionTime *date.Time      `json:"allocationStateTransitionTime,omitempty"`
+	// CreationTime - READ-ONLY
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - READ-ONLY; Possible value are: creating - Specifies that the cluster is being created. succeeded - Specifies that the cluster has been created successfully. failed - Specifies that the cluster creation has failed. deleting - Specifies that the cluster is being deleted. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateDeleting'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningStateTransitionTime - READ-ONLY
+	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
+	// AllocationState - READ-ONLY; Possible values are: steady and resizing. steady state indicates that the cluster is not resizing. There are no changes to the number of compute nodes in the cluster in progress. A cluster enters this state when it is created and when no operations are being performed on the cluster to change the number of compute nodes. resizing state indicates that the cluster is resizing; that is, compute nodes are being added to or removed from the cluster. Possible values include: 'Steady', 'Resizing'
+	AllocationState AllocationState `json:"allocationState,omitempty"`
+	// AllocationStateTransitionTime - READ-ONLY
+	AllocationStateTransitionTime *date.Time `json:"allocationStateTransitionTime,omitempty"`
 	// Errors - This element contains all the errors encountered by various compute nodes during node setup.
-	Errors           *[]Error         `json:"errors,omitempty"`
-	CurrentNodeCount *int32           `json:"currentNodeCount,omitempty"`
-	NodeStateCounts  *NodeStateCounts `json:"nodeStateCounts,omitempty"`
+	Errors *[]Error `json:"errors,omitempty"`
+	// CurrentNodeCount - READ-ONLY
+	CurrentNodeCount *int32 `json:"currentNodeCount,omitempty"`
+	// NodeStateCounts - READ-ONLY
+	NodeStateCounts *NodeStateCounts `json:"nodeStateCounts,omitempty"`
 }
 
 // ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -687,7 +677,7 @@ type ClustersCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -716,7 +706,7 @@ type ClustersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -815,7 +805,7 @@ type CustomToolkitSettings struct {
 // DataDisks settings for the data disk which would be created for the File Server.
 type DataDisks struct {
 	DiskSizeInGB *int32 `json:"diskSizeInGB,omitempty"`
-	// CachingType - Possible values include: 'None', 'Readonly', 'Readwrite'
+	// CachingType - READ-ONLY; Possible values include: 'None', 'Readonly', 'Readwrite'
 	CachingType CachingType `json:"cachingType,omitempty"`
 	DiskCount   *int32      `json:"diskCount,omitempty"`
 	// StorageAccountType - Possible values include: 'StandardLRS', 'PremiumLRS'
@@ -908,7 +898,7 @@ func (f *File) UnmarshalJSON(body []byte) error {
 // FileListResult values returned by the List operation.
 type FileListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The collection of returned job files.
+	// Value - READ-ONLY; The collection of returned job files.
 	Value *[]File `json:"value,omitempty"`
 	// NextLink - The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1064,15 +1054,15 @@ type FileServer struct {
 	autorest.Response `json:"-"`
 	// FileServerProperties - The properties associated with the File Server.
 	*FileServerProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - READ-ONLY; The type of the resource
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
+	// Location - READ-ONLY; The location of the resource
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
+	// Tags - READ-ONLY; The tags of the resource
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1081,21 +1071,6 @@ func (fs FileServer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if fs.FileServerProperties != nil {
 		objectMap["properties"] = fs.FileServerProperties
-	}
-	if fs.ID != nil {
-		objectMap["id"] = fs.ID
-	}
-	if fs.Name != nil {
-		objectMap["name"] = fs.Name
-	}
-	if fs.Type != nil {
-		objectMap["type"] = fs.Type
-	}
-	if fs.Location != nil {
-		objectMap["location"] = fs.Location
-	}
-	if fs.Tags != nil {
-		objectMap["tags"] = fs.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1394,14 +1369,17 @@ func NewFileServerListResultPage(getNextPage func(context.Context, FileServerLis
 // FileServerProperties file server specific properties.
 type FileServerProperties struct {
 	// VMSize - For information about available VM sizes for File Server from the Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux).
-	VMSize                          *string           `json:"vmSize,omitempty"`
-	SSHConfiguration                *SSHConfiguration `json:"sshConfiguration,omitempty"`
-	DataDisks                       *DataDisks        `json:"dataDisks,omitempty"`
-	Subnet                          *ResourceID       `json:"subnet,omitempty"`
-	MountSettings                   *MountSettings    `json:"mountSettings,omitempty"`
-	ProvisioningStateTransitionTime *date.Time        `json:"provisioningStateTransitionTime,omitempty"`
-	CreationTime                    *date.Time        `json:"creationTime,omitempty"`
-	// ProvisioningState - Possible values: creating - The File Server is getting created. updating - The File Server creation has been accepted and it is getting updated. deleting - The user has requested that the File Server be deleted, and it is in the process of being deleted. failed - The File Server creation has failed with the specified errorCode. Details about the error code are specified in the message field. succeeded - The File Server creation has succeeded. Possible values include: 'FileServerProvisioningStateCreating', 'FileServerProvisioningStateUpdating', 'FileServerProvisioningStateDeleting', 'FileServerProvisioningStateSucceeded', 'FileServerProvisioningStateFailed'
+	VMSize           *string           `json:"vmSize,omitempty"`
+	SSHConfiguration *SSHConfiguration `json:"sshConfiguration,omitempty"`
+	DataDisks        *DataDisks        `json:"dataDisks,omitempty"`
+	Subnet           *ResourceID       `json:"subnet,omitempty"`
+	// MountSettings - READ-ONLY
+	MountSettings *MountSettings `json:"mountSettings,omitempty"`
+	// ProvisioningStateTransitionTime - READ-ONLY
+	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
+	// CreationTime - READ-ONLY
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - READ-ONLY; Possible values: creating - The File Server is getting created. updating - The File Server creation has been accepted and it is getting updated. deleting - The user has requested that the File Server be deleted, and it is in the process of being deleted. failed - The File Server creation has failed with the specified errorCode. Details about the error code are specified in the message field. succeeded - The File Server creation has succeeded. Possible values include: 'FileServerProvisioningStateCreating', 'FileServerProvisioningStateUpdating', 'FileServerProvisioningStateDeleting', 'FileServerProvisioningStateSucceeded', 'FileServerProvisioningStateFailed'
 	ProvisioningState FileServerProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1426,7 +1404,7 @@ type FileServersCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileServersCreateFuture) Result(client FileServersClient) (fs FileServer, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1455,7 +1433,7 @@ type FileServersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileServersDeleteFuture) Result(client FileServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1495,15 +1473,15 @@ type Job struct {
 	autorest.Response `json:"-"`
 	// JobProperties - The properties associated with the job.
 	*JobProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - READ-ONLY; The type of the resource
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
+	// Location - READ-ONLY; The location of the resource
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
+	// Tags - READ-ONLY; The tags of the resource
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1512,21 +1490,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if j.JobProperties != nil {
 		objectMap["properties"] = j.JobProperties
-	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
-	}
-	if j.Location != nil {
-		objectMap["location"] = j.Location
-	}
-	if j.Tags != nil {
-		objectMap["tags"] = j.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1882,15 +1845,15 @@ type JobProperties struct {
 	EnvironmentVariables *[]EnvironmentSetting `json:"environmentVariables,omitempty"`
 	// Constraints - Constraints associated with the Job.
 	Constraints *JobPropertiesConstraints `json:"constraints,omitempty"`
-	// CreationTime - The creation time of the job.
+	// CreationTime - READ-ONLY; The creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// ProvisioningState - The provisioned state of the Batch AI job. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateDeleting'
+	// ProvisioningState - READ-ONLY; The provisioned state of the Batch AI job. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// ProvisioningStateTransitionTime - The time at which the job entered its current provisioning state.
+	// ProvisioningStateTransitionTime - READ-ONLY; The time at which the job entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
 	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
 	ExecutionState ExecutionState `json:"executionState,omitempty"`
-	// ExecutionStateTransitionTime - The time at which the job entered its current execution state.
+	// ExecutionStateTransitionTime - READ-ONLY; The time at which the job entered its current execution state.
 	ExecutionStateTransitionTime *date.Time `json:"executionStateTransitionTime,omitempty"`
 	// ExecutionInfo - Contains information about the execution of a job in the Azure Batch service.
 	ExecutionInfo *JobPropertiesExecutionInfo `json:"executionInfo,omitempty"`
@@ -1922,7 +1885,7 @@ type JobsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsCreateFuture) Result(client JobsClient) (j Job, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1950,7 +1913,7 @@ type JobsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1973,7 +1936,7 @@ type JobsTerminateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsTerminateFuture) Result(client JobsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsTerminateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2397,36 +2360,21 @@ func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, R
 
 // Resource a definition of an Azure resource.
 type Resource struct {
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - READ-ONLY; The type of the resource
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
+	// Location - READ-ONLY; The location of the resource
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
+	// Tags - READ-ONLY; The tags of the resource
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }
 

@@ -83,6 +83,9 @@ func (client DefinitionsClient) CreatePreparer(ctx context.Context, subscription
 		"api-version": APIVersion,
 	}
 
+	body.ID = nil
+	body.Name = nil
+	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

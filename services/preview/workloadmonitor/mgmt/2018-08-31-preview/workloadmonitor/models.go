@@ -178,49 +178,34 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
-	// Etag - Resource Etag.
+	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // Component model for component.
 type Component struct {
 	autorest.Response `json:"-"`
-	// Etag - For optimistic concurrency control.
+	// Etag - READ-ONLY; For optimistic concurrency control.
 	Etag *string `json:"etag,omitempty"`
-	// ComponentProperties - Properties of the component.
+	// ComponentProperties - READ-ONLY; Properties of the component.
 	*ComponentProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Component.
 func (c Component) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if c.Etag != nil {
-		objectMap["etag"] = c.Etag
-	}
-	if c.ComponentProperties != nil {
-		objectMap["properties"] = c.ComponentProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -286,105 +271,54 @@ func (c *Component) UnmarshalJSON(body []byte) error {
 
 // ComponentProperties model for properties of a component.
 type ComponentProperties struct {
-	// WorkspaceID - ID of the workspace.
+	// WorkspaceID - READ-ONLY; ID of the workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// SolutionID - ID of the OMS solution this component belong to.
+	// SolutionID - READ-ONLY; ID of the OMS solution this component belong to.
 	SolutionID *string `json:"solutionId,omitempty"`
-	// WorkloadType - Type of the workload. Possible values include: 'BaseOS', 'SQL', 'IIS', 'Apache'
+	// WorkloadType - READ-ONLY; Type of the workload. Possible values include: 'BaseOS', 'SQL', 'IIS', 'Apache'
 	WorkloadType WorkloadType `json:"workloadType,omitempty"`
-	// ComponentName - Name of the component.
+	// ComponentName - READ-ONLY; Name of the component.
 	ComponentName *string `json:"componentName,omitempty"`
-	// ComponentTypeID - ID of the component type.
+	// ComponentTypeID - READ-ONLY; ID of the component type.
 	ComponentTypeID *string `json:"componentTypeId,omitempty"`
-	// ComponentTypeName - Name of the component type. Qualifies the type of component such as whether it is a SQL database, logical disk, website, etc.
+	// ComponentTypeName - READ-ONLY; Name of the component type. Qualifies the type of component such as whether it is a SQL database, logical disk, website, etc.
 	ComponentTypeName *string `json:"componentTypeName,omitempty"`
-	// ComponentTypeGroupCategory - Component type group category. Classification of component type groups into a logical category. e.g. Network, Disk, Memory, CPU.
+	// ComponentTypeGroupCategory - READ-ONLY; Component type group category. Classification of component type groups into a logical category. e.g. Network, Disk, Memory, CPU.
 	ComponentTypeGroupCategory *string `json:"componentTypeGroupCategory,omitempty"`
-	// HealthState - Health state of the component. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
+	// HealthState - READ-ONLY; Health state of the component. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// HealthStateCategory - Category of component's health state. Possible values include: 'Identity', 'CustomGroup'
+	// HealthStateCategory - READ-ONLY; Category of component's health state. Possible values include: 'Identity', 'CustomGroup'
 	HealthStateCategory HealthStateCategory `json:"healthStateCategory,omitempty"`
-	// HealthStateChangesStartTime - Start time for health state changes.
+	// HealthStateChangesStartTime - READ-ONLY; Start time for health state changes.
 	HealthStateChangesStartTime *date.Time `json:"healthStateChangesStartTime,omitempty"`
-	// HealthStateChangesEndTime - End time for health state changes.
+	// HealthStateChangesEndTime - READ-ONLY; End time for health state changes.
 	HealthStateChangesEndTime *date.Time `json:"healthStateChangesEndTime,omitempty"`
-	// LastHealthStateChangeTime - Time of last health state change.
+	// LastHealthStateChangeTime - READ-ONLY; Time of last health state change.
 	LastHealthStateChangeTime *date.Time `json:"lastHealthStateChangeTime,omitempty"`
-	// VMID - ID of the VM this component belongs to.
+	// VMID - READ-ONLY; ID of the VM this component belongs to.
 	VMID *string `json:"vmId,omitempty"`
-	// VMName - Name of the VM this component belongs to.
+	// VMName - READ-ONLY; Name of the VM this component belongs to.
 	VMName *string `json:"vmName,omitempty"`
-	// VMTags - Tags on the VM this component belongs to.
+	// VMTags - READ-ONLY; Tags on the VM this component belongs to.
 	VMTags map[string]*string `json:"vmTags"`
-	// AggregateProperties - Properties requested in aggregation queries.
+	// AggregateProperties - READ-ONLY; Properties requested in aggregation queries.
 	AggregateProperties map[string]*string `json:"aggregateProperties"`
-	// Children - component children.
+	// Children - READ-ONLY; component children.
 	Children *[]Component `json:"children,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ComponentProperties.
 func (cp ComponentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cp.WorkspaceID != nil {
-		objectMap["workspaceId"] = cp.WorkspaceID
-	}
-	if cp.SolutionID != nil {
-		objectMap["solutionId"] = cp.SolutionID
-	}
-	if cp.WorkloadType != "" {
-		objectMap["workloadType"] = cp.WorkloadType
-	}
-	if cp.ComponentName != nil {
-		objectMap["componentName"] = cp.ComponentName
-	}
-	if cp.ComponentTypeID != nil {
-		objectMap["componentTypeId"] = cp.ComponentTypeID
-	}
-	if cp.ComponentTypeName != nil {
-		objectMap["componentTypeName"] = cp.ComponentTypeName
-	}
-	if cp.ComponentTypeGroupCategory != nil {
-		objectMap["componentTypeGroupCategory"] = cp.ComponentTypeGroupCategory
-	}
-	if cp.HealthState != "" {
-		objectMap["healthState"] = cp.HealthState
-	}
-	if cp.HealthStateCategory != "" {
-		objectMap["healthStateCategory"] = cp.HealthStateCategory
-	}
-	if cp.HealthStateChangesStartTime != nil {
-		objectMap["healthStateChangesStartTime"] = cp.HealthStateChangesStartTime
-	}
-	if cp.HealthStateChangesEndTime != nil {
-		objectMap["healthStateChangesEndTime"] = cp.HealthStateChangesEndTime
-	}
-	if cp.LastHealthStateChangeTime != nil {
-		objectMap["lastHealthStateChangeTime"] = cp.LastHealthStateChangeTime
-	}
-	if cp.VMID != nil {
-		objectMap["vmId"] = cp.VMID
-	}
-	if cp.VMName != nil {
-		objectMap["vmName"] = cp.VMName
-	}
-	if cp.VMTags != nil {
-		objectMap["vmTags"] = cp.VMTags
-	}
-	if cp.AggregateProperties != nil {
-		objectMap["aggregateProperties"] = cp.AggregateProperties
-	}
-	if cp.Children != nil {
-		objectMap["children"] = cp.Children
-	}
 	return json.Marshal(objectMap)
 }
 
 // ComponentsCollection model for collection of components.
 type ComponentsCollection struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to the next set of results.
+	// NextLink - READ-ONLY; URL to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Collection of components.
+	// Value - READ-ONLY; Collection of components.
 	Value *[]Component `json:"value,omitempty"`
 }
 
@@ -547,45 +481,30 @@ type ErrorResponse struct {
 
 // HealthStateChange model for health state change
 type HealthStateChange struct {
-	// HealthState - Health state of monitor instance. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
+	// HealthState - READ-ONLY; Health state of monitor instance. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// HealthStateChangeTime - Time at which this Health state was reached.
+	// HealthStateChangeTime - READ-ONLY; Time at which this Health state was reached.
 	HealthStateChangeTime *date.Time `json:"healthStateChangeTime,omitempty"`
 }
 
 // Monitor model for Monitor
 type Monitor struct {
 	autorest.Response `json:"-"`
-	// Etag - For optimistic concurrency control.
+	// Etag - READ-ONLY; For optimistic concurrency control.
 	Etag *string `json:"etag,omitempty"`
-	// MonitorProperties - Properties of monitor instance
+	// MonitorProperties - READ-ONLY; Properties of monitor instance
 	*MonitorProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Monitor.
 func (mVar Monitor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mVar.Etag != nil {
-		objectMap["etag"] = mVar.Etag
-	}
-	if mVar.MonitorProperties != nil {
-		objectMap["properties"] = mVar.MonitorProperties
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -651,47 +570,32 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 
 // MonitorCriteria criteria for monitor configuration
 type MonitorCriteria struct {
-	// HealthState - Target health state of the criteria. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
+	// HealthState - READ-ONLY; Target health state of the criteria. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// Threshold - Threshold value for this criteria
+	// Threshold - READ-ONLY; Threshold value for this criteria
 	Threshold *float64 `json:"threshold,omitempty"`
-	// ComparisonOperator - Comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
+	// ComparisonOperator - READ-ONLY; Comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
 	ComparisonOperator Operator `json:"comparisonOperator,omitempty"`
 }
 
 // MonitorInstance model for monitor instance.
 type MonitorInstance struct {
 	autorest.Response `json:"-"`
-	// Etag - For optimistic concurrency control.
+	// Etag - READ-ONLY; For optimistic concurrency control.
 	Etag *string `json:"etag,omitempty"`
-	// MonitorInstanceProperties - Properties of the monitor instance.
+	// MonitorInstanceProperties - READ-ONLY; Properties of the monitor instance.
 	*MonitorInstanceProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MonitorInstance.
 func (mi MonitorInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mi.Etag != nil {
-		objectMap["etag"] = mi.Etag
-	}
-	if mi.MonitorInstanceProperties != nil {
-		objectMap["properties"] = mi.MonitorInstanceProperties
-	}
-	if mi.ID != nil {
-		objectMap["id"] = mi.ID
-	}
-	if mi.Name != nil {
-		objectMap["name"] = mi.Name
-	}
-	if mi.Type != nil {
-		objectMap["type"] = mi.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -757,120 +661,60 @@ func (mi *MonitorInstance) UnmarshalJSON(body []byte) error {
 
 // MonitorInstanceProperties model for properties of a monitor instance.
 type MonitorInstanceProperties struct {
-	// WorkspaceID - ID of the workspace.
+	// WorkspaceID - READ-ONLY; ID of the workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// SolutionID - ID of the OMS solution this health instance belong to.
+	// SolutionID - READ-ONLY; ID of the OMS solution this health instance belong to.
 	SolutionID *string `json:"solutionId,omitempty"`
-	// WorkloadType - Type of the workload. Possible values include: 'BaseOS', 'SQL', 'IIS', 'Apache'
+	// WorkloadType - READ-ONLY; Type of the workload. Possible values include: 'BaseOS', 'SQL', 'IIS', 'Apache'
 	WorkloadType WorkloadType `json:"workloadType,omitempty"`
-	// ComponentID - ID of the component.
+	// ComponentID - READ-ONLY; ID of the component.
 	ComponentID *string `json:"componentId,omitempty"`
-	// ComponentName - Name of the component.
+	// ComponentName - READ-ONLY; Name of the component.
 	ComponentName *string `json:"componentName,omitempty"`
-	// ComponentTypeID - ID of the component type.
+	// ComponentTypeID - READ-ONLY; ID of the component type.
 	ComponentTypeID *string `json:"componentTypeId,omitempty"`
-	// ComponentTypeName - Name of the component type. Qualifies the type of component such as whether it is a SQL database, logical disk, website, etc.
+	// ComponentTypeName - READ-ONLY; Name of the component type. Qualifies the type of component such as whether it is a SQL database, logical disk, website, etc.
 	ComponentTypeName *string `json:"componentTypeName,omitempty"`
-	// MonitorID - ID of the monitor instance.
+	// MonitorID - READ-ONLY; ID of the monitor instance.
 	MonitorID *string `json:"monitorId,omitempty"`
-	// MonitorName - Name of the monitor.
+	// MonitorName - READ-ONLY; Name of the monitor.
 	MonitorName *string `json:"monitorName,omitempty"`
-	// MonitorType - Type of the monitor. The qualifier for the health criteria depending on the functionality it performs such as Unit, Aggregate, Dependency. Possible values include: 'Aggregate', 'Dependency', 'Unit'
+	// MonitorType - READ-ONLY; Type of the monitor. The qualifier for the health criteria depending on the functionality it performs such as Unit, Aggregate, Dependency. Possible values include: 'Aggregate', 'Dependency', 'Unit'
 	MonitorType MonitorType `json:"monitorType,omitempty"`
-	// MonitorCategory - Monitor type category. Indicates the attribute of the component that the health criteria monitors such as Performance, Availability, etc. Possible values include: 'AvailabilityHealth', 'Configuration', 'EntityHealth', 'PerformanceHealth', 'Security'
+	// MonitorCategory - READ-ONLY; Monitor type category. Indicates the attribute of the component that the health criteria monitors such as Performance, Availability, etc. Possible values include: 'AvailabilityHealth', 'Configuration', 'EntityHealth', 'PerformanceHealth', 'Security'
 	MonitorCategory MonitorCategory `json:"monitorCategory,omitempty"`
-	// HealthState - Health state of monitor instance. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
+	// HealthState - READ-ONLY; Health state of monitor instance. Possible values include: 'Error', 'Warning', 'Success', 'Unknown', 'Uninitialized'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// HealthStateCategory - Category of monitor instance's health state. Possible values include: 'Identity', 'CustomGroup'
+	// HealthStateCategory - READ-ONLY; Category of monitor instance's health state. Possible values include: 'Identity', 'CustomGroup'
 	HealthStateCategory HealthStateCategory `json:"healthStateCategory,omitempty"`
-	// HealthStateChanges - Health state changes.
+	// HealthStateChanges - READ-ONLY; Health state changes.
 	HealthStateChanges *[]HealthStateChange `json:"healthStateChanges,omitempty"`
-	// HealthStateChangesStartTime - Start time for health state changes.
+	// HealthStateChangesStartTime - READ-ONLY; Start time for health state changes.
 	HealthStateChangesStartTime *date.Time `json:"healthStateChangesStartTime,omitempty"`
-	// HealthStateChangesEndTime - End time for health state changes.
+	// HealthStateChangesEndTime - READ-ONLY; End time for health state changes.
 	HealthStateChangesEndTime *date.Time `json:"healthStateChangesEndTime,omitempty"`
-	// LastHealthStateChangeTime - Time of last health state change.
+	// LastHealthStateChangeTime - READ-ONLY; Time of last health state change.
 	LastHealthStateChangeTime *date.Time `json:"lastHealthStateChangeTime,omitempty"`
-	// AlertGeneration - Generates alert or not. Possible values include: 'Enabled', 'Disabled'
+	// AlertGeneration - READ-ONLY; Generates alert or not. Possible values include: 'Enabled', 'Disabled'
 	AlertGeneration AlertGeneration `json:"alertGeneration,omitempty"`
-	// AggregateProperties - Properties requested in aggregation queries.
+	// AggregateProperties - READ-ONLY; Properties requested in aggregation queries.
 	AggregateProperties map[string]*string `json:"aggregateProperties"`
-	// Children - Health instance children.
+	// Children - READ-ONLY; Health instance children.
 	Children *[]MonitorInstance `json:"children,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MonitorInstanceProperties.
 func (mip MonitorInstanceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mip.WorkspaceID != nil {
-		objectMap["workspaceId"] = mip.WorkspaceID
-	}
-	if mip.SolutionID != nil {
-		objectMap["solutionId"] = mip.SolutionID
-	}
-	if mip.WorkloadType != "" {
-		objectMap["workloadType"] = mip.WorkloadType
-	}
-	if mip.ComponentID != nil {
-		objectMap["componentId"] = mip.ComponentID
-	}
-	if mip.ComponentName != nil {
-		objectMap["componentName"] = mip.ComponentName
-	}
-	if mip.ComponentTypeID != nil {
-		objectMap["componentTypeId"] = mip.ComponentTypeID
-	}
-	if mip.ComponentTypeName != nil {
-		objectMap["componentTypeName"] = mip.ComponentTypeName
-	}
-	if mip.MonitorID != nil {
-		objectMap["monitorId"] = mip.MonitorID
-	}
-	if mip.MonitorName != nil {
-		objectMap["monitorName"] = mip.MonitorName
-	}
-	if mip.MonitorType != "" {
-		objectMap["monitorType"] = mip.MonitorType
-	}
-	if mip.MonitorCategory != "" {
-		objectMap["monitorCategory"] = mip.MonitorCategory
-	}
-	if mip.HealthState != "" {
-		objectMap["healthState"] = mip.HealthState
-	}
-	if mip.HealthStateCategory != "" {
-		objectMap["healthStateCategory"] = mip.HealthStateCategory
-	}
-	if mip.HealthStateChanges != nil {
-		objectMap["healthStateChanges"] = mip.HealthStateChanges
-	}
-	if mip.HealthStateChangesStartTime != nil {
-		objectMap["healthStateChangesStartTime"] = mip.HealthStateChangesStartTime
-	}
-	if mip.HealthStateChangesEndTime != nil {
-		objectMap["healthStateChangesEndTime"] = mip.HealthStateChangesEndTime
-	}
-	if mip.LastHealthStateChangeTime != nil {
-		objectMap["lastHealthStateChangeTime"] = mip.LastHealthStateChangeTime
-	}
-	if mip.AlertGeneration != "" {
-		objectMap["alertGeneration"] = mip.AlertGeneration
-	}
-	if mip.AggregateProperties != nil {
-		objectMap["aggregateProperties"] = mip.AggregateProperties
-	}
-	if mip.Children != nil {
-		objectMap["children"] = mip.Children
-	}
 	return json.Marshal(objectMap)
 }
 
 // MonitorInstancesCollection model for collection of health instances.
 type MonitorInstancesCollection struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to the next set of results.
+	// NextLink - READ-ONLY; URL to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Collection of health instances.
+	// Value - READ-ONLY; Collection of health instances.
 	Value *[]MonitorInstance `json:"value,omitempty"`
 }
 
@@ -1013,52 +857,52 @@ func NewMonitorInstancesCollectionPage(getNextPage func(context.Context, Monitor
 
 // MonitorProperties model for properties of a Monitor.
 type MonitorProperties struct {
-	// Description - Description of the monitor
+	// Description - READ-ONLY; Description of the monitor
 	Description *string `json:"description,omitempty"`
-	// MonitorID - ID of the monitor
+	// MonitorID - READ-ONLY; ID of the monitor
 	MonitorID *string `json:"monitorId,omitempty"`
-	// MonitorName - Name of the monitor
+	// MonitorName - READ-ONLY; Name of the monitor
 	MonitorName *string `json:"monitorName,omitempty"`
-	// MonitorDisplayName - User friendly display name of the monitor
+	// MonitorDisplayName - READ-ONLY; User friendly display name of the monitor
 	MonitorDisplayName *string `json:"monitorDisplayName,omitempty"`
-	// ParentMonitorName - Name of the parent monitor
+	// ParentMonitorName - READ-ONLY; Name of the parent monitor
 	ParentMonitorName *string `json:"parentMonitorName,omitempty"`
-	// ParentMonitorDisplayName - User friendly display name of the parent monitor
+	// ParentMonitorDisplayName - READ-ONLY; User friendly display name of the parent monitor
 	ParentMonitorDisplayName *string `json:"parentMonitorDisplayName,omitempty"`
-	// MonitorType - Type of the monitor. Possible values include: 'Aggregate', 'Dependency', 'Unit'
+	// MonitorType - READ-ONLY; Type of the monitor. Possible values include: 'Aggregate', 'Dependency', 'Unit'
 	MonitorType MonitorType `json:"monitorType,omitempty"`
-	// MonitorCategory - Category of the monitor. Possible values include: 'AvailabilityHealth', 'Configuration', 'EntityHealth', 'PerformanceHealth', 'Security'
+	// MonitorCategory - READ-ONLY; Category of the monitor. Possible values include: 'AvailabilityHealth', 'Configuration', 'EntityHealth', 'PerformanceHealth', 'Security'
 	MonitorCategory MonitorCategory `json:"monitorCategory,omitempty"`
-	// ComponentTypeID - Component Type Id of monitor
+	// ComponentTypeID - READ-ONLY; Component Type Id of monitor
 	ComponentTypeID *string `json:"componentTypeId,omitempty"`
-	// ComponentTypeName - Component Type Name of monitor
+	// ComponentTypeName - READ-ONLY; Component Type Name of monitor
 	ComponentTypeName *string `json:"componentTypeName,omitempty"`
-	// ComponentTypeDisplayName - Component Type Display Name of the monitor
+	// ComponentTypeDisplayName - READ-ONLY; Component Type Display Name of the monitor
 	ComponentTypeDisplayName *string `json:"componentTypeDisplayName,omitempty"`
-	// MonitorState - Is the monitor state enabled or disabled. Possible values include: 'MonitorStateEnabled', 'MonitorStateDisabled'
+	// MonitorState - READ-ONLY; Is the monitor state enabled or disabled. Possible values include: 'MonitorStateEnabled', 'MonitorStateDisabled'
 	MonitorState MonitorState `json:"monitorState,omitempty"`
-	// Criteria - Collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updating.
+	// Criteria - READ-ONLY; Collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updating.
 	Criteria *[]MonitorCriteria `json:"criteria,omitempty"`
-	// AlertGeneration - Generates alerts or not. Possible values include: 'Enabled', 'Disabled'
+	// AlertGeneration - READ-ONLY; Generates alerts or not. Possible values include: 'Enabled', 'Disabled'
 	AlertGeneration AlertGeneration `json:"alertGeneration,omitempty"`
-	// Frequency - Frequency at which monitor condition is evaluated
+	// Frequency - READ-ONLY; Frequency at which monitor condition is evaluated
 	Frequency *int32 `json:"frequency,omitempty"`
-	// LookbackDuration - The duration in minutes in the past during which the monitor is evaluated
+	// LookbackDuration - READ-ONLY; The duration in minutes in the past during which the monitor is evaluated
 	LookbackDuration *int32 `json:"lookbackDuration,omitempty"`
-	// DocumentationURL - URL pointing to the documentation of the monitor
+	// DocumentationURL - READ-ONLY; URL pointing to the documentation of the monitor
 	DocumentationURL *string `json:"documentationURL,omitempty"`
-	// SignalName - Name of the signal on which this monitor is configured.
+	// SignalName - READ-ONLY; Name of the signal on which this monitor is configured.
 	SignalName *string `json:"signalName,omitempty"`
-	// SignalType - Type of the signal on which this monitor is configured.
+	// SignalType - READ-ONLY; Type of the signal on which this monitor is configured.
 	SignalType *string `json:"signalType,omitempty"`
 }
 
 // MonitorsCollection model for collection of Monitor.
 type MonitorsCollection struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL for next set of results.
+	// NextLink - READ-ONLY; URL for next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Collection of Monitor.
+	// Value - READ-ONLY; Collection of Monitor.
 	Value *[]Monitor `json:"value,omitempty"`
 }
 
@@ -1202,36 +1046,21 @@ func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollect
 // NotificationSetting model for NotificationSetting.
 type NotificationSetting struct {
 	autorest.Response `json:"-"`
-	// Etag - For optimistic concurrency control.
+	// Etag - READ-ONLY; For optimistic concurrency control.
 	Etag *string `json:"etag,omitempty"`
-	// NotificationSettingProperties - Properties of Notification Settings
+	// NotificationSettingProperties - READ-ONLY; Properties of Notification Settings
 	*NotificationSettingProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NotificationSetting.
 func (ns NotificationSetting) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ns.Etag != nil {
-		objectMap["etag"] = ns.Etag
-	}
-	if ns.NotificationSettingProperties != nil {
-		objectMap["properties"] = ns.NotificationSettingProperties
-	}
-	if ns.ID != nil {
-		objectMap["id"] = ns.ID
-	}
-	if ns.Name != nil {
-		objectMap["name"] = ns.Name
-	}
-	if ns.Type != nil {
-		objectMap["type"] = ns.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1297,7 +1126,7 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 
 // NotificationSettingProperties model for properties of a NotificationSetting.
 type NotificationSettingProperties struct {
-	// ActionGroupResourceIds - List of action group resource ids to be notified
+	// ActionGroupResourceIds - READ-ONLY; List of action group resource ids to be notified
 	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
 }
 
@@ -1305,7 +1134,7 @@ type NotificationSettingProperties struct {
 type NotificationSettingsCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]NotificationSetting `json:"value,omitempty"`
-	// NextLink - URL to the next set of results.
+	// NextLink - READ-ONLY; URL to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1449,20 +1278,20 @@ func NewNotificationSettingsCollectionPage(getNextPage func(context.Context, Not
 
 // Operation operation supported by the resource provider.
 type Operation struct {
-	// Display - The properties of the resource operation.
+	// Display - READ-ONLY; The properties of the resource operation.
 	Display *OperationProperties `json:"display,omitempty"`
-	// Name - The name of the resource operation.
+	// Name - READ-ONLY; The name of the resource operation.
 	Name *string `json:"name,omitempty"`
-	// Origin - The origin of the operation.
+	// Origin - READ-ONLY; The origin of the operation.
 	Origin *string `json:"origin,omitempty"`
 }
 
 // OperationListResult container for a list of operations supported by the resource provider.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to the next set of results.
+	// NextLink - READ-ONLY; URL to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - List of operations.
+	// Value - READ-ONLY; List of operations.
 	Value *[]Operation `json:"value,omitempty"`
 }
 
@@ -1605,34 +1434,34 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // OperationProperties properties of an operation supported by the resource provider.
 type OperationProperties struct {
-	// Description - The description of the resource provider.
+	// Description - READ-ONLY; The description of the resource provider.
 	Description *string `json:"description,omitempty"`
-	// Operation - This operation name.
+	// Operation - READ-ONLY; This operation name.
 	Operation *string `json:"operation,omitempty"`
-	// Provider - The provider name.
+	// Provider - READ-ONLY; The provider name.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The resource name.
+	// Resource - READ-ONLY; The resource name.
 	Resource *string `json:"resource,omitempty"`
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // Resource ...
 type Resource struct {
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1642,11 +1471,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1658,15 +1487,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

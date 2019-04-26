@@ -18,6 +18,7 @@ package deploymentmanager
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -82,11 +83,11 @@ type ArtifactSource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -101,15 +102,6 @@ func (as ArtifactSource) MarshalJSON() ([]byte, error) {
 	}
 	if as.Location != nil {
 		objectMap["location"] = as.Location
-	}
-	if as.ID != nil {
-		objectMap["id"] = as.ID
-	}
-	if as.Name != nil {
-		objectMap["name"] = as.Name
-	}
-	if as.Type != nil {
-		objectMap["type"] = as.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -362,13 +354,13 @@ func (a Authentication) AsBasicAuthentication() (BasicAuthentication, bool) {
 
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
-	// Etag - Resource Etag.
+	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -380,9 +372,9 @@ type CloudError struct {
 
 // CloudErrorBody detailed error information of any failure.
 type CloudErrorBody struct {
-	// Code - Error code string.
+	// Code - READ-ONLY; Error code string.
 	Code *string `json:"code,omitempty"`
-	// Message - Descriptive error information.
+	// Message - READ-ONLY; Descriptive error information.
 	Message *string `json:"message,omitempty"`
 	// Target - Error target
 	Target *string `json:"target,omitempty"`
@@ -406,9 +398,9 @@ type ListOperation struct {
 
 // Message supplementary contextual messages during a rollout.
 type Message struct {
-	// TimeStamp - Time in UTC this message was provided.
+	// TimeStamp - READ-ONLY; Time in UTC this message was provided.
 	TimeStamp *date.Time `json:"timeStamp,omitempty"`
-	// Message - The actual message text.
+	// Message - READ-ONLY; The actual message text.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -445,21 +437,21 @@ type PrePostStep struct {
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // Resource ...
 type Resource struct {
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -467,15 +459,15 @@ type Resource struct {
 type ResourceOperation struct {
 	// ResourceName - Name of the resource as specified in the artifacts. For ARM resources, this is the name of the resource specified in the template.
 	ResourceName *string `json:"resourceName,omitempty"`
-	// OperationID - Unique identifier of the operation. For ARM resources, this is the operationId obtained from ARM service.
+	// OperationID - READ-ONLY; Unique identifier of the operation. For ARM resources, this is the operationId obtained from ARM service.
 	OperationID *string `json:"operationId,omitempty"`
 	// ResourceType - Type of the resource as specified in the artifacts. For ARM resources, this is the type of the resource specified in the template.
 	ResourceType *string `json:"resourceType,omitempty"`
-	// ProvisioningState - State of the resource deployment. For ARM resources, this is the current provisioning state of the resource.
+	// ProvisioningState - READ-ONLY; State of the resource deployment. For ARM resources, this is the current provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// StatusMessage - Descriptive information of the resource operation.
+	// StatusMessage - READ-ONLY; Descriptive information of the resource operation.
 	StatusMessage *string `json:"statusMessage,omitempty"`
-	// StatusCode - Http status code of the operation.
+	// StatusCode - READ-ONLY; Http status code of the operation.
 	StatusCode *string `json:"statusCode,omitempty"`
 }
 
@@ -490,11 +482,11 @@ type Rollout struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -512,15 +504,6 @@ func (r Rollout) MarshalJSON() ([]byte, error) {
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -605,15 +588,15 @@ func (r *Rollout) UnmarshalJSON(body []byte) error {
 
 // RolloutOperationInfo detailed runtime information of the rollout.
 type RolloutOperationInfo struct {
-	// RetryAttempt - The ordinal count of the number of retry attempts on a rollout. 0 if no retries of the rollout have been performed. If the rollout is updated with a PUT, this count is reset to 0.
+	// RetryAttempt - READ-ONLY; The ordinal count of the number of retry attempts on a rollout. 0 if no retries of the rollout have been performed. If the rollout is updated with a PUT, this count is reset to 0.
 	RetryAttempt *int32 `json:"retryAttempt,omitempty"`
-	// SkipSucceededOnRetry - True, if all steps that succeeded on the previous run/attempt were chosen to be skipped in this retry attempt. False, otherwise.
+	// SkipSucceededOnRetry - READ-ONLY; True, if all steps that succeeded on the previous run/attempt were chosen to be skipped in this retry attempt. False, otherwise.
 	SkipSucceededOnRetry *bool `json:"skipSucceededOnRetry,omitempty"`
-	// StartTime - The start time of the rollout in UTC.
+	// StartTime - READ-ONLY; The start time of the rollout in UTC.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The start time of the rollout in UTC. This property will not be set if the rollout has not completed yet.
+	// EndTime - READ-ONLY; The start time of the rollout in UTC. This property will not be set if the rollout has not completed yet.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Error - The detailed error information for any failure.
+	// Error - READ-ONLY; The detailed error information for any failure.
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
@@ -627,25 +610,25 @@ type RolloutProperties struct {
 	TargetServiceTopologyID *string `json:"targetServiceTopologyId,omitempty"`
 	// StepGroups - The list of step groups that define the orchestration.
 	StepGroups *[]Step `json:"stepGroups,omitempty"`
-	// Status - The current status of the rollout.
+	// Status - READ-ONLY; The current status of the rollout.
 	Status *string `json:"status,omitempty"`
-	// TotalRetryAttempts - The cardinal count of total number of retries performed on the rollout at a given time.
+	// TotalRetryAttempts - READ-ONLY; The cardinal count of total number of retries performed on the rollout at a given time.
 	TotalRetryAttempts *int32 `json:"totalRetryAttempts,omitempty"`
-	// OperationInfo - Operational information of the rollout.
+	// OperationInfo - READ-ONLY; Operational information of the rollout.
 	OperationInfo *RolloutOperationInfo `json:"operationInfo,omitempty"`
-	// Services - The detailed information on the services being deployed.
+	// Services - READ-ONLY; The detailed information on the services being deployed.
 	Services *[]Service `json:"services,omitempty"`
 }
 
 // RolloutPropertiesModel defines the properties of a rollout.
 type RolloutPropertiesModel struct {
-	// Status - The current status of the rollout.
+	// Status - READ-ONLY; The current status of the rollout.
 	Status *string `json:"status,omitempty"`
-	// TotalRetryAttempts - The cardinal count of total number of retries performed on the rollout at a given time.
+	// TotalRetryAttempts - READ-ONLY; The cardinal count of total number of retries performed on the rollout at a given time.
 	TotalRetryAttempts *int32 `json:"totalRetryAttempts,omitempty"`
-	// OperationInfo - Operational information of the rollout.
+	// OperationInfo - READ-ONLY; Operational information of the rollout.
 	OperationInfo *RolloutOperationInfo `json:"operationInfo,omitempty"`
-	// Services - The detailed information on the services being deployed.
+	// Services - READ-ONLY; The detailed information on the services being deployed.
 	Services *[]Service `json:"services,omitempty"`
 }
 
@@ -660,11 +643,11 @@ type RolloutRequest struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -682,15 +665,6 @@ func (rr RolloutRequest) MarshalJSON() ([]byte, error) {
 	}
 	if rr.Location != nil {
 		objectMap["location"] = rr.Location
-	}
-	if rr.ID != nil {
-		objectMap["id"] = rr.ID
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -795,7 +769,7 @@ type RolloutsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RolloutsCreateOrUpdateFuture) Result(client RolloutsClient) (rr RolloutRequest, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -818,15 +792,15 @@ func (future *RolloutsCreateOrUpdateFuture) Result(client RolloutsClient) (rr Ro
 type RolloutStep struct {
 	// Name - Name of the step.
 	Name *string `json:"name,omitempty"`
-	// Status - Current state of the step.
+	// Status - READ-ONLY; Current state of the step.
 	Status *string `json:"status,omitempty"`
 	// StepGroup - The step group the current step is part of.
 	StepGroup *string `json:"stepGroup,omitempty"`
-	// OperationInfo - Detailed information of specific action execution.
+	// OperationInfo - READ-ONLY; Detailed information of specific action execution.
 	OperationInfo *StepOperationInfo `json:"operationInfo,omitempty"`
-	// ResourceOperations - Set of resource operations that were performed, if any, on an Azure resource.
+	// ResourceOperations - READ-ONLY; Set of resource operations that were performed, if any, on an Azure resource.
 	ResourceOperations *[]ResourceOperation `json:"resourceOperations,omitempty"`
-	// Messages - Supplementary informative messages during rollout.
+	// Messages - READ-ONLY; Supplementary informative messages during rollout.
 	Messages *[]Message `json:"messages,omitempty"`
 }
 
@@ -934,11 +908,11 @@ type ServiceResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -953,15 +927,6 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
-	}
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1058,11 +1023,11 @@ type ServiceTopologyResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1077,15 +1042,6 @@ func (str ServiceTopologyResource) MarshalJSON() ([]byte, error) {
 	}
 	if str.Location != nil {
 		objectMap["location"] = str.Location
-	}
-	if str.ID != nil {
-		objectMap["id"] = str.ID
-	}
-	if str.Name != nil {
-		objectMap["name"] = str.Name
-	}
-	if str.Type != nil {
-		objectMap["type"] = str.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1210,11 +1166,11 @@ type ServiceUnitResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1229,15 +1185,6 @@ func (sur ServiceUnitResource) MarshalJSON() ([]byte, error) {
 	}
 	if sur.Location != nil {
 		objectMap["location"] = sur.Location
-	}
-	if sur.ID != nil {
-		objectMap["id"] = sur.ID
-	}
-	if sur.Name != nil {
-		objectMap["name"] = sur.Name
-	}
-	if sur.Type != nil {
-		objectMap["type"] = sur.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1331,7 +1278,7 @@ type ServiceUnitsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServiceUnitsCreateOrUpdateFuture) Result(client ServiceUnitsClient) (sur ServiceUnitResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1366,15 +1313,15 @@ type Step struct {
 
 // StepOperationInfo detailed information of a specific step run.
 type StepOperationInfo struct {
-	// DeploymentName - The name of the ARM deployment initiated as part of the step.
+	// DeploymentName - READ-ONLY; The name of the ARM deployment initiated as part of the step.
 	DeploymentName *string `json:"deploymentName,omitempty"`
-	// CorrelationID - Unique identifier to track the request for ARM-based resources.
+	// CorrelationID - READ-ONLY; Unique identifier to track the request for ARM-based resources.
 	CorrelationID *string `json:"correlationId,omitempty"`
-	// StartTime - Start time of the action in UTC.
+	// StartTime - READ-ONLY; Start time of the action in UTC.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the action in UTC.
+	// EndTime - READ-ONLY; End time of the action in UTC.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// LastUpdatedTime - Last time in UTC this operation was updated.
+	// LastUpdatedTime - READ-ONLY; Last time in UTC this operation was updated.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 	// Error - The errors, if any, for the action.
 	Error *CloudErrorBody `json:"error,omitempty"`
@@ -1463,11 +1410,11 @@ type StepResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1480,15 +1427,6 @@ func (sr StepResource) MarshalJSON() ([]byte, error) {
 	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
-	}
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1567,11 +1505,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1583,15 +1521,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

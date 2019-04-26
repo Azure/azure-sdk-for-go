@@ -22,7 +22,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-12-01-preview/devices"
+	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-04-01/devices"
 )
 
 const (
@@ -199,7 +199,6 @@ type IotHubDescriptionListResultIterator = original.IotHubDescriptionListResultI
 type IotHubDescriptionListResultPage = original.IotHubDescriptionListResultPage
 type IotHubNameAvailabilityInfo = original.IotHubNameAvailabilityInfo
 type IotHubProperties = original.IotHubProperties
-type IotHubPropertiesDeviceStreams = original.IotHubPropertiesDeviceStreams
 type IotHubQuotaMetricInfo = original.IotHubQuotaMetricInfo
 type IotHubQuotaMetricInfoListResult = original.IotHubQuotaMetricInfoListResult
 type IotHubQuotaMetricInfoListResultIterator = original.IotHubQuotaMetricInfoListResultIterator

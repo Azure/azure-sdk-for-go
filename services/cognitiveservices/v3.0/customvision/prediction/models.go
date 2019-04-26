@@ -284,15 +284,15 @@ type CustomVisionError struct {
 // ImagePrediction result of an image prediction request.
 type ImagePrediction struct {
 	autorest.Response `json:"-"`
-	// ID - Prediction Id.
+	// ID - READ-ONLY; Prediction Id.
 	ID *uuid.UUID `json:"id,omitempty"`
-	// Project - Project Id.
+	// Project - READ-ONLY; Project Id.
 	Project *uuid.UUID `json:"project,omitempty"`
-	// Iteration - Iteration Id.
+	// Iteration - READ-ONLY; Iteration Id.
 	Iteration *uuid.UUID `json:"iteration,omitempty"`
-	// Created - Date this prediction was created.
+	// Created - READ-ONLY; Date this prediction was created.
 	Created *date.Time `json:"created,omitempty"`
-	// Predictions - List of predictions.
+	// Predictions - READ-ONLY; List of predictions.
 	Predictions *[]Model `json:"predictions,omitempty"`
 }
 
@@ -304,12 +304,12 @@ type ImageURL struct {
 
 // Model prediction result.
 type Model struct {
-	// Probability - Probability of the tag.
+	// Probability - READ-ONLY; Probability of the tag.
 	Probability *float64 `json:"probability,omitempty"`
-	// TagID - Id of the predicted tag.
+	// TagID - READ-ONLY; Id of the predicted tag.
 	TagID *uuid.UUID `json:"tagId,omitempty"`
-	// TagName - Name of the predicted tag.
+	// TagName - READ-ONLY; Name of the predicted tag.
 	TagName *string `json:"tagName,omitempty"`
-	// BoundingBox - Bounding box of the prediction.
+	// BoundingBox - READ-ONLY; Bounding box of the prediction.
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }

@@ -64,11 +64,11 @@ type Account struct {
 	Tags map[string]*string `json:"tags"`
 	// Sku - The SKU of the resource
 	Sku *SKU `json:"sku,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The fully qualified type of the resource
+	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
 }
 
@@ -83,15 +83,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	}
 	if a.Sku != nil {
 		objectMap["sku"] = a.Sku
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -123,11 +114,11 @@ type Channel struct {
 	autorest.Response `json:"-"`
 	// ChannelProperties - The properties of the channel
 	*ChannelProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The fully qualified type of the resource
+	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
 }
 
@@ -136,15 +127,6 @@ func (c Channel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ChannelProperties != nil {
 		objectMap["properties"] = c.ChannelProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -260,11 +242,11 @@ type CheckNameAvailabilityParameter struct {
 // CheckNameAvailabilityResult the result of name availability check
 type CheckNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - The name to be checked
+	// NameAvailable - READ-ONLY; The name to be checked
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason if name is unavailable. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; The reason if name is unavailable. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason CheckNameUnavailableReason `json:"reason,omitempty"`
-	// Message - The message if name is unavailable
+	// Message - READ-ONLY; The message if name is unavailable
 	Message *string `json:"message,omitempty"`
 }
 
@@ -289,55 +271,55 @@ type CloudErrorBody struct {
 // KeyDescription the description of the EngagementFabric account key
 type KeyDescription struct {
 	autorest.Response `json:"-"`
-	// Name - The name of the key
+	// Name - READ-ONLY; The name of the key
 	Name *string `json:"name,omitempty"`
-	// Rank - The rank of the key. Possible values include: 'PrimaryKey', 'SecondaryKey'
+	// Rank - READ-ONLY; The rank of the key. Possible values include: 'PrimaryKey', 'SecondaryKey'
 	Rank KeyRank `json:"rank,omitempty"`
-	// Value - The value of the key
+	// Value - READ-ONLY; The value of the key
 	Value *string `json:"value,omitempty"`
 }
 
 // KeyDescriptionList the list of the EngagementFabric account keys
 type KeyDescriptionList struct {
 	autorest.Response `json:"-"`
-	// Value - Account keys
+	// Value - READ-ONLY; Account keys
 	Value *[]KeyDescription `json:"value,omitempty"`
 }
 
 // Operation the EngagementFabric operation
 type Operation struct {
-	// Name - The name of the EngagementFabric operation
+	// Name - READ-ONLY; The name of the EngagementFabric operation
 	Name *string `json:"name,omitempty"`
-	// Display - The display content of the EngagementFabric operation
+	// Display - READ-ONLY; The display content of the EngagementFabric operation
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
 // OperationDisplay the display information of the EngagementFabric operation
 type OperationDisplay struct {
-	// Provider - The resource provider namespace of the EngagementFabric operation
+	// Provider - READ-ONLY; The resource provider namespace of the EngagementFabric operation
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The resource type of the EngagementFabric operation
+	// Resource - READ-ONLY; The resource type of the EngagementFabric operation
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The name of the EngagementFabric operation
+	// Operation - READ-ONLY; The name of the EngagementFabric operation
 	Operation *string `json:"operation,omitempty"`
-	// Description - The description of the EngagementFabric operation
+	// Description - READ-ONLY; The description of the EngagementFabric operation
 	Description *string `json:"description,omitempty"`
 }
 
 // OperationList the list of the EngagementFabric operations
 type OperationList struct {
 	autorest.Response `json:"-"`
-	// Value - The EngagementFabric operations
+	// Value - READ-ONLY; The EngagementFabric operations
 	Value *[]Operation `json:"value,omitempty"`
 }
 
 // ProxyOnlyResource the base model for the proxy-only Azure resource
 type ProxyOnlyResource struct {
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The fully qualified type of the resource
+	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
 }
 
@@ -351,11 +333,11 @@ type RegenerateKeyParameter struct {
 
 // Resource the base model for Azure resource
 type Resource struct {
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The fully qualified type of the resource
+	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
 }
 
@@ -369,24 +351,24 @@ type SKU struct {
 
 // SkuDescription the EngagementFabric SKU description of given resource type
 type SkuDescription struct {
-	// ResourceType - The fully qualified resource type
+	// ResourceType - READ-ONLY; The fully qualified resource type
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Name - The name of the SKU
+	// Name - READ-ONLY; The name of the SKU
 	Name *string `json:"name,omitempty"`
-	// Tier - The price tier of the SKU
+	// Tier - READ-ONLY; The price tier of the SKU
 	Tier *string `json:"tier,omitempty"`
-	// Locations - The set of locations that the SKU is available
+	// Locations - READ-ONLY; The set of locations that the SKU is available
 	Locations *[]string `json:"locations,omitempty"`
-	// LocationInfo - Locations and zones
+	// LocationInfo - READ-ONLY; Locations and zones
 	LocationInfo *[]SkuLocationInfoItem `json:"locationInfo,omitempty"`
-	// Restrictions - The restrictions because of which SKU cannot be used
+	// Restrictions - READ-ONLY; The restrictions because of which SKU cannot be used
 	Restrictions *[]interface{} `json:"restrictions,omitempty"`
 }
 
 // SkuDescriptionList the list of the EngagementFabric SKU descriptions
 type SkuDescriptionList struct {
 	autorest.Response `json:"-"`
-	// Value - SKU descriptions
+	// Value - READ-ONLY; SKU descriptions
 	Value *[]SkuDescription `json:"value,omitempty"`
 }
 
@@ -406,11 +388,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Sku - The SKU of the resource
 	Sku *SKU `json:"sku,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The fully qualified type of the resource
+	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
 }
 
@@ -425,15 +407,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Sku != nil {
 		objectMap["sku"] = tr.Sku
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

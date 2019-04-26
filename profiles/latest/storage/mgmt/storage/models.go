@@ -19,7 +19,7 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-11-01/storage"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-04-01/storage"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -49,16 +49,6 @@ type Action = original.Action
 
 const (
 	Allow Action = original.Allow
-)
-
-type Action1 = original.Action1
-
-const (
-	Acquire Action1 = original.Acquire
-	Break   Action1 = original.Break
-	Change  Action1 = original.Change
-	Release Action1 = original.Release
-	Renew   Action1 = original.Renew
 )
 
 type Bypass = original.Bypass
@@ -227,12 +217,14 @@ const (
 type SkuName = original.SkuName
 
 const (
-	PremiumLRS    SkuName = original.PremiumLRS
-	PremiumZRS    SkuName = original.PremiumZRS
-	StandardGRS   SkuName = original.StandardGRS
-	StandardLRS   SkuName = original.StandardLRS
-	StandardRAGRS SkuName = original.StandardRAGRS
-	StandardZRS   SkuName = original.StandardZRS
+	PremiumLRS     SkuName = original.PremiumLRS
+	PremiumZRS     SkuName = original.PremiumZRS
+	StandardGRS    SkuName = original.StandardGRS
+	StandardGZRS   SkuName = original.StandardGZRS
+	StandardLRS    SkuName = original.StandardLRS
+	StandardRAGRS  SkuName = original.StandardRAGRS
+	StandardRAGZRS SkuName = original.StandardRAGZRS
+	StandardZRS    SkuName = original.StandardZRS
 )
 
 type SkuTier = original.SkuTier
@@ -305,8 +297,6 @@ type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
 type ImmutabilityPolicyProperty = original.ImmutabilityPolicyProperty
 type KeyVaultProperties = original.KeyVaultProperties
-type LeaseContainerRequest = original.LeaseContainerRequest
-type LeaseContainerResponse = original.LeaseContainerResponse
 type LegalHold = original.LegalHold
 type LegalHoldProperties = original.LegalHoldProperties
 type ListAccountSasResponse = original.ListAccountSasResponse
@@ -404,9 +394,6 @@ func PossibleAccountExpandValues() []AccountExpand {
 }
 func PossibleAccountStatusValues() []AccountStatus {
 	return original.PossibleAccountStatusValues()
-}
-func PossibleAction1Values() []Action1 {
-	return original.PossibleAction1Values()
 }
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()

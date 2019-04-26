@@ -107,6 +107,9 @@ func (client GroupsClient) CreatePreparer(ctx context.Context, resourceGroupName
 		"api-version": APIVersion,
 	}
 
+	group.ID = nil
+	group.Name = nil
+	group.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

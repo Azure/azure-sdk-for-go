@@ -122,6 +122,7 @@ func (client APIOperationsClient) CreateOrUpdatePreparer(ctx context.Context, re
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -574,6 +575,7 @@ func (client APIOperationsClient) UpdatePreparer(ctx context.Context, resourceGr
 		"api-version": APIVersion,
 	}
 
+	parameters.ID = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

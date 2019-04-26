@@ -1886,11 +1886,14 @@ type CloudPool struct {
 	NetworkConfiguration         *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 	StartTask                    *StartTask            `json:"startTask,omitempty"`
 	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
-	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
+	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
 	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
-	ApplicationLicenses  *[]string             `json:"applicationLicenses,omitempty"`
-	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
+	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
+	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
+	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
+	// TaskSchedulingPolicy - If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	Metadata             *[]MetadataItem       `json:"metadata,omitempty"`
@@ -2048,7 +2051,8 @@ type CloudServiceConfiguration struct {
 	// 2 - OS Family 2, equivalent to Windows Server 2008 R2 SP1.
 	// 3 - OS Family 3, equivalent to Windows Server 2012.
 	// 4 - OS Family 4, equivalent to Windows Server 2012 R2.
-	// 5 - OS Family 5, equivalent to Windows Server 2016. For more information, see Azure Guest OS Releases (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
+	// 5 - OS Family 5, equivalent to Windows Server 2016.
+	// 6 - OS Family 6, equivalent to Windows Server 2019. For more information, see Azure Guest OS Releases (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
 	OsFamily *string `json:"osFamily,omitempty"`
 	// OsVersion - The default value is * which specifies the latest operating system version for the specified OS family.
 	OsVersion *string `json:"osVersion,omitempty"`
@@ -3347,12 +3351,14 @@ type PoolAddParameter struct {
 	// StartTask - The task runs when the node is added to the pool or when the node is restarted.
 	StartTask *StartTask `json:"startTask,omitempty"`
 	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
-	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
+	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
 	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
 	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
-	// MaxTasksPerNode - The default value is 1. The maximum value of this setting depends on the size of the compute nodes in the pool (the vmSize setting).
-	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
+	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
+	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
+	// TaskSchedulingPolicy - If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
@@ -3689,7 +3695,7 @@ type PoolPatchParameter struct {
 	StartTask *StartTask `json:"startTask,omitempty"`
 	// CertificateReferences - If this element is present, it replaces any existing certificate references configured on the pool. If omitted, any existing certificate references are left unchanged. For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. If this element is present, it replaces any existing application package references. If you specify an empty collection, then all application package references are removed from the pool. If omitted, any existing application package references are left unchanged.
+	// ApplicationPackageReferences - The list replaces any existing application package references on the pool. Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool. If omitted, any existing application package references are left unchanged.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
 	// Metadata - If this element is present, it replaces any existing metadata configured on the pool. If you specify an empty collection, any metadata is removed from the pool. If omitted, any existing metadata is left unchanged.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
@@ -3715,8 +3721,9 @@ type PoolSpecification struct {
 	CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
 	// VirtualMachineConfiguration - This property must be specified if the pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-	// MaxTasksPerNode - The default value is 1. The maximum value of this setting depends on the size of the compute nodes in the pool (the vmSize setting).
-	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
+	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
+	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
+	// TaskSchedulingPolicy - If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	// ResizeTimeout - This timeout applies only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
@@ -3735,7 +3742,8 @@ type PoolSpecification struct {
 	NetworkConfiguration         *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 	StartTask                    *StartTask            `json:"startTask,omitempty"`
 	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
-	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
+	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
 	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail. The permitted licenses available on the pool are 'maya', 'vray', '3dsmax', 'arnold'. An additional charge applies for each application license added to the pool.
 	ApplicationLicenses *[]string      `json:"applicationLicenses,omitempty"`
@@ -3760,7 +3768,7 @@ type PoolUpdatePropertiesParameter struct {
 	StartTask *StartTask `json:"startTask,omitempty"`
 	// CertificateReferences - This list replaces any existing certificate references configured on the pool. If you specify an empty collection, any existing certificate references are removed from the pool. For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - The list replaces any existing application package references on the pool. Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. If omitted, or if you specify an empty collection, any existing application packages references are removed from the pool.
+	// ApplicationPackageReferences - The list replaces any existing application package references on the pool. Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool. If omitted, or if you specify an empty collection, any existing application packages references are removed from the pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
 	// Metadata - This list replaces any existing metadata configured on the pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the pool.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
@@ -3846,7 +3854,10 @@ type Schedule struct {
 // are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due
 // to a recovery operation may occur. Because of this, all tasks should be idempotent. This means tasks
 // need to tolerate being interrupted and restarted without causing any corruption or duplicate data. The
-// best practice for long running tasks is to use some form of checkpointing.
+// best practice for long running tasks is to use some form of checkpointing. In some cases the start task
+// may be re-run even though the node was not rebooted. Special care should be taken to avoid start tasks
+// which create breakaway process or install/launch services from the start task working directory, as this
+// will block Batch from being able to re-run the start task.
 type StartTask struct {
 	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`

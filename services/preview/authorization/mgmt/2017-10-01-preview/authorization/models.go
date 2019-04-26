@@ -610,11 +610,11 @@ type ResourceType struct {
 // RoleAssignment role Assignments
 type RoleAssignment struct {
 	autorest.Response `json:"-"`
-	// ID - The role assignment ID.
+	// ID - READ-ONLY; The role assignment ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The role assignment name.
+	// Name - READ-ONLY; The role assignment name.
 	Name *string `json:"name,omitempty"`
-	// Type - The role assignment type.
+	// Type - READ-ONLY; The role assignment type.
 	Type *string `json:"type,omitempty"`
 	// RoleAssignmentPropertiesWithScope - Role assignment properties.
 	*RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
@@ -623,15 +623,6 @@ type RoleAssignment struct {
 // MarshalJSON is the custom marshaler for RoleAssignment.
 func (ra RoleAssignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ra.ID != nil {
-		objectMap["id"] = ra.ID
-	}
-	if ra.Name != nil {
-		objectMap["name"] = ra.Name
-	}
-	if ra.Type != nil {
-		objectMap["type"] = ra.Type
-	}
 	if ra.RoleAssignmentPropertiesWithScope != nil {
 		objectMap["properties"] = ra.RoleAssignmentPropertiesWithScope
 	}
@@ -907,11 +898,11 @@ type RoleAssignmentPropertiesWithScope struct {
 // RoleDefinition role definition.
 type RoleDefinition struct {
 	autorest.Response `json:"-"`
-	// ID - The role definition ID.
+	// ID - READ-ONLY; The role definition ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The role definition name.
+	// Name - READ-ONLY; The role definition name.
 	Name *string `json:"name,omitempty"`
-	// Type - The role definition type.
+	// Type - READ-ONLY; The role definition type.
 	Type *string `json:"type,omitempty"`
 	// RoleDefinitionProperties - Role definition properties.
 	*RoleDefinitionProperties `json:"properties,omitempty"`
@@ -920,15 +911,6 @@ type RoleDefinition struct {
 // MarshalJSON is the custom marshaler for RoleDefinition.
 func (rd RoleDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rd.ID != nil {
-		objectMap["id"] = rd.ID
-	}
-	if rd.Name != nil {
-		objectMap["name"] = rd.Name
-	}
-	if rd.Type != nil {
-		objectMap["type"] = rd.Type
-	}
 	if rd.RoleDefinitionProperties != nil {
 		objectMap["properties"] = rd.RoleDefinitionProperties
 	}

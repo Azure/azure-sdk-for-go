@@ -220,6 +220,13 @@ const (
 	XMLLink    PolicyContentFormat = original.XMLLink
 )
 
+type PolicyExportFormat = original.PolicyExportFormat
+
+const (
+	PolicyExportFormatRawxml PolicyExportFormat = original.PolicyExportFormatRawxml
+	PolicyExportFormatXML    PolicyExportFormat = original.PolicyExportFormatXML
+)
+
 type PolicyScopeContract = original.PolicyScopeContract
 
 const (
@@ -1377,6 +1384,9 @@ func PossibleNotificationNameValues() []NotificationName {
 }
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {
 	return original.PossiblePolicyContentFormatValues()
+}
+func PossiblePolicyExportFormatValues() []PolicyExportFormat {
+	return original.PossiblePolicyExportFormatValues()
 }
 func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 	return original.PossiblePolicyScopeContractValues()

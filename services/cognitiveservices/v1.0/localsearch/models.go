@@ -253,51 +253,67 @@ type BasicAction interface {
 
 // Action defines an action.
 type Action struct {
+	// Location - READ-ONLY
 	Location *[]Place `json:"location,omitempty"`
-	// Result - The result produced in the action.
+	// Result - READ-ONLY; The result produced in the action.
 	Result *[]BasicThing `json:"result,omitempty"`
-	// DisplayName - A display name for the action.
+	// DisplayName - READ-ONLY; A display name for the action.
 	DisplayName *string `json:"displayName,omitempty"`
-	// IsTopAction - A Boolean representing whether this result is the top action.
+	// IsTopAction - READ-ONLY; A Boolean representing whether this result is the top action.
 	IsTopAction *bool `json:"isTopAction,omitempty"`
-	// ServiceURL - Use this URL to get additional data to determine how to take the appropriate action. For example, the serviceUrl might return JSON along with an image URL.
+	// ServiceURL - READ-ONLY; Use this URL to get additional data to determine how to take the appropriate action. For example, the serviceUrl might return JSON along with an image URL.
 	ServiceURL *string `json:"serviceUrl,omitempty"`
-	// ThumbnailURL - The URL to a thumbnail of the item.
+	// ThumbnailURL - READ-ONLY; The URL to a thumbnail of the item.
 	ThumbnailURL *string `json:"thumbnailUrl,omitempty"`
-	// About - For internal use only.
+	// About - READ-ONLY; For internal use only.
 	About *[]BasicThing `json:"about,omitempty"`
-	// Mentions - For internal use only.
+	// Mentions - READ-ONLY; For internal use only.
 	Mentions *[]BasicThing `json:"mentions,omitempty"`
-	// Provider - The source of the creative work.
+	// Provider - READ-ONLY; The source of the creative work.
 	Provider *[]BasicThing `json:"provider,omitempty"`
-	Creator  BasicThing    `json:"creator,omitempty"`
-	// Text - Text content of this creative work
-	Text                *string    `json:"text,omitempty"`
-	DiscussionURL       *string    `json:"discussionUrl,omitempty"`
-	CommentCount        *int32     `json:"commentCount,omitempty"`
-	MainEntity          BasicThing `json:"mainEntity,omitempty"`
-	HeadLine            *string    `json:"headLine,omitempty"`
-	CopyrightHolder     BasicThing `json:"copyrightHolder,omitempty"`
-	CopyrightYear       *int32     `json:"copyrightYear,omitempty"`
-	Disclaimer          *string    `json:"disclaimer,omitempty"`
-	IsAccessibleForFree *bool      `json:"isAccessibleForFree,omitempty"`
-	Genre               *[]string  `json:"genre,omitempty"`
-	IsFamilyFriendly    *bool      `json:"isFamilyFriendly,omitempty"`
-	// Name - The name of the thing represented by this object.
+	// Creator - READ-ONLY
+	Creator BasicThing `json:"creator,omitempty"`
+	// Text - READ-ONLY; Text content of this creative work
+	Text *string `json:"text,omitempty"`
+	// DiscussionURL - READ-ONLY
+	DiscussionURL *string `json:"discussionUrl,omitempty"`
+	// CommentCount - READ-ONLY
+	CommentCount *int32 `json:"commentCount,omitempty"`
+	// MainEntity - READ-ONLY
+	MainEntity BasicThing `json:"mainEntity,omitempty"`
+	// HeadLine - READ-ONLY
+	HeadLine *string `json:"headLine,omitempty"`
+	// CopyrightHolder - READ-ONLY
+	CopyrightHolder BasicThing `json:"copyrightHolder,omitempty"`
+	// CopyrightYear - READ-ONLY
+	CopyrightYear *int32 `json:"copyrightYear,omitempty"`
+	// Disclaimer - READ-ONLY
+	Disclaimer *string `json:"disclaimer,omitempty"`
+	// IsAccessibleForFree - READ-ONLY
+	IsAccessibleForFree *bool `json:"isAccessibleForFree,omitempty"`
+	// Genre - READ-ONLY
+	Genre *[]string `json:"genre,omitempty"`
+	// IsFamilyFriendly - READ-ONLY
+	IsFamilyFriendly *bool `json:"isFamilyFriendly,omitempty"`
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -344,91 +360,6 @@ func unmarshalBasicActionArray(body []byte) ([]BasicAction, error) {
 func (a Action) MarshalJSON() ([]byte, error) {
 	a.Type = TypeAction
 	objectMap := make(map[string]interface{})
-	if a.Location != nil {
-		objectMap["location"] = a.Location
-	}
-	if a.Result != nil {
-		objectMap["result"] = a.Result
-	}
-	if a.DisplayName != nil {
-		objectMap["displayName"] = a.DisplayName
-	}
-	if a.IsTopAction != nil {
-		objectMap["isTopAction"] = a.IsTopAction
-	}
-	if a.ServiceURL != nil {
-		objectMap["serviceUrl"] = a.ServiceURL
-	}
-	if a.ThumbnailURL != nil {
-		objectMap["thumbnailUrl"] = a.ThumbnailURL
-	}
-	if a.About != nil {
-		objectMap["about"] = a.About
-	}
-	if a.Mentions != nil {
-		objectMap["mentions"] = a.Mentions
-	}
-	if a.Provider != nil {
-		objectMap["provider"] = a.Provider
-	}
-	objectMap["creator"] = a.Creator
-	if a.Text != nil {
-		objectMap["text"] = a.Text
-	}
-	if a.DiscussionURL != nil {
-		objectMap["discussionUrl"] = a.DiscussionURL
-	}
-	if a.CommentCount != nil {
-		objectMap["commentCount"] = a.CommentCount
-	}
-	objectMap["mainEntity"] = a.MainEntity
-	if a.HeadLine != nil {
-		objectMap["headLine"] = a.HeadLine
-	}
-	objectMap["copyrightHolder"] = a.CopyrightHolder
-	if a.CopyrightYear != nil {
-		objectMap["copyrightYear"] = a.CopyrightYear
-	}
-	if a.Disclaimer != nil {
-		objectMap["disclaimer"] = a.Disclaimer
-	}
-	if a.IsAccessibleForFree != nil {
-		objectMap["isAccessibleForFree"] = a.IsAccessibleForFree
-	}
-	if a.Genre != nil {
-		objectMap["genre"] = a.Genre
-	}
-	if a.IsFamilyFriendly != nil {
-		objectMap["isFamilyFriendly"] = a.IsFamilyFriendly
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.URL != nil {
-		objectMap["url"] = a.URL
-	}
-	objectMap["entityPresentationInfo"] = a.EntityPresentationInfo
-	if a.ReadLink != nil {
-		objectMap["readLink"] = a.ReadLink
-	}
-	if a.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = a.WebSearchURL
-	}
-	if a.PotentialAction != nil {
-		objectMap["potentialAction"] = a.PotentialAction
-	}
-	if a.ImmediateAction != nil {
-		objectMap["immediateAction"] = a.ImmediateAction
-	}
-	if a.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = a.PreferredClickthroughURL
-	}
-	if a.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = a.AdaptiveCard
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
 	if a.Type != "" {
 		objectMap["_type"] = a.Type
 	}
@@ -868,15 +799,19 @@ type BasicAnswer interface {
 
 // Answer defines an answer.
 type Answer struct {
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -927,27 +862,6 @@ func unmarshalBasicAnswerArray(body []byte) ([]BasicAnswer, error) {
 func (a Answer) MarshalJSON() ([]byte, error) {
 	a.Type = TypeAnswer
 	objectMap := make(map[string]interface{})
-	if a.ReadLink != nil {
-		objectMap["readLink"] = a.ReadLink
-	}
-	if a.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = a.WebSearchURL
-	}
-	if a.PotentialAction != nil {
-		objectMap["potentialAction"] = a.PotentialAction
-	}
-	if a.ImmediateAction != nil {
-		objectMap["immediateAction"] = a.ImmediateAction
-	}
-	if a.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = a.PreferredClickthroughURL
-	}
-	if a.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = a.AdaptiveCard
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
 	if a.Type != "" {
 		objectMap["_type"] = a.Type
 	}
@@ -1181,42 +1095,57 @@ type BasicCreativeWork interface {
 // CreativeWork the most generic kind of creative work, including books, movies, photographs, software
 // programs, etc.
 type CreativeWork struct {
-	// ThumbnailURL - The URL to a thumbnail of the item.
+	// ThumbnailURL - READ-ONLY; The URL to a thumbnail of the item.
 	ThumbnailURL *string `json:"thumbnailUrl,omitempty"`
-	// About - For internal use only.
+	// About - READ-ONLY; For internal use only.
 	About *[]BasicThing `json:"about,omitempty"`
-	// Mentions - For internal use only.
+	// Mentions - READ-ONLY; For internal use only.
 	Mentions *[]BasicThing `json:"mentions,omitempty"`
-	// Provider - The source of the creative work.
+	// Provider - READ-ONLY; The source of the creative work.
 	Provider *[]BasicThing `json:"provider,omitempty"`
-	Creator  BasicThing    `json:"creator,omitempty"`
-	// Text - Text content of this creative work
-	Text                *string    `json:"text,omitempty"`
-	DiscussionURL       *string    `json:"discussionUrl,omitempty"`
-	CommentCount        *int32     `json:"commentCount,omitempty"`
-	MainEntity          BasicThing `json:"mainEntity,omitempty"`
-	HeadLine            *string    `json:"headLine,omitempty"`
-	CopyrightHolder     BasicThing `json:"copyrightHolder,omitempty"`
-	CopyrightYear       *int32     `json:"copyrightYear,omitempty"`
-	Disclaimer          *string    `json:"disclaimer,omitempty"`
-	IsAccessibleForFree *bool      `json:"isAccessibleForFree,omitempty"`
-	Genre               *[]string  `json:"genre,omitempty"`
-	IsFamilyFriendly    *bool      `json:"isFamilyFriendly,omitempty"`
-	// Name - The name of the thing represented by this object.
+	// Creator - READ-ONLY
+	Creator BasicThing `json:"creator,omitempty"`
+	// Text - READ-ONLY; Text content of this creative work
+	Text *string `json:"text,omitempty"`
+	// DiscussionURL - READ-ONLY
+	DiscussionURL *string `json:"discussionUrl,omitempty"`
+	// CommentCount - READ-ONLY
+	CommentCount *int32 `json:"commentCount,omitempty"`
+	// MainEntity - READ-ONLY
+	MainEntity BasicThing `json:"mainEntity,omitempty"`
+	// HeadLine - READ-ONLY
+	HeadLine *string `json:"headLine,omitempty"`
+	// CopyrightHolder - READ-ONLY
+	CopyrightHolder BasicThing `json:"copyrightHolder,omitempty"`
+	// CopyrightYear - READ-ONLY
+	CopyrightYear *int32 `json:"copyrightYear,omitempty"`
+	// Disclaimer - READ-ONLY
+	Disclaimer *string `json:"disclaimer,omitempty"`
+	// IsAccessibleForFree - READ-ONLY
+	IsAccessibleForFree *bool `json:"isAccessibleForFree,omitempty"`
+	// Genre - READ-ONLY
+	Genre *[]string `json:"genre,omitempty"`
+	// IsFamilyFriendly - READ-ONLY
+	IsFamilyFriendly *bool `json:"isFamilyFriendly,omitempty"`
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -1267,76 +1196,6 @@ func unmarshalBasicCreativeWorkArray(body []byte) ([]BasicCreativeWork, error) {
 func (cw CreativeWork) MarshalJSON() ([]byte, error) {
 	cw.Type = TypeCreativeWork
 	objectMap := make(map[string]interface{})
-	if cw.ThumbnailURL != nil {
-		objectMap["thumbnailUrl"] = cw.ThumbnailURL
-	}
-	if cw.About != nil {
-		objectMap["about"] = cw.About
-	}
-	if cw.Mentions != nil {
-		objectMap["mentions"] = cw.Mentions
-	}
-	if cw.Provider != nil {
-		objectMap["provider"] = cw.Provider
-	}
-	objectMap["creator"] = cw.Creator
-	if cw.Text != nil {
-		objectMap["text"] = cw.Text
-	}
-	if cw.DiscussionURL != nil {
-		objectMap["discussionUrl"] = cw.DiscussionURL
-	}
-	if cw.CommentCount != nil {
-		objectMap["commentCount"] = cw.CommentCount
-	}
-	objectMap["mainEntity"] = cw.MainEntity
-	if cw.HeadLine != nil {
-		objectMap["headLine"] = cw.HeadLine
-	}
-	objectMap["copyrightHolder"] = cw.CopyrightHolder
-	if cw.CopyrightYear != nil {
-		objectMap["copyrightYear"] = cw.CopyrightYear
-	}
-	if cw.Disclaimer != nil {
-		objectMap["disclaimer"] = cw.Disclaimer
-	}
-	if cw.IsAccessibleForFree != nil {
-		objectMap["isAccessibleForFree"] = cw.IsAccessibleForFree
-	}
-	if cw.Genre != nil {
-		objectMap["genre"] = cw.Genre
-	}
-	if cw.IsFamilyFriendly != nil {
-		objectMap["isFamilyFriendly"] = cw.IsFamilyFriendly
-	}
-	if cw.Name != nil {
-		objectMap["name"] = cw.Name
-	}
-	if cw.URL != nil {
-		objectMap["url"] = cw.URL
-	}
-	objectMap["entityPresentationInfo"] = cw.EntityPresentationInfo
-	if cw.ReadLink != nil {
-		objectMap["readLink"] = cw.ReadLink
-	}
-	if cw.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = cw.WebSearchURL
-	}
-	if cw.PotentialAction != nil {
-		objectMap["potentialAction"] = cw.PotentialAction
-	}
-	if cw.ImmediateAction != nil {
-		objectMap["immediateAction"] = cw.ImmediateAction
-	}
-	if cw.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = cw.PreferredClickthroughURL
-	}
-	if cw.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = cw.AdaptiveCard
-	}
-	if cw.ID != nil {
-		objectMap["id"] = cw.ID
-	}
 	if cw.Type != "" {
 		objectMap["_type"] = cw.Type
 	}
@@ -1731,12 +1590,14 @@ type BasicEntitiesEntityPresentationInfo interface {
 type EntitiesEntityPresentationInfo struct {
 	// EntityScenario - The supported scenario. Possible values include: 'DominantEntity', 'DisambiguationItem', 'ListItem'
 	EntityScenario EntityScenario `json:"entityScenario,omitempty"`
-	// EntityTypeHints - A list of hints that indicate the entity's type. The list could contain a single hint such as Movie or a list of hints such as Place, LocalBusiness, Restaurant. Each successive hint in the array narrows the entity's type.
+	// EntityTypeHints - READ-ONLY; A list of hints that indicate the entity's type. The list could contain a single hint such as Movie or a list of hints such as Place, LocalBusiness, Restaurant. Each successive hint in the array narrows the entity's type.
 	EntityTypeHints *[]EntityType `json:"entityTypeHints,omitempty"`
-	// EntityTypeDisplayHint - A display version of the entity hint. For example, if entityTypeHints is Artist, this field may be set to American Singer.
-	EntityTypeDisplayHint *string   `json:"entityTypeDisplayHint,omitempty"`
-	Query                 *string   `json:"query,omitempty"`
-	EntitySubTypeHints    *[]string `json:"entitySubTypeHints,omitempty"`
+	// EntityTypeDisplayHint - READ-ONLY; A display version of the entity hint. For example, if entityTypeHints is Artist, this field may be set to American Singer.
+	EntityTypeDisplayHint *string `json:"entityTypeDisplayHint,omitempty"`
+	// Query - READ-ONLY
+	Query *string `json:"query,omitempty"`
+	// EntitySubTypeHints - READ-ONLY
+	EntitySubTypeHints *[]string `json:"entitySubTypeHints,omitempty"`
 	// Type - Possible values include: 'TypeEntitiesEntityPresentationInfo'
 	Type TypeBasicEntitiesEntityPresentationInfo `json:"_type,omitempty"`
 }
@@ -1781,18 +1642,6 @@ func (eepi EntitiesEntityPresentationInfo) MarshalJSON() ([]byte, error) {
 	if eepi.EntityScenario != "" {
 		objectMap["entityScenario"] = eepi.EntityScenario
 	}
-	if eepi.EntityTypeHints != nil {
-		objectMap["entityTypeHints"] = eepi.EntityTypeHints
-	}
-	if eepi.EntityTypeDisplayHint != nil {
-		objectMap["entityTypeDisplayHint"] = eepi.EntityTypeDisplayHint
-	}
-	if eepi.Query != nil {
-		objectMap["query"] = eepi.Query
-	}
-	if eepi.EntitySubTypeHints != nil {
-		objectMap["entitySubTypeHints"] = eepi.EntitySubTypeHints
-	}
 	if eepi.Type != "" {
 		objectMap["_type"] = eepi.Type
 	}
@@ -1818,15 +1667,15 @@ type BasicError interface {
 type Error struct {
 	// Code - The error code that identifies the category of error. Possible values include: 'None', 'ServerError', 'InvalidRequest', 'RateLimitExceeded', 'InvalidAuthorization', 'InsufficientAuthorization'
 	Code ErrorCode `json:"code,omitempty"`
-	// SubCode - The error code that further helps to identify the error. Possible values include: 'UnexpectedError', 'ResourceError', 'NotImplemented', 'ParameterMissing', 'ParameterInvalidValue', 'HTTPNotAllowed', 'Blocked', 'AuthorizationMissing', 'AuthorizationRedundancy', 'AuthorizationDisabled', 'AuthorizationExpired'
+	// SubCode - READ-ONLY; The error code that further helps to identify the error. Possible values include: 'UnexpectedError', 'ResourceError', 'NotImplemented', 'ParameterMissing', 'ParameterInvalidValue', 'HTTPNotAllowed', 'Blocked', 'AuthorizationMissing', 'AuthorizationRedundancy', 'AuthorizationDisabled', 'AuthorizationExpired'
 	SubCode ErrorSubCode `json:"subCode,omitempty"`
 	// Message - A description of the error.
 	Message *string `json:"message,omitempty"`
-	// MoreDetails - A description that provides additional information about the error.
+	// MoreDetails - READ-ONLY; A description that provides additional information about the error.
 	MoreDetails *string `json:"moreDetails,omitempty"`
-	// Parameter - The parameter in the request that caused the error.
+	// Parameter - READ-ONLY; The parameter in the request that caused the error.
 	Parameter *string `json:"parameter,omitempty"`
-	// Value - The parameter's value in the request that was not valid.
+	// Value - READ-ONLY; The parameter's value in the request that was not valid.
 	Value *string `json:"value,omitempty"`
 	// Type - Possible values include: 'TypeError'
 	Type TypeBasicError `json:"_type,omitempty"`
@@ -1872,20 +1721,8 @@ func (e Error) MarshalJSON() ([]byte, error) {
 	if e.Code != "" {
 		objectMap["code"] = e.Code
 	}
-	if e.SubCode != "" {
-		objectMap["subCode"] = e.SubCode
-	}
 	if e.Message != nil {
 		objectMap["message"] = e.Message
-	}
-	if e.MoreDetails != nil {
-		objectMap["moreDetails"] = e.MoreDetails
-	}
-	if e.Parameter != nil {
-		objectMap["parameter"] = e.Parameter
-	}
-	if e.Value != nil {
-		objectMap["value"] = e.Value
 	}
 	if e.Type != "" {
 		objectMap["_type"] = e.Type
@@ -1907,15 +1744,19 @@ func (e Error) AsBasicError() (BasicError, bool) {
 type ErrorResponse struct {
 	// Errors - A list of errors that describe the reasons why the request failed.
 	Errors *[]BasicError `json:"errors,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -1927,27 +1768,6 @@ func (er ErrorResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if er.Errors != nil {
 		objectMap["errors"] = er.Errors
-	}
-	if er.ReadLink != nil {
-		objectMap["readLink"] = er.ReadLink
-	}
-	if er.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = er.WebSearchURL
-	}
-	if er.PotentialAction != nil {
-		objectMap["potentialAction"] = er.PotentialAction
-	}
-	if er.ImmediateAction != nil {
-		objectMap["immediateAction"] = er.ImmediateAction
-	}
-	if er.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = er.PreferredClickthroughURL
-	}
-	if er.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = er.AdaptiveCard
-	}
-	if er.ID != nil {
-		objectMap["id"] = er.ID
 	}
 	if er.Type != "" {
 		objectMap["_type"] = er.Type
@@ -2187,6 +2007,7 @@ type BasicGeoCoordinates interface {
 type GeoCoordinates struct {
 	Latitude  *float64 `json:"latitude,omitempty"`
 	Longitude *float64 `json:"longitude,omitempty"`
+	// Elevation - READ-ONLY
 	Elevation *float64 `json:"elevation,omitempty"`
 	// Type - Possible values include: 'TypeGeoCoordinates'
 	Type TypeBasicGeoCoordinates `json:"_type,omitempty"`
@@ -2235,9 +2056,6 @@ func (gc GeoCoordinates) MarshalJSON() ([]byte, error) {
 	if gc.Longitude != nil {
 		objectMap["longitude"] = gc.Longitude
 	}
-	if gc.Elevation != nil {
-		objectMap["elevation"] = gc.Elevation
-	}
 	if gc.Type != "" {
 		objectMap["_type"] = gc.Type
 	}
@@ -2283,7 +2101,7 @@ type BasicIdentifiable interface {
 
 // Identifiable defines the identity of a resource.
 type Identifiable struct {
-	// ID - A String identifier.
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -2382,9 +2200,6 @@ func unmarshalBasicIdentifiableArray(body []byte) ([]BasicIdentifiable, error) {
 func (i Identifiable) MarshalJSON() ([]byte, error) {
 	i.Type = TypeIdentifiable
 	objectMap := make(map[string]interface{})
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
 	if i.Type != "" {
 		objectMap["_type"] = i.Type
 	}
@@ -2533,21 +2348,25 @@ type BasicIntangible interface {
 // Intangible a utility class that serves as the umbrella for a number of 'intangible' things such as
 // quantities, structured values, etc.
 type Intangible struct {
-	// Name - The name of the thing represented by this object.
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -2598,34 +2417,6 @@ func unmarshalBasicIntangibleArray(body []byte) ([]BasicIntangible, error) {
 func (i Intangible) MarshalJSON() ([]byte, error) {
 	i.Type = TypeIntangible
 	objectMap := make(map[string]interface{})
-	if i.Name != nil {
-		objectMap["name"] = i.Name
-	}
-	if i.URL != nil {
-		objectMap["url"] = i.URL
-	}
-	objectMap["entityPresentationInfo"] = i.EntityPresentationInfo
-	if i.ReadLink != nil {
-		objectMap["readLink"] = i.ReadLink
-	}
-	if i.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = i.WebSearchURL
-	}
-	if i.PotentialAction != nil {
-		objectMap["potentialAction"] = i.PotentialAction
-	}
-	if i.ImmediateAction != nil {
-		objectMap["immediateAction"] = i.ImmediateAction
-	}
-	if i.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = i.PreferredClickthroughURL
-	}
-	if i.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = i.AdaptiveCard
-	}
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
 	if i.Type != "" {
 		objectMap["_type"] = i.Type
 	}
@@ -2875,27 +2666,33 @@ func (i *Intangible) UnmarshalJSON(body []byte) error {
 
 // Place defines information about a local entity, such as a restaurant or hotel.
 type Place struct {
-	Geo           BasicGeoCoordinates `json:"geo,omitempty"`
+	// Geo - READ-ONLY
+	Geo BasicGeoCoordinates `json:"geo,omitempty"`
+	// RoutablePoint - READ-ONLY
 	RoutablePoint BasicGeoCoordinates `json:"routablePoint,omitempty"`
-	// Address - The postal address of where the entity is located
+	// Address - READ-ONLY; The postal address of where the entity is located
 	Address *PostalAddress `json:"address,omitempty"`
-	// Telephone - The entity's telephone number
+	// Telephone - READ-ONLY; The entity's telephone number
 	Telephone *string `json:"telephone,omitempty"`
-	// Name - The name of the thing represented by this object.
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -2905,42 +2702,6 @@ type Place struct {
 func (p Place) MarshalJSON() ([]byte, error) {
 	p.Type = TypePlace
 	objectMap := make(map[string]interface{})
-	objectMap["geo"] = p.Geo
-	objectMap["routablePoint"] = p.RoutablePoint
-	if p.Address != nil {
-		objectMap["address"] = p.Address
-	}
-	if p.Telephone != nil {
-		objectMap["telephone"] = p.Telephone
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.URL != nil {
-		objectMap["url"] = p.URL
-	}
-	objectMap["entityPresentationInfo"] = p.EntityPresentationInfo
-	if p.ReadLink != nil {
-		objectMap["readLink"] = p.ReadLink
-	}
-	if p.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = p.WebSearchURL
-	}
-	if p.PotentialAction != nil {
-		objectMap["potentialAction"] = p.PotentialAction
-	}
-	if p.ImmediateAction != nil {
-		objectMap["immediateAction"] = p.ImmediateAction
-	}
-	if p.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = p.PreferredClickthroughURL
-	}
-	if p.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = p.AdaptiveCard
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
 	if p.Type != "" {
 		objectMap["_type"] = p.Type
 	}
@@ -3225,20 +2986,26 @@ func (p *Place) UnmarshalJSON(body []byte) error {
 // Places defines a local entity answer.
 type Places struct {
 	// Value - A list of local entities, such as restaurants or hotels.
-	Value        *[]BasicThing     `json:"value,omitempty"`
+	Value *[]BasicThing `json:"value,omitempty"`
+	// QueryContext - READ-ONLY
 	QueryContext BasicQueryContext `json:"queryContext,omitempty"`
-	// TotalEstimatedMatches - The estimated number of webpages that are relevant to the query. Use this number along with the count and offset query parameters to page the results.
+	// TotalEstimatedMatches - READ-ONLY; The estimated number of webpages that are relevant to the query. Use this number along with the count and offset query parameters to page the results.
 	TotalEstimatedMatches *int64 `json:"totalEstimatedMatches,omitempty"`
-	IsFamilyFriendly      *bool  `json:"isFamilyFriendly,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// IsFamilyFriendly - READ-ONLY
+	IsFamilyFriendly *bool `json:"isFamilyFriendly,omitempty"`
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -3250,34 +3017,6 @@ func (p Places) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.Value != nil {
 		objectMap["value"] = p.Value
-	}
-	objectMap["queryContext"] = p.QueryContext
-	if p.TotalEstimatedMatches != nil {
-		objectMap["totalEstimatedMatches"] = p.TotalEstimatedMatches
-	}
-	if p.IsFamilyFriendly != nil {
-		objectMap["isFamilyFriendly"] = p.IsFamilyFriendly
-	}
-	if p.ReadLink != nil {
-		objectMap["readLink"] = p.ReadLink
-	}
-	if p.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = p.WebSearchURL
-	}
-	if p.PotentialAction != nil {
-		objectMap["potentialAction"] = p.PotentialAction
-	}
-	if p.ImmediateAction != nil {
-		objectMap["immediateAction"] = p.ImmediateAction
-	}
-	if p.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = p.PreferredClickthroughURL
-	}
-	if p.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = p.AdaptiveCard
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
 	}
 	if p.Type != "" {
 		objectMap["_type"] = p.Type
@@ -3536,43 +3275,53 @@ func (p *Places) UnmarshalJSON(body []byte) error {
 
 // PostalAddress defines a postal address.
 type PostalAddress struct {
+	// StreetAddress - READ-ONLY
 	StreetAddress *string `json:"streetAddress,omitempty"`
-	// AddressLocality - The city where the street address is located. For example, Seattle.
-	AddressLocality  *string `json:"addressLocality,omitempty"`
+	// AddressLocality - READ-ONLY; The city where the street address is located. For example, Seattle.
+	AddressLocality *string `json:"addressLocality,omitempty"`
+	// AddressSubregion - READ-ONLY
 	AddressSubregion *string `json:"addressSubregion,omitempty"`
-	// AddressRegion - The state or province code where the street address is located. This could be the two-letter code. For example, WA, or the full name , Washington.
+	// AddressRegion - READ-ONLY; The state or province code where the street address is located. This could be the two-letter code. For example, WA, or the full name , Washington.
 	AddressRegion *string `json:"addressRegion,omitempty"`
-	// PostalCode - The zip code or postal code where the street address is located. For example, 98052.
-	PostalCode          *string `json:"postalCode,omitempty"`
+	// PostalCode - READ-ONLY; The zip code or postal code where the street address is located. For example, 98052.
+	PostalCode *string `json:"postalCode,omitempty"`
+	// PostOfficeBoxNumber - READ-ONLY
 	PostOfficeBoxNumber *string `json:"postOfficeBoxNumber,omitempty"`
-	// AddressCountry - The country/region where the street address is located. This could be the two-letter ISO code. For example, US, or the full name, United States.
+	// AddressCountry - READ-ONLY; The country/region where the street address is located. This could be the two-letter ISO code. For example, US, or the full name, United States.
 	AddressCountry *string `json:"addressCountry,omitempty"`
-	// CountryIso - The two letter ISO code of this country. For example, US.
+	// CountryIso - READ-ONLY; The two letter ISO code of this country. For example, US.
 	CountryIso *string `json:"countryIso,omitempty"`
-	// Neighborhood - The neighborhood where the street address is located. For example, Westlake.
+	// Neighborhood - READ-ONLY; The neighborhood where the street address is located. For example, Westlake.
 	Neighborhood *string `json:"neighborhood,omitempty"`
-	// AddressRegionAbbreviation - Region Abbreviation. For example, WA.
+	// AddressRegionAbbreviation - READ-ONLY; Region Abbreviation. For example, WA.
 	AddressRegionAbbreviation *string `json:"addressRegionAbbreviation,omitempty"`
-	// Text - The complete address. For example, 2100 Westlake Ave N, Bellevue, WA 98052.
-	Text             *string `json:"text,omitempty"`
-	HouseNumber      *string `json:"houseNumber,omitempty"`
-	StreetName       *string `json:"streetName,omitempty"`
+	// Text - READ-ONLY; The complete address. For example, 2100 Westlake Ave N, Bellevue, WA 98052.
+	Text *string `json:"text,omitempty"`
+	// HouseNumber - READ-ONLY
+	HouseNumber *string `json:"houseNumber,omitempty"`
+	// StreetName - READ-ONLY
+	StreetName *string `json:"streetName,omitempty"`
+	// FormattingRuleID - READ-ONLY
 	FormattingRuleID *string `json:"formattingRuleId,omitempty"`
-	// Name - The name of the thing represented by this object.
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -3582,76 +3331,6 @@ type PostalAddress struct {
 func (pa PostalAddress) MarshalJSON() ([]byte, error) {
 	pa.Type = TypePostalAddress
 	objectMap := make(map[string]interface{})
-	if pa.StreetAddress != nil {
-		objectMap["streetAddress"] = pa.StreetAddress
-	}
-	if pa.AddressLocality != nil {
-		objectMap["addressLocality"] = pa.AddressLocality
-	}
-	if pa.AddressSubregion != nil {
-		objectMap["addressSubregion"] = pa.AddressSubregion
-	}
-	if pa.AddressRegion != nil {
-		objectMap["addressRegion"] = pa.AddressRegion
-	}
-	if pa.PostalCode != nil {
-		objectMap["postalCode"] = pa.PostalCode
-	}
-	if pa.PostOfficeBoxNumber != nil {
-		objectMap["postOfficeBoxNumber"] = pa.PostOfficeBoxNumber
-	}
-	if pa.AddressCountry != nil {
-		objectMap["addressCountry"] = pa.AddressCountry
-	}
-	if pa.CountryIso != nil {
-		objectMap["countryIso"] = pa.CountryIso
-	}
-	if pa.Neighborhood != nil {
-		objectMap["neighborhood"] = pa.Neighborhood
-	}
-	if pa.AddressRegionAbbreviation != nil {
-		objectMap["addressRegionAbbreviation"] = pa.AddressRegionAbbreviation
-	}
-	if pa.Text != nil {
-		objectMap["text"] = pa.Text
-	}
-	if pa.HouseNumber != nil {
-		objectMap["houseNumber"] = pa.HouseNumber
-	}
-	if pa.StreetName != nil {
-		objectMap["streetName"] = pa.StreetName
-	}
-	if pa.FormattingRuleID != nil {
-		objectMap["formattingRuleId"] = pa.FormattingRuleID
-	}
-	if pa.Name != nil {
-		objectMap["name"] = pa.Name
-	}
-	if pa.URL != nil {
-		objectMap["url"] = pa.URL
-	}
-	objectMap["entityPresentationInfo"] = pa.EntityPresentationInfo
-	if pa.ReadLink != nil {
-		objectMap["readLink"] = pa.ReadLink
-	}
-	if pa.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = pa.WebSearchURL
-	}
-	if pa.PotentialAction != nil {
-		objectMap["potentialAction"] = pa.PotentialAction
-	}
-	if pa.ImmediateAction != nil {
-		objectMap["immediateAction"] = pa.ImmediateAction
-	}
-	if pa.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = pa.PreferredClickthroughURL
-	}
-	if pa.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = pa.AdaptiveCard
-	}
-	if pa.ID != nil {
-		objectMap["id"] = pa.ID
-	}
 	if pa.Type != "" {
 		objectMap["_type"] = pa.Type
 	}
@@ -4034,17 +3713,18 @@ type BasicQueryContext interface {
 type QueryContext struct {
 	// OriginalQuery - The query string as specified in the request.
 	OriginalQuery *string `json:"originalQuery,omitempty"`
-	// AlteredQuery - The query string used by Bing to perform the query. Bing uses the altered query string if the original query string contained spelling mistakes. For example, if the query string is "saling downwind", the altered query string will be "sailing downwind". This field is included only if the original query string contains a spelling mistake.
+	// AlteredQuery - READ-ONLY; The query string used by Bing to perform the query. Bing uses the altered query string if the original query string contained spelling mistakes. For example, if the query string is "saling downwind", the altered query string will be "sailing downwind". This field is included only if the original query string contains a spelling mistake.
 	AlteredQuery *string `json:"alteredQuery,omitempty"`
-	// AlterationDisplayQuery - AlteredQuery that is formatted for display purpose. The query string in the AlterationDisplayQuery can be html-escaped and can contain hit-highlighting characters
+	// AlterationDisplayQuery - READ-ONLY; AlteredQuery that is formatted for display purpose. The query string in the AlterationDisplayQuery can be html-escaped and can contain hit-highlighting characters
 	AlterationDisplayQuery *string `json:"alterationDisplayQuery,omitempty"`
-	// AlterationOverrideQuery - The query string to use to force Bing to use the original string. For example, if the query string is "saling downwind", the override query string will be "+saling downwind". Remember to encode the query string which results in "%2Bsaling+downwind". This field is included only if the original query string contains a spelling mistake.
+	// AlterationOverrideQuery - READ-ONLY; The query string to use to force Bing to use the original string. For example, if the query string is "saling downwind", the override query string will be "+saling downwind". Remember to encode the query string which results in "%2Bsaling+downwind". This field is included only if the original query string contains a spelling mistake.
 	AlterationOverrideQuery *string `json:"alterationOverrideQuery,omitempty"`
-	// AdultIntent - A Boolean value that indicates whether the specified query has adult intent. The value is true if the query has adult intent; otherwise, false.
+	// AdultIntent - READ-ONLY; A Boolean value that indicates whether the specified query has adult intent. The value is true if the query has adult intent; otherwise, false.
 	AdultIntent *bool `json:"adultIntent,omitempty"`
-	// AskUserForLocation - A Boolean value that indicates whether Bing requires the user's location to provide accurate results. If you specified the user's location by using the X-MSEdge-ClientIP and X-Search-Location headers, you can ignore this field. For location aware queries, such as "today's weather" or "restaurants near me" that need the user's location to provide accurate results, this field is set to true. For location aware queries that include the location (for example, "Seattle weather"), this field is set to false. This field is also set to false for queries that are not location aware, such as "best sellers".
+	// AskUserForLocation - READ-ONLY; A Boolean value that indicates whether Bing requires the user's location to provide accurate results. If you specified the user's location by using the X-MSEdge-ClientIP and X-Search-Location headers, you can ignore this field. For location aware queries, such as "today's weather" or "restaurants near me" that need the user's location to provide accurate results, this field is set to true. For location aware queries that include the location (for example, "Seattle weather"), this field is set to false. This field is also set to false for queries that are not location aware, such as "best sellers".
 	AskUserForLocation *bool `json:"askUserForLocation,omitempty"`
-	IsTransactional    *bool `json:"isTransactional,omitempty"`
+	// IsTransactional - READ-ONLY
+	IsTransactional *bool `json:"isTransactional,omitempty"`
 	// Type - Possible values include: 'TypeQueryContext'
 	Type Type `json:"_type,omitempty"`
 }
@@ -4088,24 +3768,6 @@ func (qc QueryContext) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if qc.OriginalQuery != nil {
 		objectMap["originalQuery"] = qc.OriginalQuery
-	}
-	if qc.AlteredQuery != nil {
-		objectMap["alteredQuery"] = qc.AlteredQuery
-	}
-	if qc.AlterationDisplayQuery != nil {
-		objectMap["alterationDisplayQuery"] = qc.AlterationDisplayQuery
-	}
-	if qc.AlterationOverrideQuery != nil {
-		objectMap["alterationOverrideQuery"] = qc.AlterationOverrideQuery
-	}
-	if qc.AdultIntent != nil {
-		objectMap["adultIntent"] = qc.AdultIntent
-	}
-	if qc.AskUserForLocation != nil {
-		objectMap["askUserForLocation"] = qc.AskUserForLocation
-	}
-	if qc.IsTransactional != nil {
-		objectMap["isTransactional"] = qc.IsTransactional
 	}
 	if qc.Type != "" {
 		objectMap["_type"] = qc.Type
@@ -4151,15 +3813,19 @@ type BasicResponse interface {
 // Response defines a response. All schemas that return at the root of the response must inherit from this
 // object.
 type Response struct {
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -4254,27 +3920,6 @@ func unmarshalBasicResponseArray(body []byte) ([]BasicResponse, error) {
 func (r Response) MarshalJSON() ([]byte, error) {
 	r.Type = TypeResponse
 	objectMap := make(map[string]interface{})
-	if r.ReadLink != nil {
-		objectMap["readLink"] = r.ReadLink
-	}
-	if r.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = r.WebSearchURL
-	}
-	if r.PotentialAction != nil {
-		objectMap["potentialAction"] = r.PotentialAction
-	}
-	if r.ImmediateAction != nil {
-		objectMap["immediateAction"] = r.ImmediateAction
-	}
-	if r.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = r.PreferredClickthroughURL
-	}
-	if r.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = r.AdaptiveCard
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
 	if r.Type != "" {
 		objectMap["_type"] = r.Type
 	}
@@ -4766,55 +4411,75 @@ func (rb ResponseBase) AsBasicResponseBase() (BasicResponseBase, bool) {
 
 // SearchAction ...
 type SearchAction struct {
-	DisplayText      *string        `json:"displayText,omitempty"`
-	Query            *string        `json:"query,omitempty"`
-	RichContent      *[]BasicAnswer `json:"richContent,omitempty"`
-	FormattingRuleID *string        `json:"formattingRuleId,omitempty"`
-	Location         *[]Place       `json:"location,omitempty"`
-	// Result - The result produced in the action.
+	// DisplayText - READ-ONLY
+	DisplayText *string `json:"displayText,omitempty"`
+	// Query - READ-ONLY
+	Query *string `json:"query,omitempty"`
+	// RichContent - READ-ONLY
+	RichContent *[]BasicAnswer `json:"richContent,omitempty"`
+	// FormattingRuleID - READ-ONLY
+	FormattingRuleID *string `json:"formattingRuleId,omitempty"`
+	// Location - READ-ONLY
+	Location *[]Place `json:"location,omitempty"`
+	// Result - READ-ONLY; The result produced in the action.
 	Result *[]BasicThing `json:"result,omitempty"`
-	// DisplayName - A display name for the action.
+	// DisplayName - READ-ONLY; A display name for the action.
 	DisplayName *string `json:"displayName,omitempty"`
-	// IsTopAction - A Boolean representing whether this result is the top action.
+	// IsTopAction - READ-ONLY; A Boolean representing whether this result is the top action.
 	IsTopAction *bool `json:"isTopAction,omitempty"`
-	// ServiceURL - Use this URL to get additional data to determine how to take the appropriate action. For example, the serviceUrl might return JSON along with an image URL.
+	// ServiceURL - READ-ONLY; Use this URL to get additional data to determine how to take the appropriate action. For example, the serviceUrl might return JSON along with an image URL.
 	ServiceURL *string `json:"serviceUrl,omitempty"`
-	// ThumbnailURL - The URL to a thumbnail of the item.
+	// ThumbnailURL - READ-ONLY; The URL to a thumbnail of the item.
 	ThumbnailURL *string `json:"thumbnailUrl,omitempty"`
-	// About - For internal use only.
+	// About - READ-ONLY; For internal use only.
 	About *[]BasicThing `json:"about,omitempty"`
-	// Mentions - For internal use only.
+	// Mentions - READ-ONLY; For internal use only.
 	Mentions *[]BasicThing `json:"mentions,omitempty"`
-	// Provider - The source of the creative work.
+	// Provider - READ-ONLY; The source of the creative work.
 	Provider *[]BasicThing `json:"provider,omitempty"`
-	Creator  BasicThing    `json:"creator,omitempty"`
-	// Text - Text content of this creative work
-	Text                *string    `json:"text,omitempty"`
-	DiscussionURL       *string    `json:"discussionUrl,omitempty"`
-	CommentCount        *int32     `json:"commentCount,omitempty"`
-	MainEntity          BasicThing `json:"mainEntity,omitempty"`
-	HeadLine            *string    `json:"headLine,omitempty"`
-	CopyrightHolder     BasicThing `json:"copyrightHolder,omitempty"`
-	CopyrightYear       *int32     `json:"copyrightYear,omitempty"`
-	Disclaimer          *string    `json:"disclaimer,omitempty"`
-	IsAccessibleForFree *bool      `json:"isAccessibleForFree,omitempty"`
-	Genre               *[]string  `json:"genre,omitempty"`
-	IsFamilyFriendly    *bool      `json:"isFamilyFriendly,omitempty"`
-	// Name - The name of the thing represented by this object.
+	// Creator - READ-ONLY
+	Creator BasicThing `json:"creator,omitempty"`
+	// Text - READ-ONLY; Text content of this creative work
+	Text *string `json:"text,omitempty"`
+	// DiscussionURL - READ-ONLY
+	DiscussionURL *string `json:"discussionUrl,omitempty"`
+	// CommentCount - READ-ONLY
+	CommentCount *int32 `json:"commentCount,omitempty"`
+	// MainEntity - READ-ONLY
+	MainEntity BasicThing `json:"mainEntity,omitempty"`
+	// HeadLine - READ-ONLY
+	HeadLine *string `json:"headLine,omitempty"`
+	// CopyrightHolder - READ-ONLY
+	CopyrightHolder BasicThing `json:"copyrightHolder,omitempty"`
+	// CopyrightYear - READ-ONLY
+	CopyrightYear *int32 `json:"copyrightYear,omitempty"`
+	// Disclaimer - READ-ONLY
+	Disclaimer *string `json:"disclaimer,omitempty"`
+	// IsAccessibleForFree - READ-ONLY
+	IsAccessibleForFree *bool `json:"isAccessibleForFree,omitempty"`
+	// Genre - READ-ONLY
+	Genre *[]string `json:"genre,omitempty"`
+	// IsFamilyFriendly - READ-ONLY
+	IsFamilyFriendly *bool `json:"isFamilyFriendly,omitempty"`
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -4824,103 +4489,6 @@ type SearchAction struct {
 func (sa SearchAction) MarshalJSON() ([]byte, error) {
 	sa.Type = TypeSearchAction
 	objectMap := make(map[string]interface{})
-	if sa.DisplayText != nil {
-		objectMap["displayText"] = sa.DisplayText
-	}
-	if sa.Query != nil {
-		objectMap["query"] = sa.Query
-	}
-	if sa.RichContent != nil {
-		objectMap["richContent"] = sa.RichContent
-	}
-	if sa.FormattingRuleID != nil {
-		objectMap["formattingRuleId"] = sa.FormattingRuleID
-	}
-	if sa.Location != nil {
-		objectMap["location"] = sa.Location
-	}
-	if sa.Result != nil {
-		objectMap["result"] = sa.Result
-	}
-	if sa.DisplayName != nil {
-		objectMap["displayName"] = sa.DisplayName
-	}
-	if sa.IsTopAction != nil {
-		objectMap["isTopAction"] = sa.IsTopAction
-	}
-	if sa.ServiceURL != nil {
-		objectMap["serviceUrl"] = sa.ServiceURL
-	}
-	if sa.ThumbnailURL != nil {
-		objectMap["thumbnailUrl"] = sa.ThumbnailURL
-	}
-	if sa.About != nil {
-		objectMap["about"] = sa.About
-	}
-	if sa.Mentions != nil {
-		objectMap["mentions"] = sa.Mentions
-	}
-	if sa.Provider != nil {
-		objectMap["provider"] = sa.Provider
-	}
-	objectMap["creator"] = sa.Creator
-	if sa.Text != nil {
-		objectMap["text"] = sa.Text
-	}
-	if sa.DiscussionURL != nil {
-		objectMap["discussionUrl"] = sa.DiscussionURL
-	}
-	if sa.CommentCount != nil {
-		objectMap["commentCount"] = sa.CommentCount
-	}
-	objectMap["mainEntity"] = sa.MainEntity
-	if sa.HeadLine != nil {
-		objectMap["headLine"] = sa.HeadLine
-	}
-	objectMap["copyrightHolder"] = sa.CopyrightHolder
-	if sa.CopyrightYear != nil {
-		objectMap["copyrightYear"] = sa.CopyrightYear
-	}
-	if sa.Disclaimer != nil {
-		objectMap["disclaimer"] = sa.Disclaimer
-	}
-	if sa.IsAccessibleForFree != nil {
-		objectMap["isAccessibleForFree"] = sa.IsAccessibleForFree
-	}
-	if sa.Genre != nil {
-		objectMap["genre"] = sa.Genre
-	}
-	if sa.IsFamilyFriendly != nil {
-		objectMap["isFamilyFriendly"] = sa.IsFamilyFriendly
-	}
-	if sa.Name != nil {
-		objectMap["name"] = sa.Name
-	}
-	if sa.URL != nil {
-		objectMap["url"] = sa.URL
-	}
-	objectMap["entityPresentationInfo"] = sa.EntityPresentationInfo
-	if sa.ReadLink != nil {
-		objectMap["readLink"] = sa.ReadLink
-	}
-	if sa.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = sa.WebSearchURL
-	}
-	if sa.PotentialAction != nil {
-		objectMap["potentialAction"] = sa.PotentialAction
-	}
-	if sa.ImmediateAction != nil {
-		objectMap["immediateAction"] = sa.ImmediateAction
-	}
-	if sa.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = sa.PreferredClickthroughURL
-	}
-	if sa.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = sa.AdaptiveCard
-	}
-	if sa.ID != nil {
-		objectMap["id"] = sa.ID
-	}
 	if sa.Type != "" {
 		objectMap["_type"] = sa.Type
 	}
@@ -5388,21 +4956,27 @@ func (sa *SearchAction) UnmarshalJSON(body []byte) error {
 // SearchResponse defines the top-level object that the response includes when the request succeeds.
 type SearchResponse struct {
 	autorest.Response `json:"-"`
-	// QueryContext - An object that contains the query string that Bing used for the request. This object contains the query string as entered by the user. It may also contain an altered query string that Bing used for the query if the query string contained a spelling mistake.
+	// QueryContext - READ-ONLY; An object that contains the query string that Bing used for the request. This object contains the query string as entered by the user. It may also contain an altered query string that Bing used for the query if the query string contained a spelling mistake.
 	QueryContext BasicQueryContext `json:"queryContext,omitempty"`
-	// Places - A list of local entities such as restaurants or hotels that are relevant to the query.
-	Places                       *Places                  `json:"places,omitempty"`
-	Lottery                      BasicSearchResultsAnswer `json:"lottery,omitempty"`
-	SearchResultsConfidenceScore *float64                 `json:"searchResultsConfidenceScore,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// Places - READ-ONLY; A list of local entities such as restaurants or hotels that are relevant to the query.
+	Places *Places `json:"places,omitempty"`
+	// Lottery - READ-ONLY
+	Lottery BasicSearchResultsAnswer `json:"lottery,omitempty"`
+	// SearchResultsConfidenceScore - READ-ONLY
+	SearchResultsConfidenceScore *float64 `json:"searchResultsConfidenceScore,omitempty"`
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -5412,35 +4986,6 @@ type SearchResponse struct {
 func (sr SearchResponse) MarshalJSON() ([]byte, error) {
 	sr.Type = TypeSearchResponse
 	objectMap := make(map[string]interface{})
-	objectMap["queryContext"] = sr.QueryContext
-	if sr.Places != nil {
-		objectMap["places"] = sr.Places
-	}
-	objectMap["lottery"] = sr.Lottery
-	if sr.SearchResultsConfidenceScore != nil {
-		objectMap["searchResultsConfidenceScore"] = sr.SearchResultsConfidenceScore
-	}
-	if sr.ReadLink != nil {
-		objectMap["readLink"] = sr.ReadLink
-	}
-	if sr.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = sr.WebSearchURL
-	}
-	if sr.PotentialAction != nil {
-		objectMap["potentialAction"] = sr.PotentialAction
-	}
-	if sr.ImmediateAction != nil {
-		objectMap["immediateAction"] = sr.ImmediateAction
-	}
-	if sr.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = sr.PreferredClickthroughURL
-	}
-	if sr.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = sr.AdaptiveCard
-	}
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
 	if sr.Type != "" {
 		objectMap["_type"] = sr.Type
 	}
@@ -5704,19 +5249,25 @@ type BasicSearchResultsAnswer interface {
 
 // SearchResultsAnswer defines a search result answer.
 type SearchResultsAnswer struct {
+	// QueryContext - READ-ONLY
 	QueryContext BasicQueryContext `json:"queryContext,omitempty"`
-	// TotalEstimatedMatches - The estimated number of webpages that are relevant to the query. Use this number along with the count and offset query parameters to page the results.
+	// TotalEstimatedMatches - READ-ONLY; The estimated number of webpages that are relevant to the query. Use this number along with the count and offset query parameters to page the results.
 	TotalEstimatedMatches *int64 `json:"totalEstimatedMatches,omitempty"`
-	IsFamilyFriendly      *bool  `json:"isFamilyFriendly,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// IsFamilyFriendly - READ-ONLY
+	IsFamilyFriendly *bool `json:"isFamilyFriendly,omitempty"`
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -5763,34 +5314,6 @@ func unmarshalBasicSearchResultsAnswerArray(body []byte) ([]BasicSearchResultsAn
 func (sra SearchResultsAnswer) MarshalJSON() ([]byte, error) {
 	sra.Type = TypeSearchResultsAnswer
 	objectMap := make(map[string]interface{})
-	objectMap["queryContext"] = sra.QueryContext
-	if sra.TotalEstimatedMatches != nil {
-		objectMap["totalEstimatedMatches"] = sra.TotalEstimatedMatches
-	}
-	if sra.IsFamilyFriendly != nil {
-		objectMap["isFamilyFriendly"] = sra.IsFamilyFriendly
-	}
-	if sra.ReadLink != nil {
-		objectMap["readLink"] = sra.ReadLink
-	}
-	if sra.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = sra.WebSearchURL
-	}
-	if sra.PotentialAction != nil {
-		objectMap["potentialAction"] = sra.PotentialAction
-	}
-	if sra.ImmediateAction != nil {
-		objectMap["immediateAction"] = sra.ImmediateAction
-	}
-	if sra.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = sra.PreferredClickthroughURL
-	}
-	if sra.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = sra.AdaptiveCard
-	}
-	if sra.ID != nil {
-		objectMap["id"] = sra.ID
-	}
 	if sra.Type != "" {
 		objectMap["_type"] = sra.Type
 	}
@@ -6046,21 +5569,25 @@ type BasicStructuredValue interface {
 
 // StructuredValue ...
 type StructuredValue struct {
-	// Name - The name of the thing represented by this object.
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -6107,34 +5634,6 @@ func unmarshalBasicStructuredValueArray(body []byte) ([]BasicStructuredValue, er
 func (sv StructuredValue) MarshalJSON() ([]byte, error) {
 	sv.Type = TypeStructuredValue
 	objectMap := make(map[string]interface{})
-	if sv.Name != nil {
-		objectMap["name"] = sv.Name
-	}
-	if sv.URL != nil {
-		objectMap["url"] = sv.URL
-	}
-	objectMap["entityPresentationInfo"] = sv.EntityPresentationInfo
-	if sv.ReadLink != nil {
-		objectMap["readLink"] = sv.ReadLink
-	}
-	if sv.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = sv.WebSearchURL
-	}
-	if sv.PotentialAction != nil {
-		objectMap["potentialAction"] = sv.PotentialAction
-	}
-	if sv.ImmediateAction != nil {
-		objectMap["immediateAction"] = sv.ImmediateAction
-	}
-	if sv.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = sv.PreferredClickthroughURL
-	}
-	if sv.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = sv.AdaptiveCard
-	}
-	if sv.ID != nil {
-		objectMap["id"] = sv.ID
-	}
 	if sv.Type != "" {
 		objectMap["_type"] = sv.Type
 	}
@@ -6400,21 +5899,25 @@ type BasicThing interface {
 
 // Thing defines a thing.
 type Thing struct {
-	// Name - The name of the thing represented by this object.
+	// Name - READ-ONLY; The name of the thing represented by this object.
 	Name *string `json:"name,omitempty"`
-	// URL - The URL to get more information about the thing represented by this object.
+	// URL - READ-ONLY; The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
-	// EntityPresentationInfo - Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
+	// EntityPresentationInfo - READ-ONLY; Additional information about the entity such as hints that you can use to determine the entity's type. To determine the entity's type, use the entityScenario and entityTypeHint fields.
 	EntityPresentationInfo BasicEntitiesEntityPresentationInfo `json:"entityPresentationInfo,omitempty"`
-	// ReadLink - The URL that returns this resource.
+	// ReadLink - READ-ONLY; The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
-	// WebSearchURL - The URL to Bing's search result for this item.
-	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
-	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
-	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
-	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
-	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
-	// ID - A String identifier.
+	// WebSearchURL - READ-ONLY; The URL to Bing's search result for this item.
+	WebSearchURL *string `json:"webSearchUrl,omitempty"`
+	// PotentialAction - READ-ONLY
+	PotentialAction *[]BasicAction `json:"potentialAction,omitempty"`
+	// ImmediateAction - READ-ONLY
+	ImmediateAction *[]BasicAction `json:"immediateAction,omitempty"`
+	// PreferredClickthroughURL - READ-ONLY
+	PreferredClickthroughURL *string `json:"preferredClickthroughUrl,omitempty"`
+	// AdaptiveCard - READ-ONLY
+	AdaptiveCard *string `json:"adaptiveCard,omitempty"`
+	// ID - READ-ONLY; A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeThing', 'TypePlaces', 'TypeSearchResultsAnswer', 'TypeSearchResponse', 'TypePostalAddress', 'TypePlace', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeAnswer', 'TypeErrorResponse', 'TypeCreativeWork', 'TypeIntangible', 'TypeSearchAction', 'TypeStructuredValue'
 	Type TypeBasicResponseBase `json:"_type,omitempty"`
@@ -6485,34 +5988,6 @@ func unmarshalBasicThingArray(body []byte) ([]BasicThing, error) {
 func (t Thing) MarshalJSON() ([]byte, error) {
 	t.Type = TypeThing
 	objectMap := make(map[string]interface{})
-	if t.Name != nil {
-		objectMap["name"] = t.Name
-	}
-	if t.URL != nil {
-		objectMap["url"] = t.URL
-	}
-	objectMap["entityPresentationInfo"] = t.EntityPresentationInfo
-	if t.ReadLink != nil {
-		objectMap["readLink"] = t.ReadLink
-	}
-	if t.WebSearchURL != nil {
-		objectMap["webSearchUrl"] = t.WebSearchURL
-	}
-	if t.PotentialAction != nil {
-		objectMap["potentialAction"] = t.PotentialAction
-	}
-	if t.ImmediateAction != nil {
-		objectMap["immediateAction"] = t.ImmediateAction
-	}
-	if t.PreferredClickthroughURL != nil {
-		objectMap["preferredClickthroughUrl"] = t.PreferredClickthroughURL
-	}
-	if t.AdaptiveCard != nil {
-		objectMap["adaptiveCard"] = t.AdaptiveCard
-	}
-	if t.ID != nil {
-		objectMap["id"] = t.ID
-	}
 	if t.Type != "" {
 		objectMap["_type"] = t.Type
 	}

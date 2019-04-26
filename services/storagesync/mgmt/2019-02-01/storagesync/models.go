@@ -308,13 +308,13 @@ type APIError struct {
 
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
-	// Etag - Resource Etag.
+	// Etag - READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -335,11 +335,11 @@ type CheckNameAvailabilityParameters struct {
 // CheckNameAvailabilityResult the CheckNameAvailability operation response.
 type CheckNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or invalid and cannot be used.
+	// NameAvailable - READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
-	// Message - Gets an error message explaining the Reason value in more detail.
+	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -348,11 +348,11 @@ type CloudEndpoint struct {
 	autorest.Response `json:"-"`
 	// CloudEndpointProperties - Cloud Endpoint properties.
 	*CloudEndpointProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -361,15 +361,6 @@ func (ce CloudEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ce.CloudEndpointProperties != nil {
 		objectMap["properties"] = ce.CloudEndpointProperties
-	}
-	if ce.ID != nil {
-		objectMap["id"] = ce.ID
-	}
-	if ce.Name != nil {
-		objectMap["name"] = ce.Name
-	}
-	if ce.Type != nil {
-		objectMap["type"] = ce.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -436,11 +427,11 @@ type CloudEndpointArray struct {
 type CloudEndpointCreateParameters struct {
 	// CloudEndpointCreateParametersProperties - The parameters used to create the cloud endpoint.
 	*CloudEndpointCreateParametersProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -449,15 +440,6 @@ func (cecp CloudEndpointCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cecp.CloudEndpointCreateParametersProperties != nil {
 		objectMap["properties"] = cecp.CloudEndpointCreateParametersProperties
-	}
-	if cecp.ID != nil {
-		objectMap["id"] = cecp.ID
-	}
-	if cecp.Name != nil {
-		objectMap["name"] = cecp.Name
-	}
-	if cecp.Type != nil {
-		objectMap["type"] = cecp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -535,7 +517,7 @@ type CloudEndpointProperties struct {
 	PartnershipID *string `json:"partnershipId,omitempty"`
 	// FriendlyName - Friendly Name
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// BackupEnabled - Backup Enabled
+	// BackupEnabled - READ-ONLY; Backup Enabled
 	BackupEnabled *string `json:"backupEnabled,omitempty"`
 	// ProvisioningState - CloudEndpoint Provisioning State
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -555,7 +537,7 @@ type CloudEndpointsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudEndpointsCreateFuture) Result(client CloudEndpointsClient) (ce CloudEndpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -584,7 +566,7 @@ type CloudEndpointsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudEndpointsDeleteFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -607,7 +589,7 @@ type CloudEndpointsPostBackupFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudEndpointsPostBackupFuture) Result(client CloudEndpointsClient) (pbr PostBackupResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostBackupFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -636,7 +618,7 @@ type CloudEndpointsPostRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudEndpointsPostRestoreFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -659,7 +641,7 @@ type CloudEndpointsPreBackupFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudEndpointsPreBackupFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPreBackupFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -682,7 +664,7 @@ type CloudEndpointsPreRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudEndpointsPreRestoreFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPreRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -715,11 +697,11 @@ type ErrorDetails struct {
 
 // FilesNotSyncingError files not syncing error object
 type FilesNotSyncingError struct {
-	// ErrorCode - Error code (HResult)
+	// ErrorCode - READ-ONLY; Error code (HResult)
 	ErrorCode *int32 `json:"errorCode,omitempty"`
-	// PersistentCount - Count of persistent files not syncing with the specified error code
+	// PersistentCount - READ-ONLY; Count of persistent files not syncing with the specified error code
 	PersistentCount *int64 `json:"persistentCount,omitempty"`
-	// TransientCount - Count of transient files not syncing with the specified error code
+	// TransientCount - READ-ONLY; Count of transient files not syncing with the specified error code
 	TransientCount *int64 `json:"transientCount,omitempty"`
 }
 
@@ -945,7 +927,7 @@ func (pbr *PostBackupResponse) UnmarshalJSON(body []byte) error {
 
 // PostBackupResponseProperties post Backup Response Properties object.
 type PostBackupResponseProperties struct {
-	// CloudEndpointName - cloud endpoint Name.
+	// CloudEndpointName - READ-ONLY; cloud endpoint Name.
 	CloudEndpointName *string `json:"cloudEndpointName,omitempty"`
 }
 
@@ -994,11 +976,11 @@ type PreRestoreRequest struct {
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1015,11 +997,11 @@ type RegisteredServer struct {
 	autorest.Response `json:"-"`
 	// RegisteredServerProperties - RegisteredServer properties.
 	*RegisteredServerProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1028,15 +1010,6 @@ func (rs RegisteredServer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rs.RegisteredServerProperties != nil {
 		objectMap["properties"] = rs.RegisteredServerProperties
-	}
-	if rs.ID != nil {
-		objectMap["id"] = rs.ID
-	}
-	if rs.Name != nil {
-		objectMap["name"] = rs.Name
-	}
-	if rs.Type != nil {
-		objectMap["type"] = rs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1103,11 +1076,11 @@ type RegisteredServerArray struct {
 type RegisteredServerCreateParameters struct {
 	// RegisteredServerCreateParametersProperties - The parameters used to create the registered server.
 	*RegisteredServerCreateParametersProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1116,15 +1089,6 @@ func (rscp RegisteredServerCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rscp.RegisteredServerCreateParametersProperties != nil {
 		objectMap["properties"] = rscp.RegisteredServerCreateParametersProperties
-	}
-	if rscp.ID != nil {
-		objectMap["id"] = rscp.ID
-	}
-	if rscp.Name != nil {
-		objectMap["name"] = rscp.Name
-	}
-	if rscp.Type != nil {
-		objectMap["type"] = rscp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1254,7 +1218,7 @@ type RegisteredServersCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RegisteredServersCreateFuture) Result(client RegisteredServersClient) (rs RegisteredServer, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1283,7 +1247,7 @@ type RegisteredServersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RegisteredServersDeleteFuture) Result(client RegisteredServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1306,7 +1270,7 @@ type RegisteredServersTriggerRolloverFuture struct {
 // If the operation has not completed it will return an error.
 func (future *RegisteredServersTriggerRolloverFuture) Result(client RegisteredServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersTriggerRolloverFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1321,11 +1285,11 @@ func (future *RegisteredServersTriggerRolloverFuture) Result(client RegisteredSe
 
 // Resource ...
 type Resource struct {
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1341,7 +1305,7 @@ type ResourcesMoveInfo struct {
 type RestoreFileSpec struct {
 	// Path - Restore file spec path
 	Path *string `json:"path,omitempty"`
-	// Isdir - Restore file spec isdir
+	// Isdir - READ-ONLY; Restore file spec isdir
 	Isdir *bool `json:"isdir,omitempty"`
 }
 
@@ -1350,11 +1314,11 @@ type ServerEndpoint struct {
 	autorest.Response `json:"-"`
 	// ServerEndpointProperties - Server Endpoint properties.
 	*ServerEndpointProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1363,15 +1327,6 @@ func (se ServerEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if se.ServerEndpointProperties != nil {
 		objectMap["properties"] = se.ServerEndpointProperties
-	}
-	if se.ID != nil {
-		objectMap["id"] = se.ID
-	}
-	if se.Name != nil {
-		objectMap["name"] = se.Name
-	}
-	if se.Type != nil {
-		objectMap["type"] = se.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1438,11 +1393,11 @@ type ServerEndpointArray struct {
 type ServerEndpointCreateParameters struct {
 	// ServerEndpointCreateParametersProperties - The parameters used to create the server endpoint.
 	*ServerEndpointCreateParametersProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1451,15 +1406,6 @@ func (secp ServerEndpointCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if secp.ServerEndpointCreateParametersProperties != nil {
 		objectMap["properties"] = secp.ServerEndpointCreateParametersProperties
-	}
-	if secp.ID != nil {
-		objectMap["id"] = secp.ID
-	}
-	if secp.Name != nil {
-		objectMap["name"] = secp.Name
-	}
-	if secp.Type != nil {
-		objectMap["type"] = secp.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1549,19 +1495,19 @@ type ServerEndpointProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ServerResourceID - Server Resource Id.
 	ServerResourceID *string `json:"serverResourceId,omitempty"`
-	// ProvisioningState - ServerEndpoint Provisioning State
+	// ProvisioningState - READ-ONLY; ServerEndpoint Provisioning State
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// LastWorkflowID - ServerEndpoint lastWorkflowId
+	// LastWorkflowID - READ-ONLY; ServerEndpoint lastWorkflowId
 	LastWorkflowID *string `json:"lastWorkflowId,omitempty"`
-	// LastOperationName - Resource Last Operation Name
+	// LastOperationName - READ-ONLY; Resource Last Operation Name
 	LastOperationName *string `json:"lastOperationName,omitempty"`
-	// SyncStatus - Server Endpoint sync status
+	// SyncStatus - READ-ONLY; Server Endpoint sync status
 	SyncStatus *ServerEndpointSyncStatus `json:"syncStatus,omitempty"`
 	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransfer2On', 'OfflineDataTransfer2Off'
 	OfflineDataTransfer OfflineDataTransfer2 `json:"offlineDataTransfer,omitempty"`
-	// OfflineDataTransferStorageAccountResourceID - Offline data transfer storage account resource ID
+	// OfflineDataTransferStorageAccountResourceID - READ-ONLY; Offline data transfer storage account resource ID
 	OfflineDataTransferStorageAccountResourceID *string `json:"offlineDataTransferStorageAccountResourceId,omitempty"`
-	// OfflineDataTransferStorageAccountTenantID - Offline data transfer storage account tenant ID
+	// OfflineDataTransferStorageAccountTenantID - READ-ONLY; Offline data transfer storage account tenant ID
 	OfflineDataTransferStorageAccountTenantID *string `json:"offlineDataTransferStorageAccountTenantId,omitempty"`
 	// OfflineDataTransferShareName - Offline data transfer share name
 	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
@@ -1577,7 +1523,7 @@ type ServerEndpointsCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerEndpointsCreateFuture) Result(client ServerEndpointsClient) (se ServerEndpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1606,7 +1552,7 @@ type ServerEndpointsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerEndpointsDeleteFuture) Result(client ServerEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1629,7 +1575,7 @@ type ServerEndpointsRecallActionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerEndpointsRecallActionFuture) Result(client ServerEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsRecallActionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1652,7 +1598,7 @@ type ServerEndpointsUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) (se ServerEndpoint, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1673,27 +1619,27 @@ func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) 
 
 // ServerEndpointSyncStatus server Endpoint sync status
 type ServerEndpointSyncStatus struct {
-	// DownloadHealth - Download Health Status. Possible values include: 'DownloadHealthHealthy', 'DownloadHealthError', 'DownloadHealthSyncBlockedForRestore', 'DownloadHealthSyncBlockedForChangeDetectionPostRestore', 'DownloadHealthNoActivity'
+	// DownloadHealth - READ-ONLY; Download Health Status. Possible values include: 'DownloadHealthHealthy', 'DownloadHealthError', 'DownloadHealthSyncBlockedForRestore', 'DownloadHealthSyncBlockedForChangeDetectionPostRestore', 'DownloadHealthNoActivity'
 	DownloadHealth DownloadHealth `json:"downloadHealth,omitempty"`
-	// UploadHealth - Upload Health Status. Possible values include: 'UploadHealthHealthy', 'UploadHealthError', 'UploadHealthSyncBlockedForRestore', 'UploadHealthSyncBlockedForChangeDetectionPostRestore', 'UploadHealthNoActivity'
+	// UploadHealth - READ-ONLY; Upload Health Status. Possible values include: 'UploadHealthHealthy', 'UploadHealthError', 'UploadHealthSyncBlockedForRestore', 'UploadHealthSyncBlockedForChangeDetectionPostRestore', 'UploadHealthNoActivity'
 	UploadHealth UploadHealth `json:"uploadHealth,omitempty"`
-	// CombinedHealth - Combined Health Status. Possible values include: 'CombinedHealthHealthy', 'CombinedHealthError', 'CombinedHealthSyncBlockedForRestore', 'CombinedHealthSyncBlockedForChangeDetectionPostRestore', 'CombinedHealthNoActivity'
+	// CombinedHealth - READ-ONLY; Combined Health Status. Possible values include: 'CombinedHealthHealthy', 'CombinedHealthError', 'CombinedHealthSyncBlockedForRestore', 'CombinedHealthSyncBlockedForChangeDetectionPostRestore', 'CombinedHealthNoActivity'
 	CombinedHealth CombinedHealth `json:"combinedHealth,omitempty"`
-	// SyncActivity - Sync activity. Possible values include: 'Upload', 'Download', 'UploadAndDownload'
+	// SyncActivity - READ-ONLY; Sync activity. Possible values include: 'Upload', 'Download', 'UploadAndDownload'
 	SyncActivity SyncActivity `json:"syncActivity,omitempty"`
-	// TotalPersistentFilesNotSyncingCount - Total count of persistent files not syncing (combined upload + download). Reserved for future use.
+	// TotalPersistentFilesNotSyncingCount - READ-ONLY; Total count of persistent files not syncing (combined upload + download). Reserved for future use.
 	TotalPersistentFilesNotSyncingCount *int64 `json:"totalPersistentFilesNotSyncingCount,omitempty"`
-	// LastUpdatedTimestamp - Last Updated Timestamp
+	// LastUpdatedTimestamp - READ-ONLY; Last Updated Timestamp
 	LastUpdatedTimestamp *date.Time `json:"lastUpdatedTimestamp,omitempty"`
-	// UploadStatus - Upload Status
+	// UploadStatus - READ-ONLY; Upload Status
 	UploadStatus *SyncSessionStatus `json:"uploadStatus,omitempty"`
-	// DownloadStatus - Download Status
+	// DownloadStatus - READ-ONLY; Download Status
 	DownloadStatus *SyncSessionStatus `json:"downloadStatus,omitempty"`
-	// UploadActivity - Upload sync activity
+	// UploadActivity - READ-ONLY; Upload sync activity
 	UploadActivity *SyncActivityStatus `json:"uploadActivity,omitempty"`
-	// DownloadActivity - Download sync activity
+	// DownloadActivity - READ-ONLY; Download sync activity
 	DownloadActivity *SyncActivityStatus `json:"downloadActivity,omitempty"`
-	// OfflineDataTransferStatus - Offline Data Transfer State. Possible values include: 'InProgress', 'Stopping', 'NotRunning', 'Complete'
+	// OfflineDataTransferStatus - READ-ONLY; Offline Data Transfer State. Possible values include: 'InProgress', 'Stopping', 'NotRunning', 'Complete'
 	OfflineDataTransferStatus OfflineDataTransferStatus `json:"offlineDataTransferStatus,omitempty"`
 }
 
@@ -1759,11 +1705,11 @@ type Service struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1778,15 +1724,6 @@ func (s Service) MarshalJSON() ([]byte, error) {
 	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1893,9 +1830,9 @@ func (scp ServiceCreateParameters) MarshalJSON() ([]byte, error) {
 
 // ServiceProperties storage Sync Service Properties object.
 type ServiceProperties struct {
-	// StorageSyncServiceStatus - Storage Sync service status.
+	// StorageSyncServiceStatus - READ-ONLY; Storage Sync service status.
 	StorageSyncServiceStatus *int32 `json:"storageSyncServiceStatus,omitempty"`
-	// StorageSyncServiceUID - Storage Sync service Uid
+	// StorageSyncServiceUID - READ-ONLY; Storage Sync service Uid
 	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty"`
 }
 
@@ -1923,7 +1860,7 @@ func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 type SubscriptionState struct {
 	// State - State of Azure Subscription. Possible values include: 'Registered', 'Unregistered', 'Warned', 'Suspended', 'Deleted'
 	State Reason `json:"state,omitempty"`
-	// Istransitioning - Is Transitioning
+	// Istransitioning - READ-ONLY; Is Transitioning
 	Istransitioning *bool `json:"istransitioning,omitempty"`
 	// Properties - Subscription state properties.
 	Properties interface{} `json:"properties,omitempty"`
@@ -1931,17 +1868,17 @@ type SubscriptionState struct {
 
 // SyncActivityStatus sync Session status object.
 type SyncActivityStatus struct {
-	// Timestamp - Timestamp when properties were updated
+	// Timestamp - READ-ONLY; Timestamp when properties were updated
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// PerItemErrorCount - Per item error count
+	// PerItemErrorCount - READ-ONLY; Per item error count
 	PerItemErrorCount *int64 `json:"perItemErrorCount,omitempty"`
-	// AppliedItemCount - Applied item count.
+	// AppliedItemCount - READ-ONLY; Applied item count.
 	AppliedItemCount *int64 `json:"appliedItemCount,omitempty"`
-	// TotalItemCount - Total item count (if available)
+	// TotalItemCount - READ-ONLY; Total item count (if available)
 	TotalItemCount *int64 `json:"totalItemCount,omitempty"`
-	// AppliedBytes - Applied bytes
+	// AppliedBytes - READ-ONLY; Applied bytes
 	AppliedBytes *int64 `json:"appliedBytes,omitempty"`
-	// TotalBytes - Total bytes (if available)
+	// TotalBytes - READ-ONLY; Total bytes (if available)
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
 }
 
@@ -1950,11 +1887,11 @@ type SyncGroup struct {
 	autorest.Response `json:"-"`
 	// SyncGroupProperties - SyncGroup properties.
 	*SyncGroupProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1963,15 +1900,6 @@ func (sg SyncGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sg.SyncGroupProperties != nil {
 		objectMap["properties"] = sg.SyncGroupProperties
-	}
-	if sg.ID != nil {
-		objectMap["id"] = sg.ID
-	}
-	if sg.Name != nil {
-		objectMap["name"] = sg.Name
-	}
-	if sg.Type != nil {
-		objectMap["type"] = sg.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2038,11 +1966,11 @@ type SyncGroupArray struct {
 type SyncGroupCreateParameters struct {
 	// Properties - The parameters used to create the sync group
 	Properties interface{} `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2050,25 +1978,25 @@ type SyncGroupCreateParameters struct {
 type SyncGroupProperties struct {
 	// UniqueID - Unique Id
 	UniqueID *string `json:"uniqueId,omitempty"`
-	// SyncGroupStatus - Sync group status
+	// SyncGroupStatus - READ-ONLY; Sync group status
 	SyncGroupStatus *string `json:"syncGroupStatus,omitempty"`
 }
 
 // SyncSessionStatus sync Session status object.
 type SyncSessionStatus struct {
-	// LastSyncResult - Last sync result (HResult)
+	// LastSyncResult - READ-ONLY; Last sync result (HResult)
 	LastSyncResult *int32 `json:"lastSyncResult,omitempty"`
-	// LastSyncTimestamp - Last sync timestamp
+	// LastSyncTimestamp - READ-ONLY; Last sync timestamp
 	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
-	// LastSyncSuccessTimestamp - Last sync success timestamp
+	// LastSyncSuccessTimestamp - READ-ONLY; Last sync success timestamp
 	LastSyncSuccessTimestamp *date.Time `json:"lastSyncSuccessTimestamp,omitempty"`
-	// LastSyncPerItemErrorCount - Last sync per item error count.
+	// LastSyncPerItemErrorCount - READ-ONLY; Last sync per item error count.
 	LastSyncPerItemErrorCount *int64 `json:"lastSyncPerItemErrorCount,omitempty"`
-	// PersistentFilesNotSyncingCount - Count of persistent files not syncing. Reserved for future use.
+	// PersistentFilesNotSyncingCount - READ-ONLY; Count of persistent files not syncing. Reserved for future use.
 	PersistentFilesNotSyncingCount *int64 `json:"persistentFilesNotSyncingCount,omitempty"`
-	// TransientFilesNotSyncingCount - Count of transient files not syncing. Reserved for future use.
+	// TransientFilesNotSyncingCount - READ-ONLY; Count of transient files not syncing. Reserved for future use.
 	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty"`
-	// FilesNotSyncingErrors - Array of per-item errors coming from the last sync session. Reserved for future use.
+	// FilesNotSyncingErrors - READ-ONLY; Array of per-item errors coming from the last sync session. Reserved for future use.
 	FilesNotSyncingErrors *[]FilesNotSyncingError `json:"filesNotSyncingErrors,omitempty"`
 }
 
@@ -2078,11 +2006,11 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2094,15 +2022,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2118,11 +2037,11 @@ type Workflow struct {
 	autorest.Response `json:"-"`
 	// WorkflowProperties - Workflow properties.
 	*WorkflowProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2131,15 +2050,6 @@ func (w Workflow) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.WorkflowProperties != nil {
 		objectMap["properties"] = w.WorkflowProperties
-	}
-	if w.ID != nil {
-		objectMap["id"] = w.ID
-	}
-	if w.Name != nil {
-		objectMap["name"] = w.Name
-	}
-	if w.Type != nil {
-		objectMap["type"] = w.Type
 	}
 	return json.Marshal(objectMap)
 }

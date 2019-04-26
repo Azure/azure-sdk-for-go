@@ -262,7 +262,8 @@ func (client APIOperationPolicyClient) DeleteResponder(resp *http.Response) (res
 // revision has ;rev=n as a suffix where n is the revision number.
 // operationID - operation identifier within an API. Must be unique in the current API Management service
 // instance.
-func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result PolicyContract, err error) {
+// formatParameter - policy Export Format.
+func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter PolicyExportFormat) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIOperationPolicyClient.Get")
 		defer func() {
@@ -289,7 +290,7 @@ func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupNam
 		return result, validation.NewError("apimanagement.APIOperationPolicyClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, apiid, operationID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, apiid, operationID, formatParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationPolicyClient", "Get", nil, "Failure preparing request")
 		return
@@ -311,7 +312,7 @@ func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // GetPreparer prepares the Get request.
-func (client APIOperationPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (*http.Request, error) {
+func (client APIOperationPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter PolicyExportFormat) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"operationId":       autorest.Encode("path", operationID),
@@ -324,6 +325,11 @@ func (client APIOperationPolicyClient) GetPreparer(ctx context.Context, resource
 	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(formatParameter)) > 0 {
+		queryParameters["format"] = autorest.Encode("query", formatParameter)
+	} else {
+		queryParameters["format"] = autorest.Encode("query", "xml")
 	}
 
 	preparer := autorest.CreatePreparer(

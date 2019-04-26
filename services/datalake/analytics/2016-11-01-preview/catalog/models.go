@@ -95,11 +95,11 @@ func PossiblePermissionTypeValues() []PermissionType {
 
 // ACL a Data Lake Analytics catalog access control list (ACL) entry.
 type ACL struct {
-	// AceType - the access control list (ACL) entry type. UserObj and GroupObj denote the owning user and group, respectively. Possible values include: 'UserObj', 'GroupObj', 'Other', 'User', 'Group'
+	// AceType - READ-ONLY; the access control list (ACL) entry type. UserObj and GroupObj denote the owning user and group, respectively. Possible values include: 'UserObj', 'GroupObj', 'Other', 'User', 'Group'
 	AceType ACLType `json:"aceType,omitempty"`
-	// PrincipalID - the Azure AD object ID of the user or group being specified in the access control list (ACL) entry.
+	// PrincipalID - READ-ONLY; the Azure AD object ID of the user or group being specified in the access control list (ACL) entry.
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// Permission - the permission type of the access control list (ACL) entry. Possible values include: 'None', 'Use', 'Create', 'Drop', 'Alter', 'Write', 'All'
+	// Permission - READ-ONLY; the permission type of the access control list (ACL) entry. Possible values include: 'None', 'Use', 'Create', 'Drop', 'Alter', 'Write', 'All'
 	Permission PermissionType `json:"permission,omitempty"`
 }
 
@@ -124,7 +124,7 @@ type ACLDeleteParameters struct {
 // ACLList a Data Lake Analytics catalog access control list (ACL).
 type ACLList struct {
 	autorest.Response `json:"-"`
-	// Value - the access control list (ACL).
+	// Value - READ-ONLY; the access control list (ACL).
 	Value *[]ACL `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -414,7 +414,7 @@ type USQLAssemblyFileInfo struct {
 // USQLAssemblyList a Data Lake Analytics catalog U-SQL assembly CLR item list.
 type USQLAssemblyList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of assemblies in the database
+	// Value - READ-ONLY; the list of assemblies in the database
 	Value *[]USQLAssemblyClr `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -571,7 +571,7 @@ type USQLCredential struct {
 // USQLCredentialList a Data Lake Analytics catalog U-SQL credential item list.
 type USQLCredentialList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of credentials in the database
+	// Value - READ-ONLY; the list of credentials in the database
 	Value *[]USQLCredential `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -728,7 +728,7 @@ type USQLDatabase struct {
 // USQLDatabaseList a Data Lake Analytics catalog U-SQL database item list.
 type USQLDatabaseList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of databases
+	// Value - READ-ONLY; the list of databases
 	Value *[]USQLDatabase `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -913,7 +913,7 @@ type USQLExternalDataSource struct {
 // USQLExternalDataSourceList a Data Lake Analytics catalog U-SQL external datasource item list.
 type USQLExternalDataSourceList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of external data sources in the database
+	// Value - READ-ONLY; the list of external data sources in the database
 	Value *[]USQLExternalDataSource `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1101,7 +1101,7 @@ type USQLPackage struct {
 // USQLPackageList a Data Lake Analytics catalog U-SQL package item list.
 type USQLPackageList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of packages in the database and schema combination
+	// Value - READ-ONLY; the list of packages in the database and schema combination
 	Value *[]USQLPackage `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1264,7 +1264,7 @@ type USQLProcedure struct {
 // USQLProcedureList a Data Lake Analytics catalog U-SQL procedure item list.
 type USQLProcedureList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of procedure in the database and schema combination
+	// Value - READ-ONLY; the list of procedure in the database and schema combination
 	Value *[]USQLProcedure `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1423,7 +1423,7 @@ type USQLSchema struct {
 // USQLSchemaList a Data Lake Analytics catalog U-SQL schema item list.
 type USQLSchemaList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of schemas in the database
+	// Value - READ-ONLY; the list of schemas in the database
 	Value *[]USQLSchema `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1639,7 +1639,7 @@ type USQLTableFragment struct {
 // USQLTableFragmentList a Data Lake Analytics catalog U-SQL table fragment item list.
 type USQLTableFragmentList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table fragments in the database, schema and table combination
+	// Value - READ-ONLY; the list of table fragments in the database, schema and table combination
 	Value *[]USQLTableFragment `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1785,7 +1785,7 @@ func NewUSQLTableFragmentListPage(getNextPage func(context.Context, USQLTableFra
 // USQLTableList a Data Lake Analytics catalog U-SQL table item list.
 type USQLTableList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of tables in the database and schema combination
+	// Value - READ-ONLY; the list of tables in the database and schema combination
 	Value *[]USQLTable `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1954,7 +1954,7 @@ type USQLTablePartition struct {
 // USQLTablePartitionList a Data Lake Analytics catalog U-SQL table partition item list.
 type USQLTablePartitionList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table partitions in the database, schema and table combination
+	// Value - READ-ONLY; the list of table partitions in the database, schema and table combination
 	Value *[]USQLTablePartition `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2150,7 +2150,7 @@ type USQLTableStatistics struct {
 // USQLTableStatisticsList a Data Lake Analytics catalog U-SQL table statistics item list.
 type USQLTableStatisticsList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table statistics in the database, schema and table combination
+	// Value - READ-ONLY; the list of table statistics in the database, schema and table combination
 	Value *[]USQLTableStatistics `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2296,7 +2296,7 @@ func NewUSQLTableStatisticsListPage(getNextPage func(context.Context, USQLTableS
 // USQLTableType a Data Lake Analytics catalog U-SQL table type item.
 type USQLTableType struct {
 	autorest.Response `json:"-"`
-	// Columns - the type field information associated with this table type.
+	// Columns - READ-ONLY; the type field information associated with this table type.
 	Columns *[]TypeFieldInfo `json:"columns,omitempty"`
 	// DatabaseName - the name of the database.
 	DatabaseName *string `json:"databaseName,omitempty"`
@@ -2337,7 +2337,7 @@ type USQLTableType struct {
 // USQLTableTypeList a Data Lake Analytics catalog U-SQL table type item list.
 type USQLTableTypeList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table types in the database and schema combination
+	// Value - READ-ONLY; the list of table types in the database and schema combination
 	Value *[]USQLTableType `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2500,7 +2500,7 @@ type USQLTableValuedFunction struct {
 // USQLTableValuedFunctionList a Data Lake Analytics catalog U-SQL table valued function item list.
 type USQLTableValuedFunctionList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of table valued functions in the database and schema combination
+	// Value - READ-ONLY; the list of table valued functions in the database and schema combination
 	Value *[]USQLTableValuedFunction `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2685,7 +2685,7 @@ type USQLType struct {
 // USQLTypeList a Data Lake Analytics catalog U-SQL type item list.
 type USQLTypeList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of types in the database and schema combination
+	// Value - READ-ONLY; the list of types in the database and schema combination
 	Value *[]USQLType `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2848,7 +2848,7 @@ type USQLView struct {
 // USQLViewList a Data Lake Analytics catalog U-SQL view item list.
 type USQLViewList struct {
 	autorest.Response `json:"-"`
-	// Value - the list of view in the database and schema combination
+	// Value - READ-ONLY; the list of view in the database and schema combination
 	Value *[]USQLView `json:"value,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`

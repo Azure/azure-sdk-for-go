@@ -1174,9 +1174,9 @@ func NewIntegrationAccountAgreementListResultPage(getNextPage func(context.Conte
 
 // IntegrationAccountAgreementProperties ...
 type IntegrationAccountAgreementProperties struct {
-	// CreatedTime - The created time.
+	// CreatedTime - READ-ONLY; The created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - The changed time.
+	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
@@ -1453,9 +1453,9 @@ func NewIntegrationAccountCertificateListResultPage(getNextPage func(context.Con
 
 // IntegrationAccountCertificateProperties ...
 type IntegrationAccountCertificateProperties struct {
-	// CreatedTime - The created time.
+	// CreatedTime - READ-ONLY; The created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - The changed time.
+	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
@@ -1900,15 +1900,15 @@ func NewIntegrationAccountMapListResultPage(getNextPage func(context.Context, In
 type IntegrationAccountMapProperties struct {
 	// MapType - The map type. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt'
 	MapType MapType `json:"mapType,omitempty"`
-	// CreatedTime - The created time.
+	// CreatedTime - READ-ONLY; The created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - The changed time.
+	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Content - The content.
 	Content interface{} `json:"content,omitempty"`
 	// ContentType - The content type.
 	ContentType *string `json:"contentType,omitempty"`
-	// ContentLink - The content link.
+	// ContentLink - READ-ONLY; The content link.
 	ContentLink *IntegrationAccountContentLink `json:"contentLink,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
@@ -2181,9 +2181,9 @@ func NewIntegrationAccountPartnerListResultPage(getNextPage func(context.Context
 type IntegrationAccountPartnerProperties struct {
 	// PartnerType - The partner type. Possible values include: 'PartnerTypeNotSpecified', 'PartnerTypeB2B'
 	PartnerType PartnerType `json:"partnerType,omitempty"`
-	// CreatedTime - The created time.
+	// CreatedTime - READ-ONLY; The created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - The changed time.
+	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
@@ -2495,15 +2495,15 @@ type IntegrationAccountSchemaProperties struct {
 	SchemaType SchemaType `json:"schemaType,omitempty"`
 	// TargetNamespace - The target namespace.
 	TargetNamespace *string `json:"targetNamespace,omitempty"`
-	// CreatedTime - The created time.
+	// CreatedTime - READ-ONLY; The created time.
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ChangedTime - The changed time.
+	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Content - The content.
 	Content interface{} `json:"content,omitempty"`
 	// ContentType - The content type.
 	ContentType *string `json:"contentType,omitempty"`
-	// ContentLink - The content link.
+	// ContentLink - READ-ONLY; The content link.
 	ContentLink *IntegrationAccountContentLink `json:"contentLink,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
@@ -2529,9 +2529,9 @@ type KeyVaultKeyReference struct {
 type KeyVaultKeyReferenceKeyVault struct {
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 }
 

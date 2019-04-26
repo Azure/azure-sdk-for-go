@@ -10224,11 +10224,11 @@ type EngineBaseResource struct {
 	autorest.Response `json:"-"`
 	// Properties - BackupEngineBaseResource properties
 	Properties BasicEngineBase `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -10242,15 +10242,6 @@ type EngineBaseResource struct {
 func (ebr EngineBaseResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = ebr.Properties
-	if ebr.ID != nil {
-		objectMap["id"] = ebr.ID
-	}
-	if ebr.Name != nil {
-		objectMap["name"] = ebr.Name
-	}
-	if ebr.Type != nil {
-		objectMap["type"] = ebr.Type
-	}
 	if ebr.Location != nil {
 		objectMap["location"] = ebr.Location
 	}
@@ -11858,11 +11849,11 @@ func (ir ILRRequest) AsBasicILRRequest() (BasicILRRequest, bool) {
 type ILRRequestResource struct {
 	// Properties - ILRRequestResource properties
 	Properties BasicILRRequest `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -11876,15 +11867,6 @@ type ILRRequestResource struct {
 func (irr ILRRequestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = irr.Properties
-	if irr.ID != nil {
-		objectMap["id"] = irr.ID
-	}
-	if irr.Name != nil {
-		objectMap["name"] = irr.Name
-	}
-	if irr.Type != nil {
-		objectMap["type"] = irr.Type
-	}
 	if irr.Location != nil {
 		objectMap["location"] = irr.Location
 	}
@@ -13129,11 +13111,11 @@ func (pc ProtectableContainer) AsBasicProtectableContainer() (BasicProtectableCo
 type ProtectableContainerResource struct {
 	// Properties - ProtectableContainerResource properties
 	Properties BasicProtectableContainer `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -13147,15 +13129,6 @@ type ProtectableContainerResource struct {
 func (pcr ProtectableContainerResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = pcr.Properties
-	if pcr.ID != nil {
-		objectMap["id"] = pcr.ID
-	}
-	if pcr.Name != nil {
-		objectMap["name"] = pcr.Name
-	}
-	if pcr.Type != nil {
-		objectMap["type"] = pcr.Type
-	}
 	if pcr.Location != nil {
 		objectMap["location"] = pcr.Location
 	}
@@ -13633,11 +13606,11 @@ type ProtectedItemResource struct {
 	autorest.Response `json:"-"`
 	// Properties - ProtectedItemResource properties
 	Properties BasicProtectedItem `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -13651,15 +13624,6 @@ type ProtectedItemResource struct {
 func (pir ProtectedItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = pir.Properties
-	if pir.ID != nil {
-		objectMap["id"] = pir.ID
-	}
-	if pir.Name != nil {
-		objectMap["name"] = pir.Name
-	}
-	if pir.Type != nil {
-		objectMap["type"] = pir.Type
-	}
 	if pir.Location != nil {
 		objectMap["location"] = pir.Location
 	}
@@ -13979,11 +13943,11 @@ type ProtectionContainerResource struct {
 	autorest.Response `json:"-"`
 	// Properties - ProtectionContainerResource properties
 	Properties BasicProtectionContainer `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -13997,15 +13961,6 @@ type ProtectionContainerResource struct {
 func (pcr ProtectionContainerResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = pcr.Properties
-	if pcr.ID != nil {
-		objectMap["id"] = pcr.ID
-	}
-	if pcr.Name != nil {
-		objectMap["name"] = pcr.Name
-	}
-	if pcr.Type != nil {
-		objectMap["type"] = pcr.Type
-	}
 	if pcr.Location != nil {
 		objectMap["location"] = pcr.Location
 	}
@@ -14378,11 +14333,11 @@ type ProtectionPolicyResource struct {
 	autorest.Response `json:"-"`
 	// Properties - ProtectionPolicyResource properties
 	Properties BasicProtectionPolicy `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -14396,15 +14351,6 @@ type ProtectionPolicyResource struct {
 func (ppr ProtectionPolicyResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = ppr.Properties
-	if ppr.ID != nil {
-		objectMap["id"] = ppr.ID
-	}
-	if ppr.Name != nil {
-		objectMap["name"] = ppr.Name
-	}
-	if ppr.Type != nil {
-		objectMap["type"] = ppr.Type
-	}
 	if ppr.Location != nil {
 		objectMap["location"] = ppr.Location
 	}
@@ -14672,11 +14618,11 @@ type RecoveryPointResource struct {
 	autorest.Response `json:"-"`
 	// Properties - RecoveryPointResource properties
 	Properties BasicRecoveryPoint `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -14690,15 +14636,6 @@ type RecoveryPointResource struct {
 func (rpr RecoveryPointResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = rpr.Properties
-	if rpr.ID != nil {
-		objectMap["id"] = rpr.ID
-	}
-	if rpr.Name != nil {
-		objectMap["name"] = rpr.Name
-	}
-	if rpr.Type != nil {
-		objectMap["type"] = rpr.Type
-	}
 	if rpr.Location != nil {
 		objectMap["location"] = rpr.Location
 	}
@@ -15041,11 +14978,11 @@ func (r Request) AsBasicRequest() (BasicRequest, bool) {
 type RequestResource struct {
 	// Properties - BackupRequestResource properties
 	Properties BasicRequest `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -15059,15 +14996,6 @@ type RequestResource struct {
 func (rr RequestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = rr.Properties
-	if rr.ID != nil {
-		objectMap["id"] = rr.ID
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
-	}
 	if rr.Location != nil {
 		objectMap["location"] = rr.Location
 	}
@@ -15159,11 +15087,11 @@ func (rr *RequestResource) UnmarshalJSON(body []byte) error {
 
 // Resource ARM Resource.
 type Resource struct {
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -15176,15 +15104,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -15212,11 +15131,11 @@ type ResourceConfigResource struct {
 	autorest.Response `json:"-"`
 	// Properties - BackupResourceConfigResource properties
 	Properties *ResourceConfig `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -15231,15 +15150,6 @@ func (rcr ResourceConfigResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rcr.Properties != nil {
 		objectMap["properties"] = rcr.Properties
-	}
-	if rcr.ID != nil {
-		objectMap["id"] = rcr.ID
-	}
-	if rcr.Name != nil {
-		objectMap["name"] = rcr.Name
-	}
-	if rcr.Type != nil {
-		objectMap["type"] = rcr.Type
 	}
 	if rcr.Location != nil {
 		objectMap["location"] = rcr.Location
@@ -15276,11 +15186,11 @@ type ResourceVaultConfigResource struct {
 	autorest.Response `json:"-"`
 	// Properties - BackupResourceVaultConfigResource properties
 	Properties *ResourceVaultConfig `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -15295,15 +15205,6 @@ func (rvcr ResourceVaultConfigResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rvcr.Properties != nil {
 		objectMap["properties"] = rvcr.Properties
-	}
-	if rvcr.ID != nil {
-		objectMap["id"] = rvcr.ID
-	}
-	if rvcr.Name != nil {
-		objectMap["name"] = rvcr.Name
-	}
-	if rvcr.Type != nil {
-		objectMap["type"] = rvcr.Type
 	}
 	if rvcr.Location != nil {
 		objectMap["location"] = rvcr.Location
@@ -15495,11 +15396,11 @@ func (rr RestoreRequest) AsBasicRestoreRequest() (BasicRestoreRequest, bool) {
 type RestoreRequestResource struct {
 	// Properties - RestoreRequestResource properties
 	Properties BasicRestoreRequest `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -15513,15 +15414,6 @@ type RestoreRequestResource struct {
 func (rrr RestoreRequestResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = rrr.Properties
-	if rrr.ID != nil {
-		objectMap["id"] = rrr.ID
-	}
-	if rrr.Name != nil {
-		objectMap["name"] = rrr.Name
-	}
-	if rrr.Type != nil {
-		objectMap["type"] = rrr.Type
-	}
 	if rrr.Location != nil {
 		objectMap["location"] = rrr.Location
 	}
@@ -16205,11 +16097,11 @@ func (wi WorkloadItem) AsBasicWorkloadItem() (BasicWorkloadItem, bool) {
 type WorkloadItemResource struct {
 	// Properties - WorkloadItemResource properties
 	Properties BasicWorkloadItem `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -16223,15 +16115,6 @@ type WorkloadItemResource struct {
 func (wir WorkloadItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = wir.Properties
-	if wir.ID != nil {
-		objectMap["id"] = wir.ID
-	}
-	if wir.Name != nil {
-		objectMap["name"] = wir.Name
-	}
-	if wir.Type != nil {
-		objectMap["type"] = wir.Type
-	}
 	if wir.Location != nil {
 		objectMap["location"] = wir.Location
 	}
@@ -16689,11 +16572,11 @@ func (wpi WorkloadProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorklo
 type WorkloadProtectableItemResource struct {
 	// Properties - WorkloadProtectableItemResource properties
 	Properties BasicWorkloadProtectableItem `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
+	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
+	// Name - READ-ONLY; Resource name associated with the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -16707,15 +16590,6 @@ type WorkloadProtectableItemResource struct {
 func (wpir WorkloadProtectableItemResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = wpir.Properties
-	if wpir.ID != nil {
-		objectMap["id"] = wpir.ID
-	}
-	if wpir.Name != nil {
-		objectMap["name"] = wpir.Name
-	}
-	if wpir.Type != nil {
-		objectMap["type"] = wpir.Type
-	}
 	if wpir.Location != nil {
 		objectMap["location"] = wpir.Location
 	}

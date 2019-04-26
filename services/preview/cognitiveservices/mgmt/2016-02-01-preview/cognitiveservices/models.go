@@ -342,7 +342,7 @@ func (acp AccountCreateParameters) MarshalJSON() ([]byte, error) {
 // AccountEnumerateSkusResult the list of cognitive services accounts operation response.
 type AccountEnumerateSkusResult struct {
 	autorest.Response `json:"-"`
-	// Value - Gets the list of Cognitive Services accounts and their properties.
+	// Value - READ-ONLY; Gets the list of Cognitive Services accounts and their properties.
 	Value *[]ResourceAndSku `json:"value,omitempty"`
 }
 
@@ -358,13 +358,13 @@ type AccountKeys struct {
 // AccountListResult the list of cognitive services accounts operation response.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Gets the list of Cognitive Services accounts and their properties.
+	// Value - READ-ONLY; Gets the list of Cognitive Services accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
 }
 
 // AccountProperties ...
 type AccountProperties struct {
-	// ProvisioningState - Gets the status of the cognitive services account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; Gets the status of the cognitive services account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Succeeded', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Endpoint - Endpoint of the created account
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -419,6 +419,6 @@ type ResourceAndSku struct {
 type Sku struct {
 	// Name - Gets or sets the sku name. Required for account creation, optional for update. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium'
+	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 }

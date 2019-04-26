@@ -166,10 +166,14 @@ func PossibleStatusTypeValues() []StatusType {
 type TimeframeType string
 
 const (
+	// BillingMonthToDate ...
+	BillingMonthToDate TimeframeType = "BillingMonthToDate"
 	// Custom ...
 	Custom TimeframeType = "Custom"
 	// MonthToDate ...
 	MonthToDate TimeframeType = "MonthToDate"
+	// TheLastBillingMonth ...
+	TheLastBillingMonth TimeframeType = "TheLastBillingMonth"
 	// TheLastMonth ...
 	TheLastMonth TimeframeType = "TheLastMonth"
 	// TheLastWeek ...
@@ -184,7 +188,7 @@ const (
 
 // PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
 func PossibleTimeframeTypeValues() []TimeframeType {
-	return []TimeframeType{Custom, MonthToDate, TheLastMonth, TheLastWeek, TheLastYear, WeekToDate, YearToDate}
+	return []TimeframeType{BillingMonthToDate, Custom, MonthToDate, TheLastBillingMonth, TheLastMonth, TheLastWeek, TheLastYear, WeekToDate, YearToDate}
 }
 
 // CommonExportProperties the common properties of the export.
@@ -200,13 +204,13 @@ type CommonExportProperties struct {
 // Dimension ...
 type Dimension struct {
 	*DimensionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -215,18 +219,6 @@ func (d Dimension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DimensionProperties != nil {
 		objectMap["properties"] = d.DimensionProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
-	}
-	if d.Tags != nil {
-		objectMap["tags"] = d.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -307,15 +299,15 @@ type DimensionProperties struct {
 // DimensionsListResult result of listing dimensions. It contains a list of available dimensions.
 type DimensionsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of dimensions.
+	// Value - READ-ONLY; The list of dimensions.
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -330,13 +322,13 @@ type ErrorResponse struct {
 type Export struct {
 	autorest.Response `json:"-"`
 	*ExportProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -345,18 +337,6 @@ func (e Export) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if e.ExportProperties != nil {
 		objectMap["properties"] = e.ExportProperties
-	}
-	if e.ID != nil {
-		objectMap["id"] = e.ID
-	}
-	if e.Name != nil {
-		objectMap["name"] = e.Name
-	}
-	if e.Type != nil {
-		objectMap["type"] = e.Type
-	}
-	if e.Tags != nil {
-		objectMap["tags"] = e.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -440,13 +420,13 @@ type ExportDeliveryInfo struct {
 // ExportExecution a export execution.
 type ExportExecution struct {
 	*ExportExecutionProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -455,18 +435,6 @@ func (ee ExportExecution) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ee.ExportExecutionProperties != nil {
 		objectMap["properties"] = ee.ExportExecutionProperties
-	}
-	if ee.ID != nil {
-		objectMap["id"] = ee.ID
-	}
-	if ee.Name != nil {
-		objectMap["name"] = ee.Name
-	}
-	if ee.Type != nil {
-		objectMap["type"] = ee.Type
-	}
-	if ee.Tags != nil {
-		objectMap["tags"] = ee.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -534,7 +502,7 @@ func (ee *ExportExecution) UnmarshalJSON(body []byte) error {
 // ExportExecutionListResult result of listing exports execution history of a export by name
 type ExportExecutionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of export executions.
+	// Value - READ-ONLY; The list of export executions.
 	Value *[]ExportExecution `json:"value,omitempty"`
 }
 
@@ -561,7 +529,7 @@ type ExportExecutionProperties struct {
 // provided.
 type ExportListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of exports.
+	// Value - READ-ONLY; The list of exports.
 	Value *[]Export `json:"value,omitempty"`
 }
 
@@ -597,7 +565,7 @@ type ExportSchedule struct {
 
 // Operation a Cost management REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -605,11 +573,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.CostManagement.
+	// Provider - READ-ONLY; Service provider: Microsoft.CostManagement.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Dimensions, Query.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Dimensions, Query.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -617,9 +585,9 @@ type OperationDisplay struct {
 // URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of cost management operations supported by the Microsoft.CostManagement resource provider.
+	// Value - READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -763,13 +731,13 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 // Query ...
 type Query struct {
 	*QueryProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -778,18 +746,6 @@ func (q Query) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if q.QueryProperties != nil {
 		objectMap["properties"] = q.QueryProperties
-	}
-	if q.ID != nil {
-		objectMap["id"] = q.ID
-	}
-	if q.Name != nil {
-		objectMap["name"] = q.Name
-	}
-	if q.Type != nil {
-		objectMap["type"] = q.Type
-	}
-	if q.Tags != nil {
-		objectMap["tags"] = q.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -928,7 +884,7 @@ type QueryDatasetConfiguration struct {
 type QueryDefinition struct {
 	// Type - The type of the query.
 	Type *string `json:"type,omitempty"`
-	// Timeframe - The time frame for pulling data for the query. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'YearToDate', 'TheLastWeek', 'TheLastMonth', 'TheLastYear', 'Custom'
+	// Timeframe - The time frame for pulling data for the query. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'YearToDate', 'TheLastWeek', 'TheLastMonth', 'TheLastYear', 'Custom', 'BillingMonthToDate', 'TheLastBillingMonth'
 	Timeframe TimeframeType `json:"timeframe,omitempty"`
 	// TimePeriod - Has time period for pulling data for the query.
 	TimePeriod *QueryTimePeriod `json:"timePeriod,omitempty"`
@@ -969,7 +925,7 @@ type QueryProperties struct {
 // QueryResult result of query. It contains all columns listed under groupings and aggregation.
 type QueryResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of usage data.
+	// Value - READ-ONLY; The list of usage data.
 	Value *[]Query `json:"value,omitempty"`
 }
 
@@ -991,30 +947,18 @@ type QueryTimePeriod struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
+	// Tags - READ-ONLY; Resource tags.
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }

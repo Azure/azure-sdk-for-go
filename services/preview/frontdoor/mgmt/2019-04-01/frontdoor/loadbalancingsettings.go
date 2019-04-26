@@ -103,6 +103,7 @@ func (client LoadBalancingSettingsClient) CreateOrUpdatePreparer(ctx context.Con
 		"api-version": APIVersion,
 	}
 
+	loadBalancingSettingsParameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

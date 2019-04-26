@@ -375,6 +375,7 @@ func (client ServiceClient) CreateOrUpdatePreparer(ctx context.Context, resource
 		"api-version": APIVersion,
 	}
 
+	parameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -1035,6 +1036,7 @@ func (client ServiceClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 		"api-version": APIVersion,
 	}
 
+	parameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

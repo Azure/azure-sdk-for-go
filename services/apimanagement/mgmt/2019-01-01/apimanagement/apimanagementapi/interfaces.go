@@ -71,7 +71,7 @@ var _ APIOperationClientAPI = (*apimanagement.APIOperationClient)(nil)
 type APIOperationPolicyClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, parameters apimanagement.PolicyContract, ifMatch string) (result apimanagement.PolicyContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, ifMatch string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result apimanagement.PolicyContract, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter apimanagement.PolicyExportFormat) (result apimanagement.PolicyContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result autorest.Response, err error)
 	ListByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result apimanagement.PolicyCollection, err error)
 }
@@ -116,7 +116,7 @@ var _ APIProductClientAPI = (*apimanagement.APIProductClient)(nil)
 type APIPolicyClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters apimanagement.PolicyContract, ifMatch string) (result apimanagement.PolicyContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, ifMatch string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result apimanagement.PolicyContract, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, formatParameter apimanagement.PolicyExportFormat) (result apimanagement.PolicyContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result autorest.Response, err error)
 	ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result apimanagement.PolicyCollection, err error)
 }
@@ -420,7 +420,7 @@ var _ OpenIDConnectProviderClientAPI = (*apimanagement.OpenIDConnectProviderClie
 type PolicyClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters apimanagement.PolicyContract, ifMatch string) (result apimanagement.PolicyContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.PolicyContract, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, formatParameter apimanagement.PolicyExportFormat) (result apimanagement.PolicyContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.PolicyCollection, err error)
 }
@@ -508,7 +508,7 @@ var _ ProductSubscriptionsClientAPI = (*apimanagement.ProductSubscriptionsClient
 type ProductPolicyClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters apimanagement.PolicyContract, ifMatch string) (result apimanagement.PolicyContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result apimanagement.PolicyContract, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, productID string, formatParameter apimanagement.PolicyExportFormat) (result apimanagement.PolicyContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result autorest.Response, err error)
 	ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result apimanagement.PolicyCollection, err error)
 }

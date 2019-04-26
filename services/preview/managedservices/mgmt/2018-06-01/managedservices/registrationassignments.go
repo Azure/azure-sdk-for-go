@@ -106,6 +106,9 @@ func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.C
 		"api-version": APIVersion,
 	}
 
+	requestBody.ID = nil
+	requestBody.Type = nil
+	requestBody.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

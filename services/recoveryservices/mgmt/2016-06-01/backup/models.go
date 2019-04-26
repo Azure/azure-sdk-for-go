@@ -916,7 +916,7 @@ type AzureIaaSClassicComputeVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - READ-ONLY; The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -946,9 +946,6 @@ func (aisccvc AzureIaaSClassicComputeVMContainer) MarshalJSON() ([]byte, error) 
 	}
 	if aisccvc.HealthStatus != nil {
 		objectMap["healthStatus"] = aisccvc.HealthStatus
-	}
-	if aisccvc.ContainerType != nil {
-		objectMap["containerType"] = aisccvc.ContainerType
 	}
 	if aisccvc.ProtectableObjectType != "" {
 		objectMap["protectableObjectType"] = aisccvc.ProtectableObjectType
@@ -1197,7 +1194,7 @@ type AzureIaaSComputeVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - READ-ONLY; The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -1227,9 +1224,6 @@ func (aiscvc AzureIaaSComputeVMContainer) MarshalJSON() ([]byte, error) {
 	}
 	if aiscvc.HealthStatus != nil {
 		objectMap["healthStatus"] = aiscvc.HealthStatus
-	}
-	if aiscvc.ContainerType != nil {
-		objectMap["containerType"] = aiscvc.ContainerType
 	}
 	if aiscvc.ProtectableObjectType != "" {
 		objectMap["protectableObjectType"] = aiscvc.ProtectableObjectType
@@ -1910,7 +1904,7 @@ type AzureSQLContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - READ-ONLY; The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -1931,9 +1925,6 @@ func (asc AzureSQLContainer) MarshalJSON() ([]byte, error) {
 	}
 	if asc.HealthStatus != nil {
 		objectMap["healthStatus"] = asc.HealthStatus
-	}
-	if asc.ContainerType != nil {
-		objectMap["containerType"] = asc.ContainerType
 	}
 	if asc.ProtectableObjectType != "" {
 		objectMap["protectableObjectType"] = asc.ProtectableObjectType
@@ -3041,7 +3032,7 @@ type IaaSVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - READ-ONLY; The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -3112,9 +3103,6 @@ func (isc IaaSVMContainer) MarshalJSON() ([]byte, error) {
 	}
 	if isc.HealthStatus != nil {
 		objectMap["healthStatus"] = isc.HealthStatus
-	}
-	if isc.ContainerType != nil {
-		objectMap["containerType"] = isc.ContainerType
 	}
 	if isc.ProtectableObjectType != "" {
 		objectMap["protectableObjectType"] = isc.ProtectableObjectType
@@ -4245,7 +4233,7 @@ type MabContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - READ-ONLY; The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -4281,9 +4269,6 @@ func (mc MabContainer) MarshalJSON() ([]byte, error) {
 	}
 	if mc.HealthStatus != nil {
 		objectMap["healthStatus"] = mc.HealthStatus
-	}
-	if mc.ContainerType != nil {
-		objectMap["containerType"] = mc.ContainerType
 	}
 	if mc.ProtectableObjectType != "" {
 		objectMap["protectableObjectType"] = mc.ProtectableObjectType
@@ -5735,7 +5720,7 @@ type ProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - The status of the container's health.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
+	// ContainerType - READ-ONLY; The type assigned to the container. The values to use for each of these properties are:<br/> 1. Compute Azure VM is Microsoft.Compute/virtualMachines<br/> 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines<br/> 3. Windows machines (like Azure Backup Server and DPM) is Windows<br/> 4. Azure SQL instance is AzureSqlContainer.
 	ContainerType *string `json:"containerType,omitempty"`
 	// ProtectableObjectType - Possible values include: 'ProtectableObjectTypeProtectionContainer', 'ProtectableObjectTypeAzureSQLContainer', 'ProtectableObjectTypeIaaSVMContainer', 'ProtectableObjectTypeMABWindowsContainer', 'ProtectableObjectTypeMicrosoftComputevirtualMachines', 'ProtectableObjectTypeMicrosoftClassicComputevirtualMachines'
 	ProtectableObjectType ProtectableObjectType `json:"protectableObjectType,omitempty"`
@@ -5809,9 +5794,6 @@ func (pc ProtectionContainer) MarshalJSON() ([]byte, error) {
 	}
 	if pc.HealthStatus != nil {
 		objectMap["healthStatus"] = pc.HealthStatus
-	}
-	if pc.ContainerType != nil {
-		objectMap["containerType"] = pc.ContainerType
 	}
 	if pc.ProtectableObjectType != "" {
 		objectMap["protectableObjectType"] = pc.ProtectableObjectType

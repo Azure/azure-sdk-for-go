@@ -176,9 +176,9 @@ type ErrorResponse struct {
 type GatewayDetails struct {
 	// GatewayResourceID - Gateway resource to be associated with the server.
 	GatewayResourceID *string `json:"gatewayResourceId,omitempty"`
-	// GatewayObjectID - Gateway object id from in the DMTS cluster for the gateway resource.
+	// GatewayObjectID - READ-ONLY; Gateway object id from in the DMTS cluster for the gateway resource.
 	GatewayObjectID *string `json:"gatewayObjectId,omitempty"`
-	// DmtsClusterURI - Uri of the DMTS cluster.
+	// DmtsClusterURI - READ-ONLY; Uri of the DMTS cluster.
 	DmtsClusterURI *string `json:"dmtsClusterUri,omitempty"`
 }
 
@@ -223,7 +223,7 @@ type IPv4FirewallSettings struct {
 
 // Operation a Consumption REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -231,11 +231,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Consumption.
+	// Provider - READ-ONLY; Service provider: Microsoft.Consumption.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: UsageDetail, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: UsageDetail, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -243,9 +243,9 @@ type OperationDisplay struct {
 // link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of analysis services operations supported by the Microsoft.AnalysisServices resource provider.
+	// Value - READ-ONLY; List of analysis services operations supported by the Microsoft.AnalysisServices resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -405,11 +405,11 @@ type OperationStatus struct {
 
 // Resource represents an instance of an Analysis Services resource.
 type Resource struct {
-	// ID - An identifier that represents the Analysis Services resource.
+	// ID - READ-ONLY; An identifier that represents the Analysis Services resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the Analysis Services resource.
+	// Name - READ-ONLY; The name of the Analysis Services resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the Analysis Services resource.
+	// Type - READ-ONLY; The type of the Analysis Services resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Location of the Analysis Services resource.
 	Location *string `json:"location,omitempty"`
@@ -422,15 +422,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -458,11 +449,11 @@ type Server struct {
 	autorest.Response `json:"-"`
 	// ServerProperties - Properties of the provision operation request.
 	*ServerProperties `json:"properties,omitempty"`
-	// ID - An identifier that represents the Analysis Services resource.
+	// ID - READ-ONLY; An identifier that represents the Analysis Services resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the Analysis Services resource.
+	// Name - READ-ONLY; The name of the Analysis Services resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the Analysis Services resource.
+	// Type - READ-ONLY; The type of the Analysis Services resource.
 	Type *string `json:"type,omitempty"`
 	// Location - Location of the Analysis Services resource.
 	Location *string `json:"location,omitempty"`
@@ -477,15 +468,6 @@ func (s Server) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.ServerProperties != nil {
 		objectMap["properties"] = s.ServerProperties
-	}
-	if s.ID != nil {
-		objectMap["id"] = s.ID
-	}
-	if s.Name != nil {
-		objectMap["name"] = s.Name
-	}
-	if s.Type != nil {
-		objectMap["type"] = s.Type
 	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
@@ -600,11 +582,11 @@ type ServerMutableProperties struct {
 
 // ServerProperties properties of Analysis Services resource.
 type ServerProperties struct {
-	// State - The current state of Analysis Services resource. The state is to indicate more states outside of resource provisioning. Possible values include: 'StateDeleting', 'StateSucceeded', 'StateFailed', 'StatePaused', 'StateSuspended', 'StateProvisioning', 'StateUpdating', 'StateSuspending', 'StatePausing', 'StateResuming', 'StatePreparing', 'StateScaling'
+	// State - READ-ONLY; The current state of Analysis Services resource. The state is to indicate more states outside of resource provisioning. Possible values include: 'StateDeleting', 'StateSucceeded', 'StateFailed', 'StatePaused', 'StateSuspended', 'StateProvisioning', 'StateUpdating', 'StateSuspending', 'StatePausing', 'StateResuming', 'StatePreparing', 'StateScaling'
 	State State `json:"state,omitempty"`
-	// ProvisioningState - The current deployment state of Analysis Services resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Deleting', 'Succeeded', 'Failed', 'Paused', 'Suspended', 'Provisioning', 'Updating', 'Suspending', 'Pausing', 'Resuming', 'Preparing', 'Scaling'
+	// ProvisioningState - READ-ONLY; The current deployment state of Analysis Services resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Deleting', 'Succeeded', 'Failed', 'Paused', 'Suspended', 'Provisioning', 'Updating', 'Suspending', 'Pausing', 'Resuming', 'Preparing', 'Scaling'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// ServerFullName - The full name of the Analysis Services resource.
+	// ServerFullName - READ-ONLY; The full name of the Analysis Services resource.
 	ServerFullName *string `json:"serverFullName,omitempty"`
 	// AsAdministrators - A collection of AS server administrators
 	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
@@ -635,7 +617,7 @@ type ServersCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersCreateFuture) Result(client ServersClient) (s Server, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -664,7 +646,7 @@ type ServersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -687,7 +669,7 @@ type ServersResumeFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersResumeFuture) Result(client ServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersResumeFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -710,7 +692,7 @@ type ServersSuspendFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersSuspendFuture) Result(client ServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersSuspendFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -733,7 +715,7 @@ type ServersUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ServersUpdateFuture) Result(client ServersClient) (s Server, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersUpdateFuture", "Result", future.Response(), "Polling failure")
 		return

@@ -220,21 +220,21 @@ type CheckNameAvailabilityResult struct {
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
 	// Reason - The reason for unavailability of a namespace. Possible values include: 'None', 'InvalidName', 'SubscriptionIsDisabled', 'NameInUse', 'NameInLockdown', 'TooManyNamespaceInCurrentSubscription'
 	Reason UnavailableReason `json:"reason,omitempty"`
-	// Message - The detailed info regarding the reason associated with the namespace.
+	// Message - READ-ONLY; The detailed info regarding the reason associated with the namespace.
 	Message *string `json:"message,omitempty"`
 }
 
 // MessageCountDetails message Count Details.
 type MessageCountDetails struct {
-	// ActiveMessageCount - Number of active messages in the queue, topic, or subscription.
+	// ActiveMessageCount - READ-ONLY; Number of active messages in the queue, topic, or subscription.
 	ActiveMessageCount *int64 `json:"activeMessageCount,omitempty"`
-	// DeadLetterMessageCount - Number of messages that are dead lettered.
+	// DeadLetterMessageCount - READ-ONLY; Number of messages that are dead lettered.
 	DeadLetterMessageCount *int64 `json:"deadLetterMessageCount,omitempty"`
-	// ScheduledMessageCount - Number of scheduled messages.
+	// ScheduledMessageCount - READ-ONLY; Number of scheduled messages.
 	ScheduledMessageCount *int64 `json:"scheduledMessageCount,omitempty"`
-	// TransferDeadLetterMessageCount - Number of messages transferred into dead letters.
+	// TransferDeadLetterMessageCount - READ-ONLY; Number of messages transferred into dead letters.
 	TransferDeadLetterMessageCount *int64 `json:"transferDeadLetterMessageCount,omitempty"`
-	// TransferMessageCount - Number of messages transferred to another queue, topic, or subscription.
+	// TransferMessageCount - READ-ONLY; Number of messages transferred to another queue, topic, or subscription.
 	TransferMessageCount *int64 `json:"transferMessageCount,omitempty"`
 }
 
@@ -465,15 +465,15 @@ func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListR
 
 // NamespaceProperties properties of the namespace.
 type NamespaceProperties struct {
-	// ProvisioningState - Provisioning state of the namespace.
+	// ProvisioningState - READ-ONLY; Provisioning state of the namespace.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Status - State of the namespace. Possible values include: 'NamespaceStateUnknown', 'NamespaceStateCreating', 'NamespaceStateCreated', 'NamespaceStateActivating', 'NamespaceStateEnabling', 'NamespaceStateActive', 'NamespaceStateDisabling', 'NamespaceStateDisabled', 'NamespaceStateSoftDeleting', 'NamespaceStateSoftDeleted', 'NamespaceStateRemoving', 'NamespaceStateRemoved', 'NamespaceStateFailed'
 	Status NamespaceState `json:"status,omitempty"`
-	// CreatedAt - The time the namespace was created.
+	// CreatedAt - READ-ONLY; The time the namespace was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// UpdatedAt - The time the namespace was updated.
+	// UpdatedAt - READ-ONLY; The time the namespace was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
-	// ServiceBusEndpoint - Endpoint you can use to perform Service Bus operations.
+	// ServiceBusEndpoint - READ-ONLY; Endpoint you can use to perform Service Bus operations.
 	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
 	// CreateACSNamespace - Indicates whether to create an ACS namespace.
 	CreateACSNamespace *bool `json:"createACSNamespace,omitempty"`
@@ -488,13 +488,13 @@ type NamespaceResource struct {
 	*NamespaceProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -510,17 +510,8 @@ func (nr NamespaceResource) MarshalJSON() ([]byte, error) {
 	if nr.Tags != nil {
 		objectMap["tags"] = nr.Tags
 	}
-	if nr.ID != nil {
-		objectMap["id"] = nr.ID
-	}
-	if nr.Name != nil {
-		objectMap["name"] = nr.Name
-	}
 	if nr.Location != nil {
 		objectMap["location"] = nr.Location
-	}
-	if nr.Type != nil {
-		objectMap["type"] = nr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -613,7 +604,7 @@ type NamespacesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (nr NamespaceResource, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -642,7 +633,7 @@ type NamespacesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -677,7 +668,7 @@ func (nup NamespaceUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // Operation a ServiceBus REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -685,11 +676,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.ServiceBus
+	// Provider - READ-ONLY; Service provider: Microsoft.ServiceBus
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -697,9 +688,9 @@ type OperationDisplay struct {
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of ServiceBus operations supported by the Microsoft.ServiceBus resource provider.
+	// Value - READ-ONLY; List of ServiceBus operations supported by the Microsoft.ServiceBus resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1056,13 +1047,13 @@ func NewQueueListResultPage(getNextPage func(context.Context, QueueListResult) (
 type QueueProperties struct {
 	// LockDuration - The duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
 	LockDuration *string `json:"lockDuration,omitempty"`
-	// AccessedAt - Last time a message was sent, or the last time there was a receive request to this queue.
+	// AccessedAt - READ-ONLY; Last time a message was sent, or the last time there was a receive request to this queue.
 	AccessedAt *date.Time `json:"accessedAt,omitempty"`
 	// AutoDeleteOnIdle - the TimeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
 	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
 	// EntityAvailabilityStatus - Entity availability status for the queue. Possible values include: 'Available', 'Limited', 'Renaming', 'Restoring', 'Unknown'
 	EntityAvailabilityStatus EntityAvailabilityStatus `json:"entityAvailabilityStatus,omitempty"`
-	// CreatedAt - The exact time the message was created.
+	// CreatedAt - READ-ONLY; The exact time the message was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// DefaultMessageTimeToLive - The default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
 	DefaultMessageTimeToLive *string `json:"defaultMessageTimeToLive,omitempty"`
@@ -1082,20 +1073,21 @@ type QueueProperties struct {
 	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
 	// MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
 	MaxSizeInMegabytes *int64 `json:"maxSizeInMegabytes,omitempty"`
-	// MessageCount - The number of messages in the queue.
-	MessageCount *int64               `json:"messageCount,omitempty"`
+	// MessageCount - READ-ONLY; The number of messages in the queue.
+	MessageCount *int64 `json:"messageCount,omitempty"`
+	// CountDetails - READ-ONLY
 	CountDetails *MessageCountDetails `json:"countDetails,omitempty"`
 	// RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
 	RequiresDuplicateDetection *bool `json:"requiresDuplicateDetection,omitempty"`
 	// RequiresSession - A value that indicates whether the queue supports the concept of sessions.
 	RequiresSession *bool `json:"requiresSession,omitempty"`
-	// SizeInBytes - The size of the queue, in bytes.
+	// SizeInBytes - READ-ONLY; The size of the queue, in bytes.
 	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
 	// Status - Enumerates the possible values for the status of a messaging entity. Possible values include: 'EntityStatusActive', 'EntityStatusCreating', 'EntityStatusDeleting', 'EntityStatusDisabled', 'EntityStatusReceiveDisabled', 'EntityStatusRenaming', 'EntityStatusRestoring', 'EntityStatusSendDisabled', 'EntityStatusUnknown'
 	Status EntityStatus `json:"status,omitempty"`
 	// SupportOrdering - A value that indicates whether the queue supports ordering.
 	SupportOrdering *bool `json:"supportOrdering,omitempty"`
-	// UpdatedAt - The exact time the message was updated.
+	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 }
 
@@ -1103,13 +1095,13 @@ type QueueProperties struct {
 type QueueResource struct {
 	autorest.Response `json:"-"`
 	*QueueProperties  `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1119,17 +1111,8 @@ func (qr QueueResource) MarshalJSON() ([]byte, error) {
 	if qr.QueueProperties != nil {
 		objectMap["properties"] = qr.QueueProperties
 	}
-	if qr.ID != nil {
-		objectMap["id"] = qr.ID
-	}
-	if qr.Name != nil {
-		objectMap["name"] = qr.Name
-	}
 	if qr.Location != nil {
 		objectMap["location"] = qr.Location
-	}
-	if qr.Type != nil {
-		objectMap["type"] = qr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1202,13 +1185,13 @@ type RegenerateKeysParameters struct {
 
 // Resource the Resource definition for other than namespace.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1452,13 +1435,13 @@ type SharedAccessAuthorizationRuleProperties struct {
 type SharedAccessAuthorizationRuleResource struct {
 	autorest.Response                        `json:"-"`
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1468,17 +1451,8 @@ func (saarr SharedAccessAuthorizationRuleResource) MarshalJSON() ([]byte, error)
 	if saarr.SharedAccessAuthorizationRuleProperties != nil {
 		objectMap["properties"] = saarr.SharedAccessAuthorizationRuleProperties
 	}
-	if saarr.ID != nil {
-		objectMap["id"] = saarr.ID
-	}
-	if saarr.Name != nil {
-		objectMap["name"] = saarr.Name
-	}
 	if saarr.Location != nil {
 		objectMap["location"] = saarr.Location
-	}
-	if saarr.Type != nil {
-		objectMap["type"] = saarr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1767,12 +1741,13 @@ func NewSubscriptionListResultPage(getNextPage func(context.Context, Subscriptio
 
 // SubscriptionProperties description of Subscription Resource.
 type SubscriptionProperties struct {
-	// AccessedAt - Last time there was a receive request to this subscription.
+	// AccessedAt - READ-ONLY; Last time there was a receive request to this subscription.
 	AccessedAt *date.Time `json:"accessedAt,omitempty"`
 	// AutoDeleteOnIdle - TimeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
-	AutoDeleteOnIdle *string              `json:"autoDeleteOnIdle,omitempty"`
-	CountDetails     *MessageCountDetails `json:"countDetails,omitempty"`
-	// CreatedAt - Exact time the message was created.
+	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
+	// CountDetails - READ-ONLY
+	CountDetails *MessageCountDetails `json:"countDetails,omitempty"`
+	// CreatedAt - READ-ONLY; Exact time the message was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// DefaultMessageTimeToLive - Default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
 	DefaultMessageTimeToLive *string `json:"defaultMessageTimeToLive,omitempty"`
@@ -1790,13 +1765,13 @@ type SubscriptionProperties struct {
 	LockDuration *string `json:"lockDuration,omitempty"`
 	// MaxDeliveryCount - Number of maximum deliveries.
 	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
-	// MessageCount - Number of messages.
+	// MessageCount - READ-ONLY; Number of messages.
 	MessageCount *int64 `json:"messageCount,omitempty"`
 	// RequiresSession - Value indicating if a subscription supports the concept of sessions.
 	RequiresSession *bool `json:"requiresSession,omitempty"`
 	// Status - Enumerates the possible values for the status of a messaging entity. Possible values include: 'EntityStatusActive', 'EntityStatusCreating', 'EntityStatusDeleting', 'EntityStatusDisabled', 'EntityStatusReceiveDisabled', 'EntityStatusRenaming', 'EntityStatusRestoring', 'EntityStatusSendDisabled', 'EntityStatusUnknown'
 	Status EntityStatus `json:"status,omitempty"`
-	// UpdatedAt - The exact time the message was updated.
+	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 }
 
@@ -1804,13 +1779,13 @@ type SubscriptionProperties struct {
 type SubscriptionResource struct {
 	autorest.Response       `json:"-"`
 	*SubscriptionProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1820,17 +1795,8 @@ func (sr SubscriptionResource) MarshalJSON() ([]byte, error) {
 	if sr.SubscriptionProperties != nil {
 		objectMap["properties"] = sr.SubscriptionProperties
 	}
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2109,14 +2075,15 @@ func NewTopicListResultPage(getNextPage func(context.Context, TopicListResult) (
 
 // TopicProperties the Topic Properties definition.
 type TopicProperties struct {
-	// AccessedAt - Last time the message was sent, or a request was received, for this topic.
+	// AccessedAt - READ-ONLY; Last time the message was sent, or a request was received, for this topic.
 	AccessedAt *date.Time `json:"accessedAt,omitempty"`
 	// AutoDeleteOnIdle - TimeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
 	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
 	// EntityAvailabilityStatus - Entity availability status for the topic. Possible values include: 'Available', 'Limited', 'Renaming', 'Restoring', 'Unknown'
 	EntityAvailabilityStatus EntityAvailabilityStatus `json:"entityAvailabilityStatus,omitempty"`
-	// CreatedAt - Exact time the message was created.
-	CreatedAt    *date.Time           `json:"createdAt,omitempty"`
+	// CreatedAt - READ-ONLY; Exact time the message was created.
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// CountDetails - READ-ONLY
 	CountDetails *MessageCountDetails `json:"countDetails,omitempty"`
 	// DefaultMessageTimeToLive - Default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
 	DefaultMessageTimeToLive *string `json:"defaultMessageTimeToLive,omitempty"`
@@ -2137,15 +2104,15 @@ type TopicProperties struct {
 	MaxSizeInMegabytes *int64 `json:"maxSizeInMegabytes,omitempty"`
 	// RequiresDuplicateDetection - Value indicating if this topic requires duplicate detection.
 	RequiresDuplicateDetection *bool `json:"requiresDuplicateDetection,omitempty"`
-	// SizeInBytes - Size of the topic, in bytes.
+	// SizeInBytes - READ-ONLY; Size of the topic, in bytes.
 	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
 	// Status - Enumerates the possible values for the status of a messaging entity. Possible values include: 'EntityStatusActive', 'EntityStatusCreating', 'EntityStatusDeleting', 'EntityStatusDisabled', 'EntityStatusReceiveDisabled', 'EntityStatusRenaming', 'EntityStatusRestoring', 'EntityStatusSendDisabled', 'EntityStatusUnknown'
 	Status EntityStatus `json:"status,omitempty"`
-	// SubscriptionCount - Number of subscriptions.
+	// SubscriptionCount - READ-ONLY; Number of subscriptions.
 	SubscriptionCount *int32 `json:"subscriptionCount,omitempty"`
 	// SupportOrdering - Value that indicates whether the topic supports ordering.
 	SupportOrdering *bool `json:"supportOrdering,omitempty"`
-	// UpdatedAt - The exact time the message was updated.
+	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 }
 
@@ -2153,13 +2120,13 @@ type TopicProperties struct {
 type TopicResource struct {
 	autorest.Response `json:"-"`
 	*TopicProperties  `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2169,17 +2136,8 @@ func (tr TopicResource) MarshalJSON() ([]byte, error) {
 	if tr.TopicProperties != nil {
 		objectMap["properties"] = tr.TopicProperties
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2248,13 +2206,13 @@ func (tr *TopicResource) UnmarshalJSON(body []byte) error {
 type TrackedResource struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2264,17 +2222,8 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
 }

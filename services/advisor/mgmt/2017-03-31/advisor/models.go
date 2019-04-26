@@ -318,11 +318,11 @@ func (rp RecommendationProperties) MarshalJSON() ([]byte, error) {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -331,11 +331,11 @@ type ResourceRecommendationBase struct {
 	autorest.Response `json:"-"`
 	// RecommendationProperties - The properties of the recommendation.
 	*RecommendationProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -344,15 +344,6 @@ func (rrb ResourceRecommendationBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rrb.RecommendationProperties != nil {
 		objectMap["properties"] = rrb.RecommendationProperties
-	}
-	if rrb.ID != nil {
-		objectMap["id"] = rrb.ID
-	}
-	if rrb.Name != nil {
-		objectMap["name"] = rrb.Name
-	}
-	if rrb.Type != nil {
-		objectMap["type"] = rrb.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -569,11 +560,11 @@ type SuppressionContract struct {
 	autorest.Response `json:"-"`
 	// SuppressionProperties - The properties of the suppression.
 	*SuppressionProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -582,15 +573,6 @@ func (sc SuppressionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sc.SuppressionProperties != nil {
 		objectMap["properties"] = sc.SuppressionProperties
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
 	}
 	return json.Marshal(objectMap)
 }

@@ -45,11 +45,11 @@ type DocumentStatistics struct {
 // EntitiesBatchResult ...
 type EntitiesBatchResult struct {
 	autorest.Response `json:"-"`
-	// Documents - Response by document
+	// Documents - READ-ONLY; Response by document
 	Documents *[]EntitiesBatchResultItem `json:"documents,omitempty"`
-	// Errors - Errors and Warnings by document
+	// Errors - READ-ONLY; Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
+	// Statistics - READ-ONLY; (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -57,7 +57,7 @@ type EntitiesBatchResult struct {
 type EntitiesBatchResultItem struct {
 	// ID - Unique, non-empty document identifier.
 	ID *string `json:"id,omitempty"`
-	// Entities - Recognized entities in the document.
+	// Entities - READ-ONLY; Recognized entities in the document.
 	Entities *[]EntityRecord `json:"entities,omitempty"`
 	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
@@ -73,7 +73,7 @@ type EntityRecord struct {
 	WikipediaLanguage *string `json:"wikipediaLanguage,omitempty"`
 	// WikipediaID - Wikipedia unique identifier of the recognized entity.
 	WikipediaID *string `json:"wikipediaId,omitempty"`
-	// WikipediaURL - URL for the entity's Wikipedia page.
+	// WikipediaURL - READ-ONLY; URL for the entity's Wikipedia page.
 	WikipediaURL *string `json:"wikipediaUrl,omitempty"`
 	// BingID - Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
 	BingID *string `json:"bingId,omitempty"`
@@ -109,11 +109,11 @@ type InternalError struct {
 // KeyPhraseBatchResult ...
 type KeyPhraseBatchResult struct {
 	autorest.Response `json:"-"`
-	// Documents - Response by document
+	// Documents - READ-ONLY; Response by document
 	Documents *[]KeyPhraseBatchResultItem `json:"documents,omitempty"`
-	// Errors - Errors and Warnings by document
+	// Errors - READ-ONLY; Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - =(Optional) if showStats=true was specified in the request this field will contain information about the request payload.
+	// Statistics - READ-ONLY; =(Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -121,7 +121,7 @@ type KeyPhraseBatchResult struct {
 type KeyPhraseBatchResultItem struct {
 	// ID - Unique, non-empty document identifier.
 	ID *string `json:"id,omitempty"`
-	// KeyPhrases - A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
+	// KeyPhrases - READ-ONLY; A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
 	KeyPhrases *[]string `json:"keyPhrases,omitempty"`
 	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
@@ -135,11 +135,11 @@ type LanguageBatchInput struct {
 // LanguageBatchResult ...
 type LanguageBatchResult struct {
 	autorest.Response `json:"-"`
-	// Documents - Response by document
+	// Documents - READ-ONLY; Response by document
 	Documents *[]LanguageBatchResultItem `json:"documents,omitempty"`
-	// Errors - Errors and Warnings by document
+	// Errors - READ-ONLY; Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
+	// Statistics - READ-ONLY; (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
@@ -203,11 +203,11 @@ type RequestStatistics struct {
 
 // SentimentBatchResult ...
 type SentimentBatchResult struct {
-	// Documents - Response by document
+	// Documents - READ-ONLY; Response by document
 	Documents *[]SentimentBatchResultItem `json:"documents,omitempty"`
-	// Errors - Errors and Warnings by document
+	// Errors - READ-ONLY; Errors and Warnings by document
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
-	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
+	// Statistics - READ-ONLY; (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 

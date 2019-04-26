@@ -126,9 +126,9 @@ func PossibleSkuNameValues() []SkuName {
 // AccessKeys redis cache access keys.
 type AccessKeys struct {
 	autorest.Response `json:"-"`
-	// PrimaryKey - The current primary key that clients can use to authenticate with Redis cache.
+	// PrimaryKey - READ-ONLY; The current primary key that clients can use to authenticate with Redis cache.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
-	// SecondaryKey - The current secondary key that clients can use to authenticate with Redis cache.
+	// SecondaryKey - READ-ONLY; The current secondary key that clients can use to authenticate with Redis cache.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -141,7 +141,7 @@ type CreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CreateFuture) Result(client Client) (rt ResourceType, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.CreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -164,11 +164,11 @@ func (future *CreateFuture) Result(client Client) (rt ResourceType, err error) {
 type CreateParameters struct {
 	// CreateProperties - Redis cache properties.
 	*CreateProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -181,15 +181,6 @@ func (cp CreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cp.CreateProperties != nil {
 		objectMap["properties"] = cp.CreateProperties
-	}
-	if cp.ID != nil {
-		objectMap["id"] = cp.ID
-	}
-	if cp.Name != nil {
-		objectMap["name"] = cp.Name
-	}
-	if cp.Type != nil {
-		objectMap["type"] = cp.Type
 	}
 	if cp.Location != nil {
 		objectMap["location"] = cp.Location
@@ -323,7 +314,7 @@ type DeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -345,7 +336,7 @@ type ExportDataFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ExportDataFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.ExportDataFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -372,11 +363,11 @@ type ExportRDBParameters struct {
 // addresses permitted to connect
 type FirewallRule struct {
 	autorest.Response `json:"-"`
-	// ID - resource ID (of the firewall rule)
+	// ID - READ-ONLY; resource ID (of the firewall rule)
 	ID *string `json:"id,omitempty"`
-	// Name - name of the firewall rule
+	// Name - READ-ONLY; name of the firewall rule
 	Name *string `json:"name,omitempty"`
-	// Type - type (of the firewall rule resource = 'Microsoft.Cache/redis/firewallRule')
+	// Type - READ-ONLY; type (of the firewall rule resource = 'Microsoft.Cache/redis/firewallRule')
 	Type *string `json:"type,omitempty"`
 	// FirewallRuleProperties - redis cache firewall rule properties
 	*FirewallRuleProperties `json:"properties,omitempty"`
@@ -385,15 +376,6 @@ type FirewallRule struct {
 // MarshalJSON is the custom marshaler for FirewallRule.
 func (fr FirewallRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fr.ID != nil {
-		objectMap["id"] = fr.ID
-	}
-	if fr.Name != nil {
-		objectMap["name"] = fr.Name
-	}
-	if fr.Type != nil {
-		objectMap["type"] = fr.Type
-	}
 	if fr.FirewallRuleProperties != nil {
 		objectMap["properties"] = fr.FirewallRuleProperties
 	}
@@ -608,7 +590,7 @@ type FirewallRuleProperties struct {
 // ForceRebootResponse response to force reboot for Redis cache.
 type ForceRebootResponse struct {
 	autorest.Response `json:"-"`
-	// Message - Status message
+	// Message - READ-ONLY; Status message
 	Message *string `json:"Message,omitempty"`
 }
 
@@ -621,7 +603,7 @@ type ImportDataFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ImportDataFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.ImportDataFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -958,13 +940,13 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 // PatchSchedule response to put/get patch schedules for Redis cache.
 type PatchSchedule struct {
 	autorest.Response `json:"-"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
+	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
 	// ScheduleEntries - List of patch schedules for a Redis cache.
 	*ScheduleEntries `json:"properties,omitempty"`
@@ -973,18 +955,6 @@ type PatchSchedule struct {
 // MarshalJSON is the custom marshaler for PatchSchedule.
 func (ps PatchSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ps.ID != nil {
-		objectMap["id"] = ps.ID
-	}
-	if ps.Name != nil {
-		objectMap["name"] = ps.Name
-	}
-	if ps.Type != nil {
-		objectMap["type"] = ps.Type
-	}
-	if ps.Location != nil {
-		objectMap["location"] = ps.Location
-	}
 	if ps.ScheduleEntries != nil {
 		objectMap["properties"] = ps.ScheduleEntries
 	}
@@ -1107,11 +1077,11 @@ type RegenerateKeyParameters struct {
 
 // Resource the Resource definition.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1122,15 +1092,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -1144,17 +1105,17 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ResourceProperties struct {
 	// Sku - The SKU of the Redis cache to deploy.
 	Sku *Sku `json:"sku,omitempty"`
-	// RedisVersion - Redis version.
+	// RedisVersion - READ-ONLY; Redis version.
 	RedisVersion *string `json:"redisVersion,omitempty"`
-	// ProvisioningState - Redis instance provisioning status.
+	// ProvisioningState - READ-ONLY; Redis instance provisioning status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// HostName - Redis host name.
+	// HostName - READ-ONLY; Redis host name.
 	HostName *string `json:"hostName,omitempty"`
-	// Port - Redis non-SSL port.
+	// Port - READ-ONLY; Redis non-SSL port.
 	Port *int32 `json:"port,omitempty"`
-	// SslPort - Redis SSL port.
+	// SslPort - READ-ONLY; Redis SSL port.
 	SslPort *int32 `json:"sslPort,omitempty"`
-	// AccessKeys - The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
+	// AccessKeys - READ-ONLY; The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
 	AccessKeys *AccessKeys `json:"accessKeys,omitempty"`
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
 	RedisConfiguration map[string]*string `json:"redisConfiguration"`
@@ -1175,24 +1136,6 @@ func (rp ResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rp.Sku != nil {
 		objectMap["sku"] = rp.Sku
-	}
-	if rp.RedisVersion != nil {
-		objectMap["redisVersion"] = rp.RedisVersion
-	}
-	if rp.ProvisioningState != nil {
-		objectMap["provisioningState"] = rp.ProvisioningState
-	}
-	if rp.HostName != nil {
-		objectMap["hostName"] = rp.HostName
-	}
-	if rp.Port != nil {
-		objectMap["port"] = rp.Port
-	}
-	if rp.SslPort != nil {
-		objectMap["sslPort"] = rp.SslPort
-	}
-	if rp.AccessKeys != nil {
-		objectMap["accessKeys"] = rp.AccessKeys
 	}
 	if rp.RedisConfiguration != nil {
 		objectMap["redisConfiguration"] = rp.RedisConfiguration
@@ -1220,11 +1163,11 @@ type ResourceType struct {
 	autorest.Response `json:"-"`
 	// ResourceProperties - Redis cache properties.
 	*ResourceProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1237,15 +1180,6 @@ func (rt ResourceType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rt.ResourceProperties != nil {
 		objectMap["properties"] = rt.ResourceProperties
-	}
-	if rt.ID != nil {
-		objectMap["id"] = rt.ID
-	}
-	if rt.Name != nil {
-		objectMap["name"] = rt.Name
-	}
-	if rt.Type != nil {
-		objectMap["type"] = rt.Type
 	}
 	if rt.Location != nil {
 		objectMap["location"] = rt.Location

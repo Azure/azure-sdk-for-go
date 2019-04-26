@@ -106,11 +106,11 @@ type AuthorizationRule struct {
 	autorest.Response `json:"-"`
 	// AuthorizationRuleProperties - Authorization Rule properties
 	*AuthorizationRuleProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -119,15 +119,6 @@ func (ar AuthorizationRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ar.AuthorizationRuleProperties != nil {
 		objectMap["properties"] = ar.AuthorizationRuleProperties
-	}
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -363,7 +354,7 @@ type CheckNameAvailabilityResult struct {
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
 	// Reason - The reason for unavailability of a namespace. Possible values include: 'None', 'InvalidName', 'SubscriptionIsDisabled', 'NameInUse', 'NameInLockdown', 'TooManyNamespaceInCurrentSubscription'
 	Reason UnavailableReason `json:"reason,omitempty"`
-	// Message - The detailed info regarding the reason associated with the namespace.
+	// Message - READ-ONLY; The detailed info regarding the reason associated with the namespace.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -381,11 +372,11 @@ type HybridConnection struct {
 	autorest.Response `json:"-"`
 	// HybridConnectionProperties - Properties of HybridConnection
 	*HybridConnectionProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -394,15 +385,6 @@ func (hc HybridConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if hc.HybridConnectionProperties != nil {
 		objectMap["properties"] = hc.HybridConnectionProperties
-	}
-	if hc.ID != nil {
-		objectMap["id"] = hc.ID
-	}
-	if hc.Name != nil {
-		objectMap["name"] = hc.Name
-	}
-	if hc.Type != nil {
-		objectMap["type"] = hc.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -606,11 +588,11 @@ func NewHybridConnectionListResultPage(getNextPage func(context.Context, HybridC
 
 // HybridConnectionProperties properties of the HybridConnection.
 type HybridConnectionProperties struct {
-	// CreatedAt - The time the HybridConnection was created.
+	// CreatedAt - READ-ONLY; The time the HybridConnection was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// UpdatedAt - The time the namespace was updated.
+	// UpdatedAt - READ-ONLY; The time the namespace was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
-	// ListenerCount - The number of listeners for this HybridConnection. min : 1 and max:25 supported
+	// ListenerCount - READ-ONLY; The number of listeners for this HybridConnection. min : 1 and max:25 supported
 	ListenerCount *int32 `json:"listenerCount,omitempty"`
 	// RequiresClientAuthorization - true if client authorization is needed for this HybridConnection; otherwise, false.
 	RequiresClientAuthorization *bool `json:"requiresClientAuthorization,omitempty"`
@@ -629,11 +611,11 @@ type Namespace struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -651,15 +633,6 @@ func (n Namespace) MarshalJSON() ([]byte, error) {
 	}
 	if n.Tags != nil {
 		objectMap["tags"] = n.Tags
-	}
-	if n.ID != nil {
-		objectMap["id"] = n.ID
-	}
-	if n.Name != nil {
-		objectMap["name"] = n.Name
-	}
-	if n.Type != nil {
-		objectMap["type"] = n.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -890,15 +863,15 @@ func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListR
 
 // NamespaceProperties properties of the Namespace.
 type NamespaceProperties struct {
-	// ProvisioningState - Provisioning state of the namespace.
+	// ProvisioningState - READ-ONLY; Provisioning state of the namespace.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// CreatedAt - The time the namespace was created.
+	// CreatedAt - READ-ONLY; The time the namespace was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// UpdatedAt - The time the namespace was updated.
+	// UpdatedAt - READ-ONLY; The time the namespace was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
-	// ServiceBusEndpoint - Endpoint you can use to perform Service Bus operations.
+	// ServiceBusEndpoint - READ-ONLY; Endpoint you can use to perform Service Bus operations.
 	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
-	// MetricID - Identifier for Azure Insights metrics
+	// MetricID - READ-ONLY; Identifier for Azure Insights metrics
 	MetricID *string `json:"metricId,omitempty"`
 }
 
@@ -912,7 +885,7 @@ type NamespacesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (n Namespace, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -941,7 +914,7 @@ type NamespacesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *NamespacesDeleteFuture) Result(client NamespacesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -976,7 +949,7 @@ func (nup NamespaceUpdateParameter) MarshalJSON() ([]byte, error) {
 
 // Operation a EventHub REST API operation
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -984,11 +957,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.EventHub
+	// Provider - READ-ONLY; Service provider: Microsoft.EventHub
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -996,9 +969,9 @@ type OperationDisplay struct {
 // and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of EventHub operations supported by the Microsoft.EventHub resource provider.
+	// Value - READ-ONLY; List of EventHub operations supported by the Microsoft.EventHub resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1147,11 +1120,11 @@ type RegenerateKeysParameters struct {
 
 // Resource the Resource definition
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1169,11 +1142,11 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1186,15 +1159,6 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1203,11 +1167,11 @@ type WcfRelay struct {
 	autorest.Response `json:"-"`
 	// WcfRelayProperties - Properties of WcfRelay
 	*WcfRelayProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1216,15 +1180,6 @@ func (wr WcfRelay) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if wr.WcfRelayProperties != nil {
 		objectMap["properties"] = wr.WcfRelayProperties
-	}
-	if wr.ID != nil {
-		objectMap["id"] = wr.ID
-	}
-	if wr.Name != nil {
-		objectMap["name"] = wr.Name
-	}
-	if wr.Type != nil {
-		objectMap["type"] = wr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1284,17 +1239,17 @@ func (wr *WcfRelay) UnmarshalJSON(body []byte) error {
 type WcfRelayProperties struct {
 	// RelayType - WCFRelay Type. Possible values include: 'NetTCP', 'HTTP'
 	RelayType RelaytypeEnum `json:"relayType,omitempty"`
-	// CreatedAt - The time the WCFRelay was created.
+	// CreatedAt - READ-ONLY; The time the WCFRelay was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// UpdatedAt - The time the namespace was updated.
+	// UpdatedAt - READ-ONLY; The time the namespace was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
-	// ListenerCount - The number of listeners for this relay. min : 1 and max:25 supported
+	// ListenerCount - READ-ONLY; The number of listeners for this relay. min : 1 and max:25 supported
 	ListenerCount *int32 `json:"listenerCount,omitempty"`
 	// RequiresClientAuthorization - true if client authorization is needed for this relay; otherwise, false.
 	RequiresClientAuthorization *bool `json:"requiresClientAuthorization,omitempty"`
 	// RequiresTransportSecurity - true if transport security is needed for this relay; otherwise, false.
 	RequiresTransportSecurity *bool `json:"requiresTransportSecurity,omitempty"`
-	// IsDynamic - true if the relay is dynamic; otherwise, false.
+	// IsDynamic - READ-ONLY; true if the relay is dynamic; otherwise, false.
 	IsDynamic *bool `json:"isDynamic,omitempty"`
 	// UserMetadata - usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
 	UserMetadata *string `json:"userMetadata,omitempty"`

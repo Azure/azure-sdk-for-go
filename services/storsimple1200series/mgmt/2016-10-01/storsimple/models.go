@@ -666,11 +666,11 @@ type AccessControlRecord struct {
 	autorest.Response `json:"-"`
 	// AccessControlRecordProperties - Properties of AccessControlRecord
 	*AccessControlRecordProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -679,15 +679,6 @@ func (acr AccessControlRecord) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if acr.AccessControlRecordProperties != nil {
 		objectMap["properties"] = acr.AccessControlRecordProperties
-	}
-	if acr.ID != nil {
-		objectMap["id"] = acr.ID
-	}
-	if acr.Name != nil {
-		objectMap["name"] = acr.Name
-	}
-	if acr.Type != nil {
-		objectMap["type"] = acr.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -766,7 +757,7 @@ type AccessControlRecordsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessControlRecordsClient) (acr AccessControlRecord, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -795,7 +786,7 @@ type AccessControlRecordsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccessControlRecordsDeleteFuture) Result(client AccessControlRecordsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -812,11 +803,11 @@ func (future *AccessControlRecordsDeleteFuture) Result(client AccessControlRecor
 type Alert struct {
 	// AlertProperties - Properties of alert
 	*AlertProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -825,15 +816,6 @@ func (a Alert) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AlertProperties != nil {
 		objectMap["properties"] = a.AlertProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1144,11 +1126,11 @@ type AlertSettings struct {
 	autorest.Response `json:"-"`
 	// AlertSettingsProperties - Properties of AlertSettings
 	*AlertSettingsProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1157,15 +1139,6 @@ func (as AlertSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if as.AlertSettingsProperties != nil {
 		objectMap["properties"] = as.AlertSettingsProperties
-	}
-	if as.ID != nil {
-		objectMap["id"] = as.ID
-	}
-	if as.Name != nil {
-		objectMap["name"] = as.Name
-	}
-	if as.Type != nil {
-		objectMap["type"] = as.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1452,11 +1425,11 @@ func NewAvailableProviderOperationsPage(getNextPage func(context.Context, Availa
 type Backup struct {
 	// BackupProperties - Properties of backup
 	*BackupProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1465,15 +1438,6 @@ func (b Backup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if b.BackupProperties != nil {
 		objectMap["properties"] = b.BackupProperties
-	}
-	if b.ID != nil {
-		objectMap["id"] = b.ID
-	}
-	if b.Name != nil {
-		objectMap["name"] = b.Name
-	}
-	if b.Type != nil {
-		objectMap["type"] = b.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1533,11 +1497,11 @@ func (b *Backup) UnmarshalJSON(body []byte) error {
 type BackupElement struct {
 	// BackupElementProperties - The Properties of backup element
 	*BackupElementProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1546,15 +1510,6 @@ func (be BackupElement) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if be.BackupElementProperties != nil {
 		objectMap["properties"] = be.BackupElementProperties
-	}
-	if be.ID != nil {
-		objectMap["id"] = be.ID
-	}
-	if be.Name != nil {
-		objectMap["name"] = be.Name
-	}
-	if be.Type != nil {
-		objectMap["type"] = be.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1799,11 +1754,11 @@ type BackupScheduleGroup struct {
 	autorest.Response `json:"-"`
 	// BackupScheduleGroupProperties - Properties of BackupScheduleGroup
 	*BackupScheduleGroupProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1812,15 +1767,6 @@ func (bsg BackupScheduleGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bsg.BackupScheduleGroupProperties != nil {
 		objectMap["properties"] = bsg.BackupScheduleGroupProperties
-	}
-	if bsg.ID != nil {
-		objectMap["id"] = bsg.ID
-	}
-	if bsg.Name != nil {
-		objectMap["name"] = bsg.Name
-	}
-	if bsg.Type != nil {
-		objectMap["type"] = bsg.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1899,7 +1845,7 @@ type BackupScheduleGroupsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupScheduleGroupsCreateOrUpdateFuture) Result(client BackupScheduleGroupsClient) (bsg BackupScheduleGroup, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1928,7 +1874,7 @@ type BackupScheduleGroupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupScheduleGroupsDeleteFuture) Result(client BackupScheduleGroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1950,7 +1896,7 @@ type BackupsCloneFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsCloneFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1973,7 +1919,7 @@ type BackupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupsDeleteFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1988,11 +1934,11 @@ func (future *BackupsDeleteFuture) Result(client BackupsClient) (ar autorest.Res
 
 // BaseModel base class for models
 type BaseModel struct {
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2007,11 +1953,11 @@ type ChapSettings struct {
 	autorest.Response `json:"-"`
 	// ChapProperties - Chap properties
 	*ChapProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2020,15 +1966,6 @@ func (cs ChapSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cs.ChapProperties != nil {
 		objectMap["properties"] = cs.ChapProperties
-	}
-	if cs.ID != nil {
-		objectMap["id"] = cs.ID
-	}
-	if cs.Name != nil {
-		objectMap["name"] = cs.Name
-	}
-	if cs.Type != nil {
-		objectMap["type"] = cs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2094,7 +2031,7 @@ type ChapSettingsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ChapSettingsCreateOrUpdateFuture) Result(client ChapSettingsClient) (cs ChapSettings, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2123,7 +2060,7 @@ type ChapSettingsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ChapSettingsDeleteFuture) Result(client ChapSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2209,11 +2146,11 @@ type Device struct {
 	autorest.Response `json:"-"`
 	// DeviceProperties - Collection of properties for the device
 	*DeviceProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2222,15 +2159,6 @@ func (d Device) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DeviceProperties != nil {
 		objectMap["properties"] = d.DeviceProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2364,7 +2292,7 @@ type DevicesCreateOrUpdateAlertSettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesCreateOrUpdateAlertSettingsFuture) Result(client DevicesClient) (as AlertSettings, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesCreateOrUpdateAlertSettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2393,7 +2321,7 @@ type DevicesCreateOrUpdateSecuritySettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesCreateOrUpdateSecuritySettingsFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesCreateOrUpdateSecuritySettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2416,7 +2344,7 @@ type DevicesDeactivateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesDeactivateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2439,7 +2367,7 @@ type DevicesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2462,7 +2390,7 @@ type DevicesDownloadUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDownloadUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesDownloadUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2485,7 +2413,7 @@ type DevicesFailoverFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesFailoverFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesFailoverFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2508,7 +2436,7 @@ type DevicesInstallUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesInstallUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesInstallUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2530,7 +2458,7 @@ type DevicesPatchFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesPatchFuture) Result(client DevicesClient) (d Device, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesPatchFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2559,7 +2487,7 @@ type DevicesScanForUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesScanForUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesScanForUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2577,11 +2505,11 @@ type EncryptionSettings struct {
 	autorest.Response `json:"-"`
 	// EncryptionSettingsProperties - Properties of the EncryptionSettings.
 	*EncryptionSettingsProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2590,15 +2518,6 @@ func (es EncryptionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if es.EncryptionSettingsProperties != nil {
 		objectMap["properties"] = es.EncryptionSettingsProperties
-	}
-	if es.ID != nil {
-		objectMap["id"] = es.ID
-	}
-	if es.Name != nil {
-		objectMap["name"] = es.Name
-	}
-	if es.Type != nil {
-		objectMap["type"] = es.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2682,11 +2601,11 @@ type FileServer struct {
 	autorest.Response `json:"-"`
 	// FileServerProperties - The properties.
 	*FileServerProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2695,15 +2614,6 @@ func (fs FileServer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if fs.FileServerProperties != nil {
 		objectMap["properties"] = fs.FileServerProperties
-	}
-	if fs.ID != nil {
-		objectMap["id"] = fs.ID
-	}
-	if fs.Name != nil {
-		objectMap["name"] = fs.Name
-	}
-	if fs.Type != nil {
-		objectMap["type"] = fs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2788,7 +2698,7 @@ type FileServersBackupNowFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileServersBackupNowFuture) Result(client FileServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersBackupNowFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2811,7 +2721,7 @@ type FileServersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileServersCreateOrUpdateFuture) Result(client FileServersClient) (fs FileServer, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2840,7 +2750,7 @@ type FileServersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileServersDeleteFuture) Result(client FileServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2858,11 +2768,11 @@ type FileShare struct {
 	autorest.Response `json:"-"`
 	// FileShareProperties - The properties.
 	*FileShareProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2871,15 +2781,6 @@ func (fs FileShare) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if fs.FileShareProperties != nil {
 		objectMap["properties"] = fs.FileShareProperties
-	}
-	if fs.ID != nil {
-		objectMap["id"] = fs.ID
-	}
-	if fs.Name != nil {
-		objectMap["name"] = fs.Name
-	}
-	if fs.Type != nil {
-		objectMap["type"] = fs.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -2954,9 +2855,9 @@ type FileShareProperties struct {
 	AdminUser *string `json:"adminUser,omitempty"`
 	// ProvisionedCapacityInBytes - The total provisioned capacity in Bytes
 	ProvisionedCapacityInBytes *int64 `json:"provisionedCapacityInBytes,omitempty"`
-	// UsedCapacityInBytes - The used capacity in Bytes.
+	// UsedCapacityInBytes - READ-ONLY; The used capacity in Bytes.
 	UsedCapacityInBytes *int64 `json:"usedCapacityInBytes,omitempty"`
-	// LocalUsedCapacityInBytes - The local used capacity in Bytes.
+	// LocalUsedCapacityInBytes - READ-ONLY; The local used capacity in Bytes.
 	LocalUsedCapacityInBytes *int64 `json:"localUsedCapacityInBytes,omitempty"`
 	// MonitoringStatus - The monitoring status. Possible values include: 'MonitoringStatusEnabled', 'MonitoringStatusDisabled'
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
@@ -2972,7 +2873,7 @@ type FileSharesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileSharesCreateOrUpdateFuture) Result(client FileSharesClient) (fs FileShare, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3001,7 +2902,7 @@ type FileSharesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FileSharesDeleteFuture) Result(client FileSharesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.FileSharesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3029,11 +2930,11 @@ type ISCSIDisk struct {
 	autorest.Response `json:"-"`
 	// ISCSIDiskProperties - The properties.
 	*ISCSIDiskProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3042,15 +2943,6 @@ func (ID ISCSIDisk) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ID.ISCSIDiskProperties != nil {
 		objectMap["properties"] = ID.ISCSIDiskProperties
-	}
-	if ID.ID != nil {
-		objectMap["id"] = ID.ID
-	}
-	if ID.Name != nil {
-		objectMap["name"] = ID.Name
-	}
-	if ID.Type != nil {
-		objectMap["type"] = ID.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3125,9 +3017,9 @@ type ISCSIDiskProperties struct {
 	DataPolicy DataPolicy `json:"dataPolicy,omitempty"`
 	// ProvisionedCapacityInBytes - The provisioned capacity in bytes.
 	ProvisionedCapacityInBytes *int64 `json:"provisionedCapacityInBytes,omitempty"`
-	// UsedCapacityInBytes - The used capacity in bytes.
+	// UsedCapacityInBytes - READ-ONLY; The used capacity in bytes.
 	UsedCapacityInBytes *int64 `json:"usedCapacityInBytes,omitempty"`
-	// LocalUsedCapacityInBytes - The local used capacity in bytes.
+	// LocalUsedCapacityInBytes - READ-ONLY; The local used capacity in bytes.
 	LocalUsedCapacityInBytes *int64 `json:"localUsedCapacityInBytes,omitempty"`
 	// MonitoringStatus - The monitoring. Possible values include: 'MonitoringStatusEnabled', 'MonitoringStatusDisabled'
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
@@ -3143,7 +3035,7 @@ type IscsiDisksCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IscsiDisksCreateOrUpdateFuture) Result(client IscsiDisksClient) (ID ISCSIDisk, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3172,7 +3064,7 @@ type IscsiDisksDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IscsiDisksDeleteFuture) Result(client IscsiDisksClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3190,11 +3082,11 @@ type ISCSIServer struct {
 	autorest.Response `json:"-"`
 	// ISCSIServerProperties - The properties.
 	*ISCSIServerProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3203,15 +3095,6 @@ func (is ISCSIServer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if is.ISCSIServerProperties != nil {
 		objectMap["properties"] = is.ISCSIServerProperties
-	}
-	if is.ID != nil {
-		objectMap["id"] = is.ID
-	}
-	if is.Name != nil {
-		objectMap["name"] = is.Name
-	}
-	if is.Type != nil {
-		objectMap["type"] = is.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3298,7 +3181,7 @@ type IscsiServersBackupNowFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IscsiServersBackupNowFuture) Result(client IscsiServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersBackupNowFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3321,7 +3204,7 @@ type IscsiServersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IscsiServersCreateOrUpdateFuture) Result(client IscsiServersClient) (is ISCSIServer, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3350,7 +3233,7 @@ type IscsiServersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *IscsiServersDeleteFuture) Result(client IscsiServersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.IscsiServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3384,11 +3267,11 @@ type Job struct {
 	Error *JobErrorDetails `json:"error,omitempty"`
 	// JobProperties - Other properties of the job
 	*JobProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3412,15 +3295,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	}
 	if j.JobProperties != nil {
 		objectMap["properties"] = j.JobProperties
-	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -3756,11 +3630,11 @@ type Manager struct {
 	*ManagerProperties `json:"properties,omitempty"`
 	// Etag - ETag of the Manager
 	Etag *string `json:"etag,omitempty"`
-	// ID - The Resource Id
+	// ID - READ-ONLY; The Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - The Resource Name
+	// Name - READ-ONLY; The Resource Name
 	Name *string `json:"name,omitempty"`
-	// Type - The Resource type
+	// Type - READ-ONLY; The Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - The Geo location of the Manager
 	Location *string `json:"location,omitempty"`
@@ -3776,15 +3650,6 @@ func (mVar Manager) MarshalJSON() ([]byte, error) {
 	}
 	if mVar.Etag != nil {
 		objectMap["etag"] = mVar.Etag
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
 	}
 	if mVar.Location != nil {
 		objectMap["location"] = mVar.Location
@@ -3880,11 +3745,11 @@ type ManagerExtendedInfo struct {
 	*ManagerExtendedInfoProperties `json:"properties,omitempty"`
 	// Etag - ETag of the Resource
 	Etag *string `json:"etag,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3896,15 +3761,6 @@ func (mei ManagerExtendedInfo) MarshalJSON() ([]byte, error) {
 	}
 	if mei.Etag != nil {
 		objectMap["etag"] = mei.Etag
-	}
-	if mei.ID != nil {
-		objectMap["id"] = mei.ID
-	}
-	if mei.Name != nil {
-		objectMap["name"] = mei.Name
-	}
-	if mei.Type != nil {
-		objectMap["type"] = mei.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4019,7 +3875,7 @@ type ManagerProperties struct {
 	CisIntrinsicSettings *ManagerIntrinsicSettings `json:"cisIntrinsicSettings,omitempty"`
 	// Sku - Specifies the Sku
 	Sku *ManagerSku `json:"sku,omitempty"`
-	// ProvisioningState - Specifies the state of the resource as it is getting provisioned. Value of "Succeeded" means the Manager was successfully created
+	// ProvisioningState - READ-ONLY; Specifies the state of the resource as it is getting provisioned. Value of "Succeeded" means the Manager was successfully created
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -4169,11 +4025,11 @@ type NetworkSettings struct {
 	autorest.Response `json:"-"`
 	// NetworkSettingsProperties - Properties of the given NetworkSettings.
 	*NetworkSettingsProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4182,15 +4038,6 @@ func (ns NetworkSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ns.NetworkSettingsProperties != nil {
 		objectMap["properties"] = ns.NetworkSettingsProperties
-	}
-	if ns.ID != nil {
-		objectMap["id"] = ns.ID
-	}
-	if ns.Name != nil {
-		objectMap["name"] = ns.Name
-	}
-	if ns.Type != nil {
-		objectMap["type"] = ns.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4272,11 +4119,11 @@ type RawCertificateData struct {
 
 // Resource the Azure Resource.
 type Resource struct {
-	// ID - The Resource Id
+	// ID - READ-ONLY; The Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - The Resource Name
+	// Name - READ-ONLY; The Resource Name
 	Name *string `json:"name,omitempty"`
-	// Type - The Resource type
+	// Type - READ-ONLY; The Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - The Geo location of the Manager
 	Location *string `json:"location,omitempty"`
@@ -4287,15 +4134,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -4341,11 +4179,11 @@ type ResourceCertificateAndAADDetails struct {
 type SecuritySettings struct {
 	// SecuritySettingsProperties - Properties of the SecuritySettings.
 	*SecuritySettingsProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4354,15 +4192,6 @@ func (ss SecuritySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ss.SecuritySettingsProperties != nil {
 		objectMap["properties"] = ss.SecuritySettingsProperties
-	}
-	if ss.ID != nil {
-		objectMap["id"] = ss.ID
-	}
-	if ss.Name != nil {
-		objectMap["name"] = ss.Name
-	}
-	if ss.Type != nil {
-		objectMap["type"] = ss.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4435,11 +4264,11 @@ type StorageAccountCredential struct {
 	autorest.Response `json:"-"`
 	// StorageAccountCredentialProperties - Credential properties
 	*StorageAccountCredentialProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4448,15 +4277,6 @@ func (sac StorageAccountCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sac.StorageAccountCredentialProperties != nil {
 		objectMap["properties"] = sac.StorageAccountCredentialProperties
-	}
-	if sac.ID != nil {
-		objectMap["id"] = sac.ID
-	}
-	if sac.Name != nil {
-		objectMap["name"] = sac.Name
-	}
-	if sac.Type != nil {
-		objectMap["type"] = sac.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4545,7 +4365,7 @@ type StorageAccountCredentialsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageAccountCredentialsCreateOrUpdateFuture) Result(client StorageAccountCredentialsClient) (sac StorageAccountCredential, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4574,7 +4394,7 @@ type StorageAccountCredentialsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageAccountCredentialsDeleteFuture) Result(client StorageAccountCredentialsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4592,11 +4412,11 @@ type StorageDomain struct {
 	autorest.Response `json:"-"`
 	// StorageDomainProperties - The properties.
 	*StorageDomainProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4605,15 +4425,6 @@ func (sd StorageDomain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sd.StorageDomainProperties != nil {
 		objectMap["properties"] = sd.StorageDomainProperties
-	}
-	if sd.ID != nil {
-		objectMap["id"] = sd.ID
-	}
-	if sd.Name != nil {
-		objectMap["name"] = sd.Name
-	}
-	if sd.Type != nil {
-		objectMap["type"] = sd.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4696,7 +4507,7 @@ type StorageDomainsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageDomainsCreateOrUpdateFuture) Result(client StorageDomainsClient) (sd StorageDomain, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4725,7 +4536,7 @@ type StorageDomainsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageDomainsDeleteFuture) Result(client StorageDomainsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4765,11 +4576,11 @@ type TimeSettings struct {
 	autorest.Response `json:"-"`
 	// TimeSettingsProperties - Properties of the TimeSettings.
 	*TimeSettingsProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4778,15 +4589,6 @@ func (ts TimeSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ts.TimeSettingsProperties != nil {
 		objectMap["properties"] = ts.TimeSettingsProperties
-	}
-	if ts.ID != nil {
-		objectMap["id"] = ts.ID
-	}
-	if ts.Name != nil {
-		objectMap["name"] = ts.Name
-	}
-	if ts.Type != nil {
-		objectMap["type"] = ts.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4883,11 +4685,11 @@ type Updates struct {
 	autorest.Response `json:"-"`
 	// UpdatesProperties - Update properties.
 	*UpdatesProperties `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4896,15 +4698,6 @@ func (u Updates) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if u.UpdatesProperties != nil {
 		objectMap["properties"] = u.UpdatesProperties
-	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4997,7 +4790,7 @@ type UpdatesProperties struct {
 // UploadCertificateRequest upload Certificate Request to IDM
 type UploadCertificateRequest struct {
 	*RawCertificateData `json:"properties,omitempty"`
-	// ContractVersion - Gets ContractVersion. Possible values include: 'InvalidVersion', 'V201109', 'V201202', 'V201205', 'V201212', 'V201304', 'V201310', 'V201311', 'V201404', 'V201406', 'V201407', 'V201409', 'V201410', 'V201412', 'V201501', 'V201502', 'V201504', 'V201505', 'V201506', 'V201507', 'V201508', 'V201510', 'V201512', 'V201601', 'V201602', 'V201604', 'V201605', 'V201607', 'V201608'
+	// ContractVersion - READ-ONLY; Gets ContractVersion. Possible values include: 'InvalidVersion', 'V201109', 'V201202', 'V201205', 'V201212', 'V201304', 'V201310', 'V201311', 'V201404', 'V201406', 'V201407', 'V201409', 'V201410', 'V201412', 'V201501', 'V201502', 'V201504', 'V201505', 'V201506', 'V201507', 'V201508', 'V201510', 'V201512', 'V201601', 'V201602', 'V201604', 'V201605', 'V201607', 'V201608'
 	ContractVersion ContractVersions `json:"contractVersion,omitempty"`
 }
 
@@ -5006,9 +4799,6 @@ func (ucr UploadCertificateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ucr.RawCertificateData != nil {
 		objectMap["properties"] = ucr.RawCertificateData
-	}
-	if ucr.ContractVersion != "" {
-		objectMap["contractVersion"] = ucr.ContractVersion
 	}
 	return json.Marshal(objectMap)
 }
@@ -5050,11 +4840,11 @@ func (ucr *UploadCertificateRequest) UnmarshalJSON(body []byte) error {
 type UploadCertificateResponse struct {
 	autorest.Response                 `json:"-"`
 	*ResourceCertificateAndAADDetails `json:"properties,omitempty"`
-	// ID - The identifier.
+	// ID - READ-ONLY; The identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - The name.
+	// Name - READ-ONLY; The name.
 	Name *string `json:"name,omitempty"`
-	// Type - The type.
+	// Type - READ-ONLY; The type.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5063,15 +4853,6 @@ func (ucr UploadCertificateResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ucr.ResourceCertificateAndAADDetails != nil {
 		objectMap["properties"] = ucr.ResourceCertificateAndAADDetails
-	}
-	if ucr.ID != nil {
-		objectMap["id"] = ucr.ID
-	}
-	if ucr.Name != nil {
-		objectMap["name"] = ucr.Name
-	}
-	if ucr.Type != nil {
-		objectMap["type"] = ucr.Type
 	}
 	return json.Marshal(objectMap)
 }

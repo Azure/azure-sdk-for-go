@@ -189,6 +189,13 @@ const (
 	V2 HyperVGeneration = original.V2
 )
 
+type HyperVGenerationTypes = original.HyperVGenerationTypes
+
+const (
+	HyperVGenerationTypesV1 HyperVGenerationTypes = original.HyperVGenerationTypesV1
+	HyperVGenerationTypesV2 HyperVGenerationTypes = original.HyperVGenerationTypesV2
+)
+
 type IPVersion = original.IPVersion
 
 const (
@@ -278,6 +285,13 @@ const (
 	ProvisioningState2Migrating ProvisioningState2 = original.ProvisioningState2Migrating
 	ProvisioningState2Succeeded ProvisioningState2 = original.ProvisioningState2Succeeded
 	ProvisioningState2Updating  ProvisioningState2 = original.ProvisioningState2Updating
+)
+
+type ProximityPlacementGroupType = original.ProximityPlacementGroupType
+
+const (
+	Standard ProximityPlacementGroupType = original.Standard
+	Ultra    ProximityPlacementGroupType = original.Ultra
 )
 
 type ReplicationState = original.ReplicationState
@@ -743,6 +757,13 @@ type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
+type ProximityPlacementGroup = original.ProximityPlacementGroup
+type ProximityPlacementGroupListResult = original.ProximityPlacementGroupListResult
+type ProximityPlacementGroupListResultIterator = original.ProximityPlacementGroupListResultIterator
+type ProximityPlacementGroupListResultPage = original.ProximityPlacementGroupListResultPage
+type ProximityPlacementGroupProperties = original.ProximityPlacementGroupProperties
+type ProximityPlacementGroupUpdate = original.ProximityPlacementGroupUpdate
+type ProximityPlacementGroupsClient = original.ProximityPlacementGroupsClient
 type PurchasePlan = original.PurchasePlan
 type RecommendedMachineConfiguration = original.RecommendedMachineConfiguration
 type RecoveryWalkResponse = original.RecoveryWalkResponse
@@ -758,6 +779,7 @@ type ResourceSkuCosts = original.ResourceSkuCosts
 type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
 type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
@@ -808,6 +830,7 @@ type UpgradePolicy = original.UpgradePolicy
 type Usage = original.Usage
 type UsageClient = original.UsageClient
 type UsageName = original.UsageName
+type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
 type VirtualHardDisk = original.VirtualHardDisk
@@ -1072,6 +1095,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewProximityPlacementGroupListResultIterator(page ProximityPlacementGroupListResultPage) ProximityPlacementGroupListResultIterator {
+	return original.NewProximityPlacementGroupListResultIterator(page)
+}
+func NewProximityPlacementGroupListResultPage(getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
+	return original.NewProximityPlacementGroupListResultPage(getNextPage)
+}
+func NewProximityPlacementGroupsClient(subscriptionID string) ProximityPlacementGroupsClient {
+	return original.NewProximityPlacementGroupsClient(subscriptionID)
+}
+func NewProximityPlacementGroupsClientWithBaseURI(baseURI string, subscriptionID string) ProximityPlacementGroupsClient {
+	return original.NewProximityPlacementGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)
 }
@@ -1252,6 +1287,9 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
 }
+func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
+	return original.PossibleHyperVGenerationTypesValues()
+}
 func PossibleHyperVGenerationValues() []HyperVGeneration {
 	return original.PossibleHyperVGenerationValues()
 }
@@ -1287,6 +1325,9 @@ func PossibleProvisioningState2Values() []ProvisioningState2 {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
+	return original.PossibleProximityPlacementGroupTypeValues()
 }
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()

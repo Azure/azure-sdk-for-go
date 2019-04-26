@@ -22,25 +22,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
 )
 
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
+// OperationsGroupClientAPI contains the set of methods on the OperationsGroupClient type.
+type OperationsGroupClientAPI interface {
 	List(ctx context.Context) (result subscriptions.OperationListResultPage, err error)
 }
 
-var _ OperationsClientAPI = (*subscriptions.OperationsClient)(nil)
+var _ OperationsGroupClientAPI = (*subscriptions.OperationsGroupClient)(nil)
 
-// ClientAPI contains the set of methods on the Client type.
-type ClientAPI interface {
+// GroupClientAPI contains the set of methods on the GroupClient type.
+type GroupClientAPI interface {
 	Get(ctx context.Context, subscriptionID string) (result subscriptions.Subscription, err error)
 	List(ctx context.Context) (result subscriptions.ListResultPage, err error)
 	ListLocations(ctx context.Context, subscriptionID string) (result subscriptions.LocationListResult, err error)
 }
 
-var _ ClientAPI = (*subscriptions.Client)(nil)
+var _ GroupClientAPI = (*subscriptions.GroupClient)(nil)
 
-// TenantsClientAPI contains the set of methods on the TenantsClient type.
-type TenantsClientAPI interface {
+// TenantsGroupClientAPI contains the set of methods on the TenantsGroupClient type.
+type TenantsGroupClientAPI interface {
 	List(ctx context.Context) (result subscriptions.TenantListResultPage, err error)
 }
 
-var _ TenantsClientAPI = (*subscriptions.TenantsClient)(nil)
+var _ TenantsGroupClientAPI = (*subscriptions.TenantsGroupClient)(nil)

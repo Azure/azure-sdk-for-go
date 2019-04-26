@@ -1285,6 +1285,7 @@ func (client ManagersClient) UploadRegistrationCertificatePreparer(ctx context.C
 		"api-version": APIVersion,
 	}
 
+	uploadCertificateRequestrequest.ContractVersion = ""
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

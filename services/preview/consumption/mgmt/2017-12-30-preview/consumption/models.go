@@ -69,11 +69,11 @@ func PossibleTimeGrainTypeValues() []TimeGrainType {
 type Budget struct {
 	autorest.Response `json:"-"`
 	*BudgetProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
@@ -84,15 +84,6 @@ func (b Budget) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if b.BudgetProperties != nil {
 		objectMap["properties"] = b.BudgetProperties
-	}
-	if b.ID != nil {
-		objectMap["id"] = b.ID
-	}
-	if b.Name != nil {
-		objectMap["name"] = b.Name
-	}
-	if b.Type != nil {
-		objectMap["type"] = b.Type
 	}
 	if b.ETag != nil {
 		objectMap["eTag"] = b.ETag
@@ -170,7 +161,7 @@ type BudgetProperties struct {
 	TimeGrain TimeGrainType `json:"timeGrain,omitempty"`
 	// TimePeriod - Has start and end date of the budget. The start date must be first of the month and should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should not be more than three months. Past start date should  be selected within the timegrain period. There are no restrictions on the end date.
 	TimePeriod *BudgetTimePeriod `json:"timePeriod,omitempty"`
-	// CurrentSpend - The current amount of cost which is being tracked for a budget.
+	// CurrentSpend - READ-ONLY; The current amount of cost which is being tracked for a budget.
 	CurrentSpend *CurrentSpend `json:"currentSpend,omitempty"`
 	// Notifications - Dictionary of notifications associated with the budget. Budget can have up to five notifications.
 	Notifications map[string]*Notification `json:"notifications"`
@@ -191,9 +182,6 @@ func (bp BudgetProperties) MarshalJSON() ([]byte, error) {
 	if bp.TimePeriod != nil {
 		objectMap["timePeriod"] = bp.TimePeriod
 	}
-	if bp.CurrentSpend != nil {
-		objectMap["currentSpend"] = bp.CurrentSpend
-	}
 	if bp.Notifications != nil {
 		objectMap["notifications"] = bp.Notifications
 	}
@@ -204,7 +192,7 @@ func (bp BudgetProperties) MarshalJSON() ([]byte, error) {
 // provided.
 type BudgetsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of budgets.
+	// Value - READ-ONLY; The list of budgets.
 	Value *[]Budget `json:"value,omitempty"`
 }
 
@@ -218,17 +206,17 @@ type BudgetTimePeriod struct {
 
 // CurrentSpend the current amount of cost which is being tracked for a budget.
 type CurrentSpend struct {
-	// Amount - The total amount of cost which is being tracked by the budget.
+	// Amount - READ-ONLY; The total amount of cost which is being tracked by the budget.
 	Amount *decimal.Decimal `json:"amount,omitempty"`
-	// Unit - The unit of measure for the budget amount.
+	// Unit - READ-ONLY; The unit of measure for the budget amount.
 	Unit *string `json:"unit,omitempty"`
 }
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
+	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -255,7 +243,7 @@ type Notification struct {
 
 // Operation a Consumption REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -263,11 +251,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Consumption.
+	// Provider - READ-ONLY; Service provider: Microsoft.Consumption.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: UsageDetail, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: UsageDetail, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -275,9 +263,9 @@ type OperationDisplay struct {
 // link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of consumption operations supported by the Microsoft.Consumption resource provider.
+	// Value - READ-ONLY; List of consumption operations supported by the Microsoft.Consumption resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -420,11 +408,11 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // ProxyResource the Resource model definition.
 type ProxyResource struct {
-	// ID - Resource Id.
+	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`

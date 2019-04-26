@@ -56,11 +56,11 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// AccountProperties - The properties of the machine learning team account.
 	*AccountProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -73,15 +73,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AccountProperties != nil {
 		objectMap["properties"] = a.AccountProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
@@ -311,7 +302,7 @@ func NewAccountListResultPage(getNextPage func(context.Context, AccountListResul
 type AccountProperties struct {
 	// VsoAccountID - The fully qualified arm id of the vso account to be used for this team account.
 	VsoAccountID *string `json:"vsoAccountId,omitempty"`
-	// AccountID - The immutable id associated with this team account.
+	// AccountID - READ-ONLY; The immutable id associated with this team account.
 	AccountID *string `json:"accountId,omitempty"`
 	// Description - The description of this workspace.
 	Description *string `json:"description,omitempty"`
@@ -321,13 +312,13 @@ type AccountProperties struct {
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 	// Seats - The no of users/seats who can access this team account. This property defines the charge on the team account.
 	Seats *string `json:"seats,omitempty"`
-	// DiscoveryURI - The uri for this machine learning team account.
+	// DiscoveryURI - READ-ONLY; The uri for this machine learning team account.
 	DiscoveryURI *string `json:"discoveryUri,omitempty"`
-	// CreationDate - The creation date of the machine learning team account in ISO8601 format.
+	// CreationDate - READ-ONLY; The creation date of the machine learning team account in ISO8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// StorageAccount - The properties of the storage account for the machine learning team account.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
-	// ProvisioningState - The current deployment state of team account resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The current deployment state of team account resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -437,11 +428,11 @@ type Project struct {
 	autorest.Response `json:"-"`
 	// ProjectProperties - The properties of the Project.
 	*ProjectProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -454,15 +445,6 @@ func (p Project) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.ProjectProperties != nil {
 		objectMap["properties"] = p.ProjectProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
 	}
 	if p.Location != nil {
 		objectMap["location"] = p.Location
@@ -692,19 +674,19 @@ func NewProjectListResultPage(getNextPage func(context.Context, ProjectListResul
 type ProjectProperties struct {
 	// Description - The description of this project.
 	Description *string `json:"description,omitempty"`
-	// AccountID - The immutable id of the team account which contains this project.
+	// AccountID - READ-ONLY; The immutable id of the team account which contains this project.
 	AccountID *string `json:"accountId,omitempty"`
-	// WorkspaceID - The immutable id of the workspace which contains this project.
+	// WorkspaceID - READ-ONLY; The immutable id of the workspace which contains this project.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// ProjectID - The immutable id of this project.
+	// ProjectID - READ-ONLY; The immutable id of this project.
 	ProjectID *string `json:"projectId,omitempty"`
 	// Gitrepo - The reference to git repo for this project.
 	Gitrepo *string `json:"gitrepo,omitempty"`
 	// FriendlyName - The friendly name for this project.
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// CreationDate - The creation date of the project in ISO8601 format.
+	// CreationDate - READ-ONLY; The creation date of the project in ISO8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - The current deployment state of project resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The current deployment state of project resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -773,11 +755,11 @@ func (pup *ProjectUpdateParameters) UnmarshalJSON(body []byte) error {
 
 // Resource an Azure resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -788,15 +770,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -819,11 +792,11 @@ type Workspace struct {
 	autorest.Response `json:"-"`
 	// WorkspaceProperties - The properties of the machine learning team account workspace.
 	*WorkspaceProperties `json:"properties,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
@@ -836,15 +809,6 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if w.WorkspaceProperties != nil {
 		objectMap["properties"] = w.WorkspaceProperties
-	}
-	if w.ID != nil {
-		objectMap["id"] = w.ID
-	}
-	if w.Name != nil {
-		objectMap["name"] = w.Name
-	}
-	if w.Type != nil {
-		objectMap["type"] = w.Type
 	}
 	if w.Location != nil {
 		objectMap["location"] = w.Location
@@ -1074,15 +1038,15 @@ func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListR
 type WorkspaceProperties struct {
 	// Description - The description of this workspace.
 	Description *string `json:"description,omitempty"`
-	// AccountID - The immutable id of the team account which contains this workspace.
+	// AccountID - READ-ONLY; The immutable id of the team account which contains this workspace.
 	AccountID *string `json:"accountId,omitempty"`
-	// WorkspaceID - The immutable id of this workspace.
+	// WorkspaceID - READ-ONLY; The immutable id of this workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 	// FriendlyName - The friendly name for this workspace. This will be the workspace name in the arm id when the workspace object gets created
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// CreationDate - The creation date of the machine learning workspace in ISO8601 format.
+	// CreationDate - READ-ONLY; The creation date of the machine learning workspace in ISO8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - The current deployment state of team account workspace resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The current deployment state of team account workspace resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 

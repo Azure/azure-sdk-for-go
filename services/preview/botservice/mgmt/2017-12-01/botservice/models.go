@@ -147,13 +147,13 @@ type Bot struct {
 	autorest.Response `json:"-"`
 	// Properties - The set of properties specific to bot resource
 	Properties *BotProperties `json:"properties,omitempty"`
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the resource.
+	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -171,17 +171,8 @@ func (b Bot) MarshalJSON() ([]byte, error) {
 	if b.Properties != nil {
 		objectMap["properties"] = b.Properties
 	}
-	if b.ID != nil {
-		objectMap["id"] = b.ID
-	}
-	if b.Name != nil {
-		objectMap["name"] = b.Name
-	}
 	if b.Location != nil {
 		objectMap["location"] = b.Location
-	}
-	if b.Type != nil {
-		objectMap["type"] = b.Type
 	}
 	if b.Tags != nil {
 		objectMap["tags"] = b.Tags
@@ -203,13 +194,13 @@ type BotChannel struct {
 	autorest.Response `json:"-"`
 	// Properties - The set of properties specific to bot channel resource
 	Properties BasicChannel `json:"properties,omitempty"`
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the resource.
+	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -225,17 +216,8 @@ type BotChannel struct {
 func (bc BotChannel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = bc.Properties
-	if bc.ID != nil {
-		objectMap["id"] = bc.ID
-	}
-	if bc.Name != nil {
-		objectMap["name"] = bc.Name
-	}
 	if bc.Location != nil {
 		objectMap["location"] = bc.Location
-	}
-	if bc.Type != nil {
-		objectMap["type"] = bc.Type
 	}
 	if bc.Tags != nil {
 		objectMap["tags"] = bc.Tags
@@ -357,13 +339,13 @@ type BotProperties struct {
 	IconURL *string `json:"iconUrl,omitempty"`
 	// Endpoint - The bot's endpoint
 	Endpoint *string `json:"endpoint,omitempty"`
-	// EndpointVersion - The bot's endpoint version
+	// EndpointVersion - READ-ONLY; The bot's endpoint version
 	EndpointVersion *string `json:"endpointVersion,omitempty"`
 	// MsaAppID - Microsoft App Id for the bot
 	MsaAppID *string `json:"msaAppId,omitempty"`
-	// ConfiguredChannels - Collection of channels for which the bot is configured
+	// ConfiguredChannels - READ-ONLY; Collection of channels for which the bot is configured
 	ConfiguredChannels *[]string `json:"configuredChannels,omitempty"`
-	// EnabledChannels - Collection of channels for which the bot is enabled
+	// EnabledChannels - READ-ONLY; Collection of channels for which the bot is enabled
 	EnabledChannels *[]string `json:"enabledChannels,omitempty"`
 	// DeveloperAppInsightKey - The Application Insights key
 	DeveloperAppInsightKey *string `json:"developerAppInsightKey,omitempty"`
@@ -382,7 +364,7 @@ type BotResponseList struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of bot service resources.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Gets the list of bot service results and their properties.
+	// Value - READ-ONLY; Gets the list of bot service results and their properties.
 	Value *[]Bot `json:"value,omitempty"`
 }
 
@@ -692,7 +674,7 @@ type ChannelResponseList struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of bot service channel resources.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Gets the list of bot service channel results and their properties.
+	// Value - READ-ONLY; Gets the list of bot service channel results and their properties.
 	Value *[]BotChannel `json:"value,omitempty"`
 }
 
@@ -854,7 +836,7 @@ type CheckNameAvailabilityResponseBody struct {
 
 // ConnectionItemName the display name of a connection Item Setting registered with the Bot
 type ConnectionItemName struct {
-	// Name - Connection Item name that has been added in the API
+	// Name - READ-ONLY; Connection Item name that has been added in the API
 	Name *string `json:"name,omitempty"`
 }
 
@@ -863,13 +845,13 @@ type ConnectionSetting struct {
 	autorest.Response `json:"-"`
 	// Properties - The set of properties specific to bot channel resource
 	Properties *ConnectionSettingProperties `json:"properties,omitempty"`
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the resource.
+	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -887,17 +869,8 @@ func (cs ConnectionSetting) MarshalJSON() ([]byte, error) {
 	if cs.Properties != nil {
 		objectMap["properties"] = cs.Properties
 	}
-	if cs.ID != nil {
-		objectMap["id"] = cs.ID
-	}
-	if cs.Name != nil {
-		objectMap["name"] = cs.Name
-	}
 	if cs.Location != nil {
 		objectMap["location"] = cs.Location
-	}
-	if cs.Type != nil {
-		objectMap["type"] = cs.Type
 	}
 	if cs.Tags != nil {
 		objectMap["tags"] = cs.Tags
@@ -927,7 +900,7 @@ type ConnectionSettingParameter struct {
 type ConnectionSettingProperties struct {
 	// ClientID - Client Id associated with the Connection Setting.
 	ClientID *string `json:"clientId,omitempty"`
-	// SettingID - Setting Id set by the service for the Connection Setting.
+	// SettingID - READ-ONLY; Setting Id set by the service for the Connection Setting.
 	SettingID *string `json:"settingId,omitempty"`
 	// ClientSecret - Client Secret associated with the Connection Setting
 	ClientSecret *string `json:"clientSecret,omitempty"`
@@ -946,7 +919,7 @@ type ConnectionSettingResponseList struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of bot service connection setting resources.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Gets the list of bot service connection settings and their properties.
+	// Value - READ-ONLY; Gets the list of bot service connection settings and their properties.
 	Value *[]ConnectionSetting `json:"value,omitempty"`
 }
 
@@ -1176,13 +1149,13 @@ type DirectLineChannelProperties struct {
 
 // DirectLineSite a site for the Direct Line channel
 type DirectLineSite struct {
-	// SiteID - Site Id
+	// SiteID - READ-ONLY; Site Id
 	SiteID *string `json:"siteId,omitempty"`
 	// SiteName - Site name
 	SiteName *string `json:"siteName,omitempty"`
-	// Key - Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
+	// Key - READ-ONLY; Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
 	Key *string `json:"key,omitempty"`
-	// Key2 - Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
+	// Key2 - READ-ONLY; Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
 	Key2 *string `json:"key2,omitempty"`
 	// IsEnabled - Whether this site is enabled for DirectLine channel
 	IsEnabled *bool `json:"isEnabled,omitempty"`
@@ -1380,7 +1353,7 @@ func (fc FacebookChannel) AsBasicChannel() (BasicChannel, bool) {
 
 // FacebookChannelProperties the parameters to provide for the Facebook channel.
 type FacebookChannelProperties struct {
-	// VerifyToken - Verify token. Value only returned through POST to the action Channel List API, otherwise empty.
+	// VerifyToken - READ-ONLY; Verify token. Value only returned through POST to the action Channel List API, otherwise empty.
 	VerifyToken *string `json:"verifyToken,omitempty"`
 	// Pages - The list of Facebook pages
 	Pages *[]FacebookPage `json:"pages,omitempty"`
@@ -1388,7 +1361,7 @@ type FacebookChannelProperties struct {
 	AppID *string `json:"appId,omitempty"`
 	// AppSecret - Facebook application secret. Value only returned through POST to the action Channel List API, otherwise empty.
 	AppSecret *string `json:"appSecret,omitempty"`
-	// CallbackURL - Callback Url
+	// CallbackURL - READ-ONLY; Callback Url
 	CallbackURL *string `json:"callbackUrl,omitempty"`
 	// IsEnabled - Whether this channel is enabled for the bot
 	IsEnabled *bool `json:"isEnabled,omitempty"`
@@ -1764,13 +1737,13 @@ func NewOperationEntityListResultPage(getNextPage func(context.Context, Operatio
 
 // Resource azure resource
 type Resource struct {
-	// ID - Specifies the resource ID.
+	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Specifies the name of the resource.
+	// Name - READ-ONLY; Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Type - Specifies the type of the resource.
+	// Type - READ-ONLY; Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags"`
@@ -1785,17 +1758,8 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags
@@ -1820,31 +1784,31 @@ type ServiceProvider struct {
 
 // ServiceProviderParameter extra Parameters specific to each Service Provider
 type ServiceProviderParameter struct {
-	// Name - Name of the Service Provider
+	// Name - READ-ONLY; Name of the Service Provider
 	Name *string `json:"name,omitempty"`
-	// Type - Type of the Service Provider
+	// Type - READ-ONLY; Type of the Service Provider
 	Type *string `json:"type,omitempty"`
-	// DisplayName - Display Name of the Service Provider
+	// DisplayName - READ-ONLY; Display Name of the Service Provider
 	DisplayName *string `json:"displayName,omitempty"`
-	// Description - Description of the Service Provider
+	// Description - READ-ONLY; Description of the Service Provider
 	Description *string `json:"description,omitempty"`
-	// HelpURL - Help Url for the  Service Provider
+	// HelpURL - READ-ONLY; Help Url for the  Service Provider
 	HelpURL *string `json:"helpUrl,omitempty"`
-	// Default - Default Name for the Service Provider
+	// Default - READ-ONLY; Default Name for the Service Provider
 	Default *string `json:"default,omitempty"`
 }
 
 // ServiceProviderProperties the Object used to describe a Service Provider supported by Bot Service
 type ServiceProviderProperties struct {
-	// ID - Id for Service Provider
+	// ID - READ-ONLY; Id for Service Provider
 	ID *string `json:"id,omitempty"`
-	// DisplayName - Display Name of the Service Provider
+	// DisplayName - READ-ONLY; Display Name of the Service Provider
 	DisplayName *string `json:"displayName,omitempty"`
-	// ServiceProviderName - Display Name of the Service Provider
+	// ServiceProviderName - READ-ONLY; Display Name of the Service Provider
 	ServiceProviderName *string `json:"serviceProviderName,omitempty"`
-	// DevPortalURL - Display Name of the Service Provider
+	// DevPortalURL - READ-ONLY; Display Name of the Service Provider
 	DevPortalURL *string `json:"devPortalUrl,omitempty"`
-	// IconURL - Display Name of the Service Provider
+	// IconURL - READ-ONLY; Display Name of the Service Provider
 	IconURL *string `json:"iconUrl,omitempty"`
 	// Parameters - The list of parameters for the Service Provider
 	Parameters *[]ServiceProviderParameter `json:"parameters,omitempty"`
@@ -1855,7 +1819,7 @@ type ServiceProviderResponseList struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of bot service service providers.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - Gets the list of bot service service providers and their properties.
+	// Value - READ-ONLY; Gets the list of bot service service providers and their properties.
 	Value *[]ServiceProvider `json:"value,omitempty"`
 }
 
@@ -1863,7 +1827,7 @@ type ServiceProviderResponseList struct {
 type Sku struct {
 	// Name - The sku name. Possible values include: 'F0', 'S1'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard'
+	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard'
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
@@ -2061,13 +2025,13 @@ type SlackChannelProperties struct {
 	VerificationToken *string `json:"verificationToken,omitempty"`
 	// LandingPageURL - The Slack landing page Url
 	LandingPageURL *string `json:"landingPageUrl,omitempty"`
-	// RedirectAction - The Slack redirect action
+	// RedirectAction - READ-ONLY; The Slack redirect action
 	RedirectAction *string `json:"redirectAction,omitempty"`
-	// LastSubmissionID - The Sms auth token
+	// LastSubmissionID - READ-ONLY; The Sms auth token
 	LastSubmissionID *string `json:"lastSubmissionId,omitempty"`
-	// RegisterBeforeOAuthFlow - Whether to register the settings before OAuth validation is performed. Recommended to True.
+	// RegisterBeforeOAuthFlow - READ-ONLY; Whether to register the settings before OAuth validation is performed. Recommended to True.
 	RegisterBeforeOAuthFlow *bool `json:"registerBeforeOAuthFlow,omitempty"`
-	// IsValidated - Whether this channel is validated for the bot
+	// IsValidated - READ-ONLY; Whether this channel is validated for the bot
 	IsValidated *bool `json:"isValidated,omitempty"`
 	// IsEnabled - Whether this channel is enabled for the bot
 	IsEnabled *bool `json:"isEnabled,omitempty"`
@@ -2342,7 +2306,7 @@ func (wcc WebChatChannel) AsBasicChannel() (BasicChannel, bool) {
 
 // WebChatChannelProperties the parameters to provide for the Web Chat channel.
 type WebChatChannelProperties struct {
-	// WebChatEmbedCode - Web chat control embed code
+	// WebChatEmbedCode - READ-ONLY; Web chat control embed code
 	WebChatEmbedCode *string `json:"webChatEmbedCode,omitempty"`
 	// Sites - The list of Web Chat sites
 	Sites *[]WebChatSite `json:"sites,omitempty"`
@@ -2350,13 +2314,13 @@ type WebChatChannelProperties struct {
 
 // WebChatSite a site for the Webchat channel
 type WebChatSite struct {
-	// SiteID - Site Id
+	// SiteID - READ-ONLY; Site Id
 	SiteID *string `json:"siteId,omitempty"`
 	// SiteName - Site name
 	SiteName *string `json:"siteName,omitempty"`
-	// Key - Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
+	// Key - READ-ONLY; Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
 	Key *string `json:"key,omitempty"`
-	// Key2 - Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
+	// Key2 - READ-ONLY; Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
 	Key2 *string `json:"key2,omitempty"`
 	// IsEnabled - Whether this site is enabled for DirectLine channel
 	IsEnabled *bool `json:"isEnabled,omitempty"`

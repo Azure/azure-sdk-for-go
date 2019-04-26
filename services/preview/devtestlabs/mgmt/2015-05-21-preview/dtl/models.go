@@ -800,7 +800,7 @@ type CostInsightRefreshDataFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CostInsightRefreshDataFuture) Result(client CostInsightClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostInsightRefreshDataFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -841,7 +841,7 @@ type CostRefreshDataFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CostRefreshDataFuture) Result(client CostClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostRefreshDataFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -974,7 +974,7 @@ type CustomImageCreateOrUpdateResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CustomImageCreateOrUpdateResourceFuture) Result(client CustomImageClient) (ci CustomImage, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImageCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1003,7 +1003,7 @@ type CustomImageDeleteResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CustomImageDeleteResourceFuture) Result(client CustomImageClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CustomImageDeleteResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1201,7 +1201,7 @@ type FormulaCreateOrUpdateResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *FormulaCreateOrUpdateResourceFuture) Result(client FormulaClient) (f Formula, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1532,7 +1532,7 @@ type LabCreateEnvironmentFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabCreateEnvironmentFuture) Result(client LabClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabCreateEnvironmentFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1555,7 +1555,7 @@ type LabCreateOrUpdateResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabCreateOrUpdateResourceFuture) Result(client LabClient) (l Lab, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1584,7 +1584,7 @@ type LabDeleteResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *LabDeleteResourceFuture) Result(client LabClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.LabDeleteResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3955,7 +3955,7 @@ type ScheduleCreateOrUpdateResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ScheduleCreateOrUpdateResourceFuture) Result(client ScheduleClient) (s Schedule, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3984,7 +3984,7 @@ type ScheduleDeleteResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ScheduleDeleteResourceFuture) Result(client ScheduleClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleDeleteResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4007,7 +4007,7 @@ type ScheduleExecuteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *ScheduleExecuteFuture) Result(client ScheduleClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleExecuteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4081,7 +4081,7 @@ type VirtualMachineApplyArtifactsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineApplyArtifactsFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineApplyArtifactsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4104,7 +4104,7 @@ type VirtualMachineCreateOrUpdateResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineCreateOrUpdateResourceFuture) Result(client VirtualMachineClient) (lvm LabVirtualMachine, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4133,7 +4133,7 @@ type VirtualMachineDeleteResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineDeleteResourceFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineDeleteResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4156,7 +4156,7 @@ type VirtualMachineStartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineStartFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineStartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4179,7 +4179,7 @@ type VirtualMachineStopFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineStopFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachineStopFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4312,7 +4312,7 @@ type VirtualNetworkCreateOrUpdateResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkCreateOrUpdateResourceFuture) Result(client VirtualNetworkClient) (vn VirtualNetwork, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkCreateOrUpdateResourceFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4341,7 +4341,7 @@ type VirtualNetworkDeleteResourceFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualNetworkDeleteResourceFuture) Result(client VirtualNetworkClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkDeleteResourceFuture", "Result", future.Response(), "Polling failure")
 		return

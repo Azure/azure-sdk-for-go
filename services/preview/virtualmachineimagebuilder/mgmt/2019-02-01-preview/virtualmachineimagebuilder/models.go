@@ -225,11 +225,11 @@ type APIErrorBase struct {
 type ImageTemplate struct {
 	autorest.Response        `json:"-"`
 	*ImageTemplateProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -242,15 +242,6 @@ func (it ImageTemplate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if it.ImageTemplateProperties != nil {
 		objectMap["properties"] = it.ImageTemplateProperties
-	}
-	if it.ID != nil {
-		objectMap["id"] = it.ID
-	}
-	if it.Name != nil {
-		objectMap["name"] = it.Name
-	}
-	if it.Type != nil {
-		objectMap["type"] = it.Type
 	}
 	if it.Location != nil {
 		objectMap["location"] = it.Location
@@ -915,10 +906,13 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 }
 
 // ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
-// Packer powershell provisioner
+// Packer powershell provisioner. Exactly one of 'script' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
 	// Script - The PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
-	Script         *string  `json:"script,omitempty"`
+	Script *string `json:"script,omitempty"`
+	// Inline - Array of PowerShell commands to execute
+	Inline *[]string `json:"inline,omitempty"`
+	// ValidExitCodes - Valid exit codes for the PowerShell script. [Default: 0]
 	ValidExitCodes *[]int32 `json:"validExitCodes,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
@@ -932,6 +926,9 @@ func (itpsc ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if itpsc.Script != nil {
 		objectMap["script"] = itpsc.Script
+	}
+	if itpsc.Inline != nil {
+		objectMap["inline"] = itpsc.Inline
 	}
 	if itpsc.ValidExitCodes != nil {
 		objectMap["validExitCodes"] = itpsc.ValidExitCodes
@@ -978,11 +975,11 @@ type ImageTemplateProperties struct {
 	Customize *[]BasicImageTemplateCustomizer `json:"customize,omitempty"`
 	// Distribute - The distribution targets where the image output needs to go to.
 	Distribute *[]BasicImageTemplateDistributor `json:"distribute,omitempty"`
-	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Creating', 'Succeeded', 'Failed', 'Deleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// ProvisioningError - Provisioning error, if any
+	// ProvisioningError - READ-ONLY; Provisioning error, if any
 	ProvisioningError *ProvisioningError `json:"provisioningError,omitempty"`
-	// LastRunStatus - State of 'run' that is currently executing or was last executed.
+	// LastRunStatus - READ-ONLY; State of 'run' that is currently executing or was last executed.
 	LastRunStatus *ImageTemplateLastRunStatus `json:"lastRunStatus,omitempty"`
 }
 
@@ -1174,10 +1171,13 @@ func (itsid ImageTemplateSharedImageDistributor) AsBasicImageTemplateDistributor
 	return &itsid, true
 }
 
-// ImageTemplateShellCustomizer runs a shell script during the customization phase (Linux)
+// ImageTemplateShellCustomizer runs a shell script during the customization phase (Linux). Corresponds to
+// Packer shell provisioner. Exactly one of 'script' or 'inline' can be specified.
 type ImageTemplateShellCustomizer struct {
 	// Script - The shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
 	Script *string `json:"script,omitempty"`
+	// Inline - Array of shell commands to execute
+	Inline *[]string `json:"inline,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
 	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypePowerShell'
@@ -1190,6 +1190,9 @@ func (itsc ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if itsc.Script != nil {
 		objectMap["script"] = itsc.Script
+	}
+	if itsc.Inline != nil {
+		objectMap["inline"] = itsc.Inline
 	}
 	if itsc.Name != nil {
 		objectMap["name"] = itsc.Name
@@ -1565,11 +1568,11 @@ type ProvisioningError struct {
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1580,15 +1583,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -1602,11 +1596,11 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type RunOutput struct {
 	autorest.Response    `json:"-"`
 	*RunOutputProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1616,14 +1610,8 @@ func (ro RunOutput) MarshalJSON() ([]byte, error) {
 	if ro.RunOutputProperties != nil {
 		objectMap["properties"] = ro.RunOutputProperties
 	}
-	if ro.ID != nil {
-		objectMap["id"] = ro.ID
-	}
 	if ro.Name != nil {
 		objectMap["name"] = ro.Name
-	}
-	if ro.Type != nil {
-		objectMap["type"] = ro.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -1828,19 +1816,19 @@ func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputColle
 type RunOutputProperties struct {
 	// ArtifactID - The resource id of the artifact.
 	ArtifactID *string `json:"artifactId,omitempty"`
-	// ArtifactLocation - The URL location of the artifact.
-	ArtifactLocation *string `json:"artifactLocation,omitempty"`
-	// ProvisioningState - Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
+	// ArtifactURI - The location URI of the artifact.
+	ArtifactURI *string `json:"artifactUri,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
 	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 }
 
 // SubResource the Sub Resource model definition.
 type SubResource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1854,7 +1842,7 @@ type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineImageTemplatesCreateOrUpdateFuture) Result(client VirtualMachineImageTemplatesClient) (it ImageTemplate, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1883,7 +1871,7 @@ type VirtualMachineImageTemplatesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineImageTemplatesDeleteFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1906,7 +1894,7 @@ type VirtualMachineImageTemplatesRunFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VirtualMachineImageTemplatesRunFuture) Result(client VirtualMachineImageTemplatesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesRunFuture", "Result", future.Response(), "Polling failure")
 		return

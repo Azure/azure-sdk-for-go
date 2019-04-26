@@ -40,16 +40,16 @@ func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID strin
 	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetByEnrollmentAccountAccountID get the enrollment account by id.
+// GetByEnrollmentAccountID get the enrollment account by id.
 // Parameters:
 // billingAccountName - billing Account Id.
 // enrollmentAccountName - enrollment Account Id.
 // expand - may be used to expand the Department.
 // filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
 // 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountID(ctx context.Context, billingAccountName string, enrollmentAccountName string, expand string, filter string) (result EnrollmentAccount, err error) {
+func (client EnrollmentAccountsClient) GetByEnrollmentAccountID(ctx context.Context, billingAccountName string, enrollmentAccountName string, expand string, filter string) (result EnrollmentAccount, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EnrollmentAccountsClient.GetByEnrollmentAccountAccountID")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnrollmentAccountsClient.GetByEnrollmentAccountID")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -58,29 +58,29 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountID(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByEnrollmentAccountAccountIDPreparer(ctx, billingAccountName, enrollmentAccountName, expand, filter)
+	req, err := client.GetByEnrollmentAccountIDPreparer(ctx, billingAccountName, enrollmentAccountName, expand, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountAccountID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountID", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetByEnrollmentAccountAccountIDSender(req)
+	resp, err := client.GetByEnrollmentAccountIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountAccountID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountID", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetByEnrollmentAccountAccountIDResponder(resp)
+	result, err = client.GetByEnrollmentAccountIDResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountAccountID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "GetByEnrollmentAccountID", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetByEnrollmentAccountAccountIDPreparer prepares the GetByEnrollmentAccountAccountID request.
-func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDPreparer(ctx context.Context, billingAccountName string, enrollmentAccountName string, expand string, filter string) (*http.Request, error) {
+// GetByEnrollmentAccountIDPreparer prepares the GetByEnrollmentAccountID request.
+func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDPreparer(ctx context.Context, billingAccountName string, enrollmentAccountName string, expand string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName":    autorest.Encode("path", billingAccountName),
 		"enrollmentAccountName": autorest.Encode("path", enrollmentAccountName),
@@ -105,16 +105,99 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDPreparer(c
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetByEnrollmentAccountAccountIDSender sends the GetByEnrollmentAccountAccountID request. The method will close the
+// GetByEnrollmentAccountIDSender sends the GetByEnrollmentAccountID request. The method will close the
 // http.Response Body if it receives an error.
-func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDSender(req *http.Request) (*http.Response, error) {
+func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetByEnrollmentAccountAccountIDResponder handles the response to the GetByEnrollmentAccountAccountID request. The method always
+// GetByEnrollmentAccountIDResponder handles the response to the GetByEnrollmentAccountID request. The method always
 // closes the http.Response Body.
-func (client EnrollmentAccountsClient) GetByEnrollmentAccountAccountIDResponder(resp *http.Response) (result EnrollmentAccount, err error) {
+func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDResponder(resp *http.Response) (result EnrollmentAccount, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByBillingAccountName lists all Enrollment Accounts for a user which he has access to.
+// Parameters:
+// billingAccountName - billing Account Id.
+// expand - may be used to expand the department.
+// filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
+// 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+func (client EnrollmentAccountsClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string, filter string) (result EnrollmentAccountListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnrollmentAccountsClient.ListByBillingAccountName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName, expand, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "ListByBillingAccountName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByBillingAccountNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "ListByBillingAccountName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByBillingAccountNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByBillingAccountNamePreparer prepares the ListByBillingAccountName request.
+func (client EnrollmentAccountsClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, expand string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
+// http.Response Body if it receives an error.
+func (client EnrollmentAccountsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
+// closes the http.Response Body.
+func (client EnrollmentAccountsClient) ListByBillingAccountNameResponder(resp *http.Response) (result EnrollmentAccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

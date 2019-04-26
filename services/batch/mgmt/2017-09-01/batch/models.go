@@ -358,15 +358,15 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// AccountProperties - The properties associated with the account.
 	*AccountProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource.
+	// Location - READ-ONLY; The location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource.
+	// Tags - READ-ONLY; The tags of the resource.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -375,21 +375,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AccountProperties != nil {
 		objectMap["properties"] = a.AccountProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Location != nil {
-		objectMap["location"] = a.Location
-	}
-	if a.Tags != nil {
-		objectMap["tags"] = a.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -473,7 +458,7 @@ type AccountCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountCreateFuture) Result(client AccountClient) (a Account, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -579,7 +564,7 @@ type AccountDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountDeleteFuture) Result(client AccountClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -595,11 +580,11 @@ func (future *AccountDeleteFuture) Result(client AccountClient) (ar autorest.Res
 // AccountKeys a set of Azure Batch account keys.
 type AccountKeys struct {
 	autorest.Response `json:"-"`
-	// AccountName - The Batch account name.
+	// AccountName - READ-ONLY; The Batch account name.
 	AccountName *string `json:"accountName,omitempty"`
-	// Primary - The primary key associated with the account.
+	// Primary - READ-ONLY; The primary key associated with the account.
 	Primary *string `json:"primary,omitempty"`
-	// Secondary - The secondary key associated with the account.
+	// Secondary - READ-ONLY; The secondary key associated with the account.
 	Secondary *string `json:"secondary,omitempty"`
 }
 
@@ -751,18 +736,24 @@ func NewAccountListResultPage(getNextPage func(context.Context, AccountListResul
 
 // AccountProperties account specific properties.
 type AccountProperties struct {
-	// AccountEndpoint - The account endpoint used to interact with the Batch service.
+	// AccountEndpoint - READ-ONLY; The account endpoint used to interact with the Batch service.
 	AccountEndpoint *string `json:"accountEndpoint,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'ProvisioningStateInvalid', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCancelled'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'ProvisioningStateInvalid', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCancelled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// PoolAllocationMode - Possible values include: 'BatchService', 'UserSubscription'
-	PoolAllocationMode           PoolAllocationMode     `json:"poolAllocationMode,omitempty"`
-	KeyVaultReference            *KeyVaultReference     `json:"keyVaultReference,omitempty"`
-	AutoStorage                  *AutoStorageProperties `json:"autoStorage,omitempty"`
-	DedicatedCoreQuota           *int32                 `json:"dedicatedCoreQuota,omitempty"`
-	LowPriorityCoreQuota         *int32                 `json:"lowPriorityCoreQuota,omitempty"`
-	PoolQuota                    *int32                 `json:"poolQuota,omitempty"`
-	ActiveJobAndJobScheduleQuota *int32                 `json:"activeJobAndJobScheduleQuota,omitempty"`
+	// PoolAllocationMode - READ-ONLY; Possible values include: 'BatchService', 'UserSubscription'
+	PoolAllocationMode PoolAllocationMode `json:"poolAllocationMode,omitempty"`
+	// KeyVaultReference - READ-ONLY
+	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
+	// AutoStorage - READ-ONLY
+	AutoStorage *AutoStorageProperties `json:"autoStorage,omitempty"`
+	// DedicatedCoreQuota - READ-ONLY
+	DedicatedCoreQuota *int32 `json:"dedicatedCoreQuota,omitempty"`
+	// LowPriorityCoreQuota - READ-ONLY
+	LowPriorityCoreQuota *int32 `json:"lowPriorityCoreQuota,omitempty"`
+	// PoolQuota - READ-ONLY
+	PoolQuota *int32 `json:"poolQuota,omitempty"`
+	// ActiveJobAndJobScheduleQuota - READ-ONLY
+	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty"`
 }
 
 // AccountRegenerateKeyParameters parameters supplied to the RegenerateKey operation.
@@ -862,19 +853,19 @@ type ApplicationCreateParameters struct {
 // ApplicationPackage an application package which represents a particular version of an application.
 type ApplicationPackage struct {
 	autorest.Response `json:"-"`
-	// ID - The ID of the application.
+	// ID - READ-ONLY; The ID of the application.
 	ID *string `json:"id,omitempty"`
-	// Version - The version of the application package.
+	// Version - READ-ONLY; The version of the application package.
 	Version *string `json:"version,omitempty"`
-	// State - The current state of the application package. Possible values include: 'Pending', 'Active', 'Unmapped'
+	// State - READ-ONLY; The current state of the application package. Possible values include: 'Pending', 'Active', 'Unmapped'
 	State PackageState `json:"state,omitempty"`
-	// Format - The format of the application package, if the package is active.
+	// Format - READ-ONLY; The format of the application package, if the package is active.
 	Format *string `json:"format,omitempty"`
-	// StorageURL - The URL for the application package in Azure Storage.
+	// StorageURL - READ-ONLY; The URL for the application package in Azure Storage.
 	StorageURL *string `json:"storageUrl,omitempty"`
-	// StorageURLExpiry - The UTC time at which the Azure Storage URL will expire.
+	// StorageURLExpiry - READ-ONLY; The UTC time at which the Azure Storage URL will expire.
 	StorageURLExpiry *date.Time `json:"storageUrlExpiry,omitempty"`
-	// LastActivationTime - The time at which the package was last activated, if the package is active.
+	// LastActivationTime - READ-ONLY; The time at which the package was last activated, if the package is active.
 	LastActivationTime *date.Time `json:"lastActivationTime,omitempty"`
 }
 
@@ -947,13 +938,13 @@ type Certificate struct {
 	autorest.Response `json:"-"`
 	// CertificateProperties - The properties associated with the certificate.
 	*CertificateProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The ETag of the resource, used for concurrency statements.
+	// Etag - READ-ONLY; The ETag of the resource, used for concurrency statements.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -962,18 +953,6 @@ func (c Certificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.CertificateProperties != nil {
 		objectMap["properties"] = c.CertificateProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
-	}
-	if c.Etag != nil {
-		objectMap["etag"] = c.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1058,7 +1037,7 @@ type CertificateCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CertificateCreateFuture) Result(client CertificateClient) (c Certificate, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1081,13 +1060,13 @@ func (future *CertificateCreateFuture) Result(client CertificateClient) (c Certi
 type CertificateCreateOrUpdateParameters struct {
 	// CertificateCreateOrUpdateProperties - The properties associated with the certificate.
 	*CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The ETag of the resource, used for concurrency statements.
+	// Etag - READ-ONLY; The ETag of the resource, used for concurrency statements.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -1096,18 +1075,6 @@ func (ccoup CertificateCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ccoup.CertificateCreateOrUpdateProperties != nil {
 		objectMap["properties"] = ccoup.CertificateCreateOrUpdateProperties
-	}
-	if ccoup.ID != nil {
-		objectMap["id"] = ccoup.ID
-	}
-	if ccoup.Name != nil {
-		objectMap["name"] = ccoup.Name
-	}
-	if ccoup.Type != nil {
-		objectMap["type"] = ccoup.Type
-	}
-	if ccoup.Etag != nil {
-		objectMap["etag"] = ccoup.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1196,7 +1163,7 @@ type CertificateDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CertificateDeleteFuture) Result(client CertificateClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1211,18 +1178,20 @@ func (future *CertificateDeleteFuture) Result(client CertificateClient) (ar auto
 
 // CertificateProperties certificate properties.
 type CertificateProperties struct {
-	// ProvisioningState - Values are:
+	// ProvisioningState - READ-ONLY; Values are:
 	//  Succeeded - The certificate is available for use in pools.
 	//  Deleting - The user has requested that the certificate be deleted, but the delete operation has not yet completed. You may not reference the certificate when creating or updating pools.
 	//  Failed - The user requested that the certificate be deleted, but there are pools that still have references to the certificate, or it is still installed on one or more compute nodes. (The latter can occur if the certificate has been removed from the pool, but the node has not yet restarted. Nodes refresh their certificates only when they restart.) You may use the cancel certificate delete operation to cancel the delete, or the delete certificate operation to retry the delete. Possible values include: 'Succeeded', 'Deleting', 'Failed'
-	ProvisioningState               CertificateProvisioningState `json:"provisioningState,omitempty"`
-	ProvisioningStateTransitionTime *date.Time                   `json:"provisioningStateTransitionTime,omitempty"`
-	// PreviousProvisioningState - The previous provisioned state of the resource. Possible values include: 'Succeeded', 'Deleting', 'Failed'
-	PreviousProvisioningState               CertificateProvisioningState `json:"previousProvisioningState,omitempty"`
-	PreviousProvisioningStateTransitionTime *date.Time                   `json:"previousProvisioningStateTransitionTime,omitempty"`
-	// PublicData - The public key of the certificate.
+	ProvisioningState CertificateProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningStateTransitionTime - READ-ONLY
+	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
+	// PreviousProvisioningState - READ-ONLY; The previous provisioned state of the resource. Possible values include: 'Succeeded', 'Deleting', 'Failed'
+	PreviousProvisioningState CertificateProvisioningState `json:"previousProvisioningState,omitempty"`
+	// PreviousProvisioningStateTransitionTime - READ-ONLY
+	PreviousProvisioningStateTransitionTime *date.Time `json:"previousProvisioningStateTransitionTime,omitempty"`
+	// PublicData - READ-ONLY; The public key of the certificate.
 	PublicData *string `json:"publicData,omitempty"`
-	// DeleteCertificateError - This is only returned when the certificate provisioningState is 'Failed'.
+	// DeleteCertificateError - READ-ONLY; This is only returned when the certificate provisioningState is 'Failed'.
 	DeleteCertificateError *DeleteCertificateError `json:"deleteCertificateError,omitempty"`
 	// ThumbprintAlgorithm - This must match the first portion of the certificate name. Currently required to be 'SHA1'.
 	ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
@@ -1258,11 +1227,11 @@ type CheckNameAvailabilityParameters struct {
 // CheckNameAvailabilityResult the CheckNameAvailability operation response.
 type CheckNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or invalid and cannot be used.
+	// NameAvailable - READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
-	// Message - Gets an error message explaining the Reason value in more detail.
+	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -1838,7 +1807,7 @@ func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (
 // LocationQuota quotas associated with a Batch region for a particular subscription.
 type LocationQuota struct {
 	autorest.Response `json:"-"`
-	// AccountQuota - The number of Batch accounts that may be created under the subscription in the specified region.
+	// AccountQuota - READ-ONLY; The number of Batch accounts that may be created under the subscription in the specified region.
 	AccountQuota *int32 `json:"accountQuota,omitempty"`
 }
 
@@ -2040,13 +2009,13 @@ type Pool struct {
 	autorest.Response `json:"-"`
 	// PoolProperties - The properties associated with the pool.
 	*PoolProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The ETag of the resource, used for concurrency statements.
+	// Etag - READ-ONLY; The ETag of the resource, used for concurrency statements.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -2055,18 +2024,6 @@ func (p Pool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if p.PoolProperties != nil {
 		objectMap["properties"] = p.PoolProperties
-	}
-	if p.ID != nil {
-		objectMap["id"] = p.ID
-	}
-	if p.Name != nil {
-		objectMap["name"] = p.Name
-	}
-	if p.Type != nil {
-		objectMap["type"] = p.Type
-	}
-	if p.Etag != nil {
-		objectMap["etag"] = p.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -2140,7 +2097,7 @@ type PoolCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PoolCreateFuture) Result(client PoolClient) (p Pool, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2168,7 +2125,7 @@ type PoolDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *PoolDeleteFuture) Result(client PoolClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2191,28 +2148,33 @@ type PoolEndpointConfiguration struct {
 type PoolProperties struct {
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// LastModified - This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed. It does not factor in node-level changes such as a compute node changing state.
+	// LastModified - READ-ONLY; This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed. It does not factor in node-level changes such as a compute node changing state.
 	LastModified *date.Time `json:"lastModified,omitempty"`
+	// CreationTime - READ-ONLY
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// ProvisioningState - Values are:
+	// ProvisioningState - READ-ONLY; Values are:
 	//  Succeeded - The pool is available to run tasks subject to the availability of compute nodes.
 	//  Deleting - The user has requested that the pool be deleted, but the delete operation has not yet completed. Possible values include: 'PoolProvisioningStateSucceeded', 'PoolProvisioningStateDeleting'
-	ProvisioningState               PoolProvisioningState `json:"provisioningState,omitempty"`
-	ProvisioningStateTransitionTime *date.Time            `json:"provisioningStateTransitionTime,omitempty"`
-	// AllocationState - Values are:
+	ProvisioningState PoolProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningStateTransitionTime - READ-ONLY
+	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
+	// AllocationState - READ-ONLY; Values are:
 	//  Steady - The pool is not resizing. There are no changes to the number of nodes in the pool in progress. A pool enters this state when it is created and when no operations are being performed on the pool to change the number of dedicated nodes.
 	//  Resizing - The pool is resizing; that is, compute nodes are being added to or removed from the pool.
 	//  Stopping - The pool was resizing, but the user has requested that the resize be stopped, but the stop request has not yet been completed. Possible values include: 'Steady', 'Resizing', 'Stopping'
-	AllocationState               AllocationState `json:"allocationState,omitempty"`
-	AllocationStateTransitionTime *date.Time      `json:"allocationStateTransitionTime,omitempty"`
+	AllocationState AllocationState `json:"allocationState,omitempty"`
+	// AllocationStateTransitionTime - READ-ONLY
+	AllocationStateTransitionTime *date.Time `json:"allocationStateTransitionTime,omitempty"`
 	// VMSize - For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
 	VMSize *string `json:"vmSize,omitempty"`
 	// DeploymentConfiguration - Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS).
 	DeploymentConfiguration *DeploymentConfiguration `json:"deploymentConfiguration,omitempty"`
-	CurrentDedicatedNodes   *int32                   `json:"currentDedicatedNodes,omitempty"`
-	CurrentLowPriorityNodes *int32                   `json:"currentLowPriorityNodes,omitempty"`
-	ScaleSettings           *ScaleSettings           `json:"scaleSettings,omitempty"`
-	// AutoScaleRun - This property is set only if the pool automatically scales, i.e. autoScaleSettings are used.
+	// CurrentDedicatedNodes - READ-ONLY
+	CurrentDedicatedNodes *int32 `json:"currentDedicatedNodes,omitempty"`
+	// CurrentLowPriorityNodes - READ-ONLY
+	CurrentLowPriorityNodes *int32         `json:"currentLowPriorityNodes,omitempty"`
+	ScaleSettings           *ScaleSettings `json:"scaleSettings,omitempty"`
+	// AutoScaleRun - READ-ONLY; This property is set only if the pool automatically scales, i.e. autoScaleSettings are used.
 	AutoScaleRun *AutoScaleRun `json:"autoScaleRun,omitempty"`
 	// InterNodeCommunication - This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of the requested number of nodes to be allocated in the pool. If not specified, this value defaults to 'Disabled'. Possible values include: 'Enabled', 'Disabled'
 	InterNodeCommunication InterNodeCommunicationState `json:"interNodeCommunication,omitempty"`
@@ -2229,19 +2191,20 @@ type PoolProperties struct {
 	// ApplicationPackages - Changes to application packages affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged.
 	ApplicationPackages *[]ApplicationPackageReference `json:"applicationPackages,omitempty"`
 	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
-	ApplicationLicenses   *[]string              `json:"applicationLicenses,omitempty"`
+	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
+	// ResizeOperationStatus - READ-ONLY
 	ResizeOperationStatus *ResizeOperationStatus `json:"resizeOperationStatus,omitempty"`
 }
 
 // ProxyResource a definition of an Azure resource.
 type ProxyResource struct {
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Etag - The ETag of the resource, used for concurrency statements.
+	// Etag - READ-ONLY; The ETag of the resource, used for concurrency statements.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -2270,36 +2233,21 @@ type ResizeOperationStatus struct {
 
 // Resource a definition of an Azure resource.
 type Resource struct {
-	// ID - The ID of the resource.
+	// ID - READ-ONLY; The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource.
+	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource.
+	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource.
+	// Location - READ-ONLY; The location of the resource.
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource.
+	// Tags - READ-ONLY; The tags of the resource.
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }
 

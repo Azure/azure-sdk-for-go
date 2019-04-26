@@ -29,13 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type HanaDatabaseContainersEnum = original.HanaDatabaseContainersEnum
-
-const (
-	Multiple HanaDatabaseContainersEnum = original.Multiple
-	Single   HanaDatabaseContainersEnum = original.Single
-)
-
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
@@ -124,9 +117,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleHanaDatabaseContainersEnumValues() []HanaDatabaseContainersEnum {
-	return original.PossibleHanaDatabaseContainersEnumValues()
 }
 func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
 	return original.PossibleHanaHardwareTypeNamesEnumValues()

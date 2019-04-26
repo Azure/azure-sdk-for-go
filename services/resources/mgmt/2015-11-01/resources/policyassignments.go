@@ -90,6 +90,7 @@ func (client PolicyAssignmentsClient) CreatePreparer(ctx context.Context, scope 
 		"api-version": APIVersion,
 	}
 
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -167,6 +168,7 @@ func (client PolicyAssignmentsClient) CreateByIDPreparer(ctx context.Context, po
 		"api-version": APIVersion,
 	}
 
+	parameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

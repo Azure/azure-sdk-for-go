@@ -106,15 +106,15 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// AccountProperties - The properties associated with the account.
 	*AccountProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - READ-ONLY; The type of the resource
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
+	// Location - READ-ONLY; The location of the resource
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
+	// Tags - READ-ONLY; The tags of the resource
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -123,21 +123,6 @@ func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AccountProperties != nil {
 		objectMap["properties"] = a.AccountProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
-	}
-	if a.Location != nil {
-		objectMap["location"] = a.Location
-	}
-	if a.Tags != nil {
-		objectMap["tags"] = a.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -231,7 +216,7 @@ type AccountCreateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountCreateFuture) Result(client AccountClient) (a Account, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountCreateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -327,7 +312,7 @@ type AccountDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccountDeleteFuture) Result(client AccountClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -343,9 +328,9 @@ func (future *AccountDeleteFuture) Result(client AccountClient) (ar autorest.Res
 // AccountKeys a set of Azure Batch account keys.
 type AccountKeys struct {
 	autorest.Response `json:"-"`
-	// Primary - The primary key associated with the account.
+	// Primary - READ-ONLY; The primary key associated with the account.
 	Primary *string `json:"primary,omitempty"`
-	// Secondary - The secondary key associated with the account.
+	// Secondary - READ-ONLY; The secondary key associated with the account.
 	Secondary *string `json:"secondary,omitempty"`
 }
 
@@ -497,17 +482,22 @@ func NewAccountListResultPage(getNextPage func(context.Context, AccountListResul
 
 // AccountProperties account specific properties.
 type AccountProperties struct {
-	// AccountEndpoint - The endpoint used by this account to interact with the Batch services.
+	// AccountEndpoint - READ-ONLY; The endpoint used by this account to interact with the Batch services.
 	AccountEndpoint *string `json:"accountEndpoint,omitempty"`
-	// ProvisioningState - The provisioned state of the resource. Possible values include: 'Invalid', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Cancelled'
+	// ProvisioningState - READ-ONLY; The provisioned state of the resource. Possible values include: 'Invalid', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Cancelled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// PoolAllocationMode - Possible values include: 'BatchService', 'UserSubscription'
-	PoolAllocationMode           PoolAllocationMode     `json:"poolAllocationMode,omitempty"`
-	KeyVaultReference            *KeyVaultReference     `json:"keyVaultReference,omitempty"`
-	AutoStorage                  *AutoStorageProperties `json:"autoStorage,omitempty"`
-	CoreQuota                    *int32                 `json:"coreQuota,omitempty"`
-	PoolQuota                    *int32                 `json:"poolQuota,omitempty"`
-	ActiveJobAndJobScheduleQuota *int32                 `json:"activeJobAndJobScheduleQuota,omitempty"`
+	// PoolAllocationMode - READ-ONLY; Possible values include: 'BatchService', 'UserSubscription'
+	PoolAllocationMode PoolAllocationMode `json:"poolAllocationMode,omitempty"`
+	// KeyVaultReference - READ-ONLY
+	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
+	// AutoStorage - READ-ONLY
+	AutoStorage *AutoStorageProperties `json:"autoStorage,omitempty"`
+	// CoreQuota - READ-ONLY
+	CoreQuota *int32 `json:"coreQuota,omitempty"`
+	// PoolQuota - READ-ONLY
+	PoolQuota *int32 `json:"poolQuota,omitempty"`
+	// ActiveJobAndJobScheduleQuota - READ-ONLY
+	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty"`
 }
 
 // AccountRegenerateKeyParameters parameters supplied to the RegenerateKey operation.
@@ -608,19 +598,19 @@ type Application struct {
 // ApplicationPackage an application package which represents a particular version of an application.
 type ApplicationPackage struct {
 	autorest.Response `json:"-"`
-	// ID - The ID of the application.
+	// ID - READ-ONLY; The ID of the application.
 	ID *string `json:"id,omitempty"`
-	// Version - The version of the application package.
+	// Version - READ-ONLY; The version of the application package.
 	Version *string `json:"version,omitempty"`
-	// State - The current state of the application package. Possible values include: 'Pending', 'Active', 'Unmapped'
+	// State - READ-ONLY; The current state of the application package. Possible values include: 'Pending', 'Active', 'Unmapped'
 	State PackageState `json:"state,omitempty"`
-	// Format - The format of the application package, if the package is active.
+	// Format - READ-ONLY; The format of the application package, if the package is active.
 	Format *string `json:"format,omitempty"`
-	// StorageURL - The storage URL at which the application package is stored.
+	// StorageURL - READ-ONLY; The storage URL at which the application package is stored.
 	StorageURL *string `json:"storageUrl,omitempty"`
-	// StorageURLExpiry - The UTC time at which the storage URL will expire.
+	// StorageURLExpiry - READ-ONLY; The UTC time at which the storage URL will expire.
 	StorageURLExpiry *date.Time `json:"storageUrlExpiry,omitempty"`
-	// LastActivationTime - The time at which the package was last activated, if the package is active.
+	// LastActivationTime - READ-ONLY; The time at which the package was last activated, if the package is active.
 	LastActivationTime *date.Time `json:"lastActivationTime,omitempty"`
 }
 
@@ -808,42 +798,27 @@ func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplica
 // LocationQuota quotas associated with a Batch region for a particular subscription.
 type LocationQuota struct {
 	autorest.Response `json:"-"`
-	// AccountQuota - The number of Batch accounts that may be created under the subscription in the specified region.
+	// AccountQuota - READ-ONLY; The number of Batch accounts that may be created under the subscription in the specified region.
 	AccountQuota *int32 `json:"accountQuota,omitempty"`
 }
 
 // Resource a definition of an Azure resource.
 type Resource struct {
-	// ID - The ID of the resource
+	// ID - READ-ONLY; The ID of the resource
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - READ-ONLY; The type of the resource
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
+	// Location - READ-ONLY; The location of the resource
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
+	// Tags - READ-ONLY; The tags of the resource
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }
 

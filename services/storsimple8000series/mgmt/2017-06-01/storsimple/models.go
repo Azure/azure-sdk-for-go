@@ -900,11 +900,11 @@ type AccessControlRecord struct {
 	autorest.Response `json:"-"`
 	// AccessControlRecordProperties - The properties of access control record.
 	*AccessControlRecordProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -915,15 +915,6 @@ func (acr AccessControlRecord) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if acr.AccessControlRecordProperties != nil {
 		objectMap["properties"] = acr.AccessControlRecordProperties
-	}
-	if acr.ID != nil {
-		objectMap["id"] = acr.ID
-	}
-	if acr.Name != nil {
-		objectMap["name"] = acr.Name
-	}
-	if acr.Type != nil {
-		objectMap["type"] = acr.Type
 	}
 	if acr.Kind != "" {
 		objectMap["kind"] = acr.Kind
@@ -1002,7 +993,7 @@ type AccessControlRecordList struct {
 type AccessControlRecordProperties struct {
 	// InitiatorName - The iSCSI initiator name (IQN).
 	InitiatorName *string `json:"initiatorName,omitempty"`
-	// VolumeCount - The number of volumes using the access control record.
+	// VolumeCount - READ-ONLY; The number of volumes using the access control record.
 	VolumeCount *int32 `json:"volumeCount,omitempty"`
 }
 
@@ -1016,7 +1007,7 @@ type AccessControlRecordsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessControlRecordsClient) (acr AccessControlRecord, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1045,7 +1036,7 @@ type AccessControlRecordsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *AccessControlRecordsDeleteFuture) Result(client AccessControlRecordsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -1072,11 +1063,11 @@ type AcsConfiguration struct {
 type Alert struct {
 	// AlertProperties - The properties of the alert.
 	*AlertProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -1087,15 +1078,6 @@ func (a Alert) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AlertProperties != nil {
 		objectMap["properties"] = a.AlertProperties
-	}
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
-	}
-	if a.Type != nil {
-		objectMap["type"] = a.Type
 	}
 	if a.Kind != "" {
 		objectMap["kind"] = a.Kind
@@ -1430,11 +1412,11 @@ type AlertSettings struct {
 	autorest.Response `json:"-"`
 	// AlertNotificationProperties - The properties of the alert notification settings.
 	*AlertNotificationProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -1445,15 +1427,6 @@ func (as AlertSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if as.AlertNotificationProperties != nil {
 		objectMap["properties"] = as.AlertNotificationProperties
-	}
-	if as.ID != nil {
-		objectMap["id"] = as.ID
-	}
-	if as.Name != nil {
-		objectMap["name"] = as.Name
-	}
-	if as.Type != nil {
-		objectMap["type"] = as.Type
 	}
 	if as.Kind != "" {
 		objectMap["kind"] = as.Kind
@@ -1718,11 +1691,11 @@ func NewAvailableProviderOperationListPage(getNextPage func(context.Context, Ava
 type Backup struct {
 	// BackupProperties - The properties of the backup.
 	*BackupProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -1733,15 +1706,6 @@ func (b Backup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if b.BackupProperties != nil {
 		objectMap["properties"] = b.BackupProperties
-	}
-	if b.ID != nil {
-		objectMap["id"] = b.ID
-	}
-	if b.Name != nil {
-		objectMap["name"] = b.Name
-	}
-	if b.Type != nil {
-		objectMap["type"] = b.Type
 	}
 	if b.Kind != "" {
 		objectMap["kind"] = b.Kind
@@ -1993,7 +1957,7 @@ type BackupPoliciesBackupNowFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupPoliciesBackupNowFuture) Result(client BackupPoliciesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesBackupNowFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2016,7 +1980,7 @@ type BackupPoliciesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupPoliciesCreateOrUpdateFuture) Result(client BackupPoliciesClient) (bp BackupPolicy, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2045,7 +2009,7 @@ type BackupPoliciesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupPoliciesDeleteFuture) Result(client BackupPoliciesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2063,11 +2027,11 @@ type BackupPolicy struct {
 	autorest.Response `json:"-"`
 	// BackupPolicyProperties - The properties of the backup policy.
 	*BackupPolicyProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2078,15 +2042,6 @@ func (bp BackupPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bp.BackupPolicyProperties != nil {
 		objectMap["properties"] = bp.BackupPolicyProperties
-	}
-	if bp.ID != nil {
-		objectMap["id"] = bp.ID
-	}
-	if bp.Name != nil {
-		objectMap["name"] = bp.Name
-	}
-	if bp.Type != nil {
-		objectMap["type"] = bp.Type
 	}
 	if bp.Kind != "" {
 		objectMap["kind"] = bp.Kind
@@ -2165,17 +2120,17 @@ type BackupPolicyList struct {
 type BackupPolicyProperties struct {
 	// VolumeIds - The path IDs of the volumes which are part of the backup policy.
 	VolumeIds *[]string `json:"volumeIds,omitempty"`
-	// NextBackupTime - The time of the next backup for the backup policy.
+	// NextBackupTime - READ-ONLY; The time of the next backup for the backup policy.
 	NextBackupTime *date.Time `json:"nextBackupTime,omitempty"`
-	// LastBackupTime - The time of the last backup for the backup policy.
+	// LastBackupTime - READ-ONLY; The time of the last backup for the backup policy.
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
-	// SchedulesCount - The count of schedules the backup policy contains.
+	// SchedulesCount - READ-ONLY; The count of schedules the backup policy contains.
 	SchedulesCount *int64 `json:"schedulesCount,omitempty"`
-	// ScheduledBackupStatus - Indicates whether at least one of the schedules in the backup policy is active or not. Possible values include: 'ScheduledBackupStatusDisabled', 'ScheduledBackupStatusEnabled'
+	// ScheduledBackupStatus - READ-ONLY; Indicates whether at least one of the schedules in the backup policy is active or not. Possible values include: 'ScheduledBackupStatusDisabled', 'ScheduledBackupStatusEnabled'
 	ScheduledBackupStatus ScheduledBackupStatus `json:"scheduledBackupStatus,omitempty"`
-	// BackupPolicyCreationType - The backup policy creation type. Indicates whether this was created through SaaS or through StorSimple Snapshot Manager. Possible values include: 'BackupPolicyCreationTypeBySaaS', 'BackupPolicyCreationTypeBySSM'
+	// BackupPolicyCreationType - READ-ONLY; The backup policy creation type. Indicates whether this was created through SaaS or through StorSimple Snapshot Manager. Possible values include: 'BackupPolicyCreationTypeBySaaS', 'BackupPolicyCreationTypeBySSM'
 	BackupPolicyCreationType BackupPolicyCreationType `json:"backupPolicyCreationType,omitempty"`
-	// SsmHostName - If the backup policy was created by StorSimple Snapshot Manager, then this field indicates the hostname of the StorSimple Snapshot Manager.
+	// SsmHostName - READ-ONLY; If the backup policy was created by StorSimple Snapshot Manager, then this field indicates the hostname of the StorSimple Snapshot Manager.
 	SsmHostName *string `json:"ssmHostName,omitempty"`
 }
 
@@ -2202,11 +2157,11 @@ type BackupSchedule struct {
 	autorest.Response `json:"-"`
 	// BackupScheduleProperties - The properties of the backup schedule.
 	*BackupScheduleProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2217,15 +2172,6 @@ func (bs BackupSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bs.BackupScheduleProperties != nil {
 		objectMap["properties"] = bs.BackupScheduleProperties
-	}
-	if bs.ID != nil {
-		objectMap["id"] = bs.ID
-	}
-	if bs.Name != nil {
-		objectMap["name"] = bs.Name
-	}
-	if bs.Type != nil {
-		objectMap["type"] = bs.Type
 	}
 	if bs.Kind != "" {
 		objectMap["kind"] = bs.Kind
@@ -2312,7 +2258,7 @@ type BackupScheduleProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// ScheduleStatus - The schedule status. Possible values include: 'ScheduleStatusEnabled', 'ScheduleStatusDisabled'
 	ScheduleStatus ScheduleStatus `json:"scheduleStatus,omitempty"`
-	// LastSuccessfulRun - The last successful backup run which was triggered for the schedule.
+	// LastSuccessfulRun - READ-ONLY; The last successful backup run which was triggered for the schedule.
 	LastSuccessfulRun *date.Time `json:"lastSuccessfulRun,omitempty"`
 }
 
@@ -2326,7 +2272,7 @@ type BackupSchedulesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupSchedulesCreateOrUpdateFuture) Result(client BackupSchedulesClient) (bs BackupSchedule, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2355,7 +2301,7 @@ type BackupSchedulesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupSchedulesDeleteFuture) Result(client BackupSchedulesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupSchedulesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2377,7 +2323,7 @@ type BackupsCloneFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsCloneFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2400,7 +2346,7 @@ type BackupsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupsDeleteFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2423,7 +2369,7 @@ type BackupsRestoreFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BackupsRestoreFuture) Result(client BackupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2440,7 +2386,7 @@ func (future *BackupsRestoreFuture) Result(client BackupsClient) (ar autorest.Re
 type BandwidthRateSettingProperties struct {
 	// Schedules - The schedules.
 	Schedules *[]BandwidthSchedule `json:"schedules,omitempty"`
-	// VolumeCount - The number of volumes that uses the bandwidth setting.
+	// VolumeCount - READ-ONLY; The number of volumes that uses the bandwidth setting.
 	VolumeCount *int32 `json:"volumeCount,omitempty"`
 }
 
@@ -2461,11 +2407,11 @@ type BandwidthSetting struct {
 	autorest.Response `json:"-"`
 	// BandwidthRateSettingProperties - The properties of the bandwidth setting.
 	*BandwidthRateSettingProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2476,15 +2422,6 @@ func (bs BandwidthSetting) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bs.BandwidthRateSettingProperties != nil {
 		objectMap["properties"] = bs.BandwidthRateSettingProperties
-	}
-	if bs.ID != nil {
-		objectMap["id"] = bs.ID
-	}
-	if bs.Name != nil {
-		objectMap["name"] = bs.Name
-	}
-	if bs.Type != nil {
-		objectMap["type"] = bs.Type
 	}
 	if bs.Kind != "" {
 		objectMap["kind"] = bs.Kind
@@ -2569,7 +2506,7 @@ type BandwidthSettingsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BandwidthSettingsCreateOrUpdateFuture) Result(client BandwidthSettingsClient) (bs BandwidthSetting, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2598,7 +2535,7 @@ type BandwidthSettingsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *BandwidthSettingsDeleteFuture) Result(client BandwidthSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2613,11 +2550,11 @@ func (future *BandwidthSettingsDeleteFuture) Result(client BandwidthSettingsClie
 
 // BaseModel represents the base class for all other ARM object models
 type BaseModel struct {
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2685,11 +2622,11 @@ type CloudAppliance struct {
 type CloudApplianceConfiguration struct {
 	// CloudApplianceConfigurationProperties - The properties.
 	*CloudApplianceConfigurationProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2700,15 +2637,6 @@ func (cac CloudApplianceConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cac.CloudApplianceConfigurationProperties != nil {
 		objectMap["properties"] = cac.CloudApplianceConfigurationProperties
-	}
-	if cac.ID != nil {
-		objectMap["id"] = cac.ID
-	}
-	if cac.Name != nil {
-		objectMap["name"] = cac.Name
-	}
-	if cac.Type != nil {
-		objectMap["type"] = cac.Type
 	}
 	if cac.Kind != "" {
 		objectMap["kind"] = cac.Kind
@@ -2819,7 +2747,7 @@ type CloudAppliancesProvisionFuture struct {
 // If the operation has not completed it will return an error.
 func (future *CloudAppliancesProvisionFuture) Result(client CloudAppliancesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesProvisionFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -2836,11 +2764,11 @@ func (future *CloudAppliancesProvisionFuture) Result(client CloudAppliancesClien
 type ConfigureDeviceRequest struct {
 	// ConfigureDeviceRequestProperties - The properties of the configure device request.
 	*ConfigureDeviceRequestProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2851,15 +2779,6 @@ func (cdr ConfigureDeviceRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cdr.ConfigureDeviceRequestProperties != nil {
 		objectMap["properties"] = cdr.ConfigureDeviceRequestProperties
-	}
-	if cdr.ID != nil {
-		objectMap["id"] = cdr.ID
-	}
-	if cdr.Name != nil {
-		objectMap["name"] = cdr.Name
-	}
-	if cdr.Type != nil {
-		objectMap["type"] = cdr.Type
 	}
 	if cdr.Kind != "" {
 		objectMap["kind"] = cdr.Kind
@@ -2945,11 +2864,11 @@ type ConfigureDeviceRequestProperties struct {
 type ControllerPowerStateChangeRequest struct {
 	// ControllerPowerStateChangeRequestProperties - The properties of the controller power state change request.
 	*ControllerPowerStateChangeRequestProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -2960,15 +2879,6 @@ func (cpscr ControllerPowerStateChangeRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cpscr.ControllerPowerStateChangeRequestProperties != nil {
 		objectMap["properties"] = cpscr.ControllerPowerStateChangeRequestProperties
-	}
-	if cpscr.ID != nil {
-		objectMap["id"] = cpscr.ID
-	}
-	if cpscr.Name != nil {
-		objectMap["name"] = cpscr.Name
-	}
-	if cpscr.Type != nil {
-		objectMap["type"] = cpscr.Type
 	}
 	if cpscr.Kind != "" {
 		objectMap["kind"] = cpscr.Kind
@@ -3066,11 +2976,11 @@ type Device struct {
 	autorest.Response `json:"-"`
 	// DeviceProperties - The properties of the StorSimple device.
 	*DeviceProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -3081,15 +2991,6 @@ func (d Device) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DeviceProperties != nil {
 		objectMap["properties"] = d.DeviceProperties
-	}
-	if d.ID != nil {
-		objectMap["id"] = d.ID
-	}
-	if d.Name != nil {
-		objectMap["name"] = d.Name
-	}
-	if d.Type != nil {
-		objectMap["type"] = d.Type
 	}
 	if d.Kind != "" {
 		objectMap["kind"] = d.Kind
@@ -3267,7 +3168,7 @@ type DeviceProperties struct {
 	NetworkInterfaceCardCount *int32 `json:"networkInterfaceCardCount,omitempty"`
 	// DeviceLocation - The location of the virtual appliance.
 	DeviceLocation *string `json:"deviceLocation,omitempty"`
-	// VirtualMachineAPIType - The virtual machine API type. Possible values include: 'Classic', 'Arm'
+	// VirtualMachineAPIType - READ-ONLY; The virtual machine API type. Possible values include: 'Classic', 'Arm'
 	VirtualMachineAPIType VirtualMachineAPIType `json:"virtualMachineApiType,omitempty"`
 	// Details - The additional device details regarding the end point count and volume container count.
 	Details *DeviceDetails `json:"details,omitempty"`
@@ -3295,7 +3196,7 @@ type DevicesConfigureFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesConfigureFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesConfigureFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3318,7 +3219,7 @@ type DevicesDeactivateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesDeactivateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3341,7 +3242,7 @@ type DevicesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3364,7 +3265,7 @@ type DeviceSettingsCreateOrUpdateAlertSettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeviceSettingsCreateOrUpdateAlertSettingsFuture) Result(client DeviceSettingsClient) (as AlertSettings, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3393,7 +3294,7 @@ type DeviceSettingsCreateOrUpdateTimeSettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeviceSettingsCreateOrUpdateTimeSettingsFuture) Result(client DeviceSettingsClient) (ts TimeSettings, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3422,7 +3323,7 @@ type DeviceSettingsSyncRemotemanagementCertificateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeviceSettingsSyncRemotemanagementCertificateFuture) Result(client DeviceSettingsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsSyncRemotemanagementCertificateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3445,7 +3346,7 @@ type DeviceSettingsUpdateNetworkSettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeviceSettingsUpdateNetworkSettingsFuture) Result(client DeviceSettingsClient) (ns NetworkSettings, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3474,7 +3375,7 @@ type DeviceSettingsUpdateSecuritySettingsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DeviceSettingsUpdateSecuritySettingsFuture) Result(client DeviceSettingsClient) (ss SecuritySettings, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3503,7 +3404,7 @@ type DevicesFailoverFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesFailoverFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesFailoverFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3526,7 +3427,7 @@ type DevicesInstallUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesInstallUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesInstallUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3549,7 +3450,7 @@ type DevicesScanForUpdatesFuture struct {
 // If the operation has not completed it will return an error.
 func (future *DevicesScanForUpdatesFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.DevicesScanForUpdatesFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3587,11 +3488,11 @@ type EncryptionSettings struct {
 	autorest.Response `json:"-"`
 	// EncryptionSettingsProperties - The properties of the encryption settings.
 	*EncryptionSettingsProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -3602,15 +3503,6 @@ func (es EncryptionSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if es.EncryptionSettingsProperties != nil {
 		objectMap["properties"] = es.EncryptionSettingsProperties
-	}
-	if es.ID != nil {
-		objectMap["id"] = es.ID
-	}
-	if es.Name != nil {
-		objectMap["name"] = es.Name
-	}
-	if es.Type != nil {
-		objectMap["type"] = es.Type
 	}
 	if es.Kind != "" {
 		objectMap["kind"] = es.Kind
@@ -3789,11 +3681,11 @@ type HardwareComponent struct {
 type HardwareComponentGroup struct {
 	// HardwareComponentGroupProperties - The properties of the hardware component group.
 	*HardwareComponentGroupProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -3804,15 +3696,6 @@ func (hcg HardwareComponentGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if hcg.HardwareComponentGroupProperties != nil {
 		objectMap["properties"] = hcg.HardwareComponentGroupProperties
-	}
-	if hcg.ID != nil {
-		objectMap["id"] = hcg.ID
-	}
-	if hcg.Name != nil {
-		objectMap["name"] = hcg.Name
-	}
-	if hcg.Type != nil {
-		objectMap["type"] = hcg.Type
 	}
 	if hcg.Kind != "" {
 		objectMap["kind"] = hcg.Kind
@@ -3907,7 +3790,7 @@ type HardwareComponentGroupsChangeControllerPowerStateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HardwareComponentGroupsChangeControllerPowerStateFuture) Result(client HardwareComponentGroupsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsChangeControllerPowerStateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -3935,11 +3818,11 @@ type Job struct {
 	Error *JobErrorDetails `json:"error,omitempty"`
 	// JobProperties - The properties of the job.
 	*JobProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -3965,15 +3848,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	}
 	if j.JobProperties != nil {
 		objectMap["properties"] = j.JobProperties
-	}
-	if j.ID != nil {
-		objectMap["id"] = j.ID
-	}
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
-	if j.Type != nil {
-		objectMap["type"] = j.Type
 	}
 	if j.Kind != "" {
 		objectMap["kind"] = j.Kind
@@ -4295,7 +4169,7 @@ type JobsCancelFuture struct {
 // If the operation has not completed it will return an error.
 func (future *JobsCancelFuture) Result(client JobsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsCancelFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -4341,11 +4215,11 @@ type Manager struct {
 	*ManagerProperties `json:"properties,omitempty"`
 	// Etag - The etag of the manager.
 	Etag *string `json:"etag,omitempty"`
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The geo location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -4361,15 +4235,6 @@ func (mVar Manager) MarshalJSON() ([]byte, error) {
 	}
 	if mVar.Etag != nil {
 		objectMap["etag"] = mVar.Etag
-	}
-	if mVar.ID != nil {
-		objectMap["id"] = mVar.ID
-	}
-	if mVar.Name != nil {
-		objectMap["name"] = mVar.Name
-	}
-	if mVar.Type != nil {
-		objectMap["type"] = mVar.Type
 	}
 	if mVar.Location != nil {
 		objectMap["location"] = mVar.Location
@@ -4465,11 +4330,11 @@ type ManagerExtendedInfo struct {
 	*ManagerExtendedInfoProperties `json:"properties,omitempty"`
 	// Etag - The etag of the resource.
 	Etag *string `json:"etag,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -4483,15 +4348,6 @@ func (mei ManagerExtendedInfo) MarshalJSON() ([]byte, error) {
 	}
 	if mei.Etag != nil {
 		objectMap["etag"] = mei.Etag
-	}
-	if mei.ID != nil {
-		objectMap["id"] = mei.ID
-	}
-	if mei.Name != nil {
-		objectMap["name"] = mei.Name
-	}
-	if mei.Type != nil {
-		objectMap["type"] = mei.Type
 	}
 	if mei.Kind != "" {
 		objectMap["kind"] = mei.Kind
@@ -4787,11 +4643,11 @@ type NetworkSettings struct {
 	autorest.Response `json:"-"`
 	// NetworkSettingsProperties - The properties of network settings of a device.
 	*NetworkSettingsProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -4802,15 +4658,6 @@ func (ns NetworkSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ns.NetworkSettingsProperties != nil {
 		objectMap["properties"] = ns.NetworkSettingsProperties
-	}
-	if ns.ID != nil {
-		objectMap["id"] = ns.ID
-	}
-	if ns.Name != nil {
-		objectMap["name"] = ns.Name
-	}
-	if ns.Type != nil {
-		objectMap["type"] = ns.Type
 	}
 	if ns.Kind != "" {
 		objectMap["kind"] = ns.Kind
@@ -4986,11 +4833,11 @@ type RemoteManagementSettingsPatch struct {
 
 // Resource the Azure Resource.
 type Resource struct {
-	// ID - The resource ID.
+	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The resource name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - The resource type.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The geo location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -5001,15 +4848,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -5040,11 +4878,11 @@ type SecuritySettings struct {
 	autorest.Response `json:"-"`
 	// SecuritySettingsProperties - The properties of the security settings of a device.
 	*SecuritySettingsProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -5055,15 +4893,6 @@ func (ss SecuritySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ss.SecuritySettingsProperties != nil {
 		objectMap["properties"] = ss.SecuritySettingsProperties
-	}
-	if ss.ID != nil {
-		objectMap["id"] = ss.ID
-	}
-	if ss.Name != nil {
-		objectMap["name"] = ss.Name
-	}
-	if ss.Type != nil {
-		objectMap["type"] = ss.Type
 	}
 	if ss.Kind != "" {
 		objectMap["kind"] = ss.Kind
@@ -5203,11 +5032,11 @@ type StorageAccountCredential struct {
 	autorest.Response `json:"-"`
 	// StorageAccountCredentialProperties - The storage account credential properties.
 	*StorageAccountCredentialProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -5218,15 +5047,6 @@ func (sac StorageAccountCredential) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sac.StorageAccountCredentialProperties != nil {
 		objectMap["properties"] = sac.StorageAccountCredentialProperties
-	}
-	if sac.ID != nil {
-		objectMap["id"] = sac.ID
-	}
-	if sac.Name != nil {
-		objectMap["name"] = sac.Name
-	}
-	if sac.Type != nil {
-		objectMap["type"] = sac.Type
 	}
 	if sac.Kind != "" {
 		objectMap["kind"] = sac.Kind
@@ -5309,7 +5129,7 @@ type StorageAccountCredentialProperties struct {
 	SslStatus SslStatus `json:"sslStatus,omitempty"`
 	// AccessKey - The details of the storage account password.
 	AccessKey *AsymmetricEncryptedSecret `json:"accessKey,omitempty"`
-	// VolumesCount - The count of volumes using this storage account credential.
+	// VolumesCount - READ-ONLY; The count of volumes using this storage account credential.
 	VolumesCount *int32 `json:"volumesCount,omitempty"`
 }
 
@@ -5323,7 +5143,7 @@ type StorageAccountCredentialsCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageAccountCredentialsCreateOrUpdateFuture) Result(client StorageAccountCredentialsClient) (sac StorageAccountCredential, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5352,7 +5172,7 @@ type StorageAccountCredentialsDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *StorageAccountCredentialsDeleteFuture) Result(client StorageAccountCredentialsClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5410,11 +5230,11 @@ type TimeSettings struct {
 	autorest.Response `json:"-"`
 	// TimeSettingsProperties - The properties of the time settings of a device.
 	*TimeSettingsProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -5425,15 +5245,6 @@ func (ts TimeSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ts.TimeSettingsProperties != nil {
 		objectMap["properties"] = ts.TimeSettingsProperties
-	}
-	if ts.ID != nil {
-		objectMap["id"] = ts.ID
-	}
-	if ts.Name != nil {
-		objectMap["name"] = ts.Name
-	}
-	if ts.Type != nil {
-		objectMap["type"] = ts.Type
 	}
 	if ts.Kind != "" {
 		objectMap["kind"] = ts.Kind
@@ -5516,11 +5327,11 @@ type Updates struct {
 	autorest.Response `json:"-"`
 	// UpdatesProperties - The properties of the updates profile.
 	*UpdatesProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -5531,15 +5342,6 @@ func (u Updates) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if u.UpdatesProperties != nil {
 		objectMap["properties"] = u.UpdatesProperties
-	}
-	if u.ID != nil {
-		objectMap["id"] = u.ID
-	}
-	if u.Name != nil {
-		objectMap["name"] = u.Name
-	}
-	if u.Type != nil {
-		objectMap["type"] = u.Type
 	}
 	if u.Kind != "" {
 		objectMap["kind"] = u.Kind
@@ -5638,11 +5440,11 @@ type Volume struct {
 	autorest.Response `json:"-"`
 	// VolumeProperties - The properties of the volume.
 	*VolumeProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -5653,15 +5455,6 @@ func (vVar Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vVar.VolumeProperties != nil {
 		objectMap["properties"] = vVar.VolumeProperties
-	}
-	if vVar.ID != nil {
-		objectMap["id"] = vVar.ID
-	}
-	if vVar.Name != nil {
-		objectMap["name"] = vVar.Name
-	}
-	if vVar.Type != nil {
-		objectMap["type"] = vVar.Type
 	}
 	if vVar.Kind != "" {
 		objectMap["kind"] = vVar.Kind
@@ -5734,11 +5527,11 @@ type VolumeContainer struct {
 	autorest.Response `json:"-"`
 	// VolumeContainerProperties - The volume container properties.
 	*VolumeContainerProperties `json:"properties,omitempty"`
-	// ID - The path ID that uniquely identifies the object.
+	// ID - READ-ONLY; The path ID that uniquely identifies the object.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the object.
+	// Name - READ-ONLY; The name of the object.
 	Name *string `json:"name,omitempty"`
-	// Type - The hierarchical type of the object.
+	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
@@ -5749,15 +5542,6 @@ func (vc VolumeContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vc.VolumeContainerProperties != nil {
 		objectMap["properties"] = vc.VolumeContainerProperties
-	}
-	if vc.ID != nil {
-		objectMap["id"] = vc.ID
-	}
-	if vc.Name != nil {
-		objectMap["name"] = vc.Name
-	}
-	if vc.Type != nil {
-		objectMap["type"] = vc.Type
 	}
 	if vc.Kind != "" {
 		objectMap["kind"] = vc.Kind
@@ -5845,19 +5629,19 @@ type VolumeContainerList struct {
 type VolumeContainerProperties struct {
 	// EncryptionKey - The key used to encrypt data in the volume container. It is required when property 'EncryptionStatus' is "Enabled".
 	EncryptionKey *AsymmetricEncryptedSecret `json:"encryptionKey,omitempty"`
-	// EncryptionStatus - The flag to denote whether encryption is enabled or not. Possible values include: 'EncryptionStatusEnabled', 'EncryptionStatusDisabled'
+	// EncryptionStatus - READ-ONLY; The flag to denote whether encryption is enabled or not. Possible values include: 'EncryptionStatusEnabled', 'EncryptionStatusDisabled'
 	EncryptionStatus EncryptionStatus `json:"encryptionStatus,omitempty"`
-	// VolumeCount - The number of volumes in the volume Container.
+	// VolumeCount - READ-ONLY; The number of volumes in the volume Container.
 	VolumeCount *int32 `json:"volumeCount,omitempty"`
 	// StorageAccountCredentialID - The path ID of storage account associated with the volume container.
 	StorageAccountCredentialID *string `json:"storageAccountCredentialId,omitempty"`
-	// OwnerShipStatus - The owner ship status of the volume container. Only when the status is "NotOwned", the delete operation on the volume container is permitted. Possible values include: 'Owned', 'NotOwned'
+	// OwnerShipStatus - READ-ONLY; The owner ship status of the volume container. Only when the status is "NotOwned", the delete operation on the volume container is permitted. Possible values include: 'Owned', 'NotOwned'
 	OwnerShipStatus OwnerShipStatus `json:"ownerShipStatus,omitempty"`
 	// BandWidthRateInMbps - The bandwidth-rate set on the volume container.
 	BandWidthRateInMbps *int32 `json:"bandWidthRateInMbps,omitempty"`
 	// BandwidthSettingID - The ID of the bandwidth setting associated with the volume container.
 	BandwidthSettingID *string `json:"bandwidthSettingId,omitempty"`
-	// TotalCloudStorageUsageInBytes - The total cloud storage for the volume container.
+	// TotalCloudStorageUsageInBytes - READ-ONLY; The total cloud storage for the volume container.
 	TotalCloudStorageUsageInBytes *int64 `json:"totalCloudStorageUsageInBytes,omitempty"`
 }
 
@@ -5871,7 +5655,7 @@ type VolumeContainersCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VolumeContainersCreateOrUpdateFuture) Result(client VolumeContainersClient) (vc VolumeContainer, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5900,7 +5684,7 @@ type VolumeContainersDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VolumeContainersDeleteFuture) Result(client VolumeContainersClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumeContainersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5944,19 +5728,19 @@ type VolumeProperties struct {
 	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
 	// VolumeType - The type of the volume. Possible values include: 'Tiered', 'Archival', 'LocallyPinned'
 	VolumeType VolumeType `json:"volumeType,omitempty"`
-	// VolumeContainerID - The ID of the volume container, in which this volume is created.
+	// VolumeContainerID - READ-ONLY; The ID of the volume container, in which this volume is created.
 	VolumeContainerID *string `json:"volumeContainerId,omitempty"`
 	// AccessControlRecordIds - The IDs of the access control records, associated with the volume.
 	AccessControlRecordIds *[]string `json:"accessControlRecordIds,omitempty"`
 	// VolumeStatus - The volume status. Possible values include: 'VolumeStatusOnline', 'VolumeStatusOffline'
 	VolumeStatus VolumeStatus `json:"volumeStatus,omitempty"`
-	// OperationStatus - The operation status on the volume. Possible values include: 'OperationStatusNone', 'OperationStatusUpdating', 'OperationStatusDeleting', 'OperationStatusRestoring'
+	// OperationStatus - READ-ONLY; The operation status on the volume. Possible values include: 'OperationStatusNone', 'OperationStatusUpdating', 'OperationStatusDeleting', 'OperationStatusRestoring'
 	OperationStatus OperationStatus `json:"operationStatus,omitempty"`
-	// BackupStatus - The backup status of the volume. Possible values include: 'BackupStatusEnabled', 'BackupStatusDisabled'
+	// BackupStatus - READ-ONLY; The backup status of the volume. Possible values include: 'BackupStatusEnabled', 'BackupStatusDisabled'
 	BackupStatus BackupStatus `json:"backupStatus,omitempty"`
 	// MonitoringStatus - The monitoring status of the volume. Possible values include: 'MonitoringStatusEnabled', 'MonitoringStatusDisabled'
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
-	// BackupPolicyIds - The IDs of the backup policies, in which this volume is part of.
+	// BackupPolicyIds - READ-ONLY; The IDs of the backup policies, in which this volume is part of.
 	BackupPolicyIds *[]string `json:"backupPolicyIds,omitempty"`
 }
 
@@ -5970,7 +5754,7 @@ type VolumesCreateOrUpdateFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Volume, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -5999,7 +5783,7 @@ type VolumesDeleteFuture struct {
 // If the operation has not completed it will return an error.
 func (future *VolumesDeleteFuture) Result(client VolumesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.VolumesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return

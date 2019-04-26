@@ -129,11 +129,11 @@ type OperationListResult struct {
 
 // ProxyResource common properties of proxy resource.
 type ProxyResource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -142,15 +142,6 @@ type ProxyResource struct {
 // MarshalJSON is the custom marshaler for ProxyResource.
 func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if pr.ID != nil {
-		objectMap["id"] = pr.ID
-	}
-	if pr.Name != nil {
-		objectMap["name"] = pr.Name
-	}
-	if pr.Type != nil {
-		objectMap["type"] = pr.Type
-	}
 	if pr.Tags != nil {
 		objectMap["tags"] = pr.Tags
 	}
@@ -159,11 +150,11 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 
 // Resource the resource definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -174,15 +165,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -195,11 +177,11 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // SavedSearch value object for saved search results.
 type SavedSearch struct {
 	autorest.Response `json:"-"`
-	// ID - The id of the saved search.
+	// ID - READ-ONLY; The id of the saved search.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the saved search.
+	// Name - READ-ONLY; The name of the saved search.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the saved search.
+	// Type - READ-ONLY; The type of the saved search.
 	Type *string `json:"type,omitempty"`
 	// ETag - The ETag of the saved search.
 	ETag *string `json:"eTag,omitempty"`
@@ -210,15 +192,6 @@ type SavedSearch struct {
 // MarshalJSON is the custom marshaler for SavedSearch.
 func (ss SavedSearch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ss.ID != nil {
-		objectMap["id"] = ss.ID
-	}
-	if ss.Name != nil {
-		objectMap["name"] = ss.Name
-	}
-	if ss.Type != nil {
-		objectMap["type"] = ss.Type
-	}
 	if ss.ETag != nil {
 		objectMap["eTag"] = ss.ETag
 	}
@@ -399,7 +372,7 @@ type SearchParameters struct {
 // SearchResultsResponse the get search result operation response.
 type SearchResultsResponse struct {
 	autorest.Response `json:"-"`
-	// ID - The id of the search, which includes the full url.
+	// ID - READ-ONLY; The id of the search, which includes the full url.
 	ID *string `json:"id,omitempty"`
 	// Metadata - The metadata from search results.
 	Metadata *SearchMetadata `json:"metaData,omitempty"`
@@ -459,11 +432,11 @@ type StorageInsight struct {
 	*StorageInsightProperties `json:"properties,omitempty"`
 	// ETag - The ETag of the storage insight.
 	ETag *string `json:"eTag,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -477,15 +450,6 @@ func (si StorageInsight) MarshalJSON() ([]byte, error) {
 	}
 	if si.ETag != nil {
 		objectMap["eTag"] = si.ETag
-	}
-	if si.ID != nil {
-		objectMap["id"] = si.ID
-	}
-	if si.Name != nil {
-		objectMap["name"] = si.Name
-	}
-	if si.Type != nil {
-		objectMap["type"] = si.Type
 	}
 	if si.Tags != nil {
 		objectMap["tags"] = si.Tags
@@ -716,7 +680,7 @@ type StorageInsightProperties struct {
 	Tables *[]string `json:"tables,omitempty"`
 	// StorageAccount - The storage account connection details
 	StorageAccount *StorageAccount `json:"storageAccount,omitempty"`
-	// Status - The status of the storage insight
+	// Status - READ-ONLY; The status of the storage insight
 	Status *StorageInsightStatus `json:"status,omitempty"`
 }
 
@@ -780,7 +744,7 @@ type WorkspacesGetSearchResultsFuture struct {
 // If the operation has not completed it will return an error.
 func (future *WorkspacesGetSearchResultsFuture) Result(client WorkspacesClient) (srr SearchResultsResponse, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesGetSearchResultsFuture", "Result", future.Response(), "Polling failure")
 		return

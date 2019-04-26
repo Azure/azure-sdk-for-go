@@ -246,7 +246,8 @@ func (client APIPolicyClient) DeleteResponder(resp *http.Response) (result autor
 // serviceName - the name of the API Management service.
 // apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
 // revision has ;rev=n as a suffix where n is the revision number.
-func (client APIPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result PolicyContract, err error) {
+// formatParameter - policy Export Format.
+func (client APIPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, formatParameter PolicyExportFormat) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIPolicyClient.Get")
 		defer func() {
@@ -269,7 +270,7 @@ func (client APIPolicyClient) Get(ctx context.Context, resourceGroupName string,
 		return result, validation.NewError("apimanagement.APIPolicyClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, apiid)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, apiid, formatParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIPolicyClient", "Get", nil, "Failure preparing request")
 		return
@@ -291,7 +292,7 @@ func (client APIPolicyClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // GetPreparer prepares the Get request.
-func (client APIPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (*http.Request, error) {
+func (client APIPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, formatParameter PolicyExportFormat) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"policyId":          autorest.Encode("path", "policy"),
@@ -303,6 +304,11 @@ func (client APIPolicyClient) GetPreparer(ctx context.Context, resourceGroupName
 	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(formatParameter)) > 0 {
+		queryParameters["format"] = autorest.Encode("query", formatParameter)
+	} else {
+		queryParameters["format"] = autorest.Encode("query", "xml")
 	}
 
 	preparer := autorest.CreatePreparer(

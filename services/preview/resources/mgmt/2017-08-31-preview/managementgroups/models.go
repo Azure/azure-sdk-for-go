@@ -130,11 +130,11 @@ type ErrorResponse struct {
 
 // Info the management group.
 type Info struct {
-	// ID - The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+	// ID - READ-ONLY; The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
+	// Type - READ-ONLY; The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
+	// Name - READ-ONLY; The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
 	Name            *uuid.UUID `json:"name,omitempty"`
 	*InfoProperties `json:"properties,omitempty"`
 }
@@ -142,15 +142,6 @@ type Info struct {
 // MarshalJSON is the custom marshaler for Info.
 func (i Info) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
-	if i.Type != nil {
-		objectMap["type"] = i.Type
-	}
-	if i.Name != nil {
-		objectMap["name"] = i.Name
-	}
 	if i.InfoProperties != nil {
 		objectMap["properties"] = i.InfoProperties
 	}
@@ -221,7 +212,7 @@ type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of management groups.
 	Value *[]Info `json:"value,omitempty"`
-	// NextLink - The URL to the next page of results.
+	// NextLink - READ-ONLY; The URL to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -364,11 +355,11 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 
 // ManagementGroup the management group details.
 type ManagementGroup struct {
-	// ID - The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+	// ID - READ-ONLY; The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
+	// Type - READ-ONLY; The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
+	// Name - READ-ONLY; The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
 	Name        *uuid.UUID `json:"name,omitempty"`
 	*Properties `json:"properties,omitempty"`
 }
@@ -376,15 +367,6 @@ type ManagementGroup struct {
 // MarshalJSON is the custom marshaler for ManagementGroup.
 func (mg ManagementGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mg.ID != nil {
-		objectMap["id"] = mg.ID
-	}
-	if mg.Type != nil {
-		objectMap["type"] = mg.Type
-	}
-	if mg.Name != nil {
-		objectMap["name"] = mg.Name
-	}
 	if mg.Properties != nil {
 		objectMap["properties"] = mg.Properties
 	}
@@ -444,7 +426,7 @@ func (mg *ManagementGroup) UnmarshalJSON(body []byte) error {
 
 // Operation a Management REST API operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -452,11 +434,11 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Management.
+	// Provider - READ-ONLY; Service provider: Microsoft.Management.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Invoice, etc.
+	// Resource - READ-ONLY; Resource on which the operation is performed: Invoice, etc.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
+	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
 }
 
@@ -464,9 +446,9 @@ type OperationDisplay struct {
 // the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of management operations supported by the Microsoft.Management resource provider.
+	// Value - READ-ONLY; List of management operations supported by the Microsoft.Management resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -662,11 +644,11 @@ type RecursiveChildInfo struct {
 
 // WithChildren the management group details.
 type WithChildren struct {
-	// ID - The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+	// ID - READ-ONLY; The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
+	// Type - READ-ONLY; The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
+	// Name - READ-ONLY; The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
 	Name                    *uuid.UUID `json:"name,omitempty"`
 	*PropertiesWithChildren `json:"properties,omitempty"`
 }
@@ -674,15 +656,6 @@ type WithChildren struct {
 // MarshalJSON is the custom marshaler for WithChildren.
 func (wc WithChildren) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wc.ID != nil {
-		objectMap["id"] = wc.ID
-	}
-	if wc.Type != nil {
-		objectMap["type"] = wc.Type
-	}
-	if wc.Name != nil {
-		objectMap["name"] = wc.Name
-	}
 	if wc.PropertiesWithChildren != nil {
 		objectMap["properties"] = wc.PropertiesWithChildren
 	}
@@ -743,11 +716,11 @@ func (wc *WithChildren) UnmarshalJSON(body []byte) error {
 // WithHierarchy the management group details.
 type WithHierarchy struct {
 	autorest.Response `json:"-"`
-	// ID - The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+	// ID - READ-ONLY; The ID of the management group. E.g. /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
+	// Type - READ-ONLY; The type of the resource. E.g. /providers/Microsoft.Management/managementGroups
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
+	// Name - READ-ONLY; The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
 	Name                     *uuid.UUID `json:"name,omitempty"`
 	*PropertiesWithHierarchy `json:"properties,omitempty"`
 }
@@ -755,15 +728,6 @@ type WithHierarchy struct {
 // MarshalJSON is the custom marshaler for WithHierarchy.
 func (wh WithHierarchy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wh.ID != nil {
-		objectMap["id"] = wh.ID
-	}
-	if wh.Type != nil {
-		objectMap["type"] = wh.Type
-	}
-	if wh.Name != nil {
-		objectMap["name"] = wh.Name
-	}
 	if wh.PropertiesWithHierarchy != nil {
 		objectMap["properties"] = wh.PropertiesWithHierarchy
 	}

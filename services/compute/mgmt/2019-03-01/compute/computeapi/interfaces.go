@@ -43,6 +43,18 @@ type AvailabilitySetsClientAPI interface {
 
 var _ AvailabilitySetsClientAPI = (*compute.AvailabilitySetsClient)(nil)
 
+// ProximityPlacementGroupsClientAPI contains the set of methods on the ProximityPlacementGroupsClient type.
+type ProximityPlacementGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroup) (result compute.ProximityPlacementGroup, err error)
+	Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result compute.ProximityPlacementGroup, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.ProximityPlacementGroupListResultPage, err error)
+	ListBySubscription(ctx context.Context) (result compute.ProximityPlacementGroupListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroupUpdate) (result compute.ProximityPlacementGroup, err error)
+}
+
+var _ ProximityPlacementGroupsClientAPI = (*compute.ProximityPlacementGroupsClient)(nil)
+
 // VirtualMachineExtensionImagesClientAPI contains the set of methods on the VirtualMachineExtensionImagesClient type.
 type VirtualMachineExtensionImagesClientAPI interface {
 	Get(ctx context.Context, location string, publisherName string, typeParameter string, version string) (result compute.VirtualMachineExtensionImage, err error)
@@ -128,6 +140,7 @@ var _ ImagesClientAPI = (*compute.ImagesClient)(nil)
 
 // VirtualMachineScaleSetsClientAPI contains the set of methods on the VirtualMachineScaleSetsClient type.
 type VirtualMachineScaleSetsClientAPI interface {
+	ConvertToSinglePlacementGroup(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters compute.VMScaleSetConvertToSinglePlacementGroupInput) (result autorest.Response, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, parameters compute.VirtualMachineScaleSet) (result compute.VirtualMachineScaleSetsCreateOrUpdateFuture, err error)
 	Deallocate(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *compute.VirtualMachineScaleSetVMInstanceIDs) (result compute.VirtualMachineScaleSetsDeallocateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetsDeleteFuture, err error)

@@ -93,6 +93,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, createOrUpdateP
 		"api-version": APIVersion,
 	}
 
+	createOrUpdatePayload.Properties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

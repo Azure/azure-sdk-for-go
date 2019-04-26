@@ -200,11 +200,11 @@ type Status struct {
 
 // Userargs gets or sets the object containing the user arguments.
 type Userargs struct {
-	// Arg - The list of args defined by the user.
+	// Arg - READ-ONLY; The list of args defined by the user.
 	Arg *[]string `json:"arg,omitempty"`
 	// Callback - The callback URL, if any.
 	Callback interface{} `json:"callback,omitempty"`
-	// Define - The define properties defined by the user.
+	// Define - READ-ONLY; The define properties defined by the user.
 	Define *[]string `json:"define,omitempty"`
 	// Enablelog - Whether or not the user enabled logs.
 	Enablelog *string `json:"enablelog,omitempty"`

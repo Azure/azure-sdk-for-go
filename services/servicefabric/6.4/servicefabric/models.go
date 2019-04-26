@@ -7236,15 +7236,15 @@ type ApplicationProperties struct {
 	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
 	// DebugParams - Internal - used by Visual Studio to setup the debugging session on the local development environment.
 	DebugParams *string `json:"debugParams,omitempty"`
-	// ServiceNames - Names of the services in the application.
+	// ServiceNames - READ-ONLY; Names of the services in the application.
 	ServiceNames *[]string `json:"serviceNames,omitempty"`
-	// Status - Status of the application. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the application. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the application.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the application.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -19170,7 +19170,7 @@ type ContainerCodePackageProperties struct {
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
 	// ReliableCollectionsRefs - A list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
 	ReliableCollectionsRefs *[]ReliableCollectionsRef `json:"reliableCollectionsRefs,omitempty"`
-	// InstanceView - Runtime information of a container instance.
+	// InstanceView - READ-ONLY; Runtime information of a container instance.
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`
 }
 
@@ -25123,11 +25123,11 @@ type GatewayProperties struct {
 	TCP *[]TCPConfig `json:"tcp,omitempty"`
 	// HTTP - Configuration for http connectivity for this gateway.
 	HTTP *[]HTTPConfig `json:"http,omitempty"`
-	// Status - Status of the resource. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the gateway.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the gateway.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// IPAddress - IP address of the gateway. This is populated in the response and is ignored for incoming requests.
+	// IPAddress - READ-ONLY; IP address of the gateway. This is populated in the response and is ignored for incoming requests.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
@@ -25910,9 +25910,9 @@ type ImageStoreCopyDescription struct {
 type InlinedValueSecretResourceProperties struct {
 	// Description - User readable description of the secret.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the resource. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the secret.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the secret.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// ContentType - The type of the content stored in the secret value. The value of this property is opaque to Service Fabric. Once set, the value of this property cannot be changed.
 	ContentType *string `json:"contentType,omitempty"`
@@ -25926,12 +25926,6 @@ func (ivsrp InlinedValueSecretResourceProperties) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	if ivsrp.Description != nil {
 		objectMap["description"] = ivsrp.Description
-	}
-	if ivsrp.Status != "" {
-		objectMap["status"] = ivsrp.Status
-	}
-	if ivsrp.StatusDetails != nil {
-		objectMap["statusDetails"] = ivsrp.StatusDetails
 	}
 	if ivsrp.ContentType != nil {
 		objectMap["contentType"] = ivsrp.ContentType
@@ -26376,9 +26370,9 @@ type LocalNetworkResourceProperties struct {
 	NetworkAddressPrefix *string `json:"networkAddressPrefix,omitempty"`
 	// Description - User readable description of the network.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the network. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the network. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the network.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the network.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// Kind - Possible values include: 'KindNetworkResourcePropertiesBase', 'KindNetworkResourceProperties', 'KindLocal'
 	Kind KindBasicNetworkResourcePropertiesBase `json:"kind,omitempty"`
@@ -26393,12 +26387,6 @@ func (lnrp LocalNetworkResourceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if lnrp.Description != nil {
 		objectMap["description"] = lnrp.Description
-	}
-	if lnrp.Status != "" {
-		objectMap["status"] = lnrp.Status
-	}
-	if lnrp.StatusDetails != nil {
-		objectMap["statusDetails"] = lnrp.StatusDetails
 	}
 	if lnrp.Kind != "" {
 		objectMap["kind"] = lnrp.Kind
@@ -26617,9 +26605,9 @@ type BasicNetworkResourceProperties interface {
 type NetworkResourceProperties struct {
 	// Description - User readable description of the network.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the network. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the network. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the network.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the network.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// Kind - Possible values include: 'KindNetworkResourcePropertiesBase', 'KindNetworkResourceProperties', 'KindLocal'
 	Kind KindBasicNetworkResourcePropertiesBase `json:"kind,omitempty"`
@@ -26668,12 +26656,6 @@ func (nrp NetworkResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if nrp.Description != nil {
 		objectMap["description"] = nrp.Description
-	}
-	if nrp.Status != "" {
-		objectMap["status"] = nrp.Status
-	}
-	if nrp.StatusDetails != nil {
-		objectMap["statusDetails"] = nrp.StatusDetails
 	}
 	if nrp.Kind != "" {
 		objectMap["kind"] = nrp.Kind
@@ -40915,9 +40897,9 @@ type BasicSecretResourceProperties interface {
 type SecretResourceProperties struct {
 	// Description - User readable description of the secret.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the resource. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the resource. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the secret.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the secret.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// ContentType - The type of the content stored in the secret value. The value of this property is opaque to Service Fabric. Once set, the value of this property cannot be changed.
 	ContentType *string `json:"contentType,omitempty"`
@@ -40968,12 +40950,6 @@ func (srp SecretResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if srp.Description != nil {
 		objectMap["description"] = srp.Description
-	}
-	if srp.Status != "" {
-		objectMap["status"] = srp.Status
-	}
-	if srp.StatusDetails != nil {
-		objectMap["statusDetails"] = srp.StatusDetails
 	}
 	if srp.ContentType != nil {
 		objectMap["contentType"] = srp.ContentType
@@ -44911,13 +44887,13 @@ type ServiceProperties struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// AutoScalingPolicies - Auto scaling policies
 	AutoScalingPolicies *[]AutoScalingPolicy `json:"autoScalingPolicies,omitempty"`
-	// Status - Status of the service. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the service. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the service.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the service.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -45018,13 +44994,13 @@ type ServiceResourceProperties struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// AutoScalingPolicies - Auto scaling policies
 	AutoScalingPolicies *[]AutoScalingPolicy `json:"autoScalingPolicies,omitempty"`
-	// Status - Status of the service. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the service. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the service.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the service.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-	// HealthState - Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// HealthState - READ-ONLY; Describes the health state of an application resource. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"healthState,omitempty"`
-	// UnhealthyEvaluation - When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
+	// UnhealthyEvaluation - READ-ONLY; When the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
@@ -50852,9 +50828,9 @@ func (vfce ValidationFailedChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, boo
 type VolumeProperties struct {
 	// Description - User readable description of the volume.
 	Description *string `json:"description,omitempty"`
-	// Status - Status of the volume. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
+	// Status - READ-ONLY; Status of the volume. Possible values include: 'ResourceStatusUnknown', 'ResourceStatusReady', 'ResourceStatusUpgrading', 'ResourceStatusCreating', 'ResourceStatusDeleting', 'ResourceStatusFailed'
 	Status ResourceStatus `json:"status,omitempty"`
-	// StatusDetails - Gives additional information about the current status of the volume.
+	// StatusDetails - READ-ONLY; Gives additional information about the current status of the volume.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// Provider - Provider of the volume.
 	Provider *string `json:"provider,omitempty"`

@@ -540,11 +540,11 @@ type ResourceType struct {
 // RoleAssignment role Assignments
 type RoleAssignment struct {
 	autorest.Response `json:"-"`
-	// ID - The role assignment ID.
+	// ID - READ-ONLY; The role assignment ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The role assignment name.
+	// Name - READ-ONLY; The role assignment name.
 	Name *string `json:"name,omitempty"`
-	// Type - The role assignment type.
+	// Type - READ-ONLY; The role assignment type.
 	Type *string `json:"type,omitempty"`
 	// Properties - Role assignment properties.
 	Properties *RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
@@ -729,11 +729,11 @@ type RoleAssignmentPropertiesWithScope struct {
 // RoleDefinition role definition.
 type RoleDefinition struct {
 	autorest.Response `json:"-"`
-	// ID - The role definition ID.
+	// ID - READ-ONLY; The role definition ID.
 	ID *string `json:"id,omitempty"`
-	// Name - The role definition name.
+	// Name - READ-ONLY; The role definition name.
 	Name *string `json:"name,omitempty"`
-	// Type - The role definition type.
+	// Type - READ-ONLY; The role definition type.
 	Type *string `json:"type,omitempty"`
 	// Properties - Role definition properties.
 	Properties *RoleDefinitionProperties `json:"properties,omitempty"`

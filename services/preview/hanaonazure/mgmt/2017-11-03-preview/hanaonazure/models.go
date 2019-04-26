@@ -30,21 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
-// HanaDatabaseContainersEnum enumerates the values for hana database containers enum.
-type HanaDatabaseContainersEnum string
-
-const (
-	// Multiple ...
-	Multiple HanaDatabaseContainersEnum = "multiple"
-	// Single ...
-	Single HanaDatabaseContainersEnum = "single"
-)
-
-// PossibleHanaDatabaseContainersEnumValues returns an array of possible values for the HanaDatabaseContainersEnum const type.
-func PossibleHanaDatabaseContainersEnumValues() []HanaDatabaseContainersEnum {
-	return []HanaDatabaseContainersEnum{Multiple, Single}
-}
-
 // HanaHardwareTypeNamesEnum enumerates the values for hana hardware type names enum.
 type HanaHardwareTypeNamesEnum string
 
@@ -136,21 +121,21 @@ type Disk struct {
 	Name *string `json:"name,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
+	// Lun - READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty"`
 }
 
 // Display detailed HANA operation information
 type Display struct {
-	// Provider - The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the resource provider. Use Title Casing. For examples, refer to the “name” section.
+	// Resource - READ-ONLY; The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the resource provider. Use Title Casing. For examples, refer to the “name” section.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs), but clear (self-documenting). Use Title Casing and include the entity/resource to which it applies.
+	// Operation - READ-ONLY; The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs), but clear (self-documenting). Use Title Casing and include the entity/resource to which it applies.
 	Operation *string `json:"operation,omitempty"`
-	// Description - The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise. It will be used in tool-tips and detailed views.
+	// Description - READ-ONLY; The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise. It will be used in tool-tips and detailed views.
 	Description *string `json:"description,omitempty"`
-	// Origin - The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is 'user,system'
+	// Origin - READ-ONLY; The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is 'user,system'
 	Origin *string `json:"origin,omitempty"`
 }
 
@@ -167,15 +152,15 @@ type HanaInstance struct {
 	autorest.Response `json:"-"`
 	// HanaInstanceProperties - HANA instance properties
 	*HanaInstanceProperties `json:"properties,omitempty"`
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - Resource location
+	// Location - READ-ONLY; Resource location
 	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
+	// Tags - READ-ONLY; Resource tags
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -184,21 +169,6 @@ func (hi HanaInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if hi.HanaInstanceProperties != nil {
 		objectMap["properties"] = hi.HanaInstanceProperties
-	}
-	if hi.ID != nil {
-		objectMap["id"] = hi.ID
-	}
-	if hi.Name != nil {
-		objectMap["name"] = hi.Name
-	}
-	if hi.Type != nil {
-		objectMap["type"] = hi.Type
-	}
-	if hi.Location != nil {
-		objectMap["location"] = hi.Location
-	}
-	if hi.Tags != nil {
-		objectMap["tags"] = hi.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -282,13 +252,13 @@ type HanaInstanceProperties struct {
 	OsProfile *OSProfile `json:"osProfile,omitempty"`
 	// NetworkProfile - Specifies the network settings for the HANA instance.
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
-	// HanaInstanceID - Specifies the HANA instance unique ID.
+	// HanaInstanceID - READ-ONLY; Specifies the HANA instance unique ID.
 	HanaInstanceID *string `json:"hanaInstanceId,omitempty"`
-	// PowerState - Resource power state. Possible values include: 'Starting', 'Started', 'Stopping', 'Stopped', 'Restarting', 'Unknown'
+	// PowerState - READ-ONLY; Resource power state. Possible values include: 'Starting', 'Started', 'Stopping', 'Stopped', 'Restarting', 'Unknown'
 	PowerState HanaInstancePowerStateEnum `json:"powerState,omitempty"`
-	// ProximityPlacementGroup - Resource proximity placement group
+	// ProximityPlacementGroup - READ-ONLY; Resource proximity placement group
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
-	// HwRevision - Hardware revision of a HANA instance
+	// HwRevision - READ-ONLY; Hardware revision of a HANA instance
 	HwRevision *string `json:"hwRevision,omitempty"`
 }
 
@@ -302,7 +272,7 @@ type HanaInstancesEnableMonitoringFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HanaInstancesEnableMonitoringFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -471,7 +441,7 @@ type HanaInstancesRestartFuture struct {
 // If the operation has not completed it will return an error.
 func (future *HanaInstancesRestartFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
 	var done bool
-	done, err = future.Done(client)
+	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesRestartFuture", "Result", future.Response(), "Polling failure")
 		return
@@ -486,30 +456,28 @@ func (future *HanaInstancesRestartFuture) Result(client HanaInstancesClient) (ar
 
 // HardwareProfile specifies the hardware settings for the HANA instance.
 type HardwareProfile struct {
-	// HardwareType - Name of the hardware type (vendor and/or their product name). Possible values include: 'CiscoUCS', 'HPE'
+	// HardwareType - READ-ONLY; Name of the hardware type (vendor and/or their product name). Possible values include: 'CiscoUCS', 'HPE'
 	HardwareType HanaHardwareTypeNamesEnum `json:"hardwareType,omitempty"`
-	// HanaInstanceSize - Specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m', 'S768xm', 'S960m'
+	// HanaInstanceSize - READ-ONLY; Specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m', 'S768xm', 'S960m'
 	HanaInstanceSize HanaInstanceSizeNamesEnum `json:"hanaInstanceSize,omitempty"`
 }
 
 // IPAddress specifies the IP address of the network interface.
 type IPAddress struct {
-	// IPAddress - Specifies the IP address of the network interface.
+	// IPAddress - READ-ONLY; Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
 // MonitoringDetails details needed to monitor a Hana Instance
 type MonitoringDetails struct {
-	// HanaVnet - ARM ID of an Azure Vnet with access to the HANA instance.
-	HanaVnet *string `json:"hanaVnet,omitempty"`
+	// HanaSubnet - ARM ID of an Azure Subnet with access to the HANA instance.
+	HanaSubnet *string `json:"hanaSubnet,omitempty"`
 	// HanaHostname - Hostname of the HANA Instance blade.
 	HanaHostname *string `json:"hanaHostname,omitempty"`
-	// HanaInstanceNum - A number between 00 and 99, stored as a string to maintain leading zero.
-	HanaInstanceNum *string `json:"hanaInstanceNum,omitempty"`
-	// DbContainer - Either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'Single', 'Multiple'
-	DbContainer HanaDatabaseContainersEnum `json:"dbContainer,omitempty"`
-	// HanaDatabase - Name of the database itself.  It only needs to be specified if using MDC
-	HanaDatabase *string `json:"hanaDatabase,omitempty"`
+	// HanaDbName - Name of the database itself.
+	HanaDbName *string `json:"hanaDbName,omitempty"`
+	// HanaDbSQLPort - The port number of the tenant DB. Used to connect to the DB.
+	HanaDbSQLPort *int32 `json:"hanaDbSqlPort,omitempty"`
 	// HanaDbUsername - Username for the HANA database to login to for monitoring
 	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
 	// HanaDbPassword - Password for the HANA database to login for monitoring
@@ -520,13 +488,13 @@ type MonitoringDetails struct {
 type NetworkProfile struct {
 	// NetworkInterfaces - Specifies the network interfaces for the HANA instance.
 	NetworkInterfaces *[]IPAddress `json:"networkInterfaces,omitempty"`
-	// CircuitID - Specifies the circuit id for connecting to express route.
+	// CircuitID - READ-ONLY; Specifies the circuit id for connecting to express route.
 	CircuitID *string `json:"circuitId,omitempty"`
 }
 
 // Operation HANA operation information
 type Operation struct {
-	// Name - The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event service.
+	// Name - READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event service.
 	Name *string `json:"name,omitempty"`
 	// Display - Displayed HANA operation information
 	Display *Display `json:"display,omitempty"`
@@ -541,52 +509,37 @@ type OperationList struct {
 
 // OSProfile specifies the operating system settings for the HANA instance.
 type OSProfile struct {
-	// ComputerName - Specifies the host OS name of the HANA instance.
+	// ComputerName - READ-ONLY; Specifies the host OS name of the HANA instance.
 	ComputerName *string `json:"computerName,omitempty"`
-	// OsType - This property allows you to specify the type of the OS.
+	// OsType - READ-ONLY; This property allows you to specify the type of the OS.
 	OsType *string `json:"osType,omitempty"`
-	// Version - Specifies version of operating system.
+	// Version - READ-ONLY; Specifies version of operating system.
 	Version *string `json:"version,omitempty"`
 }
 
 // Resource the resource model definition.
 type Resource struct {
-	// ID - Resource ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - Resource location
+	// Location - READ-ONLY; Resource location
 	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
+	// Tags - READ-ONLY; Resource tags
 	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }
 
 // StorageProfile specifies the storage settings for the HANA instance disks.
 type StorageProfile struct {
-	// NfsIPAddress - IP Address to connect to storage.
+	// NfsIPAddress - READ-ONLY; IP Address to connect to storage.
 	NfsIPAddress *string `json:"nfsIpAddress,omitempty"`
 	// OsDisks - Specifies information about the operating system disk used by the hana instance.
 	OsDisks *[]Disk `json:"osDisks,omitempty"`

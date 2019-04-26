@@ -47,15 +47,15 @@ func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 
 // ErrorDefinition error definition.
 type ErrorDefinition struct {
-	// Code - Service specific error code which serves as the substatus for the HTTP error code.
+	// Code - READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Description of the error.
+	// Message - READ-ONLY; Description of the error.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the error.
+	// Target - READ-ONLY; The target of the error.
 	Target *string `json:"target,omitempty"`
-	// Details - Internal error details.
+	// Details - READ-ONLY; Internal error details.
 	Details *[]ErrorDefinition `json:"details,omitempty"`
-	// AdditionalInfo - Additional scenario specific error details.
+	// AdditionalInfo - READ-ONLY; Additional scenario specific error details.
 	AdditionalInfo *[]TypedErrorInfo `json:"additionalInfo,omitempty"`
 }
 
@@ -74,9 +74,9 @@ type ExpressionEvaluationDetails struct {
 	// Path - Property path if the expression is a field or an alias.
 	Path *string `json:"path,omitempty"`
 	// ExpressionValue - Value of the expression.
-	ExpressionValue *string `json:"expressionValue,omitempty"`
+	ExpressionValue interface{} `json:"expressionValue,omitempty"`
 	// TargetValue - Target value to be compared with the expression value.
-	TargetValue *string `json:"targetValue,omitempty"`
+	TargetValue interface{} `json:"targetValue,omitempty"`
 	// Operator - Operator to compare the expression value and the target value.
 	Operator *string `json:"operator,omitempty"`
 }
@@ -144,17 +144,17 @@ type PolicyDefinitionSummary struct {
 
 // PolicyDetails the policy details.
 type PolicyDetails struct {
-	// PolicyDefinitionID - The ID of the policy definition.
+	// PolicyDefinitionID - READ-ONLY; The ID of the policy definition.
 	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
-	// PolicyAssignmentID - The ID of the policy assignment.
+	// PolicyAssignmentID - READ-ONLY; The ID of the policy assignment.
 	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
-	// PolicyAssignmentDisplayName - The display name of the policy assignment.
+	// PolicyAssignmentDisplayName - READ-ONLY; The display name of the policy assignment.
 	PolicyAssignmentDisplayName *string `json:"policyAssignmentDisplayName,omitempty"`
-	// PolicyAssignmentScope - The scope of the policy assignment.
+	// PolicyAssignmentScope - READ-ONLY; The scope of the policy assignment.
 	PolicyAssignmentScope *string `json:"policyAssignmentScope,omitempty"`
-	// PolicySetDefinitionID - The ID of the policy set definition.
+	// PolicySetDefinitionID - READ-ONLY; The ID of the policy set definition.
 	PolicySetDefinitionID *string `json:"policySetDefinitionId,omitempty"`
-	// PolicyDefinitionReferenceID - The policy definition reference ID within the policy set definition.
+	// PolicyDefinitionReferenceID - READ-ONLY; The policy definition reference ID within the policy set definition.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
 }
 
@@ -1086,24 +1086,24 @@ type PolicyStatesQueryResults struct {
 
 // PolicyTrackedResource policy tracked resource record.
 type PolicyTrackedResource struct {
-	// TrackedResourceID - The ID of the policy tracked resource.
+	// TrackedResourceID - READ-ONLY; The ID of the policy tracked resource.
 	TrackedResourceID *string `json:"trackedResourceId,omitempty"`
-	// PolicyDetails - The details of the policy that require the tracked resource.
+	// PolicyDetails - READ-ONLY; The details of the policy that require the tracked resource.
 	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty"`
-	// CreatedBy - The details of the policy triggered deployment that created the tracked resource.
+	// CreatedBy - READ-ONLY; The details of the policy triggered deployment that created the tracked resource.
 	CreatedBy *TrackedResourceModificationDetails `json:"createdBy,omitempty"`
-	// LastModifiedBy - The details of the policy triggered deployment that modified the tracked resource.
+	// LastModifiedBy - READ-ONLY; The details of the policy triggered deployment that modified the tracked resource.
 	LastModifiedBy *TrackedResourceModificationDetails `json:"lastModifiedBy,omitempty"`
-	// LastUpdateUtc - Timestamp of the last update to the tracked resource.
+	// LastUpdateUtc - READ-ONLY; Timestamp of the last update to the tracked resource.
 	LastUpdateUtc *date.Time `json:"lastUpdateUtc,omitempty"`
 }
 
 // PolicyTrackedResourcesQueryResults query results.
 type PolicyTrackedResourcesQueryResults struct {
 	autorest.Response `json:"-"`
-	// Value - Query results.
+	// Value - READ-ONLY; Query results.
 	Value *[]PolicyTrackedResource `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of results.
+	// NextLink - READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1253,9 +1253,9 @@ type QueryFailure struct {
 
 // QueryFailureError error definition.
 type QueryFailureError struct {
-	// Code - Service specific error code which serves as the substatus for the HTTP error code.
+	// Code - READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Description of the error.
+	// Message - READ-ONLY; Description of the error.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -1264,11 +1264,11 @@ type Remediation struct {
 	autorest.Response `json:"-"`
 	// RemediationProperties - Properties for the remediation.
 	*RemediationProperties `json:"properties,omitempty"`
-	// ID - The ID of the remediation.
+	// ID - READ-ONLY; The ID of the remediation.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the remediation.
+	// Type - READ-ONLY; The type of the remediation.
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the remediation.
+	// Name - READ-ONLY; The name of the remediation.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -1277,15 +1277,6 @@ func (r Remediation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if r.RemediationProperties != nil {
 		objectMap["properties"] = r.RemediationProperties
-	}
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
 	}
 	return json.Marshal(objectMap)
 }
@@ -1343,28 +1334,28 @@ func (r *Remediation) UnmarshalJSON(body []byte) error {
 
 // RemediationDeployment details of a single deployment created by the remediation.
 type RemediationDeployment struct {
-	// RemediatedResourceID - Resource ID of the resource that is being remediated by the deployment.
+	// RemediatedResourceID - READ-ONLY; Resource ID of the resource that is being remediated by the deployment.
 	RemediatedResourceID *string `json:"remediatedResourceId,omitempty"`
-	// DeploymentID - Resource ID of the template deployment that will remediate the resource.
+	// DeploymentID - READ-ONLY; Resource ID of the template deployment that will remediate the resource.
 	DeploymentID *string `json:"deploymentId,omitempty"`
-	// Status - Status of the remediation deployment.
+	// Status - READ-ONLY; Status of the remediation deployment.
 	Status *string `json:"status,omitempty"`
-	// ResourceLocation - Location of the resource that is being remediated.
+	// ResourceLocation - READ-ONLY; Location of the resource that is being remediated.
 	ResourceLocation *string `json:"resourceLocation,omitempty"`
-	// Error - Error encountered while remediated the resource.
+	// Error - READ-ONLY; Error encountered while remediated the resource.
 	Error *ErrorDefinition `json:"error,omitempty"`
-	// CreatedOn - The time at which the remediation was created.
+	// CreatedOn - READ-ONLY; The time at which the remediation was created.
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// LastUpdatedOn - The time at which the remediation deployment was last updated.
+	// LastUpdatedOn - READ-ONLY; The time at which the remediation deployment was last updated.
 	LastUpdatedOn *date.Time `json:"lastUpdatedOn,omitempty"`
 }
 
 // RemediationDeploymentsListResult list of deployments for a remediation.
 type RemediationDeploymentsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of deployments for the remediation.
+	// Value - READ-ONLY; Array of deployments for the remediation.
 	Value *[]RemediationDeployment `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of results.
+	// NextLink - READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1526,9 +1517,9 @@ type RemediationFilters struct {
 // RemediationListResult list of remediations.
 type RemediationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Array of remediation definitions.
+	// Value - READ-ONLY; Array of remediation definitions.
 	Value *[]Remediation `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of results.
+	// NextLink - READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1675,11 +1666,11 @@ type RemediationProperties struct {
 	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
 	// PolicyDefinitionReferenceID - The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
-	// ProvisioningState - The status of the remediation.
+	// ProvisioningState - READ-ONLY; The status of the remediation.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// CreatedOn - The time at which the remediation was created.
+	// CreatedOn - READ-ONLY; The time at which the remediation was created.
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// LastUpdatedOn - The time at which the remediation was last updated.
+	// LastUpdatedOn - READ-ONLY; The time at which the remediation was last updated.
 	LastUpdatedOn *date.Time `json:"lastUpdatedOn,omitempty"`
 	// Filters - The filters that will be applied to determine which resources to remediate.
 	Filters *RemediationFilters `json:"filters,omitempty"`
@@ -1729,18 +1720,18 @@ type SummaryResults struct {
 // TrackedResourceModificationDetails the details of the policy triggered deployment that created or
 // modified the tracked resource.
 type TrackedResourceModificationDetails struct {
-	// PolicyDetails - The details of the policy that created or modified the tracked resource.
+	// PolicyDetails - READ-ONLY; The details of the policy that created or modified the tracked resource.
 	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty"`
-	// DeploymentID - The ID of the deployment that created or modified the tracked resource.
+	// DeploymentID - READ-ONLY; The ID of the deployment that created or modified the tracked resource.
 	DeploymentID *string `json:"deploymentId,omitempty"`
-	// DeploymentTime - Timestamp of the deployment that created or modified the tracked resource.
+	// DeploymentTime - READ-ONLY; Timestamp of the deployment that created or modified the tracked resource.
 	DeploymentTime *date.Time `json:"deploymentTime,omitempty"`
 }
 
 // TypedErrorInfo scenario specific error details.
 type TypedErrorInfo struct {
-	// Type - The type of included error details.
+	// Type - READ-ONLY; The type of included error details.
 	Type *string `json:"type,omitempty"`
-	// Info - The scenario specific error details.
+	// Info - READ-ONLY; The scenario specific error details.
 	Info interface{} `json:"info,omitempty"`
 }

@@ -31,6 +31,7 @@ type AppsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result iotcentral.App, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result iotcentral.AppListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result iotcentral.AppListResultPage, err error)
+	ListTemplates(ctx context.Context) (result iotcentral.AppTemplatesResultPage, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, appPatch iotcentral.AppPatch) (result iotcentral.AppsUpdateFuture, err error)
 }
 

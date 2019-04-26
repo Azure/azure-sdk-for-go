@@ -416,8 +416,10 @@ const (
 type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
-	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
-	UserAssigned   ManagedServiceIdentityType = original.UserAssigned
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssignedUserAssigned
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
 )
 
 type MySQLMigrationType = original.MySQLMigrationType

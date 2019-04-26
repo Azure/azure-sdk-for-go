@@ -223,10 +223,8 @@ const (
 type PolicyExportFormat = original.PolicyExportFormat
 
 const (
-	PolicyExportFormatRawxml     PolicyExportFormat = original.PolicyExportFormatRawxml
-	PolicyExportFormatRawxmlLink PolicyExportFormat = original.PolicyExportFormatRawxmlLink
-	PolicyExportFormatXML        PolicyExportFormat = original.PolicyExportFormatXML
-	PolicyExportFormatXMLLink    PolicyExportFormat = original.PolicyExportFormatXMLLink
+	PolicyExportFormatRawxml PolicyExportFormat = original.PolicyExportFormatRawxml
+	PolicyExportFormatXML    PolicyExportFormat = original.PolicyExportFormatXML
 )
 
 type PolicyScopeContract = original.PolicyScopeContract

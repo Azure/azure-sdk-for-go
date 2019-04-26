@@ -1,5 +1,73 @@
 # CHANGELOG
 
+## `v28.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerregistry | 2019-04-01 |
+| containerservice | 2019-04-30 |
+| hybriddata | 2016-06-01 |
+| netapp | 2019-05-01 |
+| network | 2019-02-01 |
+| resources | 2019-03-01 |
+| serialconsole | 2018-05-01 |
+| storage | 2019-04-01 |
+| subscriptions | 2018-06-01 |
+| virtualmachineimagebuilder | 2019-05-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| cognitiveservices | 2017-04-18 |
+| consumption | 2019-01-01 |
+| costmanagement | 2019-01-01 |
+| datafactory | 2018-06-01 |
+| eventgrid | 2018-01-01 |
+| iotcentral | 2018-09-01 |
+| qnamaker | v4.0 |
+| sql | 2017-10-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-06-01-preview<br/>2019-01-01 |
+| billing | 2018-11-01-preview |
+| compute | 2019-03-01 |
+| cosmos-db | 2015-04-08 |
+| documentdb | 2015-04-08 |
+| hanaonazure | 2017-11-03-preview |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01 |
+| mysql | 2017-12-01 |
+| network | 2017-06-01<br/>2017-08-01<br/>2017-09-01<br/>2017-10-01<br/>2017-11-01<br/>2018-01-01<br/>2018-02-01<br/>2018-04-01<br/>2018-06-01<br/>2018-07-01<br/>2018-08-01<br/>2018-10-01<br/>2018-11-01<br/>2018-12-01 |
+| operationalinsights | 2015-11-01-preview |
+| policyinsights | 2018-07-01-preview |
+| postgresql | 2017-12-01 |
+| resources | 2018-05-01 |
+| runtime | luis |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview |
+| storagedatalake | 2018-11-09 |
+| subscriptions | 2016-06-01 |
+| virtualmachineimagebuilder | 2019-02-01-preview |
+| web | 2018-02-01 |
+
+### Removed Packages (duplicates)
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| automation | 2017-05-15-preview |
+| compute | 2017-06-01-preview |
+| devices | 2018-12-01-preview |
+| fabric | 2016-05-01 |
+| infrastructureinsights | 2016-05-01 |
+| mariadb | 2018-06-01-preview |
+| postgresql | 2017-04-30-preview<br/>2017-12-01-preview |
+| reservations | 2018-06-01 |
+| storagesync | 2018-10-01 |
+
 ## `v27.3.0`
 
 ### Updated Packages

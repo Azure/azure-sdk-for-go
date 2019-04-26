@@ -2,6 +2,10 @@
 
 ## `head`
 
+## `v0.5.1`
+- update the Azure Resource Manager dependency to the latest to help protect people not using a dependency 
+  management tool such as `dep` or `vgo`.
+
 ## `v0.5.0`
 - add support for websockets
 

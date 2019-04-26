@@ -22,7 +22,7 @@ func ExampleNamespaceWithWebSocket() {
 	ns, err := servicebus.NewNamespace(
 		servicebus.NamespaceWithConnectionString(connStr),
 		servicebus.NamespaceWithWebSocket(),
-		)
+	)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +56,3 @@ func ExampleNamespaceWithWebSocket() {
 
 	// Output: Hello World!!!
 }
-

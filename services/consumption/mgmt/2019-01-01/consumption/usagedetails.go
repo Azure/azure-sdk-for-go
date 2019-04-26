@@ -42,6 +42,89 @@ func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) Usa
 	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Download download usage details data.
+// Parameters:
+// scope - the scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
+// for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
+// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
+// scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope,
+// '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and
+// '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For
+// subscription, billing account, department, enrollment account and management group, you can also add billing
+// period to the scope using '/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'. For e.g. to
+// specify billing period at department scope use
+// '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
+func (client UsageDetailsClient) Download(ctx context.Context, scope string) (result UsageDetailsDownloadFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsageDetailsClient.Download")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DownloadPreparer(ctx, scope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "Download", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DownloadSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "Download", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DownloadPreparer prepares the Download request.
+func (client UsageDetailsClient) DownloadPreparer(ctx context.Context, scope string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"scope": scope,
+	}
+
+	const APIVersion = "2019-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Consumption/usageDetails/download", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DownloadSender sends the Download request. The method will close the
+// http.Response Body if it receives an error.
+func (client UsageDetailsClient) DownloadSender(req *http.Request) (future UsageDetailsDownloadFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DownloadResponder handles the response to the Download request. The method always
+// closes the http.Response Body.
+func (client UsageDetailsClient) DownloadResponder(resp *http.Response) (result UsageDetailsDownloadResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List lists the usage details for the defined scope. Usage details are available via this API only for May 1, 2014 or
 // later.
 // Parameters:

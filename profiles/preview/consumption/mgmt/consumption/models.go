@@ -168,9 +168,8 @@ type TagsResult = original.TagsResult
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsClient = original.UsageDetailsClient
+type UsageDetailsDownloadFuture = original.UsageDetailsDownloadFuture
 type UsageDetailsDownloadResponse = original.UsageDetailsDownloadResponse
-type UsageDetailsListClient = original.UsageDetailsListClient
-type UsageDetailsListDownloadFuture = original.UsageDetailsListDownloadFuture
 type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
@@ -291,12 +290,6 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 }
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageDetailsListClient(subscriptionID string) UsageDetailsListClient {
-	return original.NewUsageDetailsListClient(subscriptionID)
-}
-func NewUsageDetailsListClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsListClient {
-	return original.NewUsageDetailsListClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
 	return original.NewUsageDetailsListResultIterator(page)

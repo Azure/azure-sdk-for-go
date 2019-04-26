@@ -25,17 +25,11 @@ import (
 
 // UsageDetailsClientAPI contains the set of methods on the UsageDetailsClient type.
 type UsageDetailsClientAPI interface {
+	Download(ctx context.Context, scope string) (result consumption.UsageDetailsDownloadFuture, err error)
 	List(ctx context.Context, scope string, expand string, filter string, skiptoken string, top *int32, apply string) (result consumption.UsageDetailsListResultPage, err error)
 }
 
 var _ UsageDetailsClientAPI = (*consumption.UsageDetailsClient)(nil)
-
-// UsageDetailsListClientAPI contains the set of methods on the UsageDetailsListClient type.
-type UsageDetailsListClientAPI interface {
-	Download(ctx context.Context, scope string) (result consumption.UsageDetailsListDownloadFuture, err error)
-}
-
-var _ UsageDetailsListClientAPI = (*consumption.UsageDetailsListClient)(nil)
 
 // MarketplacesClientAPI contains the set of methods on the MarketplacesClient type.
 type MarketplacesClientAPI interface {

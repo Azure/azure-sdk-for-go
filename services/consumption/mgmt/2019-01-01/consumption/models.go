@@ -2620,6 +2620,35 @@ type UsageDetailProperties struct {
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
 }
 
+// UsageDetailsDownloadFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type UsageDetailsDownloadFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *UsageDetailsDownloadFuture) Result(client UsageDetailsClient) (uddr UsageDetailsDownloadResponse, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsDownloadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("consumption.UsageDetailsDownloadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if uddr.Response.Response, err = future.GetResult(sender); err == nil && uddr.Response.Response.StatusCode != http.StatusNoContent {
+		uddr, err = client.DownloadResponder(uddr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "consumption.UsageDetailsDownloadFuture", "Result", uddr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // UsageDetailsDownloadResponse download response of Usage Details.
 type UsageDetailsDownloadResponse struct {
 	autorest.Response `json:"-"`
@@ -2701,35 +2730,6 @@ func (uddr *UsageDetailsDownloadResponse) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// UsageDetailsListDownloadFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type UsageDetailsListDownloadFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *UsageDetailsListDownloadFuture) Result(client UsageDetailsListClient) (uddr UsageDetailsDownloadResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsListDownloadFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("consumption.UsageDetailsListDownloadFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if uddr.Response.Response, err = future.GetResult(sender); err == nil && uddr.Response.Response.StatusCode != http.StatusNoContent {
-		uddr, err = client.DownloadResponder(uddr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "consumption.UsageDetailsListDownloadFuture", "Result", uddr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // UsageDetailsListResult result of listing usage details. It contains a list of available usage details in

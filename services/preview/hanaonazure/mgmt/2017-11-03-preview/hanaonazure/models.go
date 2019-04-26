@@ -30,21 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
-// HanaDatabaseContainersEnum enumerates the values for hana database containers enum.
-type HanaDatabaseContainersEnum string
-
-const (
-	// Multiple ...
-	Multiple HanaDatabaseContainersEnum = "multiple"
-	// Single ...
-	Single HanaDatabaseContainersEnum = "single"
-)
-
-// PossibleHanaDatabaseContainersEnumValues returns an array of possible values for the HanaDatabaseContainersEnum const type.
-func PossibleHanaDatabaseContainersEnumValues() []HanaDatabaseContainersEnum {
-	return []HanaDatabaseContainersEnum{Multiple, Single}
-}
-
 // HanaHardwareTypeNamesEnum enumerates the values for hana hardware type names enum.
 type HanaHardwareTypeNamesEnum string
 
@@ -485,16 +470,14 @@ type IPAddress struct {
 
 // MonitoringDetails details needed to monitor a Hana Instance
 type MonitoringDetails struct {
-	// HanaVnet - ARM ID of an Azure Vnet with access to the HANA instance.
-	HanaVnet *string `json:"hanaVnet,omitempty"`
+	// HanaSubnet - ARM ID of an Azure Subnet with access to the HANA instance.
+	HanaSubnet *string `json:"hanaSubnet,omitempty"`
 	// HanaHostname - Hostname of the HANA Instance blade.
 	HanaHostname *string `json:"hanaHostname,omitempty"`
-	// HanaInstanceNum - A number between 00 and 99, stored as a string to maintain leading zero.
-	HanaInstanceNum *string `json:"hanaInstanceNum,omitempty"`
-	// DbContainer - Either single or multiple depending on the use of MDC(Multiple Database Containers). Possible values include: 'Single', 'Multiple'
-	DbContainer HanaDatabaseContainersEnum `json:"dbContainer,omitempty"`
-	// HanaDatabase - Name of the database itself.  It only needs to be specified if using MDC
-	HanaDatabase *string `json:"hanaDatabase,omitempty"`
+	// HanaDbName - Name of the database itself.
+	HanaDbName *string `json:"hanaDbName,omitempty"`
+	// HanaDbSQLPort - The port number of the tenant DB. Used to connect to the DB.
+	HanaDbSQLPort *int32 `json:"hanaDbSqlPort,omitempty"`
 	// HanaDbUsername - Username for the HANA database to login to for monitoring
 	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
 	// HanaDbPassword - Password for the HANA database to login for monitoring

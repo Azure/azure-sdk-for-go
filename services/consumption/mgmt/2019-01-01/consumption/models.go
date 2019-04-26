@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -695,6 +696,14 @@ type CurrentSpend struct {
 	Amount *decimal.Decimal `json:"amount,omitempty"`
 	// Unit - READ-ONLY; The unit of measure for the budget amount.
 	Unit *string `json:"unit,omitempty"`
+}
+
+// DownloadURL a secure URL that can be used to download a an entity until the URL expires.
+type DownloadURL struct {
+	// DownloadURL - READ-ONLY; The URL to the csv file.
+	DownloadURL *string `json:"downloadUrl,omitempty"`
+	// ValidTill - READ-ONLY; The time in UTC at which this download URL will expire.
+	ValidTill *string `json:"validTill,omitempty"`
 }
 
 // ErrorDetails the details of the error.
@@ -2609,6 +2618,118 @@ type UsageDetailProperties struct {
 	Location *string `json:"location,omitempty"`
 	// AdditionalProperties - READ-ONLY; Additional details of this usage item. By default this is not populated, unless it's specified in $expand.
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
+}
+
+// UsageDetailsDownloadResponse download response of Usage Details.
+type UsageDetailsDownloadResponse struct {
+	autorest.Response `json:"-"`
+	*DownloadURL      `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for UsageDetailsDownloadResponse.
+func (uddr UsageDetailsDownloadResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uddr.DownloadURL != nil {
+		objectMap["properties"] = uddr.DownloadURL
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for UsageDetailsDownloadResponse struct.
+func (uddr *UsageDetailsDownloadResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var downloadURL DownloadURL
+				err = json.Unmarshal(*v, &downloadURL)
+				if err != nil {
+					return err
+				}
+				uddr.DownloadURL = &downloadURL
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				uddr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				uddr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				uddr.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				uddr.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// UsageDetailsListDownloadFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type UsageDetailsListDownloadFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *UsageDetailsListDownloadFuture) Result(client UsageDetailsListClient) (uddr UsageDetailsDownloadResponse, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsListDownloadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("consumption.UsageDetailsListDownloadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if uddr.Response.Response, err = future.GetResult(sender); err == nil && uddr.Response.Response.StatusCode != http.StatusNoContent {
+		uddr, err = client.DownloadResponder(uddr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "consumption.UsageDetailsListDownloadFuture", "Result", uddr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // UsageDetailsListResult result of listing usage details. It contains a list of available usage details in

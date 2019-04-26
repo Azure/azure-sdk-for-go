@@ -477,7 +477,7 @@ type MonitoringDetails struct {
 	// HanaDbName - Name of the database itself.
 	HanaDbName *string `json:"hanaDbName,omitempty"`
 	// HanaDbSQLPort - The port number of the tenant DB. Used to connect to the DB.
-	HanaDbSQLPort *int32 `json:"hanaDbSQLPort,omitempty"`
+	HanaDbSQLPort *int32 `json:"hanaDbSqlPort,omitempty"`
 	// HanaDbUsername - Username for the HANA database to login to for monitoring
 	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
 	// HanaDbPassword - Password for the HANA database to login for monitoring

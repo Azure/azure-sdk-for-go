@@ -625,6 +625,23 @@ func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
 	return []ManagedInstanceLicenseType{BasePrice, LicenseIncluded}
 }
 
+// ManagedInstanceProxyOverride enumerates the values for managed instance proxy override.
+type ManagedInstanceProxyOverride string
+
+const (
+	// ManagedInstanceProxyOverrideDefault ...
+	ManagedInstanceProxyOverrideDefault ManagedInstanceProxyOverride = "Default"
+	// ManagedInstanceProxyOverrideProxy ...
+	ManagedInstanceProxyOverrideProxy ManagedInstanceProxyOverride = "Proxy"
+	// ManagedInstanceProxyOverrideRedirect ...
+	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = "Redirect"
+)
+
+// PossibleManagedInstanceProxyOverrideValues returns an array of possible values for the ManagedInstanceProxyOverride const type.
+func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
+	return []ManagedInstanceProxyOverride{ManagedInstanceProxyOverrideDefault, ManagedInstanceProxyOverrideProxy, ManagedInstanceProxyOverrideRedirect}
+}
+
 // ManagedServerCreateMode enumerates the values for managed server create mode.
 type ManagedServerCreateMode string
 
@@ -8728,8 +8745,8 @@ type ManagedInstanceProperties struct {
 	SourceManagedInstanceID *string `json:"sourceManagedInstanceId,omitempty"`
 	// RestorePointInTime - Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
-	// ProxyOverride - Proxy override of the managed instance.
-	ProxyOverride *string `json:"proxyOverride,omitempty"`
+	// ProxyOverride - Connection type used for connecting to the instance. Possible values include: 'ManagedInstanceProxyOverrideProxy', 'ManagedInstanceProxyOverrideRedirect', 'ManagedInstanceProxyOverrideDefault'
+	ProxyOverride ManagedInstanceProxyOverride `json:"proxyOverride,omitempty"`
 	// TimezoneID - Id of the timezone. Allowed values are timezones supported by Windows.
 	// Windows keeps details on supported timezones, including the id, in registry under
 	// KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.

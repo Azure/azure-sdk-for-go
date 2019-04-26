@@ -628,16 +628,16 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinGraphResponder(resp *htt
 	return
 }
 
-// CreateUpdateMongodbCollection create or update an Azure Cosmos DB Mongodb Collection
+// CreateUpdateMongoDBCollection create or update an Azure Cosmos DB MongoDB Collection
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
-// createUpdateMongodbCollectionParameters - the parameters to provide for the current Mongodb Collection.
-func (client DatabaseAccountsClient) CreateUpdateMongodbCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongodbCollectionParameters MongodbCollectionCreateUpdateParameters) (result DatabaseAccountsCreateUpdateMongodbCollectionFuture, err error) {
+// createUpdateMongoDBCollectionParameters - the parameters to provide for the current MongoDB Collection.
+func (client DatabaseAccountsClient) CreateUpdateMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters) (result DatabaseAccountsCreateUpdateMongoDBCollectionFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateMongodbCollection")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateMongoDBCollection")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -654,32 +654,32 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbCollection(ctx context.C
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
-		{TargetValue: createUpdateMongodbCollectionParameters,
-			Constraints: []validation.Constraint{{Target: "createUpdateMongodbCollectionParameters.MongodbCollectionCreateUpdateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createUpdateMongodbCollectionParameters.MongodbCollectionCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "createUpdateMongodbCollectionParameters.MongodbCollectionCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createUpdateMongodbCollectionParameters.MongodbCollectionCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: createUpdateMongoDBCollectionParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateMongodbCollection", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBCollection", err.Error())
 	}
 
-	req, err := client.CreateUpdateMongodbCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName, createUpdateMongodbCollectionParameters)
+	req, err := client.CreateUpdateMongoDBCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongodbCollection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBCollection", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateUpdateMongodbCollectionSender(req)
+	result, err = client.CreateUpdateMongoDBCollectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongodbCollection", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBCollection", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateUpdateMongodbCollectionPreparer prepares the CreateUpdateMongodbCollection request.
-func (client DatabaseAccountsClient) CreateUpdateMongodbCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongodbCollectionParameters MongodbCollectionCreateUpdateParameters) (*http.Request, error) {
+// CreateUpdateMongoDBCollectionPreparer prepares the CreateUpdateMongoDBCollection request.
+func (client DatabaseAccountsClient) CreateUpdateMongoDBCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"collectionName":    autorest.Encode("path", collectionName),
@@ -698,14 +698,14 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbCollectionPreparer(ctx c
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}/collections/{collectionName}", pathParameters),
-		autorest.WithJSON(createUpdateMongodbCollectionParameters),
+		autorest.WithJSON(createUpdateMongoDBCollectionParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateUpdateMongodbCollectionSender sends the CreateUpdateMongodbCollection request. The method will close the
+// CreateUpdateMongoDBCollectionSender sends the CreateUpdateMongoDBCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) CreateUpdateMongodbCollectionSender(req *http.Request) (future DatabaseAccountsCreateUpdateMongodbCollectionFuture, err error) {
+func (client DatabaseAccountsClient) CreateUpdateMongoDBCollectionSender(req *http.Request) (future DatabaseAccountsCreateUpdateMongoDBCollectionFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -716,9 +716,9 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbCollectionSender(req *ht
 	return
 }
 
-// CreateUpdateMongodbCollectionResponder handles the response to the CreateUpdateMongodbCollection request. The method always
+// CreateUpdateMongoDBCollectionResponder handles the response to the CreateUpdateMongoDBCollection request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateUpdateMongodbCollectionResponder(resp *http.Response) (result MongodbCollection, err error) {
+func (client DatabaseAccountsClient) CreateUpdateMongoDBCollectionResponder(resp *http.Response) (result MongoDBCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -729,15 +729,15 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbCollectionResponder(resp
 	return
 }
 
-// CreateUpdateMongodbDatabase create or updates Azure Cosmos DB Mongodb database
+// CreateUpdateMongoDBDatabase create or updates Azure Cosmos DB MongoDB database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// createUpdateMongodbDatabaseParameters - the parameters to provide for the current Mongodb database.
-func (client DatabaseAccountsClient) CreateUpdateMongodbDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongodbDatabaseParameters MongodbDatabaseCreateUpdateParameters) (result DatabaseAccountsCreateUpdateMongodbDatabaseFuture, err error) {
+// createUpdateMongoDBDatabaseParameters - the parameters to provide for the current MongoDB database.
+func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters) (result DatabaseAccountsCreateUpdateMongoDBDatabaseFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateMongodbDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateMongoDBDatabase")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -754,32 +754,32 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbDatabase(ctx context.Con
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
-		{TargetValue: createUpdateMongodbDatabaseParameters,
-			Constraints: []validation.Constraint{{Target: "createUpdateMongodbDatabaseParameters.MongodbDatabaseCreateUpdateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createUpdateMongodbDatabaseParameters.MongodbDatabaseCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "createUpdateMongodbDatabaseParameters.MongodbDatabaseCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createUpdateMongodbDatabaseParameters.MongodbDatabaseCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: createUpdateMongoDBDatabaseParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateMongodbDatabase", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBDatabase", err.Error())
 	}
 
-	req, err := client.CreateUpdateMongodbDatabasePreparer(ctx, resourceGroupName, accountName, databaseName, createUpdateMongodbDatabaseParameters)
+	req, err := client.CreateUpdateMongoDBDatabasePreparer(ctx, resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongodbDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBDatabase", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateUpdateMongodbDatabaseSender(req)
+	result, err = client.CreateUpdateMongoDBDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongodbDatabase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateMongoDBDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateUpdateMongodbDatabasePreparer prepares the CreateUpdateMongodbDatabase request.
-func (client DatabaseAccountsClient) CreateUpdateMongodbDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongodbDatabaseParameters MongodbDatabaseCreateUpdateParameters) (*http.Request, error) {
+// CreateUpdateMongoDBDatabasePreparer prepares the CreateUpdateMongoDBDatabase request.
+func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
@@ -797,14 +797,14 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbDatabasePreparer(ctx con
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases/{databaseName}", pathParameters),
-		autorest.WithJSON(createUpdateMongodbDatabaseParameters),
+		autorest.WithJSON(createUpdateMongoDBDatabaseParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateUpdateMongodbDatabaseSender sends the CreateUpdateMongodbDatabase request. The method will close the
+// CreateUpdateMongoDBDatabaseSender sends the CreateUpdateMongoDBDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) CreateUpdateMongodbDatabaseSender(req *http.Request) (future DatabaseAccountsCreateUpdateMongodbDatabaseFuture, err error) {
+func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabaseSender(req *http.Request) (future DatabaseAccountsCreateUpdateMongoDBDatabaseFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -815,9 +815,9 @@ func (client DatabaseAccountsClient) CreateUpdateMongodbDatabaseSender(req *http
 	return
 }
 
-// CreateUpdateMongodbDatabaseResponder handles the response to the CreateUpdateMongodbDatabase request. The method always
+// CreateUpdateMongoDBDatabaseResponder handles the response to the CreateUpdateMongoDBDatabase request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateUpdateMongodbDatabaseResponder(resp *http.Response) (result MongodbDatabase, err error) {
+func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabaseResponder(resp *http.Response) (result MongoDBDatabase, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1574,15 +1574,15 @@ func (client DatabaseAccountsClient) DeleteGremlinGraphResponder(resp *http.Resp
 	return
 }
 
-// DeleteMongodbCollection deletes an existing Azure Cosmos DB Mongodb Collection.
+// DeleteMongoDBCollection deletes an existing Azure Cosmos DB MongoDB Collection.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
-func (client DatabaseAccountsClient) DeleteMongodbCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result DatabaseAccountsDeleteMongodbCollectionFuture, err error) {
+func (client DatabaseAccountsClient) DeleteMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result DatabaseAccountsDeleteMongoDBCollectionFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteMongodbCollection")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteMongoDBCollection")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -1599,26 +1599,26 @@ func (client DatabaseAccountsClient) DeleteMongodbCollection(ctx context.Context
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteMongodbCollection", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteMongoDBCollection", err.Error())
 	}
 
-	req, err := client.DeleteMongodbCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
+	req, err := client.DeleteMongoDBCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongodbCollection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBCollection", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.DeleteMongodbCollectionSender(req)
+	result, err = client.DeleteMongoDBCollectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongodbCollection", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBCollection", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// DeleteMongodbCollectionPreparer prepares the DeleteMongodbCollection request.
-func (client DatabaseAccountsClient) DeleteMongodbCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
+// DeleteMongoDBCollectionPreparer prepares the DeleteMongoDBCollection request.
+func (client DatabaseAccountsClient) DeleteMongoDBCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"collectionName":    autorest.Encode("path", collectionName),
@@ -1640,9 +1640,9 @@ func (client DatabaseAccountsClient) DeleteMongodbCollectionPreparer(ctx context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteMongodbCollectionSender sends the DeleteMongodbCollection request. The method will close the
+// DeleteMongoDBCollectionSender sends the DeleteMongoDBCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) DeleteMongodbCollectionSender(req *http.Request) (future DatabaseAccountsDeleteMongodbCollectionFuture, err error) {
+func (client DatabaseAccountsClient) DeleteMongoDBCollectionSender(req *http.Request) (future DatabaseAccountsDeleteMongoDBCollectionFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -1653,9 +1653,9 @@ func (client DatabaseAccountsClient) DeleteMongodbCollectionSender(req *http.Req
 	return
 }
 
-// DeleteMongodbCollectionResponder handles the response to the DeleteMongodbCollection request. The method always
+// DeleteMongoDBCollectionResponder handles the response to the DeleteMongoDBCollection request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) DeleteMongodbCollectionResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) DeleteMongoDBCollectionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1665,14 +1665,14 @@ func (client DatabaseAccountsClient) DeleteMongodbCollectionResponder(resp *http
 	return
 }
 
-// DeleteMongodbDatabase deletes an existing Azure Cosmos DB Mongodb database.
+// DeleteMongoDBDatabase deletes an existing Azure Cosmos DB MongoDB database.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client DatabaseAccountsClient) DeleteMongodbDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result DatabaseAccountsDeleteMongodbDatabaseFuture, err error) {
+func (client DatabaseAccountsClient) DeleteMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result DatabaseAccountsDeleteMongoDBDatabaseFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteMongodbDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteMongoDBDatabase")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -1689,26 +1689,26 @@ func (client DatabaseAccountsClient) DeleteMongodbDatabase(ctx context.Context, 
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteMongodbDatabase", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteMongoDBDatabase", err.Error())
 	}
 
-	req, err := client.DeleteMongodbDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.DeleteMongoDBDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongodbDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBDatabase", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.DeleteMongodbDatabaseSender(req)
+	result, err = client.DeleteMongoDBDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongodbDatabase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteMongoDBDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// DeleteMongodbDatabasePreparer prepares the DeleteMongodbDatabase request.
-func (client DatabaseAccountsClient) DeleteMongodbDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// DeleteMongoDBDatabasePreparer prepares the DeleteMongoDBDatabase request.
+func (client DatabaseAccountsClient) DeleteMongoDBDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
@@ -1729,9 +1729,9 @@ func (client DatabaseAccountsClient) DeleteMongodbDatabasePreparer(ctx context.C
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteMongodbDatabaseSender sends the DeleteMongodbDatabase request. The method will close the
+// DeleteMongoDBDatabaseSender sends the DeleteMongoDBDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) DeleteMongodbDatabaseSender(req *http.Request) (future DatabaseAccountsDeleteMongodbDatabaseFuture, err error) {
+func (client DatabaseAccountsClient) DeleteMongoDBDatabaseSender(req *http.Request) (future DatabaseAccountsDeleteMongoDBDatabaseFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -1742,9 +1742,9 @@ func (client DatabaseAccountsClient) DeleteMongodbDatabaseSender(req *http.Reque
 	return
 }
 
-// DeleteMongodbDatabaseResponder handles the response to the DeleteMongodbDatabase request. The method always
+// DeleteMongoDBDatabaseResponder handles the response to the DeleteMongoDBDatabase request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) DeleteMongodbDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DatabaseAccountsClient) DeleteMongoDBDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2571,15 +2571,15 @@ func (client DatabaseAccountsClient) GetGremlinGraphResponder(resp *http.Respons
 	return
 }
 
-// GetMongodbCollection gets the Mongodb collection under an existing Azure Cosmos DB database account.
+// GetMongoDBCollection gets the MongoDB collection under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
-func (client DatabaseAccountsClient) GetMongodbCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result MongodbCollection, err error) {
+func (client DatabaseAccountsClient) GetMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result MongoDBCollection, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetMongodbCollection")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetMongoDBCollection")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -2596,32 +2596,32 @@ func (client DatabaseAccountsClient) GetMongodbCollection(ctx context.Context, r
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetMongodbCollection", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetMongoDBCollection", err.Error())
 	}
 
-	req, err := client.GetMongodbCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
+	req, err := client.GetMongoDBCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongodbCollection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBCollection", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetMongodbCollectionSender(req)
+	resp, err := client.GetMongoDBCollectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongodbCollection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBCollection", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetMongodbCollectionResponder(resp)
+	result, err = client.GetMongoDBCollectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongodbCollection", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBCollection", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetMongodbCollectionPreparer prepares the GetMongodbCollection request.
-func (client DatabaseAccountsClient) GetMongodbCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
+// GetMongoDBCollectionPreparer prepares the GetMongoDBCollection request.
+func (client DatabaseAccountsClient) GetMongoDBCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"collectionName":    autorest.Encode("path", collectionName),
@@ -2643,16 +2643,16 @@ func (client DatabaseAccountsClient) GetMongodbCollectionPreparer(ctx context.Co
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetMongodbCollectionSender sends the GetMongodbCollection request. The method will close the
+// GetMongoDBCollectionSender sends the GetMongoDBCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) GetMongodbCollectionSender(req *http.Request) (*http.Response, error) {
+func (client DatabaseAccountsClient) GetMongoDBCollectionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetMongodbCollectionResponder handles the response to the GetMongodbCollection request. The method always
+// GetMongoDBCollectionResponder handles the response to the GetMongoDBCollection request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) GetMongodbCollectionResponder(resp *http.Response) (result MongodbCollection, err error) {
+func (client DatabaseAccountsClient) GetMongoDBCollectionResponder(resp *http.Response) (result MongoDBCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2663,15 +2663,15 @@ func (client DatabaseAccountsClient) GetMongodbCollectionResponder(resp *http.Re
 	return
 }
 
-// GetMongodbDatabase gets the Mongodb databases under an existing Azure Cosmos DB database account with the provided
+// GetMongoDBDatabase gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided
 // name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client DatabaseAccountsClient) GetMongodbDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongodbDatabase, err error) {
+func (client DatabaseAccountsClient) GetMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBDatabase, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetMongodbDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetMongoDBDatabase")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -2688,32 +2688,32 @@ func (client DatabaseAccountsClient) GetMongodbDatabase(ctx context.Context, res
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetMongodbDatabase", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetMongoDBDatabase", err.Error())
 	}
 
-	req, err := client.GetMongodbDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.GetMongoDBDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongodbDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBDatabase", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetMongodbDatabaseSender(req)
+	resp, err := client.GetMongoDBDatabaseSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongodbDatabase", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBDatabase", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetMongodbDatabaseResponder(resp)
+	result, err = client.GetMongoDBDatabaseResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongodbDatabase", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetMongoDBDatabase", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetMongodbDatabasePreparer prepares the GetMongodbDatabase request.
-func (client DatabaseAccountsClient) GetMongodbDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// GetMongoDBDatabasePreparer prepares the GetMongoDBDatabase request.
+func (client DatabaseAccountsClient) GetMongoDBDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
@@ -2734,16 +2734,16 @@ func (client DatabaseAccountsClient) GetMongodbDatabasePreparer(ctx context.Cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetMongodbDatabaseSender sends the GetMongodbDatabase request. The method will close the
+// GetMongoDBDatabaseSender sends the GetMongoDBDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) GetMongodbDatabaseSender(req *http.Request) (*http.Response, error) {
+func (client DatabaseAccountsClient) GetMongoDBDatabaseSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetMongodbDatabaseResponder handles the response to the GetMongodbDatabase request. The method always
+// GetMongoDBDatabaseResponder handles the response to the GetMongoDBDatabase request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) GetMongodbDatabaseResponder(resp *http.Response) (result MongodbDatabase, err error) {
+func (client DatabaseAccountsClient) GetMongoDBDatabaseResponder(resp *http.Response) (result MongoDBDatabase, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3981,14 +3981,14 @@ func (client DatabaseAccountsClient) ListMetricsResponder(resp *http.Response) (
 	return
 }
 
-// ListMongodbCollections lists the Mongodb collection under an existing Azure Cosmos DB database account.
+// ListMongoDBCollections lists the MongoDB collection under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client DatabaseAccountsClient) ListMongodbCollections(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongodbCollectionListResult, err error) {
+func (client DatabaseAccountsClient) ListMongoDBCollections(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBCollectionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListMongodbCollections")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListMongoDBCollections")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -4005,32 +4005,32 @@ func (client DatabaseAccountsClient) ListMongodbCollections(ctx context.Context,
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListMongodbCollections", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListMongoDBCollections", err.Error())
 	}
 
-	req, err := client.ListMongodbCollectionsPreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.ListMongoDBCollectionsPreparer(ctx, resourceGroupName, accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongodbCollections", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBCollections", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListMongodbCollectionsSender(req)
+	resp, err := client.ListMongoDBCollectionsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongodbCollections", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBCollections", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListMongodbCollectionsResponder(resp)
+	result, err = client.ListMongoDBCollectionsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongodbCollections", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBCollections", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListMongodbCollectionsPreparer prepares the ListMongodbCollections request.
-func (client DatabaseAccountsClient) ListMongodbCollectionsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// ListMongoDBCollectionsPreparer prepares the ListMongoDBCollections request.
+func (client DatabaseAccountsClient) ListMongoDBCollectionsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
@@ -4051,16 +4051,16 @@ func (client DatabaseAccountsClient) ListMongodbCollectionsPreparer(ctx context.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListMongodbCollectionsSender sends the ListMongodbCollections request. The method will close the
+// ListMongoDBCollectionsSender sends the ListMongoDBCollections request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) ListMongodbCollectionsSender(req *http.Request) (*http.Response, error) {
+func (client DatabaseAccountsClient) ListMongoDBCollectionsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListMongodbCollectionsResponder handles the response to the ListMongodbCollections request. The method always
+// ListMongoDBCollectionsResponder handles the response to the ListMongoDBCollections request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) ListMongodbCollectionsResponder(resp *http.Response) (result MongodbCollectionListResult, err error) {
+func (client DatabaseAccountsClient) ListMongoDBCollectionsResponder(resp *http.Response) (result MongoDBCollectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -4071,13 +4071,13 @@ func (client DatabaseAccountsClient) ListMongodbCollectionsResponder(resp *http.
 	return
 }
 
-// ListMongodbDatabases lists the Mongodb databases under an existing Azure Cosmos DB database account.
+// ListMongoDBDatabases lists the MongoDB databases under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-func (client DatabaseAccountsClient) ListMongodbDatabases(ctx context.Context, resourceGroupName string, accountName string) (result MongodbDatabaseListResult, err error) {
+func (client DatabaseAccountsClient) ListMongoDBDatabases(ctx context.Context, resourceGroupName string, accountName string) (result MongoDBDatabaseListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListMongodbDatabases")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListMongoDBDatabases")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -4094,32 +4094,32 @@ func (client DatabaseAccountsClient) ListMongodbDatabases(ctx context.Context, r
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListMongodbDatabases", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListMongoDBDatabases", err.Error())
 	}
 
-	req, err := client.ListMongodbDatabasesPreparer(ctx, resourceGroupName, accountName)
+	req, err := client.ListMongoDBDatabasesPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongodbDatabases", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBDatabases", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListMongodbDatabasesSender(req)
+	resp, err := client.ListMongoDBDatabasesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongodbDatabases", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBDatabases", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListMongodbDatabasesResponder(resp)
+	result, err = client.ListMongoDBDatabasesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongodbDatabases", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListMongoDBDatabases", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListMongodbDatabasesPreparer prepares the ListMongodbDatabases request.
-func (client DatabaseAccountsClient) ListMongodbDatabasesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+// ListMongoDBDatabasesPreparer prepares the ListMongoDBDatabases request.
+func (client DatabaseAccountsClient) ListMongoDBDatabasesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -4139,16 +4139,16 @@ func (client DatabaseAccountsClient) ListMongodbDatabasesPreparer(ctx context.Co
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListMongodbDatabasesSender sends the ListMongodbDatabases request. The method will close the
+// ListMongoDBDatabasesSender sends the ListMongoDBDatabases request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) ListMongodbDatabasesSender(req *http.Request) (*http.Response, error) {
+func (client DatabaseAccountsClient) ListMongoDBDatabasesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListMongodbDatabasesResponder handles the response to the ListMongodbDatabases request. The method always
+// ListMongoDBDatabasesResponder handles the response to the ListMongoDBDatabases request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) ListMongodbDatabasesResponder(resp *http.Response) (result MongodbDatabaseListResult, err error) {
+func (client DatabaseAccountsClient) ListMongoDBDatabasesResponder(resp *http.Response) (result MongoDBDatabaseListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

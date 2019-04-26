@@ -69,7 +69,6 @@ const (
 	Premium    SkuNameEnum = original.Premium
 	Standalone SkuNameEnum = original.Standalone
 	Standard   SkuNameEnum = original.Standard
-	Unlimited  SkuNameEnum = original.Unlimited
 )
 
 type BaseClient = original.BaseClient

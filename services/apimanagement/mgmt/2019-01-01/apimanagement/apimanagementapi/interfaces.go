@@ -71,8 +71,8 @@ var _ APIOperationClientAPI = (*apimanagement.APIOperationClient)(nil)
 type APIOperationPolicyClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, parameters apimanagement.PolicyContract, ifMatch string) (result apimanagement.PolicyContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, ifMatch string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result apimanagement.PolicyContract, err error)
-	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter apimanagement.PolicyExportFormat) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, formatParameter apimanagement.PolicyExportFormat) (result apimanagement.PolicyContract, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result autorest.Response, err error)
 	ListByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result apimanagement.PolicyCollection, err error)
 }
 

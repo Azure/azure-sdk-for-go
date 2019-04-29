@@ -32,13 +32,13 @@ type ConnectionTypeClient struct {
 }
 
 // NewConnectionTypeClient creates an instance of the ConnectionTypeClient client.
-func NewConnectionTypeClient(subscriptionID string, countType1 CountType) ConnectionTypeClient {
-	return NewConnectionTypeClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewConnectionTypeClient(subscriptionID string) ConnectionTypeClient {
+	return NewConnectionTypeClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewConnectionTypeClientWithBaseURI creates an instance of the ConnectionTypeClient client.
-func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ConnectionTypeClient {
-	return ConnectionTypeClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string) ConnectionTypeClient {
+	return ConnectionTypeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a connection type.

@@ -33,13 +33,13 @@ type JobScheduleClient struct {
 }
 
 // NewJobScheduleClient creates an instance of the JobScheduleClient client.
-func NewJobScheduleClient(subscriptionID string, countType1 CountType) JobScheduleClient {
-	return NewJobScheduleClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewJobScheduleClient(subscriptionID string) JobScheduleClient {
+	return NewJobScheduleClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewJobScheduleClientWithBaseURI creates an instance of the JobScheduleClient client.
-func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) JobScheduleClient {
-	return JobScheduleClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string) JobScheduleClient {
+	return JobScheduleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a job schedule.

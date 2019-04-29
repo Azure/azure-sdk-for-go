@@ -32,13 +32,13 @@ type SourceControlClient struct {
 }
 
 // NewSourceControlClient creates an instance of the SourceControlClient client.
-func NewSourceControlClient(subscriptionID string, countType1 CountType) SourceControlClient {
-	return NewSourceControlClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewSourceControlClient(subscriptionID string) SourceControlClient {
+	return NewSourceControlClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSourceControlClientWithBaseURI creates an instance of the SourceControlClient client.
-func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SourceControlClient {
-	return SourceControlClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
+	return SourceControlClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a source control.

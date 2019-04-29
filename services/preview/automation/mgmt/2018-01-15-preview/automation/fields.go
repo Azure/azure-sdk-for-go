@@ -32,13 +32,13 @@ type FieldsClient struct {
 }
 
 // NewFieldsClient creates an instance of the FieldsClient client.
-func NewFieldsClient(subscriptionID string, countType1 CountType) FieldsClient {
-	return NewFieldsClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewFieldsClient(subscriptionID string) FieldsClient {
+	return NewFieldsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewFieldsClientWithBaseURI creates an instance of the FieldsClient client.
-func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) FieldsClient {
-	return FieldsClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string) FieldsClient {
+	return FieldsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByType retrieve a list of fields of a given type identified by module name.

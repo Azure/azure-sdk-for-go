@@ -32,13 +32,13 @@ type LinkedWorkspaceClient struct {
 }
 
 // NewLinkedWorkspaceClient creates an instance of the LinkedWorkspaceClient client.
-func NewLinkedWorkspaceClient(subscriptionID string, countType1 CountType) LinkedWorkspaceClient {
-	return NewLinkedWorkspaceClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewLinkedWorkspaceClient(subscriptionID string) LinkedWorkspaceClient {
+	return NewLinkedWorkspaceClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewLinkedWorkspaceClientWithBaseURI creates an instance of the LinkedWorkspaceClient client.
-func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) LinkedWorkspaceClient {
-	return LinkedWorkspaceClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string) LinkedWorkspaceClient {
+	return LinkedWorkspaceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve the linked workspace for the account id.

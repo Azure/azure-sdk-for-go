@@ -32,13 +32,13 @@ type JobClient struct {
 }
 
 // NewJobClient creates an instance of the JobClient client.
-func NewJobClient(subscriptionID string, countType1 CountType) JobClient {
-	return NewJobClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewJobClient(subscriptionID string) JobClient {
+	return NewJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewJobClientWithBaseURI creates an instance of the JobClient client.
-func NewJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) JobClient {
-	return JobClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
+	return JobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a job of the runbook.

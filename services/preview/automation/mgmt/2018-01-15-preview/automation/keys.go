@@ -32,13 +32,13 @@ type KeysClient struct {
 }
 
 // NewKeysClient creates an instance of the KeysClient client.
-func NewKeysClient(subscriptionID string, countType1 CountType) KeysClient {
-	return NewKeysClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewKeysClient(subscriptionID string) KeysClient {
+	return NewKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewKeysClientWithBaseURI creates an instance of the KeysClient client.
-func NewKeysClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) KeysClient {
-	return KeysClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return KeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByAutomationAccount retrieve the automation keys for an account.

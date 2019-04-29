@@ -63,6 +63,7 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type AvailableClustersList = original.AvailableClustersList
 type BaseClient = original.BaseClient
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult
@@ -72,9 +73,13 @@ type ClusterProperties = original.ClusterProperties
 type ClusterQuotaConfigurationProperties = original.ClusterQuotaConfigurationProperties
 type ClusterSku = original.ClusterSku
 type ClustersClient = original.ClustersClient
+type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersPatchFuture = original.ClustersPatchFuture
+type ClustersPutFuture = original.ClustersPutFuture
 type ConfigurationClient = original.ConfigurationClient
 type EHNamespace = original.EHNamespace
+type EHNamespaceIDContainer = original.EHNamespaceIDContainer
+type EHNamespaceIDListResult = original.EHNamespaceIDListResult
 type EHNamespaceListResult = original.EHNamespaceListResult
 type EHNamespaceListResultIterator = original.EHNamespaceListResultIterator
 type EHNamespaceListResultPage = original.EHNamespaceListResultPage

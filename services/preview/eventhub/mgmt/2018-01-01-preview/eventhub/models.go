@@ -104,6 +104,13 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{SkuTierBasic, SkuTierStandard}
 }
 
+// AvailableClustersList the response of the List Available Clusters operation.
+type AvailableClustersList struct {
+	autorest.Response `json:"-"`
+	// Value - The count of readily available and pre-provisioned Event Hubs Clusters per region.
+	Value *[]map[string]*int32 `json:"value,omitempty"`
+}
+
 // Cluster single Event Hubs Cluster resource in List or Get operations.
 type Cluster struct {
 	autorest.Response `json:"-"`
@@ -391,6 +398,29 @@ func (cqcp ClusterQuotaConfigurationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ClustersDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("eventhub.ClustersDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ClusterSku SKU parameters particular to a cluster instance.
 type ClusterSku struct {
 	// Name - Name of this SKU.
@@ -423,6 +453,34 @@ func (future *ClustersPatchFuture) Result(client ClustersClient) (c Cluster, err
 		c, err = client.PatchResponder(c.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "eventhub.ClustersPatchFuture", "Result", c.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ClustersPutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ClustersPutFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ClustersPutFuture) Result(client ClustersClient) (c Cluster, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.ClustersPutFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("eventhub.ClustersPutFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+		c, err = client.PutResponder(c.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventhub.ClustersPutFuture", "Result", c.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -541,6 +599,18 @@ func (en *EHNamespace) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// EHNamespaceIDContainer the full ARM ID of an Event Hubs Namespace
+type EHNamespaceIDContainer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+// EHNamespaceIDListResult the response of the List Namespace IDs operation
+type EHNamespaceIDListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Result of the List Namespace IDs operation
+	Value *[]EHNamespaceIDContainer `json:"value,omitempty"`
 }
 
 // EHNamespaceListResult the response of the List Namespace operation

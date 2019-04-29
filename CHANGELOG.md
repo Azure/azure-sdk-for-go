@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v28.1.0`
+
+Fixed build issue in legacy storage package affecting some consumers.
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| resourcegraph | 2018-09-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventhub | 2018-01-01-preview |
+
 ## `v28.0.0`
 
 ### New Packages

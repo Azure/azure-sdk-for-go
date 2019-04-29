@@ -85,24 +85,26 @@ const (
 type DatabaseStatus = original.DatabaseStatus
 
 const (
-	AutoClosed       DatabaseStatus = original.AutoClosed
-	Copying          DatabaseStatus = original.Copying
-	Creating         DatabaseStatus = original.Creating
-	EmergencyMode    DatabaseStatus = original.EmergencyMode
-	Inaccessible     DatabaseStatus = original.Inaccessible
-	Offline          DatabaseStatus = original.Offline
-	OfflineSecondary DatabaseStatus = original.OfflineSecondary
-	Online           DatabaseStatus = original.Online
-	Paused           DatabaseStatus = original.Paused
-	Pausing          DatabaseStatus = original.Pausing
-	Recovering       DatabaseStatus = original.Recovering
-	RecoveryPending  DatabaseStatus = original.RecoveryPending
-	Restoring        DatabaseStatus = original.Restoring
-	Resuming         DatabaseStatus = original.Resuming
-	Scaling          DatabaseStatus = original.Scaling
-	Shutdown         DatabaseStatus = original.Shutdown
-	Standby          DatabaseStatus = original.Standby
-	Suspect          DatabaseStatus = original.Suspect
+	AutoClosed                        DatabaseStatus = original.AutoClosed
+	Copying                           DatabaseStatus = original.Copying
+	Creating                          DatabaseStatus = original.Creating
+	EmergencyMode                     DatabaseStatus = original.EmergencyMode
+	Inaccessible                      DatabaseStatus = original.Inaccessible
+	Offline                           DatabaseStatus = original.Offline
+	OfflineChangingDwPerformanceTiers DatabaseStatus = original.OfflineChangingDwPerformanceTiers
+	OfflineSecondary                  DatabaseStatus = original.OfflineSecondary
+	Online                            DatabaseStatus = original.Online
+	OnlineChangingDwPerformanceTiers  DatabaseStatus = original.OnlineChangingDwPerformanceTiers
+	Paused                            DatabaseStatus = original.Paused
+	Pausing                           DatabaseStatus = original.Pausing
+	Recovering                        DatabaseStatus = original.Recovering
+	RecoveryPending                   DatabaseStatus = original.RecoveryPending
+	Restoring                         DatabaseStatus = original.Restoring
+	Resuming                          DatabaseStatus = original.Resuming
+	Scaling                           DatabaseStatus = original.Scaling
+	Shutdown                          DatabaseStatus = original.Shutdown
+	Standby                           DatabaseStatus = original.Standby
+	Suspect                           DatabaseStatus = original.Suspect
 )
 
 type ElasticPoolLicenseType = original.ElasticPoolLicenseType

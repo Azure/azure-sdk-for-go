@@ -486,7 +486,7 @@ func (client SensitivityLabelsClient) GetResponder(resp *http.Response) (result 
 // serverName - the name of the server.
 // databaseName - the name of the database.
 // filter - an OData filter expression that filters elements in the collection.
-func (client SensitivityLabelsClient) ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result SensitivityLabelListResultPage, err error) {
+func (client SensitivityLabelsClient) ListCurrentByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (result SensitivityLabelListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.ListCurrentByDatabase")
 		defer func() {
@@ -498,7 +498,7 @@ func (client SensitivityLabelsClient) ListCurrentByDatabase(ctx context.Context,
 		}()
 	}
 	result.fn = client.listCurrentByDatabaseNextResults
-	req, err := client.ListCurrentByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName, filter)
+	req, err := client.ListCurrentByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName, skipToken, count, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SensitivityLabelsClient", "ListCurrentByDatabase", nil, "Failure preparing request")
 		return
@@ -520,7 +520,7 @@ func (client SensitivityLabelsClient) ListCurrentByDatabase(ctx context.Context,
 }
 
 // ListCurrentByDatabasePreparer prepares the ListCurrentByDatabase request.
-func (client SensitivityLabelsClient) ListCurrentByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (*http.Request, error) {
+func (client SensitivityLabelsClient) ListCurrentByDatabasePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -531,6 +531,12 @@ func (client SensitivityLabelsClient) ListCurrentByDatabasePreparer(ctx context.
 	const APIVersion = "2017-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(skipToken) > 0 {
+		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -586,7 +592,7 @@ func (client SensitivityLabelsClient) listCurrentByDatabaseNextResults(ctx conte
 }
 
 // ListCurrentByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SensitivityLabelsClient) ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, filter string) (result SensitivityLabelListResultIterator, err error) {
+func (client SensitivityLabelsClient) ListCurrentByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, skipToken string, count *bool, filter string) (result SensitivityLabelListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SensitivityLabelsClient.ListCurrentByDatabase")
 		defer func() {
@@ -597,7 +603,7 @@ func (client SensitivityLabelsClient) ListCurrentByDatabaseComplete(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListCurrentByDatabase(ctx, resourceGroupName, serverName, databaseName, filter)
+	result.page, err = client.ListCurrentByDatabase(ctx, resourceGroupName, serverName, databaseName, skipToken, count, filter)
 	return
 }
 

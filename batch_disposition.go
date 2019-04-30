@@ -34,7 +34,7 @@ func (bde BatchDispositionError) Error() string {
 	return fmt.Sprintf("%v: %v", bde.LockTokenID, bde.err)
 }
 
-// Unwrap will return the wire error.
+// UnWrap will return the wire error.
 func (bde BatchDispositionError) UnWrap() error { 
 	return bde.err 
 }

@@ -288,7 +288,7 @@ type CustomRPRouteDefinition struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
-// CustomRPValidations a validation to apply on custom resource provider requets.
+// CustomRPValidations a validation to apply on custom resource provider requests.
 type CustomRPValidations struct {
 	// ValidationType - The type of validation to run against a matching request. Possible values include: 'Swagger'
 	ValidationType ValidationType `json:"validationType,omitempty"`
@@ -653,7 +653,7 @@ func NewResourceProviderOperationListPage(getNextPage func(context.Context, Reso
 
 // ResourceProvidersUpdate custom resource provider update information.
 type ResourceProvidersUpdate struct {
-	// Tags - resouce tags
+	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
 

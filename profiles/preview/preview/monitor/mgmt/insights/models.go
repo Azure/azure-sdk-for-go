@@ -96,8 +96,9 @@ const (
 type CriterionType = original.CriterionType
 
 const (
-	CriterionTypeMultiMetricCriteria      CriterionType = original.CriterionTypeMultiMetricCriteria
-	CriterionTypeStaticThresholdCriterion CriterionType = original.CriterionTypeStaticThresholdCriterion
+	CriterionTypeDynamicThresholdCriterion CriterionType = original.CriterionTypeDynamicThresholdCriterion
+	CriterionTypeMultiMetricCriteria       CriterionType = original.CriterionTypeMultiMetricCriteria
+	CriterionTypeStaticThresholdCriterion  CriterionType = original.CriterionTypeStaticThresholdCriterion
 )
 
 type DataStatus = original.DataStatus
@@ -355,6 +356,8 @@ type DiagnosticSettingsClient = original.DiagnosticSettingsClient
 type DiagnosticSettingsResource = original.DiagnosticSettingsResource
 type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceCollection
 type Dimension = original.Dimension
+type DynamicMetricCriteria = original.DynamicMetricCriteria
+type DynamicThresholdFailingPeriods = original.DynamicThresholdFailingPeriods
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest

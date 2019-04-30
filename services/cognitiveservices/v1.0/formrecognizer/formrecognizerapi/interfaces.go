@@ -27,12 +27,12 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	AnalyzeWithModel(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (result formrecognizer.AnalyzeResult, err error)
-	DeleteModel(ctx context.Context, ID uuid.UUID) (result autorest.Response, err error)
+	AnalyzeWithCustomModel(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (result formrecognizer.AnalyzeResult, err error)
+	DeleteCustomModel(ctx context.Context, ID uuid.UUID) (result autorest.Response, err error)
+	GetCustomModel(ctx context.Context, ID uuid.UUID) (result formrecognizer.ModelResult, err error)
+	GetCustomModels(ctx context.Context) (result formrecognizer.ModelsResult, err error)
 	GetExtractedKeys(ctx context.Context, ID uuid.UUID) (result formrecognizer.KeysResult, err error)
-	GetModel(ctx context.Context, ID uuid.UUID) (result formrecognizer.ModelResult, err error)
-	GetModels(ctx context.Context) (result formrecognizer.ModelsResult, err error)
-	TrainModel(ctx context.Context, trainRequest formrecognizer.TrainRequest) (result formrecognizer.TrainResult, err error)
+	TrainCustomModel(ctx context.Context, trainRequest formrecognizer.TrainRequest) (result formrecognizer.TrainResult, err error)
 }
 
 var _ BaseClientAPI = (*formrecognizer.BaseClient)(nil)

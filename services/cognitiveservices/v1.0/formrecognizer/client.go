@@ -51,16 +51,16 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// AnalyzeWithModel the document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg' or
-// 'image/png'. The response contains not just the extracted information of the analyzed form but also information
+// AnalyzeWithCustomModel the document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg'
+// or 'image/png'. The response contains not just the extracted information of the analyzed form but also information
 // about content that was not extracted along with a reason.
 // Parameters:
 // ID - model Identifier to analyze the document with.
 // formStream - a pdf document or image (jpg,png) file to analyze.
 // keys - an optional list of known keys to extract the values for.
-func (client BaseClient) AnalyzeWithModel(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (result AnalyzeResult, err error) {
+func (client BaseClient) AnalyzeWithCustomModel(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (result AnalyzeResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AnalyzeWithModel")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AnalyzeWithCustomModel")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -69,29 +69,29 @@ func (client BaseClient) AnalyzeWithModel(ctx context.Context, ID uuid.UUID, for
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AnalyzeWithModelPreparer(ctx, ID, formStream, keys)
+	req, err := client.AnalyzeWithCustomModelPreparer(ctx, ID, formStream, keys)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithModel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithCustomModel", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.AnalyzeWithModelSender(req)
+	resp, err := client.AnalyzeWithCustomModelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithModel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithCustomModel", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.AnalyzeWithModelResponder(resp)
+	result, err = client.AnalyzeWithCustomModelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithModel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "AnalyzeWithCustomModel", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// AnalyzeWithModelPreparer prepares the AnalyzeWithModel request.
-func (client BaseClient) AnalyzeWithModelPreparer(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (*http.Request, error) {
+// AnalyzeWithCustomModelPreparer prepares the AnalyzeWithCustomModel request.
+func (client BaseClient) AnalyzeWithCustomModelPreparer(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -118,16 +118,16 @@ func (client BaseClient) AnalyzeWithModelPreparer(ctx context.Context, ID uuid.U
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// AnalyzeWithModelSender sends the AnalyzeWithModel request. The method will close the
+// AnalyzeWithCustomModelSender sends the AnalyzeWithCustomModel request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) AnalyzeWithModelSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) AnalyzeWithCustomModelSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// AnalyzeWithModelResponder handles the response to the AnalyzeWithModel request. The method always
+// AnalyzeWithCustomModelResponder handles the response to the AnalyzeWithCustomModel request. The method always
 // closes the http.Response Body.
-func (client BaseClient) AnalyzeWithModelResponder(resp *http.Response) (result AnalyzeResult, err error) {
+func (client BaseClient) AnalyzeWithCustomModelResponder(resp *http.Response) (result AnalyzeResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -138,12 +138,12 @@ func (client BaseClient) AnalyzeWithModelResponder(resp *http.Response) (result 
 	return
 }
 
-// DeleteModel delete model artifacts.
+// DeleteCustomModel delete model artifacts.
 // Parameters:
 // ID - the identifier of the model to delete.
-func (client BaseClient) DeleteModel(ctx context.Context, ID uuid.UUID) (result autorest.Response, err error) {
+func (client BaseClient) DeleteCustomModel(ctx context.Context, ID uuid.UUID) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteModel")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteCustomModel")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -152,29 +152,29 @@ func (client BaseClient) DeleteModel(ctx context.Context, ID uuid.UUID) (result 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeleteModelPreparer(ctx, ID)
+	req, err := client.DeleteCustomModelPreparer(ctx, ID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteModel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteCustomModel", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteModelSender(req)
+	resp, err := client.DeleteCustomModelSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteModel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteCustomModel", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.DeleteModelResponder(resp)
+	result, err = client.DeleteCustomModelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteModel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "DeleteCustomModel", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// DeleteModelPreparer prepares the DeleteModel request.
-func (client BaseClient) DeleteModelPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
+// DeleteCustomModelPreparer prepares the DeleteCustomModel request.
+func (client BaseClient) DeleteCustomModelPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -190,22 +190,160 @@ func (client BaseClient) DeleteModelPreparer(ctx context.Context, ID uuid.UUID) 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteModelSender sends the DeleteModel request. The method will close the
+// DeleteCustomModelSender sends the DeleteCustomModel request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) DeleteModelSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) DeleteCustomModelSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// DeleteModelResponder handles the response to the DeleteModel request. The method always
+// DeleteCustomModelResponder handles the response to the DeleteCustomModel request. The method always
 // closes the http.Response Body.
-func (client BaseClient) DeleteModelResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BaseClient) DeleteCustomModelResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// GetCustomModel get information about a model.
+// Parameters:
+// ID - model identifier.
+func (client BaseClient) GetCustomModel(ctx context.Context, ID uuid.UUID) (result ModelResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetCustomModel")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetCustomModelPreparer(ctx, ID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModel", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetCustomModelSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModel", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetCustomModelResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModel", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetCustomModelPreparer prepares the GetCustomModel request.
+func (client BaseClient) GetCustomModelPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"id": autorest.Encode("path", ID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/formrecognizer/v1.0-preview", urlParameters),
+		autorest.WithPathParameters("/custom/models/{id}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetCustomModelSender sends the GetCustomModel request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetCustomModelSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetCustomModelResponder handles the response to the GetCustomModel request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetCustomModelResponder(resp *http.Response) (result ModelResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetCustomModels get information about all trained models
+func (client BaseClient) GetCustomModels(ctx context.Context) (result ModelsResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetCustomModels")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetCustomModelsPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModels", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetCustomModelsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModels", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetCustomModelsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetCustomModels", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetCustomModelsPreparer prepares the GetCustomModels request.
+func (client BaseClient) GetCustomModelsPreparer(ctx context.Context) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/formrecognizer/v1.0-preview", urlParameters),
+		autorest.WithPath("/custom/models"))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetCustomModelsSender sends the GetCustomModels request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetCustomModelsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetCustomModelsResponder handles the response to the GetCustomModels request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetCustomModelsResponder(resp *http.Response) (result ModelsResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -282,157 +420,19 @@ func (client BaseClient) GetExtractedKeysResponder(resp *http.Response) (result 
 	return
 }
 
-// GetModel get information about a model.
-// Parameters:
-// ID - model identifier.
-func (client BaseClient) GetModel(ctx context.Context, ID uuid.UUID) (result ModelResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetModel")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetModelPreparer(ctx, ID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetModel", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetModelSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetModel", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetModelResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetModel", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetModelPreparer prepares the GetModel request.
-func (client BaseClient) GetModelPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"id": autorest.Encode("path", ID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/formrecognizer/v1.0-preview", urlParameters),
-		autorest.WithPathParameters("/custom/models/{id}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetModelSender sends the GetModel request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetModelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetModelResponder handles the response to the GetModel request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetModelResponder(resp *http.Response) (result ModelResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetModels get information about all trained models
-func (client BaseClient) GetModels(ctx context.Context) (result ModelsResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetModels")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetModelsPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetModels", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetModelsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetModels", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetModelsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "GetModels", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetModelsPreparer prepares the GetModels request.
-func (client BaseClient) GetModelsPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/formrecognizer/v1.0-preview", urlParameters),
-		autorest.WithPath("/custom/models"))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetModelsSender sends the GetModels request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetModelsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetModelsResponder handles the response to the GetModels request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetModelsResponder(resp *http.Response) (result ModelsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// TrainModel the train request must include a source parameter that is either an externally accessible Azure Storage
-// blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted
-// drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to
-// the input mount configuration
+// TrainCustomModel the train request must include a source parameter that is either an externally accessible Azure
+// Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally
+// mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path
+// rooted to the input mount configuration
 // setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be
 // '/input/contosodataset'. All data to be trained are expected to be under the source. Models are trained using
 // documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
 // Other content is ignored when training a model.
 // Parameters:
 // trainRequest - request object for training.
-func (client BaseClient) TrainModel(ctx context.Context, trainRequest TrainRequest) (result TrainResult, err error) {
+func (client BaseClient) TrainCustomModel(ctx context.Context, trainRequest TrainRequest) (result TrainResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.TrainModel")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.TrainCustomModel")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -447,38 +447,38 @@ func (client BaseClient) TrainModel(ctx context.Context, trainRequest TrainReque
 				Chain: []validation.Constraint{{Target: "trainRequest.Source", Name: validation.MaxLength, Rule: 2048, Chain: nil},
 					{Target: "trainRequest.Source", Name: validation.MinLength, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("formrecognizer.BaseClient", "TrainModel", err.Error())
+		return result, validation.NewError("formrecognizer.BaseClient", "TrainCustomModel", err.Error())
 	}
 
-	req, err := client.TrainModelPreparer(ctx, trainRequest)
+	req, err := client.TrainCustomModelPreparer(ctx, trainRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainModel", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainCustomModel", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.TrainModelSender(req)
+	resp, err := client.TrainCustomModelSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainModel", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainCustomModel", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.TrainModelResponder(resp)
+	result, err = client.TrainCustomModelResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainModel", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "formrecognizer.BaseClient", "TrainCustomModel", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// TrainModelPreparer prepares the TrainModel request.
-func (client BaseClient) TrainModelPreparer(ctx context.Context, trainRequest TrainRequest) (*http.Request, error) {
+// TrainCustomModelPreparer prepares the TrainCustomModel request.
+func (client BaseClient) TrainCustomModelPreparer(ctx context.Context, trainRequest TrainRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json-patch+json; charset=utf-8"),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/formrecognizer/v1.0-preview", urlParameters),
 		autorest.WithPath("/custom/train"),
@@ -486,16 +486,16 @@ func (client BaseClient) TrainModelPreparer(ctx context.Context, trainRequest Tr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// TrainModelSender sends the TrainModel request. The method will close the
+// TrainCustomModelSender sends the TrainCustomModel request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) TrainModelSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) TrainCustomModelSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// TrainModelResponder handles the response to the TrainModel request. The method always
+// TrainCustomModelResponder handles the response to the TrainCustomModel request. The method always
 // closes the http.Response Body.
-func (client BaseClient) TrainModelResponder(resp *http.Response) (result TrainResult, err error) {
+func (client BaseClient) TrainCustomModelResponder(resp *http.Response) (result TrainResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

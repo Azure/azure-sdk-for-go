@@ -52,7 +52,11 @@ var _ ServicesClientAPI = (*datamigration.ServicesClient)(nil)
 type TasksClientAPI interface {
 	Cancel(ctx context.Context, groupName string, serviceName string, projectName string, taskName string) (result datamigration.ProjectTask, err error)
 	Command(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, parameters datamigration.BasicCommandProperties) (result datamigration.CommandPropertiesModel, err error)
+	CreateOrUpdate(ctx context.Context, parameters datamigration.ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result datamigration.ProjectTask, err error)
+	Delete(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, deleteRunningTasks *bool) (result autorest.Response, err error)
+	Get(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, expand string) (result datamigration.ProjectTask, err error)
 	List(ctx context.Context, groupName string, serviceName string, projectName string, taskType string) (result datamigration.TaskListPage, err error)
+	Update(ctx context.Context, parameters datamigration.ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result datamigration.ProjectTask, err error)
 }
 
 var _ TasksClientAPI = (*datamigration.TasksClient)(nil)

@@ -15499,17 +15499,17 @@ func (oci OracleConnectionInfo) AsBasicConnectionInfo() (BasicConnectionInfo, bo
 
 // OracleOCIDriverInfo information about an Oracle OCI driver.
 type OracleOCIDriverInfo struct {
-	// DriverName - The name of the driver package
+	// DriverName - READ-ONLY; The name of the driver package
 	DriverName *string `json:"driverName,omitempty"`
-	// DriverSize - The size in bytes of the driver package
+	// DriverSize - READ-ONLY; The size in bytes of the driver package
 	DriverSize *string `json:"driverSize,omitempty"`
-	// ArchiveChecksum - The MD5 Base64 encoded checksum for the driver package.
+	// ArchiveChecksum - READ-ONLY; The MD5 Base64 encoded checksum for the driver package.
 	ArchiveChecksum *string `json:"archiveChecksum,omitempty"`
-	// OracleChecksum - The checksum for the driver package provided by Oracle.
+	// OracleChecksum - READ-ONLY; The checksum for the driver package provided by Oracle.
 	OracleChecksum *string `json:"oracleChecksum,omitempty"`
-	// AssemblyVersion - Version listed in the OCI assembly 'oci.dll'
+	// AssemblyVersion - READ-ONLY; Version listed in the OCI assembly 'oci.dll'
 	AssemblyVersion *string `json:"assemblyVersion,omitempty"`
-	// SupportedOracleVersions - List of Oracle database versions supported by this driver. Only major minor of the version is listed.
+	// SupportedOracleVersions - READ-ONLY; List of Oracle database versions supported by this driver. Only major minor of the version is listed.
 	SupportedOracleVersions *[]string `json:"supportedOracleVersions,omitempty"`
 }
 

@@ -16,10 +16,10 @@ type (
 		Status       MessageStatus
 		cursor       int
 	}
-
-	// BatchDispositionErrors returns LockTokenIDs with associated error.
-	BatchDispositionErrors struct {
-		Errors map[*uuid.UUID] error
+	// BatchDispositionError represents an error state on a Bulk Disposition operation.
+	BatchDispositionError struct {		
+		LockTokenID *uuid.UUID
+		err         error
 	}
 )
 
@@ -29,6 +29,15 @@ const (
 	// Abort exposes abandonedDisposition
 	Abort MessageStatus = MessageStatus(abandonedDisposition)
 )
+
+func (bde BatchDispositionError) Error() string {
+	return fmt.Sprintf("%v: %v", bde.LockTokenID, bde.err)
+}
+
+// Unwrap will return the wire error.
+func (bde BatchDispositionError) UnWrap() error { 
+	return bde.err 
+}
 
 // Done communicates whether there are more messages remaining to be iterated over.
 func (bdi *BatchDispositionIterator) Done() bool {
@@ -44,9 +53,8 @@ func (bdi *BatchDispositionIterator) Next() (uuid *uuid.UUID) {
 	return uuid
 }
 
-func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConnector) *BatchDispositionErrors {	
-	errors := map[*uuid.UUID] error {}
-
+func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConnector) []BatchDispositionError {	
+	errors := []BatchDispositionError{}
 	for !bdi.Done() {
 		if uuid := bdi.Next(); uuid != nil {
 			m := &Message{
@@ -54,25 +62,26 @@ func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConn
 			}
 			m.ec = ec
 			err := m.sendDisposition(ctx, bdi.Status)
-			if err != nil {				
-				errors[uuid] = err
+			if err != nil {						
+				errors = append(errors, BatchDispositionError{
+					LockTokenID: uuid,
+					err: err,
+				})
 			}
 		}
 	}
-	return &BatchDispositionErrors {
-		Errors: errors,
-	}
+	return errors
 }
 
-// SendBatchDisposition updates the LockToken id to the desired status.
-func (q *Queue) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) *BatchDispositionErrors {
+// SendBatchDisposition updates the LockTokenIDs to the disposition status.
+func (q *Queue) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) []BatchDispositionError {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatchDisposition")
 	defer span.Finish()
 	return iterator.doUpdate(ctx, q)
 }
 
-// SendBatchDisposition updates the LockToken id to the desired status.
-func (s *Subscription) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) *BatchDispositionErrors {
+// SendBatchDisposition updates the LockTokenIDs to the desired disposition status.
+func (s *Subscription) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) []BatchDispositionError {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.SendBatchDisposition")
 	defer span.Finish()
 	return iterator.doUpdate(ctx, s)

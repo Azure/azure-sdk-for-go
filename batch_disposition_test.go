@@ -42,8 +42,8 @@ func TestBatchDispositionUnsupportedStatus(t *testing.T) {
 	}
 
 	subscription := Subscription{}
-	result := subscription.SendBatchDisposition(context.Background(), bdi)
-	assert.Equal(t, 1, len(result.Errors))
-	err := result.Errors[&id]
+	errors := subscription.SendBatchDisposition(context.Background(), bdi)
+	assert.Equal(t, 1, len(errors))
+	err := errors[0].UnWrap()
 	assert.EqualErrorf(t, err, "unsupported bulk disposition status \"suspended\"", err.Error())
 }

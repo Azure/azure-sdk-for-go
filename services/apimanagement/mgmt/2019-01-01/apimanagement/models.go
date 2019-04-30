@@ -9959,7 +9959,7 @@ func (future *ServiceRestoreFuture) Result(client ServiceClient) (sr ServiceReso
 type ServiceSkuProperties struct {
 	// Name - Name of the Sku. Possible values include: 'SkuTypeDeveloper', 'SkuTypeStandard', 'SkuTypePremium', 'SkuTypeBasic', 'SkuTypeConsumption'
 	Name SkuType `json:"name,omitempty"`
-	// Capacity - Capacity of the SKU (number of deployed units of the SKU). The default value is 1.
+	// Capacity - Capacity of the SKU (number of deployed units of the SKU).
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

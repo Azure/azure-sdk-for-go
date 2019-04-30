@@ -30,6 +30,7 @@ type SolutionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, solutionName string) (result operationsmanagement.Solution, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result operationsmanagement.SolutionPropertiesList, err error)
 	ListBySubscription(ctx context.Context) (result operationsmanagement.SolutionPropertiesList, err error)
+	Update(ctx context.Context, resourceGroupName string, solutionName string, parameters operationsmanagement.SolutionPatch) (result operationsmanagement.SolutionsUpdateFuture, err error)
 }
 
 var _ SolutionsClientAPI = (*operationsmanagement.SolutionsClient)(nil)

@@ -125,7 +125,7 @@ var _ APIPolicyClientAPI = (*apimanagement.APIPolicyClient)(nil)
 
 // APISchemaClientAPI contains the set of methods on the APISchemaClient type.
 type APISchemaClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters apimanagement.SchemaContract, ifMatch string) (result apimanagement.SchemaContract, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters apimanagement.SchemaCreateOrUpdateContract, ifMatch string) (result apimanagement.SchemaContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, ifMatch string, force *bool) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (result apimanagement.SchemaContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (result autorest.Response, err error)

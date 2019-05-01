@@ -9263,7 +9263,7 @@ func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
 
 // SchemaContractProperties schema contract Properties.
 type SchemaContractProperties struct {
-	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). - Swagger Schema use application/vnd.ms-azure-apim.swagger.definitions+json, - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml, -OpenApi Schema use application/vnd.oai.openapi.components+json, -WADL Schema use application/vnd.ms-azure-apim.wadl.grammars+xml.
+	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). </br> - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml </br> - `OpenApi` Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
 	ContentType *string `json:"contentType,omitempty"`
 	// Document - Properties of the Schema Document.
 	Document interface{} `json:"document,omitempty"`
@@ -9343,7 +9343,7 @@ func (scouc *SchemaCreateOrUpdateContract) UnmarshalJSON(body []byte) error {
 
 // SchemaCreateOrUpdateProperties API Schema create or update contract Properties.
 type SchemaCreateOrUpdateProperties struct {
-	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). - Swagger Schema use application/vnd.ms-azure-apim.swagger.definitions+json, - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml, -OpenApi Schema use application/vnd.oai.openapi.components+json, -WADL Schema use application/vnd.ms-azure-apim.wadl.grammars+xml.
+	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). </br> - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml </br> - `OpenApi` Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
 	ContentType *string `json:"contentType,omitempty"`
 	// SchemaDocumentProperties - Create or update Properties of the Schema Document.
 	*SchemaDocumentProperties `json:"document,omitempty"`

@@ -321,6 +321,112 @@ func NewConfigurationListResultPage(getNextPage func(context.Context, Configurat
 	return ConfigurationListResultPage{fn: getNextPage}
 }
 
+// MetadataEntity the metadata entity contract.
+type MetadataEntity struct {
+	// ID - The resource Id of the configuration resource.
+	ID *string `json:"id,omitempty"`
+	// Type - The type of the configuration resource.
+	Type *string `json:"type,omitempty"`
+	// Name - The name of the configuration resource.
+	Name *string `json:"name,omitempty"`
+	// MetadataEntityProperties - The metadata entity properties.
+	*MetadataEntityProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetadataEntity.
+func (me MetadataEntity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if me.ID != nil {
+		objectMap["id"] = me.ID
+	}
+	if me.Type != nil {
+		objectMap["type"] = me.Type
+	}
+	if me.Name != nil {
+		objectMap["name"] = me.Name
+	}
+	if me.MetadataEntityProperties != nil {
+		objectMap["properties"] = me.MetadataEntityProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MetadataEntity struct.
+func (me *MetadataEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				me.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				me.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				me.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var metadataEntityProperties MetadataEntityProperties
+				err = json.Unmarshal(*v, &metadataEntityProperties)
+				if err != nil {
+					return err
+				}
+				me.MetadataEntityProperties = &metadataEntityProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// MetadataEntityListResult the list of metadata entities
+type MetadataEntityListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of metadata entities.
+	Value *[]MetadataEntity `json:"value,omitempty"`
+}
+
+// MetadataEntityProperties the metadata entity properties
+type MetadataEntityProperties struct {
+	// DisplayName - The display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// DependsOn - The list of keys on which this entity depends on.
+	DependsOn *[]string `json:"dependsOn,omitempty"`
+	// SupportedValues - The list of supported values.
+	SupportedValues *[]MetadataSupportedValueDetail `json:"supportedValues,omitempty"`
+}
+
+// MetadataSupportedValueDetail the metadata supported value detail.
+type MetadataSupportedValueDetail struct {
+	// ID - The id.
+	ID *string `json:"id,omitempty"`
+	// DisplayName - The display name.
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 // OperationDisplayInfo the operation supported by Advisor.
 type OperationDisplayInfo struct {
 	// Description - The description of the operation.
@@ -780,6 +886,12 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 // Creates a new instance of the ResourceRecommendationBaseListResultPage type.
 func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
 	return ResourceRecommendationBaseListResultPage{fn: getNextPage}
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // ShortDescription a summary of the recommendation.

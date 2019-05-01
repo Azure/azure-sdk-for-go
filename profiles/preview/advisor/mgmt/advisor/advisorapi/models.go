@@ -23,5 +23,6 @@ import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04
 
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RecommendationMetadataClientAPI = original.RecommendationMetadataClientAPI
 type RecommendationsClientAPI = original.RecommendationsClientAPI
 type SuppressionsClientAPI = original.SuppressionsClientAPI

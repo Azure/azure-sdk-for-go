@@ -2,6 +2,10 @@
 
 ## `head`
 
+## `v0.6.0`
+- add namespace TLS configuration option
+- update to Azure SDK v28 and AutoRest 12
+
 ## `v0.5.1`
 - update the Azure Resource Manager dependency to the latest to help protect people not using a dependency 
   management tool such as `dep` or `vgo`.

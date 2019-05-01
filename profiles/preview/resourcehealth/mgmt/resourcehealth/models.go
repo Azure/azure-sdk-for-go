@@ -55,6 +55,11 @@ type BaseClient = original.BaseClient
 type ChildAvailabilityStatusesClient = original.ChildAvailabilityStatusesClient
 type ChildResourcesClient = original.ChildResourcesClient
 type ErrorResponse = original.ErrorResponse
+type MetadataClient = original.MetadataClient
+type MetadataEntity = original.MetadataEntity
+type MetadataEntityListResult = original.MetadataEntityListResult
+type MetadataEntityProperties = original.MetadataEntityProperties
+type MetadataSupportedValueDetail = original.MetadataSupportedValueDetail
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -63,6 +68,7 @@ type RecommendedAction = original.RecommendedAction
 type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
+type SetObject = original.SetObject
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -90,6 +96,12 @@ func NewChildResourcesClient(subscriptionID string) ChildResourcesClient {
 }
 func NewChildResourcesClientWithBaseURI(baseURI string, subscriptionID string) ChildResourcesClient {
 	return original.NewChildResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetadataClient(subscriptionID string) MetadataClient {
+	return original.NewMetadataClient(subscriptionID)
+}
+func NewMetadataClientWithBaseURI(baseURI string, subscriptionID string) MetadataClient {
+	return original.NewMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -22,6 +22,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
 )
 
+// MetadataClientAPI contains the set of methods on the MetadataClient type.
+type MetadataClientAPI interface {
+	Get(ctx context.Context, name string) (result resourcehealth.SetObject, err error)
+	List(ctx context.Context) (result resourcehealth.MetadataEntityListResult, err error)
+}
+
+var _ MetadataClientAPI = (*resourcehealth.MetadataClient)(nil)
+
 // AvailabilityStatusesClientAPI contains the set of methods on the AvailabilityStatusesClient type.
 type AvailabilityStatusesClientAPI interface {
 	GetByResource(ctx context.Context, resourceURI string, filter string, expand string) (result resourcehealth.AvailabilityStatus, err error)

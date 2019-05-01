@@ -50,7 +50,7 @@ func NewAPISchemaClientWithBaseURI(baseURI string, subscriptionID string) APISch
 // schemaID - schema identifier within an API. Must be unique in the current API Management service instance.
 // parameters - the schema contents to apply.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (result SchemaContract, err error) {
+func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaCreateOrUpdateContract, ifMatch string) (result SchemaContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.CreateOrUpdate")
 		defer func() {
@@ -75,8 +75,8 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 				{Target: "schemaID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "schemaID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.SchemaContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.SchemaContractProperties.ContentType", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.SchemaCreateOrUpdateProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.SchemaCreateOrUpdateProperties.ContentType", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APISchemaClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -102,7 +102,7 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (*http.Request, error) {
+func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaCreateOrUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

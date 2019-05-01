@@ -2796,6 +2796,8 @@ type OrchestratorProfile struct {
 	OrchestratorType *string `json:"orchestratorType,omitempty"`
 	// OrchestratorVersion - Orchestrator version (major, minor, patch).
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
+	// IsPreview - Whether Kubernetes version is currently in preview.
+	IsPreview *bool `json:"isPreview,omitempty"`
 }
 
 // OrchestratorProfileType profile for the container service orchestrator.
@@ -2814,6 +2816,8 @@ type OrchestratorVersionProfile struct {
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
 	// Default - Installed by default if version is not specified.
 	Default *bool `json:"default,omitempty"`
+	// IsPreview - Whether Kubernetes version is currently in preview.
+	IsPreview *bool `json:"isPreview,omitempty"`
 	// Upgrades - The list of available upgrade versions.
 	Upgrades *[]OrchestratorProfile `json:"upgrades,omitempty"`
 }

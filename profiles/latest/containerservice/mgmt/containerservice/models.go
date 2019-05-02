@@ -43,13 +43,6 @@ const (
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
 )
 
-type LoadBalancerSku = original.LoadBalancerSku
-
-const (
-	Basic    LoadBalancerSku = original.Basic
-	Standard LoadBalancerSku = original.Standard
-)
-
 type NetworkPlugin = original.NetworkPlugin
 
 const (
@@ -124,13 +117,6 @@ const (
 	DockerCE   OrchestratorTypes = original.DockerCE
 	Kubernetes OrchestratorTypes = original.Kubernetes
 	Swarm      OrchestratorTypes = original.Swarm
-)
-
-type ResourceIdentityType = original.ResourceIdentityType
-
-const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -351,17 +337,14 @@ type ManagedClusterAccessProfile = original.ManagedClusterAccessProfile
 type ManagedClusterAddonProfile = original.ManagedClusterAddonProfile
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
-type ManagedClusterIdentity = original.ManagedClusterIdentity
 type ManagedClusterListResult = original.ManagedClusterListResult
 type ManagedClusterListResultIterator = original.ManagedClusterListResultIterator
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
-type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
-type ManagedClusterWindowsProfile = original.ManagedClusterWindowsProfile
 type ManagedClustersClient = original.ManagedClustersClient
 type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
 type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
@@ -473,9 +456,6 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
-func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
-	return original.PossibleLoadBalancerSkuValues()
-}
 func PossibleNetworkPluginValues() []NetworkPlugin {
 	return original.PossibleNetworkPluginValues()
 }
@@ -493,9 +473,6 @@ func PossibleOpenShiftContainerServiceVMSizeValues() []OpenShiftContainerService
 }
 func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 	return original.PossibleOrchestratorTypesValues()
-}
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleStorageProfileTypesValues() []StorageProfileTypes {
 	return original.PossibleStorageProfileTypesValues()

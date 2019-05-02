@@ -1563,8 +1563,6 @@ type ManagedClusterAgentPoolProfile struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
-	// EnableNodePublicIP - Enable public IP for nodes
-	EnableNodePublicIP *bool `json:"enableNodePublicIP,omitempty"`
 }
 
 // ManagedClusterAgentPoolProfileProperties properties for the container service agent pool profile.
@@ -1595,8 +1593,6 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
-	// EnableNodePublicIP - Enable public IP for nodes
-	EnableNodePublicIP *bool `json:"enableNodePublicIP,omitempty"`
 }
 
 // ManagedClusterIdentity identity for the managed cluster.

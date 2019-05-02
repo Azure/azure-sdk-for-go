@@ -323,11 +323,11 @@ func NewConfigurationListResultPage(getNextPage func(context.Context, Configurat
 
 // MetadataEntity the metadata entity contract.
 type MetadataEntity struct {
-	// ID - The resource Id of the configuration resource.
+	// ID - The resource Id of the metadata entity.
 	ID *string `json:"id,omitempty"`
-	// Type - The type of the configuration resource.
+	// Type - The type of the metadata entity.
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the configuration resource.
+	// Name - The name of the metadata entity.
 	Name *string `json:"name,omitempty"`
 	// MetadataEntityProperties - The metadata entity properties.
 	*MetadataEntityProperties `json:"properties,omitempty"`

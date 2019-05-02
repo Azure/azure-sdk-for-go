@@ -89,7 +89,7 @@ func (client RecommendationMetadataClient) GetPreparer(ctx context.Context, name
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Advisor/recommendations/metadata/{name}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Advisor/metadata/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -157,7 +157,7 @@ func (client RecommendationMetadataClient) ListPreparer(ctx context.Context) (*h
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Advisor/recommendations/metadata"),
+		autorest.WithPath("/providers/Microsoft.Advisor/metadata"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
